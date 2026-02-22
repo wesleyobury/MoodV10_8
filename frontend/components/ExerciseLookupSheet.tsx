@@ -178,7 +178,7 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
     if (!selectedExercise) return null;
     
     // Get optimized URLs from Cloudinary
-    const optimizedVideoUrl = cloudinaryOptimizedVideoUrl(selectedExercise.video_url);
+    const optimizedVideoUrl = normalizeCloudinaryVideoUrl(cloudinaryOptimizedVideoUrl(selectedExercise.video_url)) || cloudinaryOptimizedVideoUrl(selectedExercise.video_url);
     const posterUrl = selectedExercise.thumbnail_url || cloudinaryThumbnailUrlFromVideoUrl(selectedExercise.video_url);
 
     return (
