@@ -9,7 +9,6 @@ import {
   Platform,
   Image,
 } from 'react-native';
-import * as VideoThumbnails from 'expo-video-thumbnails';
 import { Ionicons } from '@expo/vector-icons';
 import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -27,6 +26,19 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import * as ImageManipulator from 'expo-image-manipulator';
+
+// Safely import expo-video-thumbnails - it can crash on production iOS builds
+let VideoThumbnails: any = null;
+let videoThumbnailsAvailable = false;
+
+// Wrap in try-catch to prevent crashes on module load
+try {
+  VideoThumbnails = require('expo-video-thumbnails');
+  videoThumbnailsAvailable = true;
+} catch (error) {
+  console.warn('expo-video-thumbnails not available:', error);
+  videoThumbnailsAvailable = false;
+}
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const FILMSTRIP_HEIGHT = 56;
