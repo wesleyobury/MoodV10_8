@@ -403,13 +403,13 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
     }, [isVideoReady, retryCount, handleRetry]);
 
     const handleError = useCallback((error: any) => {
-      console.error('Video playback error:', error);
+      console.error('VIDEO LOAD ERROR:', videoUrl, error);
       if (retryCount < MAX_RETRIES) {
         handleRetry();
       } else {
         setHasTimedOut(true);
       }
-    }, [retryCount, handleRetry]);
+    }, [retryCount, handleRetry, videoUrl]);
 
     // Show timeout/error state with retry button
     if (hasTimedOut) {
