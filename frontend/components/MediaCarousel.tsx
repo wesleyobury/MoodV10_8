@@ -427,7 +427,7 @@ const SmartVideoPlayer = memo(({ uri, coverUrl, isActive, isPostInCenter }: Smar
         <Video
           key={videoKey}
           ref={videoRef}
-          source={{ uri }}
+          source={{ uri: normalizedUri }}
           style={styles.video}
           resizeMode={ResizeMode.COVER}
           shouldPlay={isActive}
@@ -436,7 +436,8 @@ const SmartVideoPlayer = memo(({ uri, coverUrl, isActive, isPostInCenter }: Smar
           onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
           onReadyForDisplay={handleVideoReadyForDisplay}
           onError={(error) => {
-            console.error('Video error:', error);
+            console.error('VIDEO LOAD ERROR:', normalizedUri, error);
+            console.error('Original URI:', uri);
             if (retryCount < MAX_RETRIES) {
               // Auto-retry on error
               if (videoRef.current) {
