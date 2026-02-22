@@ -831,6 +831,12 @@ export default function CreatePost() {
     if (!transparentCardRef.current) {
       throw new Error('No card to capture');
     }
+    
+    // Check if captureRef is available
+    if (!captureRef) {
+      showAlert('Feature Unavailable', 'Screen capture is not available on this device.');
+      return;
+    }
 
     // Check if Instagram is installed
     const canOpen = await Linking.canOpenURL('instagram-stories://share');
@@ -870,6 +876,20 @@ export default function CreatePost() {
 
     // 3) Share directly to IG Stories (skips iOS share sheet screens)
     try {
+      // Check if Share module is available
+      if (!Share) {
+        // Fall back to expo-sharing
+        const canShare = await Sharing.isAvailableAsync();
+        if (canShare) {
+          await Sharing.shareAsync(uri, {
+            mimeType: 'image/png',
+            dialogTitle: 'Share your workout achievement',
+            UTI: 'public.png',
+          });
+        }
+        return;
+      }
+      
       await Share.shareSingle({
         social: Share.Social.INSTAGRAM_STORIES,
         stickerImage,
