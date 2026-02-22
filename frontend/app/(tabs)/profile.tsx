@@ -20,7 +20,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
-import * as VideoThumbnails from 'expo-video-thumbnails';
+// REMOVED: expo-video-thumbnails - causes crashes on production iOS builds
+// Use the VideoThumbnail component instead which has safe fallbacks
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WorkoutStatsCard from '../../components/WorkoutStatsCard';
 import VideoThumbnail from '../../components/VideoThumbnail';
