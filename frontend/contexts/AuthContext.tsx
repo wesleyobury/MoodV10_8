@@ -5,6 +5,7 @@ import { trackEvent, aliasGuestToUser, GuestAnalytics } from '../utils/analytics
 import TermsAcceptanceModal from '../components/TermsAcceptanceModal';
 import { resetNotificationSession } from '../utils/notificationUtils';
 import { API_URL, validateApiConfig } from '../utils/apiConfig';
+import { apiFetch } from '../utils/api';
 
 // Terms version must match backend CURRENT_TERMS_VERSION
 // Update this when terms change to force re-acceptance for all users
