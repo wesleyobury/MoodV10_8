@@ -216,7 +216,16 @@ const VideoFrameSelector: React.FC<VideoFrameSelectorProps> = memo(({
   }, [duration]);
 
   const generateFrames = async () => {
+    // Skip on web platform
     if (Platform.OS === 'web') {
+      setIsLoadingFrames(false);
+      return;
+    }
+    
+    // Check if VideoThumbnails module is available
+    if (!videoThumbnailsAvailable || !VideoThumbnails) {
+      console.warn('VideoThumbnails not available - using fallback');
+      setError('Frame selection not available on this device. Please select a cover from your library instead.');
       setIsLoadingFrames(false);
       return;
     }
@@ -242,6 +251,7 @@ const VideoFrameSelector: React.FC<VideoFrameSelectorProps> = memo(({
             }, () => {});
           }
         } catch (e) {
+          console.warn('Frame generation error at index', i, e);
           if (frames.length > 0) {
             frames.push({ ...frames[frames.length - 1] });
           }
@@ -253,9 +263,12 @@ const VideoFrameSelector: React.FC<VideoFrameSelectorProps> = memo(({
         const mid = Math.floor(frames.length / 2);
         setCurrentFrameIndex(mid);
         scrubberX.value = (mid / (frames.length - 1)) * FILMSTRIP_WIDTH;
+      } else {
+        setError('Could not generate frames from video');
       }
     } catch (err) {
-      setError('Failed to generate frames');
+      console.error('Frame generation failed:', err);
+      setError('Failed to generate frames. Please select a cover from your library instead.');
     } finally {
       setIsLoadingFrames(false);
     }
