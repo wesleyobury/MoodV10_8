@@ -21,6 +21,7 @@ import { API_URL } from '../utils/apiConfig';
 import { 
   cloudinaryThumbnailUrlFromVideoUrl, 
   cloudinaryOptimizedVideoUrl,
+  normalizeCloudinaryVideoUrl,
   prefetchThumbnails,
   PreloadableItem 
 } from '../utils/cloudinaryVideo';
