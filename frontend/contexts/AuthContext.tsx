@@ -257,18 +257,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
+      console.log('🔐 Attempting login...');
+      console.log('🔗 API_URL being used:', API_URL);
+      
+      // Use safe apiFetch that handles non-JSON responses gracefully
+      const result = await apiFetch<{ token: string; user_id: string }>('/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        const { token: authToken, user_id } = data;
+      if (result.ok && result.data) {
+        const { token: authToken, user_id } = result.data;
         setToken(authToken);
         await AsyncStorage.setItem('auth_token', authToken);
         
@@ -289,7 +288,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         
         await fetchCurrentUser(authToken);
       } else {
-        throw new Error(data.detail || 'Login failed');
+        throw new Error(result.error || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);
