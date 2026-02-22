@@ -6,6 +6,7 @@ Build a fitness app with workout generation, social features, and video guidance
 ## Current Sprint Focus
 1. Fix TestFlight login failures caused by JSON parse errors
 2. Fix video playback failures on Explore and Profile pages
+3. Fix Create Post page crashes caused by expo-video-thumbnails
 
 ## What's Been Implemented
 
@@ -21,6 +22,12 @@ Build a fitness app with workout generation, social features, and video guidance
   - Updated `MediaCarousel.tsx` to use normalized URLs
   - Updated `ExerciseLookupSheet.tsx` to use normalized URLs
   - Added enhanced error logging for video failures
+
+- **Create Post Crash Fix (expo-video-thumbnails)**:
+  - `VideoFrameSelector.tsx`: Changed to dynamic require() with try-catch to prevent crashes
+  - `VideoThumbnail.tsx`: Same safe import pattern with Cloudinary fallback
+  - `profile.tsx`: Removed unused direct import
+  - Components now show helpful error messages instead of crashing when native thumbnails unavailable
 
 ### Previous Sessions
 - V2 Analytics Console
@@ -42,6 +49,8 @@ Build a fitness app with workout generation, social features, and video guidance
 - `/app/frontend/utils/apiConfig.ts` - API URL configuration with fallbacks
 - `/app/frontend/utils/cloudinaryVideo.ts` - Video URL normalization for iOS
 - `/app/frontend/components/MediaCarousel.tsx` - Video player component
+- `/app/frontend/components/VideoFrameSelector.tsx` - Safe video frame selector
+- `/app/frontend/components/VideoThumbnail.tsx` - Safe video thumbnail generator
 - `/app/frontend/contexts/AuthContext.tsx` - Authentication state management
 - `/app/frontend/eas.json` - EAS build configuration
 - `/app/frontend/app.json` - Expo configuration
@@ -51,6 +60,7 @@ Build a fitness app with workout generation, social features, and video guidance
 ### P0 (Critical)
 - [ ] User verification of TestFlight login fix
 - [ ] User verification of video playback fix
+- [ ] User verification of create-post page fix
 
 ### P1 (High)
 - [ ] Fix backend analytics error (`workouts_started` undefined)
