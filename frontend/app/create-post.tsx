@@ -1121,6 +1121,11 @@ export default function CreatePost() {
         console.log('✅ Web capture successful, data URL length:', uri.length);
         return uri;
       } else {
+        // Check if captureRef is available
+        if (!captureRef) {
+          console.warn('captureRef not available on this device');
+          return null;
+        }
         // Use react-native-view-shot for native
         const uri = await captureRef(statsCardRef.current, {
           format: 'png',
