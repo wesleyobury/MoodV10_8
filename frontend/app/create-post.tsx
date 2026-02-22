@@ -24,8 +24,6 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import { Video, ResizeMode } from 'expo-av';
-import { captureRef } from 'react-native-view-shot';
-import Share from 'react-native-share';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WorkoutStatsCard from '../components/WorkoutStatsCard';
@@ -35,6 +33,22 @@ import ImageCropModal from '../components/ImageCropModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import VideoFrameSelector from '../components/VideoFrameSelector';
 import InstagramShareModal from '../components/InstagramShareModal';
+
+// Safely import native modules that can crash on production iOS builds
+let captureRef: any = null;
+let Share: any = null;
+
+try {
+  captureRef = require('react-native-view-shot').captureRef;
+} catch (error) {
+  console.warn('react-native-view-shot not available:', error);
+}
+
+try {
+  Share = require('react-native-share').default;
+} catch (error) {
+  console.warn('react-native-share not available:', error);
+}
 
 import { API_URL } from '../utils/apiConfig';
 const SCREEN_WIDTH = Dimensions.get('window').width;
