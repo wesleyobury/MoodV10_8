@@ -2,7 +2,18 @@ import React, { useState, useEffect, memo } from 'react';
 import { View, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
-import * as VideoThumbnails from 'expo-video-thumbnails';
+
+// Safely import expo-video-thumbnails - it can crash on production iOS builds
+let VideoThumbnails: any = null;
+let videoThumbnailsAvailable = false;
+
+try {
+  VideoThumbnails = require('expo-video-thumbnails');
+  videoThumbnailsAvailable = true;
+} catch (error) {
+  console.warn('expo-video-thumbnails not available:', error);
+  videoThumbnailsAvailable = false;
+}
 
 interface VideoThumbnailProps {
   videoUrl: string;
