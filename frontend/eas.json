@@ -24,7 +24,7 @@
       "distribution": "store",
       "node": "20.19.4",
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://auth-stability-4.preview.emergentagent.com"
+        "EXPO_PUBLIC_BACKEND_URL": "https://analytics-fix-23.preview.emergentagent.com"
       },
       "ios": {
         "resourceClass": "m-medium",

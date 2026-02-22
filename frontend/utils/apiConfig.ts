@@ -9,7 +9,7 @@ import Constants from 'expo-constants';
 
 // Production backend URL - HARDCODED FALLBACK
 // This ensures TestFlight/production builds ALWAYS have a valid URL
-const PRODUCTION_BACKEND_URL = 'https://auth-stability-4.preview.emergentagent.com';
+const PRODUCTION_BACKEND_URL = 'https://analytics-fix-23.preview.emergentagent.com';
 
 /**
  * Get the API base URL with guaranteed non-empty result
