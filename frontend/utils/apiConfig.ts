@@ -52,6 +52,7 @@ export const validateApiConfig = async (): Promise<boolean> => {
   console.log('========================================');
   console.log('API_URL:', API_URL);
   console.log('AUTH_URL:', AUTH_URL);
+  console.log('PRODUCTION_BACKEND_URL (fallback):', PRODUCTION_BACKEND_URL);
   console.log('process.env.EXPO_PUBLIC_BACKEND_URL:', process.env.EXPO_PUBLIC_BACKEND_URL || '(not set)');
   console.log('Constants.expoConfig?.extra:', JSON.stringify(Constants.expoConfig?.extra || {}));
   console.log('========================================');
