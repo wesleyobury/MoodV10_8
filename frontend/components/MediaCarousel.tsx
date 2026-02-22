@@ -100,6 +100,9 @@ const SmartVideoPlayer = memo(({ uri, coverUrl, isActive, isPostInCenter }: Smar
   const [isSeeking, setIsSeeking] = useState(false);
   const [audioConfigured, setAudioConfigured] = useState(false);
   
+  // Normalize video URL for iOS compatibility
+  const normalizedUri = normalizeCloudinaryVideoUrl(uri) || uri;
+  
   // Timeout and retry state
   const [retryCount, setRetryCount] = useState(0);
   const [videoKey, setVideoKey] = useState(0);
