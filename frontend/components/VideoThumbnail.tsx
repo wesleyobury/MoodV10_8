@@ -83,15 +83,23 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = memo(({ videoUrl, coverUrl
     }
     
     // Generate thumbnail on native platforms for non-Cloudinary videos
-    if (Platform.OS !== 'web') {
+    if (Platform.OS !== 'web' && videoThumbnailsAvailable && VideoThumbnails) {
       generateThumbnail();
     } else {
+      // No VideoThumbnails available or on web - show fallback
       setLoading(false);
       setError(true);
     }
   }, [videoUrl, coverUrl, cloudinaryThumb]);
 
   const generateThumbnail = async () => {
+    // Double-check VideoThumbnails is available
+    if (!videoThumbnailsAvailable || !VideoThumbnails) {
+      setError(true);
+      setLoading(false);
+      return;
+    }
+    
     try {
       setLoading(true);
       setError(false);
@@ -105,7 +113,7 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = memo(({ videoUrl, coverUrl
       thumbnailCache[videoUrl] = uri;
       setThumbnail(uri);
     } catch (e) {
-      console.log('Thumbnail generation failed for:', videoUrl);
+      console.log('Thumbnail generation failed for:', videoUrl, e);
       setError(true);
     } finally {
       setLoading(false);
