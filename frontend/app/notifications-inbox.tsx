@@ -201,6 +201,7 @@ export default function NotificationsInbox() {
 
   const loadUnreadCount = async () => {
     const count = await notificationService.getUnreadCount();
+    console.log(`🔔 DEBUG: Unread notification count = ${count}`);
     setUnreadCount(count);
   };
 
