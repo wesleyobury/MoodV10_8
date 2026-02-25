@@ -1973,33 +1973,43 @@ async def get_active_users_endpoint(
     
     logger.info(f"Found {len(active_user_ids)} unique active user IDs: {active_user_ids}")
     
-    # Get user details for these active users
-    users = []
-    for user_id in active_user_ids[:limit]:
+    # Get user details for these active users (batch query)
+    user_ids_to_lookup = active_user_ids[:limit]
+    valid_oids = []
+    for uid in user_ids_to_lookup:
         try:
-            logger.info(f"Looking up user: {user_id}")
-            user = await db.users.find_one({"_id": ObjectId(user_id)})
-            if user:
-                logger.info(f"Found user: {user.get('username')}")
-                # Get activity counts for this user
-                event_count = await db.user_events.count_documents({
-                    "user_id": user_id,
-                    "timestamp": {"$gte": cutoff}
-                })
-                
-                users.append({
-                    "user_id": str(user["_id"]),
-                    "username": user.get("username", "Unknown"),
-                    "email": user.get("email", ""),
-                    "avatar_url": user.get("avatar"),
-                    "app_sessions": event_count,
-                    "created_at": user.get("created_at").isoformat() if user.get("created_at") else None,
-                })
-            else:
-                logger.warning(f"User not found for ID: {user_id}")
-        except Exception as e:
-            logger.error(f"Error looking up user {user_id}: {e}")
+            valid_oids.append(ObjectId(uid))
+        except Exception:
             continue
+    
+    users_cursor = db.users.find(
+        {"_id": {"$in": valid_oids}},
+        {"_id": 1, "username": 1, "email": 1, "avatar": 1, "created_at": 1}
+    )
+    user_map = {}
+    async for u in users_cursor:
+        user_map[str(u["_id"])] = u
+    
+    # Batch count events per user
+    event_counts_pipeline = [
+        {"$match": {"user_id": {"$in": list(user_ids_to_lookup)}, "timestamp": {"$gte": cutoff}}},
+        {"$group": {"_id": "$user_id", "count": {"$sum": 1}}}
+    ]
+    event_counts = await db.user_events.aggregate(event_counts_pipeline).to_list(limit)
+    event_count_map = {item["_id"]: item["count"] for item in event_counts}
+    
+    users = []
+    for user_id in user_ids_to_lookup:
+        user = user_map.get(user_id)
+        if user:
+            users.append({
+                "user_id": str(user["_id"]),
+                "username": user.get("username", "Unknown"),
+                "email": user.get("email", ""),
+                "avatar_url": user.get("avatar"),
+                "app_sessions": event_count_map.get(user_id, 0),
+                "created_at": user.get("created_at").isoformat() if user.get("created_at") else None,
+            })
     
     logger.info(f"Returning {len(users)} users")
     
