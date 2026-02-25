@@ -634,14 +634,18 @@ class NotificationService:
         comment_text: str
     ) -> Optional[str]:
         """Trigger notification when someone comments on a post - IG-style copy"""
+        logger.info(f"🔔 trigger_comment_notification called: commenter={commenter_id[:8]}..., post={post_id[:8]}...")
+        
         # Get post and commenter info
         post = await self.db.posts.find_one({"_id": ObjectId(post_id)})
         if not post:
+            logger.warning(f"🔔 trigger_comment_notification: Post not found: {post_id}")
             return None
         
         post_author_id = post.get("author_id")
         if not post_author_id or str(post_author_id) == commenter_id:
             # Don't notify yourself
+            logger.info(f"🔔 trigger_comment_notification: Skipping self-comment")
             return None
         
         commenter = await self.db.users.find_one({"_id": ObjectId(commenter_id)})
