@@ -844,6 +844,10 @@ class NotificationService:
             cover_urls = post.get("cover_urls", [])
             # Prefer cover (thumbnail) over full media for faster loading
             post_thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
+            
+            # If it's a video URL, generate Cloudinary video thumbnail
+            if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
+                post_thumbnail = self._get_cloudinary_video_thumbnail(post_thumbnail)
         
         return await self.create_notification(
             user_id=parent_comment_author_id,
