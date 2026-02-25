@@ -512,6 +512,7 @@ export default function PostDetail() {
                 }
                 return url;
               })}
+              postId={post.id}
               onIndexChange={setCarouselIndex}
               coverUrls={post.cover_urls}
             />
