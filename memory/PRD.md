@@ -55,19 +55,27 @@ Build a fitness app with workout generation, social features, and video guidance
 - `/app/frontend/eas.json` - EAS build configuration
 - `/app/frontend/app.json` - Expo configuration
 
+### February 25, 2026
+- **Deployment Fix Verified**: Confirmed the `SmartVideoPlayer.tsx` syntax error fix unblocks deployment (deployment_agent passed)
+- **Backend Analytics Fix**: Fixed `NameError: name 'workouts_started' is not defined` in `user_analytics.py` `get_admin_analytics()`. The return dict was using undefined variable names `workouts_started` and `total_workouts` instead of the correctly defined `total_workouts_started` and `total_workouts_completed`. Also fixed `average_workouts_per_active_user` calculation.
+
 ## Prioritized Backlog
 
 ### P0 (Critical)
+- [x] Fix deployment-blocking syntax error in SmartVideoPlayer.tsx
 - [ ] User verification of TestFlight login fix
 - [ ] User verification of video playback fix
 - [ ] User verification of create-post page fix
 
 ### P1 (High)
-- [ ] Fix backend analytics error (`workouts_started` undefined)
+- [x] Fix backend analytics error (`workouts_started` undefined) — FIXED Feb 25
 
 ### P2 (Medium)
 - [ ] Video Performance Phase 2 (pre-fetching)
 - [ ] Admin Panel caching
+- [ ] Clean up hardcoded fallback URL in `frontend/utils/apiConfig.ts`
+- [ ] Fix N+1 query pattern in moderation stats endpoint
 
 ### P3 (Low)
+- [ ] Replace temporary try-catch native module wrappers with permanent solutions
 - [ ] Code refactoring and cleanup
