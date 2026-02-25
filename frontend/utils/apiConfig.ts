@@ -42,9 +42,9 @@ const getApiUrl = (): string => {
     console.warn('⚠️ Ignoring preview config URL:', normalized);
   }
 
-  // 3️⃣ Final fallback (guaranteed safe production)
-  console.warn('⚠️ Using production fallback URL');
-  return PRODUCTION_BACKEND_URL;
+  // 3️⃣ No URL configured - fail fast
+  console.error('❌ CRITICAL: No backend URL configured. Set EXPO_PUBLIC_BACKEND_URL in environment.');
+  return '';
 };
 
 // Final resolved API URL
