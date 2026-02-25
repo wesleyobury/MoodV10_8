@@ -591,6 +591,22 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginTop: 4,
   },
+  contentThumbnailContainer: {
+    marginLeft: 'auto',
+  },
+  contentThumbnail: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    backgroundColor: '#1a1a1a',
+  },
+  thumbnailPlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1a1a1a',
+    borderWidth: 1,
+    borderColor: '#333',
+  },
   loadingMore: {
     paddingVertical: 20,
     alignItems: 'center',
