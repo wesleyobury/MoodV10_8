@@ -34,7 +34,7 @@ const isVideoUrl = (url: string): boolean => {
 
 interface MediaCarouselProps {
   media: string[];
-  postId?: string; // For stable keys
+  postId: string; // required for stable keys
   isPostVisible?: boolean;
   onIndexChange?: (index: number) => void;
   coverUrls?: { [key: number]: string } | null;
