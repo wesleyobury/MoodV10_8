@@ -910,6 +910,12 @@ class NotificationService:
             cover_urls = post.get("cover_urls", [])
             # Prefer cover (thumbnail) over full media for faster loading
             post_thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
+            
+            # If it's a video URL, generate Cloudinary video thumbnail
+            if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
+                post_thumbnail = self._get_cloudinary_video_thumbnail(post_thumbnail)
+        
+        logger.info(f"🔔 Like notification: post_thumbnail={post_thumbnail[:50] if post_thumbnail else 'None'}...")
         
         # Bundle key for grouping
         bundle_key = f"likes_{post_id}_{now.strftime('%Y%m%d%H')}"
