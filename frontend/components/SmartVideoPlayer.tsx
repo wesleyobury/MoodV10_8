@@ -141,38 +141,6 @@ useEffect(() => {
   loadThumbnail();
 }, [loadThumbnail]);
 
-    try {
-      // Priority: User-selected cover > Cloudinary thumbnail > Cache
-      if (coverUrl) {
-        setThumbnailUri(coverUrl);
-        setThumbnailLoading(false);
-        return;
-      }
-
-      if (thumbnailCache[uri]) {
-        setThumbnailUri(thumbnailCache[uri]);
-        setThumbnailLoading(false);
-        return;
-      }
-
-      const cloudinaryThumb = getCloudinaryThumbnail(uri);
-      if (cloudinaryThumb) {
-        setThumbnailUri(cloudinaryThumb);
-        thumbnailCache[uri] = cloudinaryThumb;
-        setThumbnailLoading(false);
-        return;
-      }
-
-      // No thumbnail available - show placeholder
-      setThumbnailError(true);
-    } catch (error) {
-      console.error('Error loading thumbnail:', error);
-      setThumbnailError(true);
-    } finally {
-      setThumbnailLoading(false);
-    }
-  };
-
   // Configure audio mode on mount
   useEffect(() => {
     if (!audioConfigured) {
