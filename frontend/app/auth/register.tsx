@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
+import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { useAuth } from '../../contexts/AuthContext';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 
