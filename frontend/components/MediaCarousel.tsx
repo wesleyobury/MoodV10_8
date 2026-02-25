@@ -98,14 +98,12 @@ const MediaCarousel = memo(({ media, postId, isPostVisible = true, onIndexChange
   };
 
   // Generate stable key for each slide
-  const getSlideKey = (mediaUrl: string, index: number): string => {
-    // Prefer using the mediaUrl as key if it's a valid string
-    if (mediaUrl && typeof mediaUrl === 'string' && mediaUrl.length > 0) {
-      return mediaUrl;
-    }
-    // Fallback to postId:index (postId is always available since it's required)
-    return `${postId}:${index}`;
-  };
+ const getSlideKey = (mediaUrl: string, index: number): string => {
+  if (mediaUrl && typeof mediaUrl === 'string' && mediaUrl.length > 0) {
+    return `${postId}:${mediaUrl}`;
+  }
+  return `${postId}:${index}`;
+};
 
   if (!media || media.length === 0) {
     return null;

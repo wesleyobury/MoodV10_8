@@ -104,13 +104,42 @@ const SmartVideoPlayer = memo(({ uri, coverUrl, isActive, postIsInCenter }: Smar
   }, [postIsInCenter]);
 
   // Generate or load thumbnail on mount
-  useEffect(() => {
-    loadThumbnail();
-  }, [uri, coverUrl]);
+  const loadThumbnail = useCallback(async () => {
+  setThumbnailLoading(true);
+  setThumbnailError(false);
 
-  const loadThumbnail = async () => {
-    setThumbnailLoading(true);
-    setThumbnailError(false);
+  try {
+    if (coverUrl) {
+      setThumbnailUri(coverUrl);
+      setThumbnailLoading(false);
+      return;
+    }
+
+    if (thumbnailCache[uri]) {
+      setThumbnailUri(thumbnailCache[uri]);
+      setThumbnailLoading(false);
+      return;
+    }
+
+    const cloudinaryThumb = getCloudinaryThumbnail(uri);
+    if (cloudinaryThumb) {
+      setThumbnailUri(cloudinaryThumb);
+      thumbnailCache[uri] = cloudinaryThumb;
+      setThumbnailLoading(false);
+      return;
+    }
+
+    setThumbnailError(true);
+  } catch (error) {
+    console.error('Error loading thumbnail:', error);
+    setThumbnailError(true);
+  } finally {
+    setThumbnailLoading(false);
+  }
+}, [uri, coverUrl]);
+useEffect(() => {
+  loadThumbnail();
+}, [loadThumbnail]);
 
     try {
       // Priority: User-selected cover > Cloudinary thumbnail > Cache
