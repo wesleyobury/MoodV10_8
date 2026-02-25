@@ -7889,30 +7889,38 @@ async def create_comment(comment_data: CommentCreate, current_user_id: str = Dep
         
         # Trigger comment notification to post author
         try:
+            logger.info(f"🔔 DEBUG Comment notification: commenter={current_user_id[:8]}..., post={comment_data.post_id[:8]}...")
             notification_service = get_notification_service(db)
-            await notification_service.trigger_comment_notification(
+            result = await notification_service.trigger_comment_notification(
                 commenter_id=current_user_id,
                 post_id=comment_data.post_id,
                 comment_text=comment_data.text
             )
+            logger.info(f"🔔 DEBUG Comment notification result: {result}")
         except Exception as e:
             logger.error(f"Failed to send comment notification: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
         
         # Trigger mention notifications to mentioned users
         if comment_data.mentioned_user_ids:
             try:
+                logger.info(f"🔔 DEBUG Mention notifications: mentioner={current_user_id[:8]}..., mentioned={comment_data.mentioned_user_ids}")
                 notification_service = get_notification_service(db)
                 for mentioned_user_id in comment_data.mentioned_user_ids:
                     # Don't notify yourself
                     if mentioned_user_id != current_user_id:
-                        await notification_service.trigger_mention_notification(
+                        result = await notification_service.trigger_mention_notification(
                             mentioner_id=current_user_id,
                             mentioned_user_id=mentioned_user_id,
                             post_id=comment_data.post_id,
                             comment_text=comment_data.text
                         )
+                        logger.info(f"🔔 DEBUG Mention notification result for {mentioned_user_id[:8]}...: {result}")
             except Exception as e:
                 logger.error(f"Failed to send mention notifications: {e}")
+                import traceback
+                logger.error(traceback.format_exc())
         
         # If this is a reply, notify the parent comment author
         if comment_data.parent_comment_id:
