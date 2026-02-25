@@ -56,7 +56,7 @@ Build a fitness app with workout generation, social features, and video guidance
 - `/app/frontend/app.json` - Expo configuration
 
 ### February 25, 2026
-- **Deployment Fix Verified**: Confirmed the `SmartVideoPlayer.tsx` syntax error fix unblocks deployment (deployment_agent passed)
+- **Deployment Fix (Syntax Error)**: Removed orphaned duplicate code block (lines 144-174) in `SmartVideoPlayer.tsx` — a stray try/catch block with trailing `};` left over from a previous refactor. This was the sole cause of the Metro bundling SyntaxError at line 174.
 - **Backend Analytics Fix**: Fixed `NameError: name 'workouts_started' is not defined` in `user_analytics.py` `get_admin_analytics()`. The return dict was using undefined variable names `workouts_started` and `total_workouts` instead of the correctly defined `total_workouts_started` and `total_workouts_completed`. Also fixed `average_workouts_per_active_user` calculation.
 
 ## Prioritized Backlog
