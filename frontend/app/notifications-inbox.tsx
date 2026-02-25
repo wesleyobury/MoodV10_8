@@ -52,10 +52,15 @@ const NotificationItem = React.memo(({
   const typeInfo = TYPE_ICONS[notification.type] || { name: 'notifications', color: '#888' };
   const slideAnim = useRef(new Animated.Value(0)).current;
   
-  // Get content thumbnail from metadata (for likes, comments, mentions)
-  const contentThumbnail = notification.metadata?.post_thumbnail || notification.metadata?.post_preview;
-  const hasContentThumbnail = contentThumbnail && 
-    ['like', 'comment', 'mention', 'reply'].includes(notification.type);
+  // Get content thumbnail - use explicit target_thumbnail_url first, then fall back to metadata
+  // NEVER use actor avatar as fallback for content thumbnail
+  const contentThumbnail = notification.target_thumbnail_url || 
+                            notification.metadata?.post_thumbnail || 
+                            notification.metadata?.post_preview;
+  
+  // Only show content thumbnail for relevant notification types
+  const shouldShowContentThumbnail = ['like', 'comment', 'mention', 'reply'].includes(notification.type);
+  const hasValidContentThumbnail = contentThumbnail && shouldShowContentThumbnail;
 
   // All notifications are clickable - featured_workout goes to cart, others go to home
   const isClickable = true;
@@ -71,7 +76,7 @@ const NotificationItem = React.memo(({
         onPress={onPress}
         activeOpacity={0.7}
       >
-        {/* Avatar or Type Icon */}
+        {/* Left: Avatar or Type Icon (actor who performed the action) */}
         <View style={styles.avatarContainer}>
           {notification.actor?.avatar ? (
             <Image
@@ -91,7 +96,7 @@ const NotificationItem = React.memo(({
         </View>
 
         {/* Content */}
-        <View style={[styles.textContainer, hasContentThumbnail && { flex: 1, marginRight: 12 }]}>
+        <View style={[styles.textContainer, shouldShowContentThumbnail && { flex: 1, marginRight: 12 }]}>
           <Text style={styles.notificationTitle} numberOfLines={1}>
             {notification.title}
           </Text>
@@ -103,18 +108,25 @@ const NotificationItem = React.memo(({
           </Text>
         </View>
 
-        {/* Content Thumbnail (post image/video) */}
-        {hasContentThumbnail && (
+        {/* Right: Content Thumbnail (post/video/workout image) - NEVER actor avatar */}
+        {shouldShowContentThumbnail && (
           <View style={styles.contentThumbnailContainer}>
-            <Image
-              source={{ uri: contentThumbnail }}
-              style={styles.contentThumbnail}
-            />
+            {hasValidContentThumbnail ? (
+              <Image
+                source={{ uri: contentThumbnail }}
+                style={styles.contentThumbnail}
+              />
+            ) : (
+              // Placeholder when no content thumbnail available
+              <View style={[styles.contentThumbnail, styles.thumbnailPlaceholder]}>
+                <Ionicons name="image-outline" size={20} color="#666" />
+              </View>
+            )}
           </View>
         )}
 
-        {/* Unread indicator */}
-        {isUnread && !hasContentThumbnail && (
+        {/* Unread indicator - only show if no content thumbnail */}
+        {isUnread && !shouldShowContentThumbnail && (
           <View style={styles.unreadDot} />
         )}
       </TouchableOpacity>
