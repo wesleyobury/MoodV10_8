@@ -677,6 +677,12 @@ class NotificationService:
         cover_urls = post.get("cover_urls", [])
         post_thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
         
+        # If it's a video URL, generate Cloudinary video thumbnail
+        if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
+            post_thumbnail = self._get_cloudinary_video_thumbnail(post_thumbnail)
+        
+        logger.info(f"🔔 Comment notification: post_thumbnail={post_thumbnail[:50] if post_thumbnail else 'None'}...")
+        
         # IG-style: "username commented on your photo."
         return await self.create_notification(
             user_id=str(post_author_id),
