@@ -541,7 +541,14 @@ class NotificationService:
                     "entity_type": 1,
                     "created_at": 1,
                     "read_at": 1,
-                    "metadata": 1,  # Include metadata for post_thumbnail, etc.
+                    "metadata": 1,  # Include full metadata
+                    # Extract target_thumbnail_url explicitly for frontend
+                    "target_thumbnail_url": {
+                        "$ifNull": [
+                            "$metadata.post_thumbnail",
+                            {"$ifNull": ["$metadata.post_preview", None]}
+                        ]
+                    },
                     "actor": {
                         "id": {"$toString": "$actor._id"},
                         "username": "$actor.username",
@@ -554,6 +561,12 @@ class NotificationService:
         ]
         
         notifications = await self.db.notifications.aggregate(pipeline).to_list(limit)
+        
+        # Log any notifications missing target_thumbnail_url for debugging
+        for notif in notifications:
+            if notif.get("type") in ["like", "comment", "mention", "reply"] and not notif.get("target_thumbnail_url"):
+                logger.warning(f"🔔 Notification missing target_thumbnail_url: id={notif.get('id')}, type={notif.get('type')}, entity_id={notif.get('entity_id')}")
+        
         return notifications
     
     async def get_unread_count(self, user_id: str) -> int:
