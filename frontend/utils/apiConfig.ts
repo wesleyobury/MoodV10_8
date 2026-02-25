@@ -1,50 +1,58 @@
 /**
- * API Configuration - Production URL Lock
- * 
- * CRITICAL: This file ensures the app NEVER uses relative URLs.
- * Production builds MUST use https://bug-busters-13.emergent.host
+ * API Configuration - Clean Production-Safe Version
+ *
+ * This file ensures:
+ * - Production builds use EAS env variable
+ * - Preview domains are ignored in production
+ * - A safe production fallback is always available
  */
 
 import Constants from 'expo-constants';
 
-// Production backend URL - HARDCODED FALLBACK
-// This ensures TestFlight/production builds ALWAYS have a valid URL
-const PRODUCTION_BACKEND_URL = 'https://analytics-fix-23.preview.emergentagent.com';
+// ✅ SAFE production fallback (only used if env/config missing)
+const PRODUCTION_BACKEND_URL = 'https://bug-busters-13.emergent.host';
 
-/**
- * Get the API base URL with guaranteed non-empty result
- * Priority:
- * 1. EXPO_PUBLIC_BACKEND_URL from process.env (for dev/preview)
- * 2. EXPO_PUBLIC_BACKEND_URL from Constants.expoConfig.extra (for EAS builds)
- * 3. PRODUCTION_BACKEND_URL hardcoded fallback (guaranteed for production)
- */
+// Detect preview domains
+const isPreviewDomain = (url: string): boolean =>
+  url.includes('.preview.emergentagent.com');
+
+// Normalize URL (remove trailing slashes)
+const normalize = (url: string): string =>
+  url.trim().replace(/\/+$/, '');
+
+// Get API URL safely
 const getApiUrl = (): string => {
-  // Try environment variable first (dev/preview environments)
+  // 1️⃣ Try environment variable (EAS injects this at build time)
   const envUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
   if (envUrl && envUrl.trim() !== '') {
-    return envUrl.trim();
+    const normalized = normalize(envUrl);
+    if (!isPreviewDomain(normalized)) {
+      return normalized;
+    }
+    console.warn('⚠️ Ignoring preview env URL:', normalized);
   }
-  
-  // Try EAS build config
+
+  // 2️⃣ Try Expo config (EAS build config)
   const configUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL;
-  if (configUrl && typeof configUrl === 'string' && configUrl.trim() !== '') {
-    return configUrl.trim();
+  if (typeof configUrl === 'string' && configUrl.trim() !== '') {
+    const normalized = normalize(configUrl);
+    if (!isPreviewDomain(normalized)) {
+      return normalized;
+    }
+    console.warn('⚠️ Ignoring preview config URL:', normalized);
   }
-  
-  // Fallback to production URL - NEVER return empty string
-  console.warn('⚠️ Using hardcoded production URL fallback');
+
+  // 3️⃣ Final fallback (guaranteed safe production)
+  console.warn('⚠️ Using production fallback URL');
   return PRODUCTION_BACKEND_URL;
 };
 
-// Export the API URL as a constant for easy import
+// Final resolved API URL
 export const API_URL = getApiUrl();
-
-// Auth-specific URL (same as API_URL for this app)
 export const AUTH_URL = API_URL;
 
 /**
  * Validate and log API configuration on startup
- * Call this once during app initialization
  */
 export const validateApiConfig = async (): Promise<boolean> => {
   console.log('========================================');
@@ -56,53 +64,47 @@ export const validateApiConfig = async (): Promise<boolean> => {
   console.log('process.env.EXPO_PUBLIC_BACKEND_URL:', process.env.EXPO_PUBLIC_BACKEND_URL || '(not set)');
   console.log('Constants.expoConfig?.extra:', JSON.stringify(Constants.expoConfig?.extra || {}));
   console.log('========================================');
-  
-  // Validate URL is not empty and is absolute
+
   if (!API_URL || API_URL === '') {
-    console.error('❌ CRITICAL: API_URL is empty! This should never happen.');
+    console.error('❌ CRITICAL: API_URL is empty!');
     return false;
   }
-  
+
   if (!API_URL.startsWith('http://') && !API_URL.startsWith('https://')) {
-    console.error('❌ CRITICAL: API_URL is not an absolute URL:', API_URL);
+    console.error('❌ CRITICAL: API_URL is not absolute:', API_URL);
     return false;
   }
-  
-  // Perform health check
+
   try {
     console.log('🏥 Performing health check...');
     const response = await fetch(`${API_URL}/api/health`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
-    
+
     if (response.ok) {
-      console.log('✅ Health check passed! Backend is reachable.');
+      console.log('✅ Health check passed!');
       return true;
     } else {
-      console.warn('⚠️ Health check returned non-OK status:', response.status);
+      console.warn('⚠️ Health check non-OK status:', response.status);
       return false;
     }
   } catch (error) {
     console.warn('⚠️ Health check failed:', error);
-    // Don't block app startup on health check failure
-    // The user might be offline or backend might be temporarily down
     return false;
   }
 };
 
 /**
  * Build absolute URL for API endpoints
- * NEVER returns a relative URL
  */
 export const buildApiUrl = (path: string): string => {
-  // Remove leading slash if present to avoid double slashes
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   return `${API_URL}/${cleanPath}`;
 };
 
 /**
- * OAuth callback URLs - use production domain
+ * OAuth callback URLs
  */
 export const OAUTH_CALLBACKS = {
   google: `${API_URL}/api/auth/callback/google`,

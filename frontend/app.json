@@ -11,7 +11,7 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.official.moodapp",
-      "buildNumber": "30",
+      "buildNumber": "31",
       "supportsTablet": true,
       "infoPlist": {
         "UIViewControllerBasedStatusBarAppearance": false,
@@ -81,7 +81,5 @@
       "eas": {
         "projectId": "ef2c8520-832c-4806-beb0-80b9db1a6214"
       },
-      "EXPO_PUBLIC_BACKEND_URL": "https://analytics-fix-23.preview.emergentagent.com"
-    }
   }
 }
