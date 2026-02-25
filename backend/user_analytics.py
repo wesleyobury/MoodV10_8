@@ -676,7 +676,7 @@ async def get_admin_analytics(
             "workouts_removed_from_cart": workouts_removed_from_cart,
             "cart_views": cart_views,
             "retention_rate": round((active_users / total_users * 100), 2) if total_users > 0 else 0,
-            "average_workouts_per_active_user": round(total_workouts / active_users, 2) if active_users > 0 else 0,
+            "average_workouts_per_active_user": round(total_workouts_completed / active_users, 2) if active_users > 0 else 0,
             "popular_mood_categories": [
                 {"mood": m["_id"], "count": m["count"]}
                 for m in popular_moods if m["_id"]
