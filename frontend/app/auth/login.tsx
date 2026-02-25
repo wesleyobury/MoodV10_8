@@ -67,8 +67,29 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isAppleAvailable, setIsAppleAvailable] = useState(false);
   const insets = useSafeAreaInsets();
+  
+  // Hidden diagnostics trigger - 5 rapid taps on header
+  const tapCountRef = useRef(0);
+  const lastTapRef = useRef(0);
 
   const { login, refreshAuth, continueAsGuest } = useAuth();
+  
+  // Handle hidden diagnostics trigger
+  const handleHeaderTap = () => {
+    const now = Date.now();
+    // Reset if more than 500ms since last tap
+    if (now - lastTapRef.current > 500) {
+      tapCountRef.current = 0;
+    }
+    tapCountRef.current += 1;
+    lastTapRef.current = now;
+    
+    if (tapCountRef.current >= 5) {
+      tapCountRef.current = 0;
+      console.log('🔧 Opening diagnostics panel...');
+      router.push('/diagnostics');
+    }
+  };
 
   // Check if Apple Sign-In is available (iOS only)
   useEffect(() => {
