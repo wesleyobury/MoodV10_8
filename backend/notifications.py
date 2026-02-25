@@ -815,8 +815,11 @@ class NotificationService:
         BUNDLED ONLY - no single-like spam.
         If >3 likes in 10 min, bundle into one notification.
         """
+        logger.info(f"🔔 trigger_like_notification called: liker={liker_id[:8]}..., post={post_id[:8]}..., author={post_author_id[:8]}...")
+        
         # Don't notify yourself
         if liker_id == post_author_id:
+            logger.info(f"🔔 trigger_like_notification: Skipping self-like")
             return None
         
         now = datetime.now(timezone.utc)
