@@ -1,5 +1,5 @@
-import React, { useState, useRef, memo, useCallback, useEffect } from 'react';
-import {
+ React, { useState, useRef, memo, useCallback, useEffect } from 'react';
+impoimportrt {
   View,
   StyleSheet,
   Dimensions,
