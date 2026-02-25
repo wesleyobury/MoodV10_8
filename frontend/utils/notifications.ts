@@ -51,6 +51,15 @@ export interface Notification {
   entity_type?: string;
   created_at: string;
   read_at?: string;
+  // Explicit target thumbnail URL for post/workout/media content
+  target_thumbnail_url?: string;
+  // Metadata for backward compatibility
+  metadata?: {
+    post_thumbnail?: string;
+    post_preview?: string;
+    workout_name?: string;
+    [key: string]: any;
+  };
   actor?: {
     id: string;
     username: string;
