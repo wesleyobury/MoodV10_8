@@ -350,11 +350,15 @@ export default function Login() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={[styles.content, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-          {/* Header */}
-          <View style={styles.header}>
+          {/* Header - Tap 5 times rapidly to open diagnostics */}
+          <TouchableOpacity 
+            style={styles.header} 
+            onPress={handleHeaderTap}
+            activeOpacity={1}
+          >
             <Text style={styles.title}>Welcome back</Text>
             <Text style={styles.subtitle}>Login to continue your fitness journey</Text>
-          </View>
+          </TouchableOpacity>
 
           {/* Google Sign In Button */}
           <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
