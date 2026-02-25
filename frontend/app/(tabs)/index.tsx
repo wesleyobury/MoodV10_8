@@ -28,7 +28,7 @@ import { useScreenTime } from '../../hooks/useScreenTime';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import { useFeaturedWorkouts, FeaturedWorkout } from '../../hooks/useFeaturedWorkouts';
 import ExerciseLookupSheet from '../../components/ExerciseLookupSheet';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';

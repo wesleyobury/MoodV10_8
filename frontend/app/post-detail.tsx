@@ -23,7 +23,7 @@ import GuestPromptModal from '../components/GuestPromptModal';
 import CommentsBottomSheet from '../components/CommentsBottomSheet';
 import BackButton from '../components/BackButton';
 import Constants from 'expo-constants';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { Analytics, GuestAnalytics } from '../utils/analytics';
 
 import { API_URL } from '../utils/apiConfig';

@@ -8,7 +8,7 @@ import {
   Easing,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 
 interface ChooseForMeButtonProps {
   onPress: () => void;

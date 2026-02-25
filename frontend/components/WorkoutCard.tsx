@@ -10,7 +10,7 @@ import {
   Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Workout } from '../types/workout';
 import CustomWorkoutModal from './CustomWorkoutModal';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { Ionicons } from '@expo/vector-icons';
 
 interface GradientButtonProps {

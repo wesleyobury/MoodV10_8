@@ -13,7 +13,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useAuth } from '../contexts/AuthContext';
 import notificationService, { Notification } from '../utils/notifications';
 import { formatNotificationTime } from '../utils/notificationUtils';
