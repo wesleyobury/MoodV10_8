@@ -99,7 +99,9 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ.get('DB_NAME', 'mood_app')]
 
 # JWT Configuration
-JWT_SECRET = os.environ.get('JWT_SECRET', 'mood-app-secret-key-2025')
+JWT_SECRET = os.environ.get('JWT_SECRET')
+if not JWT_SECRET:
+    raise RuntimeError("JWT_SECRET environment variable is required")
 JWT_ALGORITHM = 'HS256'
 
 # Environment Detection for Staging/Preview
