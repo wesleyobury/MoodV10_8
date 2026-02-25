@@ -548,7 +548,8 @@ export default function WorkoutStatsCard({
           
           <Animated.View style={[styles.ringContainer, { transform: [{ scale: pulseAnim }] }]}>
             {/* Use MaskedView to apply shimmer ONLY to the ring shapes */}
-            {showRingPulse ? (
+            {/* Falls back to simple rings if MaskedView not available */}
+            {showRingPulse && MaskedView ? (
               <MaskedView
                 style={styles.maskedRingContainer}
                 maskElement={
