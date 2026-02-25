@@ -16,7 +16,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
+import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useNavigation } from '@react-navigation/native';
