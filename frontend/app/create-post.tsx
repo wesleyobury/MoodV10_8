@@ -33,6 +33,7 @@ import ImageCropModal from '../components/ImageCropModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import VideoFrameSelector from '../components/VideoFrameSelector';
 import InstagramShareModal from '../components/InstagramShareModal';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 
 // Safely import native modules that can crash on production iOS builds
 let captureRef: any = null;
