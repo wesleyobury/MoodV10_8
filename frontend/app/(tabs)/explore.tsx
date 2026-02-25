@@ -1234,6 +1234,7 @@ export default function Explore() {
                           }
                           return url;
                         })}
+                        postId={post.id}
                         isPostVisible={visiblePostId === post.id}
                         coverUrls={post.cover_urls}
                         onIndexChange={(index) => {
