@@ -3,74 +3,102 @@ This session began with a request to fix slow video performance and incorrect no
 
 **PRODUCT REQUIREMENTS**:
 1.  **Deployment Stability (CRITICAL):**
-    *   Fix the build failure caused by a syntax error in the frontend code.
-    *   Resolve any blockers identified by the deployment agent to enable a successful production deployment.
+    *   Fix all build failures to enable a successful production deployment. The latest failure was a syntax error in .
 2.  **Production Stability (CRITICAL, Pending Verification):**
     *   Fix app crashes on the Explore page when viewing media.
-    *   Fix login failures in TestFlight builds due to incorrect backend URLs.
-    *   Fix users being logged out after closing the app.
-    *   Fix push notifications not being delivered in TestFlight.
-3.  **Feature: Add Custom Exercise Enhancement:**
-    *   Use a rotating, non-repeating list of 5 user-provided static images for any custom exercise added.
-4.  **Feature: Push Notifications & Deep Linking:**
-    *   Implement true push notifications (lock screen, banners).
-    *   Standardize notification copy for different types.
-    *    notifications must deep-link to the cart.
-    *   All other notifications must open the app to the home screen.
-5.  **Feature: Instagram Story Sharing:**
-    *   Fix the exported story overlay to have a transparent background.
-    *   Implement direct-to-Instagram-Stories sharing.
-    *   Make the share button more noticeable with an Instagram-style gradient.
-6.  **Bug Fixes & UX Tweaks (Pending Verification):**
-    *   Fix video player buffering/restarting loop.
-    *   Fix admin-uploaded videos requiring multiple refreshes to appear.
-    *   Fix incorrect notification thumbnails.
-    *   Update the app build version to .
+    *   Fix login failures in TestFlight builds due to incorrect backend URLs or non-JSON responses.
+    *   Fix the + (Create Post) button and post-workout screen from crashing the app. This was traced to multiple native module failures (, ) and React hooks violations.
+    *   Fix video player buffering/restarting loop and ensure videos play correctly on iOS.
+3.  **Feature: Notifications System:**
+    *   Fix notifications for likes, comments, and mentions not appearing in the notifications feed.
+    - Fix the notification badge count not updating.
+    - Ensure correct content thumbnails (the post/video being interacted with) appear on notification items, not the actor's avatar.
+4.  **Debuggability:**
+    *   Implement an in-app diagnostics panel to verify backend URLs and environment configuration in TestFlight builds.
+5.  **Latent Bug Fixes:**
+    *   Fix the backend analytics error .
 
 **User's preferred language**: English
 
 **what currently exists?**
-A full-stack Expo (React Native) and FastAPI application. A critical deployment-blocking syntax error in  has been identified and fixed. The agent corrected a misplaced  statement, cleaned the  file, and updated URLs in  and  to align with the current deployment environment. However, the deployment is still blocked by the deployment agent flagging a hardcoded URL, which was intentionally added as a fallback for mobile production builds.
+A full-stack Expo (React Native) and FastAPI application. The agent has just fixed a deployment-blocking syntax error in . Prior to this, the agent implemented numerous fixes for critical crashes reported by the user in TestFlight, primarily caused by native modules like  failing in production and React hooks violations. This involved creating safe component wrappers that fall back gracefully, refactoring component structures, and adding a hidden diagnostics screen to help debug environment issues. The notification system remains partially broken; thumbnails are now handled correctly, but the notifications themselves are not being generated in the database.
 
 **Last working item**:
--   Last item agent was working: Resolving a deployment blocker. The primary issue, a syntax error in , was fixed. The agent then addressed a secondary blocker from the deployment agent concerning a hardcoded URL in . The agent updated the URL to match the current environment, but reasoned that the hardcoded URL itself is a necessary fallback for Expo mobile app builds (like TestFlight) and may be a false positive from the deployment agent.
--   Status: BLOCKED
+-   Last item agent was working: Fixing a critical deployment failure. The build logs indicated a  in . The agent identified an extraneous semicolon and removed it.
+-   Status: IN PROGRESS
 -   Agent Testing Done: N
--   Which testing method agent to use? The  needs to be run again to verify if the changes are sufficient.
+-   Which testing method agent to use?  to confirm the fix unblocks the build process.
 -   User Testing Done: N
 
 **All Pending/In progress Issue list**:
--   Issue 1: Deployment Blocked by Hardcoded URL (P0)
--   Issue 2: Critical Production Bugs Pending Verification (P0)
--   Issue 3: Latent backend analytics error (P2)
+-   Issue 1: Deployment failing due to build errors (P0)
+-   Issue 2: Notifications are not being created in the database (P0)
+-   Issue 3: Critical Production Bugs Pending User Verification (P0)
+-   Issue 4: Latent backend analytics error (P2)
 
 **Issues Detail**:
--   **Issue 1: Deployment Blocked by Hardcoded URL**
-    -   **Description**: The production deployment is blocked. The initial cause was a syntax error () in , which has been fixed. Now, the  is flagging a hardcoded fallback URL in  as a blocker. This fallback is intentional and necessary for Expo production builds (TestFlight) to function correctly if environment variables fail to inject, creating a conflict between mobile app requirements and deployment validation rules.
-    -   **Attempted fixes**:
-        -   The misplaced  in  was moved to the top of the file.
-        -   The hardcoded URL in  and the production URL in  were updated to use the correct new production domain.
-        -   The  file was cleaned of malformed entries.
+-   **Issue 1: Deployment failing due to build errors**
+    -   **Description**: The Failed to read the app config from the project using "npx expo config" command: npx expo config --json --type public exited with non-zero code: 1.
+Falling back to the version of "@expo/config" shipped with the EAS CLI.
+> npx expo install expo-updates
+[expo-cli] node:internal/modules/cjs/loader:1210
+[expo-cli]   throw err;
+[expo-cli]   ^
+[expo-cli] 
+[expo-cli] Error: Cannot find module '@expo/cli'
+[expo-cli] Require stack:
+[expo-cli] - /app/frontend/node_modules/expo/bin/cli
+[expo-cli]     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+[expo-cli]     at Module._load (node:internal/modules/cjs/loader:1038:27)
+[expo-cli]     at Module.require (node:internal/modules/cjs/loader:1289:19)
+[expo-cli]     at require (node:internal/modules/helpers:182:18)
+[expo-cli]     at Object.<anonymous> (/app/frontend/node_modules/expo/bin/cli:5:1)
+[expo-cli]     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+[expo-cli]     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+[expo-cli]     at Module.load (node:internal/modules/cjs/loader:1266:32)
+[expo-cli]     at Module._load (node:internal/modules/cjs/loader:1091:12)
+[expo-cli]     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12) {
+[expo-cli]   code: 'MODULE_NOT_FOUND',
+[expo-cli]   requireStack: [ '/app/frontend/node_modules/expo/bin/cli' ]
+[expo-cli] }
+[expo-cli] 
+[expo-cli] Node.js v20.20.0
+/app/frontend/node_modules/expo/bin/cli install expo-updates exited with non-zero code: 1 process was failing during the Metro bundling stage. The latest log clearly identified a syntax error in . The agent has fixed this specific error.
+    -   **Attempted fixes**: Removed an extra semicolon in  at line 174.
     -   **Next debug checklist**:
-        1.  Re-run the . The URL update may have resolved the issue.
-        2.  If it still fails, the agent must reason with the deployment agent or find a way to confirm that this hardcoded URL pattern is acceptable and necessary for an Expo mobile application, distinguishing it from a standard web app.
-        3.  If the check cannot be bypassed, investigate alternative ways to provide a reliable fallback URL for mobile builds without the deployment agent flagging it.
+        1.  Run the  to verify that the syntax fix has resolved the build failure.
+        2.  If it fails again, analyze the new build logs for the next error.
     -   **Why fix this issue and what will be achieved with the fix?** This is the highest priority blocker. The application cannot be deployed or delivered to the user for testing until this is resolved.
-    -   **Status**: BLOCKED
+    -   **Status**: IN PROGRESS
     -   **Is recurring issue?** Y
     -   **Should Test frontend/backend/both after fix?** Deployment.
     -   **Blocked on other issue**: None.
 
--   **Issue 2: Critical Production Bugs**
-    -   **Description**: A collection of critical bugs (Login Failure, Explore Page Crash, Auth Persistence, Push Notifications) reported in TestFlight have been fixed in the codebase but are awaiting a new build to be deployed for user verification.
-    -   **Next debug checklist**: User needs to create a new TestFlight build once the deployment is unblocked.
-    -   **Why fix this issue and what will be achieved with the fix?** This makes the application stable and usable for production testers.
+-   **Issue 2: Notifications are not being created in the database**
+    -   **Description**: Users are not receiving notifications for likes, comments, or mentions, and the notification badge count is not updating. The agent's investigation, including direct API calls, revealed that the  endpoint returns an empty array because no notification documents are being created in the database in the first place.
+    -   **Attempted fixes**:
+        -   Added extensive logging to the backend notification creation logic () and the frontend fetching logic ().
+        -   Verified that the backend endpoint  and the frontend services are syntactically correct.
+    -   **Next debug checklist**:
+        1.  The agent has already added logging. The next step is to perform an action that *should* create a notification (e.g., have one user like another's post).
+        2.  Immediately check the backend logs () for the debug prints added in  to trace the execution flow and see why the database insert is not happening.
+        3.  Inspect the API routes for likes and comments to ensure they are correctly calling the notification trigger methods.
+    -   **Why fix this issue and what will be achieved with the fix?** This is a core social feature of the application. Fixing it will restore user engagement loops.
+    -   **Status**: IN PROGRESS
+    -   **Is recurring issue?** N
+    -   **Should Test frontend/backend/both after fix?** Both.
+    -   **Blocked on other issue**: Issue 1: Deployment failing due to build errors.
+
+-   **Issue 3: Critical Production Bugs Pending User Verification**
+    -   **Description**: A collection of critical bugs (Login Failure, Explore Page Crash, Create Post Crash) reported in TestFlight have been fixed in the codebase but are awaiting a new build to be deployed for user verification. The agent has implemented robust workarounds for native module failures.
+    -   **Next debug checklist**: Once the deployment is unblocked, the user needs to create a new TestFlight build and test the fixes.
+    -   **Why fix this issue and what will be achieved with the fix?** This will make the application stable and usable for production testers.
     -   **Status**: USER VERIFICATION PENDING
     -   **Is recurring issue?** Y
     -   **Should Test frontend/backend/both after fix?** Frontend (via TestFlight).
-    -   **Blocked on other issue**: Issue 1: Deployment Blocked by Hardcoded URL.
+    -   **Blocked on other issue**: Issue 1: Deployment failing due to build errors.
 
--   **Issue 3: Latent backend analytics error**
+-   **Issue 4: Latent backend analytics error**
     -   **Description**: A backend log error, , was noted in a previous session but never investigated.
     -   **Next debug checklist**: Search backend code for  and ensure it's initialized before use.
     -   **Why fix this issue and what will be achieved with the fix?** Prevents a potential 500 error on an admin analytics endpoint.
@@ -89,63 +117,143 @@ A full-stack Expo (React Native) and FastAPI application. A critical deployment-
     -   **Fix Backend Analytics Error (P2):** Address the  is not defined error.
 
 **Completed work in this session**
--   **Deployment Fix**: Fixed a critical build-breaking syntax error in  by relocating a misplaced  statement.
--   **Configuration Update**: Updated the hardcoded fallback URL in  and the production environment URL in  to align with the new deployment environment.
--   **Code Hygiene**: Cleaned up numerous duplicate and malformed entries from the  file.
+-   **Deployment Fix**: Fixed a critical build-breaking syntax error in .
+-   **Crash Fix ():** Created a  wrapper to fall back to a  if  fails to load in production. Used  to replace all usages across the codebase.
+-   **Crash Fix (Hooks Violation):** Refactored  by extracting  into its own file and fixing unstable keys to resolve a Rendered more hooks error.
+-   **Crash Fix (Native Modules):** Wrapped imports for , , and  in try/catch blocks to prevent them from crashing the app on load in production.
+-   **Production Debuggability**: Created a hidden diagnostics screen (), accessible via a 5-tap gesture on the login screen, to display environment variables and backend health.
+-   **Video Playback Fix**: Implemented  in  to enforce iOS-compatible MP4 format and HTTPS, applying it to all video players.
+-   **Login Stability Fix**: Created a safe  wrapper in  to gracefully handle non-JSON API responses, preventing crashes during login on TestFlight.
+-   **Notification Thumbnail Fix**: Updated  to explicitly generate and add  to notification payloads and updated  to use this new field, with a placeholder fallback.
+-   **Configuration Fixes**: Corrected invalid JSON syntax in .
 
 **Earlier issues found/mentioned but not fixed**
 -   **Issue 1: Potential undefined variable in backend analytics**
-    -   **Description**: A backend log showed the error: . This was seen in the initial handover but was not addressed.
+    -   **Description**: A backend log showed the error: . This was carried over from the initial handover and was not addressed.
     -   **Debug checklist**:
         1.  Search the backend code for the usage of a variable named .
         2.  Identify the endpoint and context where this error occurs.
         3.  Ensure the variable is defined before it's used (e.g., ).
-    -   **Why to solve this issue and what will be achieved with this?** This will prevent potential 500 errors on an admin analytics endpoint, ensuring the V2 admin panel is reliable.
+    -   **Why to solve this issue and what will be achieved with this?** This will prevent potential 500 errors on an admin analytics endpoint.
     -   **Should Test frontend/backend/both after fix**: Backend.
     -   **Is recurring issue?** N
 
 **Known issue recurrence from previous fork**
--   None.
+-   **Issue recurrence in previous fork**: Deployment blockers. The previous fork ended with a deployment blocker, and this session was also heavily focused on fixing deployment issues.
+-   **Recurrence count**: 2
+-   **Status**: IN PROGRESS
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Expo EAS Build Debugging:** Diagnosing and fixing errors that occur during the Expo Application Services (EAS) build and update process, specifically syntax errors that halt the Metro bundler.
--   **Deployment Agent Interaction:** Using a deployment sub-agent to check for production readiness and debugging its feedback.
--   **Mobile vs. Web Configuration:** Understanding the distinction that for Expo mobile apps, hardcoded fallback URLs can be a necessary pattern for production builds (TestFlight/App Store), unlike in web apps.
+-   **Expo EAS Build Debugging:** Diagnosing and fixing errors that occur during the Metro bundling phase of an > npx expo install expo-updates
+[expo-cli] env: load .env
+[expo-cli] env: export EXPO_TUNNEL_SUBDOMAIN EXPO_PACKAGER_HOSTNAME EXPO_PUBLIC_BACKEND_URL EXPO_USE_FAST_RESOLVER EXPO_USE_STATIC METRO_CACHE_ROOT
+[expo-cli] › Installing 1 SDK 54.0.0 compatible native module using yarn
+[expo-cli] > yarn add expo-updates@~29.0.16
+[expo-cli] yarn add v1.22.22
+[expo-cli] warning package-lock.json found. Your project contains lock files generated by tools other than Yarn. It is advised not to mix package managers in order to avoid resolution inconsistencies caused by unsynchronized lock files. To clear this warning, remove package-lock.json.
+[expo-cli] [1/4] Resolving packages...
+[expo-cli] [2/4] Fetching packages...
+[expo-cli] [3/4] Linking dependencies...
+[expo-cli] warning " > expo-router@6.0.19" has unmet peer dependency "@expo/metro-runtime@^6.1.2".
+[expo-cli] warning " > react-native-dotenv@3.4.11" has unmet peer dependency "@babel/runtime@^7.20.6".
+[expo-cli] warning "eslint-config-expo > @typescript-eslint/eslint-plugin@8.37.0" has incorrect peer dependency "typescript@>=4.8.4 <5.9.0".
+[expo-cli] warning "eslint-config-expo > @typescript-eslint/parser@8.37.0" has incorrect peer dependency "typescript@>=4.8.4 <5.9.0".
+[expo-cli] warning "eslint-config-expo > @typescript-eslint/eslint-plugin > @typescript-eslint/type-utils@8.37.0" has incorrect peer dependency "typescript@>=4.8.4 <5.9.0".
+[expo-cli] warning "eslint-config-expo > @typescript-eslint/eslint-plugin > @typescript-eslint/utils@8.37.0" has incorrect peer dependency "typescript@>=4.8.4 <5.9.0".
+[expo-cli] warning "eslint-config-expo > @typescript-eslint/parser > @typescript-eslint/typescript-estree@8.37.0" has incorrect peer dependency "typescript@>=4.8.4 <5.9.0".
+[expo-cli] warning "eslint-config-expo > @typescript-eslint/parser > @typescript-eslint/typescript-estree > @typescript-eslint/project-service@8.37.0" has incorrect peer dependency "typescript@>=4.8.4 <5.9.0".
+[expo-cli] warning "eslint-config-expo > @typescript-eslint/parser > @typescript-eslint/typescript-estree > @typescript-eslint/tsconfig-utils@8.37.0" has incorrect peer dependency "typescript@>=4.8.4 <5.9.0".
+[expo-cli] [4/4] Building fresh packages...
+[expo-cli] success Saved lockfile.
+[expo-cli] success Saved 6 new dependencies.
+[expo-cli] info Direct dependencies
+[expo-cli] └─ expo-updates@29.0.16
+[expo-cli] info All dependencies
+[expo-cli] ├─ expo-eas-client@1.0.8
+[expo-cli] ├─ expo-json-utils@0.15.0
+[expo-cli] ├─ expo-manifests@1.0.10
+[expo-cli] ├─ expo-structured-headers@5.0.0
+[expo-cli] ├─ expo-updates-interface@2.0.0
+[expo-cli] └─ expo-updates@29.0.16
+[expo-cli] Done in 9.83s.
+[expo-cli] Error: Cannot find module './utils/autoAddConfigPlugins.js'
+[expo-cli] Require stack:
+[expo-cli] - /app/frontend/node_modules/expo/node_modules/@expo/cli/build/src/install/applyPlugins.js
+[expo-cli] - /app/frontend/node_modules/expo/node_modules/@expo/cli/build/src/install/installAsync.js
+[expo-cli] - /app/frontend/node_modules/expo/node_modules/@expo/cli/build/src/install/index.js
+[expo-cli] - /app/frontend/node_modules/expo/node_modules/@expo/cli/build/bin/cli
+[expo-cli] - /app/frontend/node_modules/expo/bin/cli
+[expo-cli] Error: Cannot find module './utils/autoAddConfigPlugins.js'
+[expo-cli] Require stack:
+[expo-cli] - /app/frontend/node_modules/expo/node_modules/@expo/cli/build/src/install/applyPlugins.js
+[expo-cli] - /app/frontend/node_modules/expo/node_modules/@expo/cli/build/src/install/installAsync.js
+[expo-cli] - /app/frontend/node_modules/expo/node_modules/@expo/cli/build/src/install/index.js
+[expo-cli] - /app/frontend/node_modules/expo/node_modules/@expo/cli/build/bin/cli
+[expo-cli] - /app/frontend/node_modules/expo/bin/cli
+[expo-cli]     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+[expo-cli]     at Module._load (node:internal/modules/cjs/loader:1038:27)
+[expo-cli]     at Module.require (node:internal/modules/cjs/loader:1289:19)
+[expo-cli]     at require (node:internal/modules/helpers:182:18)
+[expo-cli]     at /app/frontend/node_modules/expo/node_modules/@expo/cli/build/src/install/applyPlugins.js:62:116
+[expo-cli]     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[expo-cli]     at async applyPluginsAsync (/app/frontend/node_modules/expo/node_modules/@expo/cli/build/src/install/applyPlugins.js:62:43)
+[expo-cli]     at async installPackagesAsync (/app/frontend/node_modules/expo/node_modules/@expo/cli/build/src/install/installAsync.js:194:5)
+/app/frontend/node_modules/expo/bin/cli install expo-updates exited with non-zero code: 1.
+-   **Production Native Module Failures:** Understanding that some Expo modules (e.g., ) can work in development but fail to link in production builds (TestFlight), requiring safe fallbacks.
+-   **Safe Component Wrappers:** A pattern of wrapping imports in a  block and exporting either the module or , allowing the UI to conditionally render and avoid a crash.
+-   **React Hooks Violation:** Fixing Rendered more hooks than during the previous render errors by ensuring components are not defined conditionally and refactoring component structures.
+-   **Cloudinary URL Transformation:** Modifying Cloudinary URLs on the fly to request specific formats () and quality settings for cross-platform video compatibility.
 
 **key DB schema**
--   No DB schema changes were made.
+-   No direct schema changes. However, the  API projection in  was modified to behave as if the schema contains a , which is derived at runtime.
 
 **changes in tech stack**
--   None in this session.
-
-**All files of reference**
--   **/app/frontend/app/workout-guidance.tsx**: Location of the critical syntax error that was blocking the build.
--   **/app/frontend/utils/apiConfig.ts**: Contains the hardcoded fallback URL that is currently blocking deployment validation.
--   **/app/eas.json**: Defines the production environment variables for EAS builds.
--   **/app/.gitignore**: Was cleaned of corrupted entries.
-
-**Areas that need refactoring**:
--   The use of a hardcoded fallback URL in  is being contested by the deployment agent. This pattern may need to be re-evaluated or justified to unblock deployment.
-
-**key api endpoints**
--   No new endpoints were created or modified.
-
-**Critical Info for New Agent**
--   **The absolute highest priority is to resolve the deployment blocker.** The initial syntax error is fixed, but the  is flagging a hardcoded URL in . You must understand this is an Expo mobile app, and this fallback URL is a deliberate, necessary feature for production mobile builds to work reliably. Your first step should be to run the deployment agent again, as the URL has been updated. If it still fails, you may need to find a way to justify this pattern to the agent or implement an alternative that satisfies both the deployment pipeline and the mobile app's runtime needs.
--   Once the app is deployed, the next critical step is to guide the user to create a new TestFlight build to verify the many production bug fixes from the previous session, which are currently blocked.
--   Do not remove the fallback URL logic from  without a clear, working alternative, as this will likely break the TestFlight build.
-
-**documents and test reports created in this job**
 -   None.
 
+**All files of reference**
+-   **/app/frontend/components/SmartVideoPlayer.tsx**: Location of the critical syntax error that was blocking deployment.
+-   **/app/backend/notifications.py**: Contains the core logic for creating and fetching notifications. Heavily modified to fix thumbnails and add debugging, but still fails to create notifications.
+-   **/app/frontend/components/SafeLinearGradient.tsx**: A critical wrapper created to solve a widespread production crash.
+-   **/app/frontend/components/MediaCarousel.tsx**: Was refactored to solve a React hooks crash.
+-   **/app/frontend/app/diagnostics.tsx**: A new screen created for production debugging.
+-   **/app/frontend/utils/apiConfig.ts**: Contains the safe  wrapper for login stability.
+-   **/app/frontend/app/create-post.tsx**: File where multiple native modules were made safe to prevent crashes.
+
+**Areas that need refactoring**:
+-   The root cause of why notification-triggering events (likes, comments) do not result in a database write needs to be found. The current logging in  is the starting point.
+-   The pattern of wrapping multiple native module imports in  blocks is a temporary fix. A more permanent solution would be to investigate and potentially replace the problematic libraries (, , ).
+
+**key api endpoints**
+-   
+-   
+-   POST endpoints for  and  (These are the endpoints that should be triggering notification creation).
+
+**Critical Info for New Agent**
+-   **Your absolute first step is to run the .** The previous agent fixed a syntax error that was causing the build to fail. You must verify if this was the only blocker.
+-   **Do not get sidetracked until deployment is successful.** Many critical crash fixes are waiting to be verified by the user in a new TestFlight build. Unblocking deployment is the gateway to everything else.
+-   **The second most critical issue is the broken notification system.** The agent has confirmed notifications are NOT being created. The investigation should resume in . Use the extensive logging already added to trace why the database insert calls are not happening when a user likes or comments on a post.
+-   The user has reported many crashes. The agent has implemented fixes by creating safe wrappers for native modules () and wrapping other imports in  blocks. Be aware of this pattern if new crashes appear.
+
+**documents and test reports created in this job**
+-    was updated.
+
 **Last 10 User Messages and any pending HUMAN messages**
--   User provided build error logs showing a deployment failure. (Status: **IN PROGRESS**) The root cause (syntax error) was fixed, but a secondary blocker remains.
+1.  **Deployment Failing:** User provided build logs showing a syntax error in . (Status: **FIXED**, pending deployment verification)
+2.  **Make postId required:** User asked to enforce  on  to ensure stable keys. (Status: **COMPLETED**)
+3.  **Hooks Violation:** User provided a fix for the Rendered more hooks error in . (Status: **COMPLETED**)
+4.  **Incorrect Thumbnails:** User detailed how thumbnails should work and provided a command to fix it. (Status: **COMPLETED**)
+5.  **Notifications Not Appearing:** User reported that likes, comments, and mentions are not showing up in the feed or updating the badge. (Status: **IN PROGRESS**)
+6.  **New Crashes (/Hooks):** User provided screenshots of two new errors:  and a React hooks violation. (Status: **FIXED**, pending deployment verification)
+7.  **Add Diagnostics Screen:** User requested a hidden screen to debug backend connectivity in TestFlight. (Status: **COMPLETED**)
+8.  **Crash on + and Post-Workout:** User clarified that the Try Again error screen appears immediately on tapping the + button and also after finishing a workout. (Status: **FIXED**, pending deployment verification)
+9.  **Create Post Crash:** User reported a Try Again error screen on the create post page. (Status: **FIXED**, pending deployment verification)
+10. **Video Playback Failure:** User reported videos not playing on Explore/Profile pages. (Status: **FIXED**, pending deployment verification)
 
 **Project Health Check:**
--   **Broken**: The application is not deployable. Although the critical syntax error causing the build to fail has been fixed, a deployment validation rule is now blocking progress.
+-   **Broken**: The application is not deployable until the latest fix is verified. Multiple critical bug fixes are implemented but not yet verified by the user in a production environment due to the deployment blockage.
 
 **3rd Party Integrations**
 -   **Cloudinary:** Used for all image and video assets.
@@ -153,15 +261,18 @@ A full-stack Expo (React Native) and FastAPI application. A critical deployment-
 -   **Vercel:** Deployment platform for the  Next.js application.
 -   **react-native-view-shot:** Used to capture React Native views as images for sharing.
 -   **react-native-share:** Used to enable direct sharing to Instagram Stories.
+-   **expo-linear-gradient**: Caused production crashes, now behind a safe wrapper.
+-   **expo-video-thumbnails**: Caused production crashes, now behind a safe wrapper.
 
 **Testing status**
--   Testing agent used after significant changes: The  was used multiple times to check for deployment readiness. It successfully identified the initial syntax error and is now flagging a secondary configuration issue.
+-   Testing agent used after significant changes: The  was used by the user, which successfully identified the build error.
 -   Troubleshoot agent used after agent stuck in loop: NO
 -   Test files created: None.
--   Known regressions: None in this session.
+-   Known regressions: None.
 
 **Credentials to test flow:**
 -   N/A
 
 **What agent forgot to execute**
--   The agent did not investigate or fix the backend analytics error () that was identified in the initial handover summary. This remains a latent bug.</analysis>
+-   The agent did not address the latent backend analytics error: .
+-   The agent started debugging the notification creation issue by adding logs but did not proceed to trigger an event and analyze the logs to find the root cause.</analysis>
