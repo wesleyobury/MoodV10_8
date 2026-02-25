@@ -3137,12 +3137,28 @@ async def get_drilldown_users(
             count_result = await db.user_events.aggregate(count_pipeline).to_list(1)
             total = count_result[0]["total"] if count_result else 0
             
-            # Enrich with user data
+            # Enrich with user data (batch query)
+            user_ids = [item["_id"] for item in aggregated]
+            valid_oids = []
+            for uid in user_ids:
+                try:
+                    valid_oids.append(ObjectId(uid))
+                except Exception:
+                    continue
+            
+            users_cursor = db.users.find(
+                {"_id": {"$in": valid_oids}},
+                {"_id": 1, "username": 1, "email": 1, "name": 1, "avatar": 1, "created_at": 1}
+            )
+            user_map = {}
+            async for u in users_cursor:
+                user_map[str(u["_id"])] = u
+            
             for item in aggregated:
                 user_id = item["_id"]
-                try:
-                    user = await db.users.find_one({"_id": ObjectId(user_id)})
-                except:
+                user = user_map.get(user_id)
+                if not user:
+                    # Fallback: try by user_id field
                     user = await db.users.find_one({"user_id": user_id})
                 
                 if user:
