@@ -613,6 +613,40 @@ class NotificationService:
         return result.deleted_count > 0
     
     # ----------------------------------------
+    # CLOUDINARY VIDEO THUMBNAIL HELPERS
+    # ----------------------------------------
+    
+    def _is_cloudinary_video(self, url: str) -> bool:
+        """Check if a URL is a Cloudinary video URL"""
+        if not url:
+            return False
+        return 'cloudinary.com' in url and '/video/' in url
+    
+    def _get_cloudinary_video_thumbnail(self, video_url: str) -> str:
+        """
+        Generate a Cloudinary video thumbnail URL from a video URL.
+        Transforms /video/upload/... to /video/upload/so_0,f_jpg,.../
+        This generates a thumbnail from the first frame (so_0 = start offset 0).
+        """
+        if not video_url or 'cloudinary.com' not in video_url:
+            return video_url
+        
+        try:
+            # Insert thumbnail transformation after /upload/
+            # so_0 = start offset 0 (first frame)
+            # f_jpg = output as JPEG
+            # w_400 = width 400px for small thumbnail
+            if '/video/upload/' in video_url:
+                return video_url.replace(
+                    '/video/upload/',
+                    '/video/upload/so_0,f_jpg,w_400/'
+                )
+            return video_url
+        except Exception as e:
+            logger.warning(f"Failed to generate video thumbnail: {e}")
+            return video_url
+    
+    # ----------------------------------------
     # EVENT TRIGGERS (for social actions)
     # ----------------------------------------
     
