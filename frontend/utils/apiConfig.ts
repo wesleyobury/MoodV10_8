@@ -9,8 +9,8 @@
 
 import Constants from 'expo-constants';
 
-// ✅ SAFE production fallback (only used if env/config missing)
-const PRODUCTION_BACKEND_URL = 'https://bug-busters-13.emergent.host';
+// API URL is derived exclusively from environment variables
+// No hardcoded fallback - fails fast if not configured
 
 // Detect preview domains
 const isPreviewDomain = (url: string): boolean =>
