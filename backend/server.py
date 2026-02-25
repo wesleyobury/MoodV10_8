@@ -7783,15 +7783,21 @@ async def like_post(post_id: str, current_user_id: str = Depends(get_current_use
             if updated_post:
                 try:
                     post_author_id = str(updated_post.get("author_id", ""))
+                    logger.info(f"🔔 DEBUG Like notification: liker={current_user_id[:8]}..., author={post_author_id[:8] if post_author_id else 'None'}...")
                     if post_author_id and post_author_id != current_user_id:
                         notification_service = get_notification_service(db)
-                        await notification_service.trigger_like_notification(
+                        result = await notification_service.trigger_like_notification(
                             liker_id=current_user_id,
                             post_id=post_id,
                             post_author_id=post_author_id
                         )
+                        logger.info(f"🔔 DEBUG Like notification result: {result}")
+                    else:
+                        logger.info(f"🔔 DEBUG Like notification skipped: self-like or no author")
                 except Exception as e:
                     logger.error(f"Failed to send like notification: {e}")
+                    import traceback
+                    logger.error(traceback.format_exc())
             
             return {"message": "Post liked", "liked": True, "likes_count": likes_count}
     
