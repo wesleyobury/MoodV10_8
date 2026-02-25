@@ -169,11 +169,20 @@ export default function NotificationsInbox() {
 
     try {
       const skip = refresh ? 0 : notifications.length;
+      console.log(`🔔 DEBUG: Fetching notifications (skip=${skip}, filter=${filter}, unreadOnly=${filter === 'unread'})`);
+      
       const fetched = await notificationService.getNotifications(
         20,
         refresh ? 0 : skip,
         filter === 'unread'
       );
+
+      // Debug logging
+      console.log(`🔔 DEBUG: Fetched ${fetched.length} notifications`);
+      console.log(`🔔 DEBUG: Notification types received:`, fetched.map(n => n.type));
+      if (fetched.length > 0) {
+        console.log(`🔔 DEBUG: First notification:`, JSON.stringify(fetched[0], null, 2));
+      }
 
       if (refresh) {
         setNotifications(fetched);
