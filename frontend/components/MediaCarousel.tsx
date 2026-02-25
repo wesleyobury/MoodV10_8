@@ -103,12 +103,8 @@ const MediaCarousel = memo(({ media, postId, isPostVisible = true, onIndexChange
     if (mediaUrl && typeof mediaUrl === 'string' && mediaUrl.length > 0) {
       return mediaUrl;
     }
-    // Fallback to postId:index
-    if (postId) {
-      return `${postId}:${index}`;
-    }
-    // Last resort fallback
-    return `slide-${index}`;
+    // Fallback to postId:index (postId is always available since it's required)
+    return `${postId}:${index}`;
   };
 
   if (!media || media.length === 0) {
