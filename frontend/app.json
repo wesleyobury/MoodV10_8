@@ -23,6 +23,8 @@
         "ITSAppUsesNonExemptEncryption": false,
         "LSApplicationQueriesSchemes": [
           "instagram",
+          "instagram-stories",
+          "instagram",
           "instagram-stories"
         ]
       }
@@ -36,6 +38,10 @@
       },
       "edgeToEdgeEnabled": true,
       "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
         "CAMERA",
         "RECORD_AUDIO",
         "READ_EXTERNAL_STORAGE",
@@ -81,7 +87,13 @@
       "eas": {
         "projectId": "ef2c8520-832c-4806-beb0-80b9db1a6214"
       },
-      "EXPO_PUBLIC_BACKEND_URL": "https://stability-checkpoint-2.preview.emergentagent.com"
+      "EXPO_PUBLIC_BACKEND_URL": "https://fitness-social-12.preview.emergentagent.com"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ef2c8520-832c-4806-beb0-80b9db1a6214"
     }
   }
 }
