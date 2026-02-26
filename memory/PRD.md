@@ -58,7 +58,9 @@ Build a fitness app with workout generation, social features, and video guidance
 ### February 26, 2026
 - **Feed Aspect Ratio Fix**: Changed SmartVideoPlayer and MediaCarousel containers from square (SCREEN_WIDTH x SCREEN_WIDTH) to 9:16 portrait (SCREEN_WIDTH x FEED_HEIGHT where FEED_HEIGHT = SCREEN_WIDTH * 16/9). Updated `videoContainer`, `errorContainer` in SmartVideoPlayer.tsx and `mediaContainer` in MediaCarousel.tsx.
 - **Cloudinary Video Fast Delivery**: Rewrote `normalizeCloudinaryVideoUrl()` in `cloudinaryVideo.ts` to enforce `f_mp4,q_auto:good,w_720,br_1200k,fl_progressive` transforms. Strips existing transforms and rebuilds clean URL from public_id. Reduces initial buffer time significantly on first render.
-- **Notification Feed Fix (Explore.tsx)**:
+- **MongoDB Atlas Timeout Fix**: Increased `AsyncIOMotorClient` timeouts (`connectTimeoutMS=30000`, `serverSelectionTimeoutMS=30000`, `socketTimeoutMS=45000`) and added `maxPoolSize=20`, `retryWrites=True`, `retryReads=True` for Atlas stability.
+- **Notification Thumbnail Live Lookup**: Replaced static `$ifNull` in `get_notifications` aggregation with a `$lookup` to the posts collection that fires when `metadata.post_thumbnail` is missing. Also auto-backfills `metadata.post_thumbnail` on read so future fetches skip the lookup.
+- **N+1 Query Fixes (4 endpoints)**: Batched follow-check queries in `get_user_followers`, `get_user_following`, `search_users_general`, and `get_drilldown_users` — each now uses a single `$in` query instead of per-item queries.
   - Fixed `post_preview` mapping: was using `n.image_url` (actor avatar), now uses `n.target_thumbnail_url || n.metadata?.post_thumbnail || n.image_url`
   - Fixed `message` mapping to include fallback chain: `n.body || n.title || n.message || ''`
   - Delayed `markAllNotificationsRead()` — now fires 1.5s AFTER fetch completes (not before), preventing premature zeroing of badge
