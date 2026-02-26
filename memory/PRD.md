@@ -58,9 +58,13 @@ Build a fitness app with workout generation, social features, and video guidance
 ### February 26, 2026
 - **Feed Aspect Ratio Fix**: Changed SmartVideoPlayer and MediaCarousel containers from square (SCREEN_WIDTH x SCREEN_WIDTH) to 9:16 portrait (SCREEN_WIDTH x FEED_HEIGHT where FEED_HEIGHT = SCREEN_WIDTH * 16/9). Updated `videoContainer`, `errorContainer` in SmartVideoPlayer.tsx and `mediaContainer` in MediaCarousel.tsx.
 - **Cloudinary Video Fast Delivery**: Rewrote `normalizeCloudinaryVideoUrl()` in `cloudinaryVideo.ts` to enforce `f_mp4,q_auto:good,w_720,br_1200k,fl_progressive` transforms. Strips existing transforms and rebuilds clean URL from public_id. Reduces initial buffer time significantly on first render.
-- **Admin Test Push Endpoint**: Added `POST /api/admin/test-push` that accepts a userId, looks up stored device tokens, sends test push via Expo, fetches receipts, and returns full diagnostics (tickets, receipt errors, DB notification counts).
-- **Notification Debug Logging (Backend)**: Enhanced `POST /api/notifications/device-token` and `GET /api/notifications` with detailed server-side logging (token details, response counts, sample payloads).
-- **Notification Debug Logging (Client)**: Enhanced `utils/notifications.ts` with `PUSH-DIAG` and `NOTIF-DIAG` console logs throughout token registration flow (permission status, projectId, token value, backend confirmation) and notification fetching (response length, sample payload, unread count).
+- **Notification Feed Fix (Explore.tsx)**:
+  - Fixed `post_preview` mapping: was using `n.image_url` (actor avatar), now uses `n.target_thumbnail_url || n.metadata?.post_thumbnail || n.image_url`
+  - Fixed `message` mapping to include fallback chain: `n.body || n.title || n.message || ''`
+  - Delayed `markAllNotificationsRead()` — now fires 1.5s AFTER fetch completes (not before), preventing premature zeroing of badge
+  - Added `useFocusEffect` to refetch notifications when screen regains focus while on notifications tab
+  - Added `NOTIF-DIAG` console logs for raw + mapped notification payloads
+- **Admin Backfill Endpoint**: Added `POST /api/admin/backfill-notification-thumbnails` — patches existing notifications missing `metadata.post_thumbnail` by looking up the post's `cover_urls`/`media_urls`
 
 ### February 25, 2026
 - **Deployment Fix (Syntax Error)**: Removed orphaned duplicate code block (lines 144-174) in `SmartVideoPlayer.tsx` — a stray try/catch block with trailing `};` left over from a previous refactor. This was the sole cause of the Metro bundling SyntaxError at line 174.
