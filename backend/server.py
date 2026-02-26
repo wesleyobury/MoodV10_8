@@ -3156,19 +3156,18 @@ async def get_drilldown_users(
                     continue
             
             users_cursor = db.users.find(
-                {"_id": {"$in": valid_oids}},
-                {"_id": 1, "username": 1, "email": 1, "name": 1, "avatar": 1, "created_at": 1}
+                {"$or": [{"_id": {"$in": valid_oids}}, {"user_id": {"$in": user_ids}}]},
+                {"_id": 1, "user_id": 1, "username": 1, "email": 1, "name": 1, "avatar": 1, "created_at": 1}
             )
             user_map = {}
             async for u in users_cursor:
                 user_map[str(u["_id"])] = u
+                if u.get("user_id"):
+                    user_map[u["user_id"]] = u
             
             for item in aggregated:
                 user_id = item["_id"]
                 user = user_map.get(user_id)
-                if not user:
-                    # Fallback: try by user_id field
-                    user = await db.users.find_one({"user_id": user_id})
                 
                 if user:
                     users_data.append({
