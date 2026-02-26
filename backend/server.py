@@ -11012,6 +11012,7 @@ async def register_device_token(
     current_user_id: str = Depends(get_current_user)
 ):
     """Register a device push token"""
+    logger.info(f"📱 DEVICE-TOKEN register: user={current_user_id}, platform={data.platform}, token={data.token[:30]}...")
     notification_service = get_notification_service(db)
     result = await notification_service.register_device_token(
         user_id=current_user_id,
@@ -11019,6 +11020,7 @@ async def register_device_token(
         platform=data.platform,
         device_id=data.device_id
     )
+    logger.info(f"📱 DEVICE-TOKEN result: user={current_user_id}, status={result.get('status')}, id={result.get('id')}")
     return result
 
 @api_router.delete("/notifications/device-token")
@@ -11068,6 +11070,10 @@ async def get_notifications(
         skip=skip,
         unread_only=unread_only
     )
+    logger.info(f"🔔 GET /notifications: user={current_user_id}, count={len(notifications)}, skip={skip}, unread_only={unread_only}")
+    if notifications:
+        sample = notifications[0]
+        logger.info(f"🔔 GET /notifications sample[0]: id={sample.get('id')}, type={sample.get('type')}, body={str(sample.get('body',''))[:60]}")
     return {"notifications": notifications}
 
 @api_router.get("/notifications/unread-count")
@@ -11144,6 +11150,147 @@ class FeaturedSuggestionPush(BaseModel):
 class WorkoutReminderPush(BaseModel):
     user_id: str
     custom_message: Optional[str] = None  # None = random from library
+
+class TestPushRequest(BaseModel):
+    user_id: str
+    title: Optional[str] = "MOOD Test Push"
+    body: Optional[str] = "If you see this, push notifications are working."
+
+@api_router.post("/admin/test-push")
+async def admin_test_push(
+    data: TestPushRequest,
+    current_user_id: str = Depends(require_admin)
+):
+    """
+    Admin: Send a test push to a specific user and return full diagnostics.
+    Logs Expo ticket + receipt errors for debugging.
+    """
+    if not await is_admin_allowed(current_user_id):
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    user_id = data.user_id
+
+    # 1. Look up user
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        return {"success": False, "error": "User not found", "user_id": user_id}
+
+    # 2. Look up stored device tokens
+    tokens_cursor = db.device_tokens.find({"user_id": user_id, "is_valid": True})
+    token_docs = await tokens_cursor.to_list(10)
+
+    if not token_docs:
+        all_tokens = await db.device_tokens.find({"user_id": user_id}).to_list(10)
+        return {
+            "success": False,
+            "error": "No valid device tokens for this user",
+            "user_id": user_id,
+            "username": user.get("username"),
+            "total_tokens_in_db": len(all_tokens),
+            "invalid_tokens": [
+                {"token": t["token"][:30] + "...", "is_valid": t.get("is_valid"), "platform": t.get("platform")}
+                for t in all_tokens
+            ],
+        }
+
+    push_tokens = [t["token"] for t in token_docs]
+    logger.info(f"🧪 TEST-PUSH: Found {len(push_tokens)} valid token(s) for user {user_id} ({user.get('username')})")
+
+    # 3. Send test push via Expo
+    messages = [
+        {
+            "to": token,
+            "title": data.title,
+            "body": data.body,
+            "data": {"type": "test_push", "notification_id": "test"},
+            "sound": "default",
+            "priority": "high",
+        }
+        for token in push_tokens
+    ]
+
+    expo_url = "https://exp.host/--/api/v2/push/send"
+    ticket_data = None
+    receipt_data = None
+
+    try:
+        async with httpx.AsyncClient() as client:
+            # Send push
+            resp = await client.post(expo_url, json=messages, headers={"Content-Type": "application/json"}, timeout=15.0)
+            ticket_data = resp.json()
+            logger.info(f"🧪 TEST-PUSH tickets: {ticket_data}")
+
+            # Check tickets for errors
+            ticket_ids = []
+            ticket_errors = []
+            for i, ticket in enumerate(ticket_data.get("data", [])):
+                if ticket.get("status") == "ok":
+                    ticket_ids.append(ticket.get("id"))
+                else:
+                    ticket_errors.append({
+                        "token_index": i,
+                        "token": push_tokens[i][:30] + "...",
+                        "status": ticket.get("status"),
+                        "message": ticket.get("message"),
+                        "details": ticket.get("details"),
+                    })
+                    logger.error(f"🧪 TEST-PUSH ticket error: {ticket}")
+
+            # 4. Fetch receipts (wait briefly for Expo to process)
+            if ticket_ids:
+                import asyncio
+                await asyncio.sleep(2)
+                receipt_resp = await client.post(
+                    "https://exp.host/--/api/v2/push/getReceipts",
+                    json={"ids": ticket_ids},
+                    headers={"Content-Type": "application/json"},
+                    timeout=15.0,
+                )
+                receipt_data = receipt_resp.json()
+                logger.info(f"🧪 TEST-PUSH receipts: {receipt_data}")
+
+                # Check receipts for errors
+                receipt_errors = []
+                for rid, receipt in receipt_data.get("data", {}).items():
+                    if receipt.get("status") == "error":
+                        receipt_errors.append({
+                            "receipt_id": rid,
+                            "status": receipt.get("status"),
+                            "message": receipt.get("message"),
+                            "details": receipt.get("details"),
+                        })
+                        logger.error(f"🧪 TEST-PUSH receipt error: {receipt}")
+            else:
+                receipt_errors = []
+
+    except Exception as e:
+        logger.error(f"🧪 TEST-PUSH exception: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "user_id": user_id,
+            "tokens_found": len(push_tokens),
+        }
+
+    # 5. Also check DB notification count for this user
+    notif_count = await db.notifications.count_documents({"user_id": user_id})
+    unread_count = await db.notifications.count_documents({"user_id": user_id, "read_at": None})
+
+    return {
+        "success": len(ticket_errors) == 0,
+        "user_id": user_id,
+        "username": user.get("username"),
+        "tokens_found": len(push_tokens),
+        "tokens": [{"token": t[:30] + "...", "platform": td.get("platform")} for t, td in zip(push_tokens, token_docs)],
+        "expo_tickets": ticket_data,
+        "ticket_errors": ticket_errors,
+        "expo_receipts": receipt_data,
+        "receipt_errors": receipt_errors if ticket_ids else [],
+        "db_diagnostics": {
+            "total_notifications": notif_count,
+            "unread_notifications": unread_count,
+        },
+    }
 
 @api_router.post("/admin/notifications/featured-workout")
 async def admin_send_featured_workout(
