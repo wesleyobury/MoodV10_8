@@ -110,16 +110,18 @@ class NotificationService {
     try {
       // Check existing permission
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      console.log(`🔔 PUSH-DIAG: existing permission status = ${existingStatus}`);
       let finalStatus = existingStatus;
 
       // Request permission if not granted
       if (existingStatus !== 'granted') {
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
+        console.log(`🔔 PUSH-DIAG: requested permission, got status = ${finalStatus}`);
       }
 
       if (finalStatus !== 'granted') {
-        console.log('Push notification permission not granted');
+        console.log('🔔 PUSH-DIAG: Push notification permission NOT granted');
         await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'denied');
         return null;
       }
@@ -127,16 +129,22 @@ class NotificationService {
       await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'granted');
 
       // Get Expo push token
+      const projectId = Constants.expoConfig?.extra?.eas?.projectId;
+      console.log(`🔔 PUSH-DIAG: projectId = ${projectId}`);
       const tokenData = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig?.extra?.eas?.projectId,
+        projectId,
       });
       
       this.pushToken = tokenData.data;
       await AsyncStorage.setItem(PUSH_TOKEN_KEY, this.pushToken);
+      console.log(`🔔 PUSH-DIAG: Expo push token = ${this.pushToken}`);
 
       // Register token with backend
       if (this.authToken) {
-        await this.registerDeviceToken(this.pushToken);
+        const registered = await this.registerDeviceToken(this.pushToken);
+        console.log(`🔔 PUSH-DIAG: backend registration success = ${registered}`);
+      } else {
+        console.log('🔔 PUSH-DIAG: No auth token yet, skipping backend registration');
       }
 
       // Configure Android channel
@@ -152,7 +160,7 @@ class NotificationService {
       console.log('📱 Push token registered:', this.pushToken.substring(0, 20) + '...');
       return this.pushToken;
     } catch (error) {
-      console.error('Error registering for push notifications:', error);
+      console.error('🔔 PUSH-DIAG ERROR registering for push notifications:', error);
       return null;
     }
   }
@@ -162,11 +170,12 @@ class NotificationService {
    */
   async registerDeviceToken(token: string): Promise<boolean> {
     if (!this.authToken) {
-      console.log('No auth token, skipping device registration');
+      console.log('🔔 PUSH-DIAG: No auth token, skipping device registration');
       return false;
     }
 
     try {
+      console.log(`🔔 PUSH-DIAG: Sending token to backend (platform=${Platform.OS}, token=${token.substring(0, 30)}...)`);
       const response = await fetch(`${API_URL}/api/notifications/device-token`, {
         method: 'POST',
         headers: {
@@ -181,14 +190,16 @@ class NotificationService {
       });
 
       if (response.ok) {
-        console.log('✅ Device token registered with backend');
+        const data = await response.json();
+        console.log(`🔔 PUSH-DIAG: Backend confirmed token stored: status=${data.status}, id=${data.id}`);
         return true;
       } else {
-        console.error('Failed to register device token:', response.status);
+        const errText = await response.text();
+        console.error(`🔔 PUSH-DIAG: Failed to register device token: HTTP ${response.status}, body=${errText}`);
         return false;
       }
     } catch (error) {
-      console.error('Error registering device token:', error);
+      console.error('🔔 PUSH-DIAG ERROR registering device token:', error);
       return false;
     }
   }
@@ -348,11 +359,17 @@ class NotificationService {
 
       if (response.ok) {
         const data = await response.json();
-        return data.notifications || [];
+        const notifications = data.notifications || [];
+        console.log(`🔔 NOTIF-DIAG: GET /notifications returned ${notifications.length} items (skip=${skip}, unreadOnly=${unreadOnly})`);
+        if (notifications.length > 0) {
+          console.log(`🔔 NOTIF-DIAG: sample[0] =`, JSON.stringify(notifications[0]).substring(0, 200));
+        }
+        return notifications;
       }
+      console.log(`🔔 NOTIF-DIAG: GET /notifications failed with status ${response.status}`);
       return [];
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      console.error('🔔 NOTIF-DIAG ERROR fetching notifications:', error);
       return [];
     }
   }
@@ -372,11 +389,14 @@ class NotificationService {
 
       if (response.ok) {
         const data = await response.json();
-        return data.unread_count || 0;
+        const count = data.unread_count || 0;
+        console.log(`🔔 NOTIF-DIAG: unread-count = ${count}`);
+        return count;
       }
+      console.log(`🔔 NOTIF-DIAG: unread-count request failed with status ${response.status}`);
       return 0;
     } catch (error) {
-      console.error('Error fetching unread count:', error);
+      console.error('🔔 NOTIF-DIAG ERROR fetching unread count:', error);
       return 0;
     }
   }
