@@ -6554,22 +6554,23 @@ async def get_user_followers(
         
         follows = await db.follows.aggregate(pipeline).to_list(length=limit)
         
+        # Batch follow-check: single query instead of N+1
+        follower_ids = [follow["follower"]["_id"] for follow in follows]
+        following_set = set()
+        if current_user_id and follower_ids:
+            batch = await db.follows.find({
+                "follower_id": ObjectId(current_user_id),
+                "following_id": {"$in": follower_ids}
+            }).to_list(100)
+            following_set = {str(f["following_id"]) for f in batch}
+        
         result = []
         for follow in follows:
             follower = follow["follower"]
             follower_id = str(follower["_id"])
             
-            # Check if current user is following this follower
-            is_following = False
-            is_self = False
-            if current_user_id:
-                is_self = follower_id == current_user_id
-                if not is_self:
-                    follow_check = await db.follows.find_one({
-                        "follower_id": ObjectId(current_user_id),
-                        "following_id": follower["_id"]
-                    })
-                    is_following = follow_check is not None
+            is_self = current_user_id and follower_id == current_user_id
+            is_following = follower_id in following_set if not is_self else False
             
             result.append({
                 "id": follower_id,
@@ -6580,7 +6581,7 @@ async def get_user_followers(
                 "followers_count": follower.get("followers_count", 0),
                 "following_count": follower.get("following_count", 0),
                 "is_following": is_following,
-                "is_self": is_self
+                "is_self": bool(is_self)
             })
         
         return {"users": result}
@@ -6617,22 +6618,23 @@ async def get_user_following(
         
         follows = await db.follows.aggregate(pipeline).to_list(length=limit)
         
+        # Batch follow-check: single query instead of N+1
+        following_ids = [follow["following"]["_id"] for follow in follows]
+        following_set = set()
+        if current_user_id and following_ids:
+            batch = await db.follows.find({
+                "follower_id": ObjectId(current_user_id),
+                "following_id": {"$in": following_ids}
+            }).to_list(100)
+            following_set = {str(f["following_id"]) for f in batch}
+        
         result = []
         for follow in follows:
             following = follow["following"]
             following_id = str(following["_id"])
             
-            # Check if current user is following this user
-            is_following = False
-            is_self = False
-            if current_user_id:
-                is_self = following_id == current_user_id
-                if not is_self:
-                    follow_check = await db.follows.find_one({
-                        "follower_id": ObjectId(current_user_id),
-                        "following_id": following["_id"]
-                    })
-                    is_following = follow_check is not None
+            is_self = current_user_id and following_id == current_user_id
+            is_following = following_id in following_set if not is_self else False
             
             result.append({
                 "id": following_id,
@@ -6643,7 +6645,7 @@ async def get_user_following(
                 "followers_count": following.get("followers_count", 0),
                 "following_count": following.get("following_count", 0),
                 "is_following": is_following,
-                "is_self": is_self
+                "is_self": bool(is_self)
             })
         
         return {"users": result}
@@ -6676,17 +6678,20 @@ async def search_users_general(
         result = []
         current_user_obj_id = ObjectId(current_user_id)
         
+        # Batch follow-check: single query instead of N+1
+        user_ids = [u["_id"] for u in users if u["_id"] != current_user_obj_id]
+        following_set = set()
+        if user_ids:
+            batch = await db.follows.find({
+                "follower_id": current_user_obj_id,
+                "following_id": {"$in": user_ids}
+            }).to_list(100)
+            following_set = {str(f["following_id"]) for f in batch}
+        
         for user in users:
             user_id = user["_id"]
-            
-            # Check if current user is following this user
-            is_following = False
-            if user_id != current_user_obj_id:
-                follow = await db.follows.find_one({
-                    "follower_id": current_user_obj_id,
-                    "following_id": user_id
-                })
-                is_following = follow is not None
+            is_self = user_id == current_user_obj_id
+            is_following = str(user_id) in following_set if not is_self else False
             
             result.append({
                 "id": str(user_id),
@@ -6697,7 +6702,7 @@ async def search_users_general(
                 "followers_count": user.get("followers_count", 0),
                 "following_count": user.get("following_count", 0),
                 "is_following": is_following,
-                "is_self": user_id == current_user_obj_id
+                "is_self": is_self
             })
         
         return result
