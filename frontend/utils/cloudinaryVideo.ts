@@ -136,6 +136,16 @@ export function cloudinaryOptimizedVideoUrl(videoUrl: string): string {
  *   const videoUri = normalizeCloudinaryVideoUrl(post.video_url);
  *   <Video source={{ uri: videoUri }} />
  */
+/**
+ * Fast-delivery transform string applied to all feed videos.
+ * - f_mp4          → iOS-compatible container
+ * - q_auto:good    → balanced quality/size
+ * - w_720          → cap resolution at 720p width
+ * - br_1200k       → cap bitrate for fast initial buffer
+ * - fl_progressive → progressive download (play before fully loaded)
+ */
+const FAST_VIDEO_TRANSFORMS = 'f_mp4,q_auto:good,w_720,br_1200k,fl_progressive';
+
 export function normalizeCloudinaryVideoUrl(url?: string | null): string | null {
   if (!url) return null;
   
@@ -146,54 +156,39 @@ export function normalizeCloudinaryVideoUrl(url?: string | null): string | null 
     normalized = normalized.replace('http://', 'https://');
   }
   
-  // Check if it's a Cloudinary URL
-  if (!normalized.includes('cloudinary.com')) {
-    console.log('VIDEO URL (non-Cloudinary):', normalized);
+  // Non-Cloudinary URLs pass through
+  if (!normalized.includes('cloudinary.com') || !normalized.includes('/video/')) {
     return normalized;
   }
   
-  // Check if it's a video URL
-  if (!normalized.includes('/video/')) {
-    console.log('VIDEO URL (not a video path):', normalized);
+  // Already optimized with our fast transforms — skip
+  if (normalized.includes(FAST_VIDEO_TRANSFORMS)) {
     return normalized;
   }
   
-  // Check if already has transformations applied
-  if (normalized.includes('/video/upload/f_mp4') || normalized.includes('/video/upload/q_auto,f_mp4')) {
-    console.log('VIDEO URL (already optimized):', normalized);
-    return normalized;
-  }
-  
-  // Apply iOS-compatible MP4 transformation
-  // Insert f_mp4,q_auto transformation after /upload/
-  try {
-    // Handle URLs with existing transformations
-    if (normalized.includes('/video/upload/')) {
-      // Check if there are already transformations (not just version)
-      const uploadIndex = normalized.indexOf('/video/upload/');
-      const afterUpload = normalized.substring(uploadIndex + '/video/upload/'.length);
-      
-      // If starts with transformation (contains comma or known param), prepend to existing
-      if (afterUpload.match(/^[a-z]_[^\/]/) || afterUpload.includes(',')) {
-        normalized = normalized.replace(
-          '/video/upload/',
-          '/video/upload/f_mp4,q_auto/'
-        );
-      } else {
-        // Just a version number or public_id - insert transformation
-        normalized = normalized.replace(
-          '/video/upload/',
-          '/video/upload/f_mp4,q_auto/'
-        );
-      }
+  // Strip any existing transformations and rebuild with fast delivery params
+  const publicId = cloudinaryPublicIdFromUrl(normalized);
+  if (publicId) {
+    try {
+      const u = new URL(normalized);
+      const baseParts = u.pathname.split('/').filter(Boolean);
+      const cloudName = baseParts[0];
+      const base = `${u.protocol}//${u.host}/${cloudName}/video/upload`;
+      return `${base}/${FAST_VIDEO_TRANSFORMS}/${publicId}.mp4`;
+    } catch {
+      // Fall through to simple insertion below
     }
-    
-    console.log('VIDEO URL (normalized for iOS):', normalized);
-    return normalized;
-  } catch (error) {
-    console.error('Error normalizing video URL:', error);
-    return url;
   }
+  
+  // Fallback: simple insertion after /upload/
+  if (normalized.includes('/video/upload/')) {
+    normalized = normalized.replace(
+      '/video/upload/',
+      `/video/upload/${FAST_VIDEO_TRANSFORMS}/`
+    );
+  }
+  
+  return normalized;
 }
 
 /** =========================

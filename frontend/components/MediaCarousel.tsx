@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   },
   mediaContainer: {
     width: SCREEN_WIDTH,
-    height: SCREEN_WIDTH,
+    height: FEED_HEIGHT,
     backgroundColor: '#000',
   },
   image: {

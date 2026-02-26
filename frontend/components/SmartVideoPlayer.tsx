@@ -454,7 +454,7 @@ useEffect(() => {
 const styles = StyleSheet.create({
   videoContainer: {
     width: SCREEN_WIDTH,
-    height: SCREEN_WIDTH,
+    height: FEED_HEIGHT,
     backgroundColor: '#000',
   },
   video: {
@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
   },
   errorContainer: {
     width: SCREEN_WIDTH,
-    height: SCREEN_WIDTH,
+    height: FEED_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1a1a1a',
