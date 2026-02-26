@@ -24,6 +24,7 @@ import { Ionicons } from '@expo/vector-icons';
 import SmartVideoPlayer from './SmartVideoPlayer';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const FEED_HEIGHT = Math.round(SCREEN_WIDTH * 16 / 9);
 
 // Helper to detect if a URL is a video
 const isVideoUrl = (url: string): boolean => {
