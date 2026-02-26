@@ -11134,6 +11134,67 @@ async def get_suggestion_copy_library():
     """Get the copy library for featured suggestions (admin/debug)"""
     return {"copy": SUGGESTION_COPY_LIBRARY}
 
+@api_router.post("/admin/backfill-notification-thumbnails")
+async def admin_backfill_notification_thumbnails(
+    current_user_id: str = Depends(require_admin)
+):
+    """
+    One-time backfill: patch notifications missing metadata.post_thumbnail
+    by looking up the post's cover_urls/media_urls.
+    """
+    if not await is_admin_allowed(current_user_id):
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    notification_service = get_notification_service(db)
+
+    cursor = db.notifications.find({
+        "type": {"$in": ["like", "comment", "mention", "reply"]},
+        "entity_id": {"$ne": None},
+        "$or": [
+            {"metadata.post_thumbnail": None},
+            {"metadata.post_thumbnail": {"$exists": False}}
+        ]
+    })
+
+    notifs = await cursor.to_list(500)
+    patched = 0
+    skipped = 0
+
+    for n in notifs:
+        entity_id = n.get("entity_id")
+        if not entity_id:
+            skipped += 1
+            continue
+        try:
+            post = await db.posts.find_one({"_id": ObjectId(entity_id)})
+        except Exception:
+            skipped += 1
+            continue
+        if not post:
+            skipped += 1
+            continue
+
+        cover_urls = post.get("cover_urls") or []
+        media_urls = post.get("media_urls") or []
+        thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
+
+        if not thumbnail:
+            skipped += 1
+            continue
+
+        # If video, generate Cloudinary still frame
+        if "/video/" in thumbnail and "/video/upload/" in thumbnail:
+            thumbnail = thumbnail.replace("/video/upload/", "/video/upload/so_0,f_jpg,w_400/")
+
+        await db.notifications.update_one(
+            {"_id": n["_id"]},
+            {"$set": {"metadata.post_thumbnail": thumbnail}}
+        )
+        patched += 1
+
+    logger.info(f"🔔 Backfill thumbnails: patched={patched}, skipped={skipped}, total_found={len(notifs)}")
+    return {"patched": patched, "skipped": skipped, "total_found": len(notifs)}
+
 # ============================================
 # ADMIN NOTIFICATION ENDPOINTS
 # ============================================
