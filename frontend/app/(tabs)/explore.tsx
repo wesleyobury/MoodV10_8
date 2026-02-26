@@ -412,6 +412,11 @@ export default function Explore() {
         const data = await response.json();
         const rawNotifications = data.notifications || [];
         
+        console.log(`🔔 NOTIF-DIAG: raw notifications count = ${rawNotifications.length}`);
+        if (rawNotifications.length > 0) {
+          console.log('🔔 NOTIF-DIAG: raw sample[0]:', JSON.stringify(rawNotifications[0]).substring(0, 300));
+        }
+        
         // Map backend notification format to frontend format
         const mappedNotifications = rawNotifications.map((n: any) => ({
           id: n.id,
@@ -423,11 +428,16 @@ export default function Explore() {
             avatar: n.actor?.avatar || null,
           },
           post_id: n.entity_type === 'post' ? n.entity_id : undefined,
-          post_preview: n.image_url || null,
+          post_preview: n.target_thumbnail_url || n.metadata?.post_thumbnail || n.image_url || null,
           comment_text: n.body,
           created_at: n.created_at,
-          message: n.body || n.title || '',
+          message: n.body || n.title || n.message || '',
         }));
+        
+        console.log(`🔔 NOTIF-DIAG: mapped notifications count = ${mappedNotifications.length}`);
+        if (mappedNotifications.length > 0) {
+          console.log('🔔 NOTIF-DIAG: mapped sample[0]:', JSON.stringify(mappedNotifications[0]).substring(0, 300));
+        }
         
         setNotifications(mappedNotifications);
       }
@@ -440,15 +450,18 @@ export default function Explore() {
   };
 
   // Fetch notifications when tab changes to notifications
-  // This calls markAllNotificationsRead on server to clear badge permanently
+  // Only mark as read AFTER successful fetch, not before
   useEffect(() => {
     if (activeTab === 'notifications' && !isGuest && token) {
-      // Mark all as read on SERVER (authoritative)
-      markAllNotificationsRead();
-      // Then fetch notifications for display
-      fetchNotifications();
+      // Fetch first, then mark as read after a short delay
+      fetchNotifications().then(() => {
+        // Mark as read after user has seen the list
+        setTimeout(() => {
+          markAllNotificationsRead();
+        }, 1500);
+      });
     }
-  }, [activeTab, token, isGuest, markAllNotificationsRead]);
+  }, [activeTab, token, isGuest]);
 
   const onRefreshNotifications = () => {
     setNotificationsRefreshing(true);
