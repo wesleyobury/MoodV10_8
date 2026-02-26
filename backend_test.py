@@ -14,7 +14,7 @@ import sys
 import os
 
 # Configuration
-BACKEND_URL = "https://fitness-social-12.preview.emergentagent.com"
+BACKEND_URL = "https://deploy-ready-128.preview.emergentagent.com"
 API_BASE = f"{BACKEND_URL}/api"
 
 # Test credentials from review request
