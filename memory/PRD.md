@@ -55,6 +55,10 @@ Build a fitness app with workout generation, social features, and video guidance
 - `/app/frontend/eas.json` - EAS build configuration
 - `/app/frontend/app.json` - Expo configuration
 
+### February 26, 2026
+- **Feed Aspect Ratio Fix**: Changed SmartVideoPlayer and MediaCarousel containers from square (SCREEN_WIDTH x SCREEN_WIDTH) to 9:16 portrait (SCREEN_WIDTH x FEED_HEIGHT where FEED_HEIGHT = SCREEN_WIDTH * 16/9). Updated `videoContainer`, `errorContainer` in SmartVideoPlayer.tsx and `mediaContainer` in MediaCarousel.tsx.
+- **Cloudinary Video Fast Delivery**: Rewrote `normalizeCloudinaryVideoUrl()` in `cloudinaryVideo.ts` to enforce `f_mp4,q_auto:good,w_720,br_1200k,fl_progressive` transforms. Strips existing transforms and rebuilds clean URL from public_id. Reduces initial buffer time significantly on first render.
+
 ### February 25, 2026
 - **Deployment Fix (Syntax Error)**: Removed orphaned duplicate code block (lines 144-174) in `SmartVideoPlayer.tsx` — a stray try/catch block with trailing `};` left over from a previous refactor. This was the sole cause of the Metro bundling SyntaxError at line 174.
 - **Backend Analytics Fix**: Fixed `NameError: name 'workouts_started' is not defined` in `user_analytics.py` `get_admin_analytics()`. The return dict was using undefined variable names `workouts_started` and `total_workouts` instead of the correctly defined `total_workouts_started` and `total_workouts_completed`. Also fixed `average_workouts_per_active_user` calculation.
