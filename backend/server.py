@@ -21,6 +21,7 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import re
+import httpx
 from auth import (
     exchange_session_id_for_token,
     create_or_update_user,
