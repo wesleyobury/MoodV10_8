@@ -468,6 +468,16 @@ export default function Explore() {
     fetchNotifications();
   };
 
+  // Refetch notifications on screen focus when on notifications tab
+  useFocusEffect(
+    useCallback(() => {
+      if (activeTab === 'notifications' && !isGuest && token) {
+        console.log('🔔 NOTIF-DIAG: screen focused, refetching notifications');
+        fetchNotifications();
+      }
+    }, [activeTab, isGuest, token])
+  );
+
   // Format time ago for notifications - use shared utility
   const formatTimeAgo = (dateString: string) => {
     return formatNotificationTime(dateString);
