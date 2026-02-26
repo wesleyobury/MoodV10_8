@@ -96,7 +96,15 @@ load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
 mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
-client = AsyncIOMotorClient(mongo_url)
+client = AsyncIOMotorClient(
+    mongo_url,
+    connectTimeoutMS=30000,
+    serverSelectionTimeoutMS=30000,
+    socketTimeoutMS=45000,
+    maxPoolSize=20,
+    retryWrites=True,
+    retryReads=True,
+)
 db = client[os.environ.get('DB_NAME', 'mood_app')]
 
 # JWT Configuration

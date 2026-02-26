@@ -529,6 +529,31 @@ class NotificationService:
                 }
             },
             {"$unwind": {"path": "$actor", "preserveNullAndEmptyArrays": True}},
+            # Live lookup: fetch post thumbnail when metadata is missing it
+            {
+                "$lookup": {
+                    "from": "posts",
+                    "let": {
+                        "eid": "$entity_id",
+                        "etype": "$entity_type",
+                        "existing_thumb": "$metadata.post_thumbnail"
+                    },
+                    "pipeline": [
+                        {"$match": {
+                            "$expr": {
+                                "$and": [
+                                    {"$eq": ["$$etype", "post"]},
+                                    {"$in": ["$$existing_thumb", [None, ""]]},
+                                    {"$ne": ["$$eid", None]},
+                                    {"$eq": ["$_id", {"$toObjectId": "$$eid"}]}
+                                ]
+                            }
+                        }},
+                        {"$project": {"cover_urls": 1, "media_urls": 1}}
+                    ],
+                    "as": "_post_lookup"
+                }
+            },
             {
                 "$project": {
                     "id": {"$toString": "$_id"},
@@ -541,12 +566,25 @@ class NotificationService:
                     "entity_type": 1,
                     "created_at": 1,
                     "read_at": 1,
-                    "metadata": 1,  # Include full metadata
-                    # Extract target_thumbnail_url explicitly for frontend
+                    "metadata": 1,
+                    # Prefer metadata thumbnail, fall back to live post lookup
                     "target_thumbnail_url": {
                         "$ifNull": [
                             "$metadata.post_thumbnail",
-                            {"$ifNull": ["$metadata.post_preview", None]}
+                            {"$ifNull": [
+                                "$metadata.post_preview",
+                                {"$let": {
+                                    "vars": {
+                                        "post": {"$arrayElemAt": ["$_post_lookup", 0]}
+                                    },
+                                    "in": {
+                                        "$ifNull": [
+                                            {"$arrayElemAt": ["$$post.cover_urls", 0]},
+                                            {"$arrayElemAt": ["$$post.media_urls", 0]}
+                                        ]
+                                    }
+                                }}
+                            ]}
                         ]
                     },
                     "actor": {
@@ -562,10 +600,17 @@ class NotificationService:
         
         notifications = await self.db.notifications.aggregate(pipeline).to_list(limit)
         
-        # Log any notifications missing target_thumbnail_url for debugging
+        # Backfill metadata in DB for any notifications that needed live lookup (fire-and-forget)
         for notif in notifications:
-            if notif.get("type") in ["like", "comment", "mention", "reply"] and not notif.get("target_thumbnail_url"):
-                logger.warning(f"🔔 Notification missing target_thumbnail_url: id={notif.get('id')}, type={notif.get('type')}, entity_id={notif.get('entity_id')}")
+            if notif.get("type") in ["like", "comment", "mention", "reply"] and notif.get("target_thumbnail_url") and not (notif.get("metadata") or {}).get("post_thumbnail"):
+                # Async backfill so next fetch is fast
+                try:
+                    await self.db.notifications.update_one(
+                        {"_id": ObjectId(notif["id"])},
+                        {"$set": {"metadata.post_thumbnail": notif["target_thumbnail_url"]}}
+                    )
+                except Exception:
+                    pass
         
         return notifications
     
