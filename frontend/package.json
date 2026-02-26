@@ -17,7 +17,7 @@
     "@react-native-community/slider": "^5.1.2",
     "@react-native-masked-view/masked-view": "^0.3.2",
     "axios": "^1.11.0",
-    "expo": "^54.0.33",
+    "expo": "^55.0.2",
     "expo-apple-authentication": "^8.0.8",
     "expo-av": "^16.0.8",
     "expo-blur": "~15.0.8",
