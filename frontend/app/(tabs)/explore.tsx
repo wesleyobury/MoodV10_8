@@ -34,6 +34,7 @@ import { useScreenTime } from '../../hooks/useScreenTime';
 import { PostSkeleton } from '../../components/Skeleton';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import ReportModal from '../../components/ReportModal';
+import { preloadNextItems, prefetchThumbnails } from '../../utils/cloudinaryVideo';
 
 import { API_URL } from '../../utils/apiConfig';
 import { formatNotificationTime } from '../../utils/notificationUtils';
