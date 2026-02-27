@@ -178,7 +178,7 @@ export default function Explore() {
   const router = useRouter();
   const { token, user, isGuest } = useAuth();
   const { addToCart, clearCart } = useCart();
-  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollViewRef = useRef<FlatList>(null);
   const insets = useSafeAreaInsets();
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const postLayoutsRef = useRef<{ [key: string]: { y: number; height: number } }>({});
