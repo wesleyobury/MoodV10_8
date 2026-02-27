@@ -144,7 +144,7 @@ export function cloudinaryOptimizedVideoUrl(videoUrl: string): string {
  * - br_800k        -> lower bitrate for instant buffer
  * - fl_progressive -> progressive download (play before fully loaded)
  */
-const FAST_VIDEO_TRANSFORMS = 'f_mp4,q_auto:eco,w_480,br_800k,fl_progressive';
+const FAST_VIDEO_TRANSFORMS = 'f_mp4,q_auto:good,w_720,br_800k,fl_progressive';
 
 export function normalizeCloudinaryVideoUrl(url?: string | null): string | null {
   if (!url) return null;
