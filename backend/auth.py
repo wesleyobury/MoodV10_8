@@ -14,7 +14,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 # Emergent Auth API endpoint
-EMERGENT_AUTH_SESSION_API = "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data"
+EMERGENT_AUTH_SESSION_API = os.environ.get('EMERGENT_AUTH_API_URL', 'https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data')
 
 class SessionDataResponse(BaseModel):
     """Response from Emergent Auth API"""
