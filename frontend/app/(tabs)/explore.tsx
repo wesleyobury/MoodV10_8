@@ -185,6 +185,42 @@ export default function Explore() {
   const PAGE_SIZE = 20;
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const [guestAction, setGuestAction] = useState('');
+
+  // FlatList viewability config for tracking visible posts (Instagram-style)
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50,
+    minimumViewTime: 300,
+  }).current;
+
+  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    if (viewableItems.length > 0) {
+      const topItem = viewableItems[0]?.item;
+      if (topItem?.id) {
+        setVisiblePostId(topItem.id);
+      }
+    }
+  }).current;
+
+  // Preload video thumbnails for upcoming posts when visible post changes
+  useEffect(() => {
+    if (!visiblePostId || posts.length === 0) return;
+    const currentIndex = posts.findIndex(p => p.id === visiblePostId);
+    if (currentIndex === -1) return;
+
+    // Find video posts in the next 3 items and preload their thumbnails
+    const videoItems = posts
+      .slice(currentIndex + 1, currentIndex + 4)
+      .filter(p => p.media_urls?.some(url => /\.(mp4|mov|avi|webm|mkv|m4v)/i.test(url)))
+      .map(p => ({
+        id: p.id,
+        video_url: p.media_urls.find(url => /\.(mp4|mov|avi|webm|mkv|m4v)/i.test(url)) || p.media_urls[0],
+        thumbnail_url: p.cover_urls?.[0] || null,
+      }));
+
+    if (videoItems.length > 0) {
+      prefetchThumbnails(videoItems).catch(() => {});
+    }
+  }, [visiblePostId, posts]);
   
   // Handle tab navigation from query parameter
   useEffect(() => {
