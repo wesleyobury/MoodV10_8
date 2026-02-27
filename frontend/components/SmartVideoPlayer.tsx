@@ -28,7 +28,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { normalizeCloudinaryVideoUrl } from '../utils/cloudinaryVideo';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const FEED_HEIGHT = Math.round(SCREEN_WIDTH * 16 / 9);
+const FEED_HEIGHT = Math.round(SCREEN_WIDTH * 5 / 4); // 4:5 ratio (Instagram feed standard)
 
 // Configure audio mode for proper playback on mobile
 const configureAudio = async () => {
