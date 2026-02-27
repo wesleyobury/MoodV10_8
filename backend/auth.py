@@ -2,6 +2,7 @@
 Emergent Auth Integration
 Handles Google OAuth via Emergent Auth service
 """
+import os
 import httpx
 import uuid
 from datetime import datetime, timezone, timedelta
