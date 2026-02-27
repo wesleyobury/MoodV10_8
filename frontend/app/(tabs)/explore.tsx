@@ -1181,341 +1181,326 @@ export default function Explore() {
         </TouchableOpacity>
       </View>}
 
-      {!showSearch && activeTab !== 'notifications' && <ScrollView
-        ref={scrollViewRef}
-        style={styles.feed}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#FFD700" />
-        }
-        onScroll={({ nativeEvent }) => {
-          const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
-          const paddingToBottom = 100;
-          if (layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
-            if (!loadingMore && hasMore) {
-              fetchPosts(true);
+      {!showSearch && activeTab !== 'notifications' && (
+        posts.length === 0 ? (
+          <ScrollView
+            style={styles.feed}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#FFD700" />
             }
-          }
-          
-          // Determine which post is visible
-          const scrollY = nativeEvent.contentOffset.y;
-          const viewportCenter = scrollY + (layoutMeasurement.height / 2);
-          
-          // Find the post that's most visible
-          for (const postId of Object.keys(postLayoutsRef.current)) {
-            const layout = postLayoutsRef.current[postId];
-            if (layout && viewportCenter >= layout.y && viewportCenter <= layout.y + layout.height) {
-              if (visiblePostId !== postId) {
-                setVisiblePostId(postId);
-              }
-              break;
-            }
-          }
-        }}
-        scrollEventThrottle={100}
-      >
-        {posts.length === 0 ? (
-          <View style={styles.emptyState}>
-            <Ionicons name="fitness" size={64} color="#666" />
-            <Text style={styles.emptyTitle}>No posts yet</Text>
-            <Text style={styles.emptySubtitle}>
-              {activeTab === 'following' 
-                ? 'Follow users to see their posts here'
-                : 'Be the first to share your fitness journey!'}
-            </Text>
-          </View>
+          >
+            <View style={styles.emptyState}>
+              <Ionicons name="fitness" size={64} color="#666" />
+              <Text style={styles.emptyTitle}>No posts yet</Text>
+              <Text style={styles.emptySubtitle}>
+                {activeTab === 'following' 
+                  ? 'Follow users to see their posts here'
+                  : 'Be the first to share your fitness journey!'}
+              </Text>
+            </View>
+          </ScrollView>
         ) : (
-          posts.map((post) => {
-            const likeScale = likeAnimations[post.id]
-              ? likeAnimations[post.id].interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0, 1],
-                })
-              : new Animated.Value(0);
-
-            return (
-              <View 
-                key={post.id} 
-                style={styles.postCard}
-                onLayout={(event) => {
-                  const { y, height } = event.nativeEvent.layout;
-                  postLayoutsRef.current[post.id] = { y, height };
-                }}
-              >
-                {/* Post Header */}
-                <View style={styles.postHeader}>
-                  <TouchableOpacity
-                    style={styles.authorInfo}
-                    onPress={() => handleProfile(post.author.id)}
-                  >
-                    {post.author.avatar ? (
-                      <Image 
-                        source={{ 
-                          uri: post.author.avatar.startsWith('http') 
-                            ? post.author.avatar 
-                            : `${API_URL}${post.author.avatar}` 
-                        }} 
-                        style={styles.avatar}
-                        contentFit="cover"
-                        transition={100}
-                        cachePolicy="memory-disk"
-                      />
-                    ) : (
-                      <View style={[styles.avatar, styles.avatarPlaceholder]}>
-                        <Ionicons name="person" size={20} color="#666" />
-                      </View>
-                    )}
-                    <View>
-                      <Text style={styles.authorName}>{post.author.name || post.author.username}</Text>
-                      <Text style={styles.authorUsername}>@{post.author.username}</Text>
-                    </View>
-                  </TouchableOpacity>
-                  {/* 3-dot menu for post options */}
-                  <TouchableOpacity
-                    style={styles.postMenuButton}
-                    onPress={() => {
-                      setSelectedMenuPost(post);
-                      setShowPostMenu(true);
-                    }}
-                  >
-                    <Ionicons name="ellipsis-horizontal" size={20} color="#888" />
-                  </TouchableOpacity>
-                </View>
-
-                {/* Post Media (Images and Videos) */}
-                {post.media_urls.length > 0 && (
-                  <View>
-                    <ErrorBoundary>
-                      <MediaCarousel 
-                        media={post.media_urls.map(url => {
-                          // If URL doesn't start with http/https, prepend backend URL
-                          if (!url.startsWith('http')) {
-                            return url.startsWith('/') ? `${API_URL}${url}` : `${API_URL}/api/uploads/${url}`;
-                          }
-                          return url;
-                        })}
-                        postId={post.id}
-                        isPostVisible={visiblePostId === post.id}
-                        coverUrls={post.cover_urls}
-                        onIndexChange={(index) => {
-                          setCarouselIndexes(prev => ({ ...prev, [post.id]: index }));
-                          
-                          // Trigger animation when swiping to the last slide (workout completion card)
-                          if (post.workout_data && 
-                              post.workout_data.workouts && 
-                              post.workout_data.workouts.length > 0 && 
-                              index === post.media_urls.length - 1) {
-                            // Create animation if it doesn't exist
-                            if (!tryWorkoutAnimations[post.id]) {
-                              tryWorkoutAnimations[post.id] = new Animated.Value(0);
-                            }
-                            // Reset and play animation
-                            tryWorkoutAnimations[post.id].setValue(0);
-                            Animated.spring(tryWorkoutAnimations[post.id], {
-                              toValue: 1,
-                              useNativeDriver: true,
-                              tension: 50,
-                              friction: 7,
-                            }).start();
-                          }
-                        }}
-                      />
-                    </ErrorBoundary>
-                    
-                    {/* Try This Workout Button - Only show on workout completion card (last slide) */}
-                    {post.workout_data && 
-                     post.workout_data.workouts && 
-                     post.workout_data.workouts.length > 0 && 
-                     (carouselIndexes[post.id] ?? 0) === post.media_urls.length - 1 && (
-                      <Animated.View
-                        style={[
-                          styles.tryWorkoutButtonContainer,
-                          {
-                            opacity: tryWorkoutAnimations[post.id] || 1,
-                            transform: [
-                              {
-                                scale: tryWorkoutAnimations[post.id] 
-                                  ? tryWorkoutAnimations[post.id].interpolate({
-                                      inputRange: [0, 0.5, 1],
-                                      outputRange: [0.8, 1.05, 1],
-                                    })
-                                  : 1,
-                              },
-                              {
-                                translateX: tryWorkoutAnimations[post.id]
-                                  ? tryWorkoutAnimations[post.id].interpolate({
-                                      inputRange: [0, 1],
-                                      outputRange: [20, 0],
-                                    })
-                                  : 0,
-                              },
-                            ],
-                          },
-                        ]}
-                      >
-                        <TouchableOpacity 
-                          style={styles.tryWorkoutButton}
-                          onPress={() => handleReplicateWorkout(post)}
-                          activeOpacity={0.8}
-                        >
-                          {/* Shimmer overlay */}
-                          <Animated.View
-                            style={[
-                              styles.shimmerOverlay,
-                              {
-                                transform: [
-                                  {
-                                    translateX: shimmerAnim.interpolate({
-                                      inputRange: [0, 1],
-                                      outputRange: [-150, 150],
-                                    }),
-                                  },
-                                ],
-                              },
-                            ]}
-                          >
-                            <LinearGradient
-                              colors={[
-                                'transparent',
-                                'rgba(255, 215, 0, 0.15)',
-                                'rgba(255, 255, 255, 0.25)',
-                                'rgba(255, 215, 0, 0.15)',
-                                'transparent',
-                              ]}
-                              start={{ x: 0, y: 0.5 }}
-                              end={{ x: 1, y: 0.5 }}
-                              style={styles.shimmerGradient}
-                            />
-                          </Animated.View>
-                          <Ionicons name="chevron-forward" size={14} color="#FFD700" />
-                          <Text style={styles.tryWorkoutButtonText}>Try this workout</Text>
-                        </TouchableOpacity>
-                      </Animated.View>
-                    )}
-                    
-                    {likeAnimations[post.id] && (
-                      <Animated.View
-                        style={[
-                          styles.likeAnimationContainer,
-                          {
-                            opacity: likeScale,
-                            transform: [
-                              {
-                                scale: likeScale.interpolate({
-                                  inputRange: [0, 1],
-                                  outputRange: [0, 1.5],
-                                }),
-                              },
-                            ],
-                          },
-                        ]}
-                        pointerEvents="none"
-                      >
-                        <Ionicons name="heart" size={80} color="#FFD700" />
-                      </Animated.View>
-                    )}
+          <FlatList
+            ref={scrollViewRef}
+            data={posts}
+            keyExtractor={(item) => item.id}
+            style={styles.feed}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#FFD700" />
+            }
+            onEndReached={() => {
+              if (!loadingMore && hasMore) {
+                fetchPosts(true);
+              }
+            }}
+            onEndReachedThreshold={0.5}
+            viewabilityConfig={viewabilityConfig}
+            onViewableItemsChanged={onViewableItemsChanged}
+            removeClippedSubviews={true}
+            windowSize={5}
+            maxToRenderPerBatch={3}
+            initialNumToRender={3}
+            ListFooterComponent={() => (
+              <>
+                {loadingMore && (
+                  <View style={styles.loadingMore}>
+                    <ActivityIndicator size="small" color="#FFD700" />
+                    <Text style={styles.loadingMoreText}>Loading more posts...</Text>
                   </View>
                 )}
+                {!hasMore && posts.length > 0 && (
+                  <View style={styles.endOfPosts}>
+                    <Text style={styles.endOfPostsText}>You've reached the end!</Text>
+                  </View>
+                )}
+              </>
+            )}
+            renderItem={({ item: post }) => {
+              const likeScale = likeAnimations[post.id]
+                ? likeAnimations[post.id].interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 1],
+                  })
+                : new Animated.Value(0);
 
-                {/* Post Actions */}
-                <View style={styles.postActions}>
-                  <View style={styles.leftActions}>
+              return (
+                <View style={styles.postCard}>
+                  {/* Post Header */}
+                  <View style={styles.postHeader}>
                     <TouchableOpacity
+                      style={styles.authorInfo}
+                      onPress={() => handleProfile(post.author.id)}
+                    >
+                      {post.author.avatar ? (
+                        <Image 
+                          source={{ 
+                            uri: post.author.avatar.startsWith('http') 
+                              ? post.author.avatar 
+                              : `${API_URL}${post.author.avatar}` 
+                          }} 
+                          style={styles.avatar}
+                          contentFit="cover"
+                          transition={100}
+                          cachePolicy="memory-disk"
+                        />
+                      ) : (
+                        <View style={[styles.avatar, styles.avatarPlaceholder]}>
+                          <Ionicons name="person" size={20} color="#666" />
+                        </View>
+                      )}
+                      <View>
+                        <Text style={styles.authorName}>{post.author.name || post.author.username}</Text>
+                        <Text style={styles.authorUsername}>@{post.author.username}</Text>
+                      </View>
+                    </TouchableOpacity>
+                    {/* 3-dot menu for post options */}
+                    <TouchableOpacity
+                      style={styles.postMenuButton}
+                      onPress={() => {
+                        setSelectedMenuPost(post);
+                        setShowPostMenu(true);
+                      }}
+                    >
+                      <Ionicons name="ellipsis-horizontal" size={20} color="#888" />
+                    </TouchableOpacity>
+                  </View>
+
+                  {/* Post Media (Images and Videos) */}
+                  {post.media_urls.length > 0 && (
+                    <View>
+                      <ErrorBoundary>
+                        <MediaCarousel 
+                          media={post.media_urls.map(url => {
+                            if (!url.startsWith('http')) {
+                              return url.startsWith('/') ? `${API_URL}${url}` : `${API_URL}/api/uploads/${url}`;
+                            }
+                            return url;
+                          })}
+                          postId={post.id}
+                          isPostVisible={visiblePostId === post.id}
+                          coverUrls={post.cover_urls}
+                          onIndexChange={(index) => {
+                            setCarouselIndexes(prev => ({ ...prev, [post.id]: index }));
+                            
+                            if (post.workout_data && 
+                                post.workout_data.workouts && 
+                                post.workout_data.workouts.length > 0 && 
+                                index === post.media_urls.length - 1) {
+                              if (!tryWorkoutAnimations[post.id]) {
+                                tryWorkoutAnimations[post.id] = new Animated.Value(0);
+                              }
+                              tryWorkoutAnimations[post.id].setValue(0);
+                              Animated.spring(tryWorkoutAnimations[post.id], {
+                                toValue: 1,
+                                useNativeDriver: true,
+                                tension: 50,
+                                friction: 7,
+                              }).start();
+                            }
+                          }}
+                        />
+                      </ErrorBoundary>
+                      
+                      {/* Try This Workout Button */}
+                      {post.workout_data && 
+                       post.workout_data.workouts && 
+                       post.workout_data.workouts.length > 0 && 
+                       (carouselIndexes[post.id] ?? 0) === post.media_urls.length - 1 && (
+                        <Animated.View
+                          style={[
+                            styles.tryWorkoutButtonContainer,
+                            {
+                              opacity: tryWorkoutAnimations[post.id] || 1,
+                              transform: [
+                                {
+                                  scale: tryWorkoutAnimations[post.id] 
+                                    ? tryWorkoutAnimations[post.id].interpolate({
+                                        inputRange: [0, 0.5, 1],
+                                        outputRange: [0.8, 1.05, 1],
+                                      })
+                                    : 1,
+                                },
+                                {
+                                  translateX: tryWorkoutAnimations[post.id]
+                                    ? tryWorkoutAnimations[post.id].interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [20, 0],
+                                      })
+                                    : 0,
+                                },
+                              ],
+                            },
+                          ]}
+                        >
+                          <TouchableOpacity 
+                            style={styles.tryWorkoutButton}
+                            onPress={() => handleReplicateWorkout(post)}
+                            activeOpacity={0.8}
+                          >
+                            <Animated.View
+                              style={[
+                                styles.shimmerOverlay,
+                                {
+                                  transform: [
+                                    {
+                                      translateX: shimmerAnim.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [-150, 150],
+                                      }),
+                                    },
+                                  ],
+                                },
+                              ]}
+                            >
+                              <LinearGradient
+                                colors={[
+                                  'transparent',
+                                  'rgba(255, 215, 0, 0.15)',
+                                  'rgba(255, 255, 255, 0.25)',
+                                  'rgba(255, 215, 0, 0.15)',
+                                  'transparent',
+                                ]}
+                                start={{ x: 0, y: 0.5 }}
+                                end={{ x: 1, y: 0.5 }}
+                                style={styles.shimmerGradient}
+                              />
+                            </Animated.View>
+                            <Ionicons name="chevron-forward" size={14} color="#FFD700" />
+                            <Text style={styles.tryWorkoutButtonText}>Try this workout</Text>
+                          </TouchableOpacity>
+                        </Animated.View>
+                      )}
+                      
+                      {likeAnimations[post.id] && (
+                        <Animated.View
+                          style={[
+                            styles.likeAnimationContainer,
+                            {
+                              opacity: likeScale,
+                              transform: [
+                                {
+                                  scale: likeScale.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [0, 1.5],
+                                  }),
+                                },
+                              ],
+                            },
+                          ]}
+                          pointerEvents="none"
+                        >
+                          <Ionicons name="heart" size={80} color="#FFD700" />
+                        </Animated.View>
+                      )}
+                    </View>
+                  )}
+
+                  {/* Post Actions */}
+                  <View style={styles.postActions}>
+                    <View style={styles.leftActions}>
+                      <TouchableOpacity
+                        style={styles.actionButton}
+                        onPress={() => handleLike(post.id)}
+                      >
+                        <View style={styles.socialIconContainer}>
+                          <Ionicons
+                            name={post.is_liked ? 'heart' : 'heart-outline'}
+                            size={22}
+                            color={post.is_liked ? '#FF6B6B' : 'rgba(255,255,255,0.7)'}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.actionButton}
+                        onPress={() => handleComments(post.id)}
+                      >
+                        <View style={styles.socialIconContainer}>
+                          <Ionicons name="chatbubble-outline" size={20} color="rgba(255,255,255,0.7)" />
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity 
                       style={styles.actionButton}
-                      onPress={() => handleLike(post.id)}
+                      onPress={() => handleSave(post.id)}
                     >
                       <View style={styles.socialIconContainer}>
-                        <Ionicons
-                          name={post.is_liked ? 'heart' : 'heart-outline'}
-                          size={22}
-                          color={post.is_liked ? '#FF6B6B' : 'rgba(255,255,255,0.7)'}
+                        <Ionicons 
+                          name={post.is_saved ? 'bookmark' : 'bookmark-outline'} 
+                          size={20} 
+                          color={post.is_saved ? '#FFD700' : 'rgba(255,255,255,0.7)'} 
                         />
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.actionButton}
-                      onPress={() => handleComments(post.id)}
-                    >
-                      <View style={styles.socialIconContainer}>
-                        <Ionicons name="chatbubble-outline" size={20} color="rgba(255,255,255,0.7)" />
-                      </View>
-                    </TouchableOpacity>
                   </View>
-                  <TouchableOpacity 
-                    style={styles.actionButton}
-                    onPress={() => handleSave(post.id)}
-                  >
-                    <View style={styles.socialIconContainer}>
-                      <Ionicons 
-                        name={post.is_saved ? 'bookmark' : 'bookmark-outline'} 
-                        size={20} 
-                        color={post.is_saved ? '#FFD700' : 'rgba(255,255,255,0.7)'} 
-                      />
-                    </View>
-                  </TouchableOpacity>
-                </View>
 
-                {/* Likes Count */}
-                <View style={styles.likesSection}>
-                  <Text style={styles.likesText}>
-                    {post.likes_count} {post.likes_count === 1 ? 'like' : 'likes'}
-                  </Text>
-                </View>
-
-                {/* Caption */}
-                {post.caption && (
-                  <View style={styles.captionSection}>
-                    <Text style={styles.caption}>
-                      <Text style={styles.captionUsername}>@{post.author.username} </Text>
-                      {post.caption}
+                  {/* Likes Count */}
+                  <View style={styles.likesSection}>
+                    <Text style={styles.likesText}>
+                      {post.likes_count} {post.likes_count === 1 ? 'like' : 'likes'}
                     </Text>
                   </View>
-                )}
 
-                {/* Comments Preview */}
-                {post.first_comment && (
-                  <View style={styles.firstCommentContainer}>
-                    <Text style={styles.firstCommentText} numberOfLines={2}>
-                      <Text style={styles.firstCommentUsername}>
-                        {post.first_comment.author.username}
+                  {/* Caption */}
+                  {post.caption && (
+                    <View style={styles.captionSection}>
+                      <Text style={styles.caption}>
+                        <Text style={styles.captionUsername}>@{post.author.username} </Text>
+                        {post.caption}
                       </Text>
-                      {'  '}{post.first_comment.text}
-                    </Text>
-                  </View>
-                )}
-                <TouchableOpacity onPress={() => handleComments(post.id)}>
-                  <Text style={styles.viewComments}>
-                    {post.comments_count > 0 
-                      ? `View all ${post.comments_count} ${post.comments_count === 1 ? 'comment' : 'comments'}`
-                      : 'Add a comment...'
-                    }
-                  </Text>
-                </TouchableOpacity>
+                    </View>
+                  )}
 
-                {/* Timestamp */}
-                <Text style={styles.timestamp}>
-                  {new Date(post.created_at).toLocaleDateString()}
-                </Text>
-              </View>
-            );
-          })
-        )}
-        
-        {/* Loading more indicator */}
-        {loadingMore && (
-          <View style={styles.loadingMore}>
-            <ActivityIndicator size="small" color="#FFD700" />
-            <Text style={styles.loadingMoreText}>Loading more posts...</Text>
-          </View>
-        )}
-        
-        {/* End of posts indicator */}
-        {!hasMore && posts.length > 0 && (
-          <View style={styles.endOfPosts}>
-            <Text style={styles.endOfPostsText}>You've reached the end!</Text>
-          </View>
-        )}
-      </ScrollView>}
+                  {/* Comments Preview */}
+                  {post.first_comment && (
+                    <View style={styles.firstCommentContainer}>
+                      <Text style={styles.firstCommentText} numberOfLines={2}>
+                        <Text style={styles.firstCommentUsername}>
+                          {post.first_comment.author.username}
+                        </Text>
+                        {'  '}{post.first_comment.text}
+                      </Text>
+                    </View>
+                  )}
+                  <TouchableOpacity onPress={() => handleComments(post.id)}>
+                    <Text style={styles.viewComments}>
+                      {post.comments_count > 0 
+                        ? `View all ${post.comments_count} ${post.comments_count === 1 ? 'comment' : 'comments'}`
+                        : 'Add a comment...'
+                      }
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/* Timestamp */}
+                  <Text style={styles.timestamp}>
+                    {new Date(post.created_at).toLocaleDateString()}
+                  </Text>
+                </View>
+              );
+            }}
+          />
+        )
+      )}
 
       {/* Notifications Tab Content */}
       {activeTab === 'notifications' && !showSearch && (
