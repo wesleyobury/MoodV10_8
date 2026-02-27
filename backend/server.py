@@ -3275,23 +3275,27 @@ async def get_drilldown_events(
         events = await db.user_events.find(query).sort("timestamp", -1).skip(skip).limit(limit).to_list(limit)
         total = await db.user_events.count_documents(query)
         
-        # Format events
+        # Batch fetch usernames for all events (avoid N+1)
+        user_ids = set()
+        for event in events:
+            uid = event.get("user_id")
+            if uid:
+                try:
+                    user_ids.add(ObjectId(uid))
+                except:
+                    pass
+        user_map = {}
+        if user_ids:
+            users_list = await db.users.find({"_id": {"$in": list(user_ids)}}, {"_id": 1, "username": 1}).to_list(len(user_ids))
+            user_map = {str(u["_id"]): u.get("username", "Unknown") for u in users_list}
+        
         formatted_events = []
         for event in events:
-            # Get username for the event
-            username = "Unknown"
-            try:
-                user = await db.users.find_one({"_id": ObjectId(event.get("user_id"))})
-                if user:
-                    username = user.get("username", "Unknown")
-            except:
-                pass
-            
             formatted_events.append({
                 "event_id": str(event["_id"]),
                 "event_type": event.get("event_type"),
                 "user_id": event.get("user_id"),
-                "username": username,
+                "username": user_map.get(event.get("user_id", ""), "Unknown"),
                 "timestamp": event.get("timestamp").isoformat() if event.get("timestamp") else None,
                 "metadata": event.get("metadata", {}),
             })
@@ -5230,28 +5234,32 @@ async def export_users_csv(
     
     users = await db.users.find({}).to_list(10000)
     
+    # Batch count events and workouts per user (avoid N+1)
+    user_ids = [str(u["_id"]) for u in users]
+    
+    events_agg = await db.user_events.aggregate([
+        {"$match": {"user_id": {"$in": user_ids}, "timestamp": {"$gte": start_date}}},
+        {"$group": {"_id": "$user_id", "count": {"$sum": 1}}}
+    ]).to_list(len(user_ids))
+    events_map = {item["_id"]: item["count"] for item in events_agg}
+    
+    workouts_agg = await db.user_events.aggregate([
+        {"$match": {"user_id": {"$in": user_ids}, "event_type": "workout_completed"}},
+        {"$group": {"_id": "$user_id", "count": {"$sum": 1}}}
+    ]).to_list(len(user_ids))
+    workouts_map = {item["_id"]: item["count"] for item in workouts_agg}
+    
     export_data = []
     for user in users:
         user_id = str(user["_id"])
-        
-        events_count = await db.user_events.count_documents({
-            "user_id": user_id,
-            "timestamp": {"$gte": start_date}
-        })
-        
-        workouts_count = await db.user_events.count_documents({
-            "user_id": user_id,
-            "event_type": "workout_completed"
-        })
-        
         export_data.append({
             "username": user.get("username", ""),
             "email": user.get("email", ""),
             "created_at": user.get("created_at").isoformat() if user.get("created_at") else "",
             "followers": user.get("followers_count", 0),
             "following": user.get("following_count", 0),
-            "total_workouts": workouts_count,
-            "events_in_period": events_count,
+            "total_workouts": workouts_map.get(user_id, 0),
+            "events_in_period": events_map.get(user_id, 0),
         })
     
     return {
