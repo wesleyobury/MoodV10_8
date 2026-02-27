@@ -4,92 +4,79 @@
 Build a fitness app with workout generation, social features, and video guidance. The app includes admin analytics, push notifications, and Instagram sharing capabilities.
 
 ## Current Sprint Focus
-1. Fix TestFlight login failures caused by JSON parse errors
-2. Fix video playback failures on Explore and Profile pages
-3. Fix Create Post page crashes caused by expo-video-thumbnails
+1. Resolve deployment blocker (Expo SDK 55 `--environment` flag incompatibility)
+2. Fix N+1 query performance issues for production stability
+3. Verify post-deployment features (notifications, video playback)
 
 ## What's Been Implemented
 
+### February 27, 2026
+- **Expo SDK Downgrade (54)**: Downgraded from SDK 55 (`^55.0.2`) to SDK 54 (`~54.0.0`) to resolve EAS update `--environment` flag requirement that Emergent deployment pipeline doesn't support yet. Both SDKs use React Native 0.81 so impact is minimal.
+- **Package Alignment**: Ran `npx expo install --fix` to align 5 packages with SDK 54:
+  - `@react-native-community/slider`: 5.1.2 -> 5.0.1
+  - `expo-linking`: 8.0.10 -> 8.0.11
+  - `expo-router`: 6.0.19 -> 6.0.23
+  - `expo-splash-screen`: 31.0.12 -> 31.0.13
+  - `react-native-worklets`: 0.5.2 -> 0.5.1
+- **Lock File Cleanup**: Removed `package-lock.json` (keeping only `yarn.lock`)
+- **app.json Fixes**: Fixed `android/adaptiveIcon/backgroundColor` from `#000` to `#000000`, removed duplicate `LSApplicationQueriesSchemes` and Android permissions
+- **N+1 Query Fix (Event Listing)**: Batched user lookup in event listing endpoint using `$in` query instead of per-event `find_one`
+- **N+1 Query Fix (User Export)**: Replaced per-user `count_documents` calls with two aggregation pipelines for events and workouts
+
+### February 26, 2026
+- **Feed Aspect Ratio Fix**: Changed SmartVideoPlayer and MediaCarousel containers from square to 9:16 portrait
+- **Cloudinary Video Fast Delivery**: Rewrote `normalizeCloudinaryVideoUrl()` with fast-delivery transforms
+- **MongoDB Atlas Timeout Fix**: Increased AsyncIOMotorClient timeouts for Atlas stability
+- **Notification Thumbnail Live Lookup**: Added `$lookup` fallback for missing thumbnails
+- **N+1 Query Fixes (4 analytics endpoints)**: Batched follow-check queries
+- **Admin Backfill Endpoint**: Added `POST /api/admin/backfill-notification-thumbnails`
+
+### February 25, 2026
+- **Deployment Fix (Syntax Error)**: Removed orphaned duplicate code block in SmartVideoPlayer.tsx
+- **Backend Analytics Fix**: Fixed undefined variable names in user_analytics.py
+
 ### February 22, 2026
-- **TestFlight Login Fix**: Created safe API fetch wrapper (`/app/frontend/utils/api.ts`) that handles non-JSON responses gracefully
-- Updated `AuthContext.tsx` login/register to use safe fetch
-- Added `EXPO_PUBLIC_BACKEND_URL` to `app.json` extra config for production builds
-- Enhanced API logging for debugging URL issues
-
-- **Cloudinary Video Playback Fix**: 
-  - Created `normalizeCloudinaryVideoUrl()` in `/app/frontend/utils/cloudinaryVideo.ts`
-  - Forces iOS-compatible `f_mp4,q_auto` transformation on all Cloudinary video URLs
-  - Updated `MediaCarousel.tsx` to use normalized URLs
-  - Updated `ExerciseLookupSheet.tsx` to use normalized URLs
-  - Added enhanced error logging for video failures
-
-- **Create Post Crash Fix (expo-video-thumbnails)**:
-  - `VideoFrameSelector.tsx`: Changed to dynamic require() with try-catch to prevent crashes
-  - `VideoThumbnail.tsx`: Same safe import pattern with Cloudinary fallback
-  - `profile.tsx`: Removed unused direct import
-  - Components now show helpful error messages instead of crashing when native thumbnails unavailable
+- **TestFlight Login Fix**: Created safe API fetch wrapper
+- **Cloudinary Video Playback Fix**: iOS-compatible video URL normalization
+- **Create Post Crash Fix**: Safe dynamic imports for expo-video-thumbnails
 
 ### Previous Sessions
-- V2 Analytics Console
-- Push notifications system
-- Instagram Story sharing
-- Video player optimizations
-- Featured workouts system
-- User stats and streaks
+- V2 Analytics Console, Push notifications, Instagram Story sharing
+- Video player optimizations, Featured workouts system, User stats and streaks
 
 ## Tech Stack
-- **Frontend**: Expo/React Native
+- **Frontend**: Expo SDK 54 / React Native 0.81
 - **Backend**: FastAPI
 - **Database**: MongoDB
 - **Media**: Cloudinary
 - **Notifications**: Expo Push
 
 ## Key Files
-- `/app/frontend/utils/api.ts` - Safe API fetch wrapper
-- `/app/frontend/utils/apiConfig.ts` - API URL configuration with fallbacks
-- `/app/frontend/utils/cloudinaryVideo.ts` - Video URL normalization for iOS
-- `/app/frontend/components/MediaCarousel.tsx` - Video player component
-- `/app/frontend/components/VideoFrameSelector.tsx` - Safe video frame selector
-- `/app/frontend/components/VideoThumbnail.tsx` - Safe video thumbnail generator
-- `/app/frontend/contexts/AuthContext.tsx` - Authentication state management
+- `/app/frontend/package.json` - Expo SDK 54 configuration
+- `/app/frontend/app.json` - Expo app configuration
 - `/app/frontend/eas.json` - EAS build configuration
-- `/app/frontend/app.json` - Expo configuration
-
-### February 26, 2026
-- **Feed Aspect Ratio Fix**: Changed SmartVideoPlayer and MediaCarousel containers from square (SCREEN_WIDTH x SCREEN_WIDTH) to 9:16 portrait (SCREEN_WIDTH x FEED_HEIGHT where FEED_HEIGHT = SCREEN_WIDTH * 16/9). Updated `videoContainer`, `errorContainer` in SmartVideoPlayer.tsx and `mediaContainer` in MediaCarousel.tsx.
-- **Cloudinary Video Fast Delivery**: Rewrote `normalizeCloudinaryVideoUrl()` in `cloudinaryVideo.ts` to enforce `f_mp4,q_auto:good,w_720,br_1200k,fl_progressive` transforms. Strips existing transforms and rebuilds clean URL from public_id. Reduces initial buffer time significantly on first render.
-- **MongoDB Atlas Timeout Fix**: Increased `AsyncIOMotorClient` timeouts (`connectTimeoutMS=30000`, `serverSelectionTimeoutMS=30000`, `socketTimeoutMS=45000`) and added `maxPoolSize=20`, `retryWrites=True`, `retryReads=True` for Atlas stability.
-- **Notification Thumbnail Live Lookup**: Replaced static `$ifNull` in `get_notifications` aggregation with a `$lookup` to the posts collection that fires when `metadata.post_thumbnail` is missing. Also auto-backfills `metadata.post_thumbnail` on read so future fetches skip the lookup.
-- **N+1 Query Fixes (4 endpoints)**: Batched follow-check queries in `get_user_followers`, `get_user_following`, `search_users_general`, and `get_drilldown_users` — each now uses a single `$in` query instead of per-item queries.
-  - Fixed `post_preview` mapping: was using `n.image_url` (actor avatar), now uses `n.target_thumbnail_url || n.metadata?.post_thumbnail || n.image_url`
-  - Fixed `message` mapping to include fallback chain: `n.body || n.title || n.message || ''`
-  - Delayed `markAllNotificationsRead()` — now fires 1.5s AFTER fetch completes (not before), preventing premature zeroing of badge
-  - Added `useFocusEffect` to refetch notifications when screen regains focus while on notifications tab
-  - Added `NOTIF-DIAG` console logs for raw + mapped notification payloads
-- **Admin Backfill Endpoint**: Added `POST /api/admin/backfill-notification-thumbnails` — patches existing notifications missing `metadata.post_thumbnail` by looking up the post's `cover_urls`/`media_urls`
-
-### February 25, 2026
-- **Deployment Fix (Syntax Error)**: Removed orphaned duplicate code block (lines 144-174) in `SmartVideoPlayer.tsx` — a stray try/catch block with trailing `};` left over from a previous refactor. This was the sole cause of the Metro bundling SyntaxError at line 174.
-- **Backend Analytics Fix**: Fixed `NameError: name 'workouts_started' is not defined` in `user_analytics.py` `get_admin_analytics()`. The return dict was using undefined variable names `workouts_started` and `total_workouts` instead of the correctly defined `total_workouts_started` and `total_workouts_completed`. Also fixed `average_workouts_per_active_user` calculation.
+- `/app/backend/server.py` - Main backend with N+1 fixes
+- `/app/backend/db.py` - MongoDB connection with Atlas timeouts
+- `/app/backend/notifications.py` - Notification system with thumbnail fallback
 
 ## Prioritized Backlog
 
 ### P0 (Critical)
-- [x] Fix deployment-blocking syntax error in SmartVideoPlayer.tsx
-- [ ] User verification of TestFlight login fix
-- [ ] User verification of video playback fix
-- [ ] User verification of create-post page fix
+- [x] Fix deployment blocker (Expo SDK 55 --environment flag) - FIXED Feb 27
+- [x] Fix N+1 queries in event listing and user export - FIXED Feb 27
+- [ ] User verification of deployment success
 
 ### P1 (High)
-- [x] Fix backend analytics error (`workouts_started` undefined) — FIXED Feb 25
-- [ ] Debug and fix likes/comments notification badge not updating (diagnostics added Feb 26)
+- [ ] Debug and fix likes/comments notification badge (diagnostics added Feb 26)
+- [ ] Post-deployment: Run backfill endpoint for notification thumbnails
+- [ ] Verify video playback speed and 9:16 aspect ratio
 
 ### P2 (Medium)
 - [ ] Video Performance Phase 2 (pre-fetching)
 - [ ] Admin Panel caching
-- [ ] Clean up hardcoded fallback URL in `frontend/utils/apiConfig.ts`
-- [ ] Fix N+1 query pattern in moderation stats endpoint
+- [ ] Clean up hardcoded fallback URL in apiConfig.ts
 
 ### P3 (Low)
-- [ ] Replace temporary try-catch native module wrappers with permanent solutions
+- [ ] Replace temporary try-catch native module wrappers
 - [ ] Code refactoring and cleanup
+- [ ] Root cause fix: populate metadata.post_thumbnail at notification creation time
