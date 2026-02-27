@@ -138,11 +138,11 @@ export function cloudinaryOptimizedVideoUrl(videoUrl: string): string {
  */
 /**
  * Fast-delivery transform string applied to all feed videos.
- * - f_mp4          → iOS-compatible container
- * - q_auto:good    → balanced quality/size
- * - w_720          → cap resolution at 720p width
- * - br_1200k       → cap bitrate for fast initial buffer
- * - fl_progressive → progressive download (play before fully loaded)
+ * - f_mp4          -> iOS-compatible container
+ * - q_auto:eco     -> smallest file size for fast start
+ * - w_480          -> cap resolution at 480p for feed (4:5 container)
+ * - br_800k        -> lower bitrate for instant buffer
+ * - fl_progressive -> progressive download (play before fully loaded)
  */
 const FAST_VIDEO_TRANSFORMS = 'f_mp4,q_auto:eco,w_480,br_800k,fl_progressive';
 
