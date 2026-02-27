@@ -255,13 +255,13 @@ export default function Explore() {
       if (activeTab === 'notifications') {
         setActiveTab('forYou');
         if (scrollViewRef.current) {
-          scrollViewRef.current.scrollTo({ y: 0, animated: true });
+          scrollViewRef.current.scrollToOffset({ offset: 0, animated: true });
         }
       }
       // Double tap detected (within 300ms) - scroll to top
       else if (timeSinceLastTap < 300) {
         if (scrollViewRef.current) {
-          scrollViewRef.current.scrollTo({ y: 0, animated: true });
+          scrollViewRef.current.scrollToOffset({ offset: 0, animated: true });
         }
         if (activeTab !== 'forYou') {
           setActiveTab('forYou');
