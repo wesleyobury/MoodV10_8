@@ -536,6 +536,67 @@ export default function Settings() {
           </TouchableOpacity>
         </View>
 
+        {/* DEV ONLY: Push Debug Section */}
+        {__DEV__ && (
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: '#FF6B6B' }]}>Push Debug (DEV)</Text>
+            
+            <View style={styles.settingsItem}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.settingsItemText}>Expo Push Token</Text>
+                <Text 
+                  selectable 
+                  style={[styles.settingsItemSubtext, { marginTop: 6, fontSize: 11, color: '#aaa' }]}
+                  data-testid="push-debug-token"
+                >
+                  {devPushToken || 'Not available (permissions denied or not on device)'}
+                </Text>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              style={styles.settingsItem}
+              data-testid="push-debug-copy-btn"
+              onPress={async () => {
+                if (devPushToken) {
+                  await Clipboard.setStringAsync(devPushToken);
+                  Alert.alert('Copied', 'Push token copied to clipboard');
+                } else {
+                  Alert.alert('No Token', 'No push token available to copy');
+                }
+              }}
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="copy-outline" size={20} color="#FF6B6B" />
+                <Text style={styles.settingsItemText}>Copy Token</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color="#666" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.settingsItem}
+              data-testid="push-debug-test-btn"
+              onPress={async () => {
+                await Notifications.scheduleNotificationAsync({
+                  content: {
+                    title: 'MOOD Test Notification',
+                    body: 'Push notifications are working!',
+                    data: { type: 'dev_test' },
+                  },
+                  trigger: null,
+                });
+                Alert.alert('Sent', 'Local test notification fired');
+              }}
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="notifications-outline" size={20} color="#FF6B6B" />
+                <Text style={styles.settingsItemText}>Test Local Notification</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color="#666" />
+            </TouchableOpacity>
+          </View>
+        )}
+
         {/* App Info */}
         <View style={styles.appInfo}>
           <Text style={styles.appVersion}>Version 1.0.0</Text>
