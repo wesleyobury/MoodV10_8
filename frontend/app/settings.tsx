@@ -65,9 +65,10 @@ export default function Settings() {
 
   useEffect(() => {
     if (!isAdmin) return;
-    const { NativeModules } = require('react-native');
     const Consts = require('expo-constants').default;
-    const build = `BUILD: ${Consts.nativeBuildVersion} / ${Consts.nativeAppVersion}`;
+    const version = Consts.expoConfig?.version ?? Consts.nativeAppVersion ?? 'unknown';
+    const buildNum = Consts.expoConfig?.ios?.buildNumber ?? Consts.nativeBuildVersion ?? 'unknown';
+    const build = `BUILD: ${version} (${buildNum})`;
     const hasML = `HAS ExpoMediaLibrary: ${!!NativeModules?.ExpoMediaLibrary}`;
     console.log(build);
     console.log(hasML);
