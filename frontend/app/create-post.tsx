@@ -1782,9 +1782,10 @@ export default function CreatePost() {
                 <View style={styles.actionButtonsRow}>
                   {/* Instagram Share Button - Uses Instagram gradient colors */}
                   <TouchableOpacity 
-                    onPress={() => setShowInstagramShareModal(true)} 
+                    onPress={() => handleShareToInstagram()} 
                     style={styles.instagramButtonWrapper}
                     activeOpacity={0.8}
+                    disabled={isExportingToInstagram}
                   >
                     <LinearGradient
                       colors={['#833AB4', '#FD1D1D', '#F77737']}
