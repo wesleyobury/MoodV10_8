@@ -14,12 +14,6 @@ import FloatingCart from '../components/FloatingCart';
 import ErrorBoundary from '../components/ErrorBoundary';
 import AppBootstrap from '../components/AppBootstrap';
 
-// DEV-only: Push notification debug
-if (__DEV__) {
-  const { registerForPushDebug } = require('../utils/pushDebug');
-  // Will be called in DevPushDebug component below
-}
-
 // Keep splash screen visible while we load
 SplashScreen.preventAutoHideAsync().catch(() => {
   // Ignore errors - splash screen might already be hidden
