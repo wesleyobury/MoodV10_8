@@ -1793,8 +1793,14 @@ export default function CreatePost() {
                       end={{ x: 1, y: 1 }}
                       style={styles.instagramButtonGradient}
                     >
-                      <Ionicons name="logo-instagram" size={18} color="#fff" />
-                      <Text style={styles.instagramButtonText}>Stories</Text>
+                      {isExportingToInstagram ? (
+                        <ActivityIndicator size="small" color="#fff" />
+                      ) : (
+                        <>
+                          <Ionicons name="logo-instagram" size={18} color="#fff" />
+                          <Text style={styles.instagramButtonText}>Stories</Text>
+                        </>
+                      )}
                     </LinearGradient>
                   </TouchableOpacity>
                   
