@@ -848,16 +848,8 @@ export default function CreatePost() {
         format: 'png',
         quality: 1,
         result: 'tmpfile',
-        bgColor: 'transparent',
+        bgColor: '#00000000',
       });
-      const canShare = await Sharing.isAvailableAsync();
-      if (canShare) {
-        await Sharing.shareAsync(imageUri, {
-          mimeType: 'image/png',
-          dialogTitle: 'Share your workout achievement',
-          UTI: 'public.png',
-        });
-      }
       return;
     }
 
