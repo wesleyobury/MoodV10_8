@@ -559,10 +559,9 @@ export default function Settings() {
               }
               setPushRegistering(true);
               try {
-                const { NotificationService } = require('../utils/notifications');
-                const svc = NotificationService.getInstance();
-                svc.setAuthToken(token);
-                const newToken = await svc.registerForPushNotifications();
+                const { notificationService } = require('../utils/notifications');
+                notificationService.setAuthToken(token);
+                const newToken = await notificationService.registerForPushNotifications();
                 if (newToken) {
                   setPushToken(newToken);
                   setPushStatus('registered');
