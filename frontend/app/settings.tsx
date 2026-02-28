@@ -66,14 +66,22 @@ export default function Settings() {
 
   useEffect(() => {
     if (!isAdmin) return;
-    const Consts = require('expo-constants').default;
-    const version = Consts.expoConfig?.version ?? Consts.nativeAppVersion ?? 'unknown';
-    const buildNum = Consts.expoConfig?.ios?.buildNumber ?? Consts.nativeBuildVersion ?? 'unknown';
-    const build = `BUILD: ${version} (${buildNum})`;
-    const hasML = `HAS ExpoMediaLibrary: ${!!NativeModules?.ExpoMediaLibrary}`;
-    console.log(build);
-    console.log(hasML);
-    setDebugInfo(`${build}\n${hasML}`);
+    const checkDebug = async () => {
+      const Consts = require('expo-constants').default;
+      const version = Consts.expoConfig?.version ?? Consts.nativeAppVersion ?? 'unknown';
+      const buildNum = Consts.expoConfig?.ios?.buildNumber ?? Consts.nativeBuildVersion ?? 'unknown';
+      const build = `BUILD: ${version} (${buildNum})`;
+      let hasML = false;
+      try {
+        const ML = await import('expo-media-library');
+        await ML.getPermissionsAsync();
+        hasML = true;
+      } catch {}
+      const info = `${build}\nHAS ExpoMediaLibrary: ${hasML}`;
+      console.log(info);
+      setDebugInfo(info);
+    };
+    checkDebug();
   }, [isAdmin]);
 
   // Load existing push token from storage on mount
