@@ -871,23 +871,13 @@ export default function CreatePost() {
     try {
       // Check if Share module is available
       if (!Share) {
-        // Fall back to expo-sharing
-        const canShare = await Sharing.isAvailableAsync();
-        if (canShare) {
-          await Sharing.shareAsync(uri, {
-            mimeType: 'image/png',
-            dialogTitle: 'Share your workout achievement',
-            UTI: 'public.png',
-          });
-        }
+        showAlert('Share Unavailable', 'react-native-share is not available on this device.');
         return;
       }
       
       await Share.shareSingle({
         social: Share.Social.INSTAGRAM_STORIES,
         stickerImage,
-        backgroundTopColor: '#000000',
-        backgroundBottomColor: '#000000',
       });
     } catch (error: any) {
       // If shareSingle fails (e.g., user cancelled), don't show error
