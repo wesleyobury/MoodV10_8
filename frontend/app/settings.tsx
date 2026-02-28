@@ -558,7 +558,12 @@ export default function Settings() {
               data-testid="push-debug-copy-btn"
               onPress={async () => {
                 if (devPushToken) {
-                  await Clipboard.setStringAsync(devPushToken);
+                  try {
+                    const { default: ClipboardModule } = await import('expo-clipboard');
+                    await ClipboardModule.setStringAsync(devPushToken);
+                  } catch {
+                    // Fallback: expo-clipboard not available in this build
+                  }
                   Alert.alert('Copied', 'Push token copied to clipboard');
                 } else {
                   Alert.alert('No Token', 'No push token available to copy');
