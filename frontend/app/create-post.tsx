@@ -21,7 +21,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams, router as globalRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
-import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import { Video, ResizeMode } from 'expo-av';
 import Constants from 'expo-constants';
