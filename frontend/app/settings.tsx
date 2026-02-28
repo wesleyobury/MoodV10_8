@@ -544,76 +544,129 @@ export default function Settings() {
           </TouchableOpacity>
         </View>
 
-        {/* DEV ONLY: Push Debug Section */}
-        {__DEV__ && (
-          <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: '#FF6B6B' }]}>Push Debug (DEV)</Text>
-            
+        {/* Push Notifications */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Push Notifications</Text>
+          
+          {/* Register / Enable button */}
+          <TouchableOpacity
+            style={styles.settingsItem}
+            data-testid="push-register-btn"
+            onPress={async () => {
+              if (!token) {
+                Alert.alert('Not Logged In', 'Please log in first to register for notifications.');
+                return;
+              }
+              setPushRegistering(true);
+              try {
+                const { NotificationService } = require('../utils/notifications');
+                const svc = NotificationService.getInstance();
+                svc.setAuthToken(token);
+                const newToken = await svc.registerForPushNotifications();
+                if (newToken) {
+                  setPushToken(newToken);
+                  setPushStatus('registered');
+                  Alert.alert('Success', 'Push notifications enabled and token registered to your account.');
+                } else {
+                  setPushStatus('denied');
+                  Alert.alert('Permission Denied', 'Please enable notifications in your device Settings.');
+                }
+              } catch (err: any) {
+                Alert.alert('Error', err?.message || 'Failed to register');
+              } finally {
+                setPushRegistering(false);
+              }
+            }}
+          >
+            <View style={styles.settingsItemLeft}>
+              <Ionicons 
+                name={pushStatus === 'registered' ? 'notifications' : 'notifications-outline'} 
+                size={20} 
+                color={pushStatus === 'registered' ? '#4CAF50' : '#FFD700'} 
+              />
+              <View>
+                <Text style={styles.settingsItemText}>
+                  {pushRegistering ? 'Registering...' : pushStatus === 'registered' ? 'Re-register Token' : 'Enable Notifications'}
+                </Text>
+                <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: pushStatus === 'registered' ? '#4CAF50' : '#888' }]}>
+                  {pushStatus === 'registered' ? 'Token registered to your account' : pushStatus === 'denied' ? 'Permission denied — check device Settings' : 'Tap to request permission & register'}
+                </Text>
+              </View>
+            </View>
+            {pushRegistering ? (
+              <ActivityIndicator size="small" color="#FFD700" />
+            ) : (
+              <Ionicons name="chevron-forward" size={18} color="#666" />
+            )}
+          </TouchableOpacity>
+
+          {/* Token display */}
+          {pushToken && (
             <View style={styles.settingsItem}>
               <View style={{ flex: 1 }}>
                 <Text style={styles.settingsItemText}>Expo Push Token</Text>
                 <Text 
                   selectable 
-                  style={[styles.settingsItemSubtext, { marginTop: 6, fontSize: 11, color: '#aaa' }]}
-                  data-testid="push-debug-token"
+                  style={{ marginTop: 6, fontSize: 11, color: '#aaa', fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' }}
+                  data-testid="push-token-display"
                 >
-                  {devPushToken || 'Not available (permissions denied or not on device)'}
+                  {pushToken}
                 </Text>
               </View>
             </View>
+          )}
 
+          {/* Copy token */}
+          {pushToken && (
             <TouchableOpacity
               style={styles.settingsItem}
-              data-testid="push-debug-copy-btn"
+              data-testid="push-copy-token-btn"
               onPress={async () => {
-                if (devPushToken) {
-                  try {
-                    const { default: ClipboardModule } = await import('expo-clipboard');
-                    await ClipboardModule.setStringAsync(devPushToken);
-                  } catch {
-                    // Fallback: expo-clipboard not available in this build
-                  }
-                  Alert.alert('Copied', 'Push token copied to clipboard');
-                } else {
-                  Alert.alert('No Token', 'No push token available to copy');
+                try {
+                  const ClipboardModule = require('expo-clipboard');
+                  await ClipboardModule.setStringAsync(pushToken);
+                } catch {
+                  // expo-clipboard not available, token is selectable text
                 }
+                Alert.alert('Copied', 'Push token copied to clipboard');
               }}
             >
               <View style={styles.settingsItemLeft}>
-                <Ionicons name="copy-outline" size={20} color="#FF6B6B" />
+                <Ionicons name="copy-outline" size={20} color="#FFD700" />
                 <Text style={styles.settingsItemText}>Copy Token</Text>
               </View>
               <Ionicons name="chevron-forward" size={18} color="#666" />
             </TouchableOpacity>
+          )}
 
-            <TouchableOpacity
-              style={styles.settingsItem}
-              data-testid="push-debug-test-btn"
-              onPress={async () => {
-                try {
-                  const Notifications = require('expo-notifications');
-                  await Notifications.scheduleNotificationAsync({
-                    content: {
-                      title: 'MOOD Test Notification',
-                      body: 'Push notifications are working!',
-                      data: { type: 'dev_test' },
-                    },
-                    trigger: null,
-                  });
-                  Alert.alert('Sent', 'Local test notification fired');
-                } catch (err: any) {
-                  Alert.alert('Error', err?.message || 'Could not send notification');
-                }
-              }}
-            >
-              <View style={styles.settingsItemLeft}>
-                <Ionicons name="notifications-outline" size={20} color="#FF6B6B" />
-                <Text style={styles.settingsItemText}>Test Local Notification</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color="#666" />
-            </TouchableOpacity>
-          </View>
-        )}
+          {/* Test local notification */}
+          <TouchableOpacity
+            style={styles.settingsItem}
+            data-testid="push-test-local-btn"
+            onPress={async () => {
+              try {
+                const Notifications = require('expo-notifications');
+                await Notifications.scheduleNotificationAsync({
+                  content: {
+                    title: 'MOOD Test Notification',
+                    body: 'Push notifications are working!',
+                    data: { type: 'test' },
+                  },
+                  trigger: null,
+                });
+                Alert.alert('Sent', 'Local test notification fired');
+              } catch (err: any) {
+                Alert.alert('Error', err?.message || 'Could not send notification');
+              }
+            }}
+          >
+            <View style={styles.settingsItemLeft}>
+              <Ionicons name="notifications-circle-outline" size={20} color="#FFD700" />
+              <Text style={styles.settingsItemText}>Test Local Notification</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="#666" />
+          </TouchableOpacity>
+        </View>
 
         {/* App Info */}
         <View style={styles.appInfo}>
