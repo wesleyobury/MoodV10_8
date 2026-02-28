@@ -823,7 +823,6 @@ export default function CreatePost() {
       showAlert('Error', 'Failed to create Instagram share image. Please try again.');
     } finally {
       setIsExportingToInstagram(false);
-      setShowInstagramShareModal(false);
     }
   };
 
