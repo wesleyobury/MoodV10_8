@@ -16,6 +16,7 @@ import {
   Modal,
   Dimensions,
   Linking,
+  NativeModules,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams, router as globalRouter } from 'expo-router';
