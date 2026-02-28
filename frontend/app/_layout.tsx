@@ -50,6 +50,25 @@ function AppStateTracker() {
   return null;
 }
 
+// DEV-only: Request push permissions and log token on startup
+function DevPushDebug() {
+  const { token } = useAuth();
+
+  useEffect(() => {
+    if (!__DEV__ || !token) return;
+    const { registerForPushDebug } = require('../utils/pushDebug');
+    registerForPushDebug()
+      .then((pushToken: string | null) => {
+        if (pushToken) {
+          console.log('[DEV] Push token acquired:', pushToken);
+        }
+      })
+      .catch((err: any) => console.warn('[DEV] Push debug error:', err));
+  }, [token]);
+
+  return null;
+}
+
 // Navigation stack configuration
 function NavigationStack() {
   return (
