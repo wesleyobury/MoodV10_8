@@ -59,6 +59,21 @@ export default function Settings() {
   const [pushRegistering, setPushRegistering] = useState(false);
   const [pushStatus, setPushStatus] = useState<string>('unknown');
 
+  // Admin debug info (temporary)
+  const isAdmin = user?.username === 'officialmoodapp';
+  const [debugInfo, setDebugInfo] = useState<string>('');
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    const { NativeModules } = require('react-native');
+    const Consts = require('expo-constants').default;
+    const build = `BUILD: ${Consts.nativeBuildVersion} / ${Consts.nativeAppVersion}`;
+    const hasML = `HAS ExpoMediaLibrary: ${!!NativeModules?.ExpoMediaLibrary}`;
+    console.log(build);
+    console.log(hasML);
+    setDebugInfo(`${build}\n${hasML}`);
+  }, [isAdmin]);
+
   // Load existing push token from storage on mount
   useEffect(() => {
     const loadToken = async () => {
