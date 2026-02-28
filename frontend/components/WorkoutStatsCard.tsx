@@ -831,7 +831,7 @@ const styles = StyleSheet.create({
   // TRANSPARENT/INSTAGRAM EXPORT STYLES
   // ============================================
   transparentContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    backgroundColor: 'transparent',
     borderRadius: 0,
     overflow: 'hidden',
     justifyContent: 'space-between',
