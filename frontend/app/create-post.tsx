@@ -858,7 +858,7 @@ export default function CreatePost() {
       format: 'png',
       quality: 1,
       result: 'tmpfile',
-      bgColor: 'transparent',
+      bgColor: '#00000000',
     });
 
     // 2) Convert to base64 data URI for react-native-share
