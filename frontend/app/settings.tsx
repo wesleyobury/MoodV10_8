@@ -22,7 +22,6 @@ import Constants from 'expo-constants';
 import { useAuth } from '../contexts/AuthContext';
 import { isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
 import BackButton from '../components/BackButton';
-import * as Notifications from 'expo-notifications';
 
 import { API_URL } from '../utils/apiConfig';
 const SUPPORT_EMAIL = 'wesleyogsbury@gmail.com';
