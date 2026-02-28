@@ -857,13 +857,14 @@ export default function CreatePost() {
     // 3) Check if Instagram is installed and open Stories camera
     const canOpenStories = await Linking.canOpenURL('instagram://story-camera');
     if (canOpenStories) {
-      await Linking.openURL('instagram://story-camera');
-      setTimeout(() => {
-        showAlert(
+      await new Promise<void>((resolve) => {
+        Alert.alert(
           'Overlay Saved to Photos',
-          'Instagram is open — tap the sticker icon and choose your most recent image to add the overlay.'
+          'Instagram will open next — tap the sticker icon and choose your most recent image to add the overlay.',
+          [{ text: 'Open Instagram', onPress: () => resolve() }],
         );
-      }, 600);
+      });
+      await Linking.openURL('instagram://story-camera');
     } else {
       // Fallback: Instagram not installed — use system share sheet
       try {
