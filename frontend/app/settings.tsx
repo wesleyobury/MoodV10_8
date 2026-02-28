@@ -687,6 +687,14 @@ export default function Settings() {
           <Text style={styles.appVersion}>Version 1.0.0</Text>
         </View>
 
+        {/* Admin Debug Info (temporary) */}
+        {isAdmin && debugInfo !== '' && (
+          <View style={{ backgroundColor: '#1a1a1a', borderRadius: 8, padding: 12, marginHorizontal: 16, marginBottom: 16 }}>
+            <Text style={{ color: '#FF6B6B', fontWeight: '700', fontSize: 12, marginBottom: 6 }}>Admin Debug</Text>
+            <Text selectable style={{ color: '#aaa', fontSize: 11, fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace', lineHeight: 18 }}>{debugInfo}</Text>
+          </View>
+        )}
+
         {/* Sign Out Button */}
         <TouchableOpacity 
           style={styles.signOutButton}
