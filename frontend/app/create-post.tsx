@@ -835,6 +835,13 @@ export default function CreatePost() {
     });
 
     // 2) Save to Photos so Instagram can access it
+    let MediaLibrary: any;
+    try {
+      MediaLibrary = require('expo-media-library');
+    } catch {
+      showAlert('Unavailable', 'Photo library access is not available on this build. Please rebuild the app.');
+      return;
+    }
     const { status } = await MediaLibrary.requestPermissionsAsync();
     if (status !== 'granted') {
       showAlert('Permission Needed', 'Please allow photo library access to share to Instagram.');
@@ -854,16 +861,19 @@ export default function CreatePost() {
       }, 600);
     } else {
       // Fallback: Instagram not installed — use system share sheet
-      const canShare = await Sharing.isAvailableAsync();
-      if (canShare) {
-        await Sharing.shareAsync(uri, {
-          mimeType: 'image/png',
-          dialogTitle: 'Share your workout overlay',
-          UTI: 'public.png',
-        });
-      } else {
-        showAlert('Saved to Photos', 'Your workout overlay has been saved to your photo library. Open Instagram and add it manually.');
-      }
+      try {
+        const Sharing = require('expo-sharing');
+        const canShare = await Sharing.isAvailableAsync();
+        if (canShare) {
+          await Sharing.shareAsync(uri, {
+            mimeType: 'image/png',
+            dialogTitle: 'Share your workout overlay',
+            UTI: 'public.png',
+          });
+          return;
+        }
+      } catch {}
+      showAlert('Saved to Photos', 'Your workout overlay has been saved to your photo library. Open Instagram and add it manually.');
     }
   };
 
