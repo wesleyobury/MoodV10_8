@@ -21,8 +21,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams, router as globalRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
-import * as MediaLibrary from 'expo-media-library';
-import * as Sharing from 'expo-sharing';
 import { Video, ResizeMode } from 'expo-av';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
