@@ -859,7 +859,7 @@ export default function CreatePost() {
 
     // 2) Convert to base64 data URI for react-native-share
     const b64 = await FileSystem.readAsStringAsync(uri, {
-      encoding: FileSystem.EncodingType.Base64,
+      encoding: 'base64',
     });
     const stickerImage = `data:image/png;base64,${b64}`;
 
@@ -903,7 +903,7 @@ export default function CreatePost() {
       if (Platform.OS === 'ios') {
         // iOS: Read the image and convert to base64 for sharing
         const imageBase64 = await FileSystem.readAsStringAsync(imageUri, {
-          encoding: FileSystem.EncodingType.Base64,
+          encoding: 'base64',
         });
         
         // iOS Instagram Stories deep link with sticker
