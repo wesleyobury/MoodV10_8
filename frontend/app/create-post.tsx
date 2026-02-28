@@ -2175,30 +2175,6 @@ export default function CreatePost() {
         )}
       </Modal>
 
-      {/* Instagram Share Modal */}
-      {workoutStats && (
-        <InstagramShareModal
-          visible={showInstagramShareModal}
-          onClose={() => setShowInstagramShareModal(false)}
-          onShare={() => {
-            handleShareToInstagram();
-          }}
-          previewComponent={
-            <WorkoutStatsCard
-              workouts={workoutStats.workouts}
-              totalDuration={editedDuration !== undefined ? editedDuration : workoutStats.totalDuration}
-              editedCalories={editedCalories !== undefined ? editedCalories : Math.round(workoutStats.totalDuration * 8)}
-              completedAt={workoutStats.completedAt}
-              moodCategory={workoutStats.moodCategory}
-              username={user?.username || 'User'}
-              calorieTarget={calorieTarget}
-              minuteTarget={minuteTarget}
-              transparent={true}
-            />
-          }
-          isExporting={isExportingToInstagram}
-        />
-      )}
     </SafeAreaView>
   );
 }
