@@ -54,20 +54,26 @@ export default function Settings() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
 
-  // DEV-only: Push debug state
-  const [devPushToken, setDevPushToken] = useState<string | null>(null);
+  // Push notification debug state
+  const [pushToken, setPushToken] = useState<string | null>(null);
+  const [pushRegistering, setPushRegistering] = useState(false);
+  const [pushStatus, setPushStatus] = useState<string>('unknown');
 
-  // DEV-only: Fetch push token on mount
+  // Load existing push token from storage on mount
   useEffect(() => {
-    if (!__DEV__) return;
-    try {
-      const { registerForPushDebug } = require('../utils/pushDebug');
-      registerForPushDebug()
-        .then((t: string | null) => setDevPushToken(t))
-        .catch(() => {});
-    } catch {
-      // pushDebug module not available
-    }
+    const loadToken = async () => {
+      try {
+        const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+        const storedToken = await AsyncStorage.getItem('mood_push_token');
+        if (storedToken) {
+          setPushToken(storedToken);
+          setPushStatus('registered');
+        }
+        const permStatus = await AsyncStorage.getItem('mood_notification_permission');
+        if (permStatus === 'denied') setPushStatus('denied');
+      } catch {}
+    };
+    loadToken();
   }, []);
 
   // Load analytics opt-out preference on mount
