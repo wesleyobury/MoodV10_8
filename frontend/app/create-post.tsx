@@ -835,13 +835,14 @@ export default function CreatePost() {
     });
 
     // 2) Save to Photos so Instagram can access it
-    let MediaLibrary: any;
-    try {
-      MediaLibrary = require('expo-media-library');
-    } catch {
-      showAlert('Unavailable', 'Photo library access is not available on this build. Please rebuild the app.');
+    //    Check native module existence BEFORE importing (try/catch won't catch native resolution errors)
+    const { NativeModules } = require('react-native');
+    const hasMediaLibrary = !!NativeModules?.ExpoMediaLibrary;
+    if (!hasMediaLibrary) {
+      showAlert('Unavailable', "Photo library access isn't included in this build yet. Please update the app.");
       return;
     }
+    const MediaLibrary = await import('expo-media-library');
     const { status } = await MediaLibrary.requestPermissionsAsync();
     if (status !== 'granted') {
       showAlert('Permission Needed', 'Please allow photo library access to share to Instagram.');
@@ -861,8 +862,9 @@ export default function CreatePost() {
       }, 600);
     } else {
       // Fallback: Instagram not installed — use system share sheet
-      try {
-        const Sharing = require('expo-sharing');
+      const hasSharing = !!NativeModules?.ExpoSharing;
+      if (hasSharing) {
+        const Sharing = await import('expo-sharing');
         const canShare = await Sharing.isAvailableAsync();
         if (canShare) {
           await Sharing.shareAsync(uri, {
@@ -872,7 +874,7 @@ export default function CreatePost() {
           });
           return;
         }
-      } catch {}
+      }
       showAlert('Saved to Photos', 'Your workout overlay has been saved to your photo library. Open Instagram and add it manually.');
     }
   };
