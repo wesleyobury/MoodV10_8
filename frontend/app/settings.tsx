@@ -56,6 +56,18 @@ export default function Settings() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
 
+  // DEV-only: Push debug state
+  const [devPushToken, setDevPushToken] = useState<string | null>(null);
+
+  // DEV-only: Fetch push token on mount
+  useEffect(() => {
+    if (!__DEV__) return;
+    const { registerForPushDebug } = require('../utils/pushDebug');
+    registerForPushDebug()
+      .then((t: string | null) => setDevPushToken(t))
+      .catch(() => {});
+  }, []);
+
   // Load analytics opt-out preference on mount
   useEffect(() => {
     const loadAnalyticsPreference = async () => {
