@@ -5,7 +5,7 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 1. Deployment stability (resolve all blockers)
 2. Notification system (badge notifications, feed thumbnails)
 3. Video performance & UX (aspect ratio, loading speed)
-4. Data integrity (backfill missing notification data)
+4. Instagram share flow (transparent overlay, 1-tap share)
 
 ## Architecture
 - **Frontend**: React Native (Expo SDK 54), TypeScript
@@ -14,24 +14,23 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
-- [2026-02-27] Fixed hardcoded auth API URL blocker in `backend/auth.py` (moved to env var)
-- [2026-02-27] Deployment health check passed - app is deployment-ready
-- [2026-02-27] **Aspect Ratio Fix**: Changed media feed from 9:16 (too tall) to 4:5 (Instagram feed standard) in SmartVideoPlayer and MediaCarousel
-- [2026-02-27] **FlatList Migration**: Converted Explore feed from ScrollView to FlatList for virtualized rendering (only renders visible posts)
-  - Added `viewabilityConfig` and `onViewableItemsChanged` for automatic visibility tracking
-  - Added `removeClippedSubviews`, `windowSize=5`, `maxToRenderPerBatch=3`, `initialNumToRender=3`
-  - Added `onEndReached` for infinite scroll pagination
-- [2026-02-27] **Video Preloading**: Added automatic thumbnail prefetching for upcoming video posts as user scrolls
-- [2026-02-27] **Cloudinary Optimization**: Reduced video transforms from 720p/1200k to 480p/800k with q_auto:eco for faster initial buffer
+- [2026-02-28] Instagram share: true transparency (`#00000000` bgColor), removed black story backgrounds, removed `InstagramShareModal` for 1-tap flow, loading spinner on button, removed `Sharing.shareAsync` fallback
+- [2026-02-28] Push Notifications section in Settings (production-ready, not DEV-gated), uses existing `NotificationService` to register token to logged-in user
+- [2026-02-28] Added `+not-found.tsx` for graceful unmatched route handling
+- [2026-02-28] Added `settings` route to Stack navigator in `_layout.tsx`
+- [2026-02-27] Aspect ratio: 4:5 (Instagram feed standard) in SmartVideoPlayer and MediaCarousel
+- [2026-02-27] FlatList migration for Explore feed (virtualized rendering)
+- [2026-02-27] Video preloading: thumbnail prefetching for upcoming posts
+- [2026-02-27] Cloudinary: 720p with 800k bitrate cap + progressive download
+- [2026-02-27] Fixed hardcoded auth API URL in `backend/auth.py`
 - [Previous] Downgraded Expo SDK 55 to 54 for deployment compatibility
 - [Previous] Fixed 2 N+1 query patterns in `backend/server.py`
-- [Previous] Notification system fixes (backend lookup, backfill endpoint, frontend rendering)
-- [Previous] Video player fixes (fast-delivery Cloudinary transforms, SmartVideoPlayer component)
-- [Previous] Cleaned up duplicate entries in `frontend/app.json`
+- [Previous] Notification system fixes (backend lookup, backfill endpoint)
 
 ## Pending Verification (Post-Deployment)
 - P1: Notification badge count and feed thumbnails
 - P1: Data backfill endpoint (`POST /api/admin/backfill-notification-thumbnails`)
+- P1: Instagram Stories transparent overlay rendering on device
 
 ## Backlog
 - P2: Fix unbounded query `.to_list(100000)` in `server.py` (pagination)
