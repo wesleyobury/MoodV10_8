@@ -584,15 +584,20 @@ export default function Settings() {
               style={styles.settingsItem}
               data-testid="push-debug-test-btn"
               onPress={async () => {
-                await Notifications.scheduleNotificationAsync({
-                  content: {
-                    title: 'MOOD Test Notification',
-                    body: 'Push notifications are working!',
-                    data: { type: 'dev_test' },
-                  },
-                  trigger: null,
-                });
-                Alert.alert('Sent', 'Local test notification fired');
+                try {
+                  const Notifications = require('expo-notifications');
+                  await Notifications.scheduleNotificationAsync({
+                    content: {
+                      title: 'MOOD Test Notification',
+                      body: 'Push notifications are working!',
+                      data: { type: 'dev_test' },
+                    },
+                    trigger: null,
+                  });
+                  Alert.alert('Sent', 'Local test notification fired');
+                } catch (err: any) {
+                  Alert.alert('Error', err?.message || 'Could not send notification');
+                }
               }}
             >
               <View style={styles.settingsItemLeft}>
