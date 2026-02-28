@@ -831,7 +831,7 @@ const styles = StyleSheet.create({
   // TRANSPARENT/INSTAGRAM EXPORT STYLES
   // ============================================
   transparentContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    backgroundColor: 'transparent',
     borderRadius: 0,
     overflow: 'hidden',
     justifyContent: 'space-between',
@@ -846,12 +846,18 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#FFFFFF',
     letterSpacing: 0.5,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   transparentSubtitle: {
     fontSize: 8,
-    color: 'rgba(255, 255, 255, 0.5)',
+    color: '#FFFFFF',
     letterSpacing: 0.5,
     marginTop: 3,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   
   // Centered content wrapper
@@ -897,11 +903,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#FFFFFF',
     minWidth: 40,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   transparentDataLabel: {
     fontSize: 10,
-    color: 'rgba(255, 255, 255, 0.5)',
+    color: '#FFFFFF',
     marginLeft: 3,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   
   // Center content for rings (calorie inside)
@@ -915,11 +927,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: COLORS.caloriesStart,
     letterSpacing: -0.5,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   transparentCenterCalorieLabel: {
     fontSize: 9,
-    color: 'rgba(255, 255, 255, 0.6)',
+    color: '#FFFFFF',
     marginTop: 1,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   
   // Exercises below rings
@@ -942,14 +960,20 @@ const styles = StyleSheet.create({
   transparentExerciseText: {
     flex: 1,
     fontSize: 11,
-    color: 'rgba(255, 255, 255, 0.75)',
+    color: '#FFFFFF',
     fontWeight: '400',
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   transparentMoreExercises: {
     fontSize: 9,
-    color: 'rgba(255, 255, 255, 0.5)',
+    color: '#FFFFFF',
     marginTop: 3,
     fontStyle: 'italic',
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   
   transparentFooter: {
@@ -961,5 +985,8 @@ const styles = StyleSheet.create({
     color: '#FFD700',
     fontWeight: '700',
     letterSpacing: 3,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
 });
