@@ -80,6 +80,7 @@ function NavigationStack() {
       <Stack.Screen name="privacy-policy" options={{ headerShown: false }} />
       <Stack.Screen name="cart" options={{ headerShown: false }} />
       <Stack.Screen name='workout-session' options={{ headerShown: false }} />
+      <Stack.Screen name='settings' options={{ headerShown: false }} />
     </Stack>
   );
 }
