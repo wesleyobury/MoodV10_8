@@ -95,6 +95,7 @@ function AppContent() {
   return (
     <>
       <AppStateTracker />
+      {__DEV__ && <DevPushDebug />}
       <NavigationStack />
       <FloatingCart />
     </>
