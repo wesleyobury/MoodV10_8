@@ -37,18 +37,11 @@ import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGr
 
 // Safely import native modules that can crash on production iOS builds
 let captureRef: any = null;
-let Share: any = null;
 
 try {
   captureRef = require('react-native-view-shot').captureRef;
 } catch (error) {
   console.warn('react-native-view-shot not available:', error);
-}
-
-try {
-  Share = require('react-native-share').default;
-} catch (error) {
-  console.warn('react-native-share not available:', error);
 }
 
 import { API_URL } from '../utils/apiConfig';
