@@ -836,11 +836,8 @@ export default function CreatePost() {
     });
 
     // 2) Save to Photos so Instagram can access it
-    //    Check native module existence BEFORE importing (try/catch won't catch native resolution errors)
-    const { NativeModules } = require('react-native');
-    const hasMediaLibrary = !!NativeModules?.ExpoMediaLibrary;
-    if (!hasMediaLibrary) {
-      showAlert('Unavailable', "Photo library access isn't included in this build yet. Please update the app.");
+    if (!NativeModules?.ExpoMediaLibrary) {
+      showAlert('Unavailable', 'Photo library access is not included in this build. Please reinstall the latest development build.');
       return;
     }
     const MediaLibrary = await import('expo-media-library');
@@ -863,8 +860,7 @@ export default function CreatePost() {
       }, 600);
     } else {
       // Fallback: Instagram not installed — use system share sheet
-      const hasSharing = !!NativeModules?.ExpoSharing;
-      if (hasSharing) {
+      if (NativeModules?.ExpoSharing) {
         const Sharing = await import('expo-sharing');
         const canShare = await Sharing.isAvailableAsync();
         if (canShare) {
