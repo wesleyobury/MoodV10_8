@@ -60,10 +60,14 @@ export default function Settings() {
   // DEV-only: Fetch push token on mount
   useEffect(() => {
     if (!__DEV__) return;
-    const { registerForPushDebug } = require('../utils/pushDebug');
-    registerForPushDebug()
-      .then((t: string | null) => setDevPushToken(t))
-      .catch(() => {});
+    try {
+      const { registerForPushDebug } = require('../utils/pushDebug');
+      registerForPushDebug()
+        .then((t: string | null) => setDevPushToken(t))
+        .catch(() => {});
+    } catch {
+      // pushDebug module not available
+    }
   }, []);
 
   // Load analytics opt-out preference on mount
