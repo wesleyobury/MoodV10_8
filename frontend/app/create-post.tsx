@@ -818,33 +818,18 @@ export default function CreatePost() {
     }
   };
 
-  // Direct share to Instagram Stories - opens IG immediately like CapCut
+  // Direct share to Instagram Stories via URL scheme + Photos
   const shareToInstagramStoriesDirect = async () => {
     if (!transparentCardRef.current) {
       throw new Error('No card to capture');
     }
     
-    // Check if captureRef is available
     if (!captureRef) {
       showAlert('Feature Unavailable', 'Screen capture is not available on this device.');
       return;
     }
 
-    // Check if Instagram is installed
-    const canOpen = await Linking.canOpenURL('instagram-stories://share');
-    if (!canOpen) {
-      showAlert('Instagram Not Installed', 'Please install Instagram to share stories directly.');
-      // Fall back to regular share sheet
-      const imageUri = await captureRef(transparentCardRef.current, {
-        format: 'png',
-        quality: 1,
-        result: 'tmpfile',
-        bgColor: '#00000000',
-      });
-      return;
-    }
-
-    // 1) Capture overlay WITH transparency
+    // 1) Capture overlay as transparent PNG
     const uri = await captureRef(transparentCardRef.current, {
       format: 'png',
       quality: 1,
@@ -852,112 +837,36 @@ export default function CreatePost() {
       bgColor: '#00000000',
     });
 
-    // 2) Convert to base64 data URI for react-native-share
-    const b64 = await FileSystem.readAsStringAsync(uri, {
-      encoding: 'base64',
-    });
-    const stickerImage = `data:image/png;base64,${b64}`;
-
-    // 3) Share directly to IG Stories (skips iOS share sheet screens)
-    try {
-      // Check if Share module is available
-      if (!Share) {
-        showAlert('Share Unavailable', 'react-native-share is not available on this device.');
-        return;
-      }
-      
-      await Share.shareSingle({
-        social: Share.Social.INSTAGRAM_STORIES,
-        stickerImage,
-      });
-    } catch (error: any) {
-      // If shareSingle fails (e.g., user cancelled), don't show error
-      if (error?.message?.includes('User did not share')) {
-        console.log('User cancelled Instagram share');
-        return;
-      }
-      throw error;
+    // 2) Save to Photos so Instagram can access it
+    const { status } = await MediaLibrary.requestPermissionsAsync();
+    if (status !== 'granted') {
+      showAlert('Permission Needed', 'Please allow photo library access to share to Instagram.');
+      return;
     }
-  };
+    await MediaLibrary.saveToLibraryAsync(uri);
 
-  // Legacy helper (kept for backwards compatibility, but not used)
-  const shareToInstagramStories = async (imageUri: string): Promise<boolean> => {
-    try {
-      // Check if Instagram is installed
-      const instagramUrl = Platform.OS === 'ios' 
-        ? 'instagram-stories://share' 
-        : 'instagram://story-camera';
-      
-      const canOpenInstagram = await Linking.canOpenURL(instagramUrl);
-      
-      if (!canOpenInstagram) {
-        console.log('Instagram is not installed');
-        return false;
-      }
-      
-      if (Platform.OS === 'ios') {
-        // iOS: Read the image and convert to base64 for sharing
-        const imageBase64 = await FileSystem.readAsStringAsync(imageUri, {
-          encoding: 'base64',
+    // 3) Check if Instagram is installed and open Stories camera
+    const canOpenStories = await Linking.canOpenURL('instagram://story-camera');
+    if (canOpenStories) {
+      await Linking.openURL('instagram://story-camera');
+      setTimeout(() => {
+        showAlert(
+          'Overlay Saved to Photos',
+          'Instagram is open — tap the sticker icon and choose your most recent image to add the overlay.'
+        );
+      }, 600);
+    } else {
+      // Fallback: Instagram not installed — use system share sheet
+      const canShare = await Sharing.isAvailableAsync();
+      if (canShare) {
+        await Sharing.shareAsync(uri, {
+          mimeType: 'image/png',
+          dialogTitle: 'Share your workout overlay',
+          UTI: 'public.png',
         });
-        
-        // iOS Instagram Stories deep link with sticker
-        // The image will be passed via the URL scheme
-        // Note: For full functionality, the app needs to be registered with Facebook
-        // For now, we'll use a workaround by opening Instagram Stories and letting user paste
-        
-        // Try opening Instagram Stories directly
-        const instagramStoriesUrl = `instagram-stories://share?source_application=com.mood.fitness`;
-        
-        try {
-          await Linking.openURL(instagramStoriesUrl);
-          
-          // Show instruction to user since we can't directly paste the sticker without native module
-          setTimeout(() => {
-            showAlert(
-              'Add Your Workout Overlay', 
-              'Instagram Stories is opening. Your workout card has been saved - tap the sticker icon and select it from your recent images to add it as an overlay!'
-            );
-          }, 500);
-          
-          // Save the image to camera roll so user can access it
-          // This requires expo-media-library, but for now we'll rely on the temp file
-          return true;
-        } catch (e) {
-          console.log('Failed to open Instagram Stories URL:', e);
-          return false;
-        }
-      } else if (Platform.OS === 'android') {
-        // Android: Use Intent to share directly to Instagram Stories
-        try {
-          // For Android, we can use the share intent with Instagram package
-          const intentUrl = `intent://share#Intent;` +
-            `package=com.instagram.android;` +
-            `S.browser_fallback_url=https://www.instagram.com;` +
-            `end`;
-          
-          // Try opening Instagram Stories camera directly
-          const opened = await Linking.openURL('instagram://story-camera');
-          
-          if (opened) {
-            setTimeout(() => {
-              showAlert(
-                'Add Your Workout Overlay',
-                'Instagram Stories is opening. Add your workout card from your gallery as a sticker overlay!'
-              );
-            }, 500);
-            return true;
-          }
-        } catch (e) {
-          console.log('Failed to open Instagram on Android:', e);
-        }
-        return false;
+      } else {
+        showAlert('Saved to Photos', 'Your workout overlay has been saved to your photo library. Open Instagram and add it manually.');
       }
-      
-      return false;
-    } catch (error) {
-      console.error('Error in shareToInstagramStories:', error);
-      return false;
     }
   };
 
