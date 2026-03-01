@@ -2,18 +2,7 @@ import React, { useState, useEffect, memo } from 'react';
 import { View, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
-
-// Safely import expo-video-thumbnails - it can crash on production iOS builds
-let VideoThumbnails: any = null;
-let videoThumbnailsAvailable = false;
-
-try {
-  VideoThumbnails = require('expo-video-thumbnails');
-  videoThumbnailsAvailable = true;
-} catch (error) {
-  console.warn('expo-video-thumbnails not available:', error);
-  videoThumbnailsAvailable = false;
-}
+import { cloudinaryThumbnailUrlFromVideoUrl } from '../utils/cloudinaryVideo';
 
 interface VideoThumbnailProps {
   videoUrl: string;
@@ -21,114 +10,15 @@ interface VideoThumbnailProps {
   style?: any;
 }
 
-// Cache for generated thumbnails to avoid regenerating
-const thumbnailCache: { [key: string]: string } = {};
-
 /**
- * Convert Cloudinary video URL to thumbnail URL
- * Cloudinary can generate thumbnails server-side which is much faster
+ * VideoThumbnail — shows user-selected cover (priority) or auto-generated poster.
+ * Never generates a Cloudinary thumb if coverUrl is provided.
  */
-const getCloudinaryThumbnail = (videoUrl: string): string | null => {
-  // Check if it's a Cloudinary URL
-  if (!videoUrl.includes('res.cloudinary.com') && !videoUrl.includes('cloudinary.com')) {
-    return null;
-  }
-  
-  // Transform video URL to image thumbnail
-  // Format: .../video/upload/... -> .../video/upload/so_1,f_jpg,w_400,h_400,c_fill/...
-  try {
-    // Add transformation parameters for thumbnail
-    const transformedUrl = videoUrl
-      .replace('/upload/', '/upload/so_1,f_jpg,w_400,h_400,c_fill,q_70/')
-      .replace(/\.(mov|mp4|webm|avi)$/i, '.jpg');
-    return transformedUrl;
-  } catch {
-    return null;
-  }
-};
-
 const VideoThumbnail: React.FC<VideoThumbnailProps> = memo(({ videoUrl, coverUrl, style }) => {
-  // Try to get Cloudinary thumbnail first (instant)
-  const cloudinaryThumb = getCloudinaryThumbnail(videoUrl);
-  
-  const [thumbnail, setThumbnail] = useState<string | null>(
-    coverUrl || cloudinaryThumb || thumbnailCache[videoUrl] || null
-  );
-  const [loading, setLoading] = useState(!coverUrl && !cloudinaryThumb && !thumbnailCache[videoUrl]);
-  const [error, setError] = useState(false);
+  // Priority: user-selected cover → Cloudinary poster from public_id
+  const thumbnailUri = coverUrl || cloudinaryThumbnailUrlFromVideoUrl(videoUrl);
 
-  useEffect(() => {
-    // If we have a cover URL, use it directly
-    if (coverUrl) {
-      setThumbnail(coverUrl);
-      setLoading(false);
-      setError(false);
-      return;
-    }
-    
-    // If we have a Cloudinary thumbnail, use it (instant)
-    if (cloudinaryThumb) {
-      setThumbnail(cloudinaryThumb);
-      setLoading(false);
-      setError(false);
-      return;
-    }
-    
-    // Check cache
-    if (thumbnailCache[videoUrl]) {
-      setThumbnail(thumbnailCache[videoUrl]);
-      setLoading(false);
-      setError(false);
-      return;
-    }
-    
-    // Generate thumbnail on native platforms for non-Cloudinary videos
-    if (Platform.OS !== 'web' && videoThumbnailsAvailable && VideoThumbnails) {
-      generateThumbnail();
-    } else {
-      // No VideoThumbnails available or on web - show fallback
-      setLoading(false);
-      setError(true);
-    }
-  }, [videoUrl, coverUrl, cloudinaryThumb]);
-
-  const generateThumbnail = async () => {
-    // Double-check VideoThumbnails is available
-    if (!videoThumbnailsAvailable || !VideoThumbnails) {
-      setError(true);
-      setLoading(false);
-      return;
-    }
-    
-    try {
-      setLoading(true);
-      setError(false);
-      
-      const { uri } = await VideoThumbnails.getThumbnailAsync(videoUrl, {
-        time: 1000,
-        quality: 0.7,
-      });
-      
-      // Cache the generated thumbnail
-      thumbnailCache[videoUrl] = uri;
-      setThumbnail(uri);
-    } catch (e) {
-      console.log('Thumbnail generation failed for:', videoUrl, e);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <View style={[styles.container, style]}>
-        <ActivityIndicator size="small" color="#FFD700" />
-      </View>
-    );
-  }
-
-  if (error || !thumbnail) {
+  if (!thumbnailUri) {
     return (
       <View style={[styles.container, styles.fallbackContainer, style]}>
         <View style={styles.videoIconWrapper}>
@@ -144,7 +34,7 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = memo(({ videoUrl, coverUrl
   return (
     <View style={[styles.container, style]}>
       <Image 
-        source={{ uri: thumbnail }}
+        source={{ uri: thumbnailUri }}
         style={styles.thumbnail}
         contentFit="cover"
         transition={100}
