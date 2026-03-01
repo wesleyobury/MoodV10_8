@@ -25,7 +25,7 @@ import { isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
 import BackButton from '../components/BackButton';
 
 import { API_URL } from '../utils/apiConfig';
-const SUPPORT_EMAIL = 'wesleyogsbury@gmail.com';
+const SUPPORT_EMAIL = 'wes@officialmoodapp.com';
 
 // External URLs for legal pages
 const EXTERNAL_URLS = {
