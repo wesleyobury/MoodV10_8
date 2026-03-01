@@ -381,7 +381,7 @@ useEffect(() => {
           onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
           onReadyForDisplay={handleVideoReadyForDisplay}
           onError={(error) => {
-            console.error('VIDEO LOAD ERROR:', normalizedUri, error);
+            console.error('VIDEO LOAD ERROR:', videoSource, error);
             if (retryCount < MAX_RETRIES) {
               if (videoRef.current) {
                 videoRef.current.unloadAsync().catch(() => {});
