@@ -3,9 +3,9 @@
  * 
  * Features:
  * - Extract public_id from Cloudinary URLs
- * - Generate HLS streaming URLs capped at 720p
- * - Generate thumbnail/poster URLs from videos
- * - Preload next items in a feed for smooth playback
+ * - Generate HLS streaming URLs (primary) + MP4 fallback
+ * - Generate poster images from video frames
+ * - Preload next 1 item for smooth feed scrolling
  */
 
 import { Image } from 'react-native';
@@ -17,24 +17,17 @@ import { Image } from 'react-native';
 /**
  * Extract Cloudinary public_id from a Cloudinary delivery URL.
  * Supports URLs with transformations, folders, and querystrings.
- * 
- * Example:
- * https://res.cloudinary.com/<cloud>/video/upload/v123/folder/name.mp4
- * => "folder/name"
  */
 export function cloudinaryPublicIdFromUrl(cloudinaryUrl: string): string | null {
   try {
     const url = new URL(cloudinaryUrl);
     const parts = url.pathname.split("/");
 
-    // Find "/upload/" segment and take everything after it
     const uploadIdx = parts.findIndex((p) => p === "upload");
     if (uploadIdx === -1) return null;
 
-    // Everything after upload/ could include transformations + version + public_id.ext
     const afterUpload = parts.slice(uploadIdx + 1).filter(Boolean);
 
-    // Walk from start and drop transformation-like segments until we hit v### or a segment that looks like a file path
     let i = 0;
     while (i < afterUpload.length) {
       const seg = afterUpload[i];
@@ -42,19 +35,16 @@ export function cloudinaryPublicIdFromUrl(cloudinaryUrl: string): string | null 
         i += 1;
         break;
       }
-      // transformation segments often include commas and underscores like "c_fill,w_720,q_auto"
-      if (seg.includes(",") || seg.includes(":") || seg.startsWith("c_") || seg.startsWith("w_") || seg.startsWith("q_") || seg.startsWith("f_") || seg.startsWith("sp_") || seg.startsWith("so_")) {
+      if (seg.includes(",") || seg.includes(":") || seg.startsWith("c_") || seg.startsWith("w_") || seg.startsWith("q_") || seg.startsWith("f_") || seg.startsWith("sp_") || seg.startsWith("so_") || seg.startsWith("vc_") || seg.startsWith("h_") || seg.startsWith("br_") || seg.startsWith("fl_")) {
         i += 1;
         continue;
       }
-      // If it doesn't look like a transformation, assume we're at public_id path
       break;
     }
 
     const publicPathWithExt = afterUpload.slice(i).join("/");
     if (!publicPathWithExt) return null;
 
-    // Strip extension
     const withoutExt = publicPathWithExt.replace(/\.(mp4|mov|m4v|webm|m3u8|jpg|png|jpeg)$/i, "");
     return decodeURIComponent(withoutExt);
   } catch {
@@ -63,157 +53,135 @@ export function cloudinaryPublicIdFromUrl(cloudinaryUrl: string): string | null 
 }
 
 /**
- * Build a Cloudinary thumbnail (poster) URL from a video public_id.
- * 1s offset, width 720, fill crop, auto quality, jpg for speed.
+ * Extract the cloud name from a Cloudinary URL.
  */
-export function cloudinaryThumbnailUrlFromVideoUrl(videoUrl: string): string {
-  const publicId = cloudinaryPublicIdFromUrl(videoUrl);
-  if (!publicId) return videoUrl; // fallback (won't break)
-  
+function cloudNameFromUrl(cloudinaryUrl: string): string | null {
   try {
-    const u = new URL(videoUrl);
+    const u = new URL(cloudinaryUrl);
     const baseParts = u.pathname.split("/").filter(Boolean);
-    const cloudName = baseParts[0];
-    const base = `${u.protocol}//${u.host}/${cloudName}/video/upload`;
-    return `${base}/so_1.0,w_720,c_fill,q_auto,f_jpg/${encodeURIComponent(publicId)}.jpg`;
+    return baseParts[0] || null;
   } catch {
-    return videoUrl;
+    return null;
   }
 }
 
 /**
- * Build an HLS URL capped to 720p using a Cloudinary streaming profile.
- * Default profile: "hd" (Cloudinary's built-in HD ladder)
- * 
- * Note: For custom profiles like "mood_720", create in Cloudinary console.
+ * Build the base upload path for a Cloudinary URL.
  */
-export function cloudinaryHlsUrlFromVideoUrl(videoUrl: string, profile = "hd"): string {
-  const publicId = cloudinaryPublicIdFromUrl(videoUrl);
-  if (!publicId) return videoUrl;
-  
+function cloudinaryBaseUrl(cloudinaryUrl: string): string | null {
   try {
-    const u = new URL(videoUrl);
-    const baseParts = u.pathname.split("/").filter(Boolean);
-    const cloudName = baseParts[0];
-    const base = `${u.protocol}//${u.host}/${cloudName}/video/upload`;
-    return `${base}/sp_${profile}/${encodeURIComponent(publicId)}.m3u8`;
+    const u = new URL(cloudinaryUrl);
+    const cloudName = cloudNameFromUrl(cloudinaryUrl);
+    if (!cloudName) return null;
+    return `${u.protocol}//${u.host}/${cloudName}/video/upload`;
   } catch {
-    return videoUrl;
+    return null;
   }
 }
 
+/** =========================
+ *  URL generators from public_id
+ *  ========================= */
+
 /**
- * Get an optimized video URL with quality cap (720p) without HLS.
- * Useful for direct mp4 playback with size optimization.
+ * Primary: HLS streaming URL for adaptive bitrate playback.
+ * f_m3u8 → HLS manifest
+ * vc_h264 → H.264 codec (universal)
+ * q_auto → Cloudinary auto quality
+ * w_1920,h_1080,c_limit → cap at 1080p, maintain aspect ratio
  */
-export function cloudinaryOptimizedVideoUrl(videoUrl: string): string {
-  const publicId = cloudinaryPublicIdFromUrl(videoUrl);
-  if (!publicId) return videoUrl;
-  
-  try {
-    const u = new URL(videoUrl);
-    const baseParts = u.pathname.split("/").filter(Boolean);
-    const cloudName = baseParts[0];
-    const base = `${u.protocol}//${u.host}/${cloudName}/video/upload`;
-    // Cap at 720p width, auto quality, auto format
-    return `${base}/w_720,q_auto/${encodeURIComponent(publicId)}.mp4`;
-  } catch {
-    return videoUrl;
-  }
+export function hlsUrlFromPublicId(publicId: string, baseUrl: string): string {
+  return `${baseUrl}/f_m3u8,q_auto,vc_h264,w_1920,h_1080,c_limit/${publicId}.m3u8`;
 }
 
 /**
- * Normalize a Cloudinary video URL for guaranteed iOS-compatible MP4 streaming.
- * This is CRITICAL for TestFlight/production iOS builds.
- * 
- * Features:
- * - Forces f_mp4 format (iOS Safari/AVPlayer requirement)
- * - Applies q_auto for quality optimization
- * - Ensures HTTPS
- * - Works with any Cloudinary video URL format
- * 
- * Usage:
- *   const videoUri = normalizeCloudinaryVideoUrl(post.video_url);
- *   <Video source={{ uri: videoUri }} />
+ * Fallback: Optimized MP4 for devices that don't support HLS.
+ * f_auto → best format for device
+ * vc_h264 → H.264 codec
+ * q_auto → auto quality
+ * w_1280,h_720,c_limit → cap at 720p
  */
-/**
- * Fast-delivery transform string applied to all feed videos.
- * - f_mp4          -> iOS-compatible container
- * - q_auto:good    -> balanced quality/size
- * - w_720          -> 720p resolution for crisp quality
- * - br_800k        -> capped bitrate for fast initial buffer
- * - fl_progressive -> progressive download (play before fully loaded)
- */
-const FAST_VIDEO_TRANSFORMS = 'f_mp4,q_auto:good,w_720,br_800k,fl_progressive';
+export function mp4UrlFromPublicId(publicId: string, baseUrl: string): string {
+  return `${baseUrl}/f_auto,q_auto,vc_h264,w_1280,h_720,c_limit/${publicId}.mp4`;
+}
 
+/**
+ * Poster image: frame at 1s, jpg, auto quality, 720w.
+ */
+export function posterUrlFromPublicId(publicId: string, baseUrl: string): string {
+  return `${baseUrl}/so_1,f_jpg,q_auto,w_720/${publicId}.jpg`;
+}
+
+/** =========================
+ *  High-level helpers for components
+ *  ========================= */
+
+export type VideoUrls = {
+  hls: string;
+  mp4: string;
+  poster: string;
+};
+
+/**
+ * Given a raw Cloudinary video URL, generate optimized HLS, MP4, and poster URLs.
+ * Returns null if the URL is not a Cloudinary video URL.
+ */
+export function getOptimizedVideoUrls(rawUrl: string): VideoUrls | null {
+  if (!rawUrl.includes('cloudinary.com') || !rawUrl.includes('/video/')) {
+    return null;
+  }
+
+  const publicId = cloudinaryPublicIdFromUrl(rawUrl);
+  const baseUrl = cloudinaryBaseUrl(rawUrl);
+  if (!publicId || !baseUrl) return null;
+
+  return {
+    hls: hlsUrlFromPublicId(publicId, baseUrl),
+    mp4: mp4UrlFromPublicId(publicId, baseUrl),
+    poster: posterUrlFromPublicId(publicId, baseUrl),
+  };
+}
+
+/**
+ * Normalize a Cloudinary video URL to an optimized MP4 (for expo-av source).
+ * Used by SmartVideoPlayer as the playback source.
+ */
 export function normalizeCloudinaryVideoUrl(url?: string | null): string | null {
   if (!url) return null;
-  
+
   let normalized = url;
-  
-  // Ensure HTTPS
   if (normalized.startsWith('http://')) {
     normalized = normalized.replace('http://', 'https://');
   }
-  
-  // Non-Cloudinary URLs pass through
+
   if (!normalized.includes('cloudinary.com') || !normalized.includes('/video/')) {
     return normalized;
   }
-  
-  // Already optimized with our fast transforms — skip
-  if (normalized.includes(FAST_VIDEO_TRANSFORMS)) {
-    return normalized;
-  }
-  
-  // Strip any existing transformations and rebuild with fast delivery params
+
   const publicId = cloudinaryPublicIdFromUrl(normalized);
-  if (publicId) {
-    try {
-      const u = new URL(normalized);
-      const baseParts = u.pathname.split('/').filter(Boolean);
-      const cloudName = baseParts[0];
-      const base = `${u.protocol}//${u.host}/${cloudName}/video/upload`;
-      return `${base}/${FAST_VIDEO_TRANSFORMS}/${publicId}.mp4`;
-    } catch {
-      // Fall through to simple insertion below
-    }
+  const baseUrl = cloudinaryBaseUrl(normalized);
+  if (publicId && baseUrl) {
+    return mp4UrlFromPublicId(publicId, baseUrl);
   }
-  
-  // Fallback: simple insertion after /upload/
-  if (normalized.includes('/video/upload/')) {
-    normalized = normalized.replace(
-      '/video/upload/',
-      `/video/upload/${FAST_VIDEO_TRANSFORMS}/`
-    );
-  }
-  
+
   return normalized;
+}
+
+/**
+ * Generate a poster/thumbnail URL from a video URL.
+ */
+export function cloudinaryThumbnailUrlFromVideoUrl(videoUrl: string): string {
+  const publicId = cloudinaryPublicIdFromUrl(videoUrl);
+  const baseUrl = cloudinaryBaseUrl(videoUrl);
+  if (publicId && baseUrl) {
+    return posterUrlFromPublicId(publicId, baseUrl);
+  }
+  return videoUrl;
 }
 
 /** =========================
  *  Feed preloading utilities
  *  ========================= */
-
-/**
- * Warm a URL by fetching it (DNS/TLS/CDN warm-up).
- * Best-effort, non-blocking.
- */
-async function warmUrl(url: string, timeoutMs = 4000): Promise<void> {
-  const controller = new AbortController();
-  const t = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    await fetch(url, { 
-      method: "GET", 
-      signal: controller.signal, 
-      headers: { "Cache-Control": "no-cache" } 
-    });
-  } catch {
-    // ignore; warming is best-effort
-  } finally {
-    clearTimeout(t);
-  }
-}
 
 export type PreloadableItem = {
   id: string;
@@ -222,63 +190,59 @@ export type PreloadableItem = {
 };
 
 /**
- * Preload next items in a feed for smoother playback.
- * - Prefetches thumbnails via Image.prefetch
- * - Warms HLS manifests (light fetch, no heavy buffering)
+ * Preload the NEXT 1 item in the feed for smooth playback.
+ * - Prefetches poster image
+ * - Warms the MP4 URL (DNS/TLS/CDN)
  */
 export async function preloadNextItems(opts: {
   items: PreloadableItem[];
   startIndex: number;
-  maxAhead?: number; // default 3
-  useHls?: boolean;
-  hlsProfile?: string;
+  maxAhead?: number;
 }): Promise<void> {
-  const { 
-    items, 
-    startIndex, 
-    maxAhead = 3, 
-    useHls = false, 
-    hlsProfile = "hd" 
-  } = opts;
+  const { items, startIndex, maxAhead = 1 } = opts;
 
   const end = Math.min(items.length - 1, startIndex + maxAhead);
   const slice = items.slice(startIndex + 1, end + 1);
-
   if (slice.length === 0) return;
 
-  // 1) Prefetch thumbnails (cheap & high ROI)
-  const thumbUrls = slice.map((it) => 
+  // Prefetch posters
+  const posterUrls = slice.map((it) =>
     it.thumbnail_url || cloudinaryThumbnailUrlFromVideoUrl(it.video_url)
   );
-  await Promise.allSettled(thumbUrls.map((u) => Image.prefetch(u)));
+  await Promise.allSettled(posterUrls.map((u) => Image.prefetch(u)));
 
-  // 2) Warm video URLs
-  if (useHls) {
-    const hlsUrls = slice.map((it) => cloudinaryHlsUrlFromVideoUrl(it.video_url, hlsProfile));
-    await Promise.allSettled(hlsUrls.map((u) => warmUrl(u)));
-  } else {
-    // Warm optimized mp4 URLs
-    const videoUrls = slice.map((it) => cloudinaryOptimizedVideoUrl(it.video_url));
-    await Promise.allSettled(videoUrls.map((u) => warmUrl(u)));
-  }
+  // Warm MP4 URLs (light HEAD request for DNS/TLS)
+  await Promise.allSettled(
+    slice.map((it) => {
+      const urls = getOptimizedVideoUrls(it.video_url);
+      const mp4Url = urls?.mp4 || it.video_url;
+      return warmUrl(mp4Url);
+    })
+  );
 }
 
 /**
- * Prefetch a single thumbnail image.
- */
-export async function prefetchThumbnail(videoUrl: string, existingThumbnail?: string | null): Promise<boolean> {
-  const thumbnailUrl = existingThumbnail || cloudinaryThumbnailUrlFromVideoUrl(videoUrl);
-  try {
-    return await Image.prefetch(thumbnailUrl);
-  } catch {
-    return false;
-  }
-}
-
-/**
- * Batch prefetch multiple thumbnails.
+ * Batch prefetch poster thumbnails.
  */
 export async function prefetchThumbnails(items: PreloadableItem[]): Promise<void> {
   const urls = items.map(it => it.thumbnail_url || cloudinaryThumbnailUrlFromVideoUrl(it.video_url));
   await Promise.allSettled(urls.map(u => Image.prefetch(u)));
+}
+
+/**
+ * Warm a URL (DNS/TLS/CDN warm-up). Best-effort, non-blocking.
+ */
+async function warmUrl(url: string, timeoutMs = 4000): Promise<void> {
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    await fetch(url, {
+      method: "HEAD",
+      signal: controller.signal,
+    });
+  } catch {
+    // ignore; warming is best-effort
+  } finally {
+    clearTimeout(t);
+  }
 }
