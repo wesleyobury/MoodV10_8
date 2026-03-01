@@ -77,10 +77,13 @@ const SmartVideoPlayer = memo(({ uri, coverUrl, isActive, postIsInCenter }: Smar
   
   // Generate optimized URLs from public_id
   const optimizedUrls = getOptimizedVideoUrls(uri);
-  // Primary: HLS for adaptive streaming, fallback: optimized MP4
-  const videoSource = optimizedUrls?.mp4 || normalizeCloudinaryVideoUrl(uri) || uri;
-  // Poster image generated from video at 1s mark
+  const hlsSource = optimizedUrls?.hls || null;
+  const mp4Source = optimizedUrls?.mp4 || normalizeCloudinaryVideoUrl(uri) || uri;
   const generatedPoster = optimizedUrls?.poster || null;
+  
+  // HLS primary on iOS, MP4 fallback on error or non-Cloudinary
+  const [useHls, setUseHls] = useState(Platform.OS === 'ios' && !!hlsSource);
+  const videoSource = useHls && hlsSource ? hlsSource : mp4Source;
   
   // Timeout and retry state
   const [retryCount, setRetryCount] = useState(0);
