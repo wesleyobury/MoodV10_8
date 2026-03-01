@@ -46,27 +46,37 @@ const AddCustomExerciseModal: React.FC<AddCustomExerciseModalProps> = ({
   const [reps, setReps] = useState('');
   const [rest, setRest] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  
+  // Track images assigned this session to prevent duplicates even before cart state updates
+  const assignedImagesRef = useRef<string[]>([]);
 
   // Get next available image that hasn't been used yet
   const getNextAvailableImage = (): string => {
-    // Combine cart items and existing custom workouts to check used images
+    // Combine cart items, existing custom workouts, and images assigned this session
     const allItems = [...cartItems, ...existingCustomWorkouts];
     
-    // Get all images currently used by custom workouts
-    const usedImages = allItems
-      .filter(item => item.id?.startsWith('custom-') || item.workoutType === 'Custom')
-      .map(item => item.imageUrl)
-      .filter(Boolean);
+    // Get all images currently used by custom workouts + assigned this session
+    const usedImages = new Set([
+      ...assignedImagesRef.current,
+      ...allItems
+        .filter(item => item.id?.startsWith('custom-') || item.workoutType === 'Custom')
+        .map(item => item.imageUrl)
+        .filter(Boolean),
+    ]);
     
     // Find first unused image from our 5 images
     for (const img of CUSTOM_WORKOUT_IMAGES) {
-      if (!usedImages.includes(img)) {
+      if (!usedImages.has(img)) {
+        assignedImagesRef.current.push(img);
         return img;
       }
     }
     
-    // If all 5 are used, pick a random one
-    return CUSTOM_WORKOUT_IMAGES[Math.floor(Math.random() * CUSTOM_WORKOUT_IMAGES.length)];
+    // All 5 used — cycle using total count to avoid same image twice in a row
+    const idx = usedImages.size % CUSTOM_WORKOUT_IMAGES.length;
+    const chosen = CUSTOM_WORKOUT_IMAGES[idx];
+    assignedImagesRef.current.push(chosen);
+    return chosen;
   };
 
   const resetForm = () => {
