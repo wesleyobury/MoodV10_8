@@ -40,9 +40,9 @@ const { width } = Dimensions.get('window');
 
 // External URLs for legal pages
 const EXTERNAL_URLS = {
-  termsOfService: 'https://sites.google.com/d/1IPxI-2TCXeIgIKQKjxcRcoUJNHNBjXHD/p/17nmyUORjDmp4upUwI8cMvfIRkuX_0oCv/edit',
-  privacyPolicy: 'https://sites.google.com/d/1IPxI-2TCXeIgIKQKjxcRcoUJNHNBjXHD/p/11e7szlqI_qIfmgCEeE8yOhX5lJrAHwYb/edit',
-  support: 'https://sites.google.com/d/1IPxI-2TCXeIgIKQKjxcRcoUJNHNBjXHD/p/1XhjibxEnt0V15xx32MICmpK3BnO4cNFh/edit',
+  termsOfService: 'https://www.officialmood.app/terms-of-service',
+  privacyPolicy: 'https://www.officialmood.app/privacy-policy',
+  support: 'https://www.officialmood.app/support',
 };
 
 // Mapping of featured workout names to their IDs
