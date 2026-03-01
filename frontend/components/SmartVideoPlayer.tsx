@@ -385,6 +385,13 @@ useEffect(() => {
           onReadyForDisplay={handleVideoReadyForDisplay}
           onError={(error) => {
             console.error('VIDEO LOAD ERROR:', videoSource, error);
+            // If HLS failed, fall back to MP4 before counting retries
+            if (useHls) {
+              console.log('HLS failed, falling back to MP4:', mp4Source);
+              setUseHls(false);
+              setVideoKey(prev => prev + 1);
+              return;
+            }
             if (retryCount < MAX_RETRIES) {
               if (videoRef.current) {
                 videoRef.current.unloadAsync().catch(() => {});
