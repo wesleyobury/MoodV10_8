@@ -183,6 +183,9 @@ export function cloudinaryThumbnailUrlFromVideoUrl(videoUrl: string): string {
  *  Feed preloading utilities
  *  ========================= */
 
+// In-memory dedup: never preload the same public_id twice per session
+const preloadedIds = new Set<string>();
+
 export type PreloadableItem = {
   id: string;
   video_url: string;
@@ -191,8 +194,9 @@ export type PreloadableItem = {
 
 /**
  * Preload the NEXT 1 item in the feed for smooth playback.
- * - Prefetches poster image
- * - Warms the MP4 URL (DNS/TLS/CDN)
+ * - Prefetches poster image (most visible impact)
+ * - Prefetches HLS manifest (small ~2KB file, warms CDN + prepares adaptive stream)
+ * - Deduplicates by public_id per session
  */
 export async function preloadNextItems(opts: {
   items: PreloadableItem[];
@@ -205,20 +209,29 @@ export async function preloadNextItems(opts: {
   const slice = items.slice(startIndex + 1, end + 1);
   if (slice.length === 0) return;
 
-  // Prefetch posters
-  const posterUrls = slice.map((it) =>
-    it.thumbnail_url || cloudinaryThumbnailUrlFromVideoUrl(it.video_url)
-  );
-  await Promise.allSettled(posterUrls.map((u) => Image.prefetch(u)));
+  const tasks: Promise<void>[] = [];
 
-  // Warm MP4 URLs (light HEAD request for DNS/TLS)
-  await Promise.allSettled(
-    slice.map((it) => {
-      const urls = getOptimizedVideoUrls(it.video_url);
-      const mp4Url = urls?.mp4 || it.video_url;
-      return warmUrl(mp4Url);
-    })
-  );
+  for (const item of slice) {
+    const optimized = getOptimizedVideoUrls(item.video_url);
+    const publicId = cloudinaryPublicIdFromUrl(item.video_url);
+    const dedupKey = publicId || item.id;
+
+    if (preloadedIds.has(dedupKey)) continue;
+    preloadedIds.add(dedupKey);
+
+    // Prefetch poster image
+    const posterUrl = item.thumbnail_url || optimized?.poster || cloudinaryThumbnailUrlFromVideoUrl(item.video_url);
+    if (posterUrl) {
+      tasks.push(Image.prefetch(posterUrl).catch(() => {}));
+    }
+
+    // Prefetch HLS manifest (small file, warms CDN)
+    if (optimized?.hls) {
+      tasks.push(prefetchManifest(optimized.hls));
+    }
+  }
+
+  await Promise.allSettled(tasks);
 }
 
 /**
@@ -230,18 +243,16 @@ export async function prefetchThumbnails(items: PreloadableItem[]): Promise<void
 }
 
 /**
- * Warm a URL (DNS/TLS/CDN warm-up). Best-effort, non-blocking.
+ * Prefetch an HLS manifest (tiny ~2KB text file).
+ * Warms the CDN edge and prepares the adaptive stream index.
  */
-async function warmUrl(url: string, timeoutMs = 4000): Promise<void> {
+async function prefetchManifest(manifestUrl: string, timeoutMs = 4000): Promise<void> {
   const controller = new AbortController();
   const t = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    await fetch(url, {
-      method: "HEAD",
-      signal: controller.signal,
-    });
+    await fetch(manifestUrl, { signal: controller.signal });
   } catch {
-    // ignore; warming is best-effort
+    // best-effort
   } finally {
     clearTimeout(t);
   }
