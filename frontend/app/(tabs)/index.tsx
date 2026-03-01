@@ -130,18 +130,11 @@ const AnimatedStat = ({
         </Text>
       </View>
       
-      {/* Soft spotlight glow underneath */}
-      <View style={styles.spotlightContainer}>
-        <LinearGradient
-          colors={isStreak 
-            ? ['rgba(255,200,0,0.45)', 'rgba(255,180,0,0.15)', 'rgba(255,150,0,0.0)']
-            : ['rgba(255,255,255,0.25)', 'rgba(255,255,255,0.08)', 'rgba(255,255,255,0.0)']
-          }
-          style={styles.spotlightGlow}
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 1 }}
-        />
-      </View>
+      {/* Thin line beneath */}
+      <View style={[
+        styles.statLine,
+        isStreak && styles.statLineStreak
+      ]} />
     </View>
   );
 };
