@@ -981,10 +981,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   transparentBrandText: {
-    fontSize: 10,
+    fontSize: 14,
     color: '#FFD700',
     fontWeight: '700',
-    letterSpacing: 3,
+    letterSpacing: 4,
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 3,
