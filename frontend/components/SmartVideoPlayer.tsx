@@ -51,18 +51,6 @@ const configureAudio = async () => {
   }
 };
 
-// Helper to get Cloudinary thumbnail URL from video URL
-const getCloudinaryThumbnail = (videoUrl: string): string | null => {
-  if (videoUrl.includes('cloudinary.com') && videoUrl.includes('/video/')) {
-    const urlParts = videoUrl.split('/upload/');
-    if (urlParts.length === 2) {
-      let thumbnailPath = urlParts[1].replace(/\.(mp4|mov|avi|webm|mkv|m4v)$/i, '.jpg');
-      return `${urlParts[0]}/upload/so_0,f_jpg,q_auto,w_800/${thumbnailPath}`;
-    }
-  }
-  return null;
-};
-
 // Cache for generated thumbnails
 const thumbnailCache: { [key: string]: string } = {};
 
@@ -70,7 +58,7 @@ export interface SmartVideoPlayerProps {
   uri: string;
   coverUrl?: string | null;
   isActive: boolean;
-  postIsInCenter: boolean; // Renamed from isPostInCenter to avoid shadowing
+  postIsInCenter: boolean;
 }
 
 const SmartVideoPlayer = memo(({ uri, coverUrl, isActive, postIsInCenter }: SmartVideoPlayerProps) => {
@@ -85,11 +73,14 @@ const SmartVideoPlayer = memo(({ uri, coverUrl, isActive, postIsInCenter }: Smar
   const [isSeeking, setIsSeeking] = useState(false);
   const [audioConfigured, setAudioConfigured] = useState(false);
   
-  // Internal state - renamed to avoid shadowing prop
   const [isInCenter, setIsInCenter] = useState(postIsInCenter);
   
-  // Normalize video URL for iOS compatibility
-  const normalizedUri = normalizeCloudinaryVideoUrl(uri) || uri;
+  // Generate optimized URLs from public_id
+  const optimizedUrls = getOptimizedVideoUrls(uri);
+  // Primary: HLS for adaptive streaming, fallback: optimized MP4
+  const videoSource = optimizedUrls?.mp4 || normalizeCloudinaryVideoUrl(uri) || uri;
+  // Poster image generated from video at 1s mark
+  const generatedPoster = optimizedUrls?.poster || null;
   
   // Timeout and retry state
   const [retryCount, setRetryCount] = useState(0);
@@ -103,45 +94,45 @@ const SmartVideoPlayer = memo(({ uri, coverUrl, isActive, postIsInCenter }: Smar
   const [thumbnailLoading, setThumbnailLoading] = useState(true);
   const [thumbnailError, setThumbnailError] = useState(false);
 
-  // Sync internal state with prop
   useEffect(() => {
     setIsInCenter(postIsInCenter);
   }, [postIsInCenter]);
 
-  // Generate or load thumbnail on mount
+  // Generate or load thumbnail on mount — use poster from public_id
   const loadThumbnail = useCallback(async () => {
-  setThumbnailLoading(true);
-  setThumbnailError(false);
+    setThumbnailLoading(true);
+    setThumbnailError(false);
 
-  try {
-    if (coverUrl) {
-      setThumbnailUri(coverUrl);
+    try {
+      if (coverUrl) {
+        setThumbnailUri(coverUrl);
+        setThumbnailLoading(false);
+        return;
+      }
+
+      if (thumbnailCache[uri]) {
+        setThumbnailUri(thumbnailCache[uri]);
+        setThumbnailLoading(false);
+        return;
+      }
+
+      // Use the poster URL generated from public_id (so_1,f_jpg,q_auto,w_720)
+      const poster = generatedPoster || cloudinaryThumbnailUrlFromVideoUrl(uri);
+      if (poster) {
+        setThumbnailUri(poster);
+        thumbnailCache[uri] = poster;
+        setThumbnailLoading(false);
+        return;
+      }
+
+      setThumbnailError(true);
+    } catch (error) {
+      console.error('Error loading thumbnail:', error);
+      setThumbnailError(true);
+    } finally {
       setThumbnailLoading(false);
-      return;
     }
-
-    if (thumbnailCache[uri]) {
-      setThumbnailUri(thumbnailCache[uri]);
-      setThumbnailLoading(false);
-      return;
-    }
-
-    const cloudinaryThumb = getCloudinaryThumbnail(uri);
-    if (cloudinaryThumb) {
-      setThumbnailUri(cloudinaryThumb);
-      thumbnailCache[uri] = cloudinaryThumb;
-      setThumbnailLoading(false);
-      return;
-    }
-
-    setThumbnailError(true);
-  } catch (error) {
-    console.error('Error loading thumbnail:', error);
-    setThumbnailError(true);
-  } finally {
-    setThumbnailLoading(false);
-  }
-}, [uri, coverUrl]);
+  }, [uri, coverUrl, generatedPoster]);
 useEffect(() => {
   loadThumbnail();
 }, [loadThumbnail]);
