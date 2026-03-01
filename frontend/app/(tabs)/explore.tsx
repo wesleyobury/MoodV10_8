@@ -468,7 +468,24 @@ export default function Explore() {
           post_preview: n.target_thumbnail_url || n.metadata?.post_thumbnail || n.image_url || null,
           comment_text: n.body,
           created_at: n.created_at,
-          message: n.body || n.title || n.message || '',
+          // Strip actor name/username from body to avoid duplication with @username prefix
+          message: (() => {
+            const raw = n.body || n.title || '';
+            const actorName = n.actor?.name || '';
+            const actorUsername = n.actor?.username || '';
+            let cleaned = raw;
+            // Remove leading "Name " or "username " from body
+            if (actorName && cleaned.startsWith(actorName + ' ')) {
+              cleaned = cleaned.slice(actorName.length + 1);
+            } else if (actorName && cleaned.startsWith(actorName + ': ')) {
+              cleaned = cleaned.slice(actorName.length + 2);
+            } else if (actorUsername && cleaned.startsWith(actorUsername + ' ')) {
+              cleaned = cleaned.slice(actorUsername.length + 1);
+            } else if (actorUsername && cleaned.startsWith('@' + actorUsername + ' ')) {
+              cleaned = cleaned.slice(actorUsername.length + 2);
+            }
+            return cleaned;
+          })(),
         }));
         
         console.log(`🔔 NOTIF-DIAG: mapped notifications count = ${mappedNotifications.length}`);
