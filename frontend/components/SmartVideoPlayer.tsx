@@ -372,7 +372,7 @@ useEffect(() => {
         <Video
           key={videoKey}
           ref={videoRef}
-          source={{ uri: normalizedUri }}
+          source={{ uri: videoSource }}
           style={styles.video}
           resizeMode={ResizeMode.COVER}
           shouldPlay={isActive}
