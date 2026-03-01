@@ -1528,20 +1528,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 4,
   },
-  // Spotlight glow container
-  spotlightContainer: {
-    width: 80,
-    height: 24,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    overflow: 'visible',
+  // Thin line beneath stat
+  statLine: {
+    width: 40,
+    height: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    marginTop: 2,
   },
-  // Soft diffused spotlight glow - like the reference image
-  spotlightGlow: {
-    width: 70,
-    height: 20,
-    borderRadius: 35,
-    transform: [{ scaleX: 1.3 }, { scaleY: 0.6 }],
+  statLineStreak: {
+    backgroundColor: 'rgba(255, 215, 0, 0.7)',
   },
   // New top progress section styles
   // Floating Stats - NO pill, NO border, just text + spotlight glow
