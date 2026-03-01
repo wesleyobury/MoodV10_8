@@ -25,7 +25,11 @@ import {
 import { Image } from 'expo-image';
 import { Video, ResizeMode, AVPlaybackStatus, Audio } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons';
-import { normalizeCloudinaryVideoUrl } from '../utils/cloudinaryVideo';
+import { 
+  normalizeCloudinaryVideoUrl, 
+  getOptimizedVideoUrls,
+  cloudinaryThumbnailUrlFromVideoUrl,
+} from '../utils/cloudinaryVideo';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const FEED_HEIGHT = Math.round(SCREEN_WIDTH * 5 / 4); // 4:5 ratio (Instagram feed standard)
