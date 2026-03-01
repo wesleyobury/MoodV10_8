@@ -454,8 +454,10 @@ export default function Explore() {
           console.log('🔔 NOTIF-DIAG: raw sample[0]:', JSON.stringify(rawNotifications[0]).substring(0, 300));
         }
         
-        // Map backend notification format to frontend format
-        const mappedNotifications = rawNotifications.map((n: any) => ({
+        // Map backend notification format to frontend format, excluding DMs/messages
+        const mappedNotifications = rawNotifications
+          .filter((n: any) => n.type !== 'message' && n.type !== 'dm' && n.type !== 'chat')
+          .map((n: any) => ({
           id: n.id,
           type: n.type,
           user: {
