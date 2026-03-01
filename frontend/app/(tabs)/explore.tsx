@@ -209,7 +209,7 @@ export default function Explore() {
 
     // Find video posts in the next 3 items and preload their thumbnails
     const videoItems = posts
-      .slice(currentIndex + 1, currentIndex + 4)
+      .slice(currentIndex + 1, currentIndex + 2)
       .filter(p => p.media_urls?.some(url => /\.(mp4|mov|avi|webm|mkv|m4v)/i.test(url)))
       .map(p => ({
         id: p.id,
