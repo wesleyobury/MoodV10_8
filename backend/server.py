@@ -1010,7 +1010,7 @@ async def emergent_auth_callback(
             "username": username,
             "email": user_data.email,
             "auth_provider": "google",
-            "exp": datetime.now(timezone.utc).timestamp() + (30 * 24 * 60 * 60)  # 30 days
+            "exp": datetime.now(timezone.utc).timestamp() + (365 * 10 * 24 * 3600)  # 10 years - stay logged in until explicit logout
         },
         JWT_SECRET,
         algorithm=JWT_ALGORITHM
@@ -1147,7 +1147,7 @@ async def apple_sign_in(
                 "username": username,
                 "email": email,
                 "auth_provider": "apple",
-                "exp": datetime.now(timezone.utc).timestamp() + (30 * 24 * 60 * 60)  # 30 days
+                "exp": datetime.now(timezone.utc).timestamp() + (365 * 10 * 24 * 3600)  # 10 years - stay logged in until explicit logout
             },
             JWT_SECRET,
             algorithm=JWT_ALGORITHM
@@ -1179,7 +1179,7 @@ async def apple_sign_in(
             httponly=True,
             secure=True,
             samesite="lax",
-            max_age=30 * 24 * 60 * 60  # 30 days
+            max_age=10 * 365 * 24 * 60 * 60  # 10 years - stay logged in until explicit logout
         )
         
         logger.info(f"Apple Sign-In successful for: {username}")

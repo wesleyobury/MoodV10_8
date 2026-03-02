@@ -32,6 +32,9 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - P1: Data backfill endpoint (`POST /api/admin/backfill-notification-thumbnails`)
 - P1: Instagram Stories transparent overlay rendering on device
 
+## What's Been Implemented (continued)
+- [2026-03-02] Persistent login: All auth methods (email/password, Google OAuth, Apple Sign-In) now use 10-year token/session expiry. Users stay logged in until explicit sign-out.
+
 ## Backlog
 - P2: Fix unbounded query `.to_list(100000)` in `server.py` (pagination)
 - P2: Video pre-fetching for workout plans (Phase 2)
