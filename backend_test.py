@@ -14,7 +14,7 @@ import sys
 import os
 
 # Configuration
-BACKEND_URL = "https://notification-fix-22.preview.emergentagent.com"
+BACKEND_URL = "https://mood-verify.preview.emergentagent.com"
 API_BASE = f"{BACKEND_URL}/api"
 
 # Test credentials from review request

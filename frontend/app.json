@@ -81,7 +81,7 @@
       "eas": {
         "projectId": "ef2c8520-832c-4806-beb0-80b9db1a6214"
       },
-      "EXPO_PUBLIC_BACKEND_URL": "https://notification-fix-22.preview.emergentagent.com"
+      "EXPO_PUBLIC_BACKEND_URL": "https://mood-verify.preview.emergentagent.com"
     },
     "runtimeVersion": {
       "policy": "appVersion"
