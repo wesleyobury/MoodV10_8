@@ -1,16 +1,17 @@
 /**
  * MOOD Notifications Service
- * Handles push notifications, device token registration, and notification settings
+ * Handles push notifications, device token registration, and notification settings.
+ * initNotifications() runs automatically after login and on app launch when authenticated.
  */
 
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
-import { Platform } from 'react-native';
+import { Platform, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from './apiConfig';
 
-// Configure notification handler
+// Configure notification handler (foreground display)
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -51,9 +52,7 @@ export interface Notification {
   entity_type?: string;
   created_at: string;
   read_at?: string;
-  // Explicit target thumbnail URL for post/workout/media content
   target_thumbnail_url?: string;
-  // Metadata for backward compatibility
   metadata?: {
     post_thumbnail?: string;
     post_preview?: string;
@@ -68,217 +67,224 @@ export interface Notification {
   };
 }
 
-// Storage keys
+// Persisted storage keys
 const PUSH_TOKEN_KEY = '@mood_push_token';
 const NOTIFICATION_PERMISSION_KEY = '@mood_notification_permission';
+// Tracks whether we already prompted the OS dialog (so we never re-request after denial)
+const PERMISSION_REQUESTED_KEY = '@mood_notification_permission_requested';
+
+/** Result returned by initNotifications / getNotificationStatus */
+export type NotifPermission = 'granted' | 'denied' | 'undetermined';
+export interface NotifStatus {
+  permission: NotifPermission;
+  pushToken: string | null;
+  registeredWithBackend: boolean;
+}
+
+// ─── Standalone init function ───────────────────────────────────────────────
+
+/**
+ * Core initialisation — call after login and on every authenticated app launch.
+ *   1. Check OS permission status
+ *   2. If undetermined → request permission
+ *   3. If granted → obtain Expo push token, configure Android channel,
+ *      upsert token to backend, persist locally
+ *   4. If denied → persist that fact; never re-request
+ *
+ * @returns NotifStatus so callers can react (e.g. show "Open Settings" CTA)
+ */
+export async function initNotifications(authToken: string): Promise<NotifStatus> {
+  const result: NotifStatus = { permission: 'undetermined', pushToken: null, registeredWithBackend: false };
+
+  // Non-physical devices can't do push (simulators, web)
+  if (!Device.isDevice) {
+    console.log('🔔 initNotif: Not a physical device, skipping');
+    result.permission = 'denied';
+    return result;
+  }
+
+  try {
+    // 1. Check current OS permission
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    console.log(`🔔 initNotif: OS permission = ${existingStatus}`);
+
+    let finalStatus = existingStatus;
+
+    if (existingStatus === 'granted') {
+      // Already granted — skip prompt
+      finalStatus = 'granted';
+    } else if (existingStatus === 'denied') {
+      // OS says denied — check whether we ever prompted before
+      const alreadyRequested = await AsyncStorage.getItem(PERMISSION_REQUESTED_KEY);
+      if (alreadyRequested === 'true') {
+        // User previously denied — do NOT re-request (on iOS it's a no-op anyway)
+        console.log('🔔 initNotif: Permission previously denied, not re-requesting');
+        await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'denied');
+        result.permission = 'denied';
+        return result;
+      }
+      // First time seeing denied (e.g. fresh install on some Android) — try requesting
+      const { status } = await Notifications.requestPermissionsAsync();
+      await AsyncStorage.setItem(PERMISSION_REQUESTED_KEY, 'true');
+      finalStatus = status;
+      console.log(`🔔 initNotif: Requested permission, got = ${finalStatus}`);
+    } else {
+      // undetermined — request for first time
+      const { status } = await Notifications.requestPermissionsAsync();
+      await AsyncStorage.setItem(PERMISSION_REQUESTED_KEY, 'true');
+      finalStatus = status;
+      console.log(`🔔 initNotif: First-time request, got = ${finalStatus}`);
+    }
+
+    // Persist the decision
+    if (finalStatus !== 'granted') {
+      await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'denied');
+      result.permission = 'denied';
+      return result;
+    }
+
+    await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'granted');
+    result.permission = 'granted';
+
+    // 2. Configure Android notification channel (must happen before getExpoPushTokenAsync)
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'MOOD Notifications',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FFD700',
+      });
+    }
+
+    // 3. Obtain Expo push token
+    const projectId =
+      Constants.expoConfig?.extra?.eas?.projectId ??
+      (Constants as any).easConfig?.projectId;
+    const tokenData = await Notifications.getExpoPushTokenAsync({ projectId });
+    const pushToken = tokenData.data;
+    console.log(`🔔 initNotif: Expo push token = ${pushToken}`);
+
+    // 4. Persist token locally
+    await AsyncStorage.setItem(PUSH_TOKEN_KEY, pushToken);
+    result.pushToken = pushToken;
+
+    // 5. Upsert token to backend for the current user
+    try {
+      const resp = await fetch(`${API_URL}/api/notifications/device-token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          token: pushToken,
+          platform: Platform.OS,
+          device_id: Device.modelId || `${Platform.OS}-unknown`,
+        }),
+      });
+      result.registeredWithBackend = resp.ok;
+      if (resp.ok) {
+        console.log('🔔 initNotif: Token upserted to backend');
+      } else {
+        console.warn(`🔔 initNotif: Backend upsert failed HTTP ${resp.status}`);
+      }
+    } catch (e) {
+      console.warn('🔔 initNotif: Backend upsert network error', e);
+    }
+
+    return result;
+  } catch (error) {
+    console.error('🔔 initNotif: Error', error);
+    return result;
+  }
+}
+
+/**
+ * Read the current notification status from OS + local persistence.
+ * Use this to derive UI state without triggering any permission dialogs.
+ */
+export async function getNotificationStatus(): Promise<NotifStatus> {
+  const result: NotifStatus = { permission: 'undetermined', pushToken: null, registeredWithBackend: false };
+
+  if (!Device.isDevice) {
+    result.permission = 'denied';
+    return result;
+  }
+
+  try {
+    const { status } = await Notifications.getPermissionsAsync();
+    result.permission = status === 'granted' ? 'granted' : status === 'denied' ? 'denied' : 'undetermined';
+
+    const storedToken = await AsyncStorage.getItem(PUSH_TOKEN_KEY);
+    result.pushToken = storedToken;
+    // If we have a stored token and permission is granted, assume registered
+    result.registeredWithBackend = !!(storedToken && status === 'granted');
+  } catch (e) {
+    console.warn('🔔 getNotificationStatus error', e);
+  }
+
+  return result;
+}
+
+/**
+ * Open the OS Settings page for this app (for users who denied notifications).
+ */
+export function openNotificationSettings(): void {
+  Linking.openSettings();
+}
+
+// ─── Singleton service (retains listeners + API helpers) ─────────────────────
 
 class NotificationService {
-  private pushToken: string | null = null;
   private notificationListener: Notifications.Subscription | null = null;
   private responseListener: Notifications.Subscription | null = null;
   private authToken: string | null = null;
+  private listenersSetUp = false;
 
-  /**
-   * Initialize notification service
-   */
-  async initialize(authToken: string): Promise<void> {
-    this.authToken = authToken;
-    
-    // Register for push notifications
-    await this.registerForPushNotifications();
-    
-    // Set up notification listeners
-    this.setupListeners();
-  }
-
-  /**
-   * Set auth token for API calls
-   */
   setAuthToken(token: string): void {
     this.authToken = token;
   }
 
-  /**
-   * Register for push notifications and get token
-   */
-  async registerForPushNotifications(): Promise<string | null> {
-    if (!Device.isDevice) {
-      console.log('Push notifications require a physical device');
-      return null;
-    }
+  /** Set up foreground + tap listeners (idempotent) */
+  setupListeners(): void {
+    if (this.listenersSetUp) return;
+    this.listenersSetUp = true;
 
-    try {
-      // Check existing permission
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      console.log(`🔔 PUSH-DIAG: existing permission status = ${existingStatus}`);
-      let finalStatus = existingStatus;
-
-      // Request permission if not granted
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-        console.log(`🔔 PUSH-DIAG: requested permission, got status = ${finalStatus}`);
-      }
-
-      if (finalStatus !== 'granted') {
-        console.log('🔔 PUSH-DIAG: Push notification permission NOT granted');
-        await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'denied');
-        return null;
-      }
-
-      await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'granted');
-
-      // Get Expo push token
-      const projectId = Constants.expoConfig?.extra?.eas?.projectId;
-      console.log(`🔔 PUSH-DIAG: projectId = ${projectId}`);
-      const tokenData = await Notifications.getExpoPushTokenAsync({
-        projectId,
-      });
-      
-      this.pushToken = tokenData.data;
-      await AsyncStorage.setItem(PUSH_TOKEN_KEY, this.pushToken);
-      console.log(`🔔 PUSH-DIAG: Expo push token = ${this.pushToken}`);
-
-      // Register token with backend
-      if (this.authToken) {
-        const registered = await this.registerDeviceToken(this.pushToken);
-        console.log(`🔔 PUSH-DIAG: backend registration success = ${registered}`);
-      } else {
-        console.log('🔔 PUSH-DIAG: No auth token yet, skipping backend registration');
-      }
-
-      // Configure Android channel
-      if (Platform.OS === 'android') {
-        await Notifications.setNotificationChannelAsync('default', {
-          name: 'MOOD Notifications',
-          importance: Notifications.AndroidImportance.MAX,
-          vibrationPattern: [0, 250, 250, 250],
-          lightColor: '#FFD700',
-        });
-      }
-
-      console.log('📱 Push token registered:', this.pushToken.substring(0, 20) + '...');
-      return this.pushToken;
-    } catch (error) {
-      console.error('🔔 PUSH-DIAG ERROR registering for push notifications:', error);
-      return null;
-    }
-  }
-
-  /**
-   * Register device token with backend
-   */
-  async registerDeviceToken(token: string): Promise<boolean> {
-    if (!this.authToken) {
-      console.log('🔔 PUSH-DIAG: No auth token, skipping device registration');
-      return false;
-    }
-
-    try {
-      console.log(`🔔 PUSH-DIAG: Sending token to backend (platform=${Platform.OS}, token=${token.substring(0, 30)}...)`);
-      const response = await fetch(`${API_URL}/api/notifications/device-token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.authToken}`,
-        },
-        body: JSON.stringify({
-          token,
-          platform: Platform.OS,
-          device_id: Device.modelId,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(`🔔 PUSH-DIAG: Backend confirmed token stored: status=${data.status}, id=${data.id}`);
-        return true;
-      } else {
-        const errText = await response.text();
-        console.error(`🔔 PUSH-DIAG: Failed to register device token: HTTP ${response.status}, body=${errText}`);
-        return false;
-      }
-    } catch (error) {
-      console.error('🔔 PUSH-DIAG ERROR registering device token:', error);
-      return false;
-    }
-  }
-
-  /**
-   * Unregister device token (logout)
-   */
-  async unregisterDeviceToken(): Promise<void> {
-    if (!this.pushToken || !this.authToken) return;
-
-    try {
-      await fetch(`${API_URL}/api/notifications/device-token?token=${this.pushToken}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${this.authToken}`,
-        },
-      });
-      
-      await AsyncStorage.removeItem(PUSH_TOKEN_KEY);
-      this.pushToken = null;
-      console.log('📱 Device token unregistered');
-    } catch (error) {
-      console.error('Error unregistering device token:', error);
-    }
-  }
-
-  /**
-   * Set up notification listeners
-   */
-  private setupListeners(): void {
-    // Listener for notifications received while app is foregrounded
     this.notificationListener = Notifications.addNotificationReceivedListener(
       (notification) => {
         console.log('🔔 Notification received:', notification.request.content.title);
       }
     );
 
-    // Listener for user tapping on notification
     this.responseListener = Notifications.addNotificationResponseReceivedListener(
       (response) => {
         const data = response.notification.request.content.data as any;
         console.log('📲 Notification tapped:', data);
-        
-        // Handle deep links based on notification type
         if (data?.type === 'featured_workout' && data?.deep_link) {
-          // Featured workout: open to cart with workout loaded
           this.handleDeepLink(data.deep_link as string);
         } else {
-          // All other types (like, comment, mention, nudge): open to home screen
           this.handleDeepLink('mood://home');
         }
       }
     );
   }
 
-  /**
-   * Handle deep link navigation
-   */
   private handleDeepLink(deepLink: string): void {
-    console.log('🔗 Navigating to:', deepLink);
-    
-    // Import Linking to open the deep link
-    import('expo-linking').then(({ default: Linking }) => {
-      Linking.openURL(deepLink).catch(err => {
-        console.error('Error opening deep link:', err);
-      });
+    Linking.openURL(deepLink).catch((err) => {
+      console.error('Error opening deep link:', err);
     });
   }
 
-  /**
-   * Clean up listeners
-   */
   cleanup(): void {
     if (this.notificationListener) {
       Notifications.removeNotificationSubscription(this.notificationListener);
+      this.notificationListener = null;
     }
     if (this.responseListener) {
       Notifications.removeNotificationSubscription(this.responseListener);
+      this.responseListener = null;
     }
+    this.listenersSetUp = false;
   }
 
   // =====================

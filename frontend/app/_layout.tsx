@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { CartProvider } from '../contexts/CartContext';
 import { BadgeProvider } from '../contexts/BadgeContext';
 import { Analytics } from '../utils/analytics';
+import { initNotifications, notificationService } from '../utils/notifications';
 import FloatingCart from '../components/FloatingCart';
 import ErrorBoundary from '../components/ErrorBoundary';
 import AppBootstrap from '../components/AppBootstrap';
@@ -44,6 +45,53 @@ function AppStateTracker() {
   return null;
 }
 
+/**
+ * Runs initNotifications() automatically when a user is authenticated.
+ * Fires once after login and once on every authenticated cold-start.
+ * Also re-runs when app returns to foreground (in case user toggled
+ * permissions in OS Settings).
+ */
+function NotificationInitializer() {
+  const { token, isGuest } = useAuth();
+  const initDoneForToken = useRef<string | null>(null);
+
+  // Auto-init on first auth or token change (login / app restore)
+  useEffect(() => {
+    if (!token || isGuest) return;
+    if (initDoneForToken.current === token) return; // already ran for this token
+    initDoneForToken.current = token;
+
+    // Fire-and-forget; don't block rendering
+    (async () => {
+      console.log('🔔 NotificationInitializer: running initNotifications');
+      notificationService.setAuthToken(token);
+      notificationService.setupListeners();
+      await initNotifications(token);
+    })();
+  }, [token, isGuest]);
+
+  // Re-check when app returns from background (user may have changed OS perm)
+  useEffect(() => {
+    if (!token || isGuest) return;
+
+    const subscription = AppState.addEventListener('change', (next: AppStateStatus) => {
+      if (next === 'active' && token) {
+        // Re-run init to pick up any permission changes
+        initNotifications(token).catch(() => {});
+      }
+    });
+
+    return () => subscription.remove();
+  }, [token, isGuest]);
+
+  // Cleanup listeners on unmount
+  useEffect(() => {
+    return () => notificationService.cleanup();
+  }, []);
+
+  return null;
+}
+
 // Navigation stack configuration
 function NavigationStack() {
   return (
@@ -71,6 +119,7 @@ function AppContent() {
   return (
     <>
       <AppStateTracker />
+      <NotificationInitializer />
       <NavigationStack />
       <FloatingCart />
     </>

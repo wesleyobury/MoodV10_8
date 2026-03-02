@@ -22,6 +22,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import { useAuth } from '../contexts/AuthContext';
 import { isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
+import { getNotificationStatus, openNotificationSettings, initNotifications, type NotifStatus } from '../utils/notifications';
 import BackButton from '../components/BackButton';
 
 import { API_URL } from '../utils/apiConfig';
@@ -55,10 +56,9 @@ export default function Settings() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
 
-  // Push notification debug state
-  const [pushToken, setPushToken] = useState<string | null>(null);
-  const [pushRegistering, setPushRegistering] = useState(false);
-  const [pushStatus, setPushStatus] = useState<string>('unknown');
+  // Push notification state — derived from OS permission + persisted token
+  const [notifStatus, setNotifStatus] = useState<NotifStatus>({ permission: 'undetermined', pushToken: null, registeredWithBackend: false });
+  const [pushRefreshing, setPushRefreshing] = useState(false);
 
   // Admin debug info (temporary)
   const isAdmin = user?.username === 'officialmoodapp';
@@ -84,21 +84,9 @@ export default function Settings() {
     checkDebug();
   }, [isAdmin]);
 
-  // Load existing push token from storage on mount
+  // Load notification status from OS + persisted storage on mount
   useEffect(() => {
-    const loadToken = async () => {
-      try {
-        const AsyncStorage = require('@react-native-async-storage/async-storage').default;
-        const storedToken = await AsyncStorage.getItem('mood_push_token');
-        if (storedToken) {
-          setPushToken(storedToken);
-          setPushStatus('registered');
-        }
-        const permStatus = await AsyncStorage.getItem('mood_notification_permission');
-        if (permStatus === 'denied') setPushStatus('denied');
-      } catch {}
-    };
-    loadToken();
+    getNotificationStatus().then(setNotifStatus);
   }, []);
 
   // Load analytics opt-out preference on mount
@@ -573,94 +561,110 @@ export default function Settings() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Push Notifications</Text>
           
-          {/* Register / Enable button */}
-          <TouchableOpacity
-            style={styles.settingsItem}
-            data-testid="push-register-btn"
-            onPress={async () => {
-              if (!token) {
-                Alert.alert('Not Logged In', 'Please log in first to register for notifications.');
-                return;
-              }
-              setPushRegistering(true);
-              try {
-                const { notificationService } = require('../utils/notifications');
-                notificationService.setAuthToken(token);
-                const newToken = await notificationService.registerForPushNotifications();
-                if (newToken) {
-                  setPushToken(newToken);
-                  setPushStatus('registered');
-                  Alert.alert('Success', 'Push notifications enabled and token registered to your account.');
-                } else {
-                  setPushStatus('denied');
-                  Alert.alert('Permission Denied', 'Please enable notifications in your device Settings.');
-                }
-              } catch (err: any) {
-                Alert.alert('Error', err?.message || 'Failed to register');
-              } finally {
-                setPushRegistering(false);
-              }
-            }}
-          >
-            <View style={styles.settingsItemLeft}>
-              <Ionicons 
-                name={pushStatus === 'registered' ? 'notifications' : 'notifications-outline'} 
-                size={20} 
-                color={pushStatus === 'registered' ? '#4CAF50' : '#FFD700'} 
-              />
-              <View>
-                <Text style={styles.settingsItemText}>
-                  {pushRegistering ? 'Registering...' : pushStatus === 'registered' ? 'Re-register Token' : 'Enable Notifications'}
-                </Text>
-                <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: pushStatus === 'registered' ? '#4CAF50' : '#888' }]}>
-                  {pushStatus === 'registered' ? 'Token registered to your account' : pushStatus === 'denied' ? 'Permission denied — check device Settings' : 'Tap to request permission & register'}
-                </Text>
+          {/* Status row — derived from OS permission + stored token */}
+          {notifStatus.permission === 'granted' && notifStatus.pushToken ? (
+            // Registered & active
+            <>
+              <View style={styles.settingsItem}>
+                <View style={styles.settingsItemLeft}>
+                  <Ionicons name="notifications" size={20} color="#4CAF50" />
+                  <View>
+                    <Text style={styles.settingsItemText}>Notifications Active</Text>
+                    <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#4CAF50' }]}>
+                      Token registered to your account
+                    </Text>
+                  </View>
+                </View>
+                <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
               </View>
-            </View>
-            {pushRegistering ? (
-              <ActivityIndicator size="small" color="#FFD700" />
-            ) : (
-              <Ionicons name="chevron-forward" size={18} color="#666" />
-            )}
-          </TouchableOpacity>
 
-          {/* Token display */}
-          {pushToken && (
-            <View style={styles.settingsItem}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.settingsItemText}>Expo Push Token</Text>
-                <Text 
-                  selectable 
-                  style={{ marginTop: 6, fontSize: 11, color: '#aaa', fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' }}
-                  data-testid="push-token-display"
-                >
-                  {pushToken}
-                </Text>
+              {/* Re-register (e.g. after reinstall) */}
+              <TouchableOpacity
+                style={styles.settingsItem}
+                data-testid="push-reregister-btn"
+                onPress={async () => {
+                  if (!token) return;
+                  setPushRefreshing(true);
+                  const s = await initNotifications(token);
+                  setNotifStatus(s);
+                  setPushRefreshing(false);
+                  Alert.alert('Refreshed', s.registeredWithBackend ? 'Token re-registered with backend.' : 'Could not reach backend.');
+                }}
+              >
+                <View style={styles.settingsItemLeft}>
+                  <Ionicons name="refresh-outline" size={20} color="#FFD700" />
+                  <Text style={styles.settingsItemText}>{pushRefreshing ? 'Refreshing...' : 'Re-register Token'}</Text>
+                </View>
+                {pushRefreshing ? <ActivityIndicator size="small" color="#FFD700" /> : <Ionicons name="chevron-forward" size={18} color="#666" />}
+              </TouchableOpacity>
+
+              {/* Token display */}
+              <View style={styles.settingsItem}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.settingsItemText}>Expo Push Token</Text>
+                  <Text 
+                    selectable 
+                    style={{ marginTop: 6, fontSize: 11, color: '#aaa', fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' }}
+                    data-testid="push-token-display"
+                  >
+                    {notifStatus.pushToken}
+                  </Text>
+                </View>
               </View>
-            </View>
-          )}
 
-          {/* Copy token */}
-          {pushToken && (
+              {/* Copy token */}
+              <TouchableOpacity
+                style={styles.settingsItem}
+                data-testid="push-copy-token-btn"
+                onPress={async () => {
+                  try {
+                    const ClipboardModule = require('expo-clipboard');
+                    await ClipboardModule.setStringAsync(notifStatus.pushToken);
+                  } catch {
+                    // expo-clipboard not available, token is selectable text
+                  }
+                  Alert.alert('Copied', 'Push token copied to clipboard');
+                }}
+              >
+                <View style={styles.settingsItemLeft}>
+                  <Ionicons name="copy-outline" size={20} color="#FFD700" />
+                  <Text style={styles.settingsItemText}>Copy Token</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={18} color="#666" />
+              </TouchableOpacity>
+            </>
+          ) : notifStatus.permission === 'denied' ? (
+            // Denied — "Open Settings" CTA, never re-request
             <TouchableOpacity
               style={styles.settingsItem}
-              data-testid="push-copy-token-btn"
-              onPress={async () => {
-                try {
-                  const ClipboardModule = require('expo-clipboard');
-                  await ClipboardModule.setStringAsync(pushToken);
-                } catch {
-                  // expo-clipboard not available, token is selectable text
-                }
-                Alert.alert('Copied', 'Push token copied to clipboard');
-              }}
+              data-testid="push-open-settings-btn"
+              onPress={() => openNotificationSettings()}
             >
               <View style={styles.settingsItemLeft}>
-                <Ionicons name="copy-outline" size={20} color="#FFD700" />
-                <Text style={styles.settingsItemText}>Copy Token</Text>
+                <Ionicons name="notifications-off-outline" size={20} color="#FF6B6B" />
+                <View>
+                  <Text style={styles.settingsItemText}>Notifications Disabled</Text>
+                  <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#FF6B6B' }]}>
+                    Tap to open Settings and enable notifications
+                  </Text>
+                </View>
               </View>
-              <Ionicons name="chevron-forward" size={18} color="#666" />
+              <Ionicons name="open-outline" size={18} color="#666" />
             </TouchableOpacity>
+          ) : (
+            // Undetermined or loading
+            <View style={styles.settingsItem}>
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="notifications-outline" size={20} color="#FFD700" />
+                <View>
+                  <Text style={styles.settingsItemText}>Notification Status</Text>
+                  <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#888' }]}>
+                    Checking permission...
+                  </Text>
+                </View>
+              </View>
+              <ActivityIndicator size="small" color="#FFD700" />
+            </View>
           )}
 
           {/* Test local notification */}
