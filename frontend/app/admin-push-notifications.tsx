@@ -7,6 +7,7 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -37,6 +38,8 @@ export default function AdminPushNotifications() {
   const [pushType, setPushType] = useState<'featured_workout' | 'featured_suggestion'>('featured_suggestion');
   const [selectedWorkout, setSelectedWorkout] = useState<FeaturedWorkout | null>(null);
   const [customCopy, setCustomCopy] = useState('');
+  const [customTitle, setCustomTitle] = useState('');
+  const [customBody, setCustomBody] = useState('');
   const [sending, setSending] = useState(false);
   
   // Data
@@ -133,7 +136,9 @@ export default function AdminPushNotifications() {
         ? { 
             workout_id: selectedWorkout!.id, 
             workout_name: selectedWorkout!.name,
-            workout_image: selectedWorkout!.image_url 
+            workout_image: selectedWorkout!.image_url,
+            custom_title: customTitle || null,
+            custom_body: customBody || null
           }
         : { custom_copy: customCopy || null };
       
@@ -154,6 +159,8 @@ export default function AdminPushNotifications() {
           [{ text: 'OK', onPress: () => {
             setSelectedWorkout(null);
             setCustomCopy('');
+            setCustomTitle('');
+            setCustomBody('');
             setSelectedCopyIndex(null);
           }}]
         );
@@ -299,6 +306,25 @@ export default function AdminPushNotifications() {
                 ))}
               </View>
             )}
+
+            {/* Custom Title/Body for featured workout push */}
+            <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Custom Push Copy (optional)</Text>
+            <Text style={{ color: '#888', fontSize: 12, marginBottom: 8 }}>Leave blank for random copy from library</Text>
+            <TextInput
+              style={[styles.customCopyInput, { marginBottom: 10 }]}
+              value={customTitle}
+              onChangeText={setCustomTitle}
+              placeholder="Custom title (e.g. workout name)"
+              placeholderTextColor="#666"
+            />
+            <TextInput
+              style={[styles.customCopyInput, { minHeight: 60 }]}
+              value={customBody}
+              onChangeText={setCustomBody}
+              placeholder="Custom body (exact copy for banner)"
+              placeholderTextColor="#666"
+              multiline
+            />
           </View>
         )}
 
@@ -344,12 +370,14 @@ export default function AdminPushNotifications() {
                 />
               </View>
               <Text style={styles.previewTitle}>
-                {pushType === 'featured_workout' ? 'New Featured Workout' : 'MOOD'}
+                {pushType === 'featured_workout' 
+                  ? (customTitle || (selectedWorkout ? selectedWorkout.name : 'New Featured Workout'))
+                  : 'MOOD'}
               </Text>
             </View>
             <Text style={styles.previewBody}>
               {pushType === 'featured_workout' 
-                ? (selectedWorkout ? `"${selectedWorkout.name}" just dropped` : 'Select a workout above')
+                ? (customBody || (selectedWorkout ? `"${selectedWorkout.name}" just dropped` : 'Select a workout above'))
                 : (customCopy || 'Select a message above')}
             </Text>
             <Text style={styles.previewDeepLink}>
@@ -562,6 +590,15 @@ const styles = StyleSheet.create({
   },
   copyItemTextSelected: {
     color: '#FFD700',
+  },
+  customCopyInput: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 10,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    color: '#fff',
+    fontSize: 14,
   },
   previewCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',

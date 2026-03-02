@@ -352,7 +352,8 @@ class NotificationService:
                     body=body,
                     deep_link=deep_link,
                     notification_type=notification_type,
-                    image_url=image_url
+                    image_url=image_url,
+                    metadata=metadata
                 )
         
         # Track analytics
@@ -418,7 +419,8 @@ class NotificationService:
         body: str,
         deep_link: str,
         notification_type: NotificationType,
-        image_url: Optional[str] = None
+        image_url: Optional[str] = None,
+        metadata: Optional[dict] = None
     ) -> bool:
         """Send push notification via Expo Push API"""
         tokens = await self.get_user_tokens(user_id)
@@ -427,18 +429,50 @@ class NotificationService:
             logger.debug(f"No push tokens for user {user_id[:8]}...")
             return False
         
-        # Build push message
+        # Build base data payload
+        data_payload: Dict[str, Any] = {
+            "notification_id": notification_id,
+            "type": notification_type.value,
+            "deep_link": deep_link,
+        }
+
+        # Enrich featured_workout pushes with workout context so the
+        # mobile client can populate the cart directly from the push data
+        if notification_type == NotificationType.FEATURED_WORKOUT and metadata:
+            workout_id = metadata.get("workout_id")
+            data_payload["workoutId"] = workout_id
+            data_payload["workoutTitle"] = metadata.get("workout_name", "")
+            # Fetch the full workout doc to include exercise cart items
+            if workout_id:
+                try:
+                    workout_doc = await self.db.featured_workouts.find_one(
+                        {"_id": ObjectId(workout_id)},
+                        {"_id": 0}
+                    )
+                    if workout_doc and "exercises" in workout_doc:
+                        # Include a compact representation of exercises for cart
+                        cart_items = []
+                        for ex in workout_doc["exercises"][:20]:  # cap at 20
+                            cart_items.append({
+                                "id": ex.get("id", ""),
+                                "name": ex.get("name", ""),
+                                "duration": ex.get("duration", ""),
+                                "description": ex.get("description", ""),
+                                "imageUrl": ex.get("image_url") or ex.get("imageUrl", ""),
+                                "equipment": ex.get("equipment", "None"),
+                            })
+                        data_payload["cartItems"] = cart_items
+                except Exception as e:
+                    logger.warning(f"Could not fetch workout exercises for push data: {e}")
+
+        # Build push messages
         messages = []
         for token in tokens:
-            message = {
+            message: Dict[str, Any] = {
                 "to": token,
                 "title": title,
                 "body": body,
-                "data": {
-                    "notification_id": notification_id,
-                    "type": notification_type.value,
-                    "deep_link": deep_link,
-                },
+                "data": data_payload,
                 "sound": "default",
                 "priority": "high",
             }
@@ -1053,24 +1087,47 @@ class NotificationService:
         user_id: str,
         workout_id: str,
         workout_name: str,
-        workout_image: Optional[str] = None
+        workout_image: Optional[str] = None,
+        custom_title: Optional[str] = None,
+        custom_body: Optional[str] = None
     ) -> Optional[str]:
-        """Trigger notification for a new featured workout drop - uses randomized copy"""
-        # Use standardized push copy for featured workouts
-        push_content = build_push_content(
-            notif_type="featured_workout",
-            deep_link=f"mood://cart?featuredId={workout_id}"
-        )
+        """Trigger notification for a new featured workout drop.
+        
+        If custom_title/custom_body are provided, use them exactly (authored copy).
+        Otherwise, fall back to randomized copy from the push copy library.
+        The notification title is always the workout name so it shows in the banner.
+        """
+        deep_link = f"mood://cart?featuredId={workout_id}"
+
+        if custom_title and custom_body:
+            title = custom_title
+            body = custom_body
+        elif custom_title:
+            title = custom_title
+            push_content = build_push_content(notif_type="featured_workout", deep_link=deep_link)
+            body = push_content["body"]
+        elif custom_body:
+            # Use workout name as title when only body is authored
+            title = workout_name
+            body = custom_body
+        else:
+            push_content = build_push_content(notif_type="featured_workout", deep_link=deep_link)
+            title = push_content["title"]
+            body = push_content["body"]
         
         return await self.create_notification(
             user_id=user_id,
             notification_type=NotificationType.FEATURED_WORKOUT,
-            title=push_content["title"],  # Random from: "New Drop", "Today's Workout", etc.
-            body=push_content["body"],    # Random from: "A new workout is live.", etc.
+            title=title,
+            body=body,
             entity_id=workout_id,
             entity_type="featured_workout",
             image_url=workout_image,
-            metadata={"workout_name": workout_name}
+            metadata={
+                "workout_name": workout_name,
+                "workout_id": workout_id,
+                "workout_image": workout_image,
+            }
         )
     
     async def trigger_featured_suggestion(
@@ -1097,7 +1154,9 @@ class NotificationService:
         workout_id: str,
         workout_name: str,
         workout_image: Optional[str] = None,
-        target_user_ids: Optional[List[str]] = None
+        target_user_ids: Optional[List[str]] = None,
+        custom_title: Optional[str] = None,
+        custom_body: Optional[str] = None
     ) -> int:
         """
         Admin function: Send featured workout notification to all users
@@ -1127,7 +1186,9 @@ class NotificationService:
                 user_id=user_id,
                 workout_id=workout_id,
                 workout_name=workout_name,
-                workout_image=workout_image
+                workout_image=workout_image,
+                custom_title=custom_title,
+                custom_body=custom_body
             )
             if result:
                 count += 1

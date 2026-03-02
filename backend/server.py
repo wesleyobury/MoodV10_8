@@ -11224,6 +11224,8 @@ class FeaturedWorkoutPush(BaseModel):
     workout_name: str
     workout_image: Optional[str] = None
     target_user_ids: Optional[List[str]] = None  # None = all users
+    custom_title: Optional[str] = None  # None = random from copy library
+    custom_body: Optional[str] = None   # None = random from copy library
 
 class FeaturedSuggestionPush(BaseModel):
     custom_copy: Optional[str] = None  # None = random from library
@@ -11389,7 +11391,9 @@ async def admin_send_featured_workout(
         workout_id=data.workout_id,
         workout_name=data.workout_name,
         workout_image=data.workout_image,
-        target_user_ids=data.target_user_ids
+        target_user_ids=data.target_user_ids,
+        custom_title=data.custom_title,
+        custom_body=data.custom_body
     )
     
     return {

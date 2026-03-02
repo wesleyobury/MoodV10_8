@@ -27,6 +27,7 @@ interface CartContextType {
   addToCart: (workout: WorkoutItem, options?: { source?: 'custom' | 'build_for_me', token?: string | null }) => void;
   removeFromCart: (workoutId: string) => void;
   clearCart: () => void;
+  replaceCart: (items: WorkoutItem[]) => void;
   isInCart: (workoutId: string) => boolean;
   reorderCart: (startIndex: number, endIndex: number) => void;
 }
@@ -109,6 +110,10 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     setCartItems([]);
   };
 
+  const replaceCart = (items: WorkoutItem[]) => {
+    setCartItems(items);
+  };
+
   const isInCart = useCallback((workoutId: string) => {
     return cartItems.some(item => item.id === workoutId);
   }, [cartItems]);
@@ -127,6 +132,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         addToCart,
         removeFromCart,
         clearCart,
+        replaceCart,
         isInCart,
         reorderCart,
       }}

@@ -35,6 +35,15 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 ## What's Been Implemented (continued)
 - [2026-03-02] Persistent login: All auth methods (email/password, Google OAuth, Apple Sign-In) now use 10-year token/session expiry. Users stay logged in until explicit sign-out.
 - [2026-03-02] Auto push notification init: `initNotifications()` runs automatically after login and on every authenticated app launch. Checks OS permission, requests if undetermined, obtains Expo push token, configures Android channel, upserts to backend. Persists token locally; derives UI from OS + stored state. Logout preserves push token. Denied users see "Open Settings" CTA. Never re-requests after denial.
+- [2026-03-02] Push notification identity + featured-workout deep links end-to-end:
+  - iOS: Added CFBundleDisplayName "MOOD" to Info.plist in app.json
+  - Android: Added notification icon + color config, channel name "MOOD Notifications"
+  - Backend: `_send_push_notification` enriches featured_workout pushes with workoutId, workoutTitle, cartItems[] (fetched from DB)
+  - Backend: `FeaturedWorkoutPush` model accepts custom_title/custom_body for exact authored copy; falls back to random copy library
+  - Frontend: Notification response handler parses data.type === "featured_workout", builds cart from push data (or fetches by workoutId), replaces cart contents, navigates to /cart
+  - Frontend: Cold-start handled via getLastNotificationResponse() in NotificationInitializer
+  - Frontend: Admin push page shows custom title/body inputs for featured workout pushes
+  - CartContext: Added replaceCart() method for push-originated cart population
 
 ## Backlog
 - P2: Fix unbounded query `.to_list(100000)` in `server.py` (pagination)

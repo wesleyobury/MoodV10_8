@@ -240,9 +240,18 @@ class NotificationService {
   private responseListener: Notifications.Subscription | null = null;
   private authToken: string | null = null;
   private listenersSetUp = false;
+  // Injected by _layout.tsx so the notification handler can populate the cart
+  private _replaceCart: ((items: any[]) => void) | null = null;
+  private _router: any = null;
 
   setAuthToken(token: string): void {
     this.authToken = token;
+  }
+
+  /** Inject cart + router so push response handler can navigate */
+  setNavContext(replaceCart: (items: any[]) => void, router: any): void {
+    this._replaceCart = replaceCart;
+    this._router = router;
   }
 
   /** Set up foreground + tap listeners (idempotent) */
@@ -258,21 +267,130 @@ class NotificationService {
 
     this.responseListener = Notifications.addNotificationResponseReceivedListener(
       (response) => {
-        const data = response.notification.request.content.data as any;
-        console.log('📲 Notification tapped:', data);
-        if (data?.type === 'featured_workout' && data?.deep_link) {
-          this.handleDeepLink(data.deep_link as string);
-        } else {
-          this.handleDeepLink('mood://home');
-        }
+        this._handleNotificationResponse(response);
       }
     );
   }
 
-  private handleDeepLink(deepLink: string): void {
-    Linking.openURL(deepLink).catch((err) => {
-      console.error('Error opening deep link:', err);
-    });
+  /**
+   * Handle cold-start: check if the app was opened via a notification tap
+   * while it was killed. Must be called once after listeners are set up.
+   */
+  handleColdStartNotification(): void {
+    try {
+      const lastResponse = Notifications.getLastNotificationResponse();
+      if (lastResponse) {
+        console.log('🔔 Cold-start notification detected');
+        this._handleNotificationResponse(lastResponse);
+      }
+    } catch (e) {
+      console.warn('🔔 getLastNotificationResponse not available:', e);
+    }
+  }
+
+  /**
+   * Central response handler — dispatches by notification type.
+   * For featured_workout: populates cart from push data → navigates to /cart.
+   * For all others: opens deep link or falls back to home.
+   */
+  private _handleNotificationResponse(response: Notifications.NotificationResponse): void {
+    const data = response.notification.request.content.data as any;
+    console.log('📲 Notification tapped:', JSON.stringify(data));
+
+    if (data?.type === 'featured_workout') {
+      this._handleFeaturedWorkoutTap(data);
+    } else {
+      // Non-featured: open deep link if present, else go home
+      const link = data?.deep_link || 'mood://home';
+      Linking.openURL(link).catch((err) => {
+        console.error('Error opening deep link:', err);
+      });
+    }
+  }
+
+  /**
+   * Featured workout tap handler:
+   *  1. Build WorkoutItem[] from push data.cartItems (or fetch by workoutId)
+   *  2. Replace cart contents
+   *  3. Navigate to /cart
+   */
+  private async _handleFeaturedWorkoutTap(data: any): Promise<void> {
+    const workoutId = data.workoutId;
+    const workoutTitle = data.workoutTitle || 'Featured Workout';
+
+    // Try to build cart items from push payload first
+    let cartItems: any[] = [];
+    if (Array.isArray(data.cartItems) && data.cartItems.length > 0) {
+      cartItems = data.cartItems.map((item: any) => ({
+        id: item.id || item.name || `push-${Date.now()}`,
+        name: item.name || '',
+        duration: item.duration || '',
+        description: item.description || '',
+        battlePlan: item.battlePlan || '',
+        imageUrl: item.imageUrl || item.image_url || '',
+        intensityReason: item.intensityReason || '',
+        equipment: item.equipment || 'None',
+        difficulty: item.difficulty || '',
+        workoutType: item.workoutType || '',
+        moodCard: item.moodCard || workoutTitle,
+        moodTips: item.moodTips || [],
+        source: 'build_for_me' as const,
+      }));
+    } else if (workoutId) {
+      // Fallback: fetch workout by ID from the backend
+      try {
+        const resp = await fetch(`${API_URL}/api/featured/batch`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ids: [workoutId] }),
+        });
+        if (resp.ok) {
+          const result = await resp.json();
+          const workout = result.workouts?.[0];
+          if (workout?.exercises) {
+            cartItems = workout.exercises.map((ex: any) => ({
+              id: ex.id || ex.name || `fetch-${Date.now()}`,
+              name: ex.name || '',
+              duration: ex.duration || '',
+              description: ex.description || '',
+              battlePlan: ex.battlePlan || '',
+              imageUrl: ex.image_url || ex.imageUrl || '',
+              intensityReason: ex.intensityReason || '',
+              equipment: ex.equipment || 'None',
+              difficulty: ex.difficulty || '',
+              workoutType: ex.workoutType || '',
+              moodCard: workout.title || workoutTitle,
+              moodTips: [],
+              source: 'build_for_me' as const,
+            }));
+          }
+        }
+      } catch (e) {
+        console.warn('🔔 Failed to fetch workout for push deep link:', e);
+      }
+    }
+
+    // Replace cart BEFORE navigating
+    if (cartItems.length > 0 && this._replaceCart) {
+      console.log(`🔔 Populating cart with ${cartItems.length} items from push`);
+      this._replaceCart(cartItems);
+    }
+
+    // Navigate to cart screen
+    if (this._router) {
+      try {
+        this._router.push({
+          pathname: '/cart',
+          params: { workoutId, workoutTitle, fromPush: 'true' },
+        });
+      } catch (e) {
+        console.warn('🔔 Router navigation failed, falling back to Linking:', e);
+        Linking.openURL(data.deep_link || 'mood://cart').catch(() => {});
+      }
+    } else {
+      // No router injected yet — fall back to deep link
+      Linking.openURL(data.deep_link || 'mood://cart').catch(() => {});
+    }
   }
 
   cleanup(): void {

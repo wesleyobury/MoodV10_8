@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { AppState, AppStateStatus, View, StyleSheet } from 'react-native';
@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
-import { CartProvider } from '../contexts/CartContext';
+import { CartProvider, useCart } from '../contexts/CartContext';
 import { BadgeProvider } from '../contexts/BadgeContext';
 import { Analytics } from '../utils/analytics';
 import { initNotifications, notificationService } from '../utils/notifications';
@@ -50,10 +50,19 @@ function AppStateTracker() {
  * Fires once after login and once on every authenticated cold-start.
  * Also re-runs when app returns to foreground (in case user toggled
  * permissions in OS Settings).
+ * Injects cart + router into the notification service for deep-link navigation.
  */
 function NotificationInitializer() {
   const { token, isGuest } = useAuth();
+  const { replaceCart } = useCart();
+  const router = useRouter();
   const initDoneForToken = useRef<string | null>(null);
+  const coldStartHandled = useRef(false);
+
+  // Inject nav context into the notification service whenever it changes
+  useEffect(() => {
+    notificationService.setNavContext(replaceCart, router);
+  }, [replaceCart, router]);
 
   // Auto-init on first auth or token change (login / app restore)
   useEffect(() => {
@@ -67,6 +76,15 @@ function NotificationInitializer() {
       notificationService.setAuthToken(token);
       notificationService.setupListeners();
       await initNotifications(token);
+
+      // Handle cold-start notification (app was killed, user tapped a push)
+      if (!coldStartHandled.current) {
+        coldStartHandled.current = true;
+        // Small delay to ensure navigation stack is ready
+        setTimeout(() => {
+          notificationService.handleColdStartNotification();
+        }, 500);
+      }
     })();
   }, [token, isGuest]);
 
