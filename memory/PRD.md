@@ -44,6 +44,11 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - Frontend: Cold-start handled via getLastNotificationResponse() in NotificationInitializer
   - Frontend: Admin push page shows custom title/body inputs for featured workout pushes
   - CartContext: Added replaceCart() method for push-originated cart population
+- [2026-03-02] Hardened push deep link handling:
+  - Replaced fixed 500ms cold-start delay with a pendingNotification queue in NotificationService; drained on first NavigationStack mount via onNavigationReady()
+  - Gated "denied but already requested" re-prompt guard to Android only (iOS returns undetermined until first prompt, then denied is permanent)
+  - Created proper monochrome Android notification icon (white M silhouette on transparent bg) at assets/images/notification-icon.png
+  - Set CFBundleDisplayName to "officialmoodapp" to match desired sender label on iOS
 
 ## Backlog
 - P2: Fix unbounded query `.to_list(100000)` in `server.py` (pagination)

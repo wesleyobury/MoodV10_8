@@ -114,20 +114,33 @@ export async function initNotifications(authToken: string): Promise<NotifStatus>
       // Already granted — skip prompt
       finalStatus = 'granted';
     } else if (existingStatus === 'denied') {
-      // OS says denied — check whether we ever prompted before
-      const alreadyRequested = await AsyncStorage.getItem(PERMISSION_REQUESTED_KEY);
-      if (alreadyRequested === 'true') {
-        // User previously denied — do NOT re-request (on iOS it's a no-op anyway)
-        console.log('🔔 initNotif: Permission previously denied, not re-requesting');
+      // On Android the OS can report "denied" even on a fresh install before
+      // any prompt has been shown. We track a local flag so we only call
+      // requestPermissionsAsync once. On iOS this branch is never hit for a
+      // fresh install (iOS returns "undetermined" until the first prompt, and
+      // after denial it simply no-ops on subsequent requests), so the guard
+      // is Android-only.
+      if (Platform.OS === 'android') {
+        const alreadyRequested = await AsyncStorage.getItem(PERMISSION_REQUESTED_KEY);
+        if (alreadyRequested === 'true') {
+          console.log('🔔 initNotif: Permission previously denied on Android, not re-requesting');
+          await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'denied');
+          result.permission = 'denied';
+          return result;
+        }
+        const { status } = await Notifications.requestPermissionsAsync();
+        await AsyncStorage.setItem(PERMISSION_REQUESTED_KEY, 'true');
+        finalStatus = status;
+        console.log(`🔔 initNotif: Android first-time request, got = ${finalStatus}`);
+      } else {
+        // iOS: "denied" means the user explicitly denied via the OS dialog.
+        // Calling requestPermissionsAsync again is a harmless no-op on iOS
+        // but there is no reason to — just respect the denial.
+        console.log('🔔 initNotif: iOS permission denied, not re-requesting');
         await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'denied');
         result.permission = 'denied';
         return result;
       }
-      // First time seeing denied (e.g. fresh install on some Android) — try requesting
-      const { status } = await Notifications.requestPermissionsAsync();
-      await AsyncStorage.setItem(PERMISSION_REQUESTED_KEY, 'true');
-      finalStatus = status;
-      console.log(`🔔 initNotif: Requested permission, got = ${finalStatus}`);
     } else {
       // undetermined — request for first time
       const { status } = await Notifications.requestPermissionsAsync();
@@ -243,6 +256,9 @@ class NotificationService {
   // Injected by _layout.tsx so the notification handler can populate the cart
   private _replaceCart: ((items: any[]) => void) | null = null;
   private _router: any = null;
+  private _navReady = false;
+  // Pending notification responses queued before navigation was ready
+  private _pendingResponses: Notifications.NotificationResponse[] = [];
 
   setAuthToken(token: string): void {
     this.authToken = token;
@@ -252,6 +268,21 @@ class NotificationService {
   setNavContext(replaceCart: (items: any[]) => void, router: any): void {
     this._replaceCart = replaceCart;
     this._router = router;
+  }
+
+  /**
+   * Called by NotificationInitializer once the navigation stack is confirmed
+   * mounted and the router is usable. Drains any pending notification
+   * responses that arrived before the nav was ready (cold-start scenario).
+   */
+  onNavigationReady(): void {
+    if (this._navReady) return;
+    this._navReady = true;
+    console.log(`🔔 Nav ready — draining ${this._pendingResponses.length} pending notification(s)`);
+    for (const response of this._pendingResponses) {
+      this._handleNotificationResponse(response);
+    }
+    this._pendingResponses = [];
   }
 
   /** Set up foreground + tap listeners (idempotent) */
@@ -267,21 +298,30 @@ class NotificationService {
 
     this.responseListener = Notifications.addNotificationResponseReceivedListener(
       (response) => {
-        this._handleNotificationResponse(response);
+        if (this._navReady) {
+          this._handleNotificationResponse(response);
+        } else {
+          console.log('🔔 Nav not ready yet — queuing notification response');
+          this._pendingResponses.push(response);
+        }
       }
     );
   }
 
   /**
    * Handle cold-start: check if the app was opened via a notification tap
-   * while it was killed. Must be called once after listeners are set up.
+   * while it was killed. Queues the response if navigation isn't ready yet.
    */
   handleColdStartNotification(): void {
     try {
       const lastResponse = Notifications.getLastNotificationResponse();
       if (lastResponse) {
         console.log('🔔 Cold-start notification detected');
-        this._handleNotificationResponse(lastResponse);
+        if (this._navReady) {
+          this._handleNotificationResponse(lastResponse);
+        } else {
+          this._pendingResponses.push(lastResponse);
+        }
       }
     } catch (e) {
       console.warn('🔔 getLastNotificationResponse not available:', e);

@@ -51,18 +51,27 @@ function AppStateTracker() {
  * Also re-runs when app returns to foreground (in case user toggled
  * permissions in OS Settings).
  * Injects cart + router into the notification service for deep-link navigation.
+ * Signals navigation-ready once this component is mounted (it lives inside
+ * the Stack, so the router is guaranteed usable at this point).
  */
 function NotificationInitializer() {
   const { token, isGuest } = useAuth();
   const { replaceCart } = useCart();
   const router = useRouter();
   const initDoneForToken = useRef<string | null>(null);
-  const coldStartHandled = useRef(false);
+  const coldStartChecked = useRef(false);
 
   // Inject nav context into the notification service whenever it changes
   useEffect(() => {
     notificationService.setNavContext(replaceCart, router);
   }, [replaceCart, router]);
+
+  // Signal navigation ready on first mount — this component renders inside
+  // <Stack> so the router is guaranteed to be usable. This drains any
+  // pending notification responses that were queued before nav was ready.
+  useEffect(() => {
+    notificationService.onNavigationReady();
+  }, []);
 
   // Auto-init on first auth or token change (login / app restore)
   useEffect(() => {
@@ -77,13 +86,12 @@ function NotificationInitializer() {
       notificationService.setupListeners();
       await initNotifications(token);
 
-      // Handle cold-start notification (app was killed, user tapped a push)
-      if (!coldStartHandled.current) {
-        coldStartHandled.current = true;
-        // Small delay to ensure navigation stack is ready
-        setTimeout(() => {
-          notificationService.handleColdStartNotification();
-        }, 500);
+      // Check for cold-start notification (app was killed, user tapped a push).
+      // handleColdStartNotification queues the response if nav isn't ready yet;
+      // onNavigationReady (above) drains the queue once the Stack is mounted.
+      if (!coldStartChecked.current) {
+        coldStartChecked.current = true;
+        notificationService.handleColdStartNotification();
       }
     })();
   }, [token, isGuest]);

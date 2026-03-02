@@ -14,7 +14,7 @@
       "buildNumber": "37",
       "supportsTablet": true,
       "infoPlist": {
-        "CFBundleDisplayName": "MOOD",
+        "CFBundleDisplayName": "officialmoodapp",
         "UIViewControllerBasedStatusBarAppearance": false,
         "UIStatusBarStyle": "UIStatusBarStyleLightContent",
         "NSCameraUsageDescription": "The camera is used to record photos and videos when you create workout posts or share fitness content.",
@@ -37,7 +37,7 @@
       },
       "edgeToEdgeEnabled": true,
       "notification": {
-        "icon": "./assets/images/adaptive-icon.png",
+        "icon": "./assets/images/notification-icon.png",
         "color": "#FFD700"
       },
       "permissions": [
