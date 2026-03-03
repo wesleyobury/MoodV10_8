@@ -21,6 +21,8 @@ import {
   Text,
   TouchableOpacity,
   Platform,
+  AppState,
+  AppStateStatus,
 } from 'react-native';
 import { Image } from 'expo-image';
 import { Video, ResizeMode, AVPlaybackStatus, Audio } from 'expo-av';
@@ -172,6 +174,19 @@ useEffect(() => {
       setIsPlaying(false);
     }
   }, [isActive, shouldLoadVideo]);
+
+  // Pause video + mute audio when app goes to background
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (next: AppStateStatus) => {
+      if (next !== 'active' && videoRef.current && shouldLoadVideo) {
+        videoRef.current.pauseAsync().catch(() => {});
+        videoRef.current.setIsMutedAsync(true).catch(() => {});
+        setIsMuted(true);
+        setIsPlaying(false);
+      }
+    });
+    return () => subscription.remove();
+  }, [shouldLoadVideo]);
 
   // Cleanup on unmount
   useEffect(() => {

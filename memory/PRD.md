@@ -49,6 +49,10 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - Gated "denied but already requested" re-prompt guard to Android only (iOS returns undetermined until first prompt, then denied is permanent)
   - Created proper monochrome Android notification icon (white M silhouette on transparent bg) at assets/images/notification-icon.png
   - Set CFBundleDisplayName to "officialmoodapp" to match desired sender label on iOS
+- [2026-03-03] Three UI/UX fixes:
+  - Removed exercise video search icon and search bar from home screen (index.tsx)
+  - Fixed profile grid video thumbnails: added missing `cover_urls` to PostResponse in get_user_posts and get_following_posts endpoints — root cause was the API simply wasn't returning the user-selected cover URLs
+  - Fixed video autoplay on tab switch: explore tab now clears visiblePostId on blur via useFocusEffect; SmartVideoPlayer pauses + mutes on AppState background; onViewableItemsChanged clears visiblePostId when no items visible
 
 ## Backlog
 - P2: Fix unbounded query `.to_list(100000)` in `server.py` (pagination)

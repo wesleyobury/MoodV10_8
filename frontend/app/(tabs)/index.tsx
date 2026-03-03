@@ -27,7 +27,6 @@ import { Analytics } from '../../utils/analytics';
 import { useScreenTime } from '../../hooks/useScreenTime';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import { useFeaturedWorkouts, FeaturedWorkout } from '../../hooks/useFeaturedWorkouts';
-import ExerciseLookupSheet from '../../components/ExerciseLookupSheet';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 
 // Prioritize process.env for development/preview environments
@@ -485,7 +484,6 @@ export default function WorkoutsHome() {
   const { token, isGuest } = useAuth();
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const [guestAction, setGuestAction] = useState('');
-  const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
   
   useEffect(() => {
     const hour = new Date().getHours();
@@ -837,16 +835,6 @@ export default function WorkoutsHome() {
   return (
     <View style={styles.outerContainer}>
       <View style={styles.container}>
-        {/* Search Icon in Top Right */}
-        <View style={[styles.searchIconContainer, { top: insets.top + 8 }]}>
-          <TouchableOpacity 
-            style={styles.searchIconButton}
-            onPress={() => setExerciseLookupVisible(true)}
-          >
-            <Ionicons name="search" size={22} color="rgba(255, 255, 255, 0.6)" />
-          </TouchableOpacity>
-        </View>
-        
         <ScrollView 
           style={styles.fullScrollView}
           showsVerticalScrollIndicator={false}
@@ -925,19 +913,7 @@ export default function WorkoutsHome() {
           </View>
         </View>
 
-        {/* Exercise Visual Search Section */}
-        <View style={styles.exerciseSearchSection}>
-          <TouchableOpacity
-            style={styles.exerciseSearchTrigger}
-            onPress={() => setExerciseLookupVisible(true)}
-            activeOpacity={0.7}
-          >
-            <Ionicons name="search" size={18} color="rgba(255,255,255,0.5)" />
-            <Text style={styles.exerciseSearchText}>Search workout library</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Social Icons - Below Search Bar */}
+        {/* Social Icons */}
         <View style={styles.bottomSocialContainer}>
           <TouchableOpacity 
             style={styles.bottomSocialButton}
@@ -960,12 +936,6 @@ export default function WorkoutsHome() {
         visible={showGuestPrompt}
         onClose={() => setShowGuestPrompt(false)}
         action={guestAction}
-      />
-
-      {/* Exercise Lookup Bottom Sheet */}
-      <ExerciseLookupSheet
-        visible={exerciseLookupVisible}
-        onClose={() => setExerciseLookupVisible(false)}
       />
     </View>
   );
@@ -996,19 +966,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 25,
     marginBottom: 10,
-  },
-  searchIconContainer: {
-    position: 'absolute',
-    right: 16,
-    zIndex: 100,
-  },
-  searchIconButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(28, 28, 28, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   centeredQuestionHeader: {
     alignItems: 'center',
@@ -1606,24 +1563,4 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 215, 0, 0.7)',
   },
   // Exercise Search Section
-  exerciseSearchSection: {
-    marginTop: 24,
-    marginBottom: 8,
-    paddingHorizontal: 28,
-  },
-  exerciseSearchTrigger: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 24,
-    paddingVertical: 14,
-    paddingHorizontal: 18,
-    gap: 12,
-  },
-  exerciseSearchText: {
-    flex: 1,
-    fontSize: 16,
-    color: 'rgba(255,255,255,0.5)',
-    fontWeight: '400',
-  },
 });

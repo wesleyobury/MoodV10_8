@@ -186,6 +186,20 @@ export default function Explore() {
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const [guestAction, setGuestAction] = useState('');
 
+  // Track whether this tab is focused — clear visiblePostId when not focused
+  // so no videos or audio play when user is on a different tab
+  const [isTabFocused, setIsTabFocused] = useState(true);
+  
+  useFocusEffect(
+    useCallback(() => {
+      setIsTabFocused(true);
+      return () => {
+        setIsTabFocused(false);
+        setVisiblePostId(null); // Stop all videos when leaving the tab
+      };
+    }, [])
+  );
+
   // FlatList viewability config for tracking visible posts (Instagram-style)
   const viewabilityConfig = useRef({
     itemVisiblePercentThreshold: 50,
@@ -198,6 +212,8 @@ export default function Explore() {
       if (topItem?.id) {
         setVisiblePostId(topItem.id);
       }
+    } else {
+      setVisiblePostId(null);
     }
   }).current;
 
