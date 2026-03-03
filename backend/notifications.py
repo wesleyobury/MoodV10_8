@@ -158,13 +158,21 @@ class NotificationService:
         )
     
     async def get_user_tokens(self, user_id: str) -> List[str]:
-        """Get all valid push tokens for a user"""
+        """Get all valid, unique push tokens for a user"""
         tokens = await self.db.device_tokens.find({
             "user_id": user_id,
             "is_valid": True
         }).to_list(10)
         
-        return [t["token"] for t in tokens]
+        # Deduplicate tokens (same token can be registered multiple times)
+        seen = set()
+        unique = []
+        for t in tokens:
+            tok = t["token"]
+            if tok not in seen:
+                seen.add(tok)
+                unique.append(tok)
+        return unique
     
     # ----------------------------------------
     # NOTIFICATION SETTINGS
@@ -1089,13 +1097,14 @@ class NotificationService:
         workout_name: str,
         workout_image: Optional[str] = None,
         custom_title: Optional[str] = None,
-        custom_body: Optional[str] = None
+        custom_body: Optional[str] = None,
+        actor_id: Optional[str] = None
     ) -> Optional[str]:
         """Trigger notification for a new featured workout drop.
         
         If custom_title/custom_body are provided, use them exactly (authored copy).
-        Otherwise, fall back to randomized copy from the push copy library.
-        The notification title is always the workout name so it shows in the banner.
+        Otherwise, use workout_name as title and random body from copy library.
+        actor_id is the admin who sent the push (shown as sender in notification feed).
         """
         deep_link = f"mood://cart?featuredId={workout_id}"
 
@@ -1107,12 +1116,12 @@ class NotificationService:
             push_content = build_push_content(notif_type="featured_workout", deep_link=deep_link)
             body = push_content["body"]
         elif custom_body:
-            # Use workout name as title when only body is authored
             title = workout_name
             body = custom_body
         else:
+            # Default: use workout name as title (so banner shows it)
+            title = workout_name
             push_content = build_push_content(notif_type="featured_workout", deep_link=deep_link)
-            title = push_content["title"]
             body = push_content["body"]
         
         return await self.create_notification(
@@ -1120,6 +1129,7 @@ class NotificationService:
             notification_type=NotificationType.FEATURED_WORKOUT,
             title=title,
             body=body,
+            actor_id=actor_id,
             entity_id=workout_id,
             entity_type="featured_workout",
             image_url=workout_image,
@@ -1156,7 +1166,8 @@ class NotificationService:
         workout_image: Optional[str] = None,
         target_user_ids: Optional[List[str]] = None,
         custom_title: Optional[str] = None,
-        custom_body: Optional[str] = None
+        custom_body: Optional[str] = None,
+        sender_user_id: Optional[str] = None
     ) -> int:
         """
         Admin function: Send featured workout notification to all users
@@ -1188,7 +1199,8 @@ class NotificationService:
                 workout_name=workout_name,
                 workout_image=workout_image,
                 custom_title=custom_title,
-                custom_body=custom_body
+                custom_body=custom_body,
+                actor_id=sender_user_id
             )
             if result:
                 count += 1

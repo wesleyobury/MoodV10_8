@@ -379,7 +379,7 @@ class NotificationService {
     } else if (workoutId) {
       // Fallback: fetch workout by ID from the backend
       try {
-        const resp = await fetch(`${API_URL}/api/featured/batch`, {
+        const resp = await fetch(`${API_URL}/api/featured/workouts/batch`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ids: [workoutId] }),

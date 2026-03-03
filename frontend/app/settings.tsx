@@ -557,7 +557,8 @@ export default function Settings() {
           </TouchableOpacity>
         </View>
 
-        {/* Push Notifications */}
+        {/* Push Notifications — admin-only debug tools */}
+        {isAdmin && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Push Notifications</Text>
           
@@ -695,6 +696,7 @@ export default function Settings() {
             <Ionicons name="chevron-forward" size={18} color="#666" />
           </TouchableOpacity>
         </View>
+        )}
 
         {/* App Info */}
         <View style={styles.appInfo}>

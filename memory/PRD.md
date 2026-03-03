@@ -53,6 +53,12 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - Removed exercise video search icon and search bar from home screen (index.tsx)
   - Fixed profile grid video thumbnails: added missing `cover_urls` to PostResponse in get_user_posts and get_following_posts endpoints — root cause was the API simply wasn't returning the user-selected cover URLs
   - Fixed video autoplay on tab switch: explore tab now clears visiblePostId on blur via useFocusEffect; SmartVideoPlayer pauses + mutes on AppState background; onViewableItemsChanged clears visiblePostId when no items visible
+- [2026-03-03] Four push notification + UI fixes:
+  - Push Notifications section in settings gated to admin only (officialmoodapp)
+  - Fixed duplicate push notifications: deduplicated tokens in get_user_tokens
+  - Fixed push title/body: defaults to workout_name as title (not random copy library); custom_title/custom_body used exactly when provided
+  - Fixed "unknown" sender in notification tab: trigger_featured_workout_notification now passes admin's user_id as actor_id → notification lookup joins actor data → shows officialmoodapp profile
+  - Fixed empty cart on featured workout push tap: corrected fetch URL from /api/featured/batch to /api/featured/workouts/batch
 
 ## Backlog
 - P2: Fix unbounded query `.to_list(100000)` in `server.py` (pagination)

@@ -11395,7 +11395,8 @@ async def admin_send_featured_workout(
         workout_image=data.workout_image,
         target_user_ids=data.target_user_ids,
         custom_title=data.custom_title,
-        custom_body=data.custom_body
+        custom_body=data.custom_body,
+        sender_user_id=current_user_id
     )
     
     return {
