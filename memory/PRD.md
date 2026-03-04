@@ -68,9 +68,14 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - Push data enrichment: engagement pushes now include targetType + targetId for mobile routing
   - Logging: Added token count + push type logging in _send_push_notification
   - Existing safeguards preserved: self-like skipped, user prefs respected, following-only filter, quiet hours
+- [2026-03-04] Comprehensive Push Notification System Fix (P0):
+  - **Database Hygiene**: Added unique index on `device_tokens.token` to prevent duplicate token entries. Cleanup script auto-deduplicates existing tokens on startup.
+  - **Idempotency Layer**: Created `push_send_log` collection with unique compound index on `[user_id, type, event_key]` and 7-day TTL. `_send_push_notification` checks this log before sending — guarantees at-most-once delivery per event per user.
+  - **Sender Persistence**: All server-initiated notifications (featured workouts, workout reminders, featured suggestions) now auto-resolve the admin user's ID (`officialmoodapp`) as `actor_id`. Added `get_admin_user_id()` helper. All admin endpoints pass `current_user_id` as sender.
+  - **Device Token Upsert**: Changed `register_device_token` from find+insert to atomic upsert on `token` field — eliminates race condition that caused duplicate tokens.
+  - **Unbounded Queries Fixed (P1)**: Replaced all `.to_list(100000)` with `.to_list(10000)` in server.py to prevent potential OOM errors.
 
 ## Backlog
-- P2: Fix unbounded query `.to_list(100000)` in `server.py` (pagination)
 - P2: Video pre-fetching for workout plans (Phase 2)
 - P2: Admin panel caching for expensive aggregations
 - P2: Investigate root cause of notifications without `metadata.post_thumbnail`
