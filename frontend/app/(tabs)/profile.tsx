@@ -74,6 +74,8 @@ interface Post {
   id: string;
   media_urls: string[];
   cover_urls?: { [key: string]: string }; // Map of media index to cover image URL
+  thumbnail_url?: string | null; // Canonical thumbnail for grid (server-derived for videos)
+  media_type?: string | null; // "video" | "image" | null
   caption: string;
   likes_count: number;
   comments_count: number;
@@ -950,22 +952,28 @@ export default function Profile() {
                       ? post.media_urls[0] 
                       : null;
                     
-                    // Check if the media is a video
-                    const isVideo = mediaUrl && (
+                    // Detect video using server-derived media_type (canonical) + URL extension fallback
+                    const isVideo = post.media_type === 'video' || (mediaUrl && (
                       mediaUrl.toLowerCase().endsWith('.mov') ||
                       mediaUrl.toLowerCase().endsWith('.mp4') ||
                       mediaUrl.toLowerCase().endsWith('.avi') ||
-                      mediaUrl.toLowerCase().endsWith('.webm')
-                    );
+                      mediaUrl.toLowerCase().endsWith('.webm') ||
+                      mediaUrl.toLowerCase().endsWith('.m3u8') ||
+                      mediaUrl.toLowerCase().includes('/video/')
+                    ));
                     
-                    // Get cover URL for video if available
-                    let coverUrl: string | null = null;
-                    if (isVideo && post.cover_urls && post.cover_urls['0']) {
-                      coverUrl = post.cover_urls['0'];
-                      if (!coverUrl.startsWith('http')) {
-                        coverUrl = coverUrl.startsWith('/') ? `${API_URL}${coverUrl}` : `${API_URL}/api/uploads/${coverUrl}`;
-                      }
+                    // Use canonical thumbnail_url from backend (user-selected cover or Cloudinary fallback)
+                    // Priority: post.thumbnail_url > cover_urls['0'] > null
+                    let coverUrl: string | null = post.thumbnail_url || null;
+                    if (!coverUrl && post.cover_urls) {
+                      coverUrl = post.cover_urls['0'] || post.cover_urls[0 as unknown as string] || null;
                     }
+                    if (coverUrl && !coverUrl.startsWith('http')) {
+                      coverUrl = coverUrl.startsWith('/') ? `${API_URL}${coverUrl}` : `${API_URL}/api/uploads/${coverUrl}`;
+                    }
+                    
+                    // For video grid tiles: ALWAYS use the thumbnail image, never load the video
+                    const gridImageUrl = isVideo ? (coverUrl || mediaUrl) : mediaUrl;
                     
                     // Fix media URL if it doesn't include the backend URL
                     if (mediaUrl && !mediaUrl.startsWith('http')) {
@@ -980,12 +988,22 @@ export default function Profile() {
                           router.push(`/post-detail?postId=${post.id}`);
                         }}
                       >
-                        {mediaUrl ? (
-                          isVideo ? (
-                            // Video thumbnail - use VideoThumbnail component with cover URL
+                        {gridImageUrl ? (
+                          isVideo && coverUrl ? (
+                            // Video with known cover thumbnail — render as static Image (no video loading)
+                            <Image 
+                              source={{ uri: coverUrl }}
+                              style={styles.gridImage}
+                              contentFit="cover"
+                              transition={150}
+                              cachePolicy="memory-disk"
+                              placeholder={{ blurhash: 'L6PZfSi_.AyE_3t7t7R**0o#DgR4' }}
+                            />
+                          ) : isVideo ? (
+                            // Video without cover — use VideoThumbnail (Cloudinary auto-thumb)
                             <VideoThumbnail 
                               videoUrl={mediaUrl}
-                              coverUrl={coverUrl}
+                              coverUrl={null}
                               style={styles.gridImage}
                             />
                           ) : (

@@ -39,6 +39,55 @@ def resolve_post_author_id(post: dict) -> str:
             return str(val)
     return ""
 
+
+_VIDEO_EXTENSIONS = {".mp4", ".mov", ".avi", ".webm", ".mkv", ".m4v", ".m3u8"}
+
+def derive_post_media_fields(post: dict) -> dict:
+    """Derive thumbnail_url and media_type from a raw post document.
+    
+    Returns dict with 'thumbnail_url' and 'media_type' keys.
+    thumbnail_url: user-selected cover from cover_urls, or Cloudinary auto-thumb fallback.
+    media_type: 'video' | 'image' | None
+    """
+    media_urls = post.get("media_urls") or []
+    cover_urls = post.get("cover_urls")  # dict {"0": url} or list [url]
+    first_url = (media_urls[0] if media_urls else "").lower()
+    
+    # Detect media_type
+    is_video = any(first_url.endswith(ext) for ext in _VIDEO_EXTENSIONS) or "/video/" in first_url
+    media_type = "video" if is_video else ("image" if first_url else None)
+    
+    # Resolve thumbnail_url for videos
+    thumbnail_url = None
+    if is_video:
+        # 1st priority: user-selected cover from cover_urls
+        if isinstance(cover_urls, dict):
+            thumbnail_url = cover_urls.get("0") or cover_urls.get(0)
+        elif isinstance(cover_urls, list) and cover_urls:
+            thumbnail_url = cover_urls[0]
+        
+        # 2nd priority: Cloudinary auto-thumbnail fallback
+        if not thumbnail_url and media_urls:
+            raw_url = media_urls[0]
+            if "cloudinary.com" in raw_url and "/video/upload/" in raw_url:
+                # Generate frame thumbnail: /so_1/ grabs frame at 1 second
+                parts = raw_url.split("/upload/")
+                if len(parts) == 2:
+                    # Strip any existing transforms, add thumbnail transform
+                    public_path = parts[1]
+                    # Remove existing transform chains (e.g. sp_hd/)
+                    segments = public_path.split("/")
+                    # Keep only the last segment (public_id + extension)
+                    public_id_with_ext = segments[-1]
+                    # Replace video extension with .jpg
+                    for ext in _VIDEO_EXTENSIONS:
+                        if public_id_with_ext.lower().endswith(ext):
+                            public_id_with_ext = public_id_with_ext[:-(len(ext))] + ".jpg"
+                            break
+                    thumbnail_url = f"{parts[0]}/upload/so_1,w_400,h_400,c_fill/{public_id_with_ext}"
+    
+    return {"thumbnail_url": thumbnail_url, "media_type": media_type}
+
 from auth import (
     exchange_session_id_for_token,
     create_or_update_user,
@@ -779,6 +828,8 @@ class PostResponse(BaseModel):
     media_urls: List[str] = []
     hashtags: List[str] = []
     cover_urls: Optional[dict] = None  # Map of media index to cover image URL
+    thumbnail_url: Optional[str] = None  # Canonical thumbnail for grid display (derived from cover_urls for videos)
+    media_type: Optional[str] = None  # "video" | "image" | None
     likes_count: int = 0
     comments_count: int = 0
     is_liked: bool = False
@@ -6854,6 +6905,7 @@ async def get_user_posts(
                 except Exception as e:
                     print(f"Error parsing workout_data: {e}")
             
+            media_fields = derive_post_media_fields(post)
             result.append(PostResponse(
                 id=str(post["_id"]),
                 author=author_data,
@@ -6863,6 +6915,8 @@ async def get_user_posts(
                 media_urls=post.get("media_urls", []),
                 hashtags=post.get("hashtags", []),
                 cover_urls=post.get("cover_urls"),
+                thumbnail_url=media_fields["thumbnail_url"],
+                media_type=media_fields["media_type"],
                 likes_count=post.get("likes_count", 0),
                 comments_count=post.get("comments_count", 0),
                 is_liked=len(post.get("user_like", [])) > 0,
@@ -7488,6 +7542,7 @@ async def get_following_posts(
                 except Exception as e:
                     print(f"Error parsing workout_data: {e}")
             
+            media_fields = derive_post_media_fields(post)
             result.append(PostResponse(
                 id=str(post["_id"]),
                 author=author_data,
@@ -7497,6 +7552,8 @@ async def get_following_posts(
                 media_urls=post.get("media_urls", []),
                 hashtags=post.get("hashtags", []),
                 cover_urls=post.get("cover_urls"),
+                thumbnail_url=media_fields["thumbnail_url"],
+                media_type=media_fields["media_type"],
                 likes_count=post.get("likes_count", 0),
                 comments_count=post.get("comments_count", 0),
                 is_liked=len(post.get("user_like", [])) > 0,
@@ -7561,6 +7618,7 @@ async def get_public_posts(limit: int = 20, skip: int = 0):
             except Exception as e:
                 print(f"Error parsing workout_data: {e}")
         
+        media_fields = derive_post_media_fields(post)
         result.append(PostResponse(
             id=str(post["_id"]),
             author=author_data,
@@ -7570,6 +7628,8 @@ async def get_public_posts(limit: int = 20, skip: int = 0):
             media_urls=post.get("media_urls", []),
             hashtags=post.get("hashtags", []),
             cover_urls=post.get("cover_urls"),
+            thumbnail_url=media_fields["thumbnail_url"],
+            media_type=media_fields["media_type"],
             likes_count=post.get("likes_count", 0),
             comments_count=post.get("comments_count", 0),
             is_liked=False,  # Guests can't like
