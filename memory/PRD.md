@@ -85,11 +85,12 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **Verified**: Full push path traversal confirmed via live integration test — Expo API reached and returns 200 OK.
 
 - [2026-03-04] Video Engagement Notification Fix (P0):
-  - **Root Cause**: Legacy video posts stored author as `user_id` instead of `author_id`. Like/comment handlers read `author_id` only and silently skipped when empty.
-  - **A) Fallback Resolution**: Added `resolve_post_author_id(post)` helper checking `author_id > user_id > creator_id > owner_id`. Updated like handler and `trigger_comment_notification` to use it. Orphan posts (no author fields) log warning instead of silently skipping.
+  - **A) Fallback Resolution**: Added `resolve_post_author_id(post)` helper (server.py) and `_resolve_post_author_id` @staticmethod (NotificationService) checking `author_id > user_id > creator_id > owner_id`. Updated like handler and comment notification to use it. Orphan posts (no author fields) log warning.
+  - **Comment notifications now resolve recipient from the post via _resolve_post_author_id() (same fallback order).**
   - **B) Write Normalization**: Post creation already writes `author_id`. Added assertion that logs error if `author_id` missing after insert.
-  - **C) Data Migration**: One-time startup migration backfills `author_id` from `user_id`/`creator_id` for legacy posts. Ran successfully: 1 post fixed, 0 orphaned.
-  - **Testing**: 16/16 backend tests passed including unit tests for priority order, integration tests for legacy+normal posts, regression tests.
+  - **C) Data Migration**: One-time startup migration backfills `author_id` from `user_id > creator_id > owner_id` (matching helper priority). Ran successfully: 1 post fixed, 0 orphaned.
+  - **D) NOTIF-CREATED evidence**: Log line includes `id`, `type`, `entity_id`, `recipient`, `actor`, `media_type`. Both like (single + bundled) and comment metadata include `media_type` field.
+  - **Testing**: 14/14 VIBER backend tests passed + 16/16 initial acceptance tests.
 
 ## Backlog
 - P2: Video pre-fetching for workout plans (Phase 2)
