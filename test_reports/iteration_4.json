@@ -1,0 +1,121 @@
+{
+  "summary": "Backend testing for VIBER 4 ship-ready fixes completed successfully. All 14 tests passed verifying: (1) trigger_comment_notification calls self._resolve_post_author_id(post), (2) _migrate_posts_author_id priority: user_id > creator_id > owner_id, (3) Non-self video like has different actor/recipient, (4) NOTIF-CREATED log includes media_type=video, (5) Both single-like and bundled-like include media_type, (6) Comment notification metadata includes media_type.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_viber_fixes.py",
+    "/app/test_reports/pytest/pytest_viber_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "FIX 1 VERIFIED: _resolve_post_author_id is @staticmethod on NotificationService class (line 182-193)",
+    "FIX 1 VERIFIED: trigger_comment_notification calls self._resolve_post_author_id(post) at line 883",
+    "FIX 1 VERIFIED: Comment on VIDEO post creates notification with metadata.media_type='video'",
+    "FIX 2 VERIFIED: _migrate_posts_author_id loops (user_id, creator_id, owner_id) at line 11619 - same priority as helper minus author_id which is excluded by query",
+    "FIX 3 VERIFIED: Non-self video like produces notification where actor_id != user_id (recipient)",
+    "FIX 3 VERIFIED: Self-like is correctly skipped (no notification created)",
+    "FIX 4 VERIFIED: NOTIF-CREATED log includes all required fields: id, type, entity_id, recipient, actor, media_type",
+    "FIX 4 VERIFIED: Single-like path (line 1196) includes media_type in metadata",
+    "FIX 4 VERIFIED: Bundled-like path (line 1179) includes media_type in metadata",
+    "FIX 4 VERIFIED: Comment notification (line 933) includes media_type in metadata",
+    "REGRESSION VERIFIED: Image post like creates notification with media_type='image'"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_viber_fixes.py"
+  ],
+  "success_rate": {
+    "backend": "100% (14/14 tests passed)",
+    "frontend": "N/A - backend only testing requested"
+  },
+  "seed_data_creation": "Test users and posts created during integration tests, cleaned up after completion",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "VIBER 4 fixes verified: 1) _resolve_post_author_id is @staticmethod at line 182 with priority author_id > user_id > creator_id > owner_id. 2) trigger_comment_notification at line 868 calls self._resolve_post_author_id(post). 3) _migrate_posts_author_id at line 11598 loops (user_id, creator_id, owner_id) - author_id excluded since query filters for posts WITHOUT author_id. 4) NOTIF-CREATED log at line 378 includes media_type from metadata. 5) trigger_like_notification includes media_type in both single (line 1196) and bundled (line 1179) paths. 6) trigger_comment_notification includes media_type (line 933). All tests pass with actual API calls verifying metadata.media_type='video' for video posts.",
+  "verified_features": [
+    {
+      "feature": "FIX 1a: _resolve_post_author_id is @staticmethod on NotificationService",
+      "status": "VERIFIED",
+      "test": "TestFix1_ResolvePostAuthorIdMethod::test_resolve_post_author_id_is_staticmethod_on_notificationservice"
+    },
+    {
+      "feature": "FIX 1b: trigger_comment_notification calls self._resolve_post_author_id",
+      "status": "VERIFIED",
+      "test": "TestFix1_ResolvePostAuthorIdMethod::test_trigger_comment_notification_calls_self_resolve"
+    },
+    {
+      "feature": "FIX 1c: Comment on VIDEO post creates notification with media_type=video",
+      "status": "VERIFIED",
+      "test": "TestFix1_VideoCommentNotificationMetadata::test_comment_on_video_post_has_media_type_video"
+    },
+    {
+      "feature": "FIX 2a: Migration priority order: user_id > creator_id > owner_id",
+      "status": "VERIFIED",
+      "test": "TestFix2_MigrationPriorityOrder::test_migration_function_priority_order"
+    },
+    {
+      "feature": "FIX 2b: Helper and migration have matching priority (minus author_id for migration)",
+      "status": "VERIFIED",
+      "test": "TestFix2_MigrationPriorityOrder::test_helper_and_migration_have_matching_priority"
+    },
+    {
+      "feature": "FIX 3: Non-self video like has different actor/recipient",
+      "status": "VERIFIED",
+      "test": "TestFix3_NonSelfVideoLike::test_non_self_like_creates_notification_with_different_actor_recipient"
+    },
+    {
+      "feature": "FIX 3 (regression): Self-like skipped",
+      "status": "VERIFIED",
+      "test": "TestFix3_NonSelfVideoLike::test_self_like_skipped"
+    },
+    {
+      "feature": "FIX 4a: NOTIF-CREATED log includes all required fields",
+      "status": "VERIFIED",
+      "test": "TestFix4_NotifCreatedLogFormat::test_notif_created_log_format_in_code"
+    },
+    {
+      "feature": "FIX 4b: media_type read from metadata",
+      "status": "VERIFIED",
+      "test": "TestFix4_NotifCreatedLogFormat::test_media_type_read_from_metadata"
+    },
+    {
+      "feature": "FIX 4c: Single-like path includes media_type",
+      "status": "VERIFIED",
+      "test": "TestFix4_LikeNotificationMediaType::test_single_like_path_includes_media_type"
+    },
+    {
+      "feature": "FIX 4d: Bundled-like path includes media_type",
+      "status": "VERIFIED",
+      "test": "TestFix4_LikeNotificationMediaType::test_bundled_like_path_includes_media_type"
+    },
+    {
+      "feature": "FIX 4e: Comment notification includes media_type",
+      "status": "VERIFIED",
+      "test": "TestFix4_CommentNotificationMediaType::test_comment_notification_includes_media_type"
+    },
+    {
+      "feature": "REGRESSION: Image post like has media_type=image",
+      "status": "VERIFIED",
+      "test": "TestRegression_ImagePostLike::test_image_post_like_has_media_type_image"
+    },
+    {
+      "feature": "INTEGRATION: Video like full flow",
+      "status": "VERIFIED",
+      "test": "TestIntegration_VideoLikeFullFlow::test_video_like_full_flow"
+    }
+  ],
+  "log_verification": {
+    "description": "NOTIF-CREATED logs verified in backend.err.log",
+    "sample_logs": [
+      "NOTIF-CREATED: id=... type=like entity_id=... recipient=... actor=... media_type=video",
+      "NOTIF-CREATED: id=... type=comment entity_id=... recipient=... actor=... media_type=video",
+      "NOTIF-CREATED: id=... type=like entity_id=... recipient=... actor=... media_type=image"
+    ]
+  }
+}

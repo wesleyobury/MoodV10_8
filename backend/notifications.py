@@ -179,6 +179,19 @@ class NotificationService:
     # NOTIFICATION SETTINGS
     # ----------------------------------------
     
+    @staticmethod
+    def _resolve_post_author_id(post: dict) -> str:
+        """Resolve the canonical author of a post, checking multiple field names.
+        
+        Returns the author ID as a string, or "" if none found.
+        Priority: author_id > user_id > creator_id > owner_id
+        """
+        for key in ("author_id", "user_id", "creator_id", "owner_id"):
+            val = post.get(key)
+            if val:
+                return str(val)
+        return ""
+    
     async def get_user_settings(self, user_id: str) -> dict:
         """Get notification settings for a user, with defaults"""
         settings = await self.db.notification_settings.find_one({"user_id": user_id})
@@ -359,7 +372,13 @@ class NotificationService:
         notification_id = str(result.inserted_id)
         logger.info(f"🔔 Insert result acknowledged: {result.acknowledged}, id: {notification_id}")
         
-        logger.info(f"🔔 Created notification {notification_type.value} for user {user_id[:8]}...")
+        # Explicit NOTIF-CREATED trace — includes media_type for video engagement proof
+        media_type = (metadata or {}).get("media_type", "unknown")
+        logger.info(
+            f"🔔 NOTIF-CREATED: id={notification_id} type={notification_type.value} "
+            f"entity_id={entity_id} recipient={user_id[:8]}... actor={actor_id[:8] + '...' if actor_id else 'None'} "
+            f"media_type={media_type}"
+        )
         
         # Send push if enabled and not in quiet hours
         if send_push:
@@ -861,12 +880,7 @@ class NotificationService:
             logger.warning(f"🔔 trigger_comment_notification: Post not found: {post_id}")
             return None
         
-        post_author_id = None
-        for key in ("author_id", "user_id", "creator_id", "owner_id"):
-            val = post.get(key)
-            if val:
-                post_author_id = str(val)
-                break
+        post_author_id = self._resolve_post_author_id(post)
         
         if not post_author_id:
             logger.warning(f"🔔 trigger_comment_notification: Post {post_id} missing author fields, keys={[k for k in post.keys() if k != '_id']}")
@@ -899,6 +913,10 @@ class NotificationService:
         
         logger.info(f"🔔 Comment notification: post_thumbnail={post_thumbnail[:50] if post_thumbnail else 'None'}...")
         
+        # Detect media_type for the NOTIF-CREATED log line
+        first_url = (media_urls[0] if media_urls else "").lower()
+        media_type = "video" if any(ext in first_url for ext in (".mp4", ".mov", ".m3u8", "/video")) else ("image" if first_url else "unknown")
+        
         # IG-style: "username commented on your photo."
         return await self.create_notification(
             user_id=str(post_author_id),
@@ -911,7 +929,8 @@ class NotificationService:
             image_url=avatar,
             metadata={
                 "commenter_username": commenter_username,
-                "post_thumbnail": post_thumbnail
+                "post_thumbnail": post_thumbnail,
+                "media_type": media_type
             }
         )
     
@@ -1105,6 +1124,15 @@ class NotificationService:
         
         logger.info(f"🔔 Like notification: post_thumbnail={post_thumbnail[:50] if post_thumbnail else 'None'}...")
         
+        # Detect media_type for the NOTIF-CREATED log line
+        media_type = "unknown"
+        if post:
+            first_url = (post.get("media_urls") or [""])[0].lower()
+            if any(ext in first_url for ext in (".mp4", ".mov", ".m3u8", "/video")):
+                media_type = "video"
+            elif first_url:
+                media_type = "image"
+        
         # Bundle key for grouping
         bundle_key = f"likes_{post_id}_{now.strftime('%Y%m%d%H')}"
         
@@ -1148,7 +1176,7 @@ class NotificationService:
                     image_url=avatar,
                     group_key=bundle_key,
                     dedupe_key=f"like:{post_id}:{liker_id}",
-                    metadata={"like_count": recent_likes + 1, "last_liker": liker_name, "post_thumbnail": post_thumbnail},
+                    metadata={"like_count": recent_likes + 1, "last_liker": liker_name, "post_thumbnail": post_thumbnail, "media_type": media_type},
                     send_push=True
                 )
         else:
@@ -1165,7 +1193,7 @@ class NotificationService:
                 image_url=avatar,
                 group_key=bundle_key,
                 dedupe_key=f"like:{post_id}:{liker_id}",
-                metadata={"like_count": 1, "post_thumbnail": post_thumbnail},
+                metadata={"like_count": 1, "post_thumbnail": post_thumbnail, "media_type": media_type},
                 send_push=True
             )
     
