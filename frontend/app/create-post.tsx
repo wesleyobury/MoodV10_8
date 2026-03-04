@@ -1655,11 +1655,17 @@ export default function CreatePost() {
                         
                         {/* Workout preview list */}
                         <View style={styles.achievementWorkoutPreview}>
-                          {achievement.workouts.slice(0, 2).map((workout: any, wIndex: number) => (
-                            <Text key={wIndex} style={styles.achievementWorkoutName} numberOfLines={1}>
-                              {workout.workoutName || workout.workoutTitle}
-                            </Text>
-                          ))}
+                          {achievement.workouts.slice(0, 2).map((workout: any, wIndex: number) => {
+                            const name = workout.workoutName || workout.workoutTitle;
+                            const equip = workout.equipment && workout.equipment !== 'None' ? workout.equipment : '';
+                            const label = equip ? `${name} \u2022 ${equip}` : name;
+                            const display = label.length > 40 ? label.slice(0, 37) + '...' : label;
+                            return (
+                              <Text key={wIndex} style={styles.achievementWorkoutName} numberOfLines={1}>
+                                {display}
+                              </Text>
+                            );
+                          })}
                           {achievement.workouts.length > 2 && (
                             <Text style={styles.achievementWorkoutMore}>
                               +{achievement.workouts.length - 2} more

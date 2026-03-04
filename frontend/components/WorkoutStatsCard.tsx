@@ -496,14 +496,21 @@ export default function WorkoutStatsCard({
 
           {/* Exercises List - below rings */}
           <View style={styles.transparentExercisesSection}>
-            {workouts.slice(0, 4).map((workout, index) => (
-              <View key={index} style={styles.transparentExerciseRow}>
-                <View style={styles.transparentExerciseDot} />
-                <Text style={styles.transparentExerciseText} numberOfLines={1}>
-                  {workout.workoutTitle || workout.workoutName}
-                </Text>
-              </View>
-            ))}
+            {workouts.slice(0, 4).map((workout, index) => {
+              const name = workout.workoutTitle || workout.workoutName;
+              const label = workout.equipment && workout.equipment !== 'None'
+                ? `${name} \u2022 ${workout.equipment}`
+                : name;
+              const display = label.length > 40 ? label.slice(0, 37) + '...' : label;
+              return (
+                <View key={index} style={styles.transparentExerciseRow}>
+                  <View style={styles.transparentExerciseDot} />
+                  <Text style={styles.transparentExerciseText} numberOfLines={1}>
+                    {display}
+                  </Text>
+                </View>
+              );
+            })}
             {workouts.length > 4 && (
               <Text style={styles.transparentMoreExercises}>+{workouts.length - 4} more</Text>
             )}
@@ -622,14 +629,21 @@ export default function WorkoutStatsCard({
 
         {/* Exercises */}
         <View style={styles.exercisesSection}>
-          {workouts.slice(0, 4).map((workout, index) => (
-            <View key={index} style={styles.exerciseRow}>
-              <View style={styles.exerciseDot} />
-              <Text style={styles.exerciseText} numberOfLines={1}>
-                {workout.workoutTitle || workout.workoutName}
-              </Text>
-            </View>
-          ))}
+          {workouts.slice(0, 4).map((workout, index) => {
+            const name = workout.workoutTitle || workout.workoutName;
+            const label = workout.equipment && workout.equipment !== 'None'
+              ? `${name} \u2022 ${workout.equipment}`
+              : name;
+            const display = label.length > 40 ? label.slice(0, 37) + '...' : label;
+            return (
+              <View key={index} style={styles.exerciseRow}>
+                <View style={styles.exerciseDot} />
+                <Text style={styles.exerciseText} numberOfLines={1}>
+                  {display}
+                </Text>
+              </View>
+            );
+          })}
           {workouts.length > 4 && (
             <Text style={styles.moreExercises}>+{workouts.length - 4} more</Text>
           )}
