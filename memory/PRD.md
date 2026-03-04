@@ -92,6 +92,12 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **D) NOTIF-CREATED evidence**: Log line includes `id`, `type`, `entity_id`, `recipient`, `actor`, `media_type`. Both like (single + bundled) and comment metadata include `media_type` field.
   - **Testing**: 14/14 VIBER backend tests passed + 16/16 initial acceptance tests.
 
+- [2026-03-04] Video Profile Grid Thumbnail Fix:
+  - **Backend**: Added `derive_post_media_fields()` helper. Every `PostResponse` now includes canonical `thumbnail_url` (from cover_urls or Cloudinary auto-thumb fallback) and `media_type` ("video"/"image"). Video detection includes `.m3u8` and `/video/` path.
+  - **Frontend Profile Grid**: Uses server-derived `thumbnail_url` as static `<Image>` for video tiles — never loads video. Falls back to `VideoThumbnail` component only when no cover URL exists.
+  - **Normalized**: `thumbnail_url` is the canonical field. Both Explore and Profile read the same source.
+  - **Testing**: 33/33 backend tests passed (unit + API integration + regression).
+
 ## Backlog
 - P2: Video pre-fetching for workout plans (Phase 2)
 - P2: Admin panel caching for expensive aggregations
