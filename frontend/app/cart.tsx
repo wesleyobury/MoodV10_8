@@ -177,7 +177,7 @@ export default function CartScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
-  const { cartItems, removeFromCart, clearCart, reorderCart, addToCart } = useCart();
+  const { cartItems, removeFromCart, clearCart, reorderCart, addToCart, replaceCart } = useCart();
   const { token } = useAuth();
   const [isStarting, setIsStarting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -212,6 +212,82 @@ export default function CartScreen() {
       }
     }
   }, [params.generatedCarts]);
+
+  // ────────────────────────────────────────────────────────
+  // A2 — Hydrate cart from push notification params (cold start fix)
+  // If the cart is empty AND the route was opened from a featured workout push,
+  // populate the cart from: (1) inline pushCartItems param, or (2) fetch by featuredId.
+  // This guarantees the cart renders correctly on cold start, background resume,
+  // and when replaceCart state is lost during navigation.
+  // ────────────────────────────────────────────────────────
+  const [hydrating, setHydrating] = useState(false);
+
+  useEffect(() => {
+    if (cartItems.length > 0) return;  // already populated
+    if (!params.featuredId && !params.pushCartItems) return;  // not from push
+
+    let cancelled = false;
+
+    const hydrate = async () => {
+      setHydrating(true);
+
+      // Path 1: use serialized cart items from the push payload
+      if (params.pushCartItems) {
+        try {
+          const items = JSON.parse(params.pushCartItems as string);
+          if (Array.isArray(items) && items.length > 0 && !cancelled) {
+            console.log(`🛒 Cart hydrated from pushCartItems (${items.length} items)`);
+            replaceCart(items);
+            setHydrating(false);
+            return;
+          }
+        } catch (e) {
+          console.warn('🛒 Failed to parse pushCartItems:', e);
+        }
+      }
+
+      // Path 2: fetch by featuredId from backend
+      if (params.featuredId) {
+        try {
+          const resp = await fetch(`${API_URL}/api/featured/workouts/batch`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: [params.featuredId] }),
+          });
+          if (resp.ok && !cancelled) {
+            const result = await resp.json();
+            const workout = result.workouts?.[0];
+            if (workout?.exercises?.length) {
+              const items: WorkoutItem[] = workout.exercises.map((ex: any) => ({
+                id: ex.id || ex.name || `hydrate-${Date.now()}`,
+                name: ex.name || '',
+                duration: ex.duration || '',
+                description: ex.description || '',
+                battlePlan: ex.battlePlan || '',
+                imageUrl: ex.image_url || ex.imageUrl || '',
+                intensityReason: ex.intensityReason || '',
+                equipment: ex.equipment || 'None',
+                difficulty: ex.difficulty || '',
+                workoutType: ex.workoutType || '',
+                moodCard: workout.title || params.workoutTitle || 'Featured Workout',
+                moodTips: [],
+                source: 'build_for_me' as const,
+              }));
+              console.log(`🛒 Cart hydrated from featuredId fetch (${items.length} exercises)`);
+              replaceCart(items);
+            }
+          }
+        } catch (e) {
+          console.warn('🛒 Failed to fetch featured workout for cart hydration:', e);
+        }
+      }
+
+      if (!cancelled) setHydrating(false);
+    };
+
+    hydrate();
+    return () => { cancelled = true; };
+  }, [params.featuredId, params.pushCartItems, cartItems.length]);
 
   // Handle skip to next generated cart
   const handleSkip = async () => {
@@ -534,8 +610,8 @@ export default function CartScreen() {
 
   const moodInfo = getMoodInfo();
 
-  // Empty state
-  if (cartItems.length === 0) {
+  // Empty state (but not if we're hydrating from a push notification)
+  if (cartItems.length === 0 && !hydrating) {
     return (
       <View style={styles.container}>
         <View style={[styles.emptyHeader, { paddingTop: insets.top + 10 }]}>

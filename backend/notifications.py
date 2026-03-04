@@ -363,21 +363,32 @@ class NotificationService:
         
         # Send push if enabled and not in quiet hours
         if send_push:
+            logger.info(f"🔔 PUSH-PATH: send_push=True type={notification_type.value} user={user_id[:8]}... dedupe_key={dedupe_key}")
             in_quiet_hours = self._is_in_quiet_hours(settings)
+            logger.info(f"🔔 PUSH-PATH: quiet_hours_enabled={settings.get('quiet_hours_enabled')}, in_quiet_hours={in_quiet_hours}")
             if in_quiet_hours:
-                logger.debug(f"User {user_id[:8]}... is in quiet hours, skipping push")
+                logger.info(f"🔔 PUSH-PATH: BLOCKED by quiet hours for user {user_id[:8]}... type={notification_type.value}")
             else:
-                await self._send_push_notification(
-                    user_id=user_id,
-                    notification_id=notification_id,
-                    title=title,
-                    body=body,
-                    deep_link=deep_link,
-                    notification_type=notification_type,
-                    image_url=image_url,
-                    metadata=metadata,
-                    event_key=dedupe_key,
-                )
+                logger.info(f"🔔 PUSH-PATH: Calling _send_push_notification type={notification_type.value} user={user_id[:8]}...")
+                try:
+                    push_result = await self._send_push_notification(
+                        user_id=user_id,
+                        notification_id=notification_id,
+                        title=title,
+                        body=body,
+                        deep_link=deep_link,
+                        notification_type=notification_type,
+                        image_url=image_url,
+                        metadata=metadata,
+                        event_key=dedupe_key,
+                    )
+                    logger.info(f"🔔 PUSH-PATH: _send_push_notification returned={push_result} for type={notification_type.value} user={user_id[:8]}...")
+                except Exception as push_err:
+                    logger.error(f"🔔 PUSH-PATH: EXCEPTION in _send_push_notification: {push_err}")
+                    import traceback
+                    logger.error(traceback.format_exc())
+        else:
+            logger.info(f"🔔 PUSH-PATH: send_push=False, skipping push for type={notification_type.value} user={user_id[:8]}...")
         
         # Track analytics
         await self._track_notification_event(user_id, "notification_created", notification_type.value)
@@ -403,7 +414,7 @@ class NotificationService:
     
     def _is_in_quiet_hours(self, settings: dict) -> bool:
         """Check if current time is within user's quiet hours"""
-        if not settings.get("quiet_hours_enabled", True):
+        if not settings.get("quiet_hours_enabled", False):
             return False
         
         try:
@@ -479,6 +490,8 @@ class NotificationService:
         event_key: Optional[str] = None,
     ) -> bool:
         """Send push notification via Expo Push API with idempotency check"""
+        logger.info(f"🔔 SEND-PUSH: ENTER type={notification_type.value} user={user_id[:8]}... event_key={event_key}")
+        
         # Idempotency: skip if this exact event was already pushed to this user
         if event_key:
             already_sent = await self._check_and_log_push_send(
@@ -487,16 +500,19 @@ class NotificationService:
                 event_key=event_key,
             )
             if already_sent:
-                logger.info(f"🔔 Push skipped (idempotent): user={user_id[:8]}... event_key={event_key}")
+                logger.info(f"🔔 SEND-PUSH: BLOCKED by idempotency (push_send_log duplicate) type={notification_type.value} user={user_id[:8]}...")
                 return False
+            logger.info(f"🔔 SEND-PUSH: idempotency check passed for type={notification_type.value}")
 
         tokens = await self.get_user_tokens(user_id)
         
+        logger.info(f"🔔 SEND-PUSH: tokens={len(tokens)} for user={user_id[:8]}... type={notification_type.value}")
+        
         if not tokens:
-            logger.info(f"🔔 Push: No valid tokens for user {user_id[:8]}... — skipping push")
+            logger.info(f"🔔 SEND-PUSH: NO TOKENS for user {user_id[:8]}... — push NOT sent for type={notification_type.value}")
             return False
         
-        logger.info(f"🔔 Push: Found {len(tokens)} token(s) for user {user_id[:8]}... type={notification_type.value}")
+        logger.info(f"🔔 SEND-PUSH: Found {len(tokens)} token(s) for user {user_id[:8]}... type={notification_type.value}")
         
         # Build base data payload
         data_payload: Dict[str, Any] = {

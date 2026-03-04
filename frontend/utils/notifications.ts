@@ -416,12 +416,18 @@ class NotificationService {
       this._replaceCart(cartItems);
     }
 
-    // Navigate to cart screen
+    // Navigate to cart screen — pass featuredId + serialized cart items as params
+    // so the Cart screen can self-hydrate even if replaceCart state is lost on cold start
     if (this._router) {
       try {
         this._router.push({
           pathname: '/cart',
-          params: { workoutId, workoutTitle, fromPush: 'true' },
+          params: {
+            featuredId: workoutId,
+            workoutTitle,
+            fromPush: 'true',
+            pushCartItems: cartItems.length > 0 ? JSON.stringify(cartItems) : undefined,
+          },
         });
       } catch (e) {
         console.warn('🔔 Router navigation failed, falling back to Linking:', e);

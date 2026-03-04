@@ -11388,6 +11388,25 @@ async def admin_send_featured_workout(
     if not await is_admin_allowed(current_user_id):
         raise HTTPException(status_code=403, detail="Admin access required - not in allowlist")
     
+    # Validate featured workout exists and has exercises
+    try:
+        workout_doc = await db.featured_workouts.find_one(
+            {"_id": ObjectId(data.workout_id)},
+            {"exercises": 1, "title": 1}
+        )
+    except Exception:
+        raise HTTPException(status_code=400, detail=f"Invalid workout_id: {data.workout_id}")
+    
+    if not workout_doc:
+        raise HTTPException(status_code=400, detail=f"Featured workout not found: {data.workout_id}")
+    
+    exercises = workout_doc.get("exercises", [])
+    if not exercises:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Featured workout '{workout_doc.get('title', data.workout_id)}' has no exercises. Cannot send push with empty cart."
+        )
+    
     notification_service = get_notification_service(db)
     count = await notification_service.send_featured_workout_to_all(
         workout_id=data.workout_id,
@@ -11402,7 +11421,8 @@ async def admin_send_featured_workout(
     return {
         "success": True,
         "notifications_sent": count,
-        "message": f"Featured workout notification sent to {count} users"
+        "exercises_count": len(exercises),
+        "message": f"Featured workout notification sent to {count} users ({len(exercises)} exercises)"
     }
 
 @api_router.post("/admin/notifications/featured-suggestion")
