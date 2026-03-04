@@ -1839,30 +1839,33 @@ export default function CreatePost() {
                 </View>
               </View>
               
-              <View style={styles.statsCardWrapper} ref={statsCardRef} collapsable={false}>
-                <WorkoutStatsCard 
-                  {...workoutStats} 
-                  editedDuration={editedDuration}
-                  editedCalories={editedCalories}
-                  calorieTarget={calorieTarget}
-                  minuteTarget={minuteTarget}
-                  showRingPulse={true}
-                  showEquipment={showEquipment}
-                />
-              </View>
-              
-              {/* Equipment toggle — share screen only */}
-              <TouchableOpacity
-                data-testid="equipment-toggle"
-                style={styles.equipmentToggleRow}
-                onPress={() => setShowEquipment(prev => !prev)}
-                activeOpacity={0.7}
-              >
-                <View style={[styles.equipmentToggleTrack, showEquipment && styles.equipmentToggleTrackOn]}>
-                  <View style={[styles.equipmentToggleThumb, showEquipment && styles.equipmentToggleThumbOn]} />
+              {/* Card + equipment toggle overlay */}
+              <View style={styles.cardWithToggleContainer}>
+                <View style={styles.statsCardWrapper} ref={statsCardRef} collapsable={false}>
+                  <WorkoutStatsCard 
+                    {...workoutStats} 
+                    editedDuration={editedDuration}
+                    editedCalories={editedCalories}
+                    calorieTarget={calorieTarget}
+                    minuteTarget={minuteTarget}
+                    showRingPulse={true}
+                    showEquipment={showEquipment}
+                  />
                 </View>
-                <Text style={styles.equipmentToggleLabel}>include equipment name</Text>
-              </TouchableOpacity>
+                
+                {/* Equipment toggle — overlayed on bottom of card, share screen only */}
+                <TouchableOpacity
+                  testID="equipment-toggle"
+                  style={styles.equipmentToggleOverlay}
+                  onPress={() => setShowEquipment(prev => !prev)}
+                  activeOpacity={0.7}
+                >
+                  <View style={[styles.equipmentToggleTrack, showEquipment && styles.equipmentToggleTrackOn]}>
+                    <View style={[styles.equipmentToggleThumb, showEquipment && styles.equipmentToggleThumbOn]} />
+                  </View>
+                  <Text style={styles.equipmentToggleLabel}>include equipment name</Text>
+                </TouchableOpacity>
+              </View>
               
               {/* Hidden transparent card for Instagram export */}
               <View style={styles.hiddenCardContainer} ref={transparentCardRef} collapsable={false}>
@@ -2335,40 +2338,47 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.5)',
     lineHeight: 16,
   },
-  equipmentToggleRow: {
+  equipmentToggleOverlay: {
+    position: 'absolute',
+    bottom: 12,
+    right: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-start',
-    gap: 8,
-    marginTop: 10,
-    marginBottom: 2,
-    paddingHorizontal: 4,
+    gap: 6,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    borderRadius: 10,
+    zIndex: 10,
   },
   equipmentToggleTrack: {
-    width: 32,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    width: 28,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     paddingHorizontal: 2,
   },
   equipmentToggleTrackOn: {
-    backgroundColor: 'rgba(255,255,255,0.35)',
+    backgroundColor: 'rgba(255,255,255,0.4)',
   },
   equipmentToggleThumb: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    backgroundColor: '#888',
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#666',
   },
   equipmentToggleThumbOn: {
     alignSelf: 'flex-end',
-    backgroundColor: '#ccc',
+    backgroundColor: '#bbb',
   },
   equipmentToggleLabel: {
-    fontSize: 12,
-    color: '#999',
-    letterSpacing: 0.2,
+    fontSize: 10,
+    color: '#aaa',
+    letterSpacing: 0.1,
+  },
+  cardWithToggleContainer: {
+    position: 'relative',
   },
   attachmentHint: {
     color: 'rgba(255, 255, 255, 0.4)',
