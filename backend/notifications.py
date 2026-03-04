@@ -861,8 +861,18 @@ class NotificationService:
             logger.warning(f"🔔 trigger_comment_notification: Post not found: {post_id}")
             return None
         
-        post_author_id = post.get("author_id")
-        if not post_author_id or str(post_author_id) == commenter_id:
+        post_author_id = None
+        for key in ("author_id", "user_id", "creator_id", "owner_id"):
+            val = post.get(key)
+            if val:
+                post_author_id = str(val)
+                break
+        
+        if not post_author_id:
+            logger.warning(f"🔔 trigger_comment_notification: Post {post_id} missing author fields, keys={[k for k in post.keys() if k != '_id']}")
+            return None
+        
+        if post_author_id == commenter_id:
             # Don't notify yourself
             logger.info(f"🔔 trigger_comment_notification: Skipping self-comment")
             return None

@@ -22,6 +22,23 @@ import cloudinary.uploader
 import cloudinary.api
 import re
 import httpx
+
+# ────────────────────────────────────────────────────────
+# Shared helpers
+# ────────────────────────────────────────────────────────
+
+def resolve_post_author_id(post: dict) -> str:
+    """Resolve the canonical author of a post, checking multiple field names.
+    
+    Returns the author ID as a string, or "" if none found.
+    Priority: author_id > user_id > creator_id > owner_id
+    """
+    for key in ("author_id", "user_id", "creator_id", "owner_id"):
+        val = post.get(key)
+        if val:
+            return str(val)
+    return ""
+
 from auth import (
     exchange_session_id_for_token,
     create_or_update_user,
@@ -7358,6 +7375,11 @@ async def create_post(post_data: PostCreate, current_user_id: str = Depends(get_
     }
     
     result = await db.posts.insert_one(post_doc)
+    
+    # B2: Assertion — every post must have author_id
+    if not post_doc.get("author_id"):
+        logger.error(f"🚨 POST CREATED WITHOUT author_id! post_id={result.inserted_id}")
+    
     logger.info(f"✅ Post created: {result.inserted_id}, has_attached_workout: {attached_workout is not None}")
     return {"message": "Post created successfully", "id": str(result.inserted_id)}
 
@@ -7845,9 +7867,11 @@ async def like_post(post_id: str, current_user_id: str = Depends(get_current_use
             # Trigger like notification (bundled only - no single-like spam)
             if updated_post:
                 try:
-                    post_author_id = str(updated_post.get("author_id", ""))
-                    logger.info(f"🔔 DEBUG Like notification: liker={current_user_id[:8]}..., author={post_author_id[:8] if post_author_id else 'None'}...")
-                    if post_author_id and post_author_id != current_user_id:
+                    post_author_id = resolve_post_author_id(updated_post)
+                    logger.info(f"🔔 DEBUG Like notification: liker={current_user_id[:8]}..., author={post_author_id[:8] if post_author_id else 'EMPTY'}...")
+                    if not post_author_id:
+                        logger.warning(f"⚠️ POST MISSING AUTHOR FIELDS: post_id={post_id}, keys={[k for k in updated_post.keys() if k != '_id']}")
+                    elif post_author_id != current_user_id:
                         notification_service = get_notification_service(db)
                         result = await notification_service.trigger_like_notification(
                             liker_id=current_user_id,
@@ -7856,7 +7880,7 @@ async def like_post(post_id: str, current_user_id: str = Depends(get_current_use
                         )
                         logger.info(f"🔔 DEBUG Like notification result: {result}")
                     else:
-                        logger.info(f"🔔 DEBUG Like notification skipped: self-like or no author")
+                        logger.info(f"🔔 DEBUG Like notification skipped: self-like")
                 except Exception as e:
                     logger.error(f"Failed to send like notification: {e}")
                     import traceback
@@ -11571,6 +11595,48 @@ async def _cleanup_duplicate_device_tokens(database):
         logger.info("✅ No duplicate device tokens found")
 
 
+async def _migrate_posts_author_id(database):
+    """One-time migration: backfill author_id on posts that only have user_id/creator_id/owner_id."""
+    query = {"$or": [
+        {"author_id": {"$exists": False}},
+        {"author_id": None},
+        {"author_id": ""},
+    ]}
+    
+    posts_to_fix = await database.posts.find(query).to_list(10000)
+    
+    if not posts_to_fix:
+        logger.info("✅ Migration: All posts have author_id — nothing to do")
+        return {"fixed": 0, "orphaned": []}
+    
+    fixed = 0
+    orphaned = []
+    
+    for post in posts_to_fix:
+        post_id = post["_id"]
+        # Try fallback fields in priority order
+        resolved = None
+        for key in ("user_id", "creator_id", "owner_id"):
+            val = post.get(key)
+            if val:
+                resolved = val if isinstance(val, ObjectId) else ObjectId(str(val))
+                break
+        
+        if resolved:
+            await database.posts.update_one(
+                {"_id": post_id},
+                {"$set": {"author_id": resolved}}
+            )
+            fixed += 1
+            logger.info(f"🔧 Migration: Set author_id={resolved} on post {post_id} (from '{key}')")
+        else:
+            orphaned.append(str(post_id))
+            logger.warning(f"⚠️ Migration: Post {post_id} has NO author fields — manual review needed")
+    
+    logger.info(f"🔧 Migration complete: {fixed} posts fixed, {len(orphaned)} orphaned")
+    return {"fixed": fixed, "orphaned": orphaned}
+
+
 @app.on_event("startup")
 async def startup_db_client():
     """Start background services on app startup"""
@@ -11645,6 +11711,13 @@ async def startup_db_client():
         logger.info("✅ MongoDB indexes verified/created for analytics")
     except Exception as e:
         logger.error(f"⚠️ Failed to create some indexes: {e}")
+    
+    # One-time migration: backfill author_id on legacy posts
+    try:
+        migration_result = await _migrate_posts_author_id(db)
+        logger.info(f"✅ Post author_id migration: {migration_result}")
+    except Exception as e:
+        logger.error(f"⚠️ Post author_id migration failed: {e}")
     
     # Start notification background worker
     try:
