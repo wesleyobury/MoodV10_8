@@ -59,6 +59,15 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - Fixed push title/body: defaults to workout_name as title (not random copy library); custom_title/custom_body used exactly when provided
   - Fixed "unknown" sender in notification tab: trigger_featured_workout_notification now passes admin's user_id as actor_id → notification lookup joins actor data → shows officialmoodapp profile
   - Fixed empty cart on featured workout push tap: corrected fetch URL from /api/featured/batch to /api/featured/workouts/batch
+- [2026-03-04] Like push notifications — end-to-end fix:
+  - Root cause: single-like notifications were stored with send_push=False (only bundled likes >=3 in 10min sent pushes)
+  - Fix: Changed single likes to send_push=True — every like now sends a push immediately
+  - Push copy: "New like" / "{likerName} liked your post" (Instagram-style)
+  - Deep link: Updated LIKE scheme from mood://notifications to mood://post/{entity_id} (opens the liked post)
+  - Dedupe: Added dedupe_key (like:{postId}:{likerId}) to create_notification — prevents spam from rapid re-likes
+  - Push data enrichment: engagement pushes now include targetType + targetId for mobile routing
+  - Logging: Added token count + push type logging in _send_push_notification
+  - Existing safeguards preserved: self-like skipped, user prefs respected, following-only filter, quiet hours
 
 ## Backlog
 - P2: Fix unbounded query `.to_list(100000)` in `server.py` (pagination)

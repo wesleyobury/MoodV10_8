@@ -73,11 +73,11 @@ SUGGESTION_COPY_LIBRARY = [
 
 # Deep link URL schemes
 DEEP_LINK_SCHEMES = {
-    NotificationType.LIKE: "mood://notifications",  # Go to notifications tab
-    NotificationType.COMMENT: "mood://notifications",  # Go to notifications tab
+    NotificationType.LIKE: "mood://post/{entity_id}",  # Open the liked post
+    NotificationType.COMMENT: "mood://post/{entity_id}",  # Open the commented post
     NotificationType.FOLLOW: "mood://notifications",  # Go to notifications tab
-    NotificationType.MENTION: "mood://notifications",  # Go to notifications tab
-    NotificationType.REPLY: "mood://notifications",  # Go to notifications tab
+    NotificationType.MENTION: "mood://post/{entity_id}",  # Open the mentioned post
+    NotificationType.REPLY: "mood://post/{entity_id}",  # Open the replied post
     NotificationType.MESSAGE: "mood://chat/{entity_id}",
     NotificationType.FEATURED_WORKOUT: "mood://cart/{entity_id}",  # Go directly to cart
     NotificationType.WORKOUT_REMINDER: "mood://home",  # Go to home
@@ -271,11 +271,14 @@ class NotificationService:
         image_url: Optional[str] = None,
         metadata: Optional[dict] = None,
         group_key: Optional[str] = None,
+        dedupe_key: Optional[str] = None,
         send_push: bool = True
     ) -> Optional[str]:
         """
-        Create a notification and optionally send push
-        Returns notification ID or None if not created
+        Create a notification and optionally send push.
+        dedupe_key: if provided and a notification with this key already exists
+                    for the same user, skip creation (prevents spam from rapid re-likes etc).
+        Returns notification ID or None if not created.
         """
         now = datetime.now(timezone.utc)
         
@@ -319,6 +322,16 @@ class NotificationService:
                     logger.debug(f"Skipping {notification_type.value} from non-followed user")
                     return None
         
+        # Dedupe check: if this exact event already produced a notification, skip
+        if dedupe_key:
+            existing = await self.db.notifications.find_one({
+                "user_id": user_id,
+                "metadata.dedupe_key": dedupe_key
+            })
+            if existing:
+                logger.info(f"🔔 Dedupe hit for key={dedupe_key}, skipping notification")
+                return str(existing["_id"])
+        
         # Generate deep link
         deep_link = self._generate_deep_link(notification_type, actor_id, entity_id)
         
@@ -333,7 +346,7 @@ class NotificationService:
             "entity_type": entity_type,
             "image_url": image_url,
             "deep_link": deep_link,
-            "metadata": metadata or {},
+            "metadata": {**(metadata or {}), **({"dedupe_key": dedupe_key} if dedupe_key else {})},
             "group_key": group_key,
             "created_at": now,
             "read_at": None,
@@ -434,8 +447,10 @@ class NotificationService:
         tokens = await self.get_user_tokens(user_id)
         
         if not tokens:
-            logger.debug(f"No push tokens for user {user_id[:8]}...")
+            logger.info(f"🔔 Push: No valid tokens for user {user_id[:8]}... — skipping push")
             return False
+        
+        logger.info(f"🔔 Push: Found {len(tokens)} token(s) for user {user_id[:8]}... type={notification_type.value}")
         
         # Build base data payload
         data_payload: Dict[str, Any] = {
@@ -443,6 +458,14 @@ class NotificationService:
             "type": notification_type.value,
             "deep_link": deep_link,
         }
+
+        # Enrich engagement pushes (like, comment, follow, mention) with
+        # actor + target info so the mobile client can route properly
+        if notification_type in [NotificationType.LIKE, NotificationType.COMMENT, NotificationType.MENTION, NotificationType.REPLY]:
+            # Extract entity_id from the deep link (format: mood://post/{entity_id})
+            entity_from_link = deep_link.rsplit("/", 1)[-1] if "/" in deep_link else ""
+            data_payload["targetType"] = "post"
+            data_payload["targetId"] = entity_from_link
 
         # Enrich featured_workout pushes with workout context so the
         # mobile client can populate the cart directly from the push data
@@ -1029,7 +1052,7 @@ class NotificationService:
                     {"_id": existing_bundle["_id"]},
                     {
                         "$set": {
-                            "body": f"{liker_name} and {like_count - 1} others liked your post.",
+                            "body": f"{liker_name} and {like_count - 1} others liked your post",
                             "metadata.like_count": like_count,
                             "metadata.last_liker": liker_name,
                             "metadata.post_thumbnail": post_thumbnail,
@@ -1038,37 +1061,40 @@ class NotificationService:
                         }
                     }
                 )
+                logger.info(f"🔔 Like notification: updated bundle, count={like_count}")
                 return str(existing_bundle["_id"])
             else:
-                # Create new bundled notification - IG-style copy
+                # Create new bundled notification
                 return await self.create_notification(
                     user_id=post_author_id,
                     notification_type=NotificationType.LIKE,
-                    title="Activity",  # IG-style minimal title
-                    body=f"{liker_name} and {recent_likes} others liked your photo.",
+                    title="New like",
+                    body=f"{liker_name} and {recent_likes} others liked your post",
                     actor_id=liker_id,
                     entity_id=post_id,
                     entity_type="post",
                     image_url=avatar,
                     group_key=bundle_key,
+                    dedupe_key=f"like:{post_id}:{liker_id}",
                     metadata={"like_count": recent_likes + 1, "last_liker": liker_name, "post_thumbnail": post_thumbnail},
                     send_push=True
                 )
         else:
-            # Not enough for bundle yet - store but DON'T push (likes only bundled)
-            # IG-style: "username liked your photo."
+            # Single like — send push immediately (Instagram-style)
+            logger.info(f"🔔 Like notification: sending single-like push for post {post_id[:8]}...")
             return await self.create_notification(
                 user_id=post_author_id,
                 notification_type=NotificationType.LIKE,
-                title="New Like",
-                body=f"{liker_name} liked your photo.",  # IG-style
+                title="New like",
+                body=f"{liker_name} liked your post",
                 actor_id=liker_id,
                 entity_id=post_id,
                 entity_type="post",
                 image_url=avatar,
                 group_key=bundle_key,
+                dedupe_key=f"like:{post_id}:{liker_id}",
                 metadata={"like_count": 1, "post_thumbnail": post_thumbnail},
-                send_push=False  # Don't push single likes - only bundled
+                send_push=True
             )
     
     async def trigger_workout_reminder(
