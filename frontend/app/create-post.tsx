@@ -106,6 +106,9 @@ export default function CreatePost() {
   const [calorieTarget, setCalorieTarget] = useState(500);
   const [minuteTarget, setMinuteTarget] = useState(60);
   
+  // Equipment toggle for achievement card exercise labels
+  const [showEquipment, setShowEquipment] = useState(true);
+  
   // Permission notice modal state
   const [showPermissionModal, setShowPermissionModal] = useState(false);
   const [permissionType, setPermissionType] = useState<'camera' | 'library'>('camera');
@@ -1844,8 +1847,22 @@ export default function CreatePost() {
                   calorieTarget={calorieTarget}
                   minuteTarget={minuteTarget}
                   showRingPulse={true}
+                  showEquipment={showEquipment}
                 />
               </View>
+              
+              {/* Equipment toggle — share screen only */}
+              <TouchableOpacity
+                data-testid="equipment-toggle"
+                style={styles.equipmentToggleRow}
+                onPress={() => setShowEquipment(prev => !prev)}
+                activeOpacity={0.7}
+              >
+                <View style={[styles.equipmentToggleTrack, showEquipment && styles.equipmentToggleTrackOn]}>
+                  <View style={[styles.equipmentToggleThumb, showEquipment && styles.equipmentToggleThumbOn]} />
+                </View>
+                <Text style={styles.equipmentToggleLabel}>include equipment name</Text>
+              </TouchableOpacity>
               
               {/* Hidden transparent card for Instagram export */}
               <View style={styles.hiddenCardContainer} ref={transparentCardRef} collapsable={false}>
@@ -1856,6 +1873,7 @@ export default function CreatePost() {
                   editedCalories={editedCalories}
                   calorieTarget={calorieTarget}
                   minuteTarget={minuteTarget}
+                  showEquipment={showEquipment}
                 />
               </View>
               
@@ -2316,6 +2334,41 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: 'rgba(255, 255, 255, 0.5)',
     lineHeight: 16,
+  },
+  equipmentToggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    gap: 8,
+    marginTop: 10,
+    marginBottom: 2,
+    paddingHorizontal: 4,
+  },
+  equipmentToggleTrack: {
+    width: 32,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    justifyContent: 'center',
+    paddingHorizontal: 2,
+  },
+  equipmentToggleTrackOn: {
+    backgroundColor: 'rgba(255,255,255,0.35)',
+  },
+  equipmentToggleThumb: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    backgroundColor: '#888',
+  },
+  equipmentToggleThumbOn: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#ccc',
+  },
+  equipmentToggleLabel: {
+    fontSize: 12,
+    color: '#999',
+    letterSpacing: 0.2,
   },
   attachmentHint: {
     color: 'rgba(255, 255, 255, 0.4)',

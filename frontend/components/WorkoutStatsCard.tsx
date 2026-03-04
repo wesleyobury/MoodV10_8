@@ -113,7 +113,8 @@ interface WorkoutStatsCardProps {
   editedCalories?: number;
   calorieTarget?: number;
   minuteTarget?: number;
-  showRingPulse?: boolean; // Enable soft pulsing animation on rings for share screen
+  showRingPulse?: boolean;
+  showEquipment?: boolean;
 }
 
 // Calculate intensity percentage based on workout characteristics
@@ -165,6 +166,7 @@ export default function WorkoutStatsCard({
   calorieTarget = DEFAULT_CALORIE_TARGET,
   minuteTarget = DEFAULT_MINUTE_TARGET,
   showRingPulse = false,
+  showEquipment = true,
 }: WorkoutStatsCardProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -498,7 +500,7 @@ export default function WorkoutStatsCard({
           <View style={styles.transparentExercisesSection}>
             {workouts.slice(0, 4).map((workout, index) => {
               const name = workout.workoutTitle || workout.workoutName;
-              const label = workout.equipment && workout.equipment !== 'None'
+              const label = showEquipment && workout.equipment && workout.equipment !== 'None'
                 ? `${name} \u2022 ${workout.equipment}`
                 : name;
               const display = label.length > 40 ? label.slice(0, 37) + '...' : label;
@@ -631,7 +633,7 @@ export default function WorkoutStatsCard({
         <View style={styles.exercisesSection}>
           {workouts.slice(0, 4).map((workout, index) => {
             const name = workout.workoutTitle || workout.workoutName;
-            const label = workout.equipment && workout.equipment !== 'None'
+            const label = showEquipment && workout.equipment && workout.equipment !== 'None'
               ? `${name} \u2022 ${workout.equipment}`
               : name;
             const display = label.length > 40 ? label.slice(0, 37) + '...' : label;
