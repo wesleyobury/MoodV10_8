@@ -109,38 +109,39 @@ class NotificationService:
         platform: str,  # 'ios', 'android', 'web'
         device_id: Optional[str] = None
     ) -> dict:
-        """Register or update a device push token"""
+        """Register or update a device push token using upsert to prevent duplicates.
+        
+        A push token is device-specific. If the same token is re-registered
+        (even by a different user after logout/login), we upsert on the token
+        field to guarantee exactly one document per token.
+        """
         now = datetime.now(timezone.utc)
         
-        # Check if token already exists for this user
-        existing = await self.db.device_tokens.find_one({
-            "user_id": user_id,
-            "token": token
-        })
+        result = await self.db.device_tokens.update_one(
+            {"token": token},
+            {
+                "$set": {
+                    "user_id": user_id,
+                    "platform": platform,
+                    "device_id": device_id,
+                    "last_active": now,
+                    "is_valid": True,
+                },
+                "$setOnInsert": {
+                    "token": token,
+                    "created_at": now,
+                },
+            },
+            upsert=True,
+        )
         
-        if existing:
-            # Update last_active
-            await self.db.device_tokens.update_one(
-                {"_id": existing["_id"]},
-                {"$set": {"last_active": now, "platform": platform}}
-            )
-            return {"status": "updated", "id": str(existing["_id"])}
-        
-        # Insert new token
-        doc = {
-            "user_id": user_id,
-            "token": token,
-            "platform": platform,
-            "device_id": device_id,
-            "created_at": now,
-            "last_active": now,
-            "is_valid": True
-        }
-        
-        result = await self.db.device_tokens.insert_one(doc)
-        logger.info(f"📱 Registered device token for user {user_id[:8]}... on {platform}")
-        
-        return {"status": "created", "id": str(result.inserted_id)}
+        if result.upserted_id:
+            logger.info(f"📱 Registered NEW device token for user {user_id[:8]}... on {platform}")
+            return {"status": "created", "id": str(result.upserted_id)}
+        else:
+            logger.info(f"📱 Updated device token for user {user_id[:8]}... on {platform}")
+            existing = await self.db.device_tokens.find_one({"token": token}, {"_id": 1})
+            return {"status": "updated", "id": str(existing["_id"]) if existing else "unknown"}
     
     async def unregister_device_token(self, user_id: str, token: str) -> bool:
         """Remove a device token"""
@@ -158,13 +159,13 @@ class NotificationService:
         )
     
     async def get_user_tokens(self, user_id: str) -> List[str]:
-        """Get all valid, unique push tokens for a user"""
-        tokens = await self.db.device_tokens.find({
-            "user_id": user_id,
-            "is_valid": True
-        }).to_list(10)
+        """Get all valid push tokens for a user (unique by DB constraint)"""
+        tokens = await self.db.device_tokens.find(
+            {"user_id": user_id, "is_valid": True},
+            {"token": 1, "_id": 0},
+        ).to_list(10)
         
-        # Deduplicate tokens (same token can be registered multiple times)
+        # Defensive dedup in case legacy duplicates still exist
         seen = set()
         unique = []
         for t in tokens:
@@ -374,7 +375,8 @@ class NotificationService:
                     deep_link=deep_link,
                     notification_type=notification_type,
                     image_url=image_url,
-                    metadata=metadata
+                    metadata=metadata,
+                    event_key=dedupe_key,
                 )
         
         # Track analytics
@@ -429,6 +431,38 @@ class NotificationService:
             return False
     
     # ----------------------------------------
+    # PUSH SEND LOG (IDEMPOTENCY)
+    # ----------------------------------------
+
+    async def _check_and_log_push_send(
+        self,
+        user_id: str,
+        push_type: str,
+        event_key: str,
+    ) -> bool:
+        """Check if this push was already sent. Returns True if already sent (skip).
+        
+        Uses a unique index on (user_id, type, event_key) in push_send_log
+        to guarantee at-most-once delivery per event per user.
+        """
+        try:
+            await self.db.push_send_log.insert_one({
+                "user_id": user_id,
+                "type": push_type,
+                "event_key": event_key,
+                "created_at": datetime.now(timezone.utc),
+            })
+            return False  # Not a duplicate, proceed with send
+        except Exception as e:
+            # Duplicate key error (code 11000) means already sent
+            if "11000" in str(e) or "duplicate key" in str(e).lower():
+                logger.info(f"🔔 PushSendLog: duplicate for user={user_id[:8]}... type={push_type} key={event_key}")
+                return True
+            # For other errors, log but allow the send to proceed
+            logger.warning(f"PushSendLog check error: {e}")
+            return False
+
+    # ----------------------------------------
     # PUSH NOTIFICATION DELIVERY
     # ----------------------------------------
     
@@ -441,9 +475,21 @@ class NotificationService:
         deep_link: str,
         notification_type: NotificationType,
         image_url: Optional[str] = None,
-        metadata: Optional[dict] = None
+        metadata: Optional[dict] = None,
+        event_key: Optional[str] = None,
     ) -> bool:
-        """Send push notification via Expo Push API"""
+        """Send push notification via Expo Push API with idempotency check"""
+        # Idempotency: skip if this exact event was already pushed to this user
+        if event_key:
+            already_sent = await self._check_and_log_push_send(
+                user_id=user_id,
+                push_type=notification_type.value,
+                event_key=event_key,
+            )
+            if already_sent:
+                logger.info(f"🔔 Push skipped (idempotent): user={user_id[:8]}... event_key={event_key}")
+                return False
+
         tokens = await self.get_user_tokens(user_id)
         
         if not tokens:
@@ -1097,13 +1143,33 @@ class NotificationService:
                 send_push=True
             )
     
+    async def get_admin_user_id(self) -> Optional[str]:
+        """Get the admin user ID (officialmoodapp) for server-initiated notifications"""
+        admin = await self.db.users.find_one(
+            {"username": "officialmoodapp"},
+            {"_id": 1}
+        )
+        if admin:
+            return str(admin["_id"])
+        # Fallback: try any admin user
+        admin = await self.db.users.find_one(
+            {"is_admin": True},
+            {"_id": 1}
+        )
+        return str(admin["_id"]) if admin else None
+
     async def trigger_workout_reminder(
         self,
         user_id: str,
-        custom_message: Optional[str] = None
+        custom_message: Optional[str] = None,
+        actor_id: Optional[str] = None
     ) -> Optional[str]:
         """Trigger a workout reminder notification with motivational copy"""
         import random
+        
+        # Use provided actor_id or look up admin user
+        if not actor_id:
+            actor_id = await self.get_admin_user_id()
         
         # Pick random copy from library
         copy = custom_message or random.choice(SUGGESTION_COPY_LIBRARY)
@@ -1113,6 +1179,8 @@ class NotificationService:
             notification_type=NotificationType.WORKOUT_REMINDER,
             title="Time to Move",
             body=copy,
+            actor_id=actor_id,
+            dedupe_key=f"workout_reminder:{user_id}:{datetime.now(timezone.utc).strftime('%Y%m%d')}",
             metadata={"copy_variant": copy}
         )
     
@@ -1132,6 +1200,10 @@ class NotificationService:
         Otherwise, use workout_name as title and random body from copy library.
         actor_id is the admin who sent the push (shown as sender in notification feed).
         """
+        # Always ensure actor_id is set for server-initiated pushes
+        if not actor_id:
+            actor_id = await self.get_admin_user_id()
+        
         deep_link = f"mood://cart?featuredId={workout_id}"
 
         if custom_title and custom_body:
@@ -1159,6 +1231,7 @@ class NotificationService:
             entity_id=workout_id,
             entity_type="featured_workout",
             image_url=workout_image,
+            dedupe_key=f"featured_workout:{workout_id}:{user_id}",
             metadata={
                 "workout_name": workout_name,
                 "workout_id": workout_id,
@@ -1169,10 +1242,15 @@ class NotificationService:
     async def trigger_featured_suggestion(
         self,
         user_id: str,
-        custom_copy: Optional[str] = None
+        custom_copy: Optional[str] = None,
+        actor_id: Optional[str] = None
     ) -> Optional[str]:
         """Trigger a featured suggestion push with motivational copy"""
         import random
+        
+        # Always ensure actor_id is set for server-initiated pushes
+        if not actor_id:
+            actor_id = await self.get_admin_user_id()
         
         # Pick random copy from library
         copy = custom_copy or random.choice(SUGGESTION_COPY_LIBRARY)
@@ -1182,6 +1260,8 @@ class NotificationService:
             notification_type=NotificationType.FEATURED_SUGGESTION,
             title="MOOD",
             body=copy,
+            actor_id=actor_id,
+            dedupe_key=f"featured_suggestion:{user_id}:{datetime.now(timezone.utc).strftime('%Y%m%d%H')}",
             metadata={"copy_variant": copy}
         )
     
@@ -1237,13 +1317,17 @@ class NotificationService:
     async def send_featured_suggestion_to_all(
         self,
         custom_copy: Optional[str] = None,
-        target_user_ids: Optional[List[str]] = None
+        target_user_ids: Optional[List[str]] = None,
+        sender_user_id: Optional[str] = None
     ) -> int:
         """
         Admin function: Send featured suggestion to all users
         or a specific list of users.
         """
         import random
+        
+        # Resolve admin actor_id for sender attribution
+        actor_id = sender_user_id or await self.get_admin_user_id()
         
         if target_user_ids:
             users = await self.db.users.find(
@@ -1267,7 +1351,8 @@ class NotificationService:
             
             result = await self.trigger_featured_suggestion(
                 user_id=user_id,
-                custom_copy=copy
+                custom_copy=copy,
+                actor_id=actor_id
             )
             if result:
                 count += 1

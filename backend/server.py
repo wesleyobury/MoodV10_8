@@ -1582,7 +1582,7 @@ async def get_time_series_analytics(
             events = await db.user_events.find(
                 base_filter,
                 {"user_id": 1, "timestamp": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             users_by_period = defaultdict(set)
             for event in events:
@@ -1598,7 +1598,7 @@ async def get_time_series_analytics(
             events = await db.user_events.find(
                 query,
                 {"timestamp": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             for event in events:
                 if event.get("timestamp"):
@@ -1610,7 +1610,7 @@ async def get_time_series_analytics(
             events = await db.user_events.find(
                 query,
                 {"timestamp": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             for event in events:
                 if event.get("timestamp"):
@@ -1622,7 +1622,7 @@ async def get_time_series_analytics(
             events = await db.user_events.find(
                 query,
                 {"timestamp": 1, "metadata": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             for event in events:
                 if event.get("timestamp"):
@@ -1636,7 +1636,7 @@ async def get_time_series_analytics(
             events = await db.user_events.find(
                 query,
                 {"timestamp": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             for event in events:
                 if event.get("timestamp"):
@@ -1648,7 +1648,7 @@ async def get_time_series_analytics(
             events = await db.user_events.find(
                 query,
                 {"timestamp": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             for event in events:
                 if event.get("timestamp"):
@@ -1660,7 +1660,7 @@ async def get_time_series_analytics(
             events = await db.user_events.find(
                 query,
                 {"timestamp": 1, "metadata": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             for event in events:
                 if event.get("timestamp"):
@@ -1675,7 +1675,7 @@ async def get_time_series_analytics(
             posts = await db.posts.find(
                 posts_filter,
                 {"created_at": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             for post in posts:
                 if post.get("created_at"):
@@ -1688,7 +1688,7 @@ async def get_time_series_analytics(
             events = await db.user_events.find(
                 query,
                 {"timestamp": 1, "event_type": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             for event in events:
                 if event.get("timestamp"):
@@ -1703,7 +1703,7 @@ async def get_time_series_analytics(
             users = await db.users.find(
                 users_filter,
                 {"created_at": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             for user in users:
                 if user.get("created_at"):
@@ -1791,7 +1791,7 @@ async def get_metric_breakdown(
             events = await db.user_events.find(
                 {"timestamp": {"$gte": cutoff}, "event_type": {"$in": ["screen_viewed", "screen_entered"]}},
                 {"metadata": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             breakdown = defaultdict(int)
             for event in events:
@@ -1805,7 +1805,7 @@ async def get_metric_breakdown(
             events = await db.user_events.find(
                 {"timestamp": {"$gte": cutoff}, "event_type": "mood_selected"},
                 {"metadata": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             mood_names = {
                 "sweat": "I Want to Sweat",
@@ -1827,7 +1827,7 @@ async def get_metric_breakdown(
             events = await db.user_events.find(
                 {"timestamp": {"$gte": cutoff}, "event_type": {"$in": ["post_liked", "post_commented", "user_followed", "user_unfollowed"]}},
                 {"event_type": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             type_names = {
                 "post_liked": "Likes",
@@ -5548,7 +5548,7 @@ async def get_chart_data(
             users = await db.users.find(
                 {"created_at": {"$gte": cutoff}},
                 {"created_at": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             data_by_period = defaultdict(int)
             for user in users:
@@ -5580,7 +5580,7 @@ async def get_chart_data(
             events = await db.user_events.find(
                 {"event_type": {"$in": ["app_opened", "app_session_start"]}, "timestamp": {"$gte": cutoff}},
                 {"timestamp": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             data_by_period = defaultdict(int)
             for event in events:
@@ -5679,17 +5679,17 @@ async def get_chart_data(
             like_events = await db.user_events.find(
                 {"event_type": "post_liked", "timestamp": {"$gte": cutoff}},
                 {"timestamp": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             comment_events = await db.user_events.find(
                 {"event_type": "post_commented", "timestamp": {"$gte": cutoff}},
                 {"timestamp": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             follow_events = await db.user_events.find(
                 {"event_type": "user_followed", "timestamp": {"$gte": cutoff}},
                 {"timestamp": 1}
-            ).to_list(100000)
+            ).to_list(10000)
             
             likes_by_period = defaultdict(int)
             comments_by_period = defaultdict(int)
@@ -11418,7 +11418,8 @@ async def admin_send_featured_suggestion(
     notification_service = get_notification_service(db)
     count = await notification_service.send_featured_suggestion_to_all(
         custom_copy=data.custom_copy,
-        target_user_ids=data.target_user_ids
+        target_user_ids=data.target_user_ids,
+        sender_user_id=current_user_id
     )
     
     return {
@@ -11440,7 +11441,8 @@ async def admin_send_workout_reminder(
     notification_service = get_notification_service(db)
     result = await notification_service.trigger_workout_reminder(
         user_id=data.user_id,
-        custom_message=data.custom_message
+        custom_message=data.custom_message,
+        actor_id=current_user_id
     )
     
     return {
@@ -11463,7 +11465,7 @@ async def admin_send_mass_workout_reminder(
         raise HTTPException(status_code=403, detail="Admin access required - not in allowlist")
     
     worker = get_notification_worker(db)
-    count = await worker.trigger_mass_workout_reminder(data.custom_message)
+    count = await worker.trigger_mass_workout_reminder(data.custom_message, sender_user_id=current_user_id)
     
     return {
         "success": True,
@@ -11525,6 +11527,30 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
+async def _cleanup_duplicate_device_tokens(database):
+    """One-time cleanup: deduplicate device_tokens keeping only the most recent per token"""
+    pipeline = [
+        {"$group": {
+            "_id": "$token",
+            "count": {"$sum": 1},
+            "docs": {"$push": {"id": "$_id", "last_active": "$last_active"}},
+        }},
+        {"$match": {"count": {"$gt": 1}}},
+    ]
+    dup_count = 0
+    async for group in database.device_tokens.aggregate(pipeline):
+        docs = sorted(group["docs"], key=lambda d: d.get("last_active") or datetime.min, reverse=True)
+        # Keep the most recently active doc, delete the rest
+        ids_to_delete = [d["id"] for d in docs[1:]]
+        await database.device_tokens.delete_many({"_id": {"$in": ids_to_delete}})
+        dup_count += len(ids_to_delete)
+    if dup_count:
+        logger.info(f"🧹 Cleaned up {dup_count} duplicate device tokens")
+    else:
+        logger.info("✅ No duplicate device tokens found")
+
+
 @app.on_event("startup")
 async def startup_db_client():
     """Start background services on app startup"""
@@ -11556,6 +11582,45 @@ async def startup_db_client():
         await db.admin_audit_logs.create_index([("timestamp_utc", -1)])
         await db.admin_audit_logs.create_index([("admin_user_id", 1), ("timestamp_utc", -1)])
         await db.admin_audit_logs.create_index([("action", 1), ("timestamp_utc", -1)])
+        
+        # --- Notification system indexes ---
+        # Unique index on device_tokens.token to prevent duplicate push tokens
+        try:
+            await db.device_tokens.create_index(
+                [("token", 1)],
+                unique=True,
+                name="unique_device_token",
+            )
+            logger.info("✅ device_tokens unique index on 'token' ensured")
+        except Exception as idx_err:
+            # If duplicates exist, clean them up first, then retry
+            logger.warning(f"⚠️ device_tokens unique index failed (likely duplicates): {idx_err}")
+            await _cleanup_duplicate_device_tokens(db)
+            try:
+                await db.device_tokens.create_index(
+                    [("token", 1)],
+                    unique=True,
+                    name="unique_device_token",
+                )
+                logger.info("✅ device_tokens unique index created after cleanup")
+            except Exception as retry_err:
+                logger.error(f"❌ Could not create unique device_tokens index: {retry_err}")
+        
+        # PushSendLog: unique compound index for at-most-once push delivery
+        await db.push_send_log.create_index(
+            [("user_id", 1), ("type", 1), ("event_key", 1)],
+            unique=True,
+            name="unique_push_send",
+        )
+        # TTL index: auto-expire push send logs after 7 days
+        await db.push_send_log.create_index(
+            [("created_at", 1)],
+            expireAfterSeconds=7 * 24 * 3600,
+            name="push_send_log_ttl",
+        )
+        # Notification retrieval indexes
+        await db.notifications.create_index([("user_id", 1), ("created_at", -1)])
+        await db.device_tokens.create_index([("user_id", 1), ("is_valid", 1)])
         
         logger.info("✅ MongoDB indexes verified/created for analytics")
     except Exception as e:

@@ -374,9 +374,12 @@ class NotificationWorker:
     # MANUAL TRIGGERS (for admin use)
     # ============================================
     
-    async def trigger_mass_workout_reminder(self, custom_message: Optional[str] = None) -> int:
+    async def trigger_mass_workout_reminder(self, custom_message: Optional[str] = None, sender_user_id: Optional[str] = None) -> int:
         """Send workout reminder to all users with reminders enabled"""
         count = 0
+        
+        # Resolve admin actor_id for sender attribution
+        actor_id = sender_user_id or await self.notification_service.get_admin_user_id()
         
         users = await self.db.users.find({"is_banned": {"$ne": True}}).to_list(10000)
         
@@ -393,7 +396,8 @@ class NotificationWorker:
             
             result = await self.notification_service.trigger_workout_reminder(
                 user_id=user_id,
-                custom_message=custom_message
+                custom_message=custom_message,
+                actor_id=actor_id
             )
             
             if result:

@@ -1,77 +1,72 @@
 <analysis>**original_problem_statement**:
-The user's primary goal is to fix a series of UI/UX bugs, performance issues, and crashes in their React Native application.
+The user's primary goal is to fix a series of critical bugs related to push notifications, data consistency, and UI behavior in their React Native application.
 
 **PRODUCT REQUIREMENTS**:
-1.  **Video Performance (CRITICAL):**
-    *   Fix video aspect ratio, which was appearing too tall (9:16). The user prefers a 4:5 ratio.
-    *   Drastically improve video loading speed on the Explore and Profile pages to be Instagram-like. This involves implementing HLS streaming with MP4 fallbacks and preloading strategies.
-2.  **Instagram Sharing (CRITICAL):**
-    *   The Instagram Story achievement overlay must have a true transparent background, not black or white.
-    *   Text on the overlay needs to be legible (white with a drop shadow).
-    *   The sharing flow must be a single tap, directly opening the Instagram Stories composer, not an in-app modal.
-    *   The flow must not crash on custom dev builds, even if native modules like  are missing.
-3.  **Push Notification Debugging (HIGH):**
-    *   Implement a developer-only tool to get the Expo Push Token for debugging.
-    *   Evolve this tool into a production-ready feature in the Settings screen, allowing users (especially for TestFlight) to register for notifications and copy their token. This should be tied to the logged-in user.
-4.  **Bug Fixes (HIGH):**
-    *   Resolve an unmatched route error that was crashing the app on startup for custom dev builds.
-    *   Fix a crash in the exercise video lookup sheet caused by a missing function reference.
-    *   Ensure profile video thumbnails match the thumbnail selected by the user during upload.
-    *   Clean up the notification feed: remove duplicate names and filter out direct messages (DMs).
-    *   Fix an issue where the same placeholder image was used for multiple custom workouts added to the cart; the images should be randomized.
-5.  **UI & Content Updates (MEDIUM):**
-    *   Replace capsule-style backgrounds under the home screen streak trackers with thin lines.
-    *   Increase the MOOD brand text size on the workout achievement card.
-    *   Update all old  URLs to the new  domain.
+1.  **Push Notification System Overhaul (CRITICAL):**
+    *   Fix duplicate push notifications. Events like featured workout or reminder are sending 4 pushes instead of one.
+    *   Ensure the in-app notifications tab correctly displays the sender as the admin user (officialmoodapp) instead of Unknown.
+    *   Guarantee that the title and body of featured workout pushes match the content entered in the admin panel.
+    *   Fix the deep link for featured workout pushes, which currently leads to an empty cart screen.
+    *   Enable push notifications for likes, which were previously not being sent for single likes.
+2.  **Bug Fixes & UX Polish (HIGH):**
+    *   Ensure video thumbnails on the profile grid match the thumbnail selected by the user during upload.
+    *   Prevent videos from auto-playing when the app is in the background or the user is on a different tab.
+    *   Make the push notification settings section in the app visible only to admin users.
+    *   Remove the exercise video search functionality from the home screen.
+    *   On the share achievement card, append the equipment name to workout titles, separated by a bullet point, and truncate to 40 characters.
+3.  **Authentication & Onboarding (MEDIUM):**
+    *   Implement indefinite login sessions, so users remain logged in until they explicitly sign out.
+    *   Automate the push notification permission prompt to appear on app launch or after login, removing the need for manual enablement in settings.
+    *   Harden the push notification deep link handling to work reliably on cold starts without fixed delays.
 
 **User's preferred language**: English
 
 **what currently exists?**
-The project is a full-stack application with a React Native (Expo) frontend and a FastAPI backend. The agent has successfully implemented a wide range of fixes and features during this session. The application's video delivery has been completely overhauled to use HLS streaming for performance. The Instagram sharing flow was refactored from a crash-prone, multi-step process into a robust, single-tap experience with a transparent overlay. A production-ready push notification registration tool was added to the settings screen. Numerous crashes related to native module resolution on the user's custom dev build have been fixed by implementing safe, lazy-loading patterns. All user-reported bugs regarding UI, notifications, and data display have been addressed.
+The project is a full-stack application with a React Native (Expo) frontend and a FastAPI backend. The agent has implemented several fixes, including extending auth session durations to 10 years, automating push permission requests, and fixing numerous bugs related to video playback, incorrect profile thumbnails, and the like notification flow. However, the core push notification system remains critically flawed, suffering from duplicate sends and incorrect sender attribution.
 
 **Last working item**:
--   Last item agent was working: Updating all hardcoded website and support URLs from an old  domain to the new  domain. The agent performed a global search and replace across all relevant files.
--   Status: USER VERIFICATION PENDING
+-   Last item agent was working: Investigating a complex set of push notification issues reported by the user, including duplicate sends, incorrect content, failed deep links, and the persistent Unknown sender problem.
+-   Status: IN PROGRESS
 -   Agent Testing Done: N
--   Which testing method agent to use? manual testing by user or frontend testing agent. The user needs to navigate to the Settings and legal pages to verify the links are updated and functional.
+-   Which testing method agent to use? backend testing agent. The fixes will involve database schema changes (unique index on tokens), backend logic (idempotency, deduplication), and a cleanup script. Manual verification on the frontend will also be required.
 -   User Testing Done: N
 
 **All Pending/In progress Issue list**:
--   Issue 1: Comprehensive Feature Verification (P0)
+-   Issue 1: Fix Duplicate/Incorrect Push Notifications and Unknown Sender (P0)
 -   Issue 2: Unbounded Database Query (P1)
 
 **Issues Detail**:
--   **Issue 1: Comprehensive Feature Verification**
-    -   **Description**: The user needs to perform end-to-end testing on the numerous features and fixes implemented in this session, as many changes were complex and interactive.
-    -   **Next debug checklist**:
-        -   Verify video loading speed and aspect ratio on the Explore page.
-        -   Test the full Instagram Story sharing flow (1-tap, transparent overlay, save to photos, deep link).
-        -   Test the Push Notifications section in Settings (Enable, Copy Token, Test Local).
-        -   Confirm the exercise video lookup sheet no longer crashes.
-        -   Check profile grids to ensure correct, user-selected thumbnails are displayed.
-        -   Review the notifications tab to confirm no DMs appear and names are not duplicated.
-        -   Verify that adding multiple custom workouts to the cart uses different placeholder images.
-        -   Check all links in the Settings and legal pages point to .
-    -   **Why fix this issue and what will be achieved with the fix?** To confirm that the extensive work done in this session has resolved the user's problems and the app is stable.
-    -   **Status**: USER VERIFICATION PENDING
-    -   **Is recurring issue?** N
+-   **Issue 1: Fix Duplicate/Incorrect Push Notifications and Unknown Sender**
+    -   **Description**: Users receive multiple (e.g., 4) notifications for a single event like a featured workout. The notification content is often wrong, and the sender appears as Unknown in the in-app notifications tab. This is a critical bug.
+    -   **Attempted fixes**: The agent previously tried to fix the Unknown sender issue by passing an , but it was unsuccessful. The current investigation has revealed the root causes are more systemic.
+    -   **Next debug checklist**: Implement the user's detailed work plan, which involves:
+        1.  **Database Hygiene**: Add a unique index to the  collection on  to prevent duplicate entries.
+        2.  **Idempotency**: Create a new  collection with a unique index on  to ensure each event triggers a push only once.
+        3.  **Sender Persistence**: Modify the notification creation logic in  to permanently store the admin user's ID and details as the sender for all server-initiated pushes.
+        4.  **Deduplication**: Add logic to deduplicate tokens at send-time as a defensive measure.
+    -   **Why fix this issue and what will be achieved with the fix?** To make the push notification system reliable, correct, and non-spammy, which is essential for user engagement and trust.
+    -   **Status**: IN PROGRESS
+    -   **Is recurring issue?** Y
     -   **Should Test frontend/backend/both after fix?** Both
     -   **Blocked on other issue**: None
 
 -   **Issue 2: Unbounded Database Query**
-    -   **Description**: An issue from a previous session remains unfixed. The  flagged a performance warning for an unbounded query () at , which can cause memory issues at scale.
-    -   **Attempted fixes**: None in this session.
-    -   **Next debug checklist**:
-        -   View  around line 1808.
-        -   Refactor the query to use pagination (e.g., with  and ).
-    -   **Why fix this issue and what will be achieved with the fix?** Prevents potential out-of-memory errors and improves application stability under load.
+    -   **Description**: A performance warning for an unbounded query () at  remains from a previous session. This can cause out-of-memory errors.
+    -   **Attempted fixes**: None.
+    -   **Next debug checklist**: View  around line 1808 and refactor the query to use pagination ( and ).
+    -   **Why fix this issue and what will be achieved with the fix?** Improves application stability and prevents potential crashes under load.
     -   **Status**: NOT STARTED
     -   **Is recurring issue?** Y
     -   **Should Test frontend/backend/both after fix?** Backend
     -   **Blocked on other issue**: None
 
 **In progress Task List**:
--   None.
+-   **Task 1: Implement Comprehensive Fix for Push Notification System (P0)**
+    -   **Where to resume**: Begin implementing the user's detailed work plan, starting with database hygiene. Create a migration/cleanup script to deduplicate existing tokens and add a unique index to the  collection. Then, implement the  for idempotency.
+    -   **What will be achieved with this?** A robust and reliable push notification system that sends exactly one correct notification per event.
+    -   **Status**: IN PROGRESS
+    -   **Should Test frontend/backend/both after fix?** Both
+    -   **Blocked on something**: None.
 
 **Upcoming and Future Tasks**
 -   **Upcoming Tasks:**
@@ -81,30 +76,18 @@ The project is a full-stack application with a React Native (Expo) frontend and 
     -   **Data Integrity (P2):** Investigate the root cause of notifications being created without  to simplify the read path.
 
 **Completed work in this session**
--   **Video Performance Overhaul**:
-    -   Refactored Explore page from  to  for virtualization.
-    -   Adjusted video aspect ratio from 9:16 to 4:5 in .
-    -   Rewrote  to generate HLS streams, MP4 fallbacks, and poster images from .
-    -   Updated  to use HLS primary with an automatic MP4 fallback .
-    -   Optimized preloading to fetch only the next item's poster and HLS manifest.
--   **Instagram Share Refactor**:
-    -   Replaced  with a  + URL-scheme flow ().
-    -   Fixed overlay transparency issues by setting  on the container in .
-    -   Made all overlay text pure white with a drop shadow for legibility.
-    -   Streamlined the UX to a 1-tap flow with a loading spinner and an instructional alert.
--   **Push Notification Tool**:
-    -   Implemented a production-ready Push Notifications section in .
-    -   It allows users to request permissions, register their token with the backend, copy the token, and send a local test notification.
--   **Crash & Bug Fixes**:
-    -   Resolved Unmatched Route crashes on custom dev builds by implementing safe, lazy-loading for native modules (, , ) using  around dynamic .
-    -   Fixed a crash in  by replacing a call to a deleted function.
-    -   Fixed notification display by stripping the actor's name from the notification  in .
-    -   Filtered DMs from the notification feed in .
-    -   Fixed duplicate custom workout images by using a  counter in .
--   **UI & Content**:
-    -   Replaced home screen stat backgrounds with thin lines in .
-    -   Updated all hardcoded website URLs to  across multiple files.
-    -   Bumped  and  in .
+-   **Indefinite Login Sessions**: Increased JWT, Google OAuth, and Apple Sign-In session/token expiry to 10 years.
+-   **Automated Push Notifications**: Refactored the app to automatically request push permissions on login/app start.
+-   **Hardened Deep Link Handling**: Replaced a fragile  with a robust navigation-ready queue for handling deep links on cold start.
+-   **Bug Fix (Like Notifications)**: Enabled push notifications for single likes, added a dedupe key, and corrected the deep link to point to the specific post.
+-   **Bug Fix (Home Screen, Thumbnails, Video Autoplay)**:
+    -   Removed the exercise search bar from the home screen.
+    -   Fixed incorrect profile thumbnails by ensuring  is populated in all relevant backend endpoints.
+    -   Prevented unwanted video autoplay by adding tab focus and app state awareness.
+-   **Bug Fix (Admin Section & Featured Workout Deep Link)**:
+    -   Gated the push notification settings section to be visible only to admin users.
+    -   Corrected the API endpoint used for fetching featured workout data on deep link, fixing the empty cart issue.
+-   **UI Enhancement (Achievement Card)**: Appended equipment names to workout titles on the shareable achievement card.
 
 **Earlier issues found/mentioned but not fixed**
 -   **Issue 1: Unbounded Database Query**
@@ -117,82 +100,81 @@ The project is a full-stack application with a React Native (Expo) frontend and 
 **Known issue recurrence from previous fork**
 -   **Issue recurrence in previous fork**: Deployment blockers.
 -   **Recurrence count**: 6+
--   **Status**: RESOLVED (A new blocker was found and fixed in this session).
+-   **Status**: RESOLVED (in the previous fork).
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **React Native Performance**: Using  for UI virtualization to handle long lists of videos efficiently.
--   **Video Streaming**: Implementing HLS (HTTP Live Streaming) for adaptive bitrate streaming, with a fallback to a standard MP4 file for compatibility and robustness.
--   **Cloudinary Transformations**: Dynamically generating URLs for video (, ), fallbacks (), and posters (, ).
--   **Safe Native Module Handling**: A critical pattern for this project's custom dev builds. Avoids crashes by checking for native module existence () before using it, preventing top-level import errors.
--   **Expo Router**: Managing navigation stack () and fixing unmatched route errors by ensuring all screens are declared.
--   **React Native Deep Linking**: Using  to create a seamless 1-tap user flow to an external app.
--   **Expo MediaLibrary**: Requesting permissions and saving generated assets (transparent PNGs) to the user's photo library.
--   **react-native-view-shot**: Capturing a React component as a transparent PNG image file.
+-   **Idempotency**: The plan requires creating a  collection with a unique index on  to prevent the same event from triggering multiple sends.
+-   **Database Indexing**: A unique index must be added to the  field in the  collection to enforce token uniqueness at the database level.
+-   **React Native Push Notifications (Expo)**: Using  for permissions, token retrieval, and handling responses.
+-   **React Navigation**: Using  to control component behavior based on tab focus and  to ensure the app is ready before processing deep links.
+-   **FastAPI**: The backend framework where all API and notification logic resides.
 
 **key DB schema**
--   No changes were made to the database schema in this session.
+-   **device_tokens** (collection): Currently allows duplicate tokens, which is the root cause of multiple push sends. **Action**: Add a unique index on .
+-   **notifications** (collection): Stores in-app notification records.  is often  for server-initiated pushes. **Action**: Ensure admin  is always persisted.
+-   **PushSendLog** (new collection): To be created to enforce idempotency for push sends. **Schema**:  with a unique index on .
 
 **changes in tech stack**
--   No fundamental changes. The agent carefully managed the introduction of native dependencies like  and  to work with the user's existing custom dev build.
+-   None.
 
 **All files of reference**
--   : Heavily modified to refactor the Instagram sharing flow.
--   : Modified to support HLS streaming and optimized posters.
--   : Completely rewritten to provide optimized video URLs (HLS, MP4, Poster).
--   : Modified to add the production-ready push notification tool and update URLs.
--   : Modified to convert a  to a  for performance.
--   : Patched to fix a runtime crash.
--   : Modified to fix a display bug.
--   : Modified to filter API results.
+-   : The central file for backend logic. It requires major changes to fix notification duplication, add idempotency, and persist sender information.
+-   : The main file for frontend notification logic, including receiving and deep linking.
+-   : Contains the  component that triggers notification logic.
+-   : Contains the logic for building notification content.
+-   : The UI for the admin-only push notification section.
 
 **Areas that need refactoring**:
--   The unbounded query at  () needs to be refactored to use pagination.
--   The root cause of notifications being created without  could be investigated to simplify frontend fallbacks.
+-   The entire push notification sending pipeline in  must be refactored to be idempotent and to correctly handle sender attribution.
+-   The  collection needs a cleanup script and a unique index to enforce data integrity.
+-   The unbounded query at  needs to be refactored to use pagination.
 
 **key api endpoints**
--   No new API endpoints were created.
--   The agent worked with the existing  endpoint.
+-   : The endpoint for registering push tokens. Its logic must be changed from  to  to prevent duplicates.
+-   : The endpoint for sending featured workout pushes. It's currently a source of duplicate notifications.
+-   : The entry point for the like notification flow.
 
 **Critical Info for New Agent**
--   **The user tests on a custom dev build.** This is the most critical piece of information. Any new native dependency (, , etc.) will crash the app unless the user rebuilds their client. You MUST use the established safe-loading pattern () to prevent crashes and provide a graceful fallback. Do not use top-level imports for new native modules.
--   The immediate priority is to await user verification on the large volume of fixes from this session before starting new work.
--   The admin account username is , which is used to display debug information in the settings screen.
+-   The user has provided a very specific and detailed work plan to fix the push notification system. **You must follow this plan exactly.** The highest priority is to stop duplicate notifications by cleaning up the  collection (adding a unique index) and implementing an idempotency layer ( collection).
+-   The Unknown sender issue is a recurring problem. The definitive fix is to ensure the admin user's ID is retrieved and persisted as the  in the  collection for all server-generated pushes (reminders, featured workouts).
+-   The root cause of the 4 duplicate pushes has been identified: the database contains multiple identical push tokens for a single user. Your first action should be to enforce uniqueness at the database level.
 
 **documents and test reports created in this job**
--    was updated by the agent.
+-    (updated)
+-    (created)
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **User**: Reported videos on explore/profile are not loading fast enough. Requested HLS streaming. (Status: **COMPLETED**)
-2.  **User**: Refined HLS request: HLS primary, MP4 fallback, poster prefetch, single autoplay. (Status: **COMPLETED**)
-3.  **User**: Requested UI changes: swap shading on home screen stats for thin lines, increase MOOD text size on achievement card. (Status: **COMPLETED**)
-4.  **User**: Reported two issues: profile thumbnails are incorrect, and exercise videos are crashing the app. (Status: **COMPLETED**)
-5.  **User**: Reported notification duplication: engager's @name and full name are both showing. (Status: **COMPLETED**)
-6.  **User**: Reported two more issues: DMs showing in notifications tab, and custom workout images repeating in the cart. (Status: **COMPLETED**)
-7.  **User**: Requested all old website URLs be replaced with . (Status: **COMPLETED**)
-8.  **User**: Asked to swap dark overlay background back to transparent, but make gray text pure white with a shadow. (Status: **COMPLETED**)
-9.  **User**: Requested that the Overlay Saved to Photos alert appears *before* opening Instagram. (Status: **COMPLETED**)
-10. **User**: Reported that the  admin debug info in settings showed  for the build version. (Status: **COMPLETED**)
+1.  **User**: Fix push/engagement notifications: automate permission requests on login. (Status: **COMPLETED**)
+2.  **User**: Show me where  is called after login. (Status: **COMPLETED**)
+3.  **User**: Verify 6 specific implementation details about the new notification logic. (Status: **COMPLETED**)
+4.  **User**: Fix MOOD push notification identity and deep links for featured workouts. (Status: **COMPLETED**)
+5.  **User**: Harden push deep link handling (replace , use nav-ready callback). (Status: **COMPLETED**)
+6.  **User**: Report 3 new bugs: remove home screen search, fix profile thumbnails, stop random video autoplay. (Status: **COMPLETED**)
+7.  **User**: Report 4 new bugs: admin section visible to all, duplicate featured workout pushes, incorrect content, empty cart on deep link, Unknown sender. (Status: **PARTIALLY COMPLETED**)
+8.  **User**: GOAL: Fix like notifications which are not being sent. (Status: **COMPLETED**)
+9.  **User**: Add equipment name to workout titles on the achievement share card, with truncation. (Status: **COMPLETED**)
+10. **User**: **(PENDING)** Provide a detailed work plan to fix duplicate pushes (featured workout & reminders) and the Unknown sender issue. This is the highest priority task.
 
 **Project Health Check:**
--   **Broken**: NO. All reported issues have been addressed and the code is compiling cleanly. The application is pending user verification.
+-   **Broken**: YES. The push notification system is critically broken, sending multiple notifications per event and degrading the user experience.
 -   **Mocked**: None.
 
 **3rd Party Integrations**
--   **Cloudinary**: Used for all image and video hosting and transformations.
--   **Expo**: Used for the React Native framework, push notifications, and various native APIs (, , ).
+-   **Cloudinary**: Used for image and video hosting/transformations.
+-   **Expo**: Used for the React Native framework and push notification services.
 
 **Testing status**
 -   Testing agent used after significant changes: NO
 -   Troubleshoot agent used after agent stuck in loop: NO
 -   Test files created: None
--   Known regressions: None identified.
+-   Known regressions: The push notification system has significantly regressed, now sending multiple incorrect notifications.
 
 **Credentials to test flow:**
--   **Admin User**: . Logging in with this user reveals extra debug information in the Settings screen.
+-   **Admin User**: . This account is required to access admin-only features and test server-initiated push notifications.
 
 **What agent forgot to execute**
--   The agent did not fix the long-standing unbounded database query ( in ).
--   The agent did not run a final  health check after all the extensive frontend changes.</analysis>
+-   The agent has not yet implemented the user's detailed work plan to fix the duplicate/incorrect push notifications. This is the main pending task.
+-   The agent has not addressed the long-standing unbounded database query ( in ).</analysis>
