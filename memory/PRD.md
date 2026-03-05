@@ -131,6 +131,15 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **`cloudinaryVideo.ts` Enhancements**: `preloadNextItems` default `maxAhead` increased to 3. Added `prefetchInitialBytes` helper for MP4 Range request prefetching.
   - **Testing**: 15/15 backend tests passed (iteration_9). Code review verified all integration points.
 
+- [2026-03-05] Push Notification Reliability Fix (P0):
+  - **Root Cause**: `None` values stored in MongoDB `notification_settings` treated as falsy by Python's `dict.get()`. When `notifications_enabled=None`, `not None` → `True` → silently blocked ALL push sends for affected users.
+  - **Fix**: 
+    1. Added `_bool(val, default)` / `_str(val, default)` coalescing helpers in `get_user_settings()` (notifications.py) — ensures None→default for all settings fields
+    2. Added startup data migration in `server.py` to fix existing None→True values in `notification_settings` collection
+    3. Changed `notification_worker.py` DB queries from exact `True` match to `{"$ne": False}` pattern (matches both True and None/unset)
+  - **Scope**: 6+ code paths affected including `send_featured_workout_to_all`, `trigger_mass_workout_reminder`, `create_notification`, `_process_scheduled_digests`, `_check_quiet_hours_ending`
+  - **Testing**: 13/13 backend tests passed (iteration_10). RCA verified with unit tests.
+
 ## Backlog
 - P2: Admin panel caching for expensive aggregations
 - P2: Unbounded query refactoring at server.py (replace .to_list(10000) with proper pagination)
