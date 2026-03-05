@@ -6818,16 +6818,40 @@ async def get_user_posts(
                 # Return empty list if user not found
                 return []
         
+        user_id_str = str(user_object_id)
+        
+        # Match both ObjectId AND string author_id (legacy data may store as string)
+        author_match = {"$or": [
+            {"author_id": user_object_id},
+            {"author_id": user_id_str},
+        ]}
+        
+        # Debug logging for diagnosis
+        db_count = await db.posts.count_documents(author_match)
+        logger.info(
+            f"PROFILE-POSTS: userId={user_id_str} "
+            f"skip={skip} limit={limit} sort=created_at:desc "
+            f"db_count={db_count}"
+        )
+        
         # Get posts with author and workout details
         pipeline = [
-            {"$match": {"author_id": user_object_id}},
+            {"$match": author_match},
             {"$sort": {"created_at": -1}},
             {"$skip": skip},
             {"$limit": limit},
+            # Normalize author_id to ObjectId for the user lookup (handles string author_id legacy data)
+            {"$addFields": {
+                "_author_oid": {"$cond": {
+                    "if": {"$eq": [{"$type": "$author_id"}, "string"]},
+                    "then": {"$toObjectId": "$author_id"},
+                    "else": "$author_id"
+                }}
+            }},
             {
                 "$lookup": {
                     "from": "users",
-                    "localField": "author_id",
+                    "localField": "_author_oid",
                     "foreignField": "_id",
                     "as": "author"
                 }
@@ -11690,6 +11714,62 @@ async def admin_trigger_digest(
         "message": "Digest sent" if result else "No activity to report or user has no following"
     }
 
+
+
+@api_router.get("/debug/user_posts")
+async def debug_user_posts(
+    userId: str,
+    current_user_id: str = Depends(get_current_user)
+):
+    """Admin-only debug endpoint: compare DB posts vs profile query for a user."""
+    if not await is_admin_allowed(current_user_id):
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Resolve userId to ObjectId
+    try:
+        user_oid = ObjectId(userId)
+    except:
+        user = await db.users.find_one({"user_id": userId})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        user_oid = user["_id"]
+    
+    user_id_str = str(user_oid)
+    
+    # Count posts by type
+    oid_count = await db.posts.count_documents({"author_id": user_oid})
+    str_count = await db.posts.count_documents({"author_id": user_id_str})
+    
+    # Profile query match (what the endpoint uses)
+    profile_match = {"$or": [{"author_id": user_oid}, {"author_id": user_id_str}]}
+    profile_count = await db.posts.count_documents(profile_match)
+    
+    # Newest 5 posts from DB
+    newest = await db.posts.find(
+        profile_match, {"_id": 1, "created_at": 1, "caption": 1, "author_id": 1, "media_urls": 1}
+    ).sort("created_at", -1).limit(5).to_list(5)
+    
+    newest_posts = []
+    for p in newest:
+        media = p.get("media_urls", [])
+        is_video = any(".mp4" in str(u) or ".mov" in str(u) for u in media)
+        newest_posts.append({
+            "id": str(p["_id"]),
+            "created_at": str(p.get("created_at")),
+            "caption": str(p.get("caption", ""))[:50],
+            "author_id_type": type(p.get("author_id")).__name__,
+            "is_video": is_video,
+        })
+    
+    return {
+        "userId": user_id_str,
+        "db_count_objectid": oid_count,
+        "db_count_string": str_count,
+        "profile_query_count": profile_count,
+        "mismatch": oid_count != profile_count,
+        "newest_5_posts": newest_posts,
+    }
+
 # Include router in main app
 app.include_router(api_router)
 
@@ -11907,6 +11987,28 @@ async def startup_db_client():
     except Exception as e:
         logger.error(f"⚠️ notification_settings migration failed: {e}")
     
+
+    # Migration: Normalize string author_id to ObjectId for consistent queries
+    try:
+        str_author_posts = await db.posts.count_documents({"author_id": {"$type": "string"}})
+        if str_author_posts > 0:
+            fixed = 0
+            async for post in db.posts.find({"author_id": {"$type": "string"}}, {"_id": 1, "author_id": 1}):
+                try:
+                    new_oid = ObjectId(post["author_id"])
+                    await db.posts.update_one(
+                        {"_id": post["_id"]},
+                        {"$set": {"author_id": new_oid}}
+                    )
+                    fixed += 1
+                except Exception:
+                    pass  # Skip malformed IDs
+            logger.info(f"✅ author_id migration: converted {fixed}/{str_author_posts} string→ObjectId")
+        else:
+            logger.info("✅ author_id migration: nothing to do (all ObjectId)")
+    except Exception as e:
+        logger.error(f"⚠️ author_id migration failed: {e}")
+
     # Auto-seed featured workouts in staging or if empty
     # This runs on EVERY deployment to ensure featured workouts exist
     try:
