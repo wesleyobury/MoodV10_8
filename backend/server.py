@@ -7412,12 +7412,21 @@ async def create_post(post_data: PostCreate, current_user_id: str = Depends(get_
     else:
         logger.info("📝 No workout_snapshot_id or attached_workout provided - creating post without workout")
     
+    # Normalize cover_urls from dict {"0": url} to list [url]
+    normalized_cover_urls = None
+    if post_data.cover_urls:
+        if isinstance(post_data.cover_urls, dict):
+            sorted_keys = sorted(post_data.cover_urls.keys(), key=lambda k: int(k) if k.isdigit() else 0)
+            normalized_cover_urls = [post_data.cover_urls[k] for k in sorted_keys if post_data.cover_urls[k]]
+        elif isinstance(post_data.cover_urls, list):
+            normalized_cover_urls = post_data.cover_urls
+    
     # Build the post document
     post_doc = {
         "caption": post_data.caption,
         "media_urls": post_data.media_urls,
         "hashtags": post_data.hashtags,
-        "cover_urls": post_data.cover_urls,
+        "cover_urls": normalized_cover_urls,
         "author_id": ObjectId(current_user_id),
         "likes_count": 0,
         "comments_count": 0,
@@ -7924,25 +7933,34 @@ async def like_post(post_id: str, current_user_id: str = Depends(get_current_use
             updated_post = await db.posts.find_one({"_id": post_object_id})
             likes_count = updated_post.get("likes_count", 0) if updated_post else 0
             
-            # Trigger like notification (bundled only - no single-like spam)
+            # ── TRACE-LIKE ──
+            if updated_post:
+                _media = (updated_post.get("media_urls") or [""])[0].lower()
+                _mtype = "video" if any(x in _media for x in (".mp4", ".mov", ".m3u8", "/video")) else ("image" if _media else "none")
+                _akeys = [k for k in ("author_id", "user_id", "creator_id", "owner_id") if updated_post.get(k)]
+                _resolved = resolve_post_author_id(updated_post)
+                logger.info(f"TRACE-LIKE: post_id={post_id} found=True media_type={_mtype} keys_present={_akeys} resolved_author={_resolved}")
+            else:
+                logger.error(f"TRACE-LIKE: POST_NOT_FOUND post_id={post_id}")
+            
+            # Trigger like notification
             if updated_post:
                 try:
                     post_author_id = resolve_post_author_id(updated_post)
-                    logger.info(f"🔔 DEBUG Like notification: liker={current_user_id[:8]}..., author={post_author_id[:8] if post_author_id else 'EMPTY'}...")
                     if not post_author_id:
-                        logger.warning(f"⚠️ POST MISSING AUTHOR FIELDS: post_id={post_id}, keys={[k for k in updated_post.keys() if k != '_id']}")
-                    elif post_author_id != current_user_id:
+                        logger.warning(f"TRACE-LIKE: SKIP reason=missing_author post_id={post_id}")
+                    elif post_author_id == current_user_id:
+                        logger.info(f"TRACE-LIKE: SKIP reason=self_like post_id={post_id}")
+                    else:
                         notification_service = get_notification_service(db)
                         result = await notification_service.trigger_like_notification(
                             liker_id=current_user_id,
                             post_id=post_id,
                             post_author_id=post_author_id
                         )
-                        logger.info(f"🔔 DEBUG Like notification result: {result}")
-                    else:
-                        logger.info(f"🔔 DEBUG Like notification skipped: self-like")
+                        logger.info(f"TRACE-LIKE: notification_result={result} post_id={post_id}")
                 except Exception as e:
-                    logger.error(f"Failed to send like notification: {e}")
+                    logger.error(f"TRACE-LIKE: EXCEPTION post_id={post_id} error={e}")
                     import traceback
                     logger.error(traceback.format_exc())
             
@@ -8034,18 +8052,27 @@ async def create_comment(comment_data: CommentCreate, current_user_id: str = Dep
             {"$inc": {"comments_count": 1}}
         )
         
-        # Trigger comment notification to post author
+        # ── TRACE-COMMENT ──
+        logger.info(f"TRACE-COMMENT: post_id={comment_data.post_id} actor={current_user_id}")
         try:
-            logger.info(f"🔔 DEBUG Comment notification: commenter={current_user_id[:8]}..., post={comment_data.post_id[:8]}...")
+            _cpost = await db.posts.find_one({"_id": ObjectId(comment_data.post_id)})
+            if _cpost:
+                _cmedia = (_cpost.get("media_urls") or [""])[0].lower()
+                _cmtype = "video" if any(x in _cmedia for x in (".mp4", ".mov", ".m3u8", "/video")) else ("image" if _cmedia else "none")
+                _cresolved = resolve_post_author_id(_cpost)
+                logger.info(f"TRACE-COMMENT: post_found=True media_type={_cmtype} resolved_author={_cresolved}")
+            else:
+                logger.error(f"TRACE-COMMENT: POST_NOT_FOUND post_id={comment_data.post_id}")
+            
             notification_service = get_notification_service(db)
             result = await notification_service.trigger_comment_notification(
                 commenter_id=current_user_id,
                 post_id=comment_data.post_id,
                 comment_text=comment_data.text
             )
-            logger.info(f"🔔 DEBUG Comment notification result: {result}")
+            logger.info(f"TRACE-COMMENT: notification_result={result} post_id={comment_data.post_id}")
         except Exception as e:
-            logger.error(f"Failed to send comment notification: {e}")
+            logger.error(f"TRACE-COMMENT: EXCEPTION post_id={comment_data.post_id} error={e}")
             import traceback
             logger.error(traceback.format_exc())
         
@@ -11282,7 +11309,15 @@ async def admin_backfill_notification_thumbnails(
 
         cover_urls = post.get("cover_urls") or []
         media_urls = post.get("media_urls") or []
-        thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
+        # cover_urls may be a dict ({"0": url}) from React Native
+        if isinstance(cover_urls, dict):
+            thumbnail = cover_urls.get("0") or cover_urls.get(0) or next(iter(cover_urls.values()), None)
+        elif isinstance(cover_urls, list) and cover_urls:
+            thumbnail = cover_urls[0]
+        elif isinstance(media_urls, list) and media_urls:
+            thumbnail = media_urls[0]
+        else:
+            thumbnail = None
 
         if not thumbnail:
             skipped += 1
@@ -11778,6 +11813,27 @@ async def startup_db_client():
         logger.info(f"✅ Post author_id migration: {migration_result}")
     except Exception as e:
         logger.error(f"⚠️ Post author_id migration failed: {e}")
+    
+    # One-time migration: normalize dict cover_urls to list
+    try:
+        fixed = 0
+        async for post in db.posts.find({"cover_urls": {"$type": "object"}}):
+            cu = post["cover_urls"]
+            # Convert dict {"0": url, "1": url2, ...} to list [url, url2, ...]
+            if isinstance(cu, dict):
+                sorted_keys = sorted(cu.keys(), key=lambda k: int(k) if k.isdigit() else 0)
+                as_list = [cu[k] for k in sorted_keys if cu[k]]
+                await db.posts.update_one(
+                    {"_id": post["_id"]},
+                    {"$set": {"cover_urls": as_list}}
+                )
+                fixed += 1
+        if fixed:
+            logger.info(f"✅ cover_urls migration: normalized {fixed} posts from dict to list")
+        else:
+            logger.info("✅ cover_urls migration: nothing to do")
+    except Exception as e:
+        logger.error(f"⚠️ cover_urls migration failed: {e}")
     
     # Start notification background worker
     try:

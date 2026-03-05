@@ -23,6 +23,22 @@ from push_copy import build_push_content, get_engagement_action
 
 logger = logging.getLogger(__name__)
 
+
+def _safe_first(val) -> str:
+    """Safely get the first element from a list, dict, or None.
+    
+    cover_urls may be stored as a dict ({"0": "url"}) from React Native
+    instead of a list (["url"]). This helper handles both.
+    """
+    if not val:
+        return ""
+    if isinstance(val, list):
+        return val[0] if val else ""
+    if isinstance(val, dict):
+        # Try int key 0 first, then string key "0", then first value
+        return val.get(0) or val.get("0") or next(iter(val.values()), "")
+    return ""
+
 # ============================================
 # NOTIFICATION TYPES & CONSTANTS
 # ============================================
@@ -300,7 +316,7 @@ class NotificationService:
         settings = await self.get_user_settings(user_id)
         
         if not settings.get("notifications_enabled", True):
-            logger.debug(f"Notifications disabled for user {user_id[:8]}...")
+            logger.info(f"TRACE-NOTIF: type={notification_type.value} entity_id={entity_id} actor={actor_id} recipient={user_id} decision=SKIPPED reason=prefs_disabled")
             return None
         
         # Check type-specific settings
@@ -320,7 +336,7 @@ class NotificationService:
         
         setting_key = type_setting_map.get(notification_type)
         if setting_key and not settings.get(setting_key, True):
-            logger.debug(f"{notification_type.value} notifications disabled for user {user_id[:8]}...")
+            logger.info(f"TRACE-NOTIF: type={notification_type.value} entity_id={entity_id} actor={actor_id} recipient={user_id} decision=SKIPPED reason=type_blocked({setting_key})")
             return None
         
         # Check "from following only" settings for likes/comments
@@ -333,7 +349,7 @@ class NotificationService:
                     "following_id": ObjectId(actor_id)
                 })
                 if not is_following:
-                    logger.debug(f"Skipping {notification_type.value} from non-followed user")
+                    logger.info(f"TRACE-NOTIF: type={notification_type.value} entity_id={entity_id} actor={actor_id} recipient={user_id} decision=SKIPPED reason=following_only")
                     return None
         
         # Dedupe check: if this exact event already produced a notification, skip
@@ -343,7 +359,7 @@ class NotificationService:
                 "metadata.dedupe_key": dedupe_key
             })
             if existing:
-                logger.info(f"🔔 Dedupe hit for key={dedupe_key}, skipping notification")
+                logger.info(f"TRACE-NOTIF: type={notification_type.value} entity_id={entity_id} actor={actor_id} recipient={user_id} decision=SKIPPED reason=idempotency dedupe_key={dedupe_key}")
                 return str(existing["_id"])
         
         # Generate deep link
@@ -881,27 +897,27 @@ class NotificationService:
         comment_text: str
     ) -> Optional[str]:
         """Trigger notification when someone comments on a post - IG-style copy"""
-        logger.info(f"🔔 trigger_comment_notification called: commenter={commenter_id[:8]}..., post={post_id[:8]}...")
+        logger.info(f"TRACE-NOTIF: type=comment entity_id={post_id} actor={commenter_id} trigger_entry=True")
         
         # Get post and commenter info
         post = await self.db.posts.find_one({"_id": ObjectId(post_id)})
         if not post:
-            logger.warning(f"🔔 trigger_comment_notification: Post not found: {post_id}")
+            logger.warning(f"TRACE-NOTIF: type=comment entity_id={post_id} actor={commenter_id} recipient=? decision=SKIPPED reason=missing_post")
             return None
         
         post_author_id = self._resolve_post_author_id(post)
         
         if not post_author_id:
-            logger.warning(f"🔔 trigger_comment_notification: Post {post_id} missing author fields, keys={[k for k in post.keys() if k != '_id']}")
+            logger.warning(f"TRACE-NOTIF: type=comment entity_id={post_id} actor={commenter_id} recipient=? decision=SKIPPED reason=missing_recipient keys={[k for k in post.keys() if k != '_id']}")
             return None
         
         if post_author_id == commenter_id:
-            # Don't notify yourself
-            logger.info(f"🔔 trigger_comment_notification: Skipping self-comment")
+            logger.info(f"TRACE-NOTIF: type=comment entity_id={post_id} actor={commenter_id} recipient={post_author_id} decision=SKIPPED reason=self_comment")
             return None
         
         commenter = await self.db.users.find_one({"_id": ObjectId(commenter_id)})
         if not commenter:
+            logger.warning(f"TRACE-NOTIF: type=comment entity_id={post_id} actor={commenter_id} decision=SKIPPED reason=commenter_not_found")
             return None
         
         commenter_name = commenter.get("name") or commenter.get("username", "Someone")
@@ -914,7 +930,7 @@ class NotificationService:
         # Get post preview image - prefer cover (thumbnail) for faster loading
         media_urls = post.get("media_urls", [])
         cover_urls = post.get("cover_urls", [])
-        post_thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
+        post_thumbnail = _safe_first(cover_urls) or _safe_first(media_urls) or None
         
         # If it's a video URL, generate Cloudinary video thumbnail
         if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
@@ -923,7 +939,7 @@ class NotificationService:
         logger.info(f"🔔 Comment notification: post_thumbnail={post_thumbnail[:50] if post_thumbnail else 'None'}...")
         
         # Detect media_type for the NOTIF-CREATED log line
-        first_url = (media_urls[0] if media_urls else "").lower()
+        first_url = (_safe_first(media_urls) or "").lower()
         media_type = "video" if any(ext in first_url for ext in (".mp4", ".mov", ".m3u8", "/video")) else ("image" if first_url else "unknown")
         
         # IG-style: "username commented on your photo."
@@ -1006,7 +1022,7 @@ class NotificationService:
             media_urls = post.get("media_urls", [])
             cover_urls = post.get("cover_urls", [])
             # Prefer cover (thumbnail) over full media for faster loading
-            post_thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
+            post_thumbnail = _safe_first(cover_urls) or _safe_first(media_urls) or None
             
             # If it's a video URL, generate Cloudinary video thumbnail
             if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
@@ -1059,7 +1075,7 @@ class NotificationService:
             media_urls = post.get("media_urls", [])
             cover_urls = post.get("cover_urls", [])
             # Prefer cover (thumbnail) over full media for faster loading
-            post_thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
+            post_thumbnail = _safe_first(cover_urls) or _safe_first(media_urls) or None
             
             # If it's a video URL, generate Cloudinary video thumbnail
             if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
@@ -1092,11 +1108,11 @@ class NotificationService:
         BUNDLED ONLY - no single-like spam.
         If >3 likes in 10 min, bundle into one notification.
         """
-        logger.info(f"🔔 trigger_like_notification called: liker={liker_id[:8]}..., post={post_id[:8]}..., author={post_author_id[:8]}...")
+        logger.info(f"TRACE-NOTIF: type=like entity_id={post_id} actor={liker_id} recipient={post_author_id} trigger_entry=True")
         
         # Don't notify yourself
         if liker_id == post_author_id:
-            logger.info(f"🔔 trigger_like_notification: Skipping self-like")
+            logger.info(f"TRACE-NOTIF: type=like entity_id={post_id} actor={liker_id} recipient={post_author_id} decision=SKIPPED reason=self_like")
             return None
         
         now = datetime.now(timezone.utc)
@@ -1125,7 +1141,7 @@ class NotificationService:
             media_urls = post.get("media_urls", [])
             cover_urls = post.get("cover_urls", [])
             # Prefer cover (thumbnail) over full media for faster loading
-            post_thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
+            post_thumbnail = _safe_first(cover_urls) or _safe_first(media_urls) or None
             
             # If it's a video URL, generate Cloudinary video thumbnail
             if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
@@ -1136,7 +1152,7 @@ class NotificationService:
         # Detect media_type for the NOTIF-CREATED log line
         media_type = "unknown"
         if post:
-            first_url = (post.get("media_urls") or [""])[0].lower()
+            first_url = (_safe_first(post.get("media_urls")) or "").lower()
             if any(ext in first_url for ext in (".mp4", ".mov", ".m3u8", "/video")):
                 media_type = "video"
             elif first_url:
