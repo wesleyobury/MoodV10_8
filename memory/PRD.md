@@ -98,7 +98,15 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **Normalized**: `thumbnail_url` is the canonical field. Both Explore and Profile read the same source.
   - **Testing**: 33/33 backend tests passed (unit + API integration + regression).
 
+- [2026-03-05] Featured Workout Deep Link – Battle Plan Data Fix (P0):
+  - **Root Cause**: Push payload in `notifications.py` only sent 6 fields per exercise (id, name, duration, description, imageUrl, equipment). Missing: `battlePlan`, `moodTips`, `difficulty`, `workoutType`, `moodCard`, `intensityReason`.
+  - **Backend Fix**: Updated push payload construction to include all 12 exercise fields. Capped at 10 exercises for push payload size. Added `heroImageUrl` to payload.
+  - **Frontend Fix (notifications.ts)**: Fixed fetch fallback body format from `{ids: [...]}` to bare `[...]` (matching backend endpoint contract). Fixed moodTips mapping from `[]` to `ex.moodTips || []`. Fixed id mapping to check `exerciseId` first.
+  - **Frontend Fix (cart.tsx)**: Same fixes as notifications.ts for the cart hydration fetch fallback path.
+  - **Testing**: 30/30 backend tests passed (push payload fields, batch endpoint, exerciseId mapping, cap at 10, body format).
+
 ## Backlog
 - P2: Video pre-fetching for workout plans (Phase 2)
 - P2: Admin panel caching for expensive aggregations
 - P2: Investigate root cause of notifications without `metadata.post_thumbnail`
+- P2: Unbounded query refactoring at server.py (replace .to_list(10000) with proper pagination)
