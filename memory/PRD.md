@@ -180,6 +180,16 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **Files**: `components/AppBootstrap.tsx`, `frontend/.env`, `utils/apiConfig.ts`, `app.json`
   - **Testing**: 7/7 backend tests + full frontend code correctness verification (iteration_13)
 
+- [2026-03-05] Profile Grid "No Posts" Debug & Fix (P0):
+  - **Bugs Found & Fixed**:
+    1. **Bare `except:` swallowed ALL errors** in profile endpoint → returned 404 "User not found" hiding real crashes. Fixed: now catches `Exception`, logs `PROFILE-POSTS-ERROR` with full traceback, returns 500 with error type.
+    2. **`PostResponse.cover_urls: Optional[dict]`** — previous migration converted dicts to lists, but model expected dict. Fixed: changed to `Optional[Any]` (both PostCreate and PostResponse).
+    3. **Frontend showed "No posts yet" on errors** — no distinction between failed request and empty result. Fixed: added `postsError` state, shows "Couldn't load posts" with pull-to-refresh on errors, "No posts yet" only on 200+empty.
+  - **New Debug Endpoint**: `GET /api/debug/profile_posts_check?userId=<id>` (admin-only) returns:
+    - `userId_received`, `user_exists_in_db`, `posts_by_author_id` (string), `posts_by_user_id`, `posts_by_author_obj` (ObjectId), `newest_author_posts` (3 newest), `profile_pipeline_returned`, `profile_pipeline_error`
+  - **Enhanced Logging**: PROFILE-POSTS log now includes full `filter=` mongo query
+  - **Testing**: 10/10 backend tests passed (iteration_14)
+
 ## Backlog
 - P2: Admin panel caching for expensive aggregations
 - P2: Unbounded query refactoring at server.py (replace .to_list(10000) with proper pagination)
