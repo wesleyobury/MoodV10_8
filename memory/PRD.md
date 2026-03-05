@@ -118,6 +118,10 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **Root Cause**: Hydration `useEffect` in `cart.tsx` depended on `cartItems.length`. When `clearCart()` set items to `[]`, length changed to 0, re-triggering the useEffect. Since `params.featuredId` was still set (route params persist in navigation stack), it re-hydrated the cart immediately.
   - **Fix**: Added `userClearedRef` (React ref) that's set to `true` on trash press and individual last-item removal. Hydration useEffect checks this ref and skips re-hydration after explicit user clear. Ref resets on fresh mount (new push notification = new screen instance).
 
+- [2026-03-05] Featured Workout Notification Inbox Tap Fix:
+  - **Root Cause**: `notifications-inbox.tsx` navigated to `/featured-workout` (nonexistent route → fell through to profile). Should be `/featured-workout-detail` with `params: { id: entity_id }` matching the carousel path.
+  - **Fix**: One-line route correction. Now tapping featured workout notification → workout detail screen → cart → workout session (full path with battle plans, mood tips).
+
 ## Backlog
 - P2: Video pre-fetching for workout plans (Phase 2)
 - P2: Admin panel caching for expensive aggregations

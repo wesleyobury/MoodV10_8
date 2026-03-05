@@ -272,7 +272,10 @@ export default function NotificationsInbox() {
         break;
       case 'featured_workout':
         if (entity_id) {
-          router.push(`/featured-workout?workoutId=${entity_id}`);
+          router.push({
+            pathname: '/featured-workout-detail',
+            params: { id: entity_id },
+          });
         }
         break;
       case 'workout_reminder':
