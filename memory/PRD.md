@@ -170,6 +170,16 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **Carousel uses `expo-image`**: Switched from React Native's `Image` to `expo-image` with `cachePolicy="disk"` and `transition={200}` for disk-cached images with smooth fade-in.
   - **Testing**: Bundle endpoint verified (20/20 tests, iteration_11). Code review confirmed all integrations.
 
+- [2026-03-05] Backend URL Lock Fix (P0):
+  - **Root Cause**: `AppBootstrap.tsx` had its own `getApiUrl()` function that read `process.env.EXPO_PUBLIC_BACKEND_URL` directly WITHOUT the preview domain rejection logic from `apiConfig.ts`. The Emergent deployment automation overwrites `frontend/.env` with preview URLs, so any code reading the env var directly would use the wrong backend.
+  - **Fix**:
+    1. Removed duplicate `getApiUrl()` from `AppBootstrap.tsx` — now imports `API_URL` from `../utils/apiConfig`
+    2. Updated `frontend/.env` to `https://bug-busters-13.emergent.host`
+    3. `apiConfig.ts` already has: hardcoded `PRODUCTION_BACKEND_URL`, `isPreviewDomain()` rejection, 3-tier fallback (env → config → hardcoded)
+    4. `app.json` extra section already has production URL
+  - **Files**: `components/AppBootstrap.tsx`, `frontend/.env`, `utils/apiConfig.ts`, `app.json`
+  - **Testing**: 7/7 backend tests + full frontend code correctness verification (iteration_13)
+
 ## Backlog
 - P2: Admin panel caching for expensive aggregations
 - P2: Unbounded query refactoring at server.py (replace .to_list(10000) with proper pagination)
