@@ -24,7 +24,7 @@ from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient
 
 # Use PUBLIC URL for testing
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://battle-plan-sync.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://workout-nav-fix.preview.emergentagent.com').rstrip('/')
 
 # MongoDB direct connection for DB tests
 MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
