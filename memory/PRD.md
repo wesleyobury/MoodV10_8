@@ -114,6 +114,10 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **TRACE logging**: Added TRACE-LIKE, TRACE-COMMENT, TRACE-NOTIF with explicit skip reasons (self_like, missing_post, missing_recipient, idempotency, following_only, prefs_disabled, type_blocked). Downgraded to debug level after root cause confirmed.
   - **Testing**: 10/10 backend tests passed. Video like + comment notifications now created. Image post regression passed.
 
+- [2026-03-05] Cart Persistent After Trash Fix:
+  - **Root Cause**: Hydration `useEffect` in `cart.tsx` depended on `cartItems.length`. When `clearCart()` set items to `[]`, length changed to 0, re-triggering the useEffect. Since `params.featuredId` was still set (route params persist in navigation stack), it re-hydrated the cart immediately.
+  - **Fix**: Added `userClearedRef` (React ref) that's set to `true` on trash press and individual last-item removal. Hydration useEffect checks this ref and skips re-hydration after explicit user clear. Ref resets on fresh mount (new push notification = new screen instance).
+
 ## Backlog
 - P2: Video pre-fetching for workout plans (Phase 2)
 - P2: Admin panel caching for expensive aggregations

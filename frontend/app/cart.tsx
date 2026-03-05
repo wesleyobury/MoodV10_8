@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -192,6 +192,9 @@ export default function CartScreen() {
   const [moodCard, setMoodCard] = useState('');
   const [dynamicTitle, setDynamicTitle] = useState('');
 
+  // Track explicit cart clears to prevent re-hydration from stale route params
+  const userClearedRef = useRef(false);
+
   // Parse generated carts from params on mount
   useEffect(() => {
     if (params.generatedCarts) {
@@ -224,6 +227,7 @@ export default function CartScreen() {
 
   useEffect(() => {
     if (cartItems.length > 0) return;  // already populated
+    if (userClearedRef.current) return; // user explicitly trashed — don't re-hydrate
     if (!params.featuredId && !params.pushCartItems) return;  // not from push
 
     let cancelled = false;
@@ -339,10 +343,15 @@ export default function CartScreen() {
         workout_name: workout.name,
       });
     }
+    // If removing the last item, mark as user-cleared to prevent re-hydration
+    if (cartItems.length <= 1) {
+      userClearedRef.current = true;
+    }
     removeFromCart(workoutId);
   };
 
   const handleClearCart = () => {
+    userClearedRef.current = true;
     clearCart();
     router.push('/(tabs)');
   };
