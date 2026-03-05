@@ -161,9 +161,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 if (timeoutId) clearTimeout(timeoutId);
                 return;
               }
-            } else {
-              console.log('Stored token invalid, clearing...');
+            } else if (userResp.status === 401) {
+              // Token is truly invalid/expired — clear it
+              console.log('Stored token invalid (401), clearing...');
               await AsyncStorage.removeItem('auth_token');
+            } else {
+              // Server error (500, 502, 503) — keep token, proceed optimistically
+              // Don't log out users due to transient server issues
+              console.warn(`⚠️ Server error ${userResp.status} during auth validation, keeping session`);
+              setToken(storedToken);
+              setIsLoading(false);
+              if (timeoutId) clearTimeout(timeoutId);
+              return;
             }
           } catch (fetchError: any) {
             clearTimeout(fetchTimeoutId);

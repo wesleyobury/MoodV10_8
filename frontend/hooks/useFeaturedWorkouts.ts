@@ -133,6 +133,24 @@ export async function fetchWorkoutsByIds(ids: string[]): Promise<FeaturedWorkout
 }
 
 /**
+ * Fetch config + workouts in a single call (eliminates network waterfall)
+ */
+async function fetchFeaturedBundle(): Promise<{ config: FeaturedConfig; workouts: FeaturedWorkout[] } | null> {
+  try {
+    const response = await fetch(`${API_URL}/api/featured/bundle`);
+    if (!response.ok) {
+      console.warn('[FeaturedWorkouts] Bundle fetch failed:', response.status);
+      return null;
+    }
+    const data = await response.json();
+    return { config: data.config, workouts: data.workouts || [] };
+  } catch (error) {
+    console.error('[FeaturedWorkouts] Error fetching bundle:', error);
+    return null;
+  }
+}
+
+/**
  * Get cached data from AsyncStorage
  */
 async function getCachedData(): Promise<{
@@ -245,34 +263,50 @@ export function useFeaturedWorkouts() {
       if (isRefreshing.current) return;
       isRefreshing.current = true;
 
-      const config = await fetchFeaturedConfig();
+      // Use bundle endpoint (single round-trip) for faster first load
+      const bundle = await fetchFeaturedBundle();
       
-      if (config && config.featuredWorkoutIds.length > 0) {
-        const freshWorkouts = await fetchWorkoutsByIds(config.featuredWorkoutIds);
+      if (bundle && bundle.workouts.length > 0) {
+        const validatedWorkouts = bundle.workouts.map(validateWorkoutExercises);
+        setWorkouts(validatedWorkouts);
+        setIsFromCache(false);
+        setLastUpdated(new Date());
+        setError(null);
         
-        if (freshWorkouts.length > 0) {
-          const validatedWorkouts = freshWorkouts.map(validateWorkoutExercises);
-          setWorkouts(validatedWorkouts);
-          setIsFromCache(false);
-          setLastUpdated(new Date());
-          setError(null);
+        // Prefetch exercise images for instant detail page loads
+        prefetchFeaturedWorkoutImages(validatedWorkouts);
+        
+        // Save to cache
+        await saveToCache(bundle.config, validatedWorkouts);
+      } else {
+        // Bundle failed — fallback to sequential fetch
+        const config = await fetchFeaturedConfig();
+        
+        if (config && config.featuredWorkoutIds.length > 0) {
+          const freshWorkouts = await fetchWorkoutsByIds(config.featuredWorkoutIds);
           
-          // Prefetch exercise images for instant detail page loads
-          prefetchFeaturedWorkoutImages(validatedWorkouts);
-          
-          // Save to cache
-          await saveToCache(config, validatedWorkouts);
+          if (freshWorkouts.length > 0) {
+            const validatedWorkouts = freshWorkouts.map(validateWorkoutExercises);
+            setWorkouts(validatedWorkouts);
+            setIsFromCache(false);
+            setLastUpdated(new Date());
+            setError(null);
+            
+            // Prefetch exercise images for instant detail page loads
+            prefetchFeaturedWorkoutImages(validatedWorkouts);
+            
+            // Save to cache
+            await saveToCache(config, validatedWorkouts);
+          } else if (cached.workouts.length === 0) {
+            console.warn('[FeaturedWorkouts] Using hardcoded fallback');
+            setWorkouts(HARDCODED_FALLBACK);
+            setError('Using offline data');
+          }
         } else if (cached.workouts.length === 0) {
-          // No fresh data and no cache - use hardcoded fallback
-          console.warn('[FeaturedWorkouts] Using hardcoded fallback');
+          console.warn('[FeaturedWorkouts] Using hardcoded fallback (no config)');
           setWorkouts(HARDCODED_FALLBACK);
           setError('Using offline data');
         }
-      } else if (cached.workouts.length === 0) {
-        // Config fetch failed and no cache - use hardcoded fallback
-        console.warn('[FeaturedWorkouts] Using hardcoded fallback (no config)');
-        setWorkouts(HARDCODED_FALLBACK);
-        setError('Using offline data');
       }
     } catch (err) {
       console.error('[FeaturedWorkouts] Error loading workouts:', err);

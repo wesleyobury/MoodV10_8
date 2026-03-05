@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  Image,
   Animated,
   Easing,
   Linking,
@@ -16,6 +15,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
+import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -184,7 +184,10 @@ const WorkoutCarouselCard = ({
       <Image
         source={{ uri: workout.image }}
         style={styles.carouselImage}
-        resizeMode="cover"
+        contentFit="cover"
+        cachePolicy="disk"
+        transition={200}
+        placeholder={require('../../assets/images/icon.png')}
       />
       <View style={styles.carouselOverlay} />
       

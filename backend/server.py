@@ -6911,7 +6911,7 @@ async def get_user_posts(
                 author=author_data,
                 workout=workout_data,
                 workout_data=embedded_workout_data,
-                caption=post["caption"],
+                caption=post.get("caption", ""),
                 media_urls=post.get("media_urls", []),
                 hashtags=post.get("hashtags", []),
                 cover_urls=post.get("cover_urls"),
@@ -7557,7 +7557,7 @@ async def get_following_posts(
                 author=author_data,
                 workout=workout_data,
                 workout_data=embedded_workout_data,
-                caption=post["caption"],
+                caption=post.get("caption", ""),
                 media_urls=post.get("media_urls", []),
                 hashtags=post.get("hashtags", []),
                 cover_urls=post.get("cover_urls"),
@@ -7633,7 +7633,7 @@ async def get_public_posts(limit: int = 20, skip: int = 0):
             author=author_data,
             workout=None,  # Skip workout details for public feed
             workout_data=embedded_workout_data,
-            caption=post["caption"],
+            caption=post.get("caption", ""),
             media_urls=post.get("media_urls", []),
             hashtags=post.get("hashtags", []),
             cover_urls=post.get("cover_urls"),
@@ -10317,6 +10317,49 @@ async def get_featured_config():
         "featuredWorkoutIds": config.get("featuredWorkoutIds", []),
         "ttlHours": config.get("ttlHours", 12),
         "updatedAt": config.get("updatedAt")
+    }
+
+
+@api_router.get("/featured/bundle")
+async def get_featured_bundle():
+    """Combined config + workouts in a single response (eliminates waterfall).
+    Used by guests and first-load to get everything in one round trip."""
+    config = await db.featured_config.find_one({"_id": "main"})
+    
+    config_data = {
+        "schemaVersion": config.get("schemaVersion", 1) if config else 1,
+        "featuredWorkoutIds": config.get("featuredWorkoutIds", []) if config else [],
+        "ttlHours": config.get("ttlHours", 12) if config else 12,
+        "updatedAt": config.get("updatedAt") if config else None,
+    }
+    
+    workout_ids = config_data["featuredWorkoutIds"]
+    ordered_workouts = []
+    
+    if workout_ids:
+        object_ids = []
+        for id_str in workout_ids:
+            try:
+                object_ids.append(ObjectId(id_str))
+            except Exception:
+                continue
+        
+        workouts = await db.featured_workouts.find(
+            {"_id": {"$in": object_ids}}
+        ).to_list(50)
+        
+        id_to_workout = {}
+        for w in workouts:
+            w["_id"] = str(w["_id"])
+            id_to_workout[w["_id"]] = w
+        
+        for id_str in workout_ids:
+            if id_str in id_to_workout:
+                ordered_workouts.append(id_to_workout[id_str])
+    
+    return {
+        "config": config_data,
+        "workouts": ordered_workouts,
     }
 
 # Public endpoint - fetch workouts by IDs

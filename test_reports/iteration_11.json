@@ -1,0 +1,90 @@
+{
+  "summary": "Backend testing completed for caption field fix and featured bundle endpoint. All 20 tests passed. Code review verified frontend fixes for session persistence and bundle endpoint usage.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_caption_and_bundle_fixes.py",
+    "/app/test_reports/pytest/pytest_caption_bundle_fixes.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "VERIFIED: GET /api/posts/public uses post.get('caption', '') at line 7636 - handles missing caption fields gracefully",
+    "VERIFIED: GET /api/posts (authenticated) uses post.get('caption', '') at lines 6914 and 7560 - same fix applied",
+    "VERIFIED: GET /api/featured/bundle endpoint (lines 10323-10363) returns combined config+workouts in single response",
+    "VERIFIED: Bundle response config contains schemaVersion, featuredWorkoutIds array, ttlHours, and updatedAt",
+    "VERIFIED: Bundle workouts are fully hydrated with exercise data, maintaining order from config",
+    "VERIFIED (Code Review): AuthContext.tsx lines 164-176 - only clears token on 401, keeps session on 500/502/503 server errors",
+    "VERIFIED (Code Review): useFeaturedWorkouts.ts lines 138-150 - fetchFeaturedBundle() function uses /api/featured/bundle endpoint",
+    "VERIFIED (Code Review): useFeaturedWorkouts.ts lines 266-280 - bundle-first loading with fallback to sequential fetch",
+    "VERIFIED (Code Review): index.tsx lines 184-189 - carousel uses expo-image with cachePolicy='disk' for image caching"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_caption_and_bundle_fixes.py"
+  ],
+  "success_rate": {
+    "backend": "100% (20/20 tests passed)",
+    "frontend": "N/A - React Native app, Playwright not applicable (code review only)"
+  },
+  "seed_data_creation": "None - used existing posts and featured workouts",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 11 verified fixes for: (1) Caption field handling - posts/public and posts endpoints use .get('caption', '') to handle missing caption fields. (2) Featured bundle endpoint - GET /api/featured/bundle returns config+workouts in single response, eliminating the config→batch waterfall. (3) Frontend code review confirmed session persistence fix (only logout on 401) and bundle endpoint usage.",
+  "verified_features": [
+    {
+      "feature": "GET /api/posts/public returns 200 (not 500) even with missing caption fields",
+      "status": "VERIFIED",
+      "evidence": "20/20 tests passed, endpoint returns 200 with valid response"
+    },
+    {
+      "feature": "GET /api/posts/public returns posts with caption field (can be empty string)",
+      "status": "VERIFIED",
+      "evidence": "All posts have caption field as string type"
+    },
+    {
+      "feature": "GET /api/featured/bundle returns combined config + workouts",
+      "status": "VERIFIED",
+      "evidence": "Response contains both 'config' and 'workouts' keys"
+    },
+    {
+      "feature": "Bundle config contains featuredWorkoutIds array and ttlHours",
+      "status": "VERIFIED",
+      "evidence": "config.featuredWorkoutIds is list, config.ttlHours is int"
+    },
+    {
+      "feature": "Bundle workouts array has correct workout data with exercises",
+      "status": "VERIFIED",
+      "evidence": "Workouts contain _id, title, exercises; exercises are fully hydrated"
+    },
+    {
+      "feature": "Authenticated GET /api/posts handles missing caption fields",
+      "status": "VERIFIED",
+      "evidence": "Endpoint returns 200, all posts have caption field"
+    },
+    {
+      "feature": "AuthContext.tsx only clears token on 401 (not 500/502/503)",
+      "status": "VERIFIED (Code Review)",
+      "evidence": "Lines 164-176: if status === 401 clears token, else keeps token on server errors"
+    },
+    {
+      "feature": "useFeaturedWorkouts.ts uses bundle endpoint for initial fetch",
+      "status": "VERIFIED (Code Review)",
+      "evidence": "Lines 266-280: Uses fetchFeaturedBundle() first, falls back to sequential"
+    },
+    {
+      "feature": "index.tsx carousel uses expo-image with cachePolicy=disk",
+      "status": "VERIFIED (Code Review)",
+      "evidence": "Lines 184-189: <Image cachePolicy='disk' ...>"
+    }
+  ],
+  "test_credentials": {
+    "test_user_id": "68ae7db61794544c0d5de8a3",
+    "test_username": "moodtester2025"
+  }
+}
