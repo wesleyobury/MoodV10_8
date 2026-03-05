@@ -11842,6 +11842,28 @@ async def startup_db_client():
     except Exception as e:
         logger.error(f"Failed to start notification worker: {e}")
     
+    # Migration: fix None values in notification_settings
+    # These cause silent push send failures (not None → True in Python)
+    try:
+        bool_defaults_true = [
+            "notifications_enabled", "likes_enabled", "comments_enabled",
+            "messages_enabled", "follows_enabled", "workout_reminders_enabled",
+            "featured_workouts_enabled", "following_digest_enabled",
+            "featured_suggestions_enabled",
+        ]
+        total_fixed = 0
+        for field in bool_defaults_true:
+            r = await db.notification_settings.update_many(
+                {field: None}, {"$set": {field: True}}
+            )
+            total_fixed += r.modified_count
+        if total_fixed > 0:
+            logger.info(f"✅ notification_settings migration: fixed {total_fixed} None→True fields")
+        else:
+            logger.info("✅ notification_settings migration: nothing to do")
+    except Exception as e:
+        logger.error(f"⚠️ notification_settings migration failed: {e}")
+    
     # Auto-seed featured workouts in staging or if empty
     # This runs on EVERY deployment to ensure featured workouts exist
     try:

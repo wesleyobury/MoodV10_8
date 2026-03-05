@@ -102,9 +102,10 @@ class NotificationWorker:
         hour_str = f"{current_hour:02d}:00"
         
         # Get users with matching digest time and enabled digests
+        # Use $ne: False to match both True and None (unset) values
         settings_cursor = self.db.notification_settings.find({
-            "notifications_enabled": True,
-            "following_digest_enabled": True,
+            "notifications_enabled": {"$ne": False},
+            "following_digest_enabled": {"$ne": False},
             "digest_time": hour_str,
             "following_digest_frequency": {"$ne": "off"}
         })
@@ -202,8 +203,9 @@ class NotificationWorker:
         check_time = f"{now.hour:02d}:{minute_rounded:02d}"
         
         # Find users whose quiet hours end at this time
+        # Use $ne: False to match both True and None (unset) values
         settings_cursor = self.db.notification_settings.find({
-            "notifications_enabled": True,
+            "notifications_enabled": {"$ne": False},
             "quiet_hours_enabled": True,
             "quiet_hours_end": check_time
         })

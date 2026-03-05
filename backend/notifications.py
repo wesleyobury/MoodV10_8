@@ -209,32 +209,43 @@ class NotificationService:
         return ""
     
     async def get_user_settings(self, user_id: str) -> dict:
-        """Get notification settings for a user, with defaults"""
+        """Get notification settings for a user, with defaults.
+        
+        CRITICAL: MongoDB may store None for unset fields. Python's
+        dict.get(key, default) returns None (not the default) when the key
+        EXISTS with value None. We must coalesce None -> default explicitly.
+        """
         settings = await self.db.notification_settings.find_one({"user_id": user_id})
         
         if not settings:
             # Return defaults
             return self._get_default_settings(user_id)
         
+        def _bool(val, default: bool) -> bool:
+            return val if val is not None else default
+        
+        def _str(val, default: str) -> str:
+            return val if val is not None else default
+        
         return {
             "user_id": settings["user_id"],
-            "notifications_enabled": settings.get("notifications_enabled", True),
-            "likes_enabled": settings.get("likes_enabled", True),
-            "likes_from_following_only": settings.get("likes_from_following_only", False),
-            "comments_enabled": settings.get("comments_enabled", True),
-            "comments_from_following_only": settings.get("comments_from_following_only", False),
-            "messages_enabled": settings.get("messages_enabled", True),
-            "follows_enabled": settings.get("follows_enabled", True),
-            "workout_reminders_enabled": settings.get("workout_reminders_enabled", True),
-            "featured_workouts_enabled": settings.get("featured_workouts_enabled", True),
-            "following_digest_enabled": settings.get("following_digest_enabled", True),
-            "following_digest_frequency": settings.get("following_digest_frequency", "daily"),  # daily, 3x_week, off
-            "featured_suggestions_enabled": settings.get("featured_suggestions_enabled", True),
-            "quiet_hours_enabled": settings.get("quiet_hours_enabled", False),
-            "quiet_hours_start": settings.get("quiet_hours_start", "22:00"),
-            "quiet_hours_end": settings.get("quiet_hours_end", "08:00"),
-            "digest_time": settings.get("digest_time", "18:00"),
-            "timezone": settings.get("timezone", "America/New_York"),
+            "notifications_enabled": _bool(settings.get("notifications_enabled"), True),
+            "likes_enabled": _bool(settings.get("likes_enabled"), True),
+            "likes_from_following_only": _bool(settings.get("likes_from_following_only"), False),
+            "comments_enabled": _bool(settings.get("comments_enabled"), True),
+            "comments_from_following_only": _bool(settings.get("comments_from_following_only"), False),
+            "messages_enabled": _bool(settings.get("messages_enabled"), True),
+            "follows_enabled": _bool(settings.get("follows_enabled"), True),
+            "workout_reminders_enabled": _bool(settings.get("workout_reminders_enabled"), True),
+            "featured_workouts_enabled": _bool(settings.get("featured_workouts_enabled"), True),
+            "following_digest_enabled": _bool(settings.get("following_digest_enabled"), True),
+            "following_digest_frequency": _str(settings.get("following_digest_frequency"), "daily"),
+            "featured_suggestions_enabled": _bool(settings.get("featured_suggestions_enabled"), True),
+            "quiet_hours_enabled": _bool(settings.get("quiet_hours_enabled"), False),
+            "quiet_hours_start": _str(settings.get("quiet_hours_start"), "22:00"),
+            "quiet_hours_end": _str(settings.get("quiet_hours_end"), "08:00"),
+            "digest_time": _str(settings.get("digest_time"), "18:00"),
+            "timezone": _str(settings.get("timezone"), "America/New_York"),
         }
     
     def _get_default_settings(self, user_id: str) -> dict:
