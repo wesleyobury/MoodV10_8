@@ -1,72 +1,64 @@
 <analysis>**original_problem_statement**:
-The user's primary goal is to fix a series of critical bugs related to push notifications, data consistency, and UI behavior in their React Native application.
+The user's primary goal is to fix a series of critical bugs related to push notifications, data consistency, and UI behavior in their React Native application. The most recent and critical issue is ensuring that tapping a featured workout push notification correctly populates all associated data (like battle plans), providing the same experience as tapping the workout from the in-app carousel. Other recent tasks included fixing video engagement notifications, correcting mismatched video thumbnails, and adding a UI toggle on the achievement screen.
 
 **PRODUCT REQUIREMENTS**:
-1.  **Push Notification System Overhaul (CRITICAL):**
-    *   Fix duplicate push notifications. Events like featured workout or reminder are sending 4 pushes instead of one.
-    *   Ensure the in-app notifications tab correctly displays the sender as the admin user (officialmoodapp) instead of Unknown.
-    *   Guarantee that the title and body of featured workout pushes match the content entered in the admin panel.
-    *   Fix the deep link for featured workout pushes, which currently leads to an empty cart screen.
-    *   Enable push notifications for likes, which were previously not being sent for single likes.
-2.  **Bug Fixes & UX Polish (HIGH):**
-    *   Ensure video thumbnails on the profile grid match the thumbnail selected by the user during upload.
-    *   Prevent videos from auto-playing when the app is in the background or the user is on a different tab.
-    *   Make the push notification settings section in the app visible only to admin users.
-    *   Remove the exercise video search functionality from the home screen.
-    *   On the share achievement card, append the equipment name to workout titles, separated by a bullet point, and truncate to 40 characters.
-3.  **Authentication & Onboarding (MEDIUM):**
-    *   Implement indefinite login sessions, so users remain logged in until they explicitly sign out.
-    *   Automate the push notification permission prompt to appear on app launch or after login, removing the need for manual enablement in settings.
-    *   Harden the push notification deep link handling to work reliably on cold starts without fixed delays.
+1.  **Featured Workout Deep Link Parity (P0 - CRITICAL):**
+    *   Fix featured workout push notifications so they deep link to a fully populated cart screen, including all associated battle plans and workout session data. The experience must be identical to navigating from the in-app carousel.
+    *   Investigate and fix why display images are sometimes not loading on the cart screen when accessed via a push notification.
+2.  **Video Engagement Notifications (P0 - Completed in this session):**
+    *   Ensure likes and comments on video posts reliably trigger in-app and push notifications.
+    *   This required implementing a fallback to find the post's author, normalizing the  field on new posts, and migrating old video posts to have the correct author field.
+3.  **Video Thumbnail Mismatch (P0 - Completed in this session):**
+    *   Fix the bug where the profile grid showed the first frame of a video instead of the user-selected thumbnail.
+    *   This involved normalizing a  field on the backend and ensuring the frontend profile grid component consumed it.
+4.  **Achievement Card Toggle (P1 - User Verification Pending):**
+    *   Add a toggle on the Share Your Achievement screen to let users include or exclude equipment names from the exercise list.
+    *   The toggle should be an overlay on the achievement card itself and should not be part of the final exported image.
 
 **User's preferred language**: English
 
 **what currently exists?**
-The project is a full-stack application with a React Native (Expo) frontend and a FastAPI backend. The agent has implemented several fixes, including extending auth session durations to 10 years, automating push permission requests, and fixing numerous bugs related to video playback, incorrect profile thumbnails, and the like notification flow. However, the core push notification system remains critically flawed, suffering from duplicate sends and incorrect sender attribution.
+The project is a full-stack application with a React Native (Expo) frontend and a FastAPI backend. The agent has successfully implemented numerous critical bug fixes, including a complete overhaul of the push notification system to eliminate duplicates and fix sender attribution, resolving video engagement notification failures by backfilling author data, and fixing a long-standing video thumbnail mismatch bug. The application is now in a more stable state, but a new critical deep-linking issue has emerged.
 
 **Last working item**:
--   Last item agent was working: Investigating a complex set of push notification issues reported by the user, including duplicate sends, incorrect content, failed deep links, and the persistent Unknown sender problem.
--   Status: IN PROGRESS
+-   Last item agent was working: Investigating why tapping a featured workout push notification leads to a cart with incomplete or generic battle plan data, while tapping the same workout from the in-app carousel works correctly. The agent was starting to trace and compare the data flow for both paths to identify the discrepancy.
+-   Status: NOT STARTED
 -   Agent Testing Done: N
--   Which testing method agent to use? backend testing agent. The fixes will involve database schema changes (unique index on tokens), backend logic (idempotency, deduplication), and a cleanup script. Manual verification on the frontend will also be required.
+-   Which testing method agent to use? both. The fix will likely involve backend changes to the push payload in  and frontend changes in  to consume the new data. The testing agent is needed to verify the end-to-end flow on a cold start.
 -   User Testing Done: N
 
 **All Pending/In progress Issue list**:
--   Issue 1: Fix Duplicate/Incorrect Push Notifications and Unknown Sender (P0)
--   Issue 2: Unbounded Database Query (P1)
+-   Issue 1: Featured workout push notifications lead to a cart with incomplete data (P0)
+-   Issue 2: Achievement card include equipment name toggle is pending user verification (P1)
 
 **Issues Detail**:
--   **Issue 1: Fix Duplicate/Incorrect Push Notifications and Unknown Sender**
-    -   **Description**: Users receive multiple (e.g., 4) notifications for a single event like a featured workout. The notification content is often wrong, and the sender appears as Unknown in the in-app notifications tab. This is a critical bug.
-    -   **Attempted fixes**: The agent previously tried to fix the Unknown sender issue by passing an , but it was unsuccessful. The current investigation has revealed the root causes are more systemic.
-    -   **Next debug checklist**: Implement the user's detailed work plan, which involves:
-        1.  **Database Hygiene**: Add a unique index to the  collection on  to prevent duplicate entries.
-        2.  **Idempotency**: Create a new  collection with a unique index on  to ensure each event triggers a push only once.
-        3.  **Sender Persistence**: Modify the notification creation logic in  to permanently store the admin user's ID and details as the sender for all server-initiated pushes.
-        4.  **Deduplication**: Add logic to deduplicate tokens at send-time as a defensive measure.
-    -   **Why fix this issue and what will be achieved with the fix?** To make the push notification system reliable, correct, and non-spammy, which is essential for user engagement and trust.
-    -   **Status**: IN PROGRESS
-    -   **Is recurring issue?** Y
+-   **Issue 1: Featured workout push notifications lead to a cart with incomplete data**
+    -   **Description**: When a user taps a push notification for a featured workout, they are taken to a populated cart, but the subsequent workout screens (battle plans) contain generic information, not the specific data from the database. Display images are also sometimes missing. This behavior is incorrect, as accessing the same workout from the in-app carousel functions perfectly.
+    -   **Attempted fixes**: None. Investigation just started.
+    -   **Next debug checklist**:
+        1.  Trace the data flow for the **carousel tap path**. Log the data structure used to populate the cart and subsequent screens.
+        2.  Trace the data flow for the **push notification path**. Log the  payload received in the notification response handler ().
+        3.  Compare the data from both paths. The push payload is likely missing the detailed battle plan data or a specific ID required to fetch it.
+        4.  Update the  push payload generation in  to include all necessary data.
+        5.  Update the frontend cart screen () and/or the notification handler to parse and utilize this complete data structure, especially on a cold start.
+    -   **Why fix this issue and what will be achieved with the fix?** This is a critical user engagement feature. Fixing it will ensure a seamless and correct experience, driving users to featured content effectively.
+    -   **Status**: NOT STARTED
+    -   **Is recurring issue?** Y (Deep linking has been a recurring problem area).
     -   **Should Test frontend/backend/both after fix?** Both
     -   **Blocked on other issue**: None
 
--   **Issue 2: Unbounded Database Query**
-    -   **Description**: A performance warning for an unbounded query () at  remains from a previous session. This can cause out-of-memory errors.
-    -   **Attempted fixes**: None.
-    -   **Next debug checklist**: View  around line 1808 and refactor the query to use pagination ( and ).
-    -   **Why fix this issue and what will be achieved with the fix?** Improves application stability and prevents potential crashes under load.
-    -   **Status**: NOT STARTED
-    -   **Is recurring issue?** Y
-    -   **Should Test frontend/backend/both after fix?** Backend
+-   **Issue 2: Achievement card include equipment name toggle is pending user verification**
+    -   **Description**: The user requested a toggle on the Share Your Achievement screen to show/hide equipment names. The user reported it was not visible, and the agent repositioned it as an overlay on the card.
+    -   **Attempted fixes**: The agent added the toggle to  and updated styles to position it as an absolute overlay on the  component.
+    -   **Next debug checklist**: Await user confirmation. If the issue persists, use the screenshot tool to verify the toggle's visibility and check the component hierarchy and CSS for clipping or rendering issues.
+    -   **Why fix this issue and what will be achieved with the fix?** Fulfills a direct user feature request and improves UI customizability.
+    -   **Status**: USER VERIFICATION PENDING
+    -   **Is recurring issue?** N
+    -   **Should Test frontend/backend/both after fix?** Frontend
     -   **Blocked on other issue**: None
 
 **In progress Task List**:
--   **Task 1: Implement Comprehensive Fix for Push Notification System (P0)**
-    -   **Where to resume**: Begin implementing the user's detailed work plan, starting with database hygiene. Create a migration/cleanup script to deduplicate existing tokens and add a unique index to the  collection. Then, implement the  for idempotency.
-    -   **What will be achieved with this?** A robust and reliable push notification system that sends exactly one correct notification per event.
-    -   **Status**: IN PROGRESS
-    -   **Should Test frontend/backend/both after fix?** Both
-    -   **Blocked on something**: None.
+-   None.
 
 **Upcoming and Future Tasks**
 -   **Upcoming Tasks:**
@@ -76,105 +68,98 @@ The project is a full-stack application with a React Native (Expo) frontend and 
     -   **Data Integrity (P2):** Investigate the root cause of notifications being created without  to simplify the read path.
 
 **Completed work in this session**
--   **Indefinite Login Sessions**: Increased JWT, Google OAuth, and Apple Sign-In session/token expiry to 10 years.
--   **Automated Push Notifications**: Refactored the app to automatically request push permissions on login/app start.
--   **Hardened Deep Link Handling**: Replaced a fragile  with a robust navigation-ready queue for handling deep links on cold start.
--   **Bug Fix (Like Notifications)**: Enabled push notifications for single likes, added a dedupe key, and corrected the deep link to point to the specific post.
--   **Bug Fix (Home Screen, Thumbnails, Video Autoplay)**:
-    -   Removed the exercise search bar from the home screen.
-    -   Fixed incorrect profile thumbnails by ensuring  is populated in all relevant backend endpoints.
-    -   Prevented unwanted video autoplay by adding tab focus and app state awareness.
--   **Bug Fix (Admin Section & Featured Workout Deep Link)**:
-    -   Gated the push notification settings section to be visible only to admin users.
-    -   Corrected the API endpoint used for fetching featured workout data on deep link, fixing the empty cart issue.
--   **UI Enhancement (Achievement Card)**: Appended equipment names to workout titles on the shareable achievement card.
+-   **Push Notification System Overhaul**: Fixed duplicate pushes, incorrect sender (Unknown), and added an idempotency layer () and extensive logging.
+-   **Video Engagement Notification Fix**: Implemented a robust  helper and a data migration script to ensure notifications are triggered for likes/comments on all video posts, including legacy ones.
+-   **Profile Video Thumbnail Fix**: Corrected the thumbnail mismatch between the Explore page and Profile grid by normalizing a  field on the backend for all post types and updating the frontend to use it.
+-   **Like Notification Fix**: Fully traced and fixed the push notification path for likes, ensuring delivery.
+-   **Featured Workout Deep Link Fix (Phase 1)**: Resolved the empty cart issue by ensuring the cart screen could hydrate its state from route params passed by the notification handler.
+-   **Achievement Card Toggle (Initial Implementation)**: Added a toggle to show/hide equipment names on the achievement card and positioned it as an overlay per user feedback.
+-   **Unbounded Query Patch**: Mitigated a potential OOM error by reducing a query limit from 100,000 to 10,000.
 
 **Earlier issues found/mentioned but not fixed**
 -   **Issue 1: Unbounded Database Query**
-    -   **Description**: A performance warning for an unbounded query () at  remains from a previous session.
-    -   **Debug checklist**: Review  at line 1808 and implement pagination.
-    -   **Why to solve this issue and what will be achieved with this?** Prevents potential out-of-memory errors and improves application stability.
+    -   **Description**: A performance warning for an unbounded query () at  was patched but not fully resolved.
+    -   **Debug checklist**: Refactor the query to use proper pagination ( and ) instead of fetching a large list into memory.
+    -   **Why to solve this issue and what will be achieved with this?** Improves application stability and prevents potential out-of-memory errors under load.
     -   **Should Test frontend/backend/both after fix?**: Backend
     -   **Is recurring issue?**: Y
 
 **Known issue recurrence from previous fork**
--   **Issue recurrence in previous fork**: Deployment blockers.
--   **Recurrence count**: 6+
--   **Status**: RESOLVED (in the previous fork).
+-   None in this session.
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Idempotency**: The plan requires creating a  collection with a unique index on  to prevent the same event from triggering multiple sends.
--   **Database Indexing**: A unique index must be added to the  field in the  collection to enforce token uniqueness at the database level.
--   **React Native Push Notifications (Expo)**: Using  for permissions, token retrieval, and handling responses.
--   **React Navigation**: Using  to control component behavior based on tab focus and  to ensure the app is ready before processing deep links.
--   **FastAPI**: The backend framework where all API and notification logic resides.
+-   **React Native Deep Linking**: The core of the current issue revolves around correctly handling navigation and state hydration from a push notification, especially on a cold app start.
+-   **State Hydration**: The cart screen () needs to be able to fully hydrate its state (including complex battle plan data) from parameters passed via the navigation router, which originate from the push payload.
+-   **Backend Data Serialization**: The backend () must serialize a complete data object into the push notification payload, mirroring the data available during in-app navigation.
+-   **Data Migration**: A one-time script was successfully used in  to backfill  on legacy posts, ensuring data consistency.
 
 **key DB schema**
--   **device_tokens** (collection): Currently allows duplicate tokens, which is the root cause of multiple push sends. **Action**: Add a unique index on .
--   **notifications** (collection): Stores in-app notification records.  is often  for server-initiated pushes. **Action**: Ensure admin  is always persisted.
--   **PushSendLog** (new collection): To be created to enforce idempotency for push sends. **Schema**:  with a unique index on .
+-   **posts**: Migrated to ensure  is present on all documents. A helper function  now robustly finds the owner. The backend now serializes a  derived from .
+-   **PushSendLog**: A new collection with a unique index on  was added to enforce push idempotency.
+-   **device_tokens**: A unique index was added to  to prevent duplicate token registration.
 
 **changes in tech stack**
 -   None.
 
 **All files of reference**
--   : The central file for backend logic. It requires major changes to fix notification duplication, add idempotency, and persist sender information.
--   : The main file for frontend notification logic, including receiving and deep linking.
--   : Contains the  component that triggers notification logic.
--   : Contains the logic for building notification content.
--   : The UI for the admin-only push notification section.
+-   : Major changes for author resolution, data migration, and API response normalization ().
+-   : The focus for the next fix. Needs to be updated to include battle plan data in the  push payload.
+-   : The focus for the next fix. Needs to be updated to correctly process the complete workout data from route params.
+-   : Connects the push notification tap to the navigation logic.
+-   : Contains the new achievement card toggle.
+-   : Updated to conditionally render equipment names based on a prop.
+-   : Updated to use the new normalized  field, fixing the thumbnail bug.
 
 **Areas that need refactoring**:
--   The entire push notification sending pipeline in  must be refactored to be idempotent and to correctly handle sender attribution.
--   The  collection needs a cleanup script and a unique index to enforce data integrity.
--   The unbounded query at  needs to be refactored to use pagination.
+-   The unbounded query at  was only patched. It should be refactored to use proper database pagination (/).
 
 **key api endpoints**
--   : The endpoint for registering push tokens. Its logic must be changed from  to  to prevent duplicates.
--   : The endpoint for sending featured workout pushes. It's currently a source of duplicate notifications.
--   : The entry point for the like notification flow.
+-   : New admin endpoint to run the one-time data migration.
+-   : The endpoint that triggers the problematic push notification. The payload it generates needs to be investigated.
+-   : The endpoint for the profile grid, now returns normalized  and .
 
 **Critical Info for New Agent**
--   The user has provided a very specific and detailed work plan to fix the push notification system. **You must follow this plan exactly.** The highest priority is to stop duplicate notifications by cleaning up the  collection (adding a unique index) and implementing an idempotency layer ( collection).
--   The Unknown sender issue is a recurring problem. The definitive fix is to ensure the admin user's ID is retrieved and persisted as the  in the  collection for all server-generated pushes (reminders, featured workouts).
--   The root cause of the 4 duplicate pushes has been identified: the database contains multiple identical push tokens for a single user. Your first action should be to enforce uniqueness at the database level.
+-   Your highest priority (P0) is to fix the featured workout push notification. The user has diagnosed that the data loaded via push is different from the data loaded via the in-app carousel. You must trace both paths, identify the missing data in the push payload (likely battle plan details), and add it.
+-   Start by logging the data available in  on mount for both scenarios (carousel tap vs. push tap). This will reveal the discrepancy.
+-   Then, update  to add the missing data to the push payload.
+-   Finally, update  to use this new, richer data structure passed through route params.
+-   The secondary task (P1) is to confirm with the user if the achievement card toggle is now visible and correctly positioned as an overlay. Be prepared to use the screenshot tool to verify if the user reports it's still missing.
 
 **documents and test reports created in this job**
 -    (updated)
--    (created)
+-   
+-   
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **User**: Fix push/engagement notifications: automate permission requests on login. (Status: **COMPLETED**)
-2.  **User**: Show me where  is called after login. (Status: **COMPLETED**)
-3.  **User**: Verify 6 specific implementation details about the new notification logic. (Status: **COMPLETED**)
-4.  **User**: Fix MOOD push notification identity and deep links for featured workouts. (Status: **COMPLETED**)
-5.  **User**: Harden push deep link handling (replace , use nav-ready callback). (Status: **COMPLETED**)
-6.  **User**: Report 3 new bugs: remove home screen search, fix profile thumbnails, stop random video autoplay. (Status: **COMPLETED**)
-7.  **User**: Report 4 new bugs: admin section visible to all, duplicate featured workout pushes, incorrect content, empty cart on deep link, Unknown sender. (Status: **PARTIALLY COMPLETED**)
-8.  **User**: GOAL: Fix like notifications which are not being sent. (Status: **COMPLETED**)
-9.  **User**: Add equipment name to workout titles on the achievement share card, with truncation. (Status: **COMPLETED**)
-10. **User**: **(PENDING)** Provide a detailed work plan to fix duplicate pushes (featured workout & reminders) and the Unknown sender issue. This is the highest priority task.
+1.  **User**: Confirmed toggle is not rendering on the achievement card. (Status: **ADDRESSED**, fix pending verification)
+2.  **User**: Asked agent to proceed. (Status: **ACKNOWLEDGED**)
+3.  **User**: Described the  fix for profile grid thumbnails. (Status: **COMPLETED**)
+4.  **User**: Requested agent to stay awake. (Status: **ACKNOWLEDGED**)
+5.  **User**: **(PENDING)** Reported new P0 bug: featured workout pushes link to a cart with incomplete/generic battle plan data, unlike the carousel path. (Status: **IN PROGRESS**)
+6.  **User**: Provided context for the P0 bug investigation. (Status: **ACKNOWLEDGED**)
+7.  **User**: Asked for an update on the toggle not being visible on the achievement card preview. (Status: **ADDRESSED**, fix pending verification)
+8.  **User**: Confirmed the agent's plan to fix the toggle overlay. (Status: **ACKNOWLEDGED**)
+9.  **User**: Provided final confirmation on the toggle positioning. (Status: **ACKNOWLEDGED**)
+10. **User**: Awaited the fix for the toggle and the investigation into the new P0 deep link issue. (Status: **PENDING**)
 
 **Project Health Check:**
--   **Broken**: YES. The push notification system is critically broken, sending multiple notifications per event and degrading the user experience.
--   **Mocked**: None.
+-   **Broken**: YES. The critical engagement path for featured workouts via push notifications is providing an incomplete and confusing user experience.
 
 **3rd Party Integrations**
 -   **Cloudinary**: Used for image and video hosting/transformations.
 -   **Expo**: Used for the React Native framework and push notification services.
 
 **Testing status**
--   Testing agent used after significant changes: NO
+-   Testing agent used after significant changes: YES (for all previous fixes in this session)
 -   Troubleshoot agent used after agent stuck in loop: NO
--   Test files created: None
--   Known regressions: The push notification system has significantly regressed, now sending multiple incorrect notifications.
+-   Test files created: Test cases were added to the testing agent's prompts.
+-   Known regressions: The featured workout deep link functionality has regressed; while the cart is no longer empty, it now contains incomplete data.
 
 **Credentials to test flow:**
--   **Admin User**: . This account is required to access admin-only features and test server-initiated push notifications.
+-   **Admin User**: . Required for sending featured workout pushes from the admin panel.
 
 **What agent forgot to execute**
--   The agent has not yet implemented the user's detailed work plan to fix the duplicate/incorrect push notifications. This is the main pending task.
--   The agent has not addressed the long-standing unbounded database query ( in ).</analysis>
+-   The agent did not visually confirm the achievement card toggle fix with a screenshot after the user reported it was invisible. Instead, the agent stated the code was correct and the app needed to hot-reload. This left the user's concern unverified.</analysis>

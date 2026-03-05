@@ -562,18 +562,27 @@ class NotificationService:
                         {"_id": 0}
                     )
                     if workout_doc and "exercises" in workout_doc:
-                        # Include a compact representation of exercises for cart
+                        # Include full exercise data for cart + workout session screens
                         cart_items = []
-                        for ex in workout_doc["exercises"][:20]:  # cap at 20
+                        for ex in workout_doc["exercises"][:10]:  # cap at 10 for payload size
                             cart_items.append({
-                                "id": ex.get("id", ""),
+                                "id": ex.get("exerciseId") or ex.get("id") or ex.get("name", ""),
                                 "name": ex.get("name", ""),
                                 "duration": ex.get("duration", ""),
                                 "description": ex.get("description", ""),
-                                "imageUrl": ex.get("image_url") or ex.get("imageUrl", ""),
+                                "battlePlan": ex.get("battlePlan", ""),
+                                "imageUrl": ex.get("imageUrl") or ex.get("image_url", ""),
+                                "intensityReason": ex.get("intensityReason", ""),
                                 "equipment": ex.get("equipment", "None"),
+                                "difficulty": ex.get("difficulty", ""),
+                                "workoutType": ex.get("workoutType", ""),
+                                "moodCard": ex.get("moodCard", ""),
+                                "moodTips": ex.get("moodTips", []),
                             })
                         data_payload["cartItems"] = cart_items
+                        # Also include workout-level hero image
+                        if workout_doc.get("heroImageUrl"):
+                            data_payload["heroImageUrl"] = workout_doc["heroImageUrl"]
                 except Exception as e:
                     logger.warning(f"Could not fetch workout exercises for push data: {e}")
 

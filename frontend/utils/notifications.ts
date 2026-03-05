@@ -382,25 +382,25 @@ class NotificationService {
         const resp = await fetch(`${API_URL}/api/featured/workouts/batch`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ids: [workoutId] }),
+          body: JSON.stringify([workoutId]),
         });
         if (resp.ok) {
           const result = await resp.json();
           const workout = result.workouts?.[0];
           if (workout?.exercises) {
             cartItems = workout.exercises.map((ex: any) => ({
-              id: ex.id || ex.name || `fetch-${Date.now()}`,
+              id: ex.exerciseId || ex.id || ex.name || `fetch-${Date.now()}`,
               name: ex.name || '',
               duration: ex.duration || '',
               description: ex.description || '',
               battlePlan: ex.battlePlan || '',
-              imageUrl: ex.image_url || ex.imageUrl || '',
+              imageUrl: ex.imageUrl || ex.image_url || '',
               intensityReason: ex.intensityReason || '',
               equipment: ex.equipment || 'None',
               difficulty: ex.difficulty || '',
               workoutType: ex.workoutType || '',
-              moodCard: workout.title || workoutTitle,
-              moodTips: [],
+              moodCard: ex.moodCard || workout.title || workoutTitle,
+              moodTips: ex.moodTips || [],
               source: 'build_for_me' as const,
             }));
           }
