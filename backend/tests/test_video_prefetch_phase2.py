@@ -15,7 +15,7 @@ import requests
 import os
 
 # Get API URL from environment
-BASE_URL = os.environ.get('EXPO_PUBLIC_BACKEND_URL', 'https://workout-nav-fix.preview.emergentagent.com')
+BASE_URL = os.environ.get('EXPO_PUBLIC_BACKEND_URL', 'https://bug-fixes-testing.preview.emergentagent.com')
 
 # Test credentials
 TEST_USER = "moodtester2025"

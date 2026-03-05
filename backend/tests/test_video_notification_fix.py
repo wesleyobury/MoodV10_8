@@ -21,7 +21,7 @@ import requests
 import os
 from datetime import datetime, timezone
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://workout-nav-fix.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://bug-fixes-testing.preview.emergentagent.com').rstrip('/')
 
 # Test credentials
 TEST_USERNAME = "moodtester2025"

@@ -1,26 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Animated, TouchableOpacity, Platform } from 'react-native';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
-import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// Get API URL with multiple fallbacks
-const getApiUrl = (): string => {
-  if (process.env.EXPO_PUBLIC_BACKEND_URL) {
-    return process.env.EXPO_PUBLIC_BACKEND_URL;
-  }
-  if (Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL) {
-    return Constants.expoConfig.extra.EXPO_PUBLIC_BACKEND_URL;
-  }
-  if (Constants.manifest?.extra?.EXPO_PUBLIC_BACKEND_URL) {
-    return Constants.manifest.extra.EXPO_PUBLIC_BACKEND_URL;
-  }
-  if (Constants.expoConfig?.hostUri) {
-    const host = Constants.expoConfig.hostUri.split(':')[0];
-    return `https://${host}`;
-  }
-  return '';
-};
+import { API_URL } from '../utils/apiConfig';
 
 interface AppBootstrapProps {
   children: React.ReactNode;
@@ -216,7 +198,7 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
     
     console.log('AppBootstrap: Boot sequence started');
     const bootStartTime = Date.now();
-    const apiUrl = getApiUrl();
+    const apiUrl = API_URL;
     
     // Start background checks immediately (don't await)
     runBackgroundChecks(apiUrl);

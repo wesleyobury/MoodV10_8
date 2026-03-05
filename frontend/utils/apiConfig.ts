@@ -1,18 +1,19 @@
 /**
- * API Configuration - Clean Production-Safe Version
+ * API Configuration - Locked Production URL
  *
- * This file ensures:
- * - Production builds use EAS env variable
- * - Preview domains are ignored in production
- * - A safe production fallback is always available
+ * IMPORTANT: EXPO_PUBLIC_BACKEND_URL is locked to the production backend.
+ * Preview deployments must NOT overwrite frontend .env or app.json.
+ * The frontend always points to the production backend for dev/TestFlight builds.
  */
 
 import Constants from 'expo-constants';
 
-// API URL is derived exclusively from environment variables
-// No hardcoded fallback - fails fast if not configured
+// ── LOCKED PRODUCTION BACKEND ──
+// This is the ONLY backend URL the frontend should ever use.
+// Do NOT change this to a preview domain.
+const PRODUCTION_BACKEND_URL = 'https://bug-busters-13.emergent.host';
 
-// Detect preview domains
+// Detect preview domains (must never be used)
 const isPreviewDomain = (url: string): boolean =>
   url.includes('.preview.emergentagent.com');
 
@@ -20,31 +21,30 @@ const isPreviewDomain = (url: string): boolean =>
 const normalize = (url: string): string =>
   url.trim().replace(/\/+$/, '');
 
-// Get API URL safely
+// Get API URL safely — always resolves to production
 const getApiUrl = (): string => {
-  // 1️⃣ Try environment variable (EAS injects this at build time)
+  // 1. Try environment variable (EAS injects this at build time)
   const envUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
   if (envUrl && envUrl.trim() !== '') {
     const normalized = normalize(envUrl);
     if (!isPreviewDomain(normalized)) {
       return normalized;
     }
-    console.warn('⚠️ Ignoring preview env URL:', normalized);
+    console.warn('⚠️ Rejecting preview env URL — using production:', normalized);
   }
 
-  // 2️⃣ Try Expo config (EAS build config)
+  // 2. Try Expo config (EAS build config)
   const configUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL;
   if (typeof configUrl === 'string' && configUrl.trim() !== '') {
     const normalized = normalize(configUrl);
     if (!isPreviewDomain(normalized)) {
       return normalized;
     }
-    console.warn('⚠️ Ignoring preview config URL:', normalized);
+    console.warn('⚠️ Rejecting preview config URL — using production:', normalized);
   }
 
-  // 3️⃣ No URL configured - fail fast
-  console.error('❌ CRITICAL: No backend URL configured. Set EXPO_PUBLIC_BACKEND_URL in environment.');
-  return '';
+  // 3. Locked production fallback — ALWAYS resolves, never empty
+  return PRODUCTION_BACKEND_URL;
 };
 
 // Final resolved API URL

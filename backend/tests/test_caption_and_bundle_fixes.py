@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv('/app/backend/.env')
 
-BASE_URL = os.environ.get('EXPO_PUBLIC_BACKEND_URL', 'https://workout-nav-fix.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('EXPO_PUBLIC_BACKEND_URL', 'https://bug-fixes-testing.preview.emergentagent.com').rstrip('/')
 JWT_SECRET = os.environ.get('JWT_SECRET')
 
 # Test user credentials

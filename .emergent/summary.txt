@@ -1,58 +1,62 @@
 <analysis>**original_problem_statement**:
-The user's primary goal is to fix a series of critical bugs in their React Native application. This session focused on three main issues reported by the user after the previous fixes:
-1.  **Video Engagement Notifications Not Firing:** Likes and comments on video posts were not generating in-app or push notifications.
-2.  **Persistent Featured Workout Cart:** When a featured workout is added to the cart via a push notification, it cannot be permanently removed. The cart re-populates itself immediately after being cleared.
-3.  **Incorrect In-App Notification Deep Link:** Tapping a featured workout notification from the in-app notification list navigates to the wrong screen, instead of the workout detail page.
+The user reported a series of critical production bugs. The tasks were to:
+1.  **Fix Session Persistence:** Ensure users remain logged in even after swiping the app away or during brief server outages.
+2.  **Fix Guest Experience:**
+    *   Resolve an issue where the guest explore page incorrectly showed no posts yet.
+    *   Address excessively long loading times for featured workout images and their corresponding cart details in guest mode.
+3.  **Fix Profile Content:** Diagnose and fix why a user's media content was visible on the explore page but missing from their own profile grid.
+4.  **Set Production Environment:** Switch the TestFlight builds to use the production environment.
+5.  **Lock Backend URL:** Hardcode the frontend's backend URL to a specific production host () and prevent it from being overwritten by preview deployment automation.
+6.  **Re-investigate Video Notifications:** The user reported that video engagement notifications were still not firing, requesting a re-diagnosis and a test notification.
 
 **PRODUCT REQUIREMENTS**:
-1.  **Video Notification Fix (P0 - Completed):**
-    *   Investigate and fix why likes/comments on video posts fail to generate notifications.
-    *   Ensure the fix is robust and handles any data inconsistencies.
-    *   Add a data migration to correct existing broken data.
-2.  **Persistent Cart Fix (P0 - Completed):**
-    *   Fix the bug where the cart re-hydrates with a featured workout's details immediately after the user tries to clear it.
-3.  **In-App Notification Deep Link Fix (P0 - In Progress):**
-    *   Ensure tapping a featured workout notification in the in-app notification tab takes the user to the correct workout detail page, matching the behavior of the in-app carousel.
-4.  **Featured Workout Deep Link Parity (P0 - Completed):**
-    *   Fix featured workout push notifications so they deep link to a fully populated cart screen, including all associated battle plans and workout session data.
-5.  **Achievement Card Toggle (P1 - Completed):**
-    *   User verified that the toggle on the achievement card is now working as expected.
+1.  **Session Persistence (P0 - Completed):** The app should only log a user out on a 401 Unauthorized error, not on other server errors (like 5xx).
+2.  **Guest Explore Page (P0 - Completed):** The public posts endpoint must be robust and not crash, ensuring content is always visible to guests.
+3.  **Guest Performance (P1 - Completed):** Featured workout loading for guests must be fast, comparable to the logged-in experience.
+4.  **Profile Grid (P0 - Completed):** A user's own posts must always appear on their profile page.
+5.  **Production Environment (P0 - Completed):** The backend must run with .
+6.  **Backend URL Lock (P0 - In Progress):** The frontend must be permanently configured to point to the production backend URL, regardless of the deployment environment.
+7.  **Video Notification Verification (P0 - Completed):** Confirm that the notification system for video likes is functional.
 
 **User's preferred language**: English
 
 **what currently exists?**
-The project is a full-stack application with a React Native (Expo) frontend and a FastAPI backend. In this session, the agent successfully diagnosed and resolved several critical bugs. The most complex was the video notification failure, traced to a  caused by  being stored as a dictionary () instead of a list for Cloudinary-hosted videos. The agent implemented a safe helper function, applied it globally, and added a startup data migration to fix existing records. The agent also fixed a React re-hydration loop that caused a persistent cart for featured workouts. The application is significantly more stable, with only one fix pending testing.
+The application is a React Native (Expo) frontend with a FastAPI backend. In this session, the agent resolved several critical production bugs. Key fixes include:
+*   **Session Persistence:** Modified the frontend auth provider to only clear session tokens on a  response, preventing logouts during temporary server errors.
+*   **Guest Experience:** Fixed a backend crash on the public posts endpoint caused by a  on an optional  field. Dramatically improved guest loading times by implementing a new bundled API endpoint, switching the image carousel to use the caching-enabled , and adding  headers.
+*   **Profile Grid Bug:** Diagnosed and fixed an issue where user posts were invisible on their profile. The root cause was  being stored as a  instead of an . The agent implemented a robust query to handle both types and added a startup data migration to normalize all existing records to .
+*   **Push Notification Reliability:** Diagnosed and fixed a bug where  values in user settings were silently blocking all push notifications.
+*   The  has been set to . The final action was an attempt to hardcode the production backend URL into the frontend to prevent it from being overwritten during preview deployments. This last change has not been tested.
 
 **Last working item**:
--   Last item agent was working: Fixing a bug where tapping a featured workout notification from the in-app notification list () navigates to the wrong screen. The agent identified the incorrect route ( instead of ) and wrong param name in .
--   Status: TESTING PENDING
+-   Last item agent was working: Locking the frontend's backend URL to  to prevent preview deployment configurations from overriding it. The agent modified three files: , , and  to remove dynamic URL resolution and hardcode the production URL.
+-   Status: IN PROGRESS
 -   Agent Testing Done: N
--   Which testing method agent to use? frontend testing agent. The fix is a one-line change to a  call. The agent should instruct the testing agent to verify that tapping a featured workout notification in the notification list navigates to the correct  page and that the page loads correctly.
+-   Which testing method agent to use? both. First, use the screenshot tool to perform a quick smoke test to ensure the app loads data. If successful, invoke the frontend testing agent to run a full E2E test suite to confirm all API calls are correctly routed to the production backend and the application is fully functional.
 -   User Testing Done: N
 
 **All Pending/In progress Issue list**:
--   Issue 1: In-app notification deep link fix is not tested (P0)
+-   Issue 1: Test and verify the hardcoded backend URL fix (P0)
 -   Issue 2: Unbounded database query in  (P2)
 
 **Issues Detail**:
--   **Issue 1: In-app notification deep link fix is not tested**
-    -   **Description**: Tapping a featured workout notification from the in-app notification list () was navigating to a non-existent route (), instead of the correct detail screen ().
-    -   **Attempted fixes**: The agent applied a one-line fix in  (line 275) to change  to , which aligns the navigation logic with the working carousel path.
+-   **Issue 1: Test and verify the hardcoded backend URL fix**
+    -   **Attempted fixes**: The agent hardcoded the production backend URL in , , and .
     -   **Next debug checklist**:
-        1.  Invoke the frontend testing agent to test the in-app notification flow for a featured_workout type notification.
-        2.  Verify the navigation correctly lands on the  page.
-        3.  Confirm the page content loads as expected.
-    -   **Why fix this issue and what will be achieved with the fix?** This is a critical navigation bug that breaks a core user engagement path. Fixing it ensures a consistent and correct user experience.
-    -   **Status**: TESTING PENDING
-    -   **Is recurring issue?** Y (Deep linking has been a recurring problem area.)
+        1.  Restart the frontend supervisor service to ensure all environment changes are loaded.
+        2.  Take a screenshot of the main screen to verify the app doesn't crash and can load initial data.
+        3.  If the screenshot is successful, run the  to perform a comprehensive E2E test of all major features (login, viewing explore feed, viewing featured workouts, viewing profile).
+    -   **Why fix this issue and what will be achieved with the fix?** This is a critical configuration lock-in requested by the user to ensure TestFlight and development builds always point to the stable production backend, preventing environment-related bugs.
+    -   **Status**: IN PROGRESS
+    -   **Is recurring issue?** Y (Environment configuration has been a recurring problem).
     -   **Should Test frontend/backend/both after fix?** Frontend
     -   **Blocked on other issue**: None
 
 -   **Issue 2: Unbounded database query in **
-    -   **Description**: A performance warning exists for an unbounded query () at  (from previous session) which was patched but not properly resolved.
+    -   **Description**: A performance warning exists for an unbounded query () at  (from a previous session) which poses a risk of Out-Of-Memory (OOM) errors.
     -   **Attempted fixes**: None in this session.
-    -   **Next debug checklist**: Refactor the query to use proper pagination with  and  instead of fetching a large list into server memory.
-    -   **Why fix this issue and what will be achieved with the fix?** Improves application stability and prevents potential out-of-memory (OOM) errors under load.
+    -   **Next debug checklist**: Locate the query at  and refactor it to use proper database pagination with  and .
+    -   **Why fix this issue and what will be achieved with the fix?** Improves application stability and scalability, preventing potential crashes under load.
     -   **Status**: NOT STARTED
     -   **Is recurring issue?** Y
     -   **Should Test frontend/backend/both after fix?** Backend
@@ -62,102 +66,109 @@ The project is a full-stack application with a React Native (Expo) frontend and 
 -   None.
 
 **Upcoming and Future Tasks**
--   **Upcoming Tasks:**
-    -   **Video Performance - Phase 2 (P2):** Implement aggressive pre-fetching of video thumbnails and initial video segments for workouts in the user's plan.
 -   **Future Tasks:**
     -   **Admin Panel - Caching (P2):** Implement caching for expensive backend aggregations in .
     -   **Data Integrity (P2):** Investigate the root cause of notifications being created without  to simplify the read path.
 
 **Completed work in this session**
--   **Video Engagement Notification Fix (DONE)**:
-    -   Identified the root cause:  stored as a  instead of a  for Cloudinary videos was causing a .
-    -   Added a  helper in  to safely access the first element of a list or dict-masquerading-as-list.
-    -   Refactored all usages of  and  in  and  to use the new safe helper.
-    -   Added a one-time startup data migration in  to normalize existing  data from  to .
--   **Persistent Featured Workout Cart Fix (DONE)**:
-    -   Fixed a re-hydration loop in  by adding a  flag () to prevent the  from re-populating the cart from route params immediately after it was cleared by the user.
--   **Featured Workout Push Data Fix (DONE)**:
-    -   Corrected the push notification payload in  to include all necessary data (, , etc.), ensuring the cart and subsequent screens are fully populated.
--   **Logging and Debugging (DONE)**:
-    -   Added extensive  logging to notification pathways to diagnose the video notification issue, and later downgraded them to  level after the fix.
--   **Achievement Card Toggle (DONE)**:
-    -   The user confirmed this feature, implemented in a previous session, is now working correctly.
+-   **Session Persistence Fix (DONE)**: Fixed logout issue by modifying  to only clear session on  errors.
+-   **Guest Experience & Performance Fixes (DONE)**:
+    -   Fixed a backend crash on the  endpoint in .
+    -   Created a new  endpoint in  to reduce network requests.
+    -   Switched the featured workout carousel in  to use  for disk caching.
+-   **Profile Grid Content Fix (DONE)**:
+    -   Fixed the profile posts query in  to handle  as both  and .
+    -   Added a startup data migration in  to convert all  s to .
+    -   Created a debug endpoint .
+-   **Push Notification Reliability Fix (DONE)**: Fixed logic in  and  where  in settings blocked pushes and added a data migration.
+-   **Video Notification Re-Diagnosis (DONE)**: Confirmed the video notification logic in  is working correctly, isolating the problem to a potential environment or proxy issue during user testing.
+-   **Environment Set to Production (DONE)**: Set  in .
+-   **Video Performance - Phase 2 (DONE)**: Implemented aggressive pre-fetching of video thumbnails and initial video segments in  and .
 
 **Earlier issues found/mentioned but not fixed**
 -   **Issue 1: Unbounded Database Query**
-    -   **Description**: A query in  uses , posing a performance risk.
+    -   **Description**: A query in  at line  uses , posing a performance risk.
     -   **Debug checklist**: Refactor the code to use database-level pagination (/).
     -   **Why to solve this issue and what will be achieved with this?** Prevents potential out-of-memory errors and improves backend scalability.
     -   **Should Test frontend/backend/both after fix?**: Backend
     -   **Is recurring issue?**: Y
 
 **Known issue recurrence from previous fork**
--   Deep linking and data consistency for video posts remain recurring problem areas that required significant debugging in this session.
+-   **Data Type Mismatches**: The  being  vs  is another instance of data inconsistency, similar to the   vs  issue from the previous session.
+-   **Environment Configuration**: The need to hardcode the backend URL highlights a recurring problem with environment variables being incorrectly managed between preview and production builds.
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Data Type Inconsistency**: The root cause of the video notification bug was a mismatch between data structures from React Native (JS object) and Python's expectation of a list, leading to  being stored in MongoDB as a dictionary ().
--   **Defensive Coding**: The fix involved creating a  helper to handle both  and  types gracefully, preventing future crashes.
--   **Data Migration**: A startup migration was used to retroactively fix inconsistent data in the database.
--   **React Hydration Loop**: A  hook dependency array () was causing an infinite loop of clearing and re-hydrating state. This was fixed by using a  to break the cycle.
--   **React Native Deep Linking**: The session involved fixing multiple incorrect deep linking paths, both from push notifications and the in-app notification center.
+-   **Data Type Normalization**: Migrating  IDs to  in MongoDB to ensure query consistency.
+-   **Defensive Coding**: Handling optional dictionary keys with  to prevent  crashes.
+-   **Network Performance Optimization**: Creating a bundled API endpoint to reduce the number of client-server round trips (network waterfall).
+-   **Frontend Caching**: Using  for efficient disk-based image caching on the device.
+-   **Environment Variable Management**: The challenges of managing  and build-time variables in Expo, leading to the decision to hardcode critical configuration.
+-   **Root Cause Analysis**: Differentiating between code bugs (), data bugs ( vs. ), and environment issues (dynamic backend URLs).
 
 **key DB schema**
--   **posts**: The  field for many video posts was a . A migration was run to convert these to  format (). This issue is now resolved.
-
-**changes in tech stack**
--   None.
+-   **posts**: The  field was sometimes a ; a migration has been run to convert all instances to .
+-   **users**: The  subdocument contained  values which blocked push notifications; a migration has converted them to boolean .
 
 **All files of reference**
--   : Major changes for the  fix and the startup data migration.
--   : Fixed  access and expanded the featured workout push payload.
--   : Fixed the persistent cart re-hydration bug using .
--   : Corrected the  call for in-app notification deep linking.
--   : The correct target screen for the fixed deep link.
+-   : Major changes for profile grid fix, guest bundle endpoint,  migration, and notification settings migration.
+-   : **CRITICAL CHANGE**. Hardcoded the production backend URL.
+-   : **CRITICAL CHANGE**. Hardcoded the production backend URL.
+-   : **CRITICAL CHANGE**. Removed dynamic URL injection.
+-   : Fixed session persistence logic.
+-   : Switched to guest bundle endpoint.
+-   : Replaced  with  for caching.
+-   : New file for centralized media prefetching.
 
 **Areas that need refactoring**:
--   The unbounded query at  needs to be refactored to use proper database pagination.
+-   The unbounded query at  must be refactored to use database pagination.
 
 **key api endpoints**
--   : Heavily debugged; the silent  was occurring within this endpoint's notification trigger.
--   : Verified that the same  bug affected this path.
--   : Logic updated to normalize  from a dictionary to a list upon post creation.
+-   : Fixed a  crash.
+-   : Fixed to correctly query posts where  could be a  or .
+-   : **NEW** endpoint created to optimize guest loading performance.
+-   : **NEW** admin-only endpoint to debug user post data consistency.
 
 **Critical Info for New Agent**
--   Your first and highest priority task is to **test the fix for the in-app notification deep link**. The code has been changed in , but it has not been verified. Use the frontend testing agent to confirm it works as expected.
--   Be aware that deep-linking and data structures related to video posts are fragile and have been the source of multiple critical bugs. Any work in these areas requires extra caution and thorough testing.
--   After verifying the P0 fix, the next logical step would be to address the long-standing technical debt of the unbounded query in .
+-   **Your immediate and highest-priority task is to test the frontend URL lock**. The agent has hardcoded the production backend URL in three separate files (, , ), but this change is untested and carries a high risk of breaking all communication between the frontend and backend.
+-   Follow the testing plan outlined in Last working item: a quick screenshot test, followed by a full frontend testing agent run.
+-   The application backend is now running in  mode.
+-   The main piece of remaining technical debt is the unbounded database query in . This should be addressed after the critical URL lock is verified.
 
 **documents and test reports created in this job**
--    (updated multiple times)
--   Testing agent was run successfully for two major fixes, confirming their resolution.
+-    (updated)
+-   Multiple test reports generated under  confirming fixes for push notifications, guest experience, and profile grid.
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **User**: Reports that tapping the featured workout notification from the *notification tab* takes them to the wrong place. (Status: **IN PROGRESS**, fix applied but untested)
-2.  **User**: Reports the persistent cart issue where trashing a featured workout doesn't work. (Status: **COMPLETED**)
-3.  **User**: Provides a video URL and context for a video post with likes/comments but no notifications. (Status: **COMPLETED**)
-4.  **User**: Confirms to proceed with the investigation. (Status: **ACKNOWLEDGED**)
-5.  **User**: Reports VIDEO NOTIFICATIONS STILL NOT FIRING and provides a detailed debug plan. (Status: **COMPLETED**)
-6.  **User**: Acknowledges completion of the previous task. (Status: **ACKNOWLEDGED**)
-7.  **User**: Confirms P1 (achievement toggle) was fixed and to proceed with P0 (incomplete data). (Status: **ACKNOWLEDGED**)
+1.  **User**: Requested to lock the frontend backend URL to  and prevent preview deployments from overwriting it. (Status: **IN PROGRESS**, fix applied but untested).
+2.  **User**: Acknowledged completion of the previous task. (Status: **ACKNOWLEDGED**).
+3.  **User**: Requested two more fixes: switch TestFlight builds to production and fix missing content on the VIBER user's profile grid. (Status: **COMPLETED**).
+4.  **User**: Acknowledged completion of the previous task. (Status: **ACKNOWLEDGED**).
+5.  **User**: Reported two critical production issues: users being logged out and guests seeing no posts with slow featured workout loading. (Status: **COMPLETED**).
+6.  **User**: Acknowledged the diagnostic and verification of the video notification system. (Status: **ACKNOWLEDGED**).
+7.  **User**: Confirmed to proceed. (Status: **ACKNOWLEDGED**).
+8.  **User**: Stated that video notifications are still not firing and provided a video URL to test with. (Status: **COMPLETED**, diagnosed as working on the backend).
+9.  **User**: Acknowledged completion of the previous task. (Status: **ACKNOWLEDGED**).
+10. **User**: Reported that push notifications (featured workout and reminders) are not sending reliably. (Status: **COMPLETED**).
 
 **Project Health Check:**
--   **Broken**: Yes. The fix for the critical in-app notification deep-linking bug has been implemented but not tested.
+-   **Broken**: Yes. A critical, untested change has been made to hardcode the frontend's backend URL. There is a high probability that the application is currently non-functional until this fix is verified.
 
 **3rd Party Integrations**
--   **Cloudinary**: Used for image and video hosting. Inconsistent data structures originating from uploads were the root cause of the video notification bug.
+-   **Cloudinary**: Used for image and video hosting.
 -   **Expo**: Used for the React Native framework and push notification services.
 
 **Testing status**
--   Testing agent used after significant changes: YES. The agent successfully used  to validate the  fix and the data migration.
+-   Testing agent used after significant changes: YES. The agent ran the testing agent successfully to verify the profile grid fix, guest experience fixes, and push notification fixes.
 -   Troubleshoot agent used after agent stuck in loop: NO
 -   Test files created: None.
--   Known regressions: A navigation regression in the notification tab was identified and a fix was applied, but it is pending testing.
+-   Known regressions: None known, but the last change to hardcode the backend URL is very high-risk and could have broken the entire application.
 
 **Credentials to test flow:**
--   **Admin User**: .
+-   **Admin User**: 
+-   **Test User**:  (This user had the   issue).
 
 **What agent forgot to execute**
--   The agent correctly identified and implemented a one-line fix for the in-app notification deep link bug but **did not test the fix**. This is the immediate next action required.</analysis>
+-   The agent did not test the final, critical change to lock the frontend backend URL across , , and . This is the immediate next action required.</analysis>

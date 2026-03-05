@@ -14,7 +14,7 @@ import sys
 import os
 
 # Configuration
-BACKEND_URL = "https://workout-nav-fix.preview.emergentagent.com"
+BACKEND_URL = "https://bug-fixes-testing.preview.emergentagent.com"
 API_BASE = f"{BACKEND_URL}/api"
 
 # Test credentials from review request
