@@ -127,6 +127,19 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **New `utils/mediaPrefetch.ts`**: Centralized prefetch service with session-level deduplication. Functions: `prefetchFeaturedWorkoutImages`, `prefetchCartImages`, `prefetchVideoStart`, `prefetchUpcomingVideos`.
   - **Featured Workout Image Prefetch**: `useFeaturedWorkouts.ts` now auto-prefetches all exercise images (hero + individual) when workouts load from cache or server. Detail pages load instantly.
   - **Cart Image Prefetch**: `CartContext.tsx` auto-prefetches cart item images whenever cart changes. Workout guidance screens load faster.
+
+- [2026-03-05] Environment Switch: APP_ENV=production in backend/.env
+
+- [2026-03-05] Profile Grid Missing Content Fix (P0):
+  - **Root Cause**: 14 posts had `author_id` stored as string instead of ObjectId. Profile endpoint queried only ObjectId type, so these posts were invisible on profiles but visible on explore (different query).
+  - **Fix**:
+    1. Profile endpoint `$match` now uses `$or` for both ObjectId and string author_id
+    2. Added `$addFields` + `$toObjectId` in pipeline for proper `$lookup` join on legacy data
+    3. Startup migration normalizes all string author_ids → ObjectId (14 converted)
+    4. Added `PROFILE-POSTS` debug logging with userId, skip, limit, db_count
+    5. Added admin-only `/api/debug/user_posts` endpoint for diagnosis
+  - **Testing**: 19/19 backend tests passed (iteration_12)
+
   - **Explore Feed Enhanced Preloading**: Lookahead increased from 1→3 video posts. Now prefetches: poster thumbnails (3 ahead), HLS manifests (3 ahead), and initial 150KB MP4 bytes (immediate next item only) via Range request for near-instant playback start.
   - **`cloudinaryVideo.ts` Enhancements**: `preloadNextItems` default `maxAhead` increased to 3. Added `prefetchInitialBytes` helper for MP4 Range request prefetching.
   - **Testing**: 15/15 backend tests passed (iteration_9). Code review verified all integration points.
@@ -160,3 +173,4 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 ## Backlog
 - P2: Admin panel caching for expensive aggregations
 - P2: Unbounded query refactoring at server.py (replace .to_list(10000) with proper pagination)
+- P3: Some posts have media_type=None (legacy data quality)
