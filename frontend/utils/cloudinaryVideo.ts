@@ -193,9 +193,10 @@ export type PreloadableItem = {
 };
 
 /**
- * Preload the NEXT 1 item in the feed for smooth playback.
+ * Preload the NEXT 3 items in the feed for smooth playback.
  * - Prefetches poster image (most visible impact)
  * - Prefetches HLS manifest (small ~2KB file, warms CDN + prepares adaptive stream)
+ * - Prefetches initial MP4 bytes for the immediate next item (fast playback start)
  * - Deduplicates by public_id per session
  */
 export async function preloadNextItems(opts: {
@@ -203,7 +204,7 @@ export async function preloadNextItems(opts: {
   startIndex: number;
   maxAhead?: number;
 }): Promise<void> {
-  const { items, startIndex, maxAhead = 1 } = opts;
+  const { items, startIndex, maxAhead = 3 } = opts;
 
   const end = Math.min(items.length - 1, startIndex + maxAhead);
   const slice = items.slice(startIndex + 1, end + 1);
@@ -211,7 +212,8 @@ export async function preloadNextItems(opts: {
 
   const tasks: Promise<void>[] = [];
 
-  for (const item of slice) {
+  for (let i = 0; i < slice.length; i++) {
+    const item = slice[i];
     const optimized = getOptimizedVideoUrls(item.video_url);
     const publicId = cloudinaryPublicIdFromUrl(item.video_url);
     const dedupKey = publicId || item.id;
@@ -228,6 +230,11 @@ export async function preloadNextItems(opts: {
     // Prefetch HLS manifest (small file, warms CDN)
     if (optimized?.hls) {
       tasks.push(prefetchManifest(optimized.hls));
+    }
+
+    // For the immediate next item, also prefetch first 150KB of MP4 for fast start
+    if (i === 0 && optimized?.mp4) {
+      tasks.push(prefetchInitialBytes(optimized.mp4));
     }
   }
 
@@ -251,6 +258,25 @@ async function prefetchManifest(manifestUrl: string, timeoutMs = 4000): Promise<
   const t = setTimeout(() => controller.abort(), timeoutMs);
   try {
     await fetch(manifestUrl, { signal: controller.signal });
+  } catch {
+    // best-effort
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+/**
+ * Prefetch the first 150KB of an MP4 file via Range request.
+ * This fetches the moov atom + initial video frames, enabling near-instant playback start.
+ */
+async function prefetchInitialBytes(mp4Url: string, bytes = 153600, timeoutMs = 6000): Promise<void> {
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    await fetch(mp4Url, {
+      headers: { Range: `bytes=0-${bytes}` },
+      signal: controller.signal,
+    });
   } catch {
     // best-effort
   } finally {

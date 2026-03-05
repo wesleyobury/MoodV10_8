@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 
 import { API_URL } from '../utils/apiConfig';
+import { prefetchFeaturedWorkoutImages } from '../utils/mediaPrefetch';
 
 // Cache keys
 const CACHE_KEYS = {
@@ -224,9 +225,13 @@ export function useFeaturedWorkouts() {
       const cached = await getCachedData();
       
       if (cached.workouts.length > 0 && !forceRefresh) {
-        setWorkouts(cached.workouts.map(validateWorkoutExercises));
+        const validated = cached.workouts.map(validateWorkoutExercises);
+        setWorkouts(validated);
         setIsFromCache(true);
         setLoading(false);
+        
+        // Prefetch exercise images from cache for instant detail loads
+        prefetchFeaturedWorkoutImages(validated);
         
         // If cache not expired, we're done (but still refresh in background)
         const ttlHours = cached.config?.ttlHours || DEFAULT_TTL_HOURS;
@@ -251,6 +256,9 @@ export function useFeaturedWorkouts() {
           setIsFromCache(false);
           setLastUpdated(new Date());
           setError(null);
+          
+          // Prefetch exercise images for instant detail page loads
+          prefetchFeaturedWorkoutImages(validatedWorkouts);
           
           // Save to cache
           await saveToCache(config, validatedWorkouts);

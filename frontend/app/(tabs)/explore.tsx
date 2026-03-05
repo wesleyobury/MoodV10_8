@@ -35,6 +35,7 @@ import { PostSkeleton } from '../../components/Skeleton';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import ReportModal from '../../components/ReportModal';
 import { preloadNextItems, prefetchThumbnails } from '../../utils/cloudinaryVideo';
+import { prefetchVideoStart } from '../../utils/mediaPrefetch';
 
 import { API_URL } from '../../utils/apiConfig';
 import { formatNotificationTime } from '../../utils/notificationUtils';
@@ -217,24 +218,29 @@ export default function Explore() {
     }
   }).current;
 
-  // Preload video thumbnails for upcoming posts when visible post changes
+  // Preload video thumbnails + initial segments for upcoming posts
   useEffect(() => {
     if (!visiblePostId || posts.length === 0) return;
     const currentIndex = posts.findIndex(p => p.id === visiblePostId);
     if (currentIndex === -1) return;
 
-    // Find video posts in the next 3 items and preload their thumbnails
-    const videoItems = posts
-      .slice(currentIndex + 1, currentIndex + 2)
-      .filter(p => p.media_urls?.some(url => /\.(mp4|mov|avi|webm|mkv|m4v)/i.test(url)))
+    // Look ahead 3 items for video posts — prefetch thumbnails + HLS manifests + MP4 start
+    const upcoming = posts.slice(currentIndex + 1, currentIndex + 4);
+    const videoItems = upcoming
+      .filter(p => p.media_urls?.some(url => /\.(mp4|mov|avi|webm|mkv|m4v|m3u8)/i.test(url)))
       .map(p => ({
         id: p.id,
-        video_url: p.media_urls.find(url => /\.(mp4|mov|avi|webm|mkv|m4v)/i.test(url)) || p.media_urls[0],
+        video_url: p.media_urls.find(url => /\.(mp4|mov|avi|webm|mkv|m4v|m3u8)/i.test(url)) || p.media_urls[0],
         thumbnail_url: p.cover_urls?.[0] || null,
       }));
 
     if (videoItems.length > 0) {
+      // Prefetch thumbnails for all upcoming video items
       prefetchThumbnails(videoItems).catch(() => {});
+      // Aggressive: prefetch initial video segment for the very next video
+      if (videoItems[0]?.video_url) {
+        prefetchVideoStart(videoItems[0].video_url);
+      }
     }
   }, [visiblePostId, posts]);
   

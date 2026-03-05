@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode, useRef } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode, useRef, useEffect } from 'react';
 import { API_URL } from '../utils/apiConfig';
+import { prefetchCartImages } from '../utils/mediaPrefetch';
 
 export interface WorkoutItem {
   id: string;
@@ -124,6 +125,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     result.splice(endIndex, 0, removed);
     setCartItems(result);
   };
+
+  // Prefetch cart item images whenever cart changes
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      prefetchCartImages(cartItems);
+    }
+  }, [cartItems]);
 
   return (
     <CartContext.Provider
