@@ -140,6 +140,23 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **Scope**: 6+ code paths affected including `send_featured_workout_to_all`, `trigger_mass_workout_reminder`, `create_notification`, `_process_scheduled_digests`, `_check_quiet_hours_ending`
   - **Testing**: 13/13 backend tests passed (iteration_10). RCA verified with unit tests.
 
+- [2026-03-05] Session Persistence Fix (P0):
+  - **Root Cause**: AuthContext.tsx cleared auth token on ANY non-200 response from `/api/users/me`, including 500/502/503 server errors during pod restarts/deployments.
+  - **Fix**: Only clear token on HTTP 401 (truly invalid/expired). On 500/502/503, keep the token and proceed optimistically — don't log users out for transient server issues.
+  - **File**: `contexts/AuthContext.tsx` lines 164-176
+
+- [2026-03-05] Guest Explore "No Posts" Fix (P0):
+  - **Root Cause**: `KeyError: 'caption'` crashed `/api/posts/public` when any post lacked the `caption` field. Some posts had `content` instead.
+  - **Fix**: Changed `post["caption"]` → `post.get("caption", "")` in 3 locations (public endpoint, authenticated endpoint, single post endpoint).
+  - **File**: `server.py` lines ~6914, ~7560, ~7636. Test posts without caption cleaned from DB.
+  - **Testing**: 20/20 backend tests passed (iteration_11).
+
+- [2026-03-05] Featured Workout Loading Speed Improvements:
+  - **New `/api/featured/bundle` endpoint**: Returns config + workouts in a single response, eliminating the config→batch network waterfall (saves ~100ms round trip).
+  - **Bundle-first loading in `useFeaturedWorkouts.ts`**: Hook now tries bundle endpoint first, falls back to sequential fetch if it fails.
+  - **Carousel uses `expo-image`**: Switched from React Native's `Image` to `expo-image` with `cachePolicy="disk"` and `transition={200}` for disk-cached images with smooth fade-in.
+  - **Testing**: Bundle endpoint verified (20/20 tests, iteration_11). Code review confirmed all integrations.
+
 ## Backlog
 - P2: Admin panel caching for expensive aggregations
 - P2: Unbounded query refactoring at server.py (replace .to_list(10000) with proper pagination)
