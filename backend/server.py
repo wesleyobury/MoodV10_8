@@ -6790,11 +6790,28 @@ async def search_users_general(
 @api_router.get("/users/{user_id}/posts")
 async def get_user_posts(
     user_id: str,
-    current_user_id: str = Depends(get_current_user),
+    request: Request,
     limit: int = 20,
-    skip: int = 0
+    skip: int = 0,
+    current_user_id: Optional[str] = Depends(get_current_user) if not IS_STAGING else None
 ):
-    """Get posts by a specific user"""
+    """Get posts by a specific user. Auth bypassed in staging for Swagger testing."""
+    # STAGING BYPASS: allow unauthenticated calls for debugging
+    if IS_STAGING and current_user_id is None:
+        # Try to get auth anyway (non-blocking)
+        try:
+            auth_header = request.headers.get("authorization", "")
+            if auth_header.startswith("Bearer "):
+                token = auth_header.split(" ", 1)[1]
+                payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+                uid = payload.get("user_id")
+                if uid:
+                    u = await db.users.find_one({"_id": ObjectId(uid)})
+                    if u:
+                        current_user_id = str(u["_id"])
+        except Exception:
+            pass
+        logger.info(f"STAGING-BYPASS: /users/{user_id}/posts called without auth")
     try:
         # Handle both MongoDB ObjectId and custom user_id formats
         user_object_id = None
@@ -6869,7 +6886,7 @@ async def get_user_posts(
             {
                 "$lookup": {
                     "from": "post_likes",
-                    "let": {"post_id": "$_id", "user_id": ObjectId(current_user_id)},
+                    "let": {"post_id": "$_id", "user_id": ObjectId(current_user_id) if current_user_id else ObjectId("000000000000000000000000")},
                     "pipeline": [
                         {"$match": {"$expr": {"$and": [
                             {"$eq": ["$post_id", "$$post_id"]},
