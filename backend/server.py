@@ -7933,13 +7933,13 @@ async def like_post(post_id: str, current_user_id: str = Depends(get_current_use
             updated_post = await db.posts.find_one({"_id": post_object_id})
             likes_count = updated_post.get("likes_count", 0) if updated_post else 0
             
-            # ── TRACE-LIKE ──
+            # ── TRACE-LIKE (debug) ──
             if updated_post:
                 _media = (updated_post.get("media_urls") or [""])[0].lower()
                 _mtype = "video" if any(x in _media for x in (".mp4", ".mov", ".m3u8", "/video")) else ("image" if _media else "none")
                 _akeys = [k for k in ("author_id", "user_id", "creator_id", "owner_id") if updated_post.get(k)]
                 _resolved = resolve_post_author_id(updated_post)
-                logger.info(f"TRACE-LIKE: post_id={post_id} found=True media_type={_mtype} keys_present={_akeys} resolved_author={_resolved}")
+                logger.debug(f"TRACE-LIKE: post_id={post_id} found=True media_type={_mtype} keys_present={_akeys} resolved_author={_resolved}")
             else:
                 logger.error(f"TRACE-LIKE: POST_NOT_FOUND post_id={post_id}")
             
@@ -8052,8 +8052,8 @@ async def create_comment(comment_data: CommentCreate, current_user_id: str = Dep
             {"$inc": {"comments_count": 1}}
         )
         
-        # ── TRACE-COMMENT ──
-        logger.info(f"TRACE-COMMENT: post_id={comment_data.post_id} actor={current_user_id}")
+        # ── TRACE-COMMENT (debug) ──
+        logger.debug(f"TRACE-COMMENT: post_id={comment_data.post_id} actor={current_user_id}")
         try:
             _cpost = await db.posts.find_one({"_id": ObjectId(comment_data.post_id)})
             if _cpost:

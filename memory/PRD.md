@@ -105,8 +105,16 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **Frontend Fix (cart.tsx)**: Same fixes as notifications.ts for the cart hydration fetch fallback path.
   - **Testing**: 30/30 backend tests passed (push payload fields, batch endpoint, exerciseId mapping, cap at 10, body format).
 
+- [2026-03-05] Video Engagement Notification Fix – cover_urls KeyError (P0):
+  - **Root Cause**: `cover_urls` stored as dict `{"0": "url"}` (from React Native) instead of list `["url"]`. `cover_urls[0]` threw `KeyError: 0` (dict key is string "0", not int 0) in `trigger_like_notification`, `trigger_comment_notification`, `trigger_mention_notification`, and `trigger_reply_notification`. The exception was caught silently → notification never created for ANY video post with Cloudinary URLs.
+  - **Fix 1 - _safe_first() helper** (notifications.py): New function that handles list, dict, and None for `cover_urls`/`media_urls` access. Replaced all 5 occurrences of `cover_urls[0]` in notifications.py.
+  - **Fix 2 - server.py backfill thumbnail** (line 11303): Same dict-safe access pattern applied.
+  - **Fix 3 - Startup migration**: On boot, converts all existing dict `cover_urls` to list format. Normalized 10 posts.
+  - **Fix 4 - create_post normalization**: New posts normalize dict `cover_urls` to list before storage — prevents future occurrences.
+  - **TRACE logging**: Added TRACE-LIKE, TRACE-COMMENT, TRACE-NOTIF with explicit skip reasons (self_like, missing_post, missing_recipient, idempotency, following_only, prefs_disabled, type_blocked). Downgraded to debug level after root cause confirmed.
+  - **Testing**: 10/10 backend tests passed. Video like + comment notifications now created. Image post regression passed.
+
 ## Backlog
 - P2: Video pre-fetching for workout plans (Phase 2)
 - P2: Admin panel caching for expensive aggregations
-- P2: Investigate root cause of notifications without `metadata.post_thumbnail`
 - P2: Unbounded query refactoring at server.py (replace .to_list(10000) with proper pagination)
