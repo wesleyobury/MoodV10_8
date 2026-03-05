@@ -121,8 +121,16 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - [2026-03-05] Featured Workout Notification Inbox Tap Fix:
   - **Root Cause**: `notifications-inbox.tsx` navigated to `/featured-workout` (nonexistent route → fell through to profile). Should be `/featured-workout-detail` with `params: { id: entity_id }` matching the carousel path.
   - **Fix**: One-line route correction. Now tapping featured workout notification → workout detail screen → cart → workout session (full path with battle plans, mood tips).
+  - **Testing**: 8/8 backend tests passed (iteration_8). Code review verified correct routing.
+
+- [2026-03-05] Video Performance Phase 2 — Aggressive Pre-fetching:
+  - **New `utils/mediaPrefetch.ts`**: Centralized prefetch service with session-level deduplication. Functions: `prefetchFeaturedWorkoutImages`, `prefetchCartImages`, `prefetchVideoStart`, `prefetchUpcomingVideos`.
+  - **Featured Workout Image Prefetch**: `useFeaturedWorkouts.ts` now auto-prefetches all exercise images (hero + individual) when workouts load from cache or server. Detail pages load instantly.
+  - **Cart Image Prefetch**: `CartContext.tsx` auto-prefetches cart item images whenever cart changes. Workout guidance screens load faster.
+  - **Explore Feed Enhanced Preloading**: Lookahead increased from 1→3 video posts. Now prefetches: poster thumbnails (3 ahead), HLS manifests (3 ahead), and initial 150KB MP4 bytes (immediate next item only) via Range request for near-instant playback start.
+  - **`cloudinaryVideo.ts` Enhancements**: `preloadNextItems` default `maxAhead` increased to 3. Added `prefetchInitialBytes` helper for MP4 Range request prefetching.
+  - **Testing**: 15/15 backend tests passed (iteration_9). Code review verified all integration points.
 
 ## Backlog
-- P2: Video pre-fetching for workout plans (Phase 2)
 - P2: Admin panel caching for expensive aggregations
 - P2: Unbounded query refactoring at server.py (replace .to_list(10000) with proper pagination)
