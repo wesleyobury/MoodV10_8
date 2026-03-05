@@ -177,6 +177,7 @@ export default function Profile() {
   const [savedModalVisible, setSavedModalVisible] = useState(false);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(false);
+  const [postsError, setPostsError] = useState(false);
   const [followListVisible, setFollowListVisible] = useState(false);
   const [followListType, setFollowListType] = useState<'followers' | 'following'>('followers');
   const [refreshing, setRefreshing] = useState(false);
@@ -394,6 +395,7 @@ export default function Profile() {
     const startTime = Date.now();
     console.log('Fetching posts for user:', authUser.id);
     setLoadingPosts(true);
+    setPostsError(false);
     
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
@@ -415,12 +417,14 @@ export default function Profile() {
         const data = await response.json();
         console.log('Posts loaded:', data.length, 'posts');
         setUserPosts(data);
+        setPostsError(false);
         
         // Prefetch thumbnails for grid
         prefetchGridImages(data);
       } else {
         const errorText = await response.text();
         console.error('Failed to fetch posts:', response.status, errorText);
+        setPostsError(true);
         // Retry on server error
         if (response.status >= 500 && retryCount < 2) {
           console.log(`Retrying fetch (attempt ${retryCount + 1})...`);
@@ -430,6 +434,7 @@ export default function Profile() {
       }
     } catch (error: any) {
       clearTimeout(timeoutId);
+      setPostsError(true);
       if (error.name === 'AbortError') {
         console.error('Profile posts fetch timed out');
         if (retryCount < 2) {
@@ -936,6 +941,14 @@ export default function Profile() {
                 <View style={styles.loadingContainer}>
                   <ActivityIndicator size="large" color="#FFD700" />
                   <Text style={styles.loadingText}>Loading posts...</Text>
+                </View>
+              ) : postsError ? (
+                <View style={styles.emptyState} data-testid="profile-posts-error">
+                  <Ionicons name="cloud-offline-outline" size={48} color="#FF6B6B" />
+                  <Text style={styles.emptyTitle}>Couldn't load posts</Text>
+                  <Text style={styles.emptySubtitle}>
+                    Pull down to refresh and try again
+                  </Text>
                 </View>
               ) : userPosts.length === 0 ? (
                 <View style={styles.emptyState}>

@@ -806,7 +806,7 @@ class PostCreate(BaseModel):
     caption: str
     media_urls: List[str] = []  # URLs to uploaded media files
     hashtags: List[str] = []
-    cover_urls: Optional[dict] = None  # Map of media index to cover image URL
+    cover_urls: Optional[Any] = None  # Map of media index to cover image URL (dict or list)
     workout_data: Optional[WorkoutCardData] = None  # Legacy - kept for backwards compat
     # New canonical workout attachment
     workout_snapshot_id: Optional[str] = None  # Server will hydrate attached_workout from this
@@ -827,7 +827,7 @@ class PostResponse(BaseModel):
     caption: str
     media_urls: List[str] = []
     hashtags: List[str] = []
-    cover_urls: Optional[dict] = None  # Map of media index to cover image URL
+    cover_urls: Optional[Any] = None  # Map of media index to cover image URL (dict or list)
     thumbnail_url: Optional[str] = None  # Canonical thumbnail for grid display (derived from cover_urls for videos)
     media_type: Optional[str] = None  # "video" | "image" | None
     likes_count: int = 0
@@ -6830,6 +6830,7 @@ async def get_user_posts(
         db_count = await db.posts.count_documents(author_match)
         logger.info(
             f"PROFILE-POSTS: userId={user_id_str} "
+            f"filter={author_match} "
             f"skip={skip} limit={limit} sort=created_at:desc "
             f"db_count={db_count}"
         )
@@ -6948,8 +6949,11 @@ async def get_user_posts(
             ))
         
         return result
-    except:
-        raise HTTPException(status_code=404, detail="User not found")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"PROFILE-POSTS-ERROR: userId={user_id} error={type(e).__name__}: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to load profile posts: {type(e).__name__}")
 
 # Workout Endpoints
 
@@ -11768,6 +11772,100 @@ async def debug_user_posts(
         "profile_query_count": profile_count,
         "mismatch": oid_count != profile_count,
         "newest_5_posts": newest_posts,
+    }
+
+
+@api_router.get("/debug/profile_posts_check")
+async def debug_profile_posts_check(
+    userId: str,
+    current_user_id: str = Depends(get_current_user)
+):
+    """Admin-only: deep diagnosis of why profile grid may return 0 posts."""
+    if not await is_admin_allowed(current_user_id):
+        raise HTTPException(status_code=403, detail="Admin only")
+
+    user_id_str = userId
+
+    # 1. Raw counts
+    posts_by_author_id = await db.posts.count_documents({"author_id": user_id_str})
+    posts_by_user_id = await db.posts.count_documents({"user_id": user_id_str})
+
+    # 2. ObjectId counts (if valid)
+    posts_by_author_obj = None
+    user_exists = False
+    try:
+        oid = ObjectId(user_id_str)
+        posts_by_author_obj = await db.posts.count_documents({"author_id": oid})
+        user_doc = await db.users.find_one({"_id": oid})
+        user_exists = user_doc is not None
+    except Exception:
+        pass
+
+    # 3. Newest 3 posts from author_id query (either type)
+    or_match = {"$or": [{"author_id": user_id_str}]}
+    if posts_by_author_obj is not None:
+        or_match = {"$or": [{"author_id": user_id_str}, {"author_id": ObjectId(user_id_str)}]}
+
+    newest_cursor = db.posts.find(
+        or_match, {"_id": 1, "created_at": 1, "media_type": 1, "author_id": 1, "media_urls": 1, "cover_urls": 1}
+    ).sort("created_at", -1).limit(3)
+    newest_raw = await newest_cursor.to_list(3)
+
+    newest_author_posts = []
+    for p in newest_raw:
+        newest_author_posts.append({
+            "id": str(p["_id"]),
+            "created_at": str(p.get("created_at")),
+            "media_type": p.get("media_type"),
+            "author_id_type": type(p.get("author_id")).__name__,
+            "author_id_value": str(p.get("author_id")),
+            "cover_urls_type": type(p.get("cover_urls")).__name__,
+            "media_urls_count": len(p.get("media_urls", [])),
+        })
+
+    # 4. Try running the actual profile pipeline to detect errors
+    pipeline_error = None
+    pipeline_count = 0
+    try:
+        user_object_id = ObjectId(user_id_str) if user_exists else None
+        if user_object_id:
+            author_match = {"$or": [
+                {"author_id": user_object_id},
+                {"author_id": user_id_str},
+            ]}
+            pipeline = [
+                {"$match": author_match},
+                {"$sort": {"created_at": -1}},
+                {"$limit": 5},
+                {"$addFields": {
+                    "_author_oid": {"$cond": {
+                        "if": {"$eq": [{"$type": "$author_id"}, "string"]},
+                        "then": {"$toObjectId": "$author_id"},
+                        "else": "$author_id"
+                    }}
+                }},
+                {"$lookup": {
+                    "from": "users",
+                    "localField": "_author_oid",
+                    "foreignField": "_id",
+                    "as": "author"
+                }},
+                {"$unwind": "$author"},
+            ]
+            pipeline_results = await db.posts.aggregate(pipeline).to_list(5)
+            pipeline_count = len(pipeline_results)
+    except Exception as e:
+        pipeline_error = f"{type(e).__name__}: {e}"
+
+    return {
+        "userId_received": user_id_str,
+        "user_exists_in_db": user_exists,
+        "posts_by_author_id": posts_by_author_id,
+        "posts_by_user_id": posts_by_user_id,
+        "posts_by_author_obj": posts_by_author_obj,
+        "newest_author_posts": newest_author_posts,
+        "profile_pipeline_returned": pipeline_count,
+        "profile_pipeline_error": pipeline_error,
     }
 
 # Include router in main app
