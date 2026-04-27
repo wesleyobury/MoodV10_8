@@ -438,6 +438,15 @@ export default function Login() {
               </TouchableOpacity>
             </View>
 
+            {/* Forgot password link */}
+            <TouchableOpacity
+              onPress={() => router.push('/auth/forgot-password')}
+              style={styles.forgotPasswordLink}
+              testID="login-forgot-password-link"
+            >
+              <Text style={styles.forgotPasswordText}>Forgot password?</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
               <LinearGradient
                 colors={['#FFD700', '#FFA500']}
@@ -602,6 +611,18 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     marginTop: 8,
+  },
+  forgotPasswordLink: {
+    alignSelf: 'flex-end',
+    paddingVertical: 6,
+    paddingHorizontal: 4,
+    marginTop: -6,
+    marginBottom: 8,
+  },
+  forgotPasswordText: {
+    color: '#FFD700',
+    fontSize: 13,
+    fontWeight: '600',
   },
   loginButtonGradient: {
     height: 50,

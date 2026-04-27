@@ -22,6 +22,9 @@ import cloudinary.uploader
 import cloudinary.api
 import re
 import httpx
+import secrets
+import asyncio
+import resend
 
 # ────────────────────────────────────────────────────────
 # Shared helpers
@@ -1047,6 +1050,219 @@ async def login(login_data: UserLogin, request: Request):
                 ip_address, user_agent, failure_reason=str(e)
             )
         raise HTTPException(status_code=500, detail="Login failed")
+
+
+# ────────────────────────────────────────────────────────
+# Password Reset (Forgot Password) — Resend-powered
+# ────────────────────────────────────────────────────────
+
+# Configure Resend SDK from env (loaded via dotenv at module load time)
+resend.api_key = os.environ.get("RESEND_API_KEY", "")
+SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "noreply@officialmoodapp.com")
+PASSWORD_RESET_DEEP_LINK_BASE = os.environ.get(
+    "PASSWORD_RESET_DEEP_LINK_BASE", "moodapp://reset-password"
+)
+
+# Token policy
+PASSWORD_RESET_TOKEN_TTL_HOURS = 1
+PASSWORD_RESET_TOKEN_BYTES = 32  # 256-bit raw entropy → 64-char URL-safe token
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
+
+
+def _hash_reset_token(raw_token: str) -> str:
+    """Hash a raw reset token with bcrypt before persisting."""
+    return bcrypt.hashpw(raw_token.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+def _verify_reset_token(raw_token: str, hashed_token: str) -> bool:
+    try:
+        return bcrypt.checkpw(raw_token.encode("utf-8"), hashed_token.encode("utf-8"))
+    except Exception:
+        return False
+
+
+def _build_reset_email_html(reset_link: str) -> str:
+    """Minimal, premium MOOD-styled reset email. Inline CSS only for deliverability."""
+    return f"""<!DOCTYPE html>
+<html><body style="margin:0;padding:0;background-color:#000000;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#000000;padding:40px 20px;">
+    <tr><td align="center">
+      <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px;background-color:#0a0a0a;border:1px solid #1a1a1a;border-radius:16px;padding:40px 32px;">
+        <tr><td align="center" style="padding-bottom:24px;">
+          <div style="font-size:32px;font-weight:700;color:#FFD700;letter-spacing:6px;">MOOD</div>
+          <div style="font-size:11px;color:#666666;letter-spacing:6px;margin-top:4px;">FITNESS</div>
+        </td></tr>
+        <tr><td style="padding-bottom:24px;">
+          <h1 style="margin:0 0 12px 0;color:#ffffff;font-size:22px;font-weight:600;">Reset your password</h1>
+          <p style="margin:0;color:#a0a0a0;font-size:15px;line-height:22px;">Tap the button below to set a new password. This link expires in 1 hour and can only be used once.</p>
+        </td></tr>
+        <tr><td align="center" style="padding-bottom:24px;">
+          <a href="{reset_link}" style="display:inline-block;background-color:#FFD700;color:#000000;text-decoration:none;font-weight:700;font-size:16px;padding:14px 32px;border-radius:999px;">Reset Password</a>
+        </td></tr>
+        <tr><td style="padding-bottom:8px;">
+          <p style="margin:0;color:#666666;font-size:12px;line-height:18px;">If the button doesn't work, copy and paste this link into the MOOD app:</p>
+          <p style="margin:8px 0 0 0;color:#888888;font-size:12px;word-break:break-all;">{reset_link}</p>
+        </td></tr>
+        <tr><td style="padding-top:24px;border-top:1px solid #1a1a1a;">
+          <p style="margin:0;color:#555555;font-size:11px;line-height:16px;">If you didn't request this, you can safely ignore this email — your password won't change.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>"""
+
+
+async def _send_reset_email(recipient: str, reset_link: str) -> None:
+    """Send the password reset email via Resend.
+    Failures are logged but never raised to the caller — we never want to
+    leak whether an email exists, and email transport is best-effort."""
+    if not resend.api_key:
+        logger.error("RESEND_API_KEY is not configured; skipping email send.")
+        return
+    params = {
+        "from": SENDER_EMAIL,
+        "to": [recipient],
+        "subject": "Reset your MOOD password",
+        "html": _build_reset_email_html(reset_link),
+    }
+    try:
+        result = await asyncio.to_thread(resend.Emails.send, params)
+        logger.info(f"📧 Password reset email sent to {recipient} (id={result.get('id') if isinstance(result, dict) else 'unknown'})")
+    except Exception as e:
+        logger.error(f"📧 Failed to send password reset email to {recipient}: {e}")
+
+
+@api_router.post("/auth/forgot-password")
+async def forgot_password(payload: ForgotPasswordRequest):
+    """Initiate a password reset.
+    Always returns success regardless of whether the email exists, to avoid
+    leaking account existence (security rule). The reset link is sent only
+    when the email actually maps to a user.
+    """
+    email = (payload.email or "").strip().lower()
+    if not email:
+        # Even on bad input, do not reveal anything — return success.
+        return {"success": True}
+
+    # Find user case-insensitively
+    user = await db.users.find_one(
+        {"email": {"$regex": f"^{re.escape(email)}$", "$options": "i"}}
+    )
+
+    if user:
+        user_id = str(user["_id"])
+        # Generate a cryptographically secure URL-safe token
+        raw_token = secrets.token_urlsafe(PASSWORD_RESET_TOKEN_BYTES)
+        token_hash = _hash_reset_token(raw_token)
+        now = datetime.now(timezone.utc)
+        expires_at = now + timedelta(hours=PASSWORD_RESET_TOKEN_TTL_HOURS)
+
+        # Invalidate any prior unused tokens for this user, then insert the new one.
+        await db.password_reset_tokens.update_many(
+            {"user_id": user_id, "used_at": None},
+            {"$set": {"used_at": now, "invalidated_reason": "superseded"}},
+        )
+        await db.password_reset_tokens.insert_one({
+            "user_id": user_id,
+            "token_hash": token_hash,
+            "created_at": now,
+            "expires_at": expires_at,
+            "used_at": None,
+        })
+
+        reset_link = f"{PASSWORD_RESET_DEEP_LINK_BASE}?token={raw_token}"
+        # Fire-and-forget email send so the response stays fast
+        asyncio.create_task(_send_reset_email(user.get("email", email), reset_link))
+        logger.info(f"🔐 Password reset initiated for user_id={user_id}")
+    else:
+        # Constant-time-ish: do a small sleep to mask the timing difference
+        # between "user found + DB writes + email send" and "no user".
+        await asyncio.sleep(0.15)
+        logger.info(f"🔐 Password reset requested for unknown email (suppressed)")
+
+    return {"success": True}
+
+
+@api_router.post("/auth/reset-password")
+async def reset_password(payload: ResetPasswordRequest):
+    """Consume a reset token and set a new password.
+    - Token must match a stored hash, be unused, and not expired.
+    - Token is single-use (marked used_at on success).
+    - Other unused tokens for the user are invalidated.
+    """
+    raw_token = (payload.token or "").strip()
+    new_password = payload.new_password or ""
+
+    if not raw_token or not new_password:
+        raise HTTPException(status_code=400, detail="Invalid request")
+    if len(new_password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+
+    now = datetime.now(timezone.utc)
+
+    # Token hashes are not searchable by hash since bcrypt salts each one.
+    # Pull recent unused, unexpired tokens and verify in-memory. With per-user
+    # supersedure on /forgot-password, this set is small in practice.
+    candidates = await db.password_reset_tokens.find(
+        {"used_at": None, "expires_at": {"$gt": now}}
+    ).sort("created_at", -1).to_list(length=200)
+
+    matched = None
+    for record in candidates:
+        if _verify_reset_token(raw_token, record.get("token_hash", "")):
+            matched = record
+            break
+
+    if not matched:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
+
+    user_id = matched["user_id"]
+    try:
+        user_oid = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
+
+    # Atomically mark this token used; if another request beat us, refuse.
+    consume = await db.password_reset_tokens.update_one(
+        {"_id": matched["_id"], "used_at": None},
+        {"$set": {"used_at": now}},
+    )
+    if consume.modified_count != 1:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
+
+    # Hash the new password (bcrypt) and update the user.
+    new_hash = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+    update_result = await db.users.update_one(
+        {"_id": user_oid},
+        {
+            "$set": {
+                "password": new_hash,        # legacy field used by login
+                "password_hash": new_hash,   # canonical field
+                "password_updated_at": now,
+            }
+        },
+    )
+    if update_result.matched_count != 1:
+        # User vanished — invalidate token and refuse
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
+
+    # Invalidate all other outstanding reset tokens for this user
+    await db.password_reset_tokens.update_many(
+        {"user_id": user_id, "used_at": None},
+        {"$set": {"used_at": now, "invalidated_reason": "password_changed"}},
+    )
+
+    logger.info(f"🔐 Password successfully reset for user_id={user_id}")
+    return {"success": True}
+
 
 # Emergent Auth Endpoints
 
