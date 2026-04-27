@@ -6,6 +6,7 @@ import TermsAcceptanceModal from '../components/TermsAcceptanceModal';
 import { resetNotificationSession } from '../utils/notificationUtils';
 import { API_URL, validateApiConfig } from '../utils/apiConfig';
 import { apiFetch } from '../utils/api';
+import { secureStorage, AUTH_TOKEN_KEY } from '../utils/secureStorage';
 
 // Terms version must match backend CURRENT_TERMS_VERSION
 // Update this when terms change to force re-acceptance for all users
@@ -99,7 +100,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
         
         // Try to get stored token first (fast local check)
-        const storedToken = await AsyncStorage.getItem('auth_token');
+        // SecureStore is the primary source; migrate from AsyncStorage if needed.
+        const storedToken = await secureStorage.migrate(AUTH_TOKEN_KEY);
         if (storedToken) {
           console.log('Found stored token, validating with timeout...');
           
@@ -130,45 +132,38 @@ export function AuthProvider({ children }: AuthProviderProps) {
             
             if (userResp.ok) {
               const userData = await userResp.json();
-              // Check if it's the correct demo user, if not clear and re-login
-              if (userData.username === 'Ogeeezzbury') {
-                console.log('Old demo user detected, clearing and re-logging...');
-                await AsyncStorage.removeItem('auth_token');
-                // Continue to auto-login below
-              } else {
-                setToken(storedToken);
-                setUser(userData);
-                console.log('✅ Restored session for:', userData.username);
-                
-                // Check if user needs to accept current terms version (show modal after login)
-                // Show modal if: no terms accepted OR version doesn't match current version
-                const needsTermsAcceptance = !userData.terms_accepted_at || 
-                  userData.terms_accepted_version !== CURRENT_TERMS_VERSION;
-                
-                if (needsTermsAcceptance) {
-                  console.log('⚠️ User has not accepted current terms version, showing modal...');
-                  console.log('  User version:', userData.terms_accepted_version);
-                  console.log('  Current version:', CURRENT_TERMS_VERSION);
-                  setShowTermsModal(true);
-                }
-                
-                // Track app session start on successful restore (non-blocking)
-                trackEvent(storedToken, 'app_session_start', {
-                  restored_session: true,
-                }).catch(() => {}); // Ignore tracking errors
-                
-                setIsLoading(false);
-                if (timeoutId) clearTimeout(timeoutId);
-                return;
+              setToken(storedToken);
+              setUser(userData);
+              console.log('✅ Restored session for:', userData.username);
+
+              // Check if user needs to accept current terms version (show modal after login)
+              // Show modal if: no terms accepted OR version doesn't match current version
+              const needsTermsAcceptance = !userData.terms_accepted_at ||
+                userData.terms_accepted_version !== CURRENT_TERMS_VERSION;
+
+              if (needsTermsAcceptance) {
+                console.log('⚠️ User has not accepted current terms version, showing modal...');
+                console.log('  User version:', userData.terms_accepted_version);
+                console.log('  Current version:', CURRENT_TERMS_VERSION);
+                setShowTermsModal(true);
               }
-            } else if (userResp.status === 401) {
-              // Token is truly invalid/expired — clear it
-              console.log('Stored token invalid (401), clearing...');
-              await AsyncStorage.removeItem('auth_token');
+
+              // Track app session start on successful restore (non-blocking)
+              trackEvent(storedToken, 'app_session_start', {
+                restored_session: true,
+              }).catch(() => {}); // Ignore tracking errors
+
+              setIsLoading(false);
+              if (timeoutId) clearTimeout(timeoutId);
+              return;
+            } else if (userResp.status === 401 || userResp.status === 403) {
+              // Token is truly invalid/expired per the auth endpoint — clear it
+              console.log(`Stored token invalid (${userResp.status}), clearing...`);
+              await secureStorage.delete(AUTH_TOKEN_KEY);
             } else {
-              // Server error (500, 502, 503) — keep token, proceed optimistically
+              // Server error (404, 500, 502, 503, etc.) — keep token, proceed optimistically
               // Don't log out users due to transient server issues
-              console.warn(`⚠️ Server error ${userResp.status} during auth validation, keeping session`);
+              console.warn(`⚠️ Non-auth error ${userResp.status} during validation, keeping session`);
               setToken(storedToken);
               setIsLoading(false);
               if (timeoutId) clearTimeout(timeoutId);
@@ -217,7 +212,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const loadStoredAuth = async () => {
     try {
-      const storedToken = await AsyncStorage.getItem('auth_token');
+      const storedToken = await secureStorage.get(AUTH_TOKEN_KEY);
       if (storedToken) {
         setToken(storedToken);
         await fetchCurrentUser(storedToken);
@@ -252,9 +247,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
           console.log('  Current version:', CURRENT_TERMS_VERSION);
           setShowTermsModal(true);
         }
-      } else {
-        // Token is invalid, clear it
+      } else if (response.status === 401 || response.status === 403) {
+        // Backend explicitly says the token is invalid → log out
+        console.warn(`🔐 Auth token rejected (${response.status}), logging out`);
         await logout();
+      } else {
+        // Any other non-OK (404, 500, 502, 503, ...) is a transient/server issue.
+        // Keep the session — the user should NOT be logged out.
+        console.warn(`⚠️ /users/me non-auth error ${response.status}, keeping session`);
       }
     } catch (error) {
       console.error('Error fetching current user:', error);
@@ -278,7 +278,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (result.ok && result.data) {
         const { token: authToken, user_id } = result.data;
         setToken(authToken);
-        await AsyncStorage.setItem('auth_token', authToken);
+        await secureStorage.set(AUTH_TOKEN_KEY, authToken);
         
         // Reset notification session on login
         await resetNotificationSession();
@@ -319,7 +319,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (result.ok && result.data) {
         const { token: authToken, user_id } = result.data;
         setToken(authToken);
-        await AsyncStorage.setItem('auth_token', authToken);
+        await secureStorage.set(AUTH_TOKEN_KEY, authToken);
         
         // Reset notification session on registration
         await resetNotificationSession();
@@ -348,7 +348,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem('auth_token');
+      await secureStorage.delete(AUTH_TOKEN_KEY);
       await AsyncStorage.removeItem('is_guest');
       setToken(null);
       setUser(null);
@@ -426,7 +426,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const refreshAuth = async () => {
     try {
       console.log('🔄 Refreshing auth from stored token...');
-      const storedToken = await AsyncStorage.getItem('auth_token');
+      const storedToken = await secureStorage.get(AUTH_TOKEN_KEY);
       if (storedToken) {
         setToken(storedToken);
         await fetchCurrentUser(storedToken);

@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv("/app/backend/.env")
 
-BASE_URL = os.environ.get('EXPO_PUBLIC_BACKEND_URL', 'https://bug-fixes-testing.preview.emergentagent.com')
+BASE_URL = os.environ.get('EXPO_PUBLIC_BACKEND_URL', 'https://backend-diagnostics-4.preview.emergentagent.com')
 
 # Test user IDs
 ADMIN_USER_ID = "693f94d29a560edaab674fd5"  # officialmoodapp (admin)

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ActivityIndicator, Animated, TouchableOpacity, 
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from '../utils/apiConfig';
+import { secureStorage, AUTH_TOKEN_KEY } from '../utils/secureStorage';
 
 interface AppBootstrapProps {
   children: React.ReactNode;
@@ -111,7 +112,7 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
   // Token restore check - NON-BLOCKING
   const checkTokenRestore = useCallback(async (apiUrl: string): Promise<boolean> => {
     try {
-      const storedToken = await AsyncStorage.getItem('auth_token');
+      const storedToken = await secureStorage.get(AUTH_TOKEN_KEY);
       if (!storedToken) {
         console.log('AppBootstrap: No stored token');
         return false; // No token, but that's OK

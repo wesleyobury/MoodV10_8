@@ -21,6 +21,7 @@ import * as Linking from 'expo-linking';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import Constants from 'expo-constants';
 import { API_URL } from '../../utils/apiConfig';
+import { secureStorage, AUTH_TOKEN_KEY } from '../../utils/secureStorage';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -166,9 +167,8 @@ export default function Login() {
       const data = await response.json();
       console.log('OAuth login successful!');
       
-      // Store session token in AsyncStorage
-      const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
-      await AsyncStorage.setItem('auth_token', data.session_token);
+      // Store session token in SecureStore (durable across app closes)
+      await secureStorage.set(AUTH_TOKEN_KEY, data.session_token);
       
       // Refresh auth context to load the new user
       await refreshAuth();
@@ -296,9 +296,8 @@ export default function Login() {
       const data = await response.json();
       console.log('Apple login successful!');
 
-      // Store session token in AsyncStorage
-      const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
-      await AsyncStorage.setItem('auth_token', data.session_token);
+      // Store session token in SecureStore (durable across app closes)
+      await secureStorage.set(AUTH_TOKEN_KEY, data.session_token);
 
       // Refresh auth context to load the new user
       await refreshAuth();

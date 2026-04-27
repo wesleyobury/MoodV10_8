@@ -29,7 +29,7 @@ from pymongo import MongoClient
 # Backend base URL from environment
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 if not BASE_URL:
-    BASE_URL = "https://bug-fixes-testing.preview.emergentagent.com"
+    BASE_URL = "https://backend-diagnostics-4.preview.emergentagent.com"
 
 # MongoDB connection
 MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
