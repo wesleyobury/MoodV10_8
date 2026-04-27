@@ -169,6 +169,9 @@ export default function Login() {
       
       // Store session token in SecureStore (durable across app closes)
       await secureStorage.set(AUTH_TOKEN_KEY, data.session_token);
+      const _oauthNow = new Date().toISOString();
+      await secureStorage.set('auth_token_stored_at', _oauthNow);
+      await secureStorage.set('auth_token_last_validated_at', _oauthNow);
       
       // Refresh auth context to load the new user
       await refreshAuth();
@@ -298,6 +301,9 @@ export default function Login() {
 
       // Store session token in SecureStore (durable across app closes)
       await secureStorage.set(AUTH_TOKEN_KEY, data.session_token);
+      const _appleNow = new Date().toISOString();
+      await secureStorage.set('auth_token_stored_at', _appleNow);
+      await secureStorage.set('auth_token_last_validated_at', _appleNow);
 
       // Refresh auth context to load the new user
       await refreshAuth();

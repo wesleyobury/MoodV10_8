@@ -14,6 +14,7 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-04-27] **Admin Session Diagnostics row** in `/admin-dashboard` Debug Panel (gated to `officialmoodapp` only): shows storage backend (SecureStore vs AsyncStorage), token presence + tail, token age, and last-validated timestamp — refreshes every 30s. Instrumented token writes in `AuthContext.login/register/initAuth/fetchCurrentUser/logout` and `login.tsx` OAuth+Apple paths to maintain `auth_token_stored_at` and `auth_token_last_validated_at` keys.
 - [2026-04-27] **Login persistence fix**: Replaced `AsyncStorage` with `expo-secure-store` for `auth_token` via new `/app/frontend/utils/secureStorage.ts` (keychain/keystore-backed). Auto-migrates legacy tokens from AsyncStorage on first launch. Updated `AuthContext.tsx`, `AppBootstrap.tsx`, `app/auth/login.tsx` (OAuth + Apple). Fixed `fetchCurrentUser` to only logout on 401/403 (was logging out on any non-OK). Removed legacy `Ogeeezzbury` auto-clear. Backend tokens already have 10-year expiry (longer than the 180d requested).
 - [2026-02-28] Instagram share: true transparency (`#00000000` bgColor), removed black story backgrounds, removed `InstagramShareModal` for 1-tap flow, loading spinner on button, removed `Sharing.shareAsync` fallback
 - [2026-02-28] Push Notifications section in Settings (production-ready, not DEV-gated), uses existing `NotificationService` to register token to logged-in user

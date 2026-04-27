@@ -6,7 +6,7 @@ import TermsAcceptanceModal from '../components/TermsAcceptanceModal';
 import { resetNotificationSession } from '../utils/notificationUtils';
 import { API_URL, validateApiConfig } from '../utils/apiConfig';
 import { apiFetch } from '../utils/api';
-import { secureStorage, AUTH_TOKEN_KEY } from '../utils/secureStorage';
+import { secureStorage, AUTH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY, AUTH_TOKEN_LAST_VALIDATED_KEY } from '../utils/secureStorage';
 
 // Terms version must match backend CURRENT_TERMS_VERSION
 // Update this when terms change to force re-acceptance for all users
@@ -134,6 +134,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
               const userData = await userResp.json();
               setToken(storedToken);
               setUser(userData);
+              // Mark token as freshly validated
+              secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, new Date().toISOString()).catch(() => {});
               console.log('✅ Restored session for:', userData.username);
 
               // Check if user needs to accept current terms version (show modal after login)
@@ -235,6 +237,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
+        // Mark token as freshly validated
+        secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, new Date().toISOString()).catch(() => {});
         
         // Check if user needs to accept current terms version (show modal after login)
         // Show modal if: no terms accepted OR version doesn't match current version
@@ -279,6 +283,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const { token: authToken, user_id } = result.data;
         setToken(authToken);
         await secureStorage.set(AUTH_TOKEN_KEY, authToken);
+        const nowIso = new Date().toISOString();
+        await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, nowIso);
+        await secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, nowIso);
         
         // Reset notification session on login
         await resetNotificationSession();
@@ -320,6 +327,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const { token: authToken, user_id } = result.data;
         setToken(authToken);
         await secureStorage.set(AUTH_TOKEN_KEY, authToken);
+        const nowIso = new Date().toISOString();
+        await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, nowIso);
+        await secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, nowIso);
         
         // Reset notification session on registration
         await resetNotificationSession();
@@ -349,6 +359,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = async () => {
     try {
       await secureStorage.delete(AUTH_TOKEN_KEY);
+      await secureStorage.delete(AUTH_TOKEN_STORED_AT_KEY);
+      await secureStorage.delete(AUTH_TOKEN_LAST_VALIDATED_KEY);
       await AsyncStorage.removeItem('is_guest');
       setToken(null);
       setUser(null);

@@ -16,6 +16,11 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AUTH_TOKEN_KEY = 'auth_token';
+// Timestamps (ISO strings) tracking when the token was stored and when it was
+// last validated successfully against the backend. Used by the admin Debug
+// Panel to diagnose session-persistence issues.
+export const AUTH_TOKEN_STORED_AT_KEY = 'auth_token_stored_at';
+export const AUTH_TOKEN_LAST_VALIDATED_KEY = 'auth_token_last_validated_at';
 
 const isWeb = Platform.OS === 'web';
 
@@ -122,6 +127,10 @@ export const secureStorage = {
   delete: secureDelete,
   migrate: migrateToSecureStore,
   AUTH_TOKEN_KEY,
+  AUTH_TOKEN_STORED_AT_KEY,
+  AUTH_TOKEN_LAST_VALIDATED_KEY,
+  /** Platform-identifying label for diagnostics. */
+  backendLabel: isWeb ? 'AsyncStorage (web)' : 'SecureStore (keychain/keystore)',
 };
 
 export default secureStorage;
