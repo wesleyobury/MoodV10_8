@@ -18,6 +18,7 @@ import Constants from 'expo-constants';
 import { useAuth } from '../contexts/AuthContext';
 
 import { API_URL } from '../utils/apiConfig';
+import WorkoutShareMessageCard from '../components/WorkoutShareMessageCard';
 
 interface Message {
   id: string;
@@ -25,6 +26,8 @@ interface Message {
   content: string;
   created_at: string;
   read: boolean;
+  attachment_type?: string;
+  attachment?: any;
 }
 
 export default function Chat() {
@@ -202,6 +205,35 @@ export default function Chat() {
     const isOwnMessage = item.sender_id === user?.id;
     const showDate = index === 0 || 
       formatDate(item.created_at) !== formatDate(messages[index - 1].created_at);
+
+    // Workout share attachment — render premium card instead of bubble
+    if (item.attachment_type === 'workout_share' && item.attachment) {
+      return (
+        <>
+          {showDate && (
+            <View style={styles.dateContainer}>
+              <Text style={styles.dateText}>{formatDate(item.created_at)}</Text>
+            </View>
+          )}
+          <WorkoutShareMessageCard
+            attachment={item.attachment}
+            isOwn={isOwnMessage}
+          />
+          <Text
+            style={[
+              styles.messageTime,
+              isOwnMessage ? styles.ownMessageTime : styles.otherMessageTime,
+              { alignSelf: isOwnMessage ? 'flex-end' : 'flex-start', paddingHorizontal: 12 },
+            ]}
+          >
+            {formatTime(item.created_at)}
+            {isOwnMessage && (
+              <Text> {item.read ? '✓✓' : '✓'}</Text>
+            )}
+          </Text>
+        </>
+      );
+    }
 
     return (
       <>

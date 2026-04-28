@@ -9308,13 +9308,17 @@ async def get_messages(
     
     result = []
     for msg in messages:
-        result.append({
+        item = {
             "id": str(msg["_id"]),
             "sender_id": msg["sender_id"],
-            "content": msg["content"],
+            "content": msg.get("content", ""),
             "created_at": msg["created_at"].isoformat(),
-            "read": msg.get("read", False)
-        })
+            "read": msg.get("read", False),
+        }
+        if msg.get("attachment_type"):
+            item["attachment_type"] = msg["attachment_type"]
+            item["attachment"] = msg.get("attachment") or {}
+        result.append(item)
     
     return result[::-1]  # Return in chronological order
 
@@ -9324,11 +9328,23 @@ async def send_message(
     data: dict,
     current_user_id: str = Depends(get_current_user)
 ):
-    """Send a message in a conversation"""
-    content = data.get("content", "").strip()
-    
-    if not content:
-        raise HTTPException(status_code=400, detail="Message content is required")
+    """Send a message in a conversation.
+    Supports plain text and structured attachments (e.g. workout_share).
+    Body shape:
+      {
+        "content": "optional preview text",
+        "attachment_type": "workout_share" | None,
+        "attachment": { ... }   # opaque payload, validated per type
+      }
+    """
+    content = (data.get("content") or "").strip()
+    attachment_type = data.get("attachment_type")
+    attachment = data.get("attachment")
+
+    if not content and not attachment_type:
+        raise HTTPException(status_code=400, detail="Message content or attachment is required")
+    if attachment_type and attachment_type not in {"workout_share"}:
+        raise HTTPException(status_code=400, detail="Unsupported attachment_type")
     
     # Verify user is participant
     conversation = await db.conversations.find_one({"_id": ObjectId(conversation_id)})
@@ -9341,17 +9357,26 @@ async def send_message(
         "sender_id": current_user_id,
         "content": content,
         "created_at": datetime.utcnow(),
-        "read": False
+        "read": False,
     }
-    
+    if attachment_type:
+        message["attachment_type"] = attachment_type
+        message["attachment"] = attachment or {}
+
     result = await db.messages.insert_one(message)
-    
+
+    # Build a short preview for conversation.last_message
+    preview = content[:100] if content else ""
+    if not preview and attachment_type == "workout_share":
+        wname = (attachment or {}).get("workout_name") or "a workout"
+        preview = f"📤 Sent a workout: {wname}"
+
     # Update conversation
     await db.conversations.update_one(
         {"_id": ObjectId(conversation_id)},
         {
             "$set": {
-                "last_message": content[:100],
+                "last_message": preview,
                 "updated_at": datetime.utcnow()
             }
         }
@@ -9367,18 +9392,131 @@ async def send_message(
                 sender_id=current_user_id,
                 recipient_id=recipient_id,
                 conversation_id=conversation_id,
-                message_text=content,
+                message_text=preview or content,
                 is_request=conversation.get("is_request", False)
             )
     except Exception as e:
         logger.error(f"Failed to send message notification: {e}")
     
-    return {
+    response = {
         "id": str(result.inserted_id),
         "sender_id": current_user_id,
         "content": content,
         "created_at": message["created_at"].isoformat(),
-        "read": False
+        "read": False,
+    }
+    if attachment_type:
+        response["attachment_type"] = attachment_type
+        response["attachment"] = attachment or {}
+    return response
+
+
+@api_router.post("/messages/send-workout")
+async def send_workout_message(
+    data: dict,
+    current_user_id: str = Depends(get_current_user)
+):
+    """Send a workout to another user as a chat share-card message.
+
+    Body:
+      {
+        "recipient_user_id": "<user id>",
+        "workout": { ... full workout payload ... },
+        "equipment": "Bodyweight",
+        "difficulty": "intermediate",
+        "mood_category": "Muscle Gainer",     // optional, derived client-side
+        "subtext": "Chest"                    // optional
+      }
+
+    Behavior:
+      - Refuse self-send
+      - Find or create the DM conversation
+      - Persist a 'workout_share' attachment message
+      - Return { thread_id, message_id }
+    """
+    recipient_user_id = (data.get("recipient_user_id") or "").strip()
+    workout = data.get("workout")
+    if not recipient_user_id:
+        raise HTTPException(status_code=400, detail="recipient_user_id is required")
+    if recipient_user_id == current_user_id:
+        raise HTTPException(status_code=400, detail="You can't send a workout to yourself")
+    if not workout or not isinstance(workout, dict):
+        raise HTTPException(status_code=400, detail="workout payload is required")
+
+    # Validate recipient exists
+    try:
+        recipient_oid = ObjectId(recipient_user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid recipient_user_id")
+    recipient = await db.users.find_one({"_id": recipient_oid}, {"username": 1, "_id": 1})
+    if not recipient:
+        raise HTTPException(status_code=404, detail="Recipient not found")
+
+    # Find or create DM conversation
+    existing = await db.conversations.find_one({
+        "participants": {"$all": [current_user_id, recipient_user_id]}
+    })
+    if existing:
+        conversation_id = str(existing["_id"])
+    else:
+        conv_doc = {
+            "participants": [current_user_id, recipient_user_id],
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow(),
+            "last_message": "",
+        }
+        ins = await db.conversations.insert_one(conv_doc)
+        conversation_id = str(ins.inserted_id)
+
+    # Build attachment — keep client payload + a couple of normalized fields
+    workout_name = (
+        (workout.get("name") if isinstance(workout, dict) else None)
+        or "Workout"
+    )
+    attachment = {
+        "workout": workout,
+        "equipment": (data.get("equipment") or "").strip(),
+        "difficulty": (data.get("difficulty") or "").strip(),
+        "mood_category": (data.get("mood_category") or "").strip(),
+        "subtext": (data.get("subtext") or "").strip(),
+        "workout_name": workout_name,
+    }
+
+    now = datetime.utcnow()
+    msg_doc = {
+        "conversation_id": conversation_id,
+        "sender_id": current_user_id,
+        "content": "",
+        "attachment_type": "workout_share",
+        "attachment": attachment,
+        "created_at": now,
+        "read": False,
+    }
+    ins = await db.messages.insert_one(msg_doc)
+
+    preview = f"📤 Sent a workout: {workout_name}"
+    await db.conversations.update_one(
+        {"_id": ObjectId(conversation_id)},
+        {"$set": {"last_message": preview, "updated_at": now}}
+    )
+
+    # Notify the recipient (best-effort)
+    try:
+        notification_service = get_notification_service(db)
+        await notification_service.trigger_message_notification(
+            sender_id=current_user_id,
+            recipient_id=recipient_user_id,
+            conversation_id=conversation_id,
+            message_text=preview,
+            is_request=False,
+        )
+    except Exception as e:
+        logger.error(f"Failed to send workout-share notification: {e}")
+
+    return {
+        "thread_id": conversation_id,
+        "message_id": str(ins.inserted_id),
+        "recipient_username": recipient.get("username", ""),
     }
 
 @api_router.get("/conversations/unread-count")
