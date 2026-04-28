@@ -59,13 +59,15 @@ const AnimatedStat = ({
   label, 
   isStreak = false,
   isMinutes = false,
-  delay = 0 
+  delay = 0,
+  icon,
 }: { 
   value: number; 
   label: string; 
   isStreak?: boolean;
   isMinutes?: boolean;
   delay?: number;
+  icon?: keyof typeof Ionicons.glyphMap;
 }) => {
   const [displayValue, setDisplayValue] = useState(0);
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -113,6 +115,15 @@ const AnimatedStat = ({
 
   return (
     <View style={styles.statWrapper}>
+      {/* Icon above the number — flat, no capsule per design */}
+      {icon && (
+        <Ionicons
+          name={icon}
+          size={20}
+          color={isStreak ? '#FFD700' : 'rgba(255,255,255,0.85)'}
+          style={styles.statIcon}
+        />
+      )}
       {/* Text stack */}
       <View style={styles.statContent}>
         <Text style={[
@@ -846,8 +857,18 @@ export default function WorkoutsHome() {
         >
         {/* Centered MOOD Branding */}
         <View style={styles.centeredBrandingHeader}>
+          {/* Pulse icon flanked by hairlines (yellow EKG accent) */}
+          <View style={styles.pulseRow}>
+            <View style={styles.pulseFlankLine} />
+            <Ionicons name="pulse" size={26} color="#FFD700" style={styles.pulseIcon} />
+            <View style={styles.pulseFlankLine} />
+          </View>
+
           <Text style={styles.centeredBrandTitle}>MOOD</Text>
           <Text style={styles.centeredBrandSubtitle}>TRAIN HOW YOU FEEL</Text>
+
+          {/* Yellow divider beneath the tagline */}
+          <View style={styles.brandDivider} />
         </View>
 
         {/* Progress Tracker - Animated Counting Stats */}
@@ -855,17 +876,20 @@ export default function WorkoutsHome() {
           <AnimatedStat 
             value={userStats.workouts} 
             label="WORKOUTS" 
+            icon="barbell-outline"
             delay={0}
           />
           <AnimatedStat 
             value={userStats.minutes} 
             label="MINUTES" 
+            icon="time-outline"
             isMinutes={true}
             delay={150}
           />
           <AnimatedStat 
             value={userStats.streak} 
             label="STREAK" 
+            icon="flame"
             isStreak={true}
             delay={300}
           />
@@ -1225,8 +1249,36 @@ const styles = StyleSheet.create({
   centeredBrandingHeader: {
     alignItems: 'center',
     paddingHorizontal: 32,
-    paddingTop: 20,
-    paddingBottom: 16,
+    paddingTop: 8,
+    paddingBottom: 12,
+  },
+  // Pulse + flanking hairlines above MOOD wordmark
+  pulseRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6,
+  },
+  pulseFlankLine: {
+    width: 36,
+    height: 2,
+    backgroundColor: '#FFD700',
+    borderRadius: 1,
+    marginHorizontal: 8,
+  },
+  pulseIcon: {
+    textShadowColor: 'rgba(255, 215, 0, 0.55)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
+  },
+  // Yellow divider below "TRAIN HOW YOU FEEL"
+  brandDivider: {
+    width: 110,
+    height: 2,
+    backgroundColor: '#FFD700',
+    borderRadius: 1,
+    marginTop: 14,
+    opacity: 0.95,
   },
   centeredBrandTitle: {
     fontSize: 42,
@@ -1483,6 +1535,10 @@ const styles = StyleSheet.create({
     width: 110,
     alignItems: 'center',
     paddingBottom: 8,
+  },
+  statIcon: {
+    marginBottom: 6,
+    opacity: 0.9,
   },
   statContent: {
     alignItems: 'center',
