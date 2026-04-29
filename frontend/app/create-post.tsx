@@ -316,6 +316,18 @@ export default function CreatePost() {
     }
   }, [params.workoutStats]);
 
+  // Auto-save: as soon as workout stats arrive on this screen (post-completion),
+  // save the workout card to the user's profile silently. The visible "Save"
+  // button still exists as a manual fallback.
+  useEffect(() => {
+    if (workoutStats && !cardSaved && !isLoading && token) {
+      handleSaveCard().catch((e) => console.warn('Auto-save failed:', e));
+    }
+    // We intentionally only watch workoutStats + auth readiness — handleSaveCard
+    // dedupes via cardSaved guard and the Save button updates state on success.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workoutStats, isLoading, token]);
+
   const pickImages = async () => {
     const maxMedia = hasStatsCard ? 4 : 5;
     
@@ -860,14 +872,14 @@ export default function CreatePost() {
     // 3) Check if Instagram is installed and open Stories camera
     const canOpenStories = await Linking.canOpenURL('instagram://story-camera');
     if (canOpenStories) {
-      await new Promise<void>((resolve) => {
-        Alert.alert(
-          'Overlay Saved to Photos',
-          'Instagram will open next — tap the sticker icon and choose your most recent image to add the overlay.',
-          [{ text: 'Open Instagram', onPress: () => resolve() }],
-        );
+      // Custom Modal (with X close) instead of system Alert so user can dismiss
+      const opened = await new Promise<boolean>((resolve) => {
+        igPromptResolveRef.current = resolve;
+        setIgPromptVisible(true);
       });
-      await Linking.openURL('instagram://story-camera');
+      if (opened) {
+        await Linking.openURL('instagram://story-camera');
+      }
     } else {
       // Fallback: Instagram not installed — use system share sheet
       try {
@@ -2029,6 +2041,54 @@ export default function CreatePost() {
         action='create posts'
       />
 
+      {/* Instagram Hand-off Modal — replaces system Alert; has X to dismiss. */}
+      <Modal
+        visible={igPromptVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => {
+          setIgPromptVisible(false);
+          igPromptResolveRef.current?.(false);
+          igPromptResolveRef.current = null;
+        }}
+      >
+        <View style={styles.igBackdrop}>
+          <View style={styles.igCard}>
+            <TouchableOpacity
+              style={styles.igClose}
+              onPress={() => {
+                setIgPromptVisible(false);
+                igPromptResolveRef.current?.(false);
+                igPromptResolveRef.current = null;
+              }}
+              hitSlop={12}
+              testID="instagram-prompt-close"
+            >
+              <Ionicons name="close" size={22} color="#999" />
+            </TouchableOpacity>
+
+            <Ionicons name="logo-instagram" size={36} color="#FFD700" style={{ marginBottom: 12 }} />
+            <Text style={styles.igTitle}>Overlay saved to Photos</Text>
+            <Text style={styles.igBody}>
+              Instagram will open next — tap the sticker icon and pick your most recent image to add the overlay.
+            </Text>
+
+            <TouchableOpacity
+              style={styles.igCta}
+              onPress={() => {
+                setIgPromptVisible(false);
+                igPromptResolveRef.current?.(true);
+                igPromptResolveRef.current = null;
+              }}
+              activeOpacity={0.85}
+              testID="instagram-prompt-open"
+            >
+              <Text style={styles.igCtaText}>Open Instagram</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       {/* Cover Options Modal */}
       <Modal
         visible={showCoverPicker && coverPickerVideoIndex >= 0}
@@ -2953,5 +3013,61 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
     fontWeight: '500',
+  },
+  // Instagram hand-off prompt
+  igBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.72)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 28,
+  },
+  igCard: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: '#0a0a0a',
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.18)',
+    paddingTop: 26,
+    paddingBottom: 22,
+    paddingHorizontal: 22,
+    alignItems: 'center',
+  },
+  igClose: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  igTitle: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  igBody: {
+    color: '#9c9c9c',
+    fontSize: 13,
+    lineHeight: 19,
+    textAlign: 'center',
+    marginBottom: 18,
+  },
+  igCta: {
+    backgroundColor: '#FFD700',
+    paddingVertical: 12,
+    paddingHorizontal: 28,
+    borderRadius: 999,
+  },
+  igCtaText: {
+    color: '#0c0c0c',
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.3,
   },
 });

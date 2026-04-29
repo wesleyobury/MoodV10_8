@@ -482,6 +482,20 @@ export default function WorkoutsHome() {
       setShuffledWorkouts(shuffled);
     }
   }, [remoteFeaturedWorkouts]);
+
+  // Pulse icon heartbeat animation — soft scale loop, ~2.5s cadence
+  const pulseScale = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseScale, { toValue: 1.18, duration: 380, useNativeDriver: true }),
+        Animated.timing(pulseScale, { toValue: 1, duration: 280, useNativeDriver: true }),
+        Animated.delay(1700),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [pulseScale]);
   
   // Use shuffled workouts for the carousel
   const featuredWorkouts = shuffledWorkouts;
@@ -860,7 +874,9 @@ export default function WorkoutsHome() {
           {/* Pulse icon flanked by hairlines (yellow EKG accent) */}
           <View style={styles.pulseRow}>
             <View style={styles.pulseFlankLine} />
-            <Ionicons name="pulse" size={26} color="#FFD700" style={styles.pulseIcon} />
+            <Animated.View style={{ transform: [{ scale: pulseScale }] }}>
+              <Ionicons name="pulse" size={26} color="#FFD700" style={styles.pulseIcon} />
+            </Animated.View>
             <View style={styles.pulseFlankLine} />
           </View>
 
@@ -1261,10 +1277,11 @@ const styles = StyleSheet.create({
   },
   pulseFlankLine: {
     width: 36,
-    height: 2,
+    height: 1,
     backgroundColor: '#FFD700',
     borderRadius: 1,
     marginHorizontal: 8,
+    opacity: 0.85,
   },
   pulseIcon: {
     textShadowColor: 'rgba(255, 215, 0, 0.55)',
@@ -1274,11 +1291,11 @@ const styles = StyleSheet.create({
   // Yellow divider below "TRAIN HOW YOU FEEL"
   brandDivider: {
     width: 110,
-    height: 2,
+    height: 1,
     backgroundColor: '#FFD700',
     borderRadius: 1,
     marginTop: 14,
-    opacity: 0.95,
+    opacity: 0.85,
   },
   centeredBrandTitle: {
     fontSize: 42,

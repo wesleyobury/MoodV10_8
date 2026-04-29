@@ -911,7 +911,7 @@ export default function Profile() {
               styles.tabText, 
               activeTab === 'cards' && styles.activeTabText
             ]}>
-              Cards
+              Completed
             </Text>
           </TouchableOpacity>
 
@@ -1061,9 +1061,9 @@ export default function Profile() {
               ) : workoutCards.length === 0 ? (
                 <View style={styles.emptyState}>
                   <Ionicons name="trophy-outline" size={48} color="#666" />
-                  <Text style={styles.emptyTitle}>No workout cards yet</Text>
+                  <Text style={styles.emptyTitle}>No completed workouts yet</Text>
                   <Text style={styles.emptySubtitle}>
-                    Complete workouts to save your achievement cards!
+                    Finish a workout to see it here.
                   </Text>
                 </View>
               ) : (
