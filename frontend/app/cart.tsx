@@ -21,6 +21,7 @@ import Constants from 'expo-constants';
 import HomeButton from '../components/HomeButton';
 import BackButton from '../components/BackButton';
 import AddCustomExerciseModal from '../components/AddCustomExerciseModal';
+import SendWorkoutModal from '../components/SendWorkoutModal';
 import { useCart, WorkoutItem } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
@@ -178,6 +179,8 @@ export default function CartScreen() {
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { cartItems, removeFromCart, clearCart, reorderCart, addToCart, replaceCart } = useCart();
+  // Send-Workout-to-Friend modal state (cart-level)
+  const [sendModalVisible, setSendModalVisible] = useState(false);
   const { token } = useAuth();
   const [isStarting, setIsStarting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -725,6 +728,19 @@ export default function CartScreen() {
             </View>
             <Text style={styles.addExerciseText}>Add Exercise</Text>
           </TouchableOpacity>
+
+          {/* Send Workout to Friend — cart-level share */}
+          {cartItems.length > 0 && (
+            <TouchableOpacity
+              style={styles.sendCartButton}
+              onPress={() => setSendModalVisible(true)}
+              activeOpacity={0.85}
+              testID="cart-send-workout-btn"
+            >
+              <Ionicons name="paper-plane-outline" size={16} color="#fff" />
+              <Text style={styles.sendCartButtonText}>Send Workout to Friend</Text>
+            </TouchableOpacity>
+          )}
         </ScrollView>
       </View>
 
@@ -732,6 +748,24 @@ export default function CartScreen() {
       <AddCustomExerciseModal
         visible={showAddExerciseModal}
         onClose={() => setShowAddExerciseModal(false)}
+      />
+
+      {/* Send Workout (cart-level) Modal */}
+      <SendWorkoutModal
+        visible={sendModalVisible}
+        onClose={() => setSendModalVisible(false)}
+        workout={cartItems.length > 0 ? {
+          name: (isGeneratedWorkout && dynamicTitle) ? dynamicTitle : (moodInfo.type || 'Workout'),
+          imageUrl: cartItems[0]?.imageUrl || '',
+          duration: `${getTotalDuration()} min`,
+          description: cartItems.map((c) => c.name).join(' · '),
+          // Carry the full cart so the recipient can preview/replicate it
+          workouts: cartItems,
+        } as any : null}
+        equipment={cartItems[0]?.equipment || ''}
+        difficulty={(generatedCarts[currentCartIndex]?.intensity) || (cartItems[0]?.difficulty) || ''}
+        moodCategory={moodInfo.mood || ''}
+        subtext={(isGeneratedWorkout && dynamicTitle) ? '' : (moodInfo.type || '')}
       />
 
       {/* Bottom Action Bar */}
@@ -1252,5 +1286,25 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: 'rgba(255, 215, 0, 0.8)',
+  },
+  // Send Workout to Friend (cart-level)
+  sendCartButton: {
+    height: 44,
+    marginTop: 14,
+    marginHorizontal: 4,
+    backgroundColor: 'transparent',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.32)',
+  },
+  sendCartButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#ffffff',
+    letterSpacing: 0.2,
   },
 });

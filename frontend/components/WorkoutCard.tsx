@@ -10,12 +10,10 @@ import {
   Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { usePathname } from 'expo-router';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Workout } from '../types/workout';
 import CustomWorkoutModal from './CustomWorkoutModal';
-import SendWorkoutModal from './SendWorkoutModal';
 import { shuffleArray } from '../utils/shuffle';
 
 const { width } = Dimensions.get('window');
@@ -45,42 +43,7 @@ const WorkoutCard = React.memo(({
   const [localScaleAnim] = useState(new Animated.Value(1));
   const [customModalVisible, setCustomModalVisible] = useState(false);
   const [selectedWorkoutForEdit, setSelectedWorkoutForEdit] = useState<Workout | null>(null);
-  const [sendModalVisible, setSendModalVisible] = useState(false);
-  const [sendModalWorkout, setSendModalWorkout] = useState<Workout | null>(null);
   const flatListRef = useRef<FlatList>(null);
-
-  // Derive parent mood-card name + sub-path from the current route, so the
-  // share card title matches the mood card the cart was created from
-  // (Muscle Gainer / Sweat / Explosion / I'm Feeling Lazy / Outdoors / Calisthenics).
-  const pathname = usePathname() || '';
-  const { moodCategory, moodSubtext } = useMemo(() => {
-    const path = pathname.toLowerCase();
-    const muscleGroups = [
-      'chest', 'back', 'shoulders', 'biceps', 'triceps',
-      'legs', 'leg', 'abs', 'arms', 'forearms', 'glutes',
-      'calves', 'quads', 'hamstrings', 'traps',
-    ];
-    const matchedMuscle = muscleGroups.find((m) => path.includes(m));
-    if (matchedMuscle) {
-      const pretty = matchedMuscle.charAt(0).toUpperCase() + matchedMuscle.slice(1);
-      return { moodCategory: 'Muscle Gainer', moodSubtext: pretty };
-    }
-    if (path.includes('cardio') || path.includes('sweat')) {
-      const isLight = path.includes('light') || path.includes('weight');
-      return { moodCategory: 'Sweat', moodSubtext: isLight ? 'Light Weight' : 'Cardio' };
-    }
-    if (path.includes('explos')) {
-      const isWeighted = path.includes('weight') && !path.includes('bodyweight');
-      return { moodCategory: 'Explosion', moodSubtext: isWeighted ? 'Weight Based' : 'Bodyweight' };
-    }
-    if (path.includes('lazy')) {
-      const isWeighted = path.includes('weight') && !path.includes('bodyweight');
-      return { moodCategory: "I'm Feeling Lazy", moodSubtext: isWeighted ? 'Weight Based' : 'Bodyweight' };
-    }
-    if (path.includes('outdoor')) return { moodCategory: 'Outdoors', moodSubtext: '' };
-    if (path.includes('cali')) return { moodCategory: 'Calisthenics', moodSubtext: '' };
-    return { moodCategory: '', moodSubtext: '' };
-  }, [pathname]);
   
   // Shuffle workouts once when the card mounts - stays consistent during the session
   const shuffledWorkouts = useMemo(() => shuffleArray(workouts), []);
@@ -192,20 +155,6 @@ const WorkoutCard = React.memo(({
             </Text>
           </TouchableOpacity>
         </Animated.View>
-
-        {/* Send Workout to Friend Button */}
-        <TouchableOpacity
-          style={styles.sendWorkoutButton}
-          onPress={() => {
-            setSendModalWorkout(item);
-            setSendModalVisible(true);
-          }}
-          activeOpacity={0.85}
-          testID={`send-workout-btn-${equipment}-${item.name}`}
-        >
-          <Ionicons name="paper-plane-outline" size={16} color="#fff" />
-          <Text style={styles.sendWorkoutButtonText}>Send Workout to Friend</Text>
-        </TouchableOpacity>
 
         {/* Swipe for more text */}
         <Text style={styles.swipeForMoreText}>Swipe for more</Text>
@@ -356,20 +305,6 @@ const WorkoutCard = React.memo(({
         equipment={equipment}
         difficulty={difficulty}
         defaultWorkoutName={selectedWorkoutForEdit?.name || ''}
-      />
-
-      {/* Send Workout Modal */}
-      <SendWorkoutModal
-        visible={sendModalVisible}
-        onClose={() => {
-          setSendModalVisible(false);
-          setSendModalWorkout(null);
-        }}
-        workout={sendModalWorkout}
-        equipment={equipment}
-        difficulty={difficulty}
-        moodCategory={moodCategory}
-        subtext={moodSubtext}
       />
     </View>
   );
@@ -546,25 +481,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#ffffff',
-  },
-  sendWorkoutButton: {
-    height: 38,
-    marginTop: 8,
-    backgroundColor: 'transparent',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.32)',
-  },
-  sendWorkoutButtonText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#ffffff',
-    letterSpacing: 0.2,
   },
   swipeForMoreText: {
     fontSize: 10,
