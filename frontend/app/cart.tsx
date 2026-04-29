@@ -734,10 +734,10 @@ export default function CartScreen() {
             <TouchableOpacity
               style={styles.sendCartButton}
               onPress={() => setSendModalVisible(true)}
-              activeOpacity={0.85}
+              activeOpacity={0.7}
               testID="cart-send-workout-btn"
             >
-              <Ionicons name="paper-plane-outline" size={16} color="#fff" />
+              <Ionicons name="paper-plane-outline" size={16} color="#bfbfbf" />
               <Text style={styles.sendCartButtonText}>Send Workout to Friend</Text>
             </TouchableOpacity>
           )}

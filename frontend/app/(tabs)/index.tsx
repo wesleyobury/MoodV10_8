@@ -27,7 +27,6 @@ import { Analytics } from '../../utils/analytics';
 import { useScreenTime } from '../../hooks/useScreenTime';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import { useFeaturedWorkouts, FeaturedWorkout } from '../../hooks/useFeaturedWorkouts';
-import SendWorkoutModal from '../../components/SendWorkoutModal';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 
 // Prioritize process.env for development/preview environments
@@ -224,23 +223,6 @@ const WorkoutCarouselCard = ({
           color={isSaved ? "#FFD700" : "#fff"} 
         />
       </TouchableOpacity>
-
-      {/* Send-to-Friend button - just below bookmark */}
-      {onSendPress && (
-        <TouchableOpacity
-          style={styles.sendCarouselButton}
-          onPress={(e) => {
-            // Prevent the card's onPress from also firing
-            // @ts-ignore — RN nativeEvent stop helpers
-            e.stopPropagation?.();
-            onSendPress();
-          }}
-          hitSlop={8}
-          testID={`carousel-send-btn-${workout.id}`}
-        >
-          <Ionicons name="paper-plane-outline" size={18} color="#fff" />
-        </TouchableOpacity>
-      )}
       
       {/* Bottom info - mood + workout format */}
       <View style={styles.carouselInfo}>
@@ -473,9 +455,6 @@ export default function WorkoutsHome() {
   
   // Fetch remote-driven featured workouts
   const { workouts: remoteFeaturedWorkouts, loading: featuredLoading, refresh: refreshFeatured } = useFeaturedWorkouts();
-  // Featured-carousel "Send to Friend" state
-  const [featuredSendVisible, setFeaturedSendVisible] = useState(false);
-  const [featuredSendWorkout, setFeaturedSendWorkout] = useState<any>(null);
   
   // Randomize workouts once per session - use ref to ensure shuffle only happens once
   const [shuffledWorkouts, setShuffledWorkouts] = useState<CarouselWorkout[]>([]);
@@ -765,10 +744,6 @@ export default function WorkoutsHome() {
         onUnsave={() => handleUnsaveFeaturedWorkout(item)}
         isSaved={savedWorkoutIds.has(item.id)}
         isSaving={savingWorkoutIds.has(item.id)}
-        onSendPress={() => {
-          setFeaturedSendWorkout(item);
-          setFeaturedSendVisible(true);
-        }}
       />
     );
   }, [router, token, savedWorkoutIds, savingWorkoutIds]);
@@ -1001,27 +976,6 @@ export default function WorkoutsHome() {
         visible={showGuestPrompt}
         onClose={() => setShowGuestPrompt(false)}
         action={guestAction}
-      />
-
-      {/* Send Workout Modal — featured-workout carousel share */}
-      <SendWorkoutModal
-        visible={featuredSendVisible}
-        onClose={() => {
-          setFeaturedSendVisible(false);
-          setFeaturedSendWorkout(null);
-        }}
-        workout={featuredSendWorkout ? {
-          name: featuredSendWorkout.title || 'Workout',
-          imageUrl: featuredSendWorkout.image || '',
-          duration: featuredSendWorkout.duration || '',
-          description: featuredSendWorkout.description || '',
-          // Featured payload — recipient can preview the cart
-          ...featuredSendWorkout,
-        } as any : null}
-        equipment={featuredSendWorkout?.equipment || ''}
-        difficulty={featuredSendWorkout?.intensity || featuredSendWorkout?.difficulty || ''}
-        moodCategory={featuredSendWorkout?.mood || ''}
-        subtext={featuredSendWorkout?.title || ''}
       />
     </View>
   );
@@ -1262,21 +1216,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
-  },
-  // Send-to-Friend icon under the bookmark on each carousel card
-  sendCarouselButton: {
-    position: 'absolute',
-    top: 56,
-    right: 12,
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.32)',
   },
   bookmarkButtonSaved: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

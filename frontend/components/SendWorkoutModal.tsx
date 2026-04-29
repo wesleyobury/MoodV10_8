@@ -13,6 +13,7 @@ import {
   Platform,
   Pressable,
   Animated,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -59,8 +60,10 @@ export default function SendWorkoutModal({
   const [results, setResults] = useState<SearchUser[]>([]);
   const [searching, setSearching] = useState(false);
   const [sendingTo, setSendingTo] = useState<string | null>(null);
+  const [sentTo, setSentTo] = useState<string | null>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const slideAnim = useRef(new Animated.Value(0)).current;
+  const checkScale = useRef(new Animated.Value(0)).current;
 
   // Slide-up animation when opening
   useEffect(() => {
@@ -78,6 +81,8 @@ export default function SendWorkoutModal({
       setResults([]);
       setSearching(false);
       setSendingTo(null);
+      setSentTo(null);
+      checkScale.setValue(0);
     }
   }, [visible]);
 
@@ -142,29 +147,52 @@ export default function SendWorkoutModal({
       });
 
       if (!resp.ok) {
-        const errBody = await resp.json().catch(() => ({}));
-        throw new Error(errBody.detail || 'Send failed');
+        const errBody = await resp.json().catch(() => ({} as any));
+        const detail = errBody?.detail;
+        const msg =
+          resp.status === 404
+            ? "We couldn't reach the messaging service. Try again in a moment."
+            : (typeof detail === 'string' ? detail : 'Send failed. Please try again.');
+        throw new Error(msg);
       }
 
       const data = await resp.json();
-      // Close modal then navigate to the chat thread
-      onClose();
-      // Brief delay to let the modal animate out before pushing the chat screen
+
+      // Success: animate the row's pill to a gold checkmark
+      setSendingTo(null);
+      setSentTo(recipient.id);
+      checkScale.setValue(0);
+      Animated.spring(checkScale, {
+        toValue: 1,
+        speed: 16,
+        bounciness: 12,
+        useNativeDriver: true,
+      }).start();
+
+      // Hold the check for ~750ms, then close + navigate
       setTimeout(() => {
-        router.push({
-          pathname: '/chat',
-          params: {
-            conversationId: data.thread_id,
-            userId: recipient.id,
-            username: recipient.username,
-            name: recipient.name || '',
-            avatar: recipient.avatar || '',
-          },
-        });
-      }, 200);
+        onClose();
+        setTimeout(() => {
+          router.push({
+            pathname: '/chat',
+            params: {
+              conversationId: data.thread_id,
+              userId: recipient.id,
+              username: recipient.username,
+              name: recipient.name || '',
+              avatar: recipient.avatar || '',
+            },
+          });
+        }, 200);
+      }, 750);
     } catch (e: any) {
       console.warn('send-workout failed:', e?.message || e);
       setSendingTo(null);
+      // Surface the error so the user knows the send didn't go through
+      Alert.alert(
+        'Couldn\u2019t send workout',
+        e?.message || 'Please check your connection and try again.'
+      );
     }
   };
 
@@ -181,11 +209,12 @@ export default function SendWorkoutModal({
         ? `${API_URL}${item.avatar}`
         : null;
     const isSending = sendingTo === item.id;
+    const isSent = sentTo === item.id;
 
     return (
       <Pressable
         onPress={() => handleSend(item)}
-        disabled={!!sendingTo}
+        disabled={!!sendingTo || !!sentTo}
         style={({ pressed }) => [
           styles.row,
           pressed && styles.rowPressed,
@@ -207,6 +236,13 @@ export default function SendWorkoutModal({
         </View>
         {isSending ? (
           <ActivityIndicator color="#FFD700" size="small" />
+        ) : isSent ? (
+          <Animated.View
+            style={[styles.sentCheck, { transform: [{ scale: checkScale }] }]}
+            testID="send-workout-sent-check"
+          >
+            <Ionicons name="checkmark" size={18} color="#0c0c0c" />
+          </Animated.View>
         ) : (
           <View style={styles.sendPill}>
             <Ionicons name="paper-plane" size={14} color="#0c0c0c" />
@@ -378,5 +414,13 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   sendPillText: { color: '#0c0c0c', fontSize: 12, fontWeight: '700' },
+  sentCheck: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#FFD700',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   separator: { height: 1, backgroundColor: '#111', marginLeft: 54 },
 });
