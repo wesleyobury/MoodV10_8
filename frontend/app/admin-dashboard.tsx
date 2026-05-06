@@ -1013,6 +1013,17 @@ export default function AdminDashboard() {
         )}
       </View>
 
+      {/* Add Workout (Admin Tools) */}
+      <TouchableOpacity
+        style={styles.addWorkoutCta}
+        onPress={() => router.push('/admin-add-workout' as any)}
+        testID="admin-go-add-workout"
+      >
+        <Ionicons name="add-circle" size={20} color="#0c0c0c" />
+        <Text style={styles.addWorkoutCtaText}>Add Workout</Text>
+        <Ionicons name="chevron-forward" size={18} color="#0c0c0c" />
+      </TouchableOpacity>
+
       {/* Time Period Selector */}
       <View style={styles.periodSelector}>
         {TIME_PERIODS.map(period => (
@@ -2895,6 +2906,25 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     backgroundColor: '#0c0c0c',
+  },
+  addWorkoutCta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#FFD700',
+    marginHorizontal: 16,
+    marginTop: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    borderRadius: 12,
+  },
+  addWorkoutCtaText: {
+    flex: 1,
+    color: '#0c0c0c',
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.3,
   },
   periodChip: {
     paddingHorizontal: 16,

@@ -18,7 +18,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 const MOODS = ['Muscle Gainer', 'Sweat', 'Explosion', "I'm Feeling Lazy", 'Outdoors', 'Calisthenics'];
 const MUSCLES_BY_MOOD: Record<string, string[]> = {
-  'Muscle Gainer': ['Legs', 'Chest', 'Back', 'Shoulders', 'Arms', 'Abs'],
+  'Muscle Gainer': ['Compound', 'Glutes', 'Hamstrings', 'Quads', 'Calves', 'Chest', 'Back', 'Shoulders', 'Arms', 'Abs'],
   'Sweat': [''],
   'Explosion': [''],
   "I'm Feeling Lazy": [''],
@@ -37,7 +37,7 @@ export default function AdminAddWorkout() {
   const { token } = useAuth();
 
   const [mood, setMood] = useState(MOODS[0]);
-  const [muscle, setMuscle] = useState('Legs');
+  const [muscle, setMuscle] = useState('Compound');
   const [category, setCategory] = useState(CATEGORIES[0]);
   const [equipment, setEquipment] = useState(EQUIPMENTS[0]);
   const [intensity, setIntensity] = useState<'beginner' | 'intermediate' | 'advanced'>('beginner');
@@ -53,6 +53,14 @@ export default function AdminAddWorkout() {
   const [submitting, setSubmitting] = useState(false);
 
   const muscleOptions = useMemo(() => MUSCLES_BY_MOOD[mood] || [''], [mood]);
+
+  // Reset muscle to first valid option when mood changes
+  React.useEffect(() => {
+    if (!muscleOptions.includes(muscle)) {
+      setMuscle(muscleOptions[0] || '');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mood]);
 
   const updateTip = (i: number, key: keyof MoodTip, val: string) => {
     setTips((prev) => prev.map((t, idx) => (idx === i ? { ...t, [key]: val } : t)));

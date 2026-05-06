@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,7 @@ import { quadsWorkoutDatabase } from '../data/quads-workouts-data';
 import { calvesWorkoutDatabase } from '../data/calves-workouts-data';
 import { compoundLegsWorkoutDatabase } from '../data/compound-legs-workouts-data';
 import { Workout, EquipmentWorkouts } from '../types/workout';
+import { API_URL } from '../utils/apiConfig';
 
 // Map muscle group name to database
 const muscleGroupDatabases: Record<string, EquipmentWorkouts[]> = {
@@ -94,6 +95,49 @@ const CompoundWorkoutDisplayScreen = memo(function CompoundWorkoutDisplayScreen(
 
   const { addToCart, isInCart } = useCart();
   const { token } = useAuth();
+
+  // Map frontend muscleGroup key → admin "muscle" value (form uses display names)
+  const muscleGroupToAdminMuscle: Record<string, string> = {
+    Compound: 'Compound',
+    Glutes: 'Glutes',
+    Hammies: 'Hamstrings',
+    Quads: 'Quads',
+    Calfs: 'Calves',
+  };
+
+  // Fetch dynamic admin-created workouts for this mood + difficulty
+  const [adminWorkouts, setAdminWorkouts] = useState<any[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const params = new URLSearchParams();
+        if (moodTitle) params.set('mood', moodTitle);
+        if (difficulty) params.set('intensity', difficulty);
+        const resp = await fetch(`${API_URL}/api/workouts?${params.toString()}`);
+        if (!resp.ok) {
+          if (!cancelled) setAdminWorkouts([]);
+          return;
+        }
+        const data = await resp.json();
+        if (!cancelled) setAdminWorkouts(Array.isArray(data) ? data : []);
+      } catch (e) {
+        if (!cancelled) setAdminWorkouts([]);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [moodTitle, difficulty]);
+
+  // Convert admin workout doc → static Workout shape
+  const toWorkoutShape = (w: any): Workout => ({
+    name: w.name,
+    duration: w.duration,
+    description: w.description,
+    battlePlan: w.battlePlan || '',
+    imageUrl: w.imageUrl || '',
+    intensityReason: w.intensityReason || '',
+    moodTips: Array.isArray(w.moodTips) ? w.moodTips : [],
+  });
 
   const handleGoBack = () => {
     router.back();
@@ -215,20 +259,69 @@ const CompoundWorkoutDisplayScreen = memo(function CompoundWorkoutDisplayScreen(
     return [steps];
   };
 
-  // Get workouts for each selected muscle group with their equipment
+  // Get workouts for each selected muscle group with their equipment.
+  // Merges static-data workouts with admin-created workouts (matching mood +
+  // muscle + equipment + intensity), so dynamically-added workouts appear in
+  // the same equipment group cards.
   const getWorkoutsForMuscleGroup = (muscleGroup: string): EquipmentWorkouts[] => {
     const database = muscleGroupDatabases[muscleGroup] || [];
     const equipment = equipmentPerGroup[muscleGroup as keyof EquipmentPerGroup] || [];
-    
+
     if (equipment.length === 0) {
       return [];
     }
-    
-    return database.filter(item => 
-      equipment.some(eqName => 
-        item.equipment.toLowerCase().trim() === eqName.toLowerCase().trim()
-      )
+
+    const adminMuscleName = muscleGroupToAdminMuscle[muscleGroup] || muscleGroup;
+    const eqEquals = (a: string, b: string) =>
+      a.toLowerCase().trim() === b.toLowerCase().trim();
+
+    // Admin workouts that match this muscle group + intensity (already filtered)
+    const groupAdminWorkouts = adminWorkouts.filter(
+      (w) => (w.muscle || '').toLowerCase() === adminMuscleName.toLowerCase()
     );
+
+    // Start with static equipment cards filtered to selected equipment
+    const staticEquipment = database.filter((item) =>
+      equipment.some((eqName) => eqEquals(item.equipment, eqName))
+    );
+
+    // Build map keyed by equipment name (lowercase) to inject admin workouts
+    const merged: Record<string, EquipmentWorkouts> = {};
+    for (const item of staticEquipment) {
+      merged[item.equipment.toLowerCase().trim()] = {
+        equipment: item.equipment,
+        icon: item.icon,
+        workouts: {
+          beginner: [...(item.workouts.beginner || [])],
+          intermediate: [...(item.workouts.intermediate || [])],
+          advanced: [...(item.workouts.advanced || [])],
+        },
+      };
+    }
+
+    // Inject admin workouts into matching equipment buckets (or create new)
+    for (const w of groupAdminWorkouts) {
+      // Only consider equipment the user selected for this group
+      const matchedEq = equipment.find((eqName) => eqEquals(eqName, w.equipment));
+      if (!matchedEq) continue;
+      const key = matchedEq.toLowerCase().trim();
+      if (!merged[key]) {
+        merged[key] = {
+          equipment: matchedEq,
+          icon: 'barbell',
+          workouts: { beginner: [], intermediate: [], advanced: [] },
+        };
+      }
+      const intensityKey = (w.intensity || difficulty || 'beginner').toLowerCase() as
+        | 'beginner'
+        | 'intermediate'
+        | 'advanced';
+      if (intensityKey === 'beginner' || intensityKey === 'intermediate' || intensityKey === 'advanced') {
+        merged[key].workouts[intensityKey].push(toWorkoutShape(w));
+      }
+    }
+
+    return Object.values(merged);
   };
 
   // Check if there are any workouts to display

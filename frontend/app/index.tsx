@@ -277,7 +277,12 @@ export default function Welcome() {
       </Modal>
 
       <View style={styles.simplifiedGradient}>
-        <View style={[styles.content, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={[styles.content, { paddingTop: insets.top, paddingBottom: insets.bottom }]}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+        >
           {/* Hero Section */}
           <View style={styles.heroSection}>
             <View style={styles.logoContainer}>
@@ -351,7 +356,7 @@ export default function Welcome() {
               </LinearGradient>
             </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -367,7 +372,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
   },
   content: {
-    flex: 1,
+    flexGrow: 1,
     paddingHorizontal: 20,
     justifyContent: 'space-between',
   },
