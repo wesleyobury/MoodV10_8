@@ -97,6 +97,8 @@ export default function BodyPartsScreen() {
   const insets = useSafeAreaInsets();
   const params = useLocalSearchParams();
   const [selectedBodyParts, setSelectedBodyParts] = useState<Selection[]>([]);
+  // Ref to the main content ScrollView so we can scroll Continue / Build For Me into view
+  const contentScrollRef = useRef<ScrollView>(null);
   const [expandedBodyPart, setExpandedBodyPart] = useState<string>('');
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const expandAnim = useRef(new Animated.Value(0)).current;
@@ -255,6 +257,10 @@ export default function BodyPartsScreen() {
       } else {
         // Add to selection
         setSelectedBodyParts(prev => [...prev, { bodyPart: bodyPartName }]);
+        // Scroll the bottom CTAs (Build For Me + Continue) into view
+        requestAnimationFrame(() => {
+          contentScrollRef.current?.scrollToEnd({ animated: true });
+        });
       }
     }
   };
@@ -268,6 +274,10 @@ export default function BodyPartsScreen() {
     } else {
       // Add this sub-option (allow multiple arm selections)
       setSelectedBodyParts(prev => [...prev, { bodyPart: 'Arms', subOption: subOptionName }]);
+      // Scroll the bottom CTAs into view
+      requestAnimationFrame(() => {
+        contentScrollRef.current?.scrollToEnd({ animated: true });
+      });
     }
   };
 
@@ -398,7 +408,7 @@ export default function BodyPartsScreen() {
       </View>
 
       {/* Body Parts Grid */}
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false} ref={contentScrollRef}>
         <View style={styles.bodyPartsGrid}>
           {bodyParts.map((bodyPart) => {
             const isSelected = isBodyPartSelected(bodyPart.name);

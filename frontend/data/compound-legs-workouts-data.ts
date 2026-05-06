@@ -2630,34 +2630,3 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
     }
   }
 ];
-       ]
-        },
-        {
-          name: 'Smith Squat Burnout',
-          duration: '18–20 min',
-          description: 'High-rep finisher for total leg fatigue',
-          battlePlan: '3 rounds\n• 20 Squats\nRest 180s',
-          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241289/mood_app/workout_images/le4l1rje_smith_squat_2.jpg',
-          intensityReason: 'High reps push legs to complete fatigue',
-          moodTips: [
-            {
-              icon: 'barbell',
-              title: 'Moderate load only',
-              description: 'Enables uninterrupted reps.'
-            },
-            {
-              icon: 'repeat',
-              title: 'No lockout at top',
-              description: 'Keeps tension on legs.'
-            },
-            {
-              icon: 'body',
-              title: 'Controlled breathing',
-              description: 'One breath per rep.'
-            }
-          ]
-        }
-      ]
-    }
-  }
-];
