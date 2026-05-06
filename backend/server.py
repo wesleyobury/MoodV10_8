@@ -1266,6 +1266,132 @@ async def reset_password(payload: ResetPasswordRequest):
 
 # Emergent Auth Endpoints
 
+# ────────────────────────────────────────────────────────
+# Admin: Custom Workouts (Mongo-backed catalog)
+# Lets admins create new workout entries that augment the static
+# data files. Public GET filters by mood/muscle/category/equipment/intensity
+# so the relevant carousel can fold them in alongside static workouts.
+# ────────────────────────────────────────────────────────
+
+
+class AdminWorkoutCreate(BaseModel):
+    mood: str               # e.g. "Muscle Gainer"
+    muscle: str             # e.g. "Legs"
+    category: str           # e.g. "Compound"
+    equipment: str          # e.g. "Dumbbells"
+    intensity: str          # "beginner" | "intermediate" | "advanced"
+    name: str
+    duration: str           # "10–12 min"
+    description: str
+    battlePlan: str         # newline-delimited ok
+    imageUrl: str
+    intensityReason: str = ""
+    moodTips: list = []     # list of {icon, title, description}
+
+
+@api_router.post("/admin/workouts")
+async def admin_create_workout(
+    payload: AdminWorkoutCreate,
+    current_user_id: str = Depends(get_current_user),
+):
+    """Admin-only: insert a new workout into the Mongo catalog."""
+    is_admin, _ = await is_admin_effective(current_user_id)
+    if not is_admin:
+        raise HTTPException(status_code=403, detail="Admin only")
+
+    intensity = (payload.intensity or "").strip().lower()
+    if intensity not in ("beginner", "intermediate", "advanced"):
+        raise HTTPException(
+            status_code=400,
+            detail="intensity must be one of: beginner, intermediate, advanced",
+        )
+
+    # Validate moodTips shape
+    cleaned_tips = []
+    for tip in (payload.moodTips or []):
+        if not isinstance(tip, dict):
+            continue
+        cleaned_tips.append({
+            "icon": str(tip.get("icon") or "flash"),
+            "title": str(tip.get("title") or ""),
+            "description": str(tip.get("description") or ""),
+        })
+
+    doc = {
+        "mood": payload.mood.strip(),
+        "muscle": payload.muscle.strip(),
+        "category": payload.category.strip(),
+        "equipment": payload.equipment.strip(),
+        "intensity": intensity,
+        "name": payload.name.strip(),
+        "duration": payload.duration.strip(),
+        "description": payload.description.strip(),
+        "battlePlan": payload.battlePlan,
+        "imageUrl": payload.imageUrl.strip(),
+        "intensityReason": (payload.intensityReason or "").strip(),
+        "moodTips": cleaned_tips,
+        "created_at": datetime.now(timezone.utc),
+        "created_by": current_user_id,
+        "active": True,
+    }
+    result = await db.admin_workouts.insert_one(doc)
+    logger.info(
+        f"🧱 Admin {current_user_id} created workout '{doc['name']}' "
+        f"({doc['mood']}/{doc['muscle']}/{doc['category']}/{doc['equipment']}/{doc['intensity']})"
+    )
+    return {"success": True, "id": str(result.inserted_id)}
+
+
+@api_router.get("/workouts")
+async def list_admin_workouts(
+    mood: str | None = None,
+    muscle: str | None = None,
+    category: str | None = None,
+    equipment: str | None = None,
+    intensity: str | None = None,
+):
+    """Public list of admin-created workouts. Filters are case-insensitive
+    exact matches. Returned shape mirrors the static data files so the
+    frontend can merge results directly into the existing carousel."""
+    q = {"active": True}
+    if mood: q["mood"] = {"$regex": f"^{re.escape(mood)}$", "$options": "i"}
+    if muscle: q["muscle"] = {"$regex": f"^{re.escape(muscle)}$", "$options": "i"}
+    if category: q["category"] = {"$regex": f"^{re.escape(category)}$", "$options": "i"}
+    if equipment: q["equipment"] = {"$regex": f"^{re.escape(equipment)}$", "$options": "i"}
+    if intensity: q["intensity"] = (intensity or "").strip().lower()
+
+    docs = await db.admin_workouts.find(q, {"_id": 0, "created_by": 0, "active": 0}).to_list(length=500)
+    # Convert datetime to iso string for JSON
+    for d in docs:
+        ca = d.get("created_at")
+        if ca and hasattr(ca, "isoformat"):
+            d["created_at"] = ca.isoformat()
+    return docs
+
+
+@api_router.delete("/admin/workouts/{workout_id}")
+async def admin_delete_workout(
+    workout_id: str,
+    current_user_id: str = Depends(get_current_user),
+):
+    """Admin-only: soft-delete a workout (sets active=False)."""
+    is_admin, _ = await is_admin_effective(current_user_id)
+    if not is_admin:
+        raise HTTPException(status_code=403, detail="Admin only")
+    try:
+        oid = ObjectId(workout_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid id")
+    result = await db.admin_workouts.update_one(
+        {"_id": oid}, {"$set": {"active": False}}
+    )
+    if result.matched_count != 1:
+        raise HTTPException(status_code=404, detail="Workout not found")
+    return {"success": True}
+
+
+# Emergent Auth Endpoints
+
 @api_router.post("/auth/oauth/callback")
 async def emergent_auth_callback(
     session_id: str,
