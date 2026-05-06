@@ -1984,141 +1984,114 @@ async def get_time_series_analytics(
     if excluded_user_ids:
         base_filter["user_id"] = {"$nin": list(excluded_user_ids)}
     
+    # Map Python strftime format to MongoDB $dateToString format
+    # %V (ISO week) in Python -> %V in Mongo; pair with %G (ISO year) for week period
+    if period == "month":
+        mongo_date_format = "%Y-%m"
+    elif period == "week":
+        mongo_date_format = "%G-W%V"  # Use ISO year for week grouping
+    else:
+        mongo_date_format = "%Y-%m-%d"
+    
+    # Hard cap to bound any pipeline output (period buckets cannot exceed days_back)
+    max_buckets = days_back + 32
+    
     try:
         data_by_period = defaultdict(lambda: {"count": 0, "value": 0})
         
+        async def _agg_count_by_period(coll, match, date_field):
+            """Run a $group-by-period pipeline and return list of {_id, count}."""
+            pipeline = [
+                {"$match": match},
+                {"$group": {
+                    "_id": {"$dateToString": {"format": mongo_date_format, "date": f"${date_field}"}},
+                    "count": {"$sum": 1},
+                }},
+                {"$limit": max_buckets},
+            ]
+            return await coll.aggregate(pipeline, allowDiskUse=True).to_list(max_buckets)
+        
         if metric_type == "active_users":
-            # Count unique users per period
-            events = await db.user_events.find(
-                base_filter,
-                {"user_id": 1, "timestamp": 1}
-            ).to_list(10000)
-            
-            users_by_period = defaultdict(set)
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    users_by_period[period_key].add(event.get("user_id"))
-            
-            for period_key, users in users_by_period.items():
-                data_by_period[period_key]["count"] = len(users)
+            # Count unique users per period using $addToSet at DB level
+            pipeline = [
+                {"$match": base_filter},
+                {"$group": {
+                    "_id": {"$dateToString": {"format": mongo_date_format, "date": "$timestamp"}},
+                    "users": {"$addToSet": "$user_id"},
+                }},
+                {"$project": {"count": {"$size": "$users"}}},
+                {"$limit": max_buckets},
+            ]
+            for row in await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(max_buckets):
+                data_by_period[row["_id"]]["count"] = row["count"]
                 
         elif metric_type == "app_sessions":
-            query = {**base_filter, "event_type": "app_session_start"}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1}
-            ).to_list(10000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "app_session_start"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "screen_views":
-            query = {**base_filter, "event_type": {"$in": ["screen_viewed", "screen_entered"]}}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1}
-            ).to_list(10000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events,
+                {**base_filter, "event_type": {"$in": ["screen_viewed", "screen_entered"]}},
+                "timestamp",
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "screen_time":
-            query = {**base_filter, "event_type": "screen_time_spent"}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1, "metadata": 1}
-            ).to_list(10000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    duration = event.get("metadata", {}).get("duration_seconds", 0)
-                    data_by_period[period_key]["count"] += 1
-                    data_by_period[period_key]["value"] += duration / 60  # Convert to minutes
-                    
+            pipeline = [
+                {"$match": {**base_filter, "event_type": "screen_time_spent"}},
+                {"$group": {
+                    "_id": {"$dateToString": {"format": mongo_date_format, "date": "$timestamp"}},
+                    "count": {"$sum": 1},
+                    "total_seconds": {"$sum": {"$ifNull": ["$metadata.duration_seconds", 0]}},
+                }},
+                {"$limit": max_buckets},
+            ]
+            for row in await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(max_buckets):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                data_by_period[row["_id"]]["value"] = row.get("total_seconds", 0) / 60  # to minutes
+                
         elif metric_type == "workouts_started":
-            query = {**base_filter, "event_type": "workout_started"}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1}
-            ).to_list(10000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "workout_started"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "workouts_completed":
-            query = {**base_filter, "event_type": "workout_completed"}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1}
-            ).to_list(10000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "workout_completed"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "mood_selections":
-            query = {**base_filter, "event_type": "mood_selected"}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1, "metadata": 1}
-            ).to_list(10000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "mood_selected"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "posts_created":
-            # For posts, we need to filter by author_id
             posts_filter = {"created_at": {"$gte": cutoff}}
             if excluded_user_ids:
                 posts_filter["author_id"] = {"$nin": [ObjectId(uid) for uid in excluded_user_ids if len(uid) == 24]}
-            posts = await db.posts.find(
-                posts_filter,
-                {"created_at": 1}
-            ).to_list(10000)
-            
-            for post in posts:
-                if post.get("created_at"):
-                    period_key = post["created_at"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(db.posts, posts_filter, "created_at"):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "social_interactions":
-            # Likes, comments, follows
-            query = {**base_filter, "event_type": {"$in": ["post_liked", "post_commented", "user_followed"]}}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1, "event_type": 1}
-            ).to_list(10000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events,
+                {**base_filter, "event_type": {"$in": ["post_liked", "post_commented", "user_followed"]}},
+                "timestamp",
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "new_users":
-            # For users, filter by is_internal flag
             users_filter = {"created_at": {"$gte": cutoff}}
             if not include_internal:
                 users_filter["is_internal"] = {"$ne": True}
-            users = await db.users.find(
-                users_filter,
-                {"created_at": 1}
-            ).to_list(10000)
-            
-            for user in users:
-                if user.get("created_at"):
-                    period_key = user["created_at"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
+            for row in await _agg_count_by_period(db.users, users_filter, "created_at"):
+                data_by_period[row["_id"]]["count"] = row["count"]
         
         # Format response
         sorted_data = sorted(data_by_period.items(), key=lambda x: x[0])[-limit:]
@@ -2198,25 +2171,17 @@ async def get_metric_breakdown(
     
     try:
         if metric_type == "screen_views":
-            events = await db.user_events.find(
-                {"timestamp": {"$gte": cutoff}, "event_type": {"$in": ["screen_viewed", "screen_entered"]}},
-                {"metadata": 1}
-            ).to_list(10000)
-            
-            breakdown = defaultdict(int)
-            for event in events:
-                screen = event.get("metadata", {}).get("screen_name", "Unknown")
-                breakdown[screen] += 1
-            
-            items = [{"name": k, "count": v} for k, v in sorted(breakdown.items(), key=lambda x: -x[1])[:20]]
-            return {"metric_type": metric_type, "items": items, "total": sum(breakdown.values())}
+            pipeline = [
+                {"$match": {"timestamp": {"$gte": cutoff}, "event_type": {"$in": ["screen_viewed", "screen_entered"]}}},
+                {"$group": {"_id": {"$ifNull": ["$metadata.screen_name", "Unknown"]}, "count": {"$sum": 1}}},
+                {"$sort": {"count": -1}},
+                {"$limit": 20},
+            ]
+            rows = await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(20)
+            items = [{"name": r["_id"], "count": r["count"]} for r in rows]
+            return {"metric_type": metric_type, "items": items, "total": sum(r["count"] for r in rows)}
             
         elif metric_type == "mood_selections":
-            events = await db.user_events.find(
-                {"timestamp": {"$gte": cutoff}, "event_type": "mood_selected"},
-                {"metadata": 1}
-            ).to_list(10000)
-            
             mood_names = {
                 "sweat": "I Want to Sweat",
                 "energize": "Energize Me",
@@ -2224,35 +2189,32 @@ async def get_metric_breakdown(
                 "strength": "Build Strength",
                 "lazy": "Lazy Day Workout",
             }
-            
-            breakdown = defaultdict(int)
-            for event in events:
-                mood = event.get("metadata", {}).get("mood", "Unknown")
-                breakdown[mood_names.get(mood, mood)] += 1
-            
-            items = [{"name": k, "count": v} for k, v in sorted(breakdown.items(), key=lambda x: -x[1])]
-            return {"metric_type": metric_type, "items": items, "total": sum(breakdown.values())}
+            pipeline = [
+                {"$match": {"timestamp": {"$gte": cutoff}, "event_type": "mood_selected"}},
+                {"$group": {"_id": {"$ifNull": ["$metadata.mood", "Unknown"]}, "count": {"$sum": 1}}},
+                {"$sort": {"count": -1}},
+                {"$limit": 50},
+            ]
+            rows = await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(50)
+            items = [{"name": mood_names.get(r["_id"], r["_id"]), "count": r["count"]} for r in rows]
+            return {"metric_type": metric_type, "items": items, "total": sum(r["count"] for r in rows)}
             
         elif metric_type == "social_interactions":
-            events = await db.user_events.find(
-                {"timestamp": {"$gte": cutoff}, "event_type": {"$in": ["post_liked", "post_commented", "user_followed", "user_unfollowed"]}},
-                {"event_type": 1}
-            ).to_list(10000)
-            
             type_names = {
                 "post_liked": "Likes",
                 "post_commented": "Comments",
                 "user_followed": "Follows",
                 "user_unfollowed": "Unfollows",
             }
-            
-            breakdown = defaultdict(int)
-            for event in events:
-                event_type = event.get("event_type", "Unknown")
-                breakdown[type_names.get(event_type, event_type)] += 1
-            
-            items = [{"name": k, "count": v} for k, v in sorted(breakdown.items(), key=lambda x: -x[1])]
-            return {"metric_type": metric_type, "items": items, "total": sum(breakdown.values())}
+            pipeline = [
+                {"$match": {"timestamp": {"$gte": cutoff}, "event_type": {"$in": list(type_names.keys())}}},
+                {"$group": {"_id": "$event_type", "count": {"$sum": 1}}},
+                {"$sort": {"count": -1}},
+                {"$limit": 10},
+            ]
+            rows = await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(10)
+            items = [{"name": type_names.get(r["_id"], r["_id"]), "count": r["count"]} for r in rows]
+            return {"metric_type": metric_type, "items": items, "total": sum(r["count"] for r in rows)}
             
         return {"metric_type": metric_type, "items": [], "total": 0}
         
@@ -2307,27 +2269,25 @@ async def get_signup_trend_endpoint(
         
         cutoff = datetime.now(timezone.utc) - timedelta(days=days_back)
         
-        # Get all users created after cutoff
-        users = await db.users.find(
-            {"created_at": {"$gte": cutoff}},
-            {"created_at": 1}
-        ).to_list(10000)
+        # Group at DB level using aggregation (avoid loading all users into memory)
+        mongo_date_format = "%G-W%V" if period == "week" else date_format
+        pipeline = [
+            {"$match": {"created_at": {"$gte": cutoff}}},
+            {"$group": {
+                "_id": {"$dateToString": {"format": mongo_date_format, "date": "$created_at"}},
+                "count": {"$sum": 1},
+            }},
+            {"$sort": {"_id": -1}},
+            {"$limit": max(limit, 1)},
+        ]
+        rows = await db.users.aggregate(pipeline, allowDiskUse=True).to_list(max(limit, 1))
         
         # Group by period
         from collections import defaultdict
         signup_counts = defaultdict(int)
-        
-        for user in users:
-            if user.get("created_at"):
-                created_at = user["created_at"]
-                if period == "week":
-                    # Format as year-week
-                    period_key = created_at.strftime("%Y-W%V")
-                elif period == "month":
-                    period_key = created_at.strftime("%Y-%m")
-                else:
-                    period_key = created_at.strftime("%Y-%m-%d")
-                signup_counts[period_key] += 1
+        for r in rows:
+            if r.get("_id"):
+                signup_counts[r["_id"]] = r["count"]
         
         # Sort by date and limit
         sorted_data = sorted(signup_counts.items(), key=lambda x: x[0], reverse=True)[:limit]
@@ -5635,14 +5595,20 @@ async def get_user_detail_report(
 @api_router.get("/analytics/admin/export/users")
 async def export_users_csv(
     days: int = 30,
+    limit: int = 5000,
+    skip: int = 0,
     current_user_id: str = Depends(require_admin)
 ):
     """
-    Export all users data as CSV format (returns JSON for frontend to convert).
+    Export users data as CSV format (returns JSON for frontend to convert).
+    Paginated to bound memory; pass skip/limit to page through large user bases.
     """
     start_date = datetime.now(timezone.utc) - timedelta(days=days)
+    # Hard-cap to avoid OOM on huge installations
+    safe_limit = max(1, min(limit, 5000))
+    safe_skip = max(0, skip)
     
-    users = await db.users.find({}).to_list(10000)
+    users = await db.users.find({}).sort("created_at", -1).skip(safe_skip).limit(safe_limit).to_list(safe_limit)
     
     # Batch count events and workouts per user (avoid N+1)
     user_ids = [str(u["_id"]) for u in users]
@@ -5955,18 +5921,14 @@ async def get_chart_data(
     
     try:
         if chart_type == "user_growth":
-            users = await db.users.find(
-                {"created_at": {"$gte": cutoff}},
-                {"created_at": 1}
-            ).to_list(10000)
-            
-            data_by_period = defaultdict(int)
-            for user in users:
-                if user.get("created_at"):
-                    period_key = user["created_at"].strftime(date_format)
-                    data_by_period[period_key] += 1
-            
-            sorted_data = sorted(data_by_period.items())
+            pipeline = [
+                {"$match": {"created_at": {"$gte": cutoff}}},
+                {"$group": {"_id": {"$dateToString": {"format": date_format, "date": "$created_at"}}, "count": {"$sum": 1}}},
+                {"$sort": {"_id": 1}},
+                {"$limit": 400},
+            ]
+            results = await db.users.aggregate(pipeline, allowDiskUse=True).to_list(400)
+            sorted_data = [(r["_id"], r["count"]) for r in results]
             
             # Calculate cumulative
             cumulative = []
@@ -5987,18 +5949,14 @@ async def get_chart_data(
             }
             
         elif chart_type == "session_trend":
-            events = await db.user_events.find(
-                {"event_type": {"$in": ["app_opened", "app_session_start"]}, "timestamp": {"$gte": cutoff}},
-                {"timestamp": 1}
-            ).to_list(10000)
-            
-            data_by_period = defaultdict(int)
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key] += 1
-            
-            sorted_data = sorted(data_by_period.items())
+            pipeline = [
+                {"$match": {"event_type": {"$in": ["app_opened", "app_session_start"]}, "timestamp": {"$gte": cutoff}}},
+                {"$group": {"_id": {"$dateToString": {"format": date_format, "date": "$timestamp"}}, "count": {"$sum": 1}}},
+                {"$sort": {"_id": 1}},
+                {"$limit": 400},
+            ]
+            results = await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(400)
+            sorted_data = [(r["_id"], r["count"]) for r in results]
             labels = [format_label(date_key, period) for date_key, _ in sorted_data]
             
             return {
@@ -6086,39 +6044,31 @@ async def get_chart_data(
             }
             
         elif chart_type == "engagement_trend":
-            like_events = await db.user_events.find(
-                {"event_type": "post_liked", "timestamp": {"$gte": cutoff}},
-                {"timestamp": 1}
-            ).to_list(10000)
-            
-            comment_events = await db.user_events.find(
-                {"event_type": "post_commented", "timestamp": {"$gte": cutoff}},
-                {"timestamp": 1}
-            ).to_list(10000)
-            
-            follow_events = await db.user_events.find(
-                {"event_type": "user_followed", "timestamp": {"$gte": cutoff}},
-                {"timestamp": 1}
-            ).to_list(10000)
+            engagement_pipeline = [
+                {"$match": {"event_type": {"$in": ["post_liked", "post_commented", "user_followed"]}, "timestamp": {"$gte": cutoff}}},
+                {"$group": {
+                    "_id": {
+                        "period": {"$dateToString": {"format": date_format, "date": "$timestamp"}},
+                        "type": "$event_type",
+                    },
+                    "count": {"$sum": 1},
+                }},
+                {"$limit": 1200},
+            ]
+            rows = await db.user_events.aggregate(engagement_pipeline, allowDiskUse=True).to_list(1200)
             
             likes_by_period = defaultdict(int)
             comments_by_period = defaultdict(int)
             follows_by_period = defaultdict(int)
-            
-            for event in like_events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    likes_by_period[period_key] += 1
-                    
-            for event in comment_events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    comments_by_period[period_key] += 1
-                    
-            for event in follow_events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    follows_by_period[period_key] += 1
+            for r in rows:
+                p = r["_id"]["period"]
+                t = r["_id"]["type"]
+                if t == "post_liked":
+                    likes_by_period[p] = r["count"]
+                elif t == "post_commented":
+                    comments_by_period[p] = r["count"]
+                elif t == "user_followed":
+                    follows_by_period[p] = r["count"]
             
             all_dates = sorted(set(list(likes_by_period.keys()) + list(comments_by_period.keys()) + list(follows_by_period.keys())))
             

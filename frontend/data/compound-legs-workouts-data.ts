@@ -2211,6 +2211,31 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Every jump should be explosive.'
             }
           ]
+        },
+        {
+          name: 'Pit Shark Step-Ups',
+          duration: '14–16 min',
+          description: 'Belt-loaded step-ups reducing spinal load while training legs',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/mt2elt9e_pit%20shark%20step%20up.png',
+          intensityReason: 'Belt-loaded step-ups train legs without compressing the spine',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Drive through front leg',
+              description: 'Let belt load legs.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay balanced',
+              description: 'Control hips.'
+            },
+            {
+              icon: 'timer',
+              title: 'Keep reps clean',
+              description: 'Don’t rush.'
+            }
+          ]
         }
       ],
       advanced: [
@@ -2311,6 +2336,31 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               icon: 'alert',
               title: 'Stop when jumps slow',
               description: 'End set once explosiveness fades.'
+            }
+          ]
+        },
+        {
+          name: 'Pit Shark Step-Up Pulses',
+          duration: '16–18 min',
+          description: 'Step-ups extended with pulses to increase tension and fatigue',
+          battlePlan: '4 rounds\n• 6 per leg + 3 pulses\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/mt2elt9e_pit%20shark%20step%20up.png',
+          intensityReason: 'Top pulses extend time under tension for max quad/glute fatigue',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Pulse at top',
+              description: 'Extra contraction.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Final sets should burn.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stay stable',
+              description: 'No wobble.'
             }
           ]
         }
