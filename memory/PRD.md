@@ -14,6 +14,14 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-06] **P2: Eliminated unbounded admin analytics queries + added 2 Pit Shark Step-Up workouts**:
+  - **Backend (`server.py`)**: Refactored 16 `.find().to_list(10000)` calls in admin analytics to MongoDB aggregation pipelines that group at the DB level (no more loading 10k docs into Python memory). Affected functions: `get_time_series_analytics` (10 metrics × {day,week,month}), `get_metric_breakdown` (3 breakdowns), `get_signup_trend_endpoint`, `get_chart_data` (`user_growth`, `session_trend`, `engagement_trend`), and paginated `export_users_csv` (now `?limit=&skip=`, hard-cap 5000). Response shapes preserved. Week-period grouping now uses Mongo `%G-W%V` (correct ISO week+year).
+  - **Frontend (`compound-legs-workouts-data.ts`)**: Added 2 new workouts under `Pit Shark`:
+    - **Intermediate**: `Pit Shark Step-Ups` — 14–16 min, 4 rounds × 8/leg, Rest 90s. Belt-loaded step-ups reducing spinal load.
+    - **Advanced**: `Pit Shark Step-Up Pulses` — 16–18 min, 4 rounds × 6/leg + 3 pulses, Rest 120s. Top pulses extend time under tension.
+    - Both use the user-supplied step-up reference image (`mt2elt9e_pit shark step up.png`).
+  - **Verification**: Testing agent ran 43/43 backend pytest tests — all admin analytics endpoints return correct shape, pagination works, non-admin → 403, /users/{id}/posts requires auth (no staging bypass leak). Frontend data file additions confirmed by direct inspection.
+
 - [2026-05-06] **Reverted staging auth bypass + 2 new Compound equipment dead-links**:
   - **Reverted `IS_STAGING` JWT bypass** on `GET /api/users/{user_id}/posts` in `backend/server.py` — endpoint now requires JWT auth in all environments.
   - **Reverted `APP_ENV=staging`** → `APP_ENV=production` in `backend/.env`. Backend log confirms `Environment: APP_ENV=production, IS_STAGING=False` after restart.
