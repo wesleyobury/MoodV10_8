@@ -95,6 +95,31 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Feel quad and glute push you up together.'
             }
           ]
+        },
+        {
+          name: 'Supported Step-Ups',
+          duration: '10–12 min',
+          description: 'Step-ups with light support to build balance, control, and rhythm.',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/7tvi5pvu_db%20step%20up.png',
+          intensityReason: 'Support + light load builds confidence in the step pattern.',
+          moodTips: [
+            {
+              icon: 'hand-right',
+              title: 'Use support if needed',
+              description: 'Build confidence while learning movement.'
+            },
+            {
+              icon: 'footsteps',
+              title: 'Step fully onto box',
+              description: 'Whole foot drives upward.'
+            },
+            {
+              icon: 'time',
+              title: 'Move at your pace',
+              description: 'Control over speed.'
+            }
+          ]
         }
       ],
       intermediate: [
@@ -187,6 +212,31 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Chest tall and knees tracking forward throughout.'
             }
           ]
+        },
+        {
+          name: 'Tempo Step-Ups',
+          duration: '14–16 min',
+          description: 'Step-ups using slow eccentrics to increase tension and control.',
+          battlePlan: '4 rounds\n• 8 per leg (3s down)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/7tvi5pvu_db%20step%20up.png',
+          intensityReason: 'Tempo eccentric stresses single-leg quads + glutes for hypertrophy.',
+          moodTips: [
+            {
+              icon: 'trending-down',
+              title: 'Control the descent',
+              description: '3-second eccentric builds stability.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay tall at top',
+              description: 'Full extension each rep.'
+            },
+            {
+              icon: 'pulse',
+              title: 'Keep rhythm steady',
+              description: 'No rushing.'
+            }
+          ]
         }
       ],
       advanced: [
@@ -277,6 +327,31 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               icon: 'alert',
               title: 'Drop dumbbells if needed',
               description: 'Finish set safely with bodyweight if balance fades.'
+            }
+          ]
+        },
+        {
+          name: 'Explosive Step-Up + Eccentric Return',
+          duration: '16–18 min',
+          description: 'Explosive step-ups paired with slow controlled eccentric returns.',
+          battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/7tvi5pvu_db%20step%20up.png',
+          intensityReason: 'Power on the way up + slow return delivers maximum single-leg load.',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Explode up hard',
+              description: 'Max power each rep.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Final sets should challenge limit.'
+            },
+            {
+              icon: 'trending-down',
+              title: 'Own the descent',
+              description: 'Build serious tension.'
             }
           ]
         }

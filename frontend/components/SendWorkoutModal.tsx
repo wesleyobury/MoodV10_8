@@ -181,6 +181,7 @@ export default function SendWorkoutModal({
               username: recipient.username,
               name: recipient.name || '',
               avatar: recipient.avatar || '',
+              fromShare: '1',
             },
           });
         }, 200);

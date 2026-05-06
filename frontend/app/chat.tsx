@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  Animated,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -32,12 +33,13 @@ interface Message {
 
 export default function Chat() {
   const params = useLocalSearchParams();
-  const { conversationId, userId, username, name, avatar } = params as {
+  const { conversationId, userId, username, name, avatar, fromShare } = params as {
     conversationId?: string;
     userId: string;
     username: string;
     name: string;
     avatar: string;
+    fromShare?: string;
   };
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -45,6 +47,8 @@ export default function Chat() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [activeConversationId, setActiveConversationId] = useState(conversationId);
+  const [shareToastVisible, setShareToastVisible] = useState(false);
+  const shareToastAnim = useRef(new Animated.Value(0)).current;
   const flatListRef = useRef<FlatList>(null);
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -275,12 +279,57 @@ export default function Chat() {
     ? avatar 
     : avatar ? `${API_URL}${avatar}` : null;
 
+  useEffect(() => {
+    if (fromShare === '1') {
+      setShareToastVisible(true);
+      Animated.sequence([
+        Animated.spring(shareToastAnim, {
+          toValue: 1,
+          speed: 14,
+          bounciness: 6,
+          useNativeDriver: true,
+        }),
+        Animated.delay(2200),
+        Animated.timing(shareToastAnim, {
+          toValue: 0,
+          duration: 220,
+          useNativeDriver: true,
+        }),
+      ]).start(() => setShareToastVisible(false));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fromShare]);
+
   return (
     <KeyboardAvoidingView
       style={[styles.container, { paddingTop: insets.top }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={0}
     >
+      {/* New-thread toast (shown after navigating from Send Workout flow) */}
+      {shareToastVisible && (
+        <Animated.View
+          style={[
+            styles.shareToast,
+            {
+              top: insets.top + 8,
+              opacity: shareToastAnim,
+              transform: [{
+                translateY: shareToastAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [-12, 0],
+                }),
+              }],
+            },
+          ]}
+          pointerEvents="none"
+          testID="share-thread-toast"
+        >
+          <Ionicons name="link" size={14} color="#0c0c0c" />
+          <Text style={styles.shareToastText}>New thread started</Text>
+        </Animated.View>
+      )}
+
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
@@ -510,5 +559,29 @@ const styles = StyleSheet.create({
   },
   sendButtonDisabled: {
     backgroundColor: '#333',
+  },
+  // "New thread started" toast that appears after navigating from Send-Workout flow
+  shareToast: {
+    position: 'absolute',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: '#FFD700',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
+    zIndex: 100,
+    shadowColor: '#000',
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
+  },
+  shareToastText: {
+    color: '#0c0c0c',
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
 });
