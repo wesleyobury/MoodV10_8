@@ -120,6 +120,31 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Control over speed.'
             }
           ]
+        },
+        {
+          name: 'Controlled Walking Lunge',
+          duration: '10–12 min',
+          description: 'Forward lunges focusing on balance, rhythm, and controlled reps.',
+          battlePlan: '3 rounds\n• 8–10 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/rurzgx9a_db%20walking%20lunge.png',
+          intensityReason: 'Light load + steady cadence locks in the lunge pattern before adding intensity.',
+          moodTips: [
+            {
+              icon: 'footsteps',
+              title: 'Take comfortable steps',
+              description: 'Build confidence in balance.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright',
+              description: 'Maintain positioning.'
+            },
+            {
+              icon: 'pulse',
+              title: 'Move smoothly',
+              description: 'No rushing.'
+            }
+          ]
         }
       ],
       intermediate: [
@@ -237,6 +262,56 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'No rushing.'
             }
           ]
+        },
+        {
+          name: 'Walking Lunge Pulses',
+          duration: '14–16 min',
+          description: 'Walking lunges extended with pulses for added tension and burn.',
+          battlePlan: '3 rounds\n• 8 per leg + 3 pulses\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/rurzgx9a_db%20walking%20lunge.png',
+          intensityReason: 'Pulses extend time under tension, hammering quads and glutes mid-step.',
+          moodTips: [
+            {
+              icon: 'pulse',
+              title: 'Pulse at bottom',
+              description: 'Increase time under tension.'
+            },
+            {
+              icon: 'trending-down',
+              title: 'Stay low between steps',
+              description: 'Constant load.'
+            },
+            {
+              icon: 'flame',
+              title: 'Control fatigue',
+              description: 'Keep reps clean.'
+            }
+          ]
+        },
+        {
+          name: 'Goblet Squat Tempo',
+          duration: '14–16 min',
+          description: 'Goblet squats using slow eccentrics to build quad control.',
+          battlePlan: '4 rounds\n• 10–12 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/tsuxq68j_db%20goblet%20squat.png',
+          intensityReason: 'Tempo eccentric maximizes quad tension without heavier loading.',
+          moodTips: [
+            {
+              icon: 'trending-down',
+              title: 'Slow descent',
+              description: '3-second eccentric.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright',
+              description: 'DB helps balance.'
+            },
+            {
+              icon: 'flag',
+              title: 'Keep depth consistent',
+              description: 'Don’t shorten reps.'
+            }
+          ]
         }
       ],
       advanced: [
@@ -352,6 +427,56 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               icon: 'trending-down',
               title: 'Own the descent',
               description: 'Build serious tension.'
+            }
+          ]
+        },
+        {
+          name: 'Walking Lunge Drop Set',
+          duration: '16–18 min',
+          description: 'Continuous lunges extended with weight drops to near failure.',
+          battlePlan: '3 rounds\n• 10 per leg\n• Drop → 10\n• Drop → BW to failure\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/rurzgx9a_db%20walking%20lunge.png',
+          intensityReason: 'Continuous load reductions push past traditional failure for maximum burn.',
+          moodTips: [
+            {
+              icon: 'arrow-forward',
+              title: 'Keep moving forward',
+              description: 'No stopping.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Last sets should burn.'
+            },
+            {
+              icon: 'body',
+              title: 'Finish bodyweight',
+              description: 'Full burnout.'
+            }
+          ]
+        },
+        {
+          name: 'Goblet Squat 1.5 Reps',
+          duration: '16–18 min',
+          description: 'Goblet squats using 1.5 reps to increase time under tension.',
+          battlePlan: '4 rounds\n• 8–10 reps\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/tsuxq68j_db%20goblet%20squat.png',
+          intensityReason: '1.5 reps double the bottom-half stress, maxing out quad time under tension.',
+          moodTips: [
+            {
+              icon: 'repeat',
+              title: 'Half + full rep',
+              description: 'One cycle = one rep.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Final rounds should hit limit.'
+            },
+            {
+              icon: 'trending-down',
+              title: 'Stay controlled',
+              description: 'No bouncing.'
             }
           ]
         }
@@ -2475,6 +2600,37 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Posterior chain should limit set.'
             }
           ]
+        },
+        {
+          name: 'Smith Squat Burnout',
+          duration: '18–20 min',
+          description: 'High-rep finisher for total leg fatigue',
+          battlePlan: '3 rounds\n• 20 Squats\nRest 180s',
+          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241289/mood_app/workout_images/le4l1rje_smith_squat_2.jpg',
+          intensityReason: 'High reps push legs to complete fatigue',
+          moodTips: [
+            {
+              icon: 'barbell',
+              title: 'Moderate load only',
+              description: 'Enables uninterrupted reps.'
+            },
+            {
+              icon: 'repeat',
+              title: 'No lockout at top',
+              description: 'Keeps tension on legs.'
+            },
+            {
+              icon: 'body',
+              title: 'Controlled breathing',
+              description: 'One breath per rep.'
+            }
+          ]
+        }
+      ]
+    }
+  }
+];
+       ]
         },
         {
           name: 'Smith Squat Burnout',
