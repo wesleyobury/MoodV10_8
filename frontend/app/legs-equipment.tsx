@@ -46,6 +46,8 @@ const equipmentDatabase: MuscleGroupEquipment[] = [
       { id: 'smith-machine', name: 'Smith Machine', icon: 'grid-outline' },
       { id: 'squat-rack-compound', name: 'Squat Rack', icon: 'barbell' },
       { id: 'trap-bar', name: 'Trap Bar', icon: 'remove' },
+      { id: 'kettlebells-compound', name: 'Kettlebells', icon: 'fitness' },
+      { id: 'pendulum-squat-compound', name: 'Pendulum Squat', icon: 'trending-up' },
     ]
   },
   {
