@@ -35,6 +35,8 @@ const equipmentOptions: EquipmentOption[] = [
   { id: 'hack-squat-machine', name: 'Hack Squat Machine', icon: 'triangle' },
   { id: 'single-stack-cable', name: 'Single Stack Cable', icon: 'reorder-three' },
   { id: 'trap-bar', name: 'Trap Bar', icon: 'remove' },
+  { id: 'kettlebells', name: 'Kettlebells', icon: 'fitness' },
+  { id: 'pendulum-squat', name: 'Pendulum Squat', icon: 'trending-up' },
 ];
 
 const difficultyLevels: DifficultyLevel[] = [

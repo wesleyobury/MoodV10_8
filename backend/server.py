@@ -7135,25 +7135,9 @@ async def get_user_posts(
     request: Request,
     limit: int = 20,
     skip: int = 0,
-    current_user_id: Optional[str] = Depends(get_current_user) if not IS_STAGING else None
+    current_user_id: str = Depends(get_current_user)
 ):
-    """Get posts by a specific user. Auth bypassed in staging for Swagger testing."""
-    # STAGING BYPASS: allow unauthenticated calls for debugging
-    if IS_STAGING and current_user_id is None:
-        # Try to get auth anyway (non-blocking)
-        try:
-            auth_header = request.headers.get("authorization", "")
-            if auth_header.startswith("Bearer "):
-                token = auth_header.split(" ", 1)[1]
-                payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-                uid = payload.get("user_id")
-                if uid:
-                    u = await db.users.find_one({"_id": ObjectId(uid)})
-                    if u:
-                        current_user_id = str(u["_id"])
-        except Exception:
-            pass
-        logger.info(f"STAGING-BYPASS: /users/{user_id}/posts called without auth")
+    """Get posts by a specific user."""
     try:
         # Handle both MongoDB ObjectId and custom user_id formats
         user_object_id = None

@@ -14,7 +14,12 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
-- [2026-05-06] **Admin "Add Workout" Flow Complete** + **Welcome screen scroll fix**:
+- [2026-05-06] **Reverted staging auth bypass + 2 new Compound equipment dead-links**:
+  - **Reverted `IS_STAGING` JWT bypass** on `GET /api/users/{user_id}/posts` in `backend/server.py` — endpoint now requires JWT auth in all environments.
+  - **Reverted `APP_ENV=staging`** → `APP_ENV=production` in `backend/.env`. Backend log confirms `Environment: APP_ENV=production, IS_STAGING=False` after restart.
+  - **Added Kettlebells + Pendulum Squat equipment cards** to Muscle Gainer → Legs → Compound flow (`frontend/app/compound-equipment.tsx`). Per request, these are dead-link selections — no static workouts seeded yet, so selecting only one of them produces an empty equipment-state in the workout display. Visible at the bottom of the equipment grid alongside the existing six options.
+
+
   - **Welcome screen Get Started button accessibility (P0)**: Wrapped the welcome content in a `ScrollView` with `flexGrow:1, justifyContent:'space-between'` content style and `bounces=false`. On constrained viewports (e.g., the Emergent web preview's iPhone-frame mockup), users can now scroll to reach the gold "Get Started" button at the bottom. File: `frontend/app/index.tsx`.
   - **Admin Add Workout — final wiring**:
     1. Registered the new screen in `frontend/app/_layout.tsx`: `<Stack.Screen name="admin-add-workout" />`.
