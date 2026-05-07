@@ -14,6 +14,12 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-07] **Added 9 KB Step-Up workouts** to the existing `Kettlebells` block in `frontend/data/compound-legs-workouts-data.ts` (Kettlebells now has 25 total: 9 lunges + 7 swings + 9 step-ups):
+  - **Beginner (3)**: KB Supported Step-Up, KB Low Box Step-Up, KB Alternating Step-Up
+  - **Intermediate (3)**: KB Step-Up Tempo, KB Step-Up Knee Drive, KB Step-Up Hold
+  - **Advanced (3)**: KB Explosive Step-Up, KB Step-Up Pulses, KB Step-Up Drop Set
+  - Each rotates through the 3 user-supplied step-up reference images. `tsc --noEmit` clean.
+
 - [2026-05-07] **Added 7 KB Swing workouts** to the existing `Kettlebells` block in `frontend/data/compound-legs-workouts-data.ts` (alongside the 9 KB Lunge entries already there):
   - **Beginner (3)**: KB Controlled Swing, KB Swing Reset, KB Swing Hold
   - **Intermediate (3)**: KB Swing Tempo, KB Swing Ladder, KB Swing Continuous

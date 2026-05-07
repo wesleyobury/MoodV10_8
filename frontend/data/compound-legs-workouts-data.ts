@@ -3134,6 +3134,82 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
             }
           ]
         }
+        ,
+        {
+          name: 'KB Supported Step-Up',
+          duration: '10–12 min',
+          description: 'Step-ups using light support to build balance and coordination',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/frus5rdt_kb%20step%20up.png',
+          intensityReason: 'Light support lets beginners groove balance before adding intensity',
+          moodTips: [
+            {
+              icon: 'hand-right',
+              title: 'Use support to stay steady',
+              description: 'Balance comes first, not speed or load.'
+            },
+            {
+              icon: 'footsteps',
+              title: 'Plant your whole foot',
+              description: 'Driving through toes reduces stability.'
+            },
+            {
+              icon: 'checkmark-circle',
+              title: 'Finish feeling confident',
+              description: 'You should have reps left.'
+            }
+          ]
+        },
+        {
+          name: 'KB Low Box Step-Up',
+          duration: '10–12 min',
+          description: 'Step-ups on a lower platform reducing difficulty and impact',
+          battlePlan: '3 rounds\n• 10 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7j1bpxt0_kb%20step%20up%202.png',
+          intensityReason: 'Lower platform protects knees while you build the pattern',
+          moodTips: [
+            {
+              icon: 'resize',
+              title: 'Choose the right height',
+              description: 'Too high breaks form, too low limits benefit.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright throughout',
+              description: 'Leaning forward reduces effectiveness.'
+            },
+            {
+              icon: 'refresh',
+              title: 'Build rhythm first',
+              description: 'Smooth reps matter most.'
+            }
+          ]
+        },
+        {
+          name: 'KB Alternating Step-Up',
+          duration: '10–12 min',
+          description: 'Alternating step-ups improving coordination and movement flow',
+          battlePlan: '3 rounds\n• 10 total\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7w1rm7gq_kb%20step%20up%203.png',
+          intensityReason: 'Alternating sides develops symmetry and movement flow',
+          moodTips: [
+            {
+              icon: 'refresh',
+              title: 'Keep transitions smooth',
+              description: 'Avoid pauses between reps.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stay balanced at the top',
+              description: 'Control before stepping down.'
+            },
+            {
+              icon: 'checkmark-circle',
+              title: 'Confidence over fatigue',
+              description: 'This isn’t a burnout yet.'
+            }
+          ]
+        }
       ],
       intermediate: [
         {
@@ -3286,6 +3362,82 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
             }
           ]
         }
+        ,
+        {
+          name: 'KB Step-Up Tempo',
+          duration: '14–16 min',
+          description: 'Step-ups with slow eccentrics increasing tension and control',
+          battlePlan: '4 rounds\n• 8 per leg (3s down)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/frus5rdt_kb%20step%20up.png',
+          intensityReason: 'Slow eccentric phase amplifies time under tension on each rep',
+          moodTips: [
+            {
+              icon: 'arrow-down',
+              title: 'Own the lowering phase',
+              description: 'If you rush down, you lose the benefit.'
+            },
+            {
+              icon: 'arrow-up',
+              title: 'Drive fully at the top',
+              description: 'Complete extension builds strength.'
+            },
+            {
+              icon: 'flame',
+              title: 'Burn should build gradually',
+              description: 'If not, increase load.'
+            }
+          ]
+        },
+        {
+          name: 'KB Step-Up Knee Drive',
+          duration: '14–16 min',
+          description: 'Step-ups adding knee drive to increase power and coordination',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7j1bpxt0_kb%20step%20up%202.png',
+          intensityReason: 'Knee drive adds explosive hip flexion and balance demand',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Drive the knee with intent',
+              description: 'Adds power, not just height.'
+            },
+            {
+              icon: 'arrow-down',
+              title: 'Control the return',
+              description: 'Don’t fall back down.'
+            },
+            {
+              icon: 'shield',
+              title: 'Feel balance challenged',
+              description: 'That’s part of the goal.'
+            }
+          ]
+        },
+        {
+          name: 'KB Step-Up Hold',
+          duration: '14–16 min',
+          description: 'Step-ups with top holds increasing stability and control',
+          battlePlan: '4 rounds\n• 8 per leg (2s hold)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7w1rm7gq_kb%20step%20up%203.png',
+          intensityReason: 'Top holds reinforce balance and unilateral lockout strength',
+          moodTips: [
+            {
+              icon: 'pause',
+              title: 'Pause and stabilize fully',
+              description: 'If you wobble, reset.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay tall at the top',
+              description: 'Avoid leaning or collapsing.'
+            },
+            {
+              icon: 'timer',
+              title: 'Fatigue should feel controlled',
+              description: 'Challenging, not chaotic.'
+            }
+          ]
+        }
       ],
       advanced: [
         {
@@ -3385,6 +3537,81 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               icon: 'flame',
               title: 'Push to your limit',
               description: 'Final rounds should be brutal.'
+            }
+          ]
+        },
+        {
+          name: 'KB Explosive Step-Up',
+          duration: '16–18 min',
+          description: 'Explosive step-ups building power and high-output strength',
+          battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/frus5rdt_kb%20step%20up.png',
+          intensityReason: 'Explosive intent develops unilateral power and landing control',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Attack every rep upward',
+              description: 'Power should be intentional.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stick the landing clean',
+              description: 'Control proves real strength.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure late',
+              description: 'Last rounds should test you.'
+            }
+          ]
+        },
+        {
+          name: 'KB Step-Up Pulses',
+          duration: '16–18 min',
+          description: 'Step-ups extended with pulses increasing time under tension',
+          battlePlan: '4 rounds\n• 6 per leg + 3 pulses\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7j1bpxt0_kb%20step%20up%202.png',
+          intensityReason: 'Top pulses extend time in the hardest portion of the rep',
+          moodTips: [
+            {
+              icon: 'pulse',
+              title: 'Stay in the hardest position',
+              description: 'Pulses keep you there.'
+            },
+            {
+              icon: 'flame',
+              title: 'Don’t escape the burn',
+              description: 'That’s where growth happens.'
+            },
+            {
+              icon: 'alert',
+              title: 'Final sets should hurt',
+              description: 'You’re chasing fatigue.'
+            }
+          ]
+        },
+        {
+          name: 'KB Step-Up Drop Set',
+          duration: '16–18 min',
+          description: 'Step-ups extended with weight drops pushing toward failure',
+          battlePlan: '3 rounds\n• 8 per leg → Drop → 8 → Drop → BW\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7w1rm7gq_kb%20step%20up%203.png',
+          intensityReason: 'Weight drops sustain effort past traditional failure points',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Drop weight, not effort',
+              description: 'Keep intensity high throughout.'
+            },
+            {
+              icon: 'timer',
+              title: 'No long breaks',
+              description: 'Fatigue is the goal.'
+            },
+            {
+              icon: 'flame',
+              title: 'Last reps should be a fight',
+              description: 'Not easy to finish.'
             }
           ]
         }
