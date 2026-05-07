@@ -3210,6 +3210,82 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
             }
           ]
         }
+        ,
+        {
+          name: 'KB Deadlift',
+          duration: '10–12 min',
+          description: 'Basic hinge movement building posterior chain strength safely',
+          battlePlan: '3 rounds\n• 10–12 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/wt6q1tpv_kb%20deadlift.png',
+          intensityReason: 'Foundational hinge pattern teaches posterior chain engagement',
+          moodTips: [
+            {
+              icon: 'arrow-back',
+              title: 'Push hips back first',
+              description: 'Not a squat.'
+            },
+            {
+              icon: 'body',
+              title: 'Feel hamstrings stretch',
+              description: 'That’s your cue.'
+            },
+            {
+              icon: 'checkmark-circle',
+              title: 'Finish confident',
+              description: 'Not fatigued.'
+            }
+          ]
+        },
+        {
+          name: 'KB Deadlift Pause',
+          duration: '10–12 min',
+          description: 'Deadlifts with pauses reinforcing hinge control and stability',
+          battlePlan: '3 rounds\n• 8–10 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/cbm9hqde_kb%20deadlift%202.png',
+          intensityReason: 'Mid-range pauses build positional awareness and stability',
+          moodTips: [
+            {
+              icon: 'pause',
+              title: 'Pause mid-shin',
+              description: 'Builds awareness.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stay tight throughout',
+              description: 'No relaxation.'
+            },
+            {
+              icon: 'timer',
+              title: 'Control every rep',
+              description: 'No rushing.'
+            }
+          ]
+        },
+        {
+          name: 'KB Deadlift Reset',
+          duration: '10–12 min',
+          description: 'Deadlifts resetting each rep to reinforce proper positioning',
+          battlePlan: '3 rounds\n• 10 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/29ao1zhg_kb%20deadlift%203.png',
+          intensityReason: 'Full resets each rep build rock-solid hinge habits',
+          moodTips: [
+            {
+              icon: 'refresh',
+              title: 'Reset fully each rep',
+              description: 'Build good habits.'
+            },
+            {
+              icon: 'shield',
+              title: 'Brace before lifting',
+              description: 'Protect your back.'
+            },
+            {
+              icon: 'checkmark-circle',
+              title: 'Confidence over load',
+              description: 'Form first.'
+            }
+          ]
+        }
       ],
       intermediate: [
         {
@@ -3359,6 +3435,82 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               icon: 'pulse',
               title: 'Fatigue should feel steady',
               description: 'Not chaotic.'
+            }
+          ]
+        }
+        ,
+        {
+          name: 'KB Deadlift Tempo',
+          duration: '14–16 min',
+          description: 'Deadlifts with slow eccentrics increasing time under tension',
+          battlePlan: '4 rounds\n• 10 reps (3s down)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/wt6q1tpv_kb%20deadlift.png',
+          intensityReason: 'Slow eccentric amplifies posterior chain time under tension',
+          moodTips: [
+            {
+              icon: 'arrow-down',
+              title: 'Lower slowly every rep',
+              description: 'That’s where growth happens.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stay tight at bottom',
+              description: 'No collapse.'
+            },
+            {
+              icon: 'flame',
+              title: 'Tension should build',
+              description: 'If not, increase load.'
+            }
+          ]
+        },
+        {
+          name: 'KB Romanian Deadlift',
+          duration: '14–16 min',
+          description: 'Hinged deadlifts emphasizing hamstrings and glute stretch',
+          battlePlan: '4 rounds\n• 10 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/cbm9hqde_kb%20deadlift%202.png',
+          intensityReason: 'RDL pattern hunts hamstring stretch and glute recruitment',
+          moodTips: [
+            {
+              icon: 'resize',
+              title: 'Chase the stretch',
+              description: 'That’s your depth marker.'
+            },
+            {
+              icon: 'arrow-back',
+              title: 'Keep bar path close',
+              description: 'Efficiency matters.'
+            },
+            {
+              icon: 'body',
+              title: 'Feel hamstrings working',
+              description: 'Not your lower back.'
+            }
+          ]
+        },
+        {
+          name: 'KB Deadlift Hold',
+          duration: '14–16 min',
+          description: 'Deadlifts with top holds improving lockout strength and control',
+          battlePlan: '4 rounds\n• 8 reps (2s hold)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/29ao1zhg_kb%20deadlift%203.png',
+          intensityReason: 'Top holds train glute lockout and hinge awareness',
+          moodTips: [
+            {
+              icon: 'shield',
+              title: 'Squeeze at the top',
+              description: 'Full glute contraction.'
+            },
+            {
+              icon: 'pause',
+              title: 'Hold with tension',
+              description: 'Not relaxation.'
+            },
+            {
+              icon: 'flame',
+              title: 'Fatigue should build',
+              description: 'Controlled strain.'
             }
           ]
         }
@@ -3537,6 +3689,81 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               icon: 'flame',
               title: 'Push to your limit',
               description: 'Final rounds should be brutal.'
+            }
+          ]
+        },
+        {
+          name: 'KB Deadlift Drop Set',
+          duration: '16–18 min',
+          description: 'Deadlifts extended with weight drops pushing toward failure',
+          battlePlan: '3 rounds\n• 8 → Drop → 8 → Drop → 8\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/wt6q1tpv_kb%20deadlift.png',
+          intensityReason: 'Weight drops sustain posterior chain effort past traditional failure',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'No rest between drops',
+              description: 'Keep intensity high.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Last sets should burn.'
+            },
+            {
+              icon: 'shield',
+              title: 'Maintain form under fatigue',
+              description: 'No breakdown.'
+            }
+          ]
+        },
+        {
+          name: 'KB Deadlift 1.5 Reps',
+          duration: '16–18 min',
+          description: 'Deadlifts using extended reps increasing time under tension',
+          battlePlan: '4 rounds\n• 6–8 reps\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/cbm9hqde_kb%20deadlift%202.png',
+          intensityReason: '1.5 reps double the time spent in the loaded stretch',
+          moodTips: [
+            {
+              icon: 'arrow-down',
+              title: 'Control the bottom half',
+              description: 'That’s where tension lives.'
+            },
+            {
+              icon: 'timer',
+              title: 'Stay patient',
+              description: 'No rushing reps.'
+            },
+            {
+              icon: 'flame',
+              title: 'Expect deep fatigue',
+              description: 'That’s the goal.'
+            }
+          ]
+        },
+        {
+          name: 'KB Heavy Deadlift',
+          duration: '16–18 min',
+          description: 'Heavy deadlifts focusing on maximal strength and power output',
+          battlePlan: '4 rounds\n• 5–6 reps\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/29ao1zhg_kb%20deadlift%203.png',
+          intensityReason: 'Heavy low-rep work builds raw posterior chain strength',
+          moodTips: [
+            {
+              icon: 'barbell',
+              title: 'Treat every rep like a max',
+              description: 'Full focus and brace.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stay tight throughout',
+              description: 'No slack.'
+            },
+            {
+              icon: 'flame',
+              title: 'Final sets near failure',
+              description: 'Should feel demanding.'
             }
           ]
         },
