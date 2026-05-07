@@ -273,7 +273,19 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **Enhanced Logging**: PROFILE-POSTS log now includes full `filter=` mongo query
   - **Testing**: 10/10 backend tests passed (iteration_14)
 
+- [2026-02 session] Build For Me v2 — Sweat / Outdoor / Calisthenics:
+  - **Sweat v2**: Fixed cart sizes (2 beg / 3 int/adv), strict equipment uniqueness, canonical `cardio → resistance → cardio` template. Tagged all sweat workouts with `role`/`modality`/`intensity_cost`.
+  - **Outdoor v2**: Combo + solo logic via `ELIGIBLE_PAIRINGS` matrix. Same-env combos require beginner-tier opener; cross-env prefers user-tier ≤cost 3 with beginner-tier fallback. 60 outdoor workouts tagged with `session_type`.
+  - **Calisthenics v2**: Slot-assembly generator (main_1 → optional main_2 → abs finisher). Strict equipment uniqueness for int/adv; abs slot ALWAYS picks `abs_slot_eligible: true`. 69 calisthenics workouts tagged with `movement_focus`/`abs_slot_eligible`. Added "Pull-Up Bar (abs)" equipment + 12 new core exercises.
+  - **Cart UI labels**: `cart.tsx` and `GeneratedWorkoutView.tsx` render plain white "Warm-Up / Main Set / Finisher" text labels under workout names based on the `role` metadata.
+  - **Validation [2026-02 fork session]**: Self-contained Node validator at `/tmp/test_calisthenics.mjs` runs the v2 algorithm against real data — 50 iterations × 3 carts × 3 intensities = 450 carts validated. All v2 rules pass: cart sizes correct (2/3/3), last slot is abs_eligible 100% of the time, no duplicate equipment within int/adv carts, no duplicate names across carts in same iteration. Metro cache cleared and Expo restarted with fresh bundle.
+  - **Files**: `frontend/types/workout.ts`, `frontend/utils/workoutGenerator.ts`, `frontend/data/calisthenics-all-workouts-data.ts`, `frontend/data/outdoor-workouts-data.ts`, `frontend/data/cardio-workouts-data.ts`, `frontend/app/cart.tsx`, `frontend/components/GeneratedWorkoutView.tsx`.
+
 ## Backlog
+- P1: "Send Workout to Friend" 404 in production — backend has `/api/messages/send-workout` route working in preview, needs production deploy from user (no code change).
+- P2: Primary Goal toggle (Strength / Skill / Endurance) above equipment list to narrow down picks.
+- P2: Cleanup duplicate/dead files (`compound-equipment.tsx`, `compound-workout-display-updated.tsx`, `.backup-before-fix` files).
+- P2: Refactor `workoutGenerator.ts` (1400+ lines) into domain-specific files (`generators/sweat.ts`, `generators/outdoor.ts`, `generators/calisthenics.ts`).
 - P2: Admin panel caching for expensive aggregations
 - P2: Unbounded query refactoring at server.py (replace .to_list(10000) with proper pagination)
 - P3: Some posts have media_type=None (legacy data quality)
