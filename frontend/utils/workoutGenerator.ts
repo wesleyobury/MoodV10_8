@@ -797,6 +797,12 @@ function candidatesToCart(
   const items: WorkoutItem[] = picks.map(p =>
     workoutToItem(p.workout, p.equipment, intensity, moodCard, workoutType)
   );
+  // Combo carts: tag opener as 'primer' and main as 'main_block' so the cart UI
+  // renders Warm-Up / Main Set labels (mirrors Sweat path styling).
+  if (items.length === 2) {
+    items[0] = { ...items[0], role: 'primer' };
+    items[1] = { ...items[1], role: 'main_block' };
+  }
   const totalDuration = picks.reduce((sum, p) => sum + parseDuration(p.workout.duration), 0);
   return {
     id: `outdoor-cart-${cartIdx + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,

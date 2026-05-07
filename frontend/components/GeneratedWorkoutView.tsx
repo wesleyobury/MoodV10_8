@@ -155,7 +155,8 @@ const ExerciseCard = ({
 }) => {
   const placeholderImage = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=200&h=200&fit=crop';
   const imageSource = item.imageUrl && item.imageUrl.length > 0 ? item.imageUrl : placeholderImage;
-  const sweatRoleLabel = item.moodCard === 'Sweat / burn fat' && item.role ? ROLE_LABEL[item.role] : null;
+  // Show the role label whenever role is set (Sweat tags every workout; Outdoor tags only combo carts).
+  const sweatRoleLabel = item.role ? ROLE_LABEL[item.role] : null;
 
   return (
     <View style={styles.exerciseCard}>

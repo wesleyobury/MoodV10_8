@@ -133,7 +133,9 @@ const CartItemComponent: React.FC<{
   
   // Check if it's a custom workout
   const isCustomWorkout = item.workoutType === 'Custom' || item.id?.startsWith('custom-');
-  const sweatRoleLabel = item.moodCard === 'Sweat / burn fat' && item.role ? ROLE_LABEL[item.role] : null;
+  // Sweat path tags every workout with role; Outdoor path tags only combo carts (primer + main_block).
+  // Show the role label whenever role is set, regardless of mood.
+  const sweatRoleLabel = item.role ? ROLE_LABEL[item.role] : null;
   
   return (
     <View style={styles.exerciseCard}>
