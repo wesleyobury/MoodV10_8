@@ -20,6 +20,25 @@ export type SessionType =
   | 'technique';
 export type OutdoorEnvironment = 'run' | 'bike' | 'swim' | 'hills' | 'park' | 'track';
 
+// --- Calisthenics mood metadata (used by Build For Me on the Calisthenics path) ---
+export type CalisthenicsEquipment =
+  | 'no_equipment'
+  | 'pull_up_bar'
+  | 'pull_up_bar_abs'
+  | 'parallel_bars'
+  | 'rings'
+  | 'parallettes'
+  | 'ab_wheel';
+export type MovementFocus =
+  | 'full_body'
+  | 'upper_push'
+  | 'upper_pull'
+  | 'mixed_upper'
+  | 'lower'
+  | 'unilateral'
+  | 'hinge_pull'
+  | 'core';
+
 export interface Workout {
   name: string;
   duration: string;
@@ -39,6 +58,9 @@ export interface Workout {
   modality?: Modality;
   // Outdoor metadata — optional, only set on outdoor workouts
   session_type?: SessionType;
+  // Calisthenics metadata — optional, only set on calisthenics workouts
+  movement_focus?: MovementFocus;
+  abs_slot_eligible?: boolean;
 }
 
 export interface EquipmentWorkouts {

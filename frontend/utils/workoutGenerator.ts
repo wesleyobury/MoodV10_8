@@ -7,7 +7,7 @@ import { lazyBodyweightDatabase } from '../data/lazy-bodyweight-data';
 import { lazyUpperBodyDatabase } from '../data/lazy-upper-body-data';
 import { lazyLowerBodyDatabase } from '../data/lazy-lower-body-data';
 import { lazyFullBodyDatabase } from '../data/lazy-full-body-data';
-import { additionalWorkoutDatabase as calisthenicsDatabase } from '../data/calisthenics-all-workouts-data';
+import { additionalWorkoutDatabase as calisthenicsDatabase, calisthenicsWorkoutsDatabase } from '../data/calisthenics-all-workouts-data';
 import { outdoorRunWorkoutDatabase } from '../data/outdoor-workouts-data';
 // Muscle gainer data imports
 import { chestWorkoutDatabase } from '../data/chest-workouts-data';
@@ -20,7 +20,7 @@ import { quadsWorkoutDatabase } from '../data/quads-workouts-data';
 import { hamstringsWorkoutDatabase } from '../data/hamstrings-workouts-data';
 import { glutesWorkoutDatabase } from '../data/glutes-workouts-data';
 import { calvesWorkoutDatabase } from '../data/calves-workouts-data';
-import { Workout, EquipmentWorkouts, Modality, IntensityCost, OutdoorEnvironment, SessionType } from '../types/workout';
+import { Workout, EquipmentWorkouts, Modality, IntensityCost, OutdoorEnvironment, SessionType, MovementFocus, CalisthenicsEquipment } from '../types/workout';
 import { IntensityLevel } from '../components/IntensitySelectionModal';
 import { GeneratedCart } from '../components/GeneratedWorkoutView';
 
@@ -583,13 +583,198 @@ export function generateLazyCartsWithType(
   return carts;
 }
 
-// Export for Calisthenics path
+// ============================================================================
+// CALISTHENICS MOOD CARD — Slot-Assembly Build Logic (v2)
+// ============================================================================
+// Cart structure by tier:
+//   Beginner    : [Main, Abs Finisher]                (2 workouts)
+//   Intermediate: [Main 1, Main 2, Abs Finisher]      (3 workouts)
+//   Advanced    : [Main 1, Main 2, Abs Finisher]      (3 workouts)
+//
+// Rules:
+//   • Equipment uniqueness within int/adv carts (each slot uses different gear)
+//   • Last slot is always abs-eligible (ab_wheel, no_equipment, or pull_up_bar_abs)
+//   • Finisher-only equipment (ab_wheel, pull_up_bar_abs) cannot fill main slots
+//   • Slot 2 prefers different movement_focus than Slot 1
+//   • Cross-cart soft variety: track usedEquipByRole so abs slot rotates through gear
+//   • No equipment selection prerequisite — pulls from full database
+// ============================================================================
+
+const CAL_EQUIPMENT_TO_KEY: Record<string, CalisthenicsEquipment> = {
+  'Pure bodyweight': 'no_equipment',
+  'Pull up bar': 'pull_up_bar',
+  'Pull-Up Bar (abs)': 'pull_up_bar_abs',
+  'Parallel bars / dip station': 'parallel_bars',
+  'Gymnast rings': 'rings',
+  'Pushup bars / parallettes': 'parallettes',
+  'Ab wheel': 'ab_wheel',
+};
+
+const CAL_FINISHER_ONLY: Set<CalisthenicsEquipment> = new Set(['ab_wheel', 'pull_up_bar_abs']);
+
+const CAL_CART_SIZE: Record<IntensityLevel, number> = {
+  beginner: 2,
+  intermediate: 3,
+  advanced: 3,
+};
+
+interface CalCandidate {
+  workout: Workout;
+  displayEquipment: string;
+  equipment: CalisthenicsEquipment;
+  movement_focus?: MovementFocus;
+  abs_eligible: boolean;
+}
+
+function buildCalisthenicsPool(intensity: IntensityLevel): CalCandidate[] {
+  const out: CalCandidate[] = [];
+  for (const eq of calisthenicsWorkoutsDatabase) {
+    const key = CAL_EQUIPMENT_TO_KEY[eq.equipment];
+    if (!key) continue;
+    for (const w of eq.workouts[intensity] || []) {
+      out.push({
+        workout: w,
+        displayEquipment: eq.equipment,
+        equipment: key,
+        movement_focus: w.movement_focus,
+        abs_eligible: !!w.abs_slot_eligible,
+      });
+    }
+  }
+  return out;
+}
+
+function pickCalMain(
+  pool: CalCandidate[],
+  usedNames: Set<string>,
+  usedEqInCart: Set<CalisthenicsEquipment>,
+  avoidFocus: MovementFocus | null,
+  deprioritizeEquip: Set<CalisthenicsEquipment>,
+  deprioritizeFocus: Set<MovementFocus>,
+): CalCandidate | null {
+  let candidates = pool.filter(c =>
+    !usedNames.has(c.workout.name) &&
+    !CAL_FINISHER_ONLY.has(c.equipment) &&
+    !usedEqInCart.has(c.equipment)
+  );
+  if (candidates.length === 0) return null;
+
+  if (avoidFocus) {
+    const filtered = candidates.filter(c => c.movement_focus !== avoidFocus);
+    if (filtered.length > 0) candidates = filtered;
+  }
+  // Prefer non-deprioritized equipment AND non-deprioritized focus
+  const novel = candidates.filter(c =>
+    !deprioritizeEquip.has(c.equipment) && (!c.movement_focus || !deprioritizeFocus.has(c.movement_focus))
+  );
+  const finalPool = novel.length > 0 ? novel : candidates;
+  return finalPool[Math.floor(Math.random() * finalPool.length)];
+}
+
+function pickCalAbs(
+  pool: CalCandidate[],
+  usedNames: Set<string>,
+  excludeEquip: Set<CalisthenicsEquipment>,
+  deprioritizeEquip: Set<CalisthenicsEquipment>,
+): CalCandidate | null {
+  const candidates = pool.filter(c =>
+    !usedNames.has(c.workout.name) &&
+    c.abs_eligible &&
+    !excludeEquip.has(c.equipment)
+  );
+  if (candidates.length === 0) return null;
+  const novel = candidates.filter(c => !deprioritizeEquip.has(c.equipment));
+  const finalPool = novel.length > 0 ? novel : candidates;
+  return finalPool[Math.floor(Math.random() * finalPool.length)];
+}
+
+// New v2 Calisthenics generator — slot assembly with abs finisher.
 export function generateCalisthenicsCarts(
   intensity: IntensityLevel,
   moodCard: string = 'I want to do calisthenics',
-  workoutType: string = 'Calisthenics'
+  workoutType: string = 'Calisthenics',
 ): GeneratedCart[] {
-  return generateWorkoutCarts(intensity, moodCard, workoutType, calisthenicsDatabase);
+  const pool = buildCalisthenicsPool(intensity);
+  const cartSize = CAL_CART_SIZE[intensity];
+
+  const usedNames = new Set<string>();
+  const usedEqByRole = {
+    main_1: new Set<CalisthenicsEquipment>(),
+    main_2: new Set<CalisthenicsEquipment>(),
+    abs:    new Set<CalisthenicsEquipment>(),
+  };
+  const usedFocusByRole = {
+    main_1: new Set<MovementFocus>(),
+    main_2: new Set<MovementFocus>(),
+    abs:    new Set<MovementFocus>(),
+  };
+  const carts: GeneratedCart[] = [];
+
+  for (let cartIdx = 0; cartIdx < 3; cartIdx++) {
+    const usedEqInCart = new Set<CalisthenicsEquipment>();
+    const items: WorkoutItem[] = [];
+    const picks: CalCandidate[] = [];
+
+    // Slot 1 — Main
+    const main1 = pickCalMain(pool, usedNames, usedEqInCart, null, usedEqByRole.main_1, usedFocusByRole.main_1);
+    if (!main1) continue;
+    picks.push(main1);
+    usedNames.add(main1.workout.name);
+    usedEqInCart.add(main1.equipment);
+    usedEqByRole.main_1.add(main1.equipment);
+    if (main1.movement_focus) usedFocusByRole.main_1.add(main1.movement_focus);
+
+    // Slot 2 — Main 2 (int/adv only)
+    if (cartSize === 3) {
+      const main2 = pickCalMain(
+        pool,
+        usedNames,
+        usedEqInCart,
+        main1.movement_focus || null,
+        usedEqByRole.main_2,
+        usedFocusByRole.main_2,
+      );
+      if (main2) {
+        picks.push(main2);
+        usedNames.add(main2.workout.name);
+        usedEqInCart.add(main2.equipment);
+        usedEqByRole.main_2.add(main2.equipment);
+        if (main2.movement_focus) usedFocusByRole.main_2.add(main2.movement_focus);
+      }
+    }
+
+    // Last slot — Abs Finisher
+    const absExclude = intensity === 'beginner' ? new Set<CalisthenicsEquipment>() : new Set(usedEqInCart);
+    const abs = pickCalAbs(pool, usedNames, absExclude, usedEqByRole.abs);
+    if (abs) {
+      picks.push(abs);
+      usedNames.add(abs.workout.name);
+      usedEqByRole.abs.add(abs.equipment);
+    }
+
+    if (picks.length === 0) continue;
+
+    // Convert to WorkoutItems. Tag main slots with main_block role and abs with finisher
+    // so the cart UI shows Main Set / Finisher labels (consistent with Sweat path).
+    picks.forEach((p, idx) => {
+      const item = workoutToItem(p.workout, p.displayEquipment, intensity, moodCard, workoutType);
+      const isAbsSlot = idx === picks.length - 1 && p.abs_eligible;
+      items.push({
+        ...item,
+        role: isAbsSlot ? 'finisher' : 'main_block',
+      });
+    });
+
+    const totalDuration = picks.reduce((sum, p) => sum + parseDuration(p.workout.duration), 0);
+    carts.push({
+      id: `cal-cart-${cartIdx + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+      workouts: items,
+      totalDuration,
+      intensity,
+    });
+  }
+
+  return carts;
 }
 
 // ============================================================================
