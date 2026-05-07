@@ -33,6 +33,8 @@ import {
   LazyModality,
   LiftWeightsBodyRegion,
   LiftWeightsSubCategory,
+  ExplosivePath,
+  CartFlavor,
 } from '../types/workout';
 import { IntensityLevel } from '../components/IntensitySelectionModal';
 import { GeneratedCart } from '../components/GeneratedWorkoutView';
@@ -473,15 +475,155 @@ export function generateCardioCarts(
   return generateWorkoutCarts(intensity, moodCard, workoutType, cardioWorkoutsDatabase);
 }
 
-// Export for Build Explosion path (bodyweight + weights)
+// ============================================================================
+// I'M FEELING EXPLOSIVE — Build For Me v3
+// 3 carts, each tagged with a flavor: plyo / loaded / dynamic.
+// Beginner = 2 slots (1 BW + 1 LW); Int/Adv = 3 slots (1 BW + 1 LW + 1 flex).
+// Hard rules:
+//   • each cart contains exactly 1 BW and 1 LW workout (slots 1-2 mandatory)
+//   • no equipment value appears in more than one cart in a single generation
+//   • each cart's workouts share the same cart_flavor
+//   • sequencing: lowest intensity_cost first; for 3-slot carts → low, high, mid
+// Returned in canonical display order: plyo → loaded → dynamic.
+// ============================================================================
+
+interface ExplosiveCandidate {
+  workout: Workout;
+  equipment: string;
+  path: ExplosivePath;
+  flavor: CartFlavor;
+  cost: number;
+}
+
+const EXPLOSIVE_FLAVORS: CartFlavor[] = ['plyo', 'loaded', 'dynamic'];
+
+function buildExplosivePool(
+  database: EquipmentWorkouts[],
+  intensity: IntensityLevel,
+  path: ExplosivePath,
+): ExplosiveCandidate[] {
+  const out: ExplosiveCandidate[] = [];
+  for (const eq of database) {
+    for (const w of eq.workouts[intensity] || []) {
+      if (!w.cart_flavor || !w.path) continue;
+      out.push({
+        workout: w,
+        equipment: eq.equipment,
+        path: w.path,
+        flavor: w.cart_flavor,
+        cost: w.intensity_cost ?? 3,
+      });
+    }
+  }
+  return out;
+}
+
+function pickFromFlavoredPool(
+  pool: ExplosiveCandidate[],
+  flavor: CartFlavor,
+  excludeNames: Set<string>,
+  excludeEquipment: Set<string>,
+  pathFilter?: ExplosivePath,
+): ExplosiveCandidate | null {
+  const candidates = pool.filter(c =>
+    c.flavor === flavor &&
+    !excludeNames.has(c.workout.name) &&
+    !excludeEquipment.has(c.equipment) &&
+    (pathFilter ? c.path === pathFilter : true)
+  );
+  if (candidates.length === 0) return null;
+  return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
+function sequenceExplosiveCart(items: ExplosiveCandidate[]): ExplosiveCandidate[] {
+  const sorted = [...items].sort((a, b) => a.cost - b.cost);
+  if (sorted.length <= 2) return sorted;
+  // 3 slots: low, high, mid
+  return [sorted[0], sorted[2], sorted[1]];
+}
+
 export function generateExplosivenessCarts(
   intensity: IntensityLevel,
   moodCard: string = 'I want to build explosion',
-  workoutType: string = 'Mixed Explosive'
+  workoutType: string = 'Mixed Explosive',
 ): GeneratedCart[] {
-  // Combine both bodyweight and weight-based explosiveness databases
-  const combinedDatabase = [...bodyweightExplosivenessDatabase, ...explosivenessWeightsDatabase];
-  return generateWorkoutCarts(intensity, moodCard, workoutType, combinedDatabase);
+  const bwPool = buildExplosivePool(bodyweightExplosivenessDatabase, intensity, 'bodyweight');
+  const lwPool = buildExplosivePool(explosivenessWeightsDatabase, intensity, 'weights');
+  const fullPool = [...bwPool, ...lwPool];
+
+  const cartSize = intensity === 'beginner' ? 2 : 3;
+
+  // Process tightest flavor first. Tightness is the SMALLEST DISTINCT EQUIPMENT count
+  // across the BW and LW slots for that flavor — that's the slot most likely to be
+  // blocked by other flavors' picks.
+  const distinctEq = (pool: ExplosiveCandidate[], flavor: CartFlavor): number =>
+    new Set(pool.filter(c => c.flavor === flavor).map(c => c.equipment)).size;
+
+  const flavorTightness = EXPLOSIVE_FLAVORS.map(f => ({
+    flavor: f,
+    tightness: Math.min(distinctEq(bwPool, f), distinctEq(lwPool, f)),
+  }));
+
+  // Retry the whole generation a bounded number of times. Even with smart sort,
+  // shared-equipment conflicts (e.g. KB appearing in both loaded BW and dynamic LW)
+  // can require a do-over for a small fraction of seeds.
+  const MAX_ATTEMPTS = 25;
+  let cartsByFlavor = new Map<CartFlavor, ExplosiveCandidate[]>();
+
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    cartsByFlavor = new Map<CartFlavor, ExplosiveCandidate[]>();
+    const flavorsByDepth = [...flavorTightness].sort((a, b) => a.tightness - b.tightness).map(x => x.flavor);
+    const usedEquipment = new Set<string>();
+    const usedNames = new Set<string>();
+    let allFlavorsFilled = true;
+
+    for (const flavor of flavorsByDepth) {
+      const cart: ExplosiveCandidate[] = [];
+
+      const bwPick = pickFromFlavoredPool(bwPool, flavor, usedNames, usedEquipment);
+      if (!bwPick) { allFlavorsFilled = false; break; }
+      cart.push(bwPick);
+      usedEquipment.add(bwPick.equipment);
+      usedNames.add(bwPick.workout.name);
+
+      const lwPick = pickFromFlavoredPool(lwPool, flavor, usedNames, usedEquipment);
+      if (!lwPick) { allFlavorsFilled = false; break; }
+      cart.push(lwPick);
+      usedEquipment.add(lwPick.equipment);
+      usedNames.add(lwPick.workout.name);
+
+      if (cartSize === 3) {
+        const flexPick = pickFromFlavoredPool(fullPool, flavor, usedNames, usedEquipment);
+        if (flexPick) {
+          cart.push(flexPick);
+          usedEquipment.add(flexPick.equipment);
+          usedNames.add(flexPick.workout.name);
+        }
+        // Flex slot is best-effort; not having one isn't fatal but shouldn't really happen.
+      }
+
+      cartsByFlavor.set(flavor, sequenceExplosiveCart(cart));
+    }
+    if (allFlavorsFilled && cartsByFlavor.size === 3) break;
+  }
+
+  // Reorder to canonical display: plyo → loaded → dynamic
+  const carts: GeneratedCart[] = [];
+  EXPLOSIVE_FLAVORS.forEach((flavor, idx) => {
+    const cart = cartsByFlavor.get(flavor);
+    if (!cart || cart.length === 0) return;
+    const items: WorkoutItem[] = cart.map(c =>
+      workoutToItem(c.workout, c.equipment, intensity, moodCard, workoutType),
+    );
+    const totalDuration = items.reduce((sum, it) => sum + parseDuration(it.duration), 0);
+    carts.push({
+      id: `cart-${idx + 1}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      workouts: items,
+      totalDuration,
+      intensity,
+    });
+  });
+  return carts;
 }
 
 // Export for I'm Feeling Lazy path (all lazy workouts combined)

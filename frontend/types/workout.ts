@@ -48,6 +48,10 @@ export type LiftWeightsSubCategory =
   | 'fullbody_pull'
   | 'fullbody_mix';
 
+// --- Explosive mood metadata (used by Build For Me on the I'm Feeling Explosive path) ---
+export type ExplosivePath = 'bodyweight' | 'weights';
+export type CartFlavor = 'plyo' | 'loaded' | 'dynamic';
+
 // --- Calisthenics mood metadata (used by Build For Me on the Calisthenics path) ---
 export type CalisthenicsEquipment =
   | 'no_equipment'
@@ -89,6 +93,9 @@ export interface Workout {
   // Calisthenics metadata — optional, only set on calisthenics workouts
   movement_focus?: MovementFocus;
   abs_slot_eligible?: boolean;
+  // Explosive metadata — optional, only set on explosive workouts
+  path?: ExplosivePath;
+  cart_flavor?: CartFlavor;
 }
 
 export interface EquipmentWorkouts {
