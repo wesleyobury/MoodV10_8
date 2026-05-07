@@ -2992,71 +2992,22 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/75iax87r_kb%20lunge.png',
           intensityReason: 'Stationary lunges teach balance and bracing under kettlebell load',
           moodTips: [
-            {
-              icon: 'repeat',
-              title: 'Make every rep identical',
-              description: 'Same depth and stance each time builds real control.'
-            },
-            {
-              icon: 'flash',
-              title: 'Feel your front leg working',
-              description: 'If back leg dominates, shorten your stance.'
-            },
-            {
-              icon: 'shield',
-              title: 'Finish feeling in control',
-              description: 'You should have reps left, not be exhausted.'
-            }
+            { icon: 'repeat', title: 'Make every rep identical', description: 'Same depth and stance each time builds real control.' },
+            { icon: 'flash', title: 'Feel your front leg working', description: 'If back leg dominates, shorten your stance.' },
+            { icon: 'shield', title: 'Finish feeling in control', description: 'You should have reps left, not be exhausted.' }
           ]
         },
         {
-          name: 'KB Supported Reverse Lunge',
+          name: 'KB Supported Step-Up',
           duration: '10–12 min',
-          description: 'Reverse lunges using support to improve balance and positioning',
+          description: 'Step-ups using light support to build balance and coordination',
           battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/3pz6hkz9_kb%20lunge%202.png',
-          intensityReason: 'Reverse pattern protects knees while you groove the movement',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/frus5rdt_kb%20step%20up.png',
+          intensityReason: 'Light support lets beginners groove balance before adding intensity',
           moodTips: [
-            {
-              icon: 'hand-right',
-              title: 'Use support, don’t rely on it',
-              description: 'Just enough to stabilize, not assist the lift.'
-            },
-            {
-              icon: 'arrow-back',
-              title: 'Step back longer than you think',
-              description: 'Longer stride protects knees and loads glutes.'
-            },
-            {
-              icon: 'checkmark-circle',
-              title: 'Confidence over intensity',
-              description: 'Goal is clean reps, not fatigue.'
-            }
-          ]
-        },
-        {
-          name: 'KB Alternating Lunge',
-          duration: '10–12 min',
-          description: 'Alternating lunges improving coordination and controlled movement flow',
-          battlePlan: '3 rounds\n• 10 total\nRest 75s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/em1qkl0b_kb%20lunge%203.png',
-          intensityReason: 'Alternating pattern develops symmetry and flow with the load',
-          moodTips: [
-            {
-              icon: 'refresh',
-              title: 'Find your rhythm early',
-              description: 'Smooth transitions matter more than speed.'
-            },
-            {
-              icon: 'body',
-              title: 'Stay upright through every rep',
-              description: 'Leaning forward shifts load away from legs.'
-            },
-            {
-              icon: 'timer',
-              title: 'Control every step',
-              description: 'You should never feel rushed.'
-            }
+            { icon: 'hand-right', title: 'Use support to stay steady', description: 'Balance comes first, not speed or load.' },
+            { icon: 'footsteps', title: 'Plant your whole foot', description: 'Driving through toes reduces stability.' },
+            { icon: 'checkmark-circle', title: 'Finish feeling confident', description: 'You should have reps left.' }
           ]
         },
         {
@@ -3067,150 +3018,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/ajm4hd60_kb%20swing.png',
           intensityReason: 'Foundational hip hinge teaches power transfer through the posterior chain',
           moodTips: [
-            {
-              icon: 'flash',
-              title: 'Hips drive the movement',
-              description: 'Arms should feel passive, not active.'
-            },
-            {
-              icon: 'pulse',
-              title: 'Snap, don’t lift',
-              description: 'If shoulders work, reset your hinge.'
-            },
-            {
-              icon: 'checkmark-circle',
-              title: 'Finish feeling confident',
-              description: 'Not out of breath or overwhelmed.'
-            }
+            { icon: 'flash', title: 'Hips drive the movement', description: 'Arms should feel passive, not active.' },
+            { icon: 'pulse', title: 'Snap, don’t lift', description: 'If shoulders work, reset your hinge.' },
+            { icon: 'checkmark-circle', title: 'Finish feeling confident', description: 'Not out of breath or overwhelmed.' }
           ]
         },
-        {
-          name: 'KB Swing Reset',
-          duration: '10–12 min',
-          description: 'Swings with resets reinforcing clean hinge positioning',
-          battlePlan: '3 rounds\n• 10 reps\nRest 60s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/pj2fe7fs_kb%20swing%202.png',
-          intensityReason: 'Resets reinforce hinge mechanics rep-by-rep before adding volume',
-          moodTips: [
-            {
-              icon: 'refresh',
-              title: 'Reset each rep fully',
-              description: 'Build proper habits early.'
-            },
-            {
-              icon: 'shield',
-              title: 'Stay tight at the top',
-              description: 'Glutes finish the rep.'
-            },
-            {
-              icon: 'timer',
-              title: 'Move with control',
-              description: 'No rushing reps.'
-            }
-          ]
-        },
-        {
-          name: 'KB Swing Hold',
-          duration: '10–12 min',
-          description: 'Swings with top holds improving control and positioning',
-          battlePlan: '3 rounds\n• 10 reps (1s hold)\nRest 60s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/qt6ggg2u_kb%20swing%203.png',
-          intensityReason: 'Top holds build glute lockout and position awareness',
-          moodTips: [
-            {
-              icon: 'pause',
-              title: 'Pause at the top',
-              description: 'Feel full glute contraction.'
-            },
-            {
-              icon: 'body',
-              title: 'Stay tall and locked in',
-              description: 'No leaning back.'
-            },
-            {
-              icon: 'shield',
-              title: 'Control the bell',
-              description: 'Don’t let it control you.'
-            }
-          ]
-        }
-        ,
-        {
-          name: 'KB Supported Step-Up',
-          duration: '10–12 min',
-          description: 'Step-ups using light support to build balance and coordination',
-          battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/frus5rdt_kb%20step%20up.png',
-          intensityReason: 'Light support lets beginners groove balance before adding intensity',
-          moodTips: [
-            {
-              icon: 'hand-right',
-              title: 'Use support to stay steady',
-              description: 'Balance comes first, not speed or load.'
-            },
-            {
-              icon: 'footsteps',
-              title: 'Plant your whole foot',
-              description: 'Driving through toes reduces stability.'
-            },
-            {
-              icon: 'checkmark-circle',
-              title: 'Finish feeling confident',
-              description: 'You should have reps left.'
-            }
-          ]
-        },
-        {
-          name: 'KB Low Box Step-Up',
-          duration: '10–12 min',
-          description: 'Step-ups on a lower platform reducing difficulty and impact',
-          battlePlan: '3 rounds\n• 10 per leg\nRest 75s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7j1bpxt0_kb%20step%20up%202.png',
-          intensityReason: 'Lower platform protects knees while you build the pattern',
-          moodTips: [
-            {
-              icon: 'resize',
-              title: 'Choose the right height',
-              description: 'Too high breaks form, too low limits benefit.'
-            },
-            {
-              icon: 'body',
-              title: 'Stay upright throughout',
-              description: 'Leaning forward reduces effectiveness.'
-            },
-            {
-              icon: 'refresh',
-              title: 'Build rhythm first',
-              description: 'Smooth reps matter most.'
-            }
-          ]
-        },
-        {
-          name: 'KB Alternating Step-Up',
-          duration: '10–12 min',
-          description: 'Alternating step-ups improving coordination and movement flow',
-          battlePlan: '3 rounds\n• 10 total\nRest 75s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7w1rm7gq_kb%20step%20up%203.png',
-          intensityReason: 'Alternating sides develops symmetry and movement flow',
-          moodTips: [
-            {
-              icon: 'refresh',
-              title: 'Keep transitions smooth',
-              description: 'Avoid pauses between reps.'
-            },
-            {
-              icon: 'shield',
-              title: 'Stay balanced at the top',
-              description: 'Control before stepping down.'
-            },
-            {
-              icon: 'checkmark-circle',
-              title: 'Confidence over fatigue',
-              description: 'This isn’t a burnout yet.'
-            }
-          ]
-        }
-        ,
         {
           name: 'KB Deadlift',
           duration: '10–12 min',
@@ -3219,71 +3031,9 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/wt6q1tpv_kb%20deadlift.png',
           intensityReason: 'Foundational hinge pattern teaches posterior chain engagement',
           moodTips: [
-            {
-              icon: 'arrow-back',
-              title: 'Push hips back first',
-              description: 'Not a squat.'
-            },
-            {
-              icon: 'body',
-              title: 'Feel hamstrings stretch',
-              description: 'That’s your cue.'
-            },
-            {
-              icon: 'checkmark-circle',
-              title: 'Finish confident',
-              description: 'Not fatigued.'
-            }
-          ]
-        },
-        {
-          name: 'KB Deadlift Pause',
-          duration: '10–12 min',
-          description: 'Deadlifts with pauses reinforcing hinge control and stability',
-          battlePlan: '3 rounds\n• 8–10 reps\nRest 75s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/cbm9hqde_kb%20deadlift%202.png',
-          intensityReason: 'Mid-range pauses build positional awareness and stability',
-          moodTips: [
-            {
-              icon: 'pause',
-              title: 'Pause mid-shin',
-              description: 'Builds awareness.'
-            },
-            {
-              icon: 'shield',
-              title: 'Stay tight throughout',
-              description: 'No relaxation.'
-            },
-            {
-              icon: 'timer',
-              title: 'Control every rep',
-              description: 'No rushing.'
-            }
-          ]
-        },
-        {
-          name: 'KB Deadlift Reset',
-          duration: '10–12 min',
-          description: 'Deadlifts resetting each rep to reinforce proper positioning',
-          battlePlan: '3 rounds\n• 10 reps\nRest 75s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/29ao1zhg_kb%20deadlift%203.png',
-          intensityReason: 'Full resets each rep build rock-solid hinge habits',
-          moodTips: [
-            {
-              icon: 'refresh',
-              title: 'Reset fully each rep',
-              description: 'Build good habits.'
-            },
-            {
-              icon: 'shield',
-              title: 'Brace before lifting',
-              description: 'Protect your back.'
-            },
-            {
-              icon: 'checkmark-circle',
-              title: 'Confidence over load',
-              description: 'Form first.'
-            }
+            { icon: 'arrow-back', title: 'Push hips back first', description: 'Not a squat.' },
+            { icon: 'body', title: 'Feel hamstrings stretch', description: 'That’s your cue.' },
+            { icon: 'checkmark-circle', title: 'Finish confident', description: 'Not fatigued.' }
           ]
         }
       ],
@@ -3293,74 +3043,25 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Walking lunges building unilateral strength and continuous tension',
           battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/75iax87r_kb%20lunge.png',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/3pz6hkz9_kb%20lunge%202.png',
           intensityReason: 'Walking adds balance demand on top of unilateral leg drive',
           moodTips: [
-            {
-              icon: 'footsteps',
-              title: 'Step with intention, not momentum',
-              description: 'Feel the front leg load before stepping through.'
-            },
-            {
-              icon: 'arrow-down',
-              title: 'Stay low between steps',
-              description: 'Standing tall resets tension and makes it easier.'
-            },
-            {
-              icon: 'flame',
-              title: 'Burn should build each round',
-              description: 'If legs feel fresh late, increase intensity.'
-            }
+            { icon: 'footsteps', title: 'Step with intention, not momentum', description: 'Feel the front leg load before stepping through.' },
+            { icon: 'arrow-down', title: 'Stay low between steps', description: 'Standing tall resets tension and makes it easier.' },
+            { icon: 'flame', title: 'Burn should build each round', description: 'If legs feel fresh late, increase intensity.' }
           ]
         },
         {
-          name: 'KB Lunge Pulses',
+          name: 'KB Step-Up Tempo',
           duration: '14–16 min',
-          description: 'Lunges extended with bottom pulses to increase time under tension',
-          battlePlan: '3 rounds\n• 8 per leg + 3 pulses\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/3pz6hkz9_kb%20lunge%202.png',
-          intensityReason: 'Bottom pulses amplify time under tension where it counts most',
+          description: 'Step-ups with slow eccentrics increasing tension and control',
+          battlePlan: '4 rounds\n• 8 per leg (3s down)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7j1bpxt0_kb%20step%20up%202.png',
+          intensityReason: 'Slow eccentric phase amplifies time under tension on each rep',
           moodTips: [
-            {
-              icon: 'arrow-down',
-              title: 'Live in the bottom position',
-              description: 'That’s where tension—and growth—happens.'
-            },
-            {
-              icon: 'pulse',
-              title: 'Keep pulses small and controlled',
-              description: 'Big movements lose the benefit.'
-            },
-            {
-              icon: 'flame',
-              title: 'Burn should hit early',
-              description: 'That’s the goal of this variation.'
-            }
-          ]
-        },
-        {
-          name: 'KB Front Rack Lunge',
-          duration: '14–16 min',
-          description: 'Front-loaded lunges increasing core demand and posture control',
-          battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/em1qkl0b_kb%20lunge%203.png',
-          intensityReason: 'Front rack position forces upright posture and core bracing',
-          moodTips: [
-            {
-              icon: 'trending-up',
-              title: 'Elbows stay high the whole set',
-              description: 'Dropping them means you’re losing position.'
-            },
-            {
-              icon: 'shield',
-              title: 'Brace before every step',
-              description: 'Core stability drives better leg output.'
-            },
-            {
-              icon: 'timer',
-              title: 'Fatigue should feel controlled',
-              description: 'Challenging, but never sloppy.'
-            }
+            { icon: 'arrow-down', title: 'Own the lowering phase', description: 'If you rush down, you lose the benefit.' },
+            { icon: 'arrow-up', title: 'Drive fully at the top', description: 'Complete extension builds strength.' },
+            { icon: 'flame', title: 'Burn should build gradually', description: 'If not, increase load.' }
           ]
         },
         {
@@ -3368,100 +3069,12 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Swings with controlled returns increasing time under tension',
           battlePlan: '4 rounds\n• 12 reps\nRest 75s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/ajm4hd60_kb%20swing.png',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/pj2fe7fs_kb%20swing%202.png',
           intensityReason: 'Controlled return phase doubles posterior chain time under tension',
           moodTips: [
-            {
-              icon: 'arrow-down',
-              title: 'Control the drop',
-              description: 'Don’t let gravity take over.'
-            },
-            {
-              icon: 'flash',
-              title: 'Explode every rep',
-              description: 'Power still matters.'
-            },
-            {
-              icon: 'flame',
-              title: 'Fatigue should build gradually',
-              description: 'If not, increase load.'
-            }
-          ]
-        },
-        {
-          name: 'KB Swing Ladder',
-          duration: '14–16 min',
-          description: 'Progressive rep ladder increasing output and endurance',
-          battlePlan: '10-12-15-12-10 reps\nRest 75s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/pj2fe7fs_kb%20swing%202.png',
-          intensityReason: 'Ladder structure builds power output across an endurance window',
-          moodTips: [
-            {
-              icon: 'timer',
-              title: 'Pace early rounds',
-              description: 'Don’t burn out too soon.'
-            },
-            {
-              icon: 'flash',
-              title: 'Stay explosive late',
-              description: 'Power shouldn’t drop.'
-            },
-            {
-              icon: 'pulse',
-              title: 'Feel lungs and legs working',
-              description: 'Full-body fatigue expected.'
-            }
-          ]
-        },
-        {
-          name: 'KB Swing Continuous',
-          duration: '14–16 min',
-          description: 'Continuous swings building endurance and conditioning',
-          battlePlan: '4 rounds\n• 20 reps\nRest 75s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/qt6ggg2u_kb%20swing%203.png',
-          intensityReason: 'Unbroken sets train aerobic capacity alongside hinge endurance',
-          moodTips: [
-            {
-              icon: 'refresh',
-              title: 'No breaks mid-set',
-              description: 'Stay moving.'
-            },
-            {
-              icon: 'body',
-              title: 'Keep hinge consistent',
-              description: 'Don’t squat it.'
-            },
-            {
-              icon: 'pulse',
-              title: 'Fatigue should feel steady',
-              description: 'Not chaotic.'
-            }
-          ]
-        }
-        ,
-        {
-          name: 'KB Deadlift Tempo',
-          duration: '14–16 min',
-          description: 'Deadlifts with slow eccentrics increasing time under tension',
-          battlePlan: '4 rounds\n• 10 reps (3s down)\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/wt6q1tpv_kb%20deadlift.png',
-          intensityReason: 'Slow eccentric amplifies posterior chain time under tension',
-          moodTips: [
-            {
-              icon: 'arrow-down',
-              title: 'Lower slowly every rep',
-              description: 'That’s where growth happens.'
-            },
-            {
-              icon: 'shield',
-              title: 'Stay tight at bottom',
-              description: 'No collapse.'
-            },
-            {
-              icon: 'flame',
-              title: 'Tension should build',
-              description: 'If not, increase load.'
-            }
+            { icon: 'arrow-down', title: 'Control the drop', description: 'Don’t let gravity take over.' },
+            { icon: 'flash', title: 'Explode every rep', description: 'Power still matters.' },
+            { icon: 'flame', title: 'Fatigue should build gradually', description: 'If not, increase load.' }
           ]
         },
         {
@@ -3472,122 +3085,9 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/cbm9hqde_kb%20deadlift%202.png',
           intensityReason: 'RDL pattern hunts hamstring stretch and glute recruitment',
           moodTips: [
-            {
-              icon: 'resize',
-              title: 'Chase the stretch',
-              description: 'That’s your depth marker.'
-            },
-            {
-              icon: 'arrow-back',
-              title: 'Keep bar path close',
-              description: 'Efficiency matters.'
-            },
-            {
-              icon: 'body',
-              title: 'Feel hamstrings working',
-              description: 'Not your lower back.'
-            }
-          ]
-        },
-        {
-          name: 'KB Deadlift Hold',
-          duration: '14–16 min',
-          description: 'Deadlifts with top holds improving lockout strength and control',
-          battlePlan: '4 rounds\n• 8 reps (2s hold)\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/29ao1zhg_kb%20deadlift%203.png',
-          intensityReason: 'Top holds train glute lockout and hinge awareness',
-          moodTips: [
-            {
-              icon: 'shield',
-              title: 'Squeeze at the top',
-              description: 'Full glute contraction.'
-            },
-            {
-              icon: 'pause',
-              title: 'Hold with tension',
-              description: 'Not relaxation.'
-            },
-            {
-              icon: 'flame',
-              title: 'Fatigue should build',
-              description: 'Controlled strain.'
-            }
-          ]
-        }
-        ,
-        {
-          name: 'KB Step-Up Tempo',
-          duration: '14–16 min',
-          description: 'Step-ups with slow eccentrics increasing tension and control',
-          battlePlan: '4 rounds\n• 8 per leg (3s down)\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/frus5rdt_kb%20step%20up.png',
-          intensityReason: 'Slow eccentric phase amplifies time under tension on each rep',
-          moodTips: [
-            {
-              icon: 'arrow-down',
-              title: 'Own the lowering phase',
-              description: 'If you rush down, you lose the benefit.'
-            },
-            {
-              icon: 'arrow-up',
-              title: 'Drive fully at the top',
-              description: 'Complete extension builds strength.'
-            },
-            {
-              icon: 'flame',
-              title: 'Burn should build gradually',
-              description: 'If not, increase load.'
-            }
-          ]
-        },
-        {
-          name: 'KB Step-Up Knee Drive',
-          duration: '14–16 min',
-          description: 'Step-ups adding knee drive to increase power and coordination',
-          battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7j1bpxt0_kb%20step%20up%202.png',
-          intensityReason: 'Knee drive adds explosive hip flexion and balance demand',
-          moodTips: [
-            {
-              icon: 'flash',
-              title: 'Drive the knee with intent',
-              description: 'Adds power, not just height.'
-            },
-            {
-              icon: 'arrow-down',
-              title: 'Control the return',
-              description: 'Don’t fall back down.'
-            },
-            {
-              icon: 'shield',
-              title: 'Feel balance challenged',
-              description: 'That’s part of the goal.'
-            }
-          ]
-        },
-        {
-          name: 'KB Step-Up Hold',
-          duration: '14–16 min',
-          description: 'Step-ups with top holds increasing stability and control',
-          battlePlan: '4 rounds\n• 8 per leg (2s hold)\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7w1rm7gq_kb%20step%20up%203.png',
-          intensityReason: 'Top holds reinforce balance and unilateral lockout strength',
-          moodTips: [
-            {
-              icon: 'pause',
-              title: 'Pause and stabilize fully',
-              description: 'If you wobble, reset.'
-            },
-            {
-              icon: 'body',
-              title: 'Stay tall at the top',
-              description: 'Avoid leaning or collapsing.'
-            },
-            {
-              icon: 'timer',
-              title: 'Fatigue should feel controlled',
-              description: 'Challenging, not chaotic.'
-            }
+            { icon: 'resize', title: 'Chase the stretch', description: 'That’s your depth marker.' },
+            { icon: 'arrow-back', title: 'Keep bar path close', description: 'Efficiency matters.' },
+            { icon: 'body', title: 'Feel hamstrings working', description: 'Not your lower back.' }
           ]
         }
       ],
@@ -3597,74 +3097,25 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Continuous lunges extended with weight drops to near failure',
           battlePlan: '3 rounds\n• 10 per leg → Drop → 10 → Drop → BW\nRest 120s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/75iax87r_kb%20lunge.png',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/em1qkl0b_kb%20lunge%203.png',
           intensityReason: 'Drop sets push past comfortable rep ranges into real fatigue',
           moodTips: [
-            {
-              icon: 'arrow-forward',
-              title: 'Don’t stop moving forward',
-              description: 'The set ends when your legs say it does.'
-            },
-            {
-              icon: 'flash',
-              title: 'Drop weight, not intensity',
-              description: 'Each drop keeps effort high, not easier.'
-            },
-            {
-              icon: 'flame',
-              title: 'Final set should test you',
-              description: 'You shouldn’t be sure you’ll finish.'
-            }
+            { icon: 'arrow-forward', title: 'Don’t stop moving forward', description: 'The set ends when your legs say it does.' },
+            { icon: 'flash', title: 'Drop weight, not intensity', description: 'Each drop keeps effort high, not easier.' },
+            { icon: 'flame', title: 'Final set should test you', description: 'You shouldn’t be sure you’ll finish.' }
           ]
         },
         {
-          name: 'KB Lunge 1.5 Reps',
+          name: 'KB Explosive Step-Up',
           duration: '16–18 min',
-          description: 'Lunges using extended reps to increase time under tension',
+          description: 'Explosive step-ups building power and high-output strength',
           battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/3pz6hkz9_kb%20lunge%202.png',
-          intensityReason: '1.5 reps double the time spent in the hardest portion',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7w1rm7gq_kb%20step%20up%203.png',
+          intensityReason: 'Explosive intent develops unilateral power and landing control',
           moodTips: [
-            {
-              icon: 'arrow-down',
-              title: 'Own the bottom half',
-              description: 'That’s where most people are weakest.'
-            },
-            {
-              icon: 'timer',
-              title: 'Stay patient through reps',
-              description: 'Rushing removes the challenge.'
-            },
-            {
-              icon: 'flame',
-              title: 'Expect deep fatigue late',
-              description: 'That’s when growth happens.'
-            }
-          ]
-        },
-        {
-          name: 'KB Deficit Lunge',
-          duration: '16–18 min',
-          description: 'Elevated lunges increasing depth, stretch, and loading demand',
-          battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/em1qkl0b_kb%20lunge%203.png',
-          intensityReason: 'Deficit increases range of motion and loaded stretch',
-          moodTips: [
-            {
-              icon: 'trending-down',
-              title: 'Go deeper with control',
-              description: 'Range matters more than load here.'
-            },
-            {
-              icon: 'shield',
-              title: 'Stability is everything',
-              description: 'Wobbling kills output.'
-            },
-            {
-              icon: 'flame',
-              title: 'Push close to failure',
-              description: 'Last reps should feel questionable.'
-            }
+            { icon: 'flash', title: 'Attack every rep upward', description: 'Power should be intentional.' },
+            { icon: 'shield', title: 'Stick the landing clean', description: 'Control proves real strength.' },
+            { icon: 'flame', title: 'Push near failure late', description: 'Last rounds should test you.' }
           ]
         },
         {
@@ -3672,74 +3123,12 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'High-output swings performed in timed explosive intervals',
           battlePlan: '5 rounds\n• 20s on / 20s off\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/ajm4hd60_kb%20swing.png',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/qt6ggg2u_kb%20swing%203.png',
           intensityReason: 'Timed intervals demand max power output rep after rep',
           moodTips: [
-            {
-              icon: 'flash',
-              title: 'Every rep is max effort',
-              description: 'Treat it like a sprint.'
-            },
-            {
-              icon: 'shield',
-              title: 'Stay sharp under fatigue',
-              description: 'Don’t lose hinge form.'
-            },
-            {
-              icon: 'flame',
-              title: 'Push to your limit',
-              description: 'Final rounds should be brutal.'
-            }
-          ]
-        },
-        {
-          name: 'KB Deadlift Drop Set',
-          duration: '16–18 min',
-          description: 'Deadlifts extended with weight drops pushing toward failure',
-          battlePlan: '3 rounds\n• 8 → Drop → 8 → Drop → 8\nRest 120s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/wt6q1tpv_kb%20deadlift.png',
-          intensityReason: 'Weight drops sustain posterior chain effort past traditional failure',
-          moodTips: [
-            {
-              icon: 'flash',
-              title: 'No rest between drops',
-              description: 'Keep intensity high.'
-            },
-            {
-              icon: 'flame',
-              title: 'Push near failure',
-              description: 'Last sets should burn.'
-            },
-            {
-              icon: 'shield',
-              title: 'Maintain form under fatigue',
-              description: 'No breakdown.'
-            }
-          ]
-        },
-        {
-          name: 'KB Deadlift 1.5 Reps',
-          duration: '16–18 min',
-          description: 'Deadlifts using extended reps increasing time under tension',
-          battlePlan: '4 rounds\n• 6–8 reps\nRest 120s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/cbm9hqde_kb%20deadlift%202.png',
-          intensityReason: '1.5 reps double the time spent in the loaded stretch',
-          moodTips: [
-            {
-              icon: 'arrow-down',
-              title: 'Control the bottom half',
-              description: 'That’s where tension lives.'
-            },
-            {
-              icon: 'timer',
-              title: 'Stay patient',
-              description: 'No rushing reps.'
-            },
-            {
-              icon: 'flame',
-              title: 'Expect deep fatigue',
-              description: 'That’s the goal.'
-            }
+            { icon: 'flash', title: 'Every rep is max effort', description: 'Treat it like a sprint.' },
+            { icon: 'shield', title: 'Stay sharp under fatigue', description: 'Don’t lose hinge form.' },
+            { icon: 'flame', title: 'Push to your limit', description: 'Final rounds should be brutal.' }
           ]
         },
         {
@@ -3750,99 +3139,142 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/29ao1zhg_kb%20deadlift%203.png',
           intensityReason: 'Heavy low-rep work builds raw posterior chain strength',
           moodTips: [
-            {
-              icon: 'barbell',
-              title: 'Treat every rep like a max',
-              description: 'Full focus and brace.'
-            },
-            {
-              icon: 'shield',
-              title: 'Stay tight throughout',
-              description: 'No slack.'
-            },
-            {
-              icon: 'flame',
-              title: 'Final sets near failure',
-              description: 'Should feel demanding.'
-            }
+            { icon: 'barbell', title: 'Treat every rep like a max', description: 'Full focus and brace.' },
+            { icon: 'shield', title: 'Stay tight throughout', description: 'No slack.' },
+            { icon: 'flame', title: 'Final sets near failure', description: 'Should feel demanding.' }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    equipment: 'Pendulum Squat',
+    icon: 'fitness',
+    workouts: {
+      beginner: [
+        {
+          name: 'Controlled Pendulum Squat',
+          duration: '10–12 min',
+          description: 'Machine-guided squats emphasizing control and depth',
+          battlePlan: '3 rounds\n• 10–12 Pendulum Squats\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/4ei74z7h_Pendullum%20squat.png',
+          intensityReason: 'Guided path lets beginners focus purely on depth and quad engagement',
+          moodTips: [
+            { icon: 'navigate', title: 'Let machine guide path', description: 'Focus on smooth movement.' },
+            { icon: 'arrow-down', title: 'Slow descent', description: 'Build tension gradually.' },
+            { icon: 'body', title: 'Push evenly', description: 'Balanced pressure prevents drift.' }
           ]
         },
         {
-          name: 'KB Explosive Step-Up',
-          duration: '16–18 min',
-          description: 'Explosive step-ups building power and high-output strength',
-          battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/frus5rdt_kb%20step%20up.png',
-          intensityReason: 'Explosive intent develops unilateral power and landing control',
+          name: 'Pendulum Squat Pause',
+          duration: '10–12 min',
+          description: 'Paused reps improving bottom control',
+          battlePlan: '3 rounds\n• 8–10 Squats (2s pause)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/6qfpin63_Pendullum%20squat%202.png',
+          intensityReason: 'Paused reps remove momentum and reinforce control out of the bottom',
           moodTips: [
-            {
-              icon: 'flash',
-              title: 'Attack every rep upward',
-              description: 'Power should be intentional.'
-            },
-            {
-              icon: 'shield',
-              title: 'Stick the landing clean',
-              description: 'Control proves real strength.'
-            },
-            {
-              icon: 'flame',
-              title: 'Push near failure late',
-              description: 'Last rounds should test you.'
-            }
+            { icon: 'pause', title: 'Pause just above depth', description: 'Removes momentum.' },
+            { icon: 'shield', title: 'Stay tight', description: 'No relaxation at bottom.' },
+            { icon: 'arrow-up', title: 'Smooth drive upward', description: 'Controlled power.' }
           ]
         },
         {
-          name: 'KB Step-Up Pulses',
-          duration: '16–18 min',
-          description: 'Step-ups extended with pulses increasing time under tension',
-          battlePlan: '4 rounds\n• 6 per leg + 3 pulses\nRest 120s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7j1bpxt0_kb%20step%20up%202.png',
-          intensityReason: 'Top pulses extend time in the hardest portion of the rep',
+          name: 'Tempo Pendulum Squat',
+          duration: '10–12 min',
+          description: 'Slow eccentric squats building tension',
+          battlePlan: '3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/uqrxzr6n_Pendullum%20squat%203.png',
+          intensityReason: 'Slow eccentric maximises quad time under tension',
           moodTips: [
-            {
-              icon: 'pulse',
-              title: 'Stay in the hardest position',
-              description: 'Pulses keep you there.'
-            },
-            {
-              icon: 'flame',
-              title: 'Don’t escape the burn',
-              description: 'That’s where growth happens.'
-            },
-            {
-              icon: 'alert',
-              title: 'Final sets should hurt',
-              description: 'You’re chasing fatigue.'
-            }
+            { icon: 'timer', title: '3-second descent', description: 'Constant quad tension.' },
+            { icon: 'body', title: 'Stay connected to pad', description: 'Keeps movement stable.' },
+            { icon: 'arrow-up', title: 'Drive smoothly', description: 'No bouncing.' }
+          ]
+        }
+      ],
+      intermediate: [
+        {
+          name: 'Pendulum Squat Drop Set',
+          duration: '14–16 min',
+          description: 'Extended squat sets using rapid weight drops',
+          battlePlan: '3 rounds\n• 8 Squats\n• Drop → 8\n• Drop → 8\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/4ei74z7h_Pendullum%20squat.png',
+          intensityReason: 'Back-to-back drops extend effort past traditional failure',
+          moodTips: [
+            { icon: 'flash', title: 'Immediate drops', description: 'No rest between sets.' },
+            { icon: 'trending-down', title: 'Reduce ~25%', description: 'Maintain form.' },
+            { icon: 'shield', title: 'Stay controlled', description: 'Don’t rush lighter reps.' }
           ]
         },
         {
-          name: 'KB Step-Up Drop Set',
-          duration: '16–18 min',
-          description: 'Step-ups extended with weight drops pushing toward failure',
-          battlePlan: '3 rounds\n• 8 per leg → Drop → 8 → Drop → BW\nRest 120s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7w1rm7gq_kb%20step%20up%203.png',
-          intensityReason: 'Weight drops sustain effort past traditional failure points',
+          name: 'Heel-Elevated Pendulum Squat',
+          duration: '14–16 min',
+          description: 'Quad-biased squats using heel elevation',
+          battlePlan: '4 rounds\n• 8–10 Squats\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/6qfpin63_Pendullum%20squat%202.png',
+          intensityReason: 'Heel elevation deepens range and biases the quads',
           moodTips: [
-            {
-              icon: 'flash',
-              title: 'Drop weight, not effort',
-              description: 'Keep intensity high throughout.'
-            },
-            {
-              icon: 'timer',
-              title: 'No long breaks',
-              description: 'Fatigue is the goal.'
-            },
-            {
-              icon: 'flame',
-              title: 'Last reps should be a fight',
-              description: 'Not easy to finish.'
-            }
+            { icon: 'trending-up', title: 'Heels raised', description: 'Increases quad loading.' },
+            { icon: 'resize', title: 'Deep range', description: 'Maximize stretch.' },
+            { icon: 'body', title: 'Stay upright', description: 'Prevents hip takeover.' }
+          ]
+        },
+        {
+          name: 'Pendulum Squat Pulses',
+          duration: '14–16 min',
+          description: 'Squats extended with bottom pulses',
+          battlePlan: '3 rounds\n• 8 Squats + 5 pulses\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/uqrxzr6n_Pendullum%20squat%203.png',
+          intensityReason: 'Pulses keep tension where it counts most',
+          moodTips: [
+            { icon: 'pulse', title: 'Pulse at depth', description: 'Small movements increase burn.' },
+            { icon: 'arrow-down', title: 'Stay low', description: 'Keep tension constant.' },
+            { icon: 'flame', title: 'Expect fatigue early', description: 'That’s intentional.' }
+          ]
+        }
+      ],
+      advanced: [
+        {
+          name: 'Heavy Pendulum Squat',
+          duration: '16–18 min',
+          description: 'Low-rep squats emphasizing maximal strength',
+          battlePlan: '5 rounds\n• 5–6 Squats\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/4ei74z7h_Pendullum%20squat.png',
+          intensityReason: 'Heavy low-rep work develops raw quad strength',
+          moodTips: [
+            { icon: 'shield', title: 'Brace before every rep', description: 'Treat each rep as a single.' },
+            { icon: 'arrow-down', title: 'Control eccentric', description: 'Don’t drop into bottom.' },
+            { icon: 'people', title: 'Spotter recommended', description: 'Heavy loads demand safety.' }
+          ]
+        },
+        {
+          name: 'Pendulum Squat Burnout',
+          duration: '18–20 min',
+          description: 'High-rep finisher driving full quad fatigue',
+          battlePlan: '3 rounds\n• 15–20 Squats\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/6qfpin63_Pendullum%20squat%202.png',
+          intensityReason: 'High-rep volume drives quads to total fatigue',
+          moodTips: [
+            { icon: 'repeat', title: 'No lockout', description: 'Constant tension.' },
+            { icon: 'barbell', title: 'Moderate load', description: 'Allows continuous reps.' },
+            { icon: 'flame', title: 'Push through burn', description: 'That’s the goal.' }
+          ]
+        },
+        {
+          name: 'Pendulum Squat 1.5 Reps',
+          duration: '18–20 min',
+          description: 'Extended reps increasing time under tension',
+          battlePlan: '4 rounds\n• 6–8 (1.5 reps)\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/uqrxzr6n_Pendullum%20squat%203.png',
+          intensityReason: '1.5 reps double time spent in the deepest range',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Half rep + full rep', description: 'One full cycle equals one rep.' },
+            { icon: 'timer', title: 'Stay controlled', description: 'No rushing.' },
+            { icon: 'flame', title: 'Deep burn expected', description: 'That’s intentional.' }
           ]
         }
       ]
     }
   }
 ];
+

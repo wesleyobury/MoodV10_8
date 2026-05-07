@@ -14,6 +14,14 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-07] **Kettlebells trimmed to 4 cards per intensity & added Pendulum Squat block** in `frontend/data/compound-legs-workouts-data.ts`:
+  - **Kettlebells (12 total — 4 per intensity)**: each intensity now shows exactly one Lunge + one Step-Up + one Swing + one Deadlift.
+    - Beginner: KB Static Lunge, KB Supported Step-Up, KB Controlled Swing, KB Deadlift
+    - Intermediate: KB Walking Lunge, KB Step-Up Tempo, KB Swing Tempo, KB Romanian Deadlift
+    - Advanced: KB Walking Lunge Drop Set, KB Explosive Step-Up, KB Swing Intervals, KB Heavy Deadlift
+  - **Pendulum Squat (9 total)**: new equipment block with 3 per intensity. Beginner: Controlled, Pause, Tempo. Intermediate: Drop Set, Heel-Elevated, Pulses. Advanced: Heavy, Burnout, 1.5 Reps. Each rotates through the 3 user-supplied Pendulum Squat reference images.
+  - `tsc --noEmit` clean.
+
 - [2026-05-07] **Added 9 KB Deadlift workouts** to the existing `Kettlebells` block in `frontend/data/compound-legs-workouts-data.ts` (Kettlebells now has **34 total**: 9 lunges + 7 swings + 9 step-ups + 9 deadlifts):
   - **Beginner (3)**: KB Deadlift, KB Deadlift Pause, KB Deadlift Reset
   - **Intermediate (3)**: KB Deadlift Tempo, KB Romanian Deadlift, KB Deadlift Hold
