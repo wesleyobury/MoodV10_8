@@ -14,6 +14,13 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-07] **Added 12 new compound-legs workouts** to `frontend/data/compound-legs-workouts-data.ts`:
+  - **Smith Machine — Step Ups** (3): `Smith Supported Step-Ups` (beginner), `Smith Step-Ups Tempo` (intermediate), `Smith Step-Up Drive` (advanced) — uses smith-machine-step-up reference image.
+  - **Squat Rack — Zercher Squat** (3): `Zercher Box Squat` (beginner), `Tempo Zercher Squat` (intermediate), `Zercher Pause Squat` (advanced) — uses zercher-squat reference image.
+  - **Squat Rack — Lunges** (3): `Barbell Static Lunge` (beginner), `Barbell Walking Lunge` (intermediate), `Barbell Lunge Burnout` (advanced) — uses bb-lunge reference image.
+  - **Squat Rack — Jump Squat** (3): `Bodyweight Jump Squat` (beginner), `Jump Squat Repeats` (intermediate), `Jump Squat Clusters` (advanced) — uses jump-squat reference image.
+  All 12 surface in the Muscle Gainer → Legs → Compound flow when the matching equipment + intensity is selected. TypeScript compile clean for the data file (no new errors introduced).
+
 - [2026-05-06] **P2: Eliminated unbounded admin analytics queries + added 2 Pit Shark Step-Up workouts**:
   - **Backend (`server.py`)**: Refactored 16 `.find().to_list(10000)` calls in admin analytics to MongoDB aggregation pipelines that group at the DB level (no more loading 10k docs into Python memory). Affected functions: `get_time_series_analytics` (10 metrics × {day,week,month}), `get_metric_breakdown` (3 breakdowns), `get_signup_trend_endpoint`, `get_chart_data` (`user_growth`, `session_trend`, `engagement_trend`), and paginated `export_users_csv` (now `?limit=&skip=`, hard-cap 5000). Response shapes preserved. Week-period grouping now uses Mongo `%G-W%V` (correct ISO week+year).
   - **Frontend (`compound-legs-workouts-data.ts`)**: Added 2 new workouts under `Pit Shark`:

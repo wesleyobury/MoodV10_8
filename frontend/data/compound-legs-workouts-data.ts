@@ -598,6 +598,81 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'No bouncing out of the bottom.'
             }
           ]
+        },
+        {
+          name: 'Zercher Box Squat',
+          duration: '12–14 min',
+          description: 'Zercher squats using box support to reinforce depth and control',
+          battlePlan: '3 rounds\n• 8–10 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/5n35ypfy_zercher%20squat.png',
+          intensityReason: 'Box guidance teaches safe Zercher depth and bracing',
+          moodTips: [
+            {
+              icon: 'square-outline',
+              title: 'Use box for guidance',
+              description: 'Build confidence in depth.'
+            },
+            {
+              icon: 'shield',
+              title: 'Keep elbows tight',
+              description: 'Secure bar position.'
+            },
+            {
+              icon: 'timer',
+              title: 'Move controlled',
+              description: 'Focus on form.'
+            }
+          ]
+        },
+        {
+          name: 'Barbell Static Lunge',
+          duration: '12–14 min',
+          description: 'Stationary lunges focusing on balance, control, and positioning',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/phvexum7_bb%20lunge.png',
+          intensityReason: 'Stationary stance lets beginners groove the lunge pattern',
+          moodTips: [
+            {
+              icon: 'footsteps',
+              title: 'Stay planted',
+              description: 'Build stability.'
+            },
+            {
+              icon: 'body',
+              title: 'Keep torso tall',
+              description: 'Proper posture.'
+            },
+            {
+              icon: 'timer',
+              title: 'Move controlled',
+              description: 'Build confidence.'
+            }
+          ]
+        },
+        {
+          name: 'Bodyweight Jump Squat',
+          duration: '10–12 min',
+          description: 'Jump squats introducing explosive movement with safe mechanics',
+          battlePlan: '3 rounds\n• 8–10 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/hkwmfgkl_jump%20squat.png',
+          intensityReason: 'Bodyweight jumps teach soft landings before adding load',
+          moodTips: [
+            {
+              icon: 'arrow-down',
+              title: 'Land softly',
+              description: 'Protect joints.'
+            },
+            {
+              icon: 'flash',
+              title: 'Jump controlled',
+              description: 'Not max effort yet.'
+            },
+            {
+              icon: 'body',
+              title: 'Build comfort',
+              description: 'Focus on form.'
+            }
+          ]
         }
       ],
       intermediate: [
@@ -711,6 +786,81 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Safety always overrides completion.'
             }
           ]
+        },
+        {
+          name: 'Tempo Zercher Squat',
+          duration: '14–16 min',
+          description: 'Zercher squats with slow eccentrics increasing tension and control',
+          battlePlan: '4 rounds\n• 6–8 reps\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/5n35ypfy_zercher%20squat.png',
+          intensityReason: 'Slow eccentric Zercher hammers the core and quads',
+          moodTips: [
+            {
+              icon: 'timer',
+              title: '3-second descent',
+              description: 'Build strength and stability.'
+            },
+            {
+              icon: 'shield',
+              title: 'Brace hard',
+              description: 'Core demand is high.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright',
+              description: 'Avoid folding.'
+            }
+          ]
+        },
+        {
+          name: 'Barbell Walking Lunge',
+          duration: '14–16 min',
+          description: 'Loaded walking lunges building unilateral strength and control',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/phvexum7_bb%20lunge.png',
+          intensityReason: 'Walking pattern adds balance demand to loaded lunge',
+          moodTips: [
+            {
+              icon: 'footsteps',
+              title: 'Step consistent',
+              description: 'Maintain rhythm.'
+            },
+            {
+              icon: 'timer',
+              title: 'Stay controlled',
+              description: 'Avoid rushing.'
+            },
+            {
+              icon: 'flash',
+              title: 'Manage fatigue',
+              description: 'Keep reps clean.'
+            }
+          ]
+        },
+        {
+          name: 'Jump Squat Repeats',
+          duration: '14–16 min',
+          description: 'Repeated jump squats improving power output and endurance',
+          battlePlan: '4 rounds\n• 10 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/hkwmfgkl_jump%20squat.png',
+          intensityReason: 'Repeated jumps build explosive endurance',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Explode each rep',
+              description: 'Max intent upward.'
+            },
+            {
+              icon: 'refresh',
+              title: 'Reset quickly',
+              description: 'Maintain rhythm.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay controlled',
+              description: 'Clean landings.'
+            }
+          ]
         }
       ],
       advanced: [
@@ -821,6 +971,81 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               icon: 'alert',
               title: 'End set before breakdown',
               description: 'Stop when posture degrades.'
+            }
+          ]
+        },
+        {
+          name: 'Zercher Pause Squat',
+          duration: '16–18 min',
+          description: 'Paused Zercher squats building strength in the bottom position',
+          battlePlan: '4 rounds\n• 5–6 reps\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/5n35ypfy_zercher%20squat.png',
+          intensityReason: 'Bottom pauses develop raw strength out of the hole',
+          moodTips: [
+            {
+              icon: 'pause',
+              title: 'Pause at depth',
+              description: 'Remove all momentum.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Final rounds should challenge limit.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stay tight',
+              description: 'No relaxation.'
+            }
+          ]
+        },
+        {
+          name: 'Barbell Lunge Burnout',
+          duration: '16–18 min',
+          description: 'High-rep lunges pushing full leg fatigue and endurance output',
+          battlePlan: '3 rounds\n• 12 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/phvexum7_bb%20lunge.png',
+          intensityReason: 'Volume lunges drive deep posterior + quad fatigue',
+          moodTips: [
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Last sets should burn.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright',
+              description: 'Avoid breakdown.'
+            },
+            {
+              icon: 'flash',
+              title: 'Finish strong',
+              description: 'Don’t quit early.'
+            }
+          ]
+        },
+        {
+          name: 'Jump Squat Clusters',
+          duration: '16–18 min',
+          description: 'Clustered jump squats maintaining power output under fatigue',
+          battlePlan: '4 rounds\n• 5 + 5 + 5\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/hkwmfgkl_jump%20squat.png',
+          intensityReason: 'Cluster sets preserve max power output across reps',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Max effort jumps',
+              description: 'Every rep explosive.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Final clusters should hit limit.'
+            },
+            {
+              icon: 'alert',
+              title: 'Stay sharp',
+              description: 'Quality reps only.'
             }
           ]
         }
@@ -2471,6 +2696,31 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Depth stops before spine flexes.'
             }
           ]
+        },
+        {
+          name: 'Smith Supported Step-Ups',
+          duration: '10–12 min',
+          description: 'Guided step-ups using bar support to assist balance and control',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/sijsojfi_smith%20machine%20step%20up.png',
+          intensityReason: 'Smith bar path stabilizes the step-up while you build leg strength',
+          moodTips: [
+            {
+              icon: 'shield',
+              title: 'Use bar for balance',
+              description: 'Build confidence.'
+            },
+            {
+              icon: 'footsteps',
+              title: 'Step fully up',
+              description: 'Full foot contact.'
+            },
+            {
+              icon: 'timer',
+              title: 'Move controlled',
+              description: 'No rushing.'
+            }
+          ]
         }
       ],
       intermediate: [
@@ -2573,6 +2823,31 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Explosiveness over fatigue.'
             }
           ]
+        },
+        {
+          name: 'Smith Step-Ups Tempo',
+          duration: '14–16 min',
+          description: 'Step-ups using controlled tempo for increased tension',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/sijsojfi_smith%20machine%20step%20up.png',
+          intensityReason: 'Tempo step-ups maximize quad/glute time under tension',
+          moodTips: [
+            {
+              icon: 'timer',
+              title: 'Slow descent',
+              description: '3-second eccentric.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright',
+              description: 'Keep bar stable.'
+            },
+            {
+              icon: 'refresh',
+              title: 'Consistent rhythm',
+              description: 'No bouncing.'
+            }
+          ]
         }
       ],
       advanced: [
@@ -2673,6 +2948,31 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               icon: 'body',
               title: 'Controlled breathing',
               description: 'One breath per rep.'
+            }
+          ]
+        },
+        {
+          name: 'Smith Step-Up Drive',
+          duration: '16–18 min',
+          description: 'Explosive step-ups focusing on power and control under load',
+          battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/sijsojfi_smith%20machine%20step%20up.png',
+          intensityReason: 'Heavy explosive step-ups develop unilateral power',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Explode upward',
+              description: 'Max intent each rep.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Last rounds should burn.'
+            },
+            {
+              icon: 'shield',
+              title: 'Control return',
+              description: 'Stay balanced.'
             }
           ]
         }
