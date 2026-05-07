@@ -14,6 +14,16 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-07] **Added Barbell equipment to Muscle Gainer > Legs > Glutes (alphabetical)** in `frontend/app/legs-equipment.tsx` and Glutes data file:
+  - New equipment id `barbell-glute` (name: 'Barbell', icon: 'barbell') inserted alphabetically as first option in Glutes equipment list.
+  - Updated `equipmentPerGroup.Glutes.push` mapping (line 284) and `hasGlutesEquipment` selector (line 350) to include `barbell-glute`.
+  - Added new `Barbell` block to `frontend/data/glutes-workouts-data.ts` with **9 Back Squat workouts** (3 per intensity):
+    - Beginner: Controlled Back Squat, Box Back Squat, Tempo Back Squat
+    - Intermediate: Glute-Biased Back Squat, Back Squat Pulses, Back Squat Pause Reps
+    - Advanced: Heavy Glute Back Squat, Back Squat 1.5 Reps, Back Squat Burnout
+  - Each intensity uses one of the 3 user-supplied back squat images (beginner→pic1, intermediate→pic2, advanced→pic3).
+  - User confirmed prior Pendulum Squat / Kettlebells fixes are rendering correctly.
+
 - [2026-05-07] **Aligned Kettlebells intermediate/advanced deadlift picks with user's first-listed variants** + restarted Metro to clear stale bundle cache:
   - KB intermediate deadlift: KB Romanian Deadlift → **KB Deadlift Tempo** (matches user's first-listed intermediate deadlift).
   - KB advanced deadlift: KB Heavy Deadlift → **KB Deadlift Drop Set** (matches user's first-listed advanced deadlift).

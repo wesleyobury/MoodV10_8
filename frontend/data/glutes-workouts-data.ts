@@ -2,6 +2,135 @@ import { EquipmentWorkouts } from '../types/workout';
 
 export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
   {
+    equipment: 'Barbell',
+    icon: 'barbell',
+    workouts: {
+      beginner: [
+        {
+          name: 'Controlled Back Squat',
+          duration: '12–14 min',
+          description: 'Back squats building glute strength through controlled movement',
+          battlePlan: '3 rounds\n• 8–10 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
+          intensityReason: 'Controlled tempo teaches glute loading and squat positioning',
+          moodTips: [
+            { icon: 'arrow-back', title: 'Sit back before you descend', description: 'Hips should load before knees drive forward.' },
+            { icon: 'footsteps', title: 'Push evenly through your feet', description: 'Mid-foot pressure keeps glutes engaged throughout.' },
+            { icon: 'checkmark-circle', title: 'Leave reps in the tank', description: 'You should finish feeling confident, not drained.' }
+          ]
+        },
+        {
+          name: 'Box Back Squat',
+          duration: '12–14 min',
+          description: 'Box-guided squats reinforcing glute loading and depth control',
+          battlePlan: '3 rounds\n• 8 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
+          intensityReason: 'Box reference reinforces depth and consistent glute loading',
+          moodTips: [
+            { icon: 'remove', title: 'Lightly touch the box only', description: 'Don’t fully sit and lose tension.' },
+            { icon: 'flash', title: 'Drive hips through at the top', description: 'Finish every rep with glute contraction.' },
+            { icon: 'shield', title: 'Control the entire rep', description: 'Smooth movement matters more than weight.' }
+          ]
+        },
+        {
+          name: 'Tempo Back Squat',
+          duration: '12–14 min',
+          description: 'Slow eccentric squats increasing glute tension and positioning',
+          battlePlan: '3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
+          intensityReason: 'Slow eccentric amplifies glute tension under controlled load',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Lower slower than you want to', description: 'The eccentric is where most tension builds.' },
+            { icon: 'shield', title: 'Stay braced the whole descent', description: 'Losing tension shifts stress away from glutes.' },
+            { icon: 'timer', title: 'Move with patience', description: 'Don’t rush to stand up.' }
+          ]
+        }
+      ],
+      intermediate: [
+        {
+          name: 'Glute-Biased Back Squat',
+          duration: '14–16 min',
+          description: 'Wider stance squats emphasizing glute engagement and strength',
+          battlePlan: '4 rounds\n• 8–10 reps\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
+          intensityReason: 'Wider stance emphasizes hip drive and glute recruitment',
+          moodTips: [
+            { icon: 'expand', title: 'Push knees outward hard', description: 'Creates better glute recruitment and hip stability.' },
+            { icon: 'footsteps', title: 'Drive through your heels', description: 'You should feel glutes working before quads dominate.' },
+            { icon: 'flame', title: 'Tension should build each round', description: 'If reps still feel easy late, increase load.' }
+          ]
+        },
+        {
+          name: 'Back Squat Pulses',
+          duration: '14–16 min',
+          description: 'Squats extended with bottom pulses increasing glute tension',
+          battlePlan: '4 rounds\n• 8 reps + 4 pulses\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
+          intensityReason: 'Bottom pulses sustain glute tension in the deepest range',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Stay close to the bottom', description: 'Pulses keep you in the hardest range longer.' },
+            { icon: 'pulse', title: 'Keep pulses controlled and short', description: 'Big bounces remove the benefit.' },
+            { icon: 'flame', title: 'Expect a deep glute burn early', description: 'That’s the purpose of this variation.' }
+          ]
+        },
+        {
+          name: 'Back Squat Pause Reps',
+          duration: '14–16 min',
+          description: 'Paused squats building glute strength from the bottom position',
+          battlePlan: '4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
+          intensityReason: 'Paused bottom develops strength out of the hardest position',
+          moodTips: [
+            { icon: 'pause', title: 'Pause without relaxing', description: 'Stay tight at full depth.' },
+            { icon: 'flash', title: 'Drive explosively out of the hole', description: 'Power should come from hips and glutes.' },
+            { icon: 'flame', title: 'Last reps should slow slightly', description: 'That’s how you know intensity is right.' }
+          ]
+        }
+      ],
+      advanced: [
+        {
+          name: 'Heavy Glute Back Squat',
+          duration: '16–18 min',
+          description: 'Heavy squats emphasizing maximal glute strength and output',
+          battlePlan: '5 rounds\n• 5–6 reps\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
+          intensityReason: 'Heavy load drives maximal glute strength adaptations',
+          moodTips: [
+            { icon: 'shield', title: 'Treat every rep like a single', description: 'Full brace and focus before unracking.' },
+            { icon: 'flash', title: 'Drive hips through aggressively', description: 'Finish every rep with intent, not survival.' },
+            { icon: 'flame', title: 'Final sets should challenge you hard', description: 'You should question the last 1–2 reps.' }
+          ]
+        },
+        {
+          name: 'Back Squat 1.5 Reps',
+          duration: '16–18 min',
+          description: 'Extended-rep squats increasing glute tension and fatigue output',
+          battlePlan: '4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
+          intensityReason: '1.5 reps double time spent in the deepest glute-loading range',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Own the bottom half of the squat', description: 'That’s where glutes work hardest.' },
+            { icon: 'shield', title: 'Stay controlled through transitions', description: 'Rushing removes tension immediately.' },
+            { icon: 'flame', title: 'Burn should become unavoidable', description: 'Especially by the final round.' }
+          ]
+        },
+        {
+          name: 'Back Squat Burnout',
+          duration: '18–20 min',
+          description: 'High-rep squats driving deep glute fatigue and endurance',
+          battlePlan: '3 rounds\n• 15–20 reps\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
+          intensityReason: 'High-rep volume drives deep glute fatigue and endurance',
+          moodTips: [
+            { icon: 'repeat', title: 'Stay in constant motion', description: 'Locking out fully gives your muscles a break.' },
+            { icon: 'pulse', title: 'Control breathing under fatigue', description: 'One breath per rep keeps rhythm steady.' },
+            { icon: 'flame', title: 'Final reps should feel brutal', description: 'The set should end near failure, not comfort.' }
+          ]
+        }
+      ]
+    }
+  },
+  {
     equipment: 'Single Stack Cable Machine',
     icon: 'reorder-three',
     workouts: {

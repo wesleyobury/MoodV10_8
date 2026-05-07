@@ -53,6 +53,7 @@ const equipmentDatabase: MuscleGroupEquipment[] = [
   {
     muscleGroup: 'Glutes',
     equipment: [
+      { id: 'barbell-glute', name: 'Barbell', icon: 'barbell' },
       { id: 'glute-kick-machine', name: 'Glute Kick Machine', icon: 'ellipse' },
       { id: 'hip-abductor', name: 'Hip Abductor Machine', icon: 'resize' },
       { id: 'hip-thruster', name: 'Hip Thruster Equipment', icon: 'fitness' },
@@ -280,7 +281,7 @@ export default function LegsEquipmentScreen() {
         if (['dumbbells-compound', 'squat-rack-compound', 'leg-press-compound', 'hack-squat-compound', 'cable-machine-compound', 'trap-bar', 'pit-shark', 'smith-machine', 'kettlebells-compound', 'pendulum-squat-compound'].includes(eq.id)) {
           equipmentPerGroup.Compound.push(eq.name);
         }
-        if (['glute-kick-machine', 'hip-abductor', 'hip-thruster', 'cable-machine'].includes(eq.id)) {
+        if (['barbell-glute', 'glute-kick-machine', 'hip-abductor', 'hip-thruster', 'cable-machine'].includes(eq.id)) {
           equipmentPerGroup.Glutes.push(eq.name);
         }
         if (['barbell-ham', 'dumbbells', 'leg-curl', 'roman-chair'].includes(eq.id)) {
@@ -346,7 +347,7 @@ export default function LegsEquipmentScreen() {
     ['dumbbells-compound', 'squat-rack-compound', 'leg-press-compound', 'hack-squat-compound', 'cable-machine-compound', 'trap-bar', 'pit-shark', 'smith-machine', 'kettlebells-compound', 'pendulum-squat-compound'].includes(eq.id)
   );
   const hasGlutesEquipment = selectedEquipment.some(eq => 
-    ['glute-kick-machine', 'hip-abductor', 'hip-thruster', 'cable-machine'].includes(eq.id)
+    ['barbell-glute', 'glute-kick-machine', 'hip-abductor', 'hip-thruster', 'cable-machine'].includes(eq.id)
   );
   const hasHamstringsEquipment = selectedEquipment.some(eq => 
     ['barbell-ham', 'dumbbells', 'leg-curl', 'roman-chair'].includes(eq.id)
