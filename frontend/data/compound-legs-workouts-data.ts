@@ -2978,5 +2978,242 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
         }
       ]
     }
+  },
+  {
+    equipment: 'Kettlebells',
+    icon: 'fitness',
+    workouts: {
+      beginner: [
+        {
+          name: 'KB Static Lunge',
+          duration: '10–12 min',
+          description: 'Stationary lunges building balance, control, and movement confidence',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/75iax87r_kb%20lunge.png',
+          intensityReason: 'Stationary lunges teach balance and bracing under kettlebell load',
+          moodTips: [
+            {
+              icon: 'repeat',
+              title: 'Make every rep identical',
+              description: 'Same depth and stance each time builds real control.'
+            },
+            {
+              icon: 'flash',
+              title: 'Feel your front leg working',
+              description: 'If back leg dominates, shorten your stance.'
+            },
+            {
+              icon: 'shield',
+              title: 'Finish feeling in control',
+              description: 'You should have reps left, not be exhausted.'
+            }
+          ]
+        },
+        {
+          name: 'KB Supported Reverse Lunge',
+          duration: '10–12 min',
+          description: 'Reverse lunges using support to improve balance and positioning',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/3pz6hkz9_kb%20lunge%202.png',
+          intensityReason: 'Reverse pattern protects knees while you groove the movement',
+          moodTips: [
+            {
+              icon: 'hand-right',
+              title: 'Use support, don’t rely on it',
+              description: 'Just enough to stabilize, not assist the lift.'
+            },
+            {
+              icon: 'arrow-back',
+              title: 'Step back longer than you think',
+              description: 'Longer stride protects knees and loads glutes.'
+            },
+            {
+              icon: 'checkmark-circle',
+              title: 'Confidence over intensity',
+              description: 'Goal is clean reps, not fatigue.'
+            }
+          ]
+        },
+        {
+          name: 'KB Alternating Lunge',
+          duration: '10–12 min',
+          description: 'Alternating lunges improving coordination and controlled movement flow',
+          battlePlan: '3 rounds\n• 10 total\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/em1qkl0b_kb%20lunge%203.png',
+          intensityReason: 'Alternating pattern develops symmetry and flow with the load',
+          moodTips: [
+            {
+              icon: 'refresh',
+              title: 'Find your rhythm early',
+              description: 'Smooth transitions matter more than speed.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright through every rep',
+              description: 'Leaning forward shifts load away from legs.'
+            },
+            {
+              icon: 'timer',
+              title: 'Control every step',
+              description: 'You should never feel rushed.'
+            }
+          ]
+        }
+      ],
+      intermediate: [
+        {
+          name: 'KB Walking Lunge',
+          duration: '14–16 min',
+          description: 'Walking lunges building unilateral strength and continuous tension',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/75iax87r_kb%20lunge.png',
+          intensityReason: 'Walking adds balance demand on top of unilateral leg drive',
+          moodTips: [
+            {
+              icon: 'footsteps',
+              title: 'Step with intention, not momentum',
+              description: 'Feel the front leg load before stepping through.'
+            },
+            {
+              icon: 'arrow-down',
+              title: 'Stay low between steps',
+              description: 'Standing tall resets tension and makes it easier.'
+            },
+            {
+              icon: 'flame',
+              title: 'Burn should build each round',
+              description: 'If legs feel fresh late, increase intensity.'
+            }
+          ]
+        },
+        {
+          name: 'KB Lunge Pulses',
+          duration: '14–16 min',
+          description: 'Lunges extended with bottom pulses to increase time under tension',
+          battlePlan: '3 rounds\n• 8 per leg + 3 pulses\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/3pz6hkz9_kb%20lunge%202.png',
+          intensityReason: 'Bottom pulses amplify time under tension where it counts most',
+          moodTips: [
+            {
+              icon: 'arrow-down',
+              title: 'Live in the bottom position',
+              description: 'That’s where tension—and growth—happens.'
+            },
+            {
+              icon: 'pulse',
+              title: 'Keep pulses small and controlled',
+              description: 'Big movements lose the benefit.'
+            },
+            {
+              icon: 'flame',
+              title: 'Burn should hit early',
+              description: 'That’s the goal of this variation.'
+            }
+          ]
+        },
+        {
+          name: 'KB Front Rack Lunge',
+          duration: '14–16 min',
+          description: 'Front-loaded lunges increasing core demand and posture control',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/em1qkl0b_kb%20lunge%203.png',
+          intensityReason: 'Front rack position forces upright posture and core bracing',
+          moodTips: [
+            {
+              icon: 'trending-up',
+              title: 'Elbows stay high the whole set',
+              description: 'Dropping them means you’re losing position.'
+            },
+            {
+              icon: 'shield',
+              title: 'Brace before every step',
+              description: 'Core stability drives better leg output.'
+            },
+            {
+              icon: 'timer',
+              title: 'Fatigue should feel controlled',
+              description: 'Challenging, but never sloppy.'
+            }
+          ]
+        }
+      ],
+      advanced: [
+        {
+          name: 'KB Walking Lunge Drop Set',
+          duration: '16–18 min',
+          description: 'Continuous lunges extended with weight drops to near failure',
+          battlePlan: '3 rounds\n• 10 per leg → Drop → 10 → Drop → BW\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/75iax87r_kb%20lunge.png',
+          intensityReason: 'Drop sets push past comfortable rep ranges into real fatigue',
+          moodTips: [
+            {
+              icon: 'arrow-forward',
+              title: 'Don’t stop moving forward',
+              description: 'The set ends when your legs say it does.'
+            },
+            {
+              icon: 'flash',
+              title: 'Drop weight, not intensity',
+              description: 'Each drop keeps effort high, not easier.'
+            },
+            {
+              icon: 'flame',
+              title: 'Final set should test you',
+              description: 'You shouldn’t be sure you’ll finish.'
+            }
+          ]
+        },
+        {
+          name: 'KB Lunge 1.5 Reps',
+          duration: '16–18 min',
+          description: 'Lunges using extended reps to increase time under tension',
+          battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/3pz6hkz9_kb%20lunge%202.png',
+          intensityReason: '1.5 reps double the time spent in the hardest portion',
+          moodTips: [
+            {
+              icon: 'arrow-down',
+              title: 'Own the bottom half',
+              description: 'That’s where most people are weakest.'
+            },
+            {
+              icon: 'timer',
+              title: 'Stay patient through reps',
+              description: 'Rushing removes the challenge.'
+            },
+            {
+              icon: 'flame',
+              title: 'Expect deep fatigue late',
+              description: 'That’s when growth happens.'
+            }
+          ]
+        },
+        {
+          name: 'KB Deficit Lunge',
+          duration: '16–18 min',
+          description: 'Elevated lunges increasing depth, stretch, and loading demand',
+          battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/em1qkl0b_kb%20lunge%203.png',
+          intensityReason: 'Deficit increases range of motion and loaded stretch',
+          moodTips: [
+            {
+              icon: 'trending-down',
+              title: 'Go deeper with control',
+              description: 'Range matters more than load here.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stability is everything',
+              description: 'Wobbling kills output.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push close to failure',
+              description: 'Last reps should feel questionable.'
+            }
+          ]
+        }
+      ]
+    }
   }
 ];

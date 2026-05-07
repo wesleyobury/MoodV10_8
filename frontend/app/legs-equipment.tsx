@@ -277,7 +277,7 @@ export default function LegsEquipmentScreen() {
 
       // Map selected equipment to their respective muscle groups
       selectedEquipment.forEach(eq => {
-        if (['dumbbells-compound', 'squat-rack-compound', 'leg-press-compound', 'hack-squat-compound', 'cable-machine-compound', 'trap-bar', 'pit-shark', 'smith-machine'].includes(eq.id)) {
+        if (['dumbbells-compound', 'squat-rack-compound', 'leg-press-compound', 'hack-squat-compound', 'cable-machine-compound', 'trap-bar', 'pit-shark', 'smith-machine', 'kettlebells-compound', 'pendulum-squat-compound'].includes(eq.id)) {
           equipmentPerGroup.Compound.push(eq.name);
         }
         if (['glute-kick-machine', 'hip-abductor', 'hip-thruster', 'cable-machine'].includes(eq.id)) {
@@ -343,7 +343,7 @@ export default function LegsEquipmentScreen() {
   const isQuadsSelected = muscleGroupNames.includes('Quads');
   const isCalvesSelected = muscleGroupNames.includes('Calfs');
   const hasCompoundEquipment = selectedEquipment.some(eq => 
-    ['dumbbells-compound', 'squat-rack-compound', 'leg-press-compound', 'hack-squat-compound', 'cable-machine-compound', 'trap-bar', 'pit-shark', 'smith-machine'].includes(eq.id)
+    ['dumbbells-compound', 'squat-rack-compound', 'leg-press-compound', 'hack-squat-compound', 'cable-machine-compound', 'trap-bar', 'pit-shark', 'smith-machine', 'kettlebells-compound', 'pendulum-squat-compound'].includes(eq.id)
   );
   const hasGlutesEquipment = selectedEquipment.some(eq => 
     ['glute-kick-machine', 'hip-abductor', 'hip-thruster', 'cable-machine'].includes(eq.id)

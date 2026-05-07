@@ -14,6 +14,14 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-07] **Kettlebells equipment now has real workouts** in Muscle Gainer → Legs → Compound:
+  - **`frontend/app/legs-equipment.tsx`**: Wired `kettlebells-compound` (and `pendulum-squat-compound`) into the `Compound` equipment bucket so selections actually flow into the workout-display screen (previously dead-link).
+  - **`frontend/data/compound-legs-workouts-data.ts`**: Added new `Kettlebells` equipment block with 9 lunge workouts (3 per intensity), each carouseling through the 3 user-supplied KB lunge reference images:
+    - **Beginner**: KB Static Lunge, KB Supported Reverse Lunge, KB Alternating Lunge.
+    - **Intermediate**: KB Walking Lunge, KB Lunge Pulses, KB Front Rack Lunge.
+    - **Advanced**: KB Walking Lunge Drop Set, KB Lunge 1.5 Reps, KB Deficit Lunge.
+  - All 9 surface in the standard equipment carousel via the existing `WorkoutCard` rendering — no new component required (same logic as Dumbbells / Barbell). `tsc --noEmit` clean for both edited files.
+
 - [2026-05-07] **Added 12 new compound-legs workouts** to `frontend/data/compound-legs-workouts-data.ts`:
   - **Smith Machine — Step Ups** (3): `Smith Supported Step-Ups` (beginner), `Smith Step-Ups Tempo` (intermediate), `Smith Step-Up Drive` (advanced) — uses smith-machine-step-up reference image.
   - **Squat Rack — Zercher Squat** (3): `Zercher Box Squat` (beginner), `Tempo Zercher Squat` (intermediate), `Zercher Pause Squat` (advanced) — uses zercher-squat reference image.
