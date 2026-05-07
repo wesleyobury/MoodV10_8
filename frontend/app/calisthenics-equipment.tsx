@@ -43,6 +43,7 @@ const equipmentOptions: EquipmentOption[] = [
   { id: 'gymnast-rings', name: 'Gymnast rings', icon: 'radio-button-off' },
   { id: 'parallel-bars', name: 'Parallel bars / dip station', icon: 'remove' },
   { id: 'pull-up-bar', name: 'Pull up bar', icon: 'remove-outline' },
+  { id: 'pull-up-bar-abs', name: 'Pull-Up Bar (abs)', icon: 'body-outline' },
   { id: 'pure-bodyweight', name: 'Pure bodyweight', icon: 'body' },
   { id: 'pushup-bars', name: 'Pushup bars / parallettes', icon: 'reorder-three' },
 ];

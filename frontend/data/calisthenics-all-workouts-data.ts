@@ -1027,6 +1027,174 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
     }
   },
   {
+    equipment: 'Pull-Up Bar (abs)',
+    icon: 'body-outline',
+    workouts: {
+      beginner: [
+        {
+          name: 'Hanging Knee Raise',
+          duration: '8–10 min',
+          description: 'Hanging knee raises building core control and lower ab strength',
+          battlePlan: '3 rounds\n• 10–12 reps\nRest 60s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/btrm5pgt_pull%20up%20bar%20leg%20raise.png',
+          intensityReason: 'Knee raises teach lower-ab control without overloading the core',
+          moodTips: [
+            { icon: 'body', title: 'Lift with your abs, not momentum', description: 'Swinging removes tension from the core immediately.' },
+            { icon: 'arrow-up', title: 'Exhale as knees rise', description: 'Breathing helps fully contract the abs.' },
+            { icon: 'arrow-down', title: 'Control the lowering phase', description: 'Don’t just drop your legs back down.' }
+          ]
+        },
+        {
+          name: 'Alternating Hanging Knee Raise',
+          duration: '8–10 min',
+          description: 'Alternating knee raises improving coordination and core control',
+          battlePlan: '3 rounds\n• 12 total reps\nRest 60s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/50qyiwtg_alternating%20hangin%20knee%20raise.png',
+          intensityReason: 'Alternating reps build coordination and unilateral core stability',
+          moodTips: [
+            { icon: 'shield', title: 'Keep your torso as still as possible', description: 'Stability is part of the challenge.' },
+            { icon: 'arrow-up', title: 'Bring knees higher than feels comfortable', description: 'Higher range creates stronger contraction.' },
+            { icon: 'checkmark-circle', title: 'Finish feeling controlled', description: 'You should own every rep.' }
+          ]
+        },
+        {
+          name: 'Hanging Knee Raise Hold',
+          duration: '8–10 min',
+          description: 'Knee raises with pauses increasing abdominal tension and control',
+          battlePlan: '3 rounds\n• 8 reps (2s hold)\nRest 60s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/btrm5pgt_pull%20up%20bar%20leg%20raise.png',
+          intensityReason: 'Top-position holds maximize ab tension and time-under-load',
+          moodTips: [
+            { icon: 'pause', title: 'Pause at the top deliberately', description: 'The hold is where the abs light up most.' },
+            { icon: 'fitness', title: 'Keep shoulders active on the bar', description: 'Don’t hang completely loose.' },
+            { icon: 'flame', title: 'Embrace the shaking', description: 'Stability improves through tension.' }
+          ]
+        },
+        {
+          name: 'Slow Hanging Knee Raise',
+          duration: '8–10 min',
+          description: 'Slow-tempo knee raises increasing lower ab tension and control',
+          battlePlan: '3 rounds\n• 8–10 reps (3s eccentric)\nRest 60s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/btrm5pgt_pull%20up%20bar%20leg%20raise.png',
+          intensityReason: 'Slow tempo increases time under tension for the lower abs',
+          moodTips: [
+            { icon: 'timer', title: 'Move slower than feels natural', description: 'Tempo forces the abs to stay engaged longer.' },
+            { icon: 'remove', title: 'Avoid swinging between reps', description: 'Reset if momentum builds.' },
+            { icon: 'shield', title: 'Control matters more than reps', description: 'Quality over quantity here.' }
+          ]
+        }
+      ],
+      intermediate: [
+        {
+          name: 'Hanging Leg Raise',
+          duration: '10–12 min',
+          description: 'Straight-leg raises increasing lower ab strength and tension',
+          battlePlan: '4 rounds\n• 10–12 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/btrm5pgt_pull%20up%20bar%20leg%20raise.png',
+          intensityReason: 'Straight legs lengthen the lever and overload the lower abs',
+          moodTips: [
+            { icon: 'remove', title: 'Keep legs as straight as possible', description: 'Bent knees reduce the challenge significantly.' },
+            { icon: 'arrow-up', title: 'Lift from your pelvis, not hips alone', description: 'Posterior tilt fully engages the abs.' },
+            { icon: 'flame', title: 'The burn should build gradually', description: 'Especially in the lower abs.' }
+          ]
+        },
+        {
+          name: 'Toes-to-Bar Progression',
+          duration: '10–12 min',
+          description: 'Controlled toe raises improving compression and abdominal strength',
+          battlePlan: '4 rounds\n• 8–10 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/dadu4ryl_pull%20up%20bar%20toe%20to%20bar.png',
+          intensityReason: 'Reaching for the bar develops abdominal compression strength',
+          moodTips: [
+            { icon: 'arrow-up', title: 'Bring toes higher every round', description: 'Compression strength improves through range.' },
+            { icon: 'shield', title: 'Avoid turning it into a swing', description: 'Momentum steals tension from the abs.' },
+            { icon: 'checkmark-circle', title: 'Stay controlled under fatigue', description: 'Clean reps matter more than height.' }
+          ]
+        },
+        {
+          name: 'Hanging Leg Raise Pulses',
+          duration: '10–12 min',
+          description: 'Leg raises extended with pulses increasing abdominal tension',
+          battlePlan: '4 rounds\n• 8 reps + 4 pulses\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/btrm5pgt_pull%20up%20bar%20leg%20raise.png',
+          intensityReason: 'Top-end pulses keep the abs loaded in their hardest range',
+          moodTips: [
+            { icon: 'pulse', title: 'Pulse near the top position', description: 'That’s where the abs are working hardest.' },
+            { icon: 'remove', title: 'Keep movements short and controlled', description: 'Big swings lose the benefit.' },
+            { icon: 'flame', title: 'Your abs should light up quickly', description: 'That’s intentional here.' }
+          ]
+        },
+        {
+          name: 'Windshield Wiper Intro',
+          duration: '10–12 min',
+          description: 'Rotational hanging raises building oblique strength and control',
+          battlePlan: '4 rounds\n• 6 per side\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/xv28u0mp_windshield%20wipers.png',
+          intensityReason: 'Rotational pattern teaches oblique control and core stability',
+          moodTips: [
+            { icon: 'sync', title: 'Rotate slowly through the movement', description: 'Control matters more than range.' },
+            { icon: 'shield', title: 'Keep shoulders locked in', description: 'Stability protects your spine and posture.' },
+            { icon: 'flame', title: 'Feel your obliques working hard', description: 'Rotation should challenge both sides evenly.' }
+          ]
+        }
+      ],
+      advanced: [
+        {
+          name: 'Toes-to-Bar',
+          duration: '12–14 min',
+          description: 'Full toes-to-bar reps demanding advanced core compression strength',
+          battlePlan: '4 rounds\n• 10–12 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/dadu4ryl_pull%20up%20bar%20toe%20to%20bar.png',
+          intensityReason: 'Full range requires elite compression strength and grip',
+          moodTips: [
+            { icon: 'flash', title: 'Drive toes upward aggressively', description: 'Intent matters as much as flexibility here.' },
+            { icon: 'arrow-down', title: 'Control the return every rep', description: 'Dropping fast kills tension immediately.' },
+            { icon: 'flame', title: 'Final reps should feel brutal', description: 'Especially through the lower abs and grip.' }
+          ]
+        },
+        {
+          name: 'Hanging L-Sit Raise',
+          duration: '12–14 min',
+          description: 'L-sit raises combining compression strength with core endurance',
+          battlePlan: '4 rounds\n• 8–10 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/k7ylihgl_L%20sit%20pull%20up.png',
+          intensityReason: 'L-sit hold demands max compression + endurance simultaneously',
+          moodTips: [
+            { icon: 'remove', title: 'Keep legs locked the entire set', description: 'Bent knees reduce the challenge dramatically.' },
+            { icon: 'fitness', title: 'Stay active through your shoulders', description: 'Don’t collapse into the hang.' },
+            { icon: 'flame', title: 'The burn should become relentless', description: 'Especially during later rounds.' }
+          ]
+        },
+        {
+          name: 'Hanging Windshield Wipers',
+          duration: '12–14 min',
+          description: 'Full rotational raises building advanced oblique and core strength',
+          battlePlan: '4 rounds\n• 8 per side\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/xv28u0mp_windshield%20wipers.png',
+          intensityReason: 'Full rotation overloads the obliques with elite control',
+          moodTips: [
+            { icon: 'timer', title: 'Move slower than your ego wants to', description: 'Control is what makes this exercise elite.' },
+            { icon: 'arrow-up', title: 'Keep hips elevated throughout', description: 'Dropping hips removes abdominal tension.' },
+            { icon: 'shield', title: 'Near failure should feel technical', description: 'Not sloppy or uncontrolled.' }
+          ]
+        },
+        {
+          name: 'Toes-to-Bar Burnout',
+          duration: '12–14 min',
+          description: 'High-rep toes-to-bar sets pushing abdominal endurance and grip',
+          battlePlan: '3 rounds\n• 15–20 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/dadu4ryl_pull%20up%20bar%20toe%20to%20bar.png',
+          intensityReason: 'High-rep volume drives abdominal endurance and grip stamina',
+          moodTips: [
+            { icon: 'repeat', title: 'Stay moving once the burn starts', description: 'Continuous reps create the challenge.' },
+            { icon: 'pulse', title: 'Manage your breathing under fatigue', description: 'Rhythm keeps reps efficient.' },
+            { icon: 'flame', title: 'Last rounds should empty you', description: 'Near failure is the target here.' }
+          ]
+        }
+      ]
+    }
+  },
+  {
     equipment: 'Parallel bars / dip station',
     icon: 'remove',
     workouts: {
