@@ -3078,16 +3078,16 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'KB Romanian Deadlift',
+          name: 'KB Deadlift Tempo',
           duration: '14–16 min',
-          description: 'Hinged deadlifts emphasizing hamstrings and glute stretch',
-          battlePlan: '4 rounds\n• 10 reps\nRest 90s',
+          description: 'Deadlifts with slow eccentrics increasing time under tension',
+          battlePlan: '4 rounds\n• 10 reps (3s down)\nRest 90s',
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/cbm9hqde_kb%20deadlift%202.png',
-          intensityReason: 'RDL pattern hunts hamstring stretch and glute recruitment',
+          intensityReason: 'Slow eccentric amplifies posterior chain time under tension',
           moodTips: [
-            { icon: 'resize', title: 'Chase the stretch', description: 'That’s your depth marker.' },
-            { icon: 'arrow-back', title: 'Keep bar path close', description: 'Efficiency matters.' },
-            { icon: 'body', title: 'Feel hamstrings working', description: 'Not your lower back.' }
+            { icon: 'arrow-down', title: 'Lower slowly every rep', description: 'That’s where growth happens.' },
+            { icon: 'shield', title: 'Stay tight at bottom', description: 'No collapse.' },
+            { icon: 'flame', title: 'Tension should build', description: 'If not, increase load.' }
           ]
         }
       ],
@@ -3132,16 +3132,16 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'KB Heavy Deadlift',
+          name: 'KB Deadlift Drop Set',
           duration: '16–18 min',
-          description: 'Heavy deadlifts focusing on maximal strength and power output',
-          battlePlan: '4 rounds\n• 5–6 reps\nRest 120s',
+          description: 'Deadlifts extended with weight drops pushing toward failure',
+          battlePlan: '3 rounds\n• 8 → Drop → 8 → Drop → 8\nRest 120s',
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/29ao1zhg_kb%20deadlift%203.png',
-          intensityReason: 'Heavy low-rep work builds raw posterior chain strength',
+          intensityReason: 'Weight drops sustain posterior chain effort past traditional failure',
           moodTips: [
-            { icon: 'barbell', title: 'Treat every rep like a max', description: 'Full focus and brace.' },
-            { icon: 'shield', title: 'Stay tight throughout', description: 'No slack.' },
-            { icon: 'flame', title: 'Final sets near failure', description: 'Should feel demanding.' }
+            { icon: 'flash', title: 'No rest between drops', description: 'Keep intensity high.' },
+            { icon: 'flame', title: 'Push near failure', description: 'Last sets should burn.' },
+            { icon: 'shield', title: 'Maintain form under fatigue', description: 'No breakdown.' }
           ]
         }
       ]

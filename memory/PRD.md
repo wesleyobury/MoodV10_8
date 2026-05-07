@@ -14,6 +14,12 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-07] **Aligned Kettlebells intermediate/advanced deadlift picks with user's first-listed variants** + restarted Metro to clear stale bundle cache:
+  - KB intermediate deadlift: KB Romanian Deadlift → **KB Deadlift Tempo** (matches user's first-listed intermediate deadlift).
+  - KB advanced deadlift: KB Heavy Deadlift → **KB Deadlift Drop Set** (matches user's first-listed advanced deadlift).
+  - Forced `expo` supervisor restart + cache clear after the user reported stale UI showing "no workouts found" on Pendulum Squat.
+  - Verified via direct module import: data file exposes Kettlebells (4/4/4) and Pendulum Squat (3/3/3) correctly, all 10 equipment entries present.
+
 - [2026-05-07] **Kettlebells trimmed to 4 cards per intensity & added Pendulum Squat block** in `frontend/data/compound-legs-workouts-data.ts`:
   - **Kettlebells (12 total — 4 per intensity)**: each intensity now shows exactly one Lunge + one Step-Up + one Swing + one Deadlift.
     - Beginner: KB Static Lunge, KB Supported Step-Up, KB Controlled Swing, KB Deadlift
