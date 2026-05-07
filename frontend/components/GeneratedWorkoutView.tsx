@@ -155,7 +155,7 @@ const ExerciseCard = ({
 }) => {
   const placeholderImage = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=200&h=200&fit=crop';
   const imageSource = item.imageUrl && item.imageUrl.length > 0 ? item.imageUrl : placeholderImage;
-  const showSweatChips = item.moodCard === 'Sweat / burn fat' && (item.role || item.modality || item.intensity_cost);
+  const sweatRoleLabel = item.moodCard === 'Sweat / burn fat' && item.role ? ROLE_LABEL[item.role] : null;
 
   return (
     <View style={styles.exerciseCard}>
@@ -168,24 +168,8 @@ const ExerciseCard = ({
         <Text style={styles.exerciseEquipment}>{item.equipment}</Text>
         <Text style={styles.exerciseName} numberOfLines={1}>{item.name}</Text>
         <Text style={styles.exerciseDuration}>{item.duration}</Text>
-        {showSweatChips && (
-          <View style={styles.chipRow}>
-            {item.role && (
-              <View style={[styles.chip, styles.chipRole]}>
-                <Text style={styles.chipText}>{ROLE_LABEL[item.role] || item.role}</Text>
-              </View>
-            )}
-            {item.modality && (
-              <View style={[styles.chip, styles.chipModality]}>
-                <Text style={styles.chipText}>{MODALITY_LABEL[item.modality] || item.modality}</Text>
-              </View>
-            )}
-            {costLabel(item.intensity_cost) && (
-              <View style={[styles.chip, styles.chipCost]}>
-                <Text style={styles.chipText}>{costLabel(item.intensity_cost)}</Text>
-              </View>
-            )}
-          </View>
+        {sweatRoleLabel && (
+          <Text style={styles.sweatRoleLabel}>{sweatRoleLabel}</Text>
         )}
       </View>
       <View style={styles.exerciseActions}>
@@ -662,6 +646,13 @@ const styles = StyleSheet.create({
   exerciseDuration: {
     fontSize: 12,
     color: 'rgba(255, 255, 255, 0.6)',
+  },
+  sweatRoleLabel: {
+    fontSize: 11,
+    color: 'rgba(255, 255, 255, 0.92)',
+    fontWeight: '600',
+    letterSpacing: 0.4,
+    marginTop: 4,
   },
   chipRow: {
     flexDirection: 'row',

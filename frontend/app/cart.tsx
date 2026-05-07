@@ -133,7 +133,7 @@ const CartItemComponent: React.FC<{
   
   // Check if it's a custom workout
   const isCustomWorkout = item.workoutType === 'Custom' || item.id?.startsWith('custom-');
-  const showSweatChips = item.moodCard === 'Sweat / burn fat' && (item.role || item.modality || item.intensity_cost);
+  const sweatRoleLabel = item.moodCard === 'Sweat / burn fat' && item.role ? ROLE_LABEL[item.role] : null;
   
   return (
     <View style={styles.exerciseCard}>
@@ -153,24 +153,8 @@ const CartItemComponent: React.FC<{
           )}
         </View>
         <Text style={styles.exerciseDuration}>{item.duration}</Text>
-        {showSweatChips && (
-          <View style={styles.chipRow}>
-            {item.role && (
-              <View style={[styles.chip, styles.chipRole]}>
-                <Text style={styles.chipText}>{ROLE_LABEL[item.role] || item.role}</Text>
-              </View>
-            )}
-            {item.modality && (
-              <View style={[styles.chip, styles.chipModality]}>
-                <Text style={styles.chipText}>{MODALITY_LABEL[item.modality] || item.modality}</Text>
-              </View>
-            )}
-            {costLabel(item.intensity_cost) && (
-              <View style={[styles.chip, styles.chipCost]}>
-                <Text style={styles.chipText}>{costLabel(item.intensity_cost)}</Text>
-              </View>
-            )}
-          </View>
+        {sweatRoleLabel && (
+          <Text style={styles.sweatRoleLabel}>{sweatRoleLabel}</Text>
         )}
       </View>
       <View style={styles.exerciseActions}>
@@ -1072,35 +1056,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgba(255, 255, 255, 0.6)',
   },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6,
-    marginTop: 6,
-  },
-  chip: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 10,
-    borderWidth: 1,
-  },
-  chipRole: {
-    backgroundColor: 'rgba(74, 144, 226, 0.18)',
-    borderColor: 'rgba(74, 144, 226, 0.45)',
-  },
-  chipModality: {
-    backgroundColor: 'rgba(155, 89, 182, 0.18)',
-    borderColor: 'rgba(155, 89, 182, 0.45)',
-  },
-  chipCost: {
-    backgroundColor: 'rgba(231, 76, 60, 0.18)',
-    borderColor: 'rgba(231, 76, 60, 0.45)',
-  },
-  chipText: {
-    fontSize: 10,
+  sweatRoleLabel: {
+    fontSize: 11,
     color: 'rgba(255, 255, 255, 0.92)',
     fontWeight: '600',
-    letterSpacing: 0.3,
+    letterSpacing: 0.4,
+    marginTop: 4,
   },
   exerciseActions: {
     flexDirection: 'row',
