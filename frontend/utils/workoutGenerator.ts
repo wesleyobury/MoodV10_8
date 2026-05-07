@@ -232,207 +232,209 @@ export function generateWorkoutCarts(
 }
 
 // ============================================================================
-// SWEAT MOOD CARD — Structured Assembly Logic
+// SWEAT MOOD CARD — Structured Assembly Logic (v2)
 // ============================================================================
-// Replaces the old shuffle-and-filter generator with a slot-template builder.
-// Template:
-//   Beginner    : [primer, main_block, main_block]
-//   Intermediate: [primer, main_block, main_block, finisher]
-//   Advanced    : [primer, main_block, main_block, finisher]
-// Rules per cart:
-//   • Each slot only pulls workouts whose `role` matches that slot
-//   • Modality must alternate slot-to-slot (no two cardio adjacent, no two
-//     resistance adjacent)
-//   • Every cart guaranteed ≥1 cardio + ≥1 resistance
-//   • Intensity curve: low at slot 1, peak in middle, taper but stay strong
-//   • Equipment clusters when possible (same equipment grouped to reduce
-//     transition friction)
-// 3 carts are deliberate flavors: Cardio-leaning, Balanced, Resistance-leaning.
+// Cart structure by tier (FIXED size, not a range):
+//   Beginner    : [Cardio Primer, Resistance Main]                    (2 exercises)
+//   Intermediate: [Cardio Primer, Resistance Main, Cardio Finisher]   (3 exercises)
+//   Advanced    : [Cardio Primer, Resistance Main, Cardio Finisher]   (3 exercises)
+//
+// Hard rules per cart:
+//   • Equipment uniqueness: no two slots can share `equipment` value
+//   • Modality alternation: cardio → resistance → cardio (canonical sandwich)
+//   • Always exactly 1 resistance circuit + 1-2 cardio blocks
+//
+// Slot eligibility:
+//   • Cardio Primer:  modality='cardio', intensity_cost<=3, prefer role='primer'
+//                     (any tier; beginner-tier primers are valid for advanced users)
+//   • Resistance Main: modality='resistance', tier===userTier, intensity_cost>=3,
+//                     prefer role='main_block', accept role='finisher' for int/adv
+//   • Cardio Finisher: modality='cardio', tier===userTier, intensity_cost>=4,
+//                     prefer role='finisher'
+//
+// 3 carts: differentiate by equipment selection (not session shape).
+// Cross-cart soft preference: track usedEquipmentByRole and deprioritize
+// (don't exclude) repeats so the 3 carts visibly differ.
 // ============================================================================
 
 type SlotRole = 'primer' | 'main_block' | 'finisher';
-type Flavor = 'cardio' | 'balanced' | 'resistance';
 
 interface TaggedCandidate {
   workout: Workout;
   equipment: string;
+  tier: IntensityLevel;
 }
 
-const SWEAT_TEMPLATES: Record<IntensityLevel, SlotRole[]> = {
-  beginner:     ['primer', 'main_block', 'main_block'],
-  intermediate: ['primer', 'main_block', 'main_block', 'finisher'],
-  advanced:     ['primer', 'main_block', 'main_block', 'finisher'],
+const SWEAT_CART_SIZE: Record<IntensityLevel, number> = {
+  beginner: 2,
+  intermediate: 3,
+  advanced: 3,
 };
 
-// Pull every tagged workout (across ALL tiers) from cardio + light-weights pools.
-// We deliberately do NOT filter by `intensity` here — the user's selected
-// intensity shapes the cart through `intensity_cost` targeting, not tier
-// gating. (User's spec: roles like 'primer' are only tagged on beginner-tier
-// cardio, 'finisher' on advanced-tier; if we filter by tier we starve slots.)
-function buildSweatPool(): {
-  byRoleModality: Record<SlotRole, { cardio: TaggedCandidate[]; resistance: TaggedCandidate[] }>;
-} {
-  const empty = (): { cardio: TaggedCandidate[]; resistance: TaggedCandidate[] } => ({ cardio: [], resistance: [] });
-  const byRoleModality: Record<SlotRole, { cardio: TaggedCandidate[]; resistance: TaggedCandidate[] }> = {
-    primer: empty(),
-    main_block: empty(),
-    finisher: empty(),
-  };
-
+// Pull every tagged workout from cardio + light-weights pools, preserving tier.
+function buildSweatPool(): TaggedCandidate[] {
+  const out: TaggedCandidate[] = [];
   const harvest = (db: EquipmentWorkouts[]) => {
     for (const eq of db) {
       for (const tier of ['beginner', 'intermediate', 'advanced'] as IntensityLevel[]) {
         for (const w of eq.workouts[tier] || []) {
           if (!w.role || !w.modality) continue;
-          byRoleModality[w.role][w.modality].push({ workout: w, equipment: eq.equipment });
+          out.push({ workout: w, equipment: eq.equipment, tier });
         }
       }
     }
   };
   harvest(cardioWorkoutsDatabase);
   harvest(lightWeightsDatabase);
-  return { byRoleModality };
+  return out;
 }
 
-// Target intensity_cost per slot for each user-selected intensity.
-// Curve: low at slot 1, ramp to peak in middle, finisher stays strong.
-const SWEAT_COST_CURVE: Record<IntensityLevel, IntensityCost[]> = {
-  beginner:     [2, 3, 3],
-  intermediate: [2, 4, 4, 4],
-  advanced:     [3, 5, 5, 5],
-};
+interface SlotConstraints {
+  modality: Modality;
+  tier?: IntensityLevel;            // hard tier filter (omit for any-tier)
+  preferRole: SlotRole;
+  acceptRoles?: SlotRole[];          // additional roles allowed if preferRole is exhausted
+  costMin?: IntensityCost;
+  costMax?: IntensityCost;
+}
 
-// Pick best candidate for a slot given used names, target modality, equipment cluster pref,
-// and target intensity cost.
-function pickForSlot(
-  candidates: TaggedCandidate[],
-  usedNames: Set<string>,
-  preferredEquipment: string | null,
-  targetCost: IntensityCost
+// Pick a candidate matching constraints, excluding equipment already in cart,
+// and deprioritizing equipment already used in this slot-role across the 3 carts.
+function pickCandidate(
+  pool: TaggedCandidate[],
+  constraints: SlotConstraints,
+  excludeEquipment: Set<string>,
+  deprioritizeEquipment: Set<string>,
+  usedNames: Set<string>
 ): TaggedCandidate | null {
-  const fresh = candidates.filter(c => !usedNames.has(c.workout.name));
-  const pool = fresh.length > 0 ? fresh : candidates;
-  if (pool.length === 0) return null;
+  const { modality, tier, preferRole, acceptRoles = [], costMin, costMax } = constraints;
 
-  // Score by cost proximity, with strong bias toward exact match,
-  // then equipment cluster match.
-  const scored = pool.map(c => {
+  // Hard filter
+  let filtered = pool.filter(c => {
+    if (c.workout.modality !== modality) return false;
+    if (tier && c.tier !== tier) return false;
+    if (excludeEquipment.has(c.equipment)) return false;
     const cost = c.workout.intensity_cost ?? 3;
-    const costDiff = Math.abs(cost - targetCost);
-    const equipMatch = preferredEquipment && c.equipment === preferredEquipment ? 1 : 0;
-    return { c, score: -costDiff * 2 + equipMatch + Math.random() * 0.5 };
+    if (costMin !== undefined && cost < costMin) return false;
+    if (costMax !== undefined && cost > costMax) return false;
+    return true;
   });
-  scored.sort((a, b) => b.score - a.score);
-  // Take from top 3 to keep variety run-to-run
-  const topN = Math.min(3, scored.length);
-  return scored[Math.floor(Math.random() * topN)].c;
-}
 
-// Decide modality for slot N based on flavor + previous slot modality + role available pools
-function chooseModality(
-  flavor: Flavor,
-  prevModality: Modality | null,
-  rolePool: { cardio: TaggedCandidate[]; resistance: TaggedCandidate[] }
-): Modality | null {
-  const cardioAvail = rolePool.cardio.length > 0;
-  const resAvail = rolePool.resistance.length > 0;
-  if (!cardioAvail && !resAvail) return null;
-  if (!cardioAvail) return 'resistance';
-  if (!resAvail) return 'cardio';
+  if (filtered.length === 0) return null;
 
-  // Hard alternation rule: must differ from prev when both are available
-  if (prevModality === 'cardio') return 'resistance';
-  if (prevModality === 'resistance') return 'cardio';
+  // Prefer fresh names (not used elsewhere in this build)
+  const fresh = filtered.filter(c => !usedNames.has(c.workout.name));
+  if (fresh.length > 0) filtered = fresh;
 
-  // First slot: bias by flavor
-  if (flavor === 'cardio') return 'cardio';
-  if (flavor === 'resistance') return 'resistance';
-  // balanced — coin flip
-  return Math.random() < 0.5 ? 'cardio' : 'resistance';
-}
-
-function buildSweatCart(
-  intensity: IntensityLevel,
-  flavor: Flavor,
-  pool: ReturnType<typeof buildSweatPool>['byRoleModality'],
-  globalUsed: Set<string>,
-  moodCard: string,
-  workoutType: string
-): { exercises: WorkoutItem[]; equipmentList: string[]; totalDurationMin: number } {
-  const template = SWEAT_TEMPLATES[intensity];
-  const costCurve = SWEAT_COST_CURVE[intensity];
-  const localUsed = new Set<string>();
-  const exercises: WorkoutItem[] = [];
-  const equipmentList: string[] = [];
-  let prevModality: Modality | null = null;
-  let lastEquipment: string | null = null;
-  let totalDuration = 0;
-  let cardioCount = 0;
-  let resistanceCount = 0;
-
-  for (let slotIdx = 0; slotIdx < template.length; slotIdx++) {
-    const role = template[slotIdx];
-    const targetCost = costCurve[slotIdx] ?? 3;
-    const isLastSlot = slotIdx === template.length - 1;
-    let modality = chooseModality(flavor, prevModality, pool[role]);
-
-    // Guarantee both modalities present: if last slot and one is missing, force it
-    if (isLastSlot) {
-      if (cardioCount === 0 && pool[role].cardio.length > 0) modality = 'cardio';
-      else if (resistanceCount === 0 && pool[role].resistance.length > 0) modality = 'resistance';
-    }
-    // Mid-cart correction: if 2nd-to-last and a modality has zero count, prefer it
-    if (!isLastSlot && slotIdx === template.length - 2) {
-      if (cardioCount === 0 && pool[role].cardio.length > 0 && prevModality !== 'cardio') modality = 'cardio';
-      else if (resistanceCount === 0 && pool[role].resistance.length > 0 && prevModality !== 'resistance') modality = 'resistance';
-    }
-
-    if (!modality) continue;
-
-    const candidates = pool[role][modality];
-    const used = new Set([...globalUsed, ...localUsed]);
-    // Equipment clustering: prefer matching last equipment when same modality follows
-    const preferEquip = lastEquipment && modality === prevModality ? lastEquipment : null;
-    const pick = pickForSlot(candidates, used, preferEquip, targetCost);
-    if (!pick) continue;
-
-    const item = workoutToItem(pick.workout, pick.equipment, intensity, moodCard, workoutType);
-    exercises.push(item);
-    equipmentList.push(pick.equipment);
-    localUsed.add(pick.workout.name);
-    globalUsed.add(pick.workout.name);
-    totalDuration += parseDuration(pick.workout.duration);
-    prevModality = modality;
-    lastEquipment = pick.equipment;
-    if (modality === 'cardio') cardioCount++;
-    else resistanceCount++;
+  // Prefer preferRole, fall back to acceptRoles
+  let preferred = filtered.filter(c => c.workout.role === preferRole);
+  if (preferred.length === 0 && acceptRoles.length > 0) {
+    preferred = filtered.filter(c => acceptRoles.includes(c.workout.role!));
   }
+  if (preferred.length === 0) preferred = filtered;
 
-  return { exercises, equipmentList, totalDurationMin: totalDuration };
+  // Cross-cart variety: prefer equipment NOT already used in this slot role
+  const novel = preferred.filter(c => !deprioritizeEquipment.has(c.equipment));
+  const finalPool = novel.length > 0 ? novel : preferred;
+
+  return finalPool[Math.floor(Math.random() * finalPool.length)];
 }
 
-// New structured Sweat generator — replaces shuffle-and-filter approach
+// New structured Sweat generator (v2) — slot-based assembly with strict
+// equipment uniqueness + canonical cardio-resistance-cardio sandwich.
 export function generateSweatBurnFatCarts(
   intensity: IntensityLevel,
   moodCard: string = 'Sweat / burn fat',
   workoutType: string = 'Mixed'
 ): GeneratedCart[] {
-  const { byRoleModality } = buildSweatPool();
+  const pool = buildSweatPool();
+  const cartSize = SWEAT_CART_SIZE[intensity];
 
-  const flavors: Flavor[] = ['cardio', 'balanced', 'resistance'];
-
-  const globalUsed = new Set<string>();
+  // Track equipment used per slot-role across the 3 carts (soft variety).
+  const usedEqByRole: Record<SlotRole, Set<string>> = {
+    primer: new Set(),
+    main_block: new Set(),
+    finisher: new Set(),
+  };
+  const usedNames = new Set<string>();
   const carts: GeneratedCart[] = [];
 
-  for (let i = 0; i < flavors.length; i++) {
-    const flavor = flavors[i];
-    const built = buildSweatCart(intensity, flavor, byRoleModality, globalUsed, moodCard, workoutType);
-    if (built.exercises.length === 0) continue;
+  for (let cartIdx = 0; cartIdx < 3; cartIdx++) {
+    const usedEqInCart = new Set<string>();
+    const slotItems: WorkoutItem[] = [];
+    let totalDuration = 0;
+
+    // SLOT 1 — Cardio Primer
+    const primer = pickCandidate(
+      pool,
+      {
+        modality: 'cardio',
+        preferRole: 'primer',
+        acceptRoles: ['main_block'],
+        costMax: 3,
+      },
+      usedEqInCart,
+      usedEqByRole.primer,
+      usedNames,
+    );
+    if (!primer) continue; // skip cart if no primer available
+    slotItems.push(workoutToItem(primer.workout, primer.equipment, intensity, moodCard, workoutType));
+    usedEqInCart.add(primer.equipment);
+    usedEqByRole.primer.add(primer.equipment);
+    usedNames.add(primer.workout.name);
+    totalDuration += parseDuration(primer.workout.duration);
+
+    // SLOT 2 — Resistance Main (tier-locked)
+    const main = pickCandidate(
+      pool,
+      {
+        modality: 'resistance',
+        tier: intensity,
+        preferRole: 'main_block',
+        acceptRoles: intensity === 'beginner' ? [] : ['finisher'],
+        costMin: 3,
+      },
+      usedEqInCart,
+      usedEqByRole.main_block,
+      usedNames,
+    );
+    if (!main) continue;
+    slotItems.push(workoutToItem(main.workout, main.equipment, intensity, moodCard, workoutType));
+    usedEqInCart.add(main.equipment);
+    usedEqByRole.main_block.add(main.equipment);
+    usedNames.add(main.workout.name);
+    totalDuration += parseDuration(main.workout.duration);
+
+    // SLOT 3 — Cardio Finisher (only for intermediate/advanced)
+    if (cartSize === 3) {
+      const finisher = pickCandidate(
+        pool,
+        {
+          modality: 'cardio',
+          tier: intensity,
+          preferRole: 'finisher',
+          acceptRoles: ['main_block'],
+          costMin: 4,
+        },
+        usedEqInCart, // critical — prevents same cardio twice
+        usedEqByRole.finisher,
+        usedNames,
+      );
+      if (finisher) {
+        slotItems.push(workoutToItem(finisher.workout, finisher.equipment, intensity, moodCard, workoutType));
+        usedEqInCart.add(finisher.equipment);
+        usedEqByRole.finisher.add(finisher.equipment);
+        usedNames.add(finisher.workout.name);
+        totalDuration += parseDuration(finisher.workout.duration);
+      }
+    }
+
+    if (slotItems.length === 0) continue;
 
     carts.push({
-      id: `sweat-cart-${i + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
-      workouts: built.exercises,
-      totalDuration: built.totalDurationMin,
+      id: `sweat-cart-${cartIdx + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+      workouts: slotItems,
+      totalDuration,
       intensity,
     });
   }

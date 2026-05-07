@@ -100,6 +100,24 @@ function getRandomWorkoutTitle(intensity: string, moodTitle: string): string {
   return allTitles[Math.floor(Math.random() * allTitles.length)];
 }
 
+// Common-language label helpers for Sweat metadata badge chips
+const ROLE_LABEL: Record<string, string> = {
+  primer: 'Warm-Up',
+  main_block: 'Main Set',
+  finisher: 'Finisher',
+};
+const MODALITY_LABEL: Record<string, string> = {
+  cardio: 'Cardio',
+  resistance: 'Strength',
+};
+function costLabel(c?: number): string | null {
+  if (!c) return null;
+  if (c <= 2) return 'Easy';
+  if (c === 3) return 'Moderate';
+  if (c === 4) return 'Hard';
+  return 'All-Out';
+}
+
 const CartItemComponent: React.FC<{
   item: WorkoutItem;
   index: number;
@@ -115,6 +133,7 @@ const CartItemComponent: React.FC<{
   
   // Check if it's a custom workout
   const isCustomWorkout = item.workoutType === 'Custom' || item.id?.startsWith('custom-');
+  const showSweatChips = item.moodCard === 'Sweat / burn fat' && (item.role || item.modality || item.intensity_cost);
   
   return (
     <View style={styles.exerciseCard}>
@@ -134,6 +153,25 @@ const CartItemComponent: React.FC<{
           )}
         </View>
         <Text style={styles.exerciseDuration}>{item.duration}</Text>
+        {showSweatChips && (
+          <View style={styles.chipRow}>
+            {item.role && (
+              <View style={[styles.chip, styles.chipRole]}>
+                <Text style={styles.chipText}>{ROLE_LABEL[item.role] || item.role}</Text>
+              </View>
+            )}
+            {item.modality && (
+              <View style={[styles.chip, styles.chipModality]}>
+                <Text style={styles.chipText}>{MODALITY_LABEL[item.modality] || item.modality}</Text>
+              </View>
+            )}
+            {costLabel(item.intensity_cost) && (
+              <View style={[styles.chip, styles.chipCost]}>
+                <Text style={styles.chipText}>{costLabel(item.intensity_cost)}</Text>
+              </View>
+            )}
+          </View>
+        )}
       </View>
       <View style={styles.exerciseActions}>
         <View style={styles.reorderButtons}>
@@ -1033,6 +1071,36 @@ const styles = StyleSheet.create({
   exerciseDuration: {
     fontSize: 12,
     color: 'rgba(255, 255, 255, 0.6)',
+  },
+  chipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginTop: 6,
+  },
+  chip: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  chipRole: {
+    backgroundColor: 'rgba(74, 144, 226, 0.18)',
+    borderColor: 'rgba(74, 144, 226, 0.45)',
+  },
+  chipModality: {
+    backgroundColor: 'rgba(155, 89, 182, 0.18)',
+    borderColor: 'rgba(155, 89, 182, 0.45)',
+  },
+  chipCost: {
+    backgroundColor: 'rgba(231, 76, 60, 0.18)',
+    borderColor: 'rgba(231, 76, 60, 0.45)',
+  },
+  chipText: {
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.92)',
+    fontWeight: '600',
+    letterSpacing: 0.3,
   },
   exerciseActions: {
     flexDirection: 'row',
