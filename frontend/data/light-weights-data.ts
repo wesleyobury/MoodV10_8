@@ -206,7 +206,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
       ],
       intermediate: [
         {
-          name: 'Ladder',
+          name: 'Ladder (KB)',
           duration: '20–24 min',
           description: 'Four rounds: swings, cleans, snatches, squats, push presses.',
           battlePlan: 'Perform 4 rounds:\n• 10 Swings\n• 8 Cleans (4/side)\n• 6 Snatches (3/side)\n• 4 Goblet Squats\n• 2 Push Presses (each side)\n• Rest 1 min',
@@ -254,7 +254,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
       ],
       advanced: [
         {
-          name: 'Complex',
+          name: 'Complex (KB)',
           duration: '25–26 min',
           description: 'Five rounds, six per side: swing, clean, squat, press, snatch.',
           battlePlan: 'Perform 5 rounds (6 reps each, per side, no rest between moves):\n• Swing\n• Clean\n• Front Squat\n• Push Press\n• Snatch\n• Rest 1 min between rounds',
@@ -277,7 +277,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'AMRAP 15',
+          name: 'AMRAP 15 (KB)',
           duration: '15 min',
           description: 'Double swings, alternating snatches, jump squats, TGUs.',
           battlePlan: 'As many rounds as possible in 15 min:\n• 10 Double Swings\n• 8 Alternating Snatches\n• 6 Goblet Squat Jumps\n• 4 Turkish Get-Ups (2/side)',
@@ -331,7 +331,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Cardio Flow',
+          name: 'Cardio Flow (BB)',
           duration: '14–16 min',
           description: 'Three rounds: cleans, presses, back squats, rows, rest.',
           battlePlan: 'Perform 3 rounds:\n• 6 Hang Cleans\n• 6 Push Presses\n• 6 Back Squats\n• 6 Bent-Over Rows\n• Rest 90s',
@@ -356,7 +356,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
       ],
       intermediate: [
         {
-          name: 'Complex',
+          name: 'Complex (BB)',
           duration: '28–30 min',
           description: 'Four rounds of fives across six classic barbell patterns.',
           battlePlan: 'Perform 4 rounds (no rest between moves):\n• 5 Deadlifts\n• 5 Hang Power Cleans\n• 5 Front Squats\n• 5 Push Presses\n• 5 Back Squats\n• 5 Bent-Over Rows\n• Rest 1 min',
@@ -379,7 +379,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'EMOM 12',
+          name: 'EMOM 12 (BB)',
           duration: '12 min',
           description: 'Odd minutes thrusters; even minutes sumo high pulls.',
           battlePlan: 'For 12 minutes (alternating each minute):\n• Odd min: 8 Thrusters\n• Even min: 10 Sumo Deadlift High Pulls',
@@ -404,7 +404,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
       ],
       advanced: [
         {
-          name: 'Ladder',
+          name: 'Ladder (BB)',
           duration: '20–24 min',
           description: '10–2 reps: power clean, push jerk, front squat, burpees.',
           battlePlan: 'Perform 10–8–6–4–2 reps:\n• Power Clean\n• Push Jerk\n• Front Squat\n• Burpee Over Bar\n• Rest as needed to finish',
@@ -427,7 +427,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'AMRAP 15',
+          name: 'AMRAP 15 (BB)',
           duration: '15 min',
           description: 'Continuous sixes of deads, cleans, presses, squats, burpees.',
           battlePlan: 'As many rounds as possible in 15 min:\n• 6 Deadlifts\n• 6 Hang Cleans\n• 6 Push Presses\n• 6 Back Squats\n• 6 Bar-Facing Burpees',
@@ -458,7 +458,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
     workouts: {
       beginner: [
         {
-          name: 'Cardio Circuit',
+          name: 'Cardio Circuit (Med Ball)',
           duration: '12–16 min',
           description: 'Three rounds: wall balls, slams, twists, one‑minute rest.',
           battlePlan: 'Perform 3 rounds:\n• 10 Wall Balls\n• 10 Slams\n• 10 Russian Twists (each side)\n• Rest 1 min',
@@ -481,7 +481,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Flow',
+          name: 'Flow (Med Ball)',
           duration: '12–15 min',
           description: 'Three rounds: chest pass, overhead throw, squat press.',
           battlePlan: 'Perform 3 rounds:\n• 8 Chest Passes (against wall)\n• 8 Overhead Throws\n• 8 Squat-to-Press\n• Rest 1 min',
@@ -529,7 +529,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Tabata',
+          name: 'Tabata (Med Ball)',
           duration: '16 min',
           description: 'Four‑movement Tabata repeated for sixteen total intervals.',
           battlePlan: '20s work / 10s rest:\n• Wall Balls\n• Slams\n• Rotational Throws\n• Squat-to-Press\nRepeat 4 rounds (16 intervals total).',
@@ -554,7 +554,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
       ],
       advanced: [
         {
-          name: 'Complex',
+          name: 'Complex (Med Ball)',
           duration: '16–20 min',
           description: 'Four rounds 12‑10‑8‑6 with one‑minute rests between sets.',
           battlePlan: 'Perform 4 rounds:\n• 12 Wall Balls\n• 10 Slams\n• 8 Rotations (per side)\n• 6 Burpee Slams\n• Rest 1 min',
@@ -631,7 +631,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Flow',
+          name: 'Flow (Slam Ball)',
           duration: '12–15 min',
           description: 'Three rounds: slams, overhead throws, twists, recover.',
           battlePlan: 'Perform 3 rounds:\n• 8 Slams\n• 8 Overhead Throws\n• 8 Russian Twists (per side)\n• Rest 1 min',
@@ -656,7 +656,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
       ],
       intermediate: [
         {
-          name: 'AMRAP 10',
+          name: 'AMRAP 10 (Slam Ball)',
           duration: '10–12 min',
           description: 'Ten‑minute loop: slams, lateral slams, squat jumps.',
           battlePlan: 'As many rounds as possible in 10 min:\n• 10 Slams\n• 10 Lateral Slams (5/side)\n• 10 Squat Jumps (ball at chest)',
@@ -679,7 +679,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Tabata',
+          name: 'Tabata (Slam Ball)',
           duration: '16 min',
           description: 'Four‑move Tabata repeated to total sixteen intervals.',
           battlePlan: '20s work / 10s rest with:\n• Slams\n• Squat-to-Press\n• Lateral Slams\n• Burpee Slams\nRepeat 4 rounds (16 intervals total).',
@@ -704,7 +704,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
       ],
       advanced: [
         {
-          name: 'Complex',
+          name: 'Complex (Slam Ball)',
           duration: '20–24 min',
           description: 'Four rounds 12‑10‑8‑6 with one‑minute rests between sets.',
           battlePlan: 'Perform 4 rounds:\n• 12 Slams\n• 10 Lateral Slams\n• 8 Burpee Slams\n• 6 Overhead Throws\n• Rest 1 min',
@@ -727,7 +727,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Sprint Circuit',
+          name: 'Sprint Circuit (Slam Ball)',
           duration: '20–25 min',
           description: 'Five rounds: slams, sprint, lateral slams, sprint, rest.',
           battlePlan: 'Perform 5 rounds:\n• 10 Slams\n• 20 m Sprint (with ball)\n• 10 Lateral Slams\n• 20 m Sprint (with ball)\n• Rest 1 min',
@@ -806,7 +806,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
       ],
       intermediate: [
         {
-          name: 'Tabata',
+          name: 'Tabata (Ropes)',
           duration: '16 min',
           description: 'Waves, slams, circles, jacks rotated for sixteen intervals.',
           battlePlan: '20s work / 10s rest alternating:\n• Waves\n• Slams\n• Circles\n• Jumping Jacks\nRepeat 4 rounds (16 intervals).',
@@ -1004,7 +1004,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
       ],
       advanced: [
         {
-          name: 'Gauntlet',
+          name: 'Gauntlet (Sled)',
           duration: '24–28 min',
           description: 'Five rounds: heavy push, sprint push, drag, lateral, rest.',
           battlePlan: 'Perform 5 rounds:\n• 10 m Heavy Push\n• 10 m Sprint Push (light)\n• 10 m Backward Drag\n• 10 m Lateral Push\n• Rest 1 min',

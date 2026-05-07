@@ -379,7 +379,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Reverse & Forward',
+          name: 'Reverse & Forward (UBE)',
           duration: '20 min',
           description: 'Alternating forward and reverse cycling\nwith sprint intervals. 4 complete rounds.\n ',
           battlePlan: '• 2 min forward (resistance 5)\n• 1 min reverse (resistance 3)\n• 1 min sprint (forward, resistance 4)\n• repeat 4x',
@@ -577,7 +577,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Endurance & Power',
+          name: 'Endurance & Power (Bike)',
           duration: '35 min',
           description: 'Long ride with challenges tests endurance and power.\n ',
           battlePlan: '• 5 min easy\n• 10 min moderate (resistance 7)\n• 5 min hard (resistance 10)\n• 5 min fast (resistance 5, RPM 80+)\n• 5 min reverse (resistance 6)\n• 5 min cool-down',
@@ -631,7 +631,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Resistance Play',
+          name: 'Resistance Play (Assault)',
           duration: '15 min',
           description: 'Resistance progression with easy, moderate,\nand fast intervals. 3 complete cycles.\n ',
           battlePlan: '• 2 min easy\n• 1 min moderate (increase resistance)\n• 1 min fast\n• repeat 3x\n• finish with 2 min easy',
@@ -854,7 +854,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
       ],
       advanced: [
         {
-          name: 'Sprint & Recover',
+          name: 'Sprint & Recover (Row)',
           duration: '20 min',
           description: 'Sprint intervals at 32 SPM with moderate\nrecovery strokes. 10 complete rounds.\n ',
           battlePlan: '• 30 sec sprint (32 SPM)\n• 1 min moderate (24 SPM)\n• repeat 10x',
@@ -877,7 +877,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Endurance Builder',
+          name: 'Endurance Builder (Row)',
           duration: '30 min',
           description: 'Progressive endurance build from easy\nto fast pace with structured progression.\n ',
           battlePlan: '• 5 min easy\n• 10 min moderate\n• 5 min hard\n• 5 min fast\n• 5 min cool-down',
@@ -1081,7 +1081,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Resistance Play',
+          name: 'Resistance Play (Ski)',
           duration: '15 min',
           description: 'Resistance variations from light to moderate\nwith steady, moderate, and slow phases.\n ',
           battlePlan: '• 2 min steady (resistance 3)\n• 1 min moderate (resistance 5)\n• 2 min slow (resistance 2)\n• repeat 3x',
@@ -1154,7 +1154,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
       ],
       advanced: [
         {
-          name: 'Sprint & Recover',
+          name: 'Sprint & Recover (Ski)',
           duration: '20 min',
           description: 'High-intensity ski sprints with moderate\nrecovery periods. 10 complete rounds.\n ',
           battlePlan: '• 30 sec sprint\n• 1 min moderate\n• repeat 10x',
@@ -1327,7 +1327,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'EMOM Challenge',
+          name: 'EMOM Challenge (Curve)',
           duration: '15 min',
           description: 'Every minute sprint challenge with 20s\nall-out effort and 40s jog recovery.\n ',
           battlePlan: '• Every minute: 20 sec sprint\n• 40 sec moderate jog\n• repeat for 15 min',
@@ -1556,7 +1556,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
       ],
       intermediate: [
         {
-          name: 'Interval Climb',
+          name: 'Interval Climb (Climber)',
           duration: '15 min',
           description: 'Sustained intervals challenge full-body endurance. 5 rounds.\n ',
           battlePlan: '• 1 min hard\n• 1 min moderate\n• 1 min slow\n• repeat 5x',
@@ -1604,7 +1604,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
       ],
       advanced: [
         {
-          name: 'Sprint & Recover',
+          name: 'Sprint & Recover (Climber)',
           duration: '20 min',
           description: 'High-intensity climbing sprints with 20s\nall-out effort and 40s recovery. 15 rounds.\n ',
           battlePlan: '• 20 sec sprint\n• 40 sec moderate\n• repeat 15x',

@@ -771,7 +771,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Technique Tempo',
+          name: 'Technique Tempo (SkiErg)',
           duration: '12–14 min',
           description: '2 min easy then 1 min tempo pulls; repeat smoothly.',
           battlePlan: '5 cycles continuous\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 6)',
@@ -1377,7 +1377,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Gear Nudge',
+          name: 'Gear Nudge (Assault)',
           duration: '10–12 min',
           description: '90s easy then 30s firmer push; repeat controlled cycles.',
           battlePlan: '6 cycles continuous\n• 90s Easy (RPE 3)\n• 30s Push (RPE 6)',

@@ -555,7 +555,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Cable Finish',
+          name: 'Cable Finish (Lower)',
           duration: '28–35 min',
           description: 'Pull-throughs, cable goblets, curls, standing calves.',
           battlePlan: 'Cable Pull-Through\n• 4 × 10 (RPE 6), 60–75s rest\nCable Goblet Squat (low cable)\n• 4 × 8–10 (RPE 6), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 6), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 6), 60s rest',

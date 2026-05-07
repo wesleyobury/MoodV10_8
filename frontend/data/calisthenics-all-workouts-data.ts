@@ -330,7 +330,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Angle Mix',
+          name: 'Angle Mix (Ab Wheel)',
           duration: '14–18 min',
           description: 'Kneeling diagonals, side planks, hollow holds finish.',
           battlePlan: 'Kneeling Ab Wheel Diagonal Rolls\n• 4 × 5–6/side (RPE 5), 90s rest\nSide Plank\n• 3 × 25–35s/side (RPE 5), 45–60s rest\nHollow Hold\n• 3 × 25–35s (RPE 5), 45–60s rest',
@@ -398,7 +398,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Midrange Control',
+          name: 'Midrange Control (Ab Wheel)',
           duration: '16–22 min',
           description: 'Wheel outs with 1.5 reps, diagonal rolls light, side planks for core development.',
           battlePlan: 'Kneeling Ab Wheel (1.5 reps)\n• 4 × 5–6 (RPE 6), 90s rest\nKneeling Diagonal Rolls (short)\n• 3 × 5–6/side (RPE 6), 90s rest\nSide Plank\n• 3 × 30–40s/side (RPE 6), 60s rest',
@@ -428,7 +428,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
     workouts: {
       beginner: [
         {
-          name: 'Bar Start',
+          name: 'Bar Start (Parallettes)',
           duration: '16–22 min',
           description: 'Incline pushups, row regressions, dead bug finish.',
           battlePlan: 'Incline Pushup on Parallettes\n• 3 × 8–12 (RPE 4), 60s rest\nTable Row or Band Row (if available)\n• 3 × 10–12 (RPE 4), 60s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest',
@@ -540,7 +540,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Mixed Angle',
+          name: 'Mixed Angle (Parallettes)',
           duration: '22–28 min',
           description: 'Wide pushups, neutral pushups, side plank reaches.',
           battlePlan: 'Wide Parallette Pushup\n• 4 × 8–12 (RPE 5), 75s rest\nNeutral Parallette Pushup\n• 3 × 8–12 (RPE 5), 60–75s rest\nSide Plank with Reach\n• 3 × 8–10/side (RPE 5), 45–60s rest',
@@ -608,7 +608,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Midrange Control',
+          name: 'Midrange Control (Parallettes)',
           duration: '26–34 min',
           description: 'Pushup 1.5s, pseudo planche pushups, L-sit holds.',
           battlePlan: 'Parallette Pushup (1.5 reps)\n• 4 × 6–8 (RPE 6), 90s rest\nPseudo Planche Pushup\n• 4 × 6–8 (RPE 6), 90s rest\nParallette L-Sit (tuck or one leg)\n• 4 × 10–15s (RPE 6), 60–75s rest',
@@ -1432,7 +1432,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Mixed Angle',
+          name: 'Mixed Angle (Parallel Bars)',
           duration: '22–28 min',
           description: 'Pronated bar rows, dips, knee tucks controlled.',
           battlePlan: 'Parallel Bar Row (pronated, feet bent)\n• 4 × 8–10 (RPE 5), 75s rest\nBand-Assisted Dips\n• 4 × 6–8 (RPE 5–6), 90s rest\nParallel Bar Knee Tucks\n• 3 × 10–12 (RPE 5), 60s rest',
@@ -1478,7 +1478,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Eccentric Power',
+          name: 'Eccentric Power (Parallel Bars)',
           duration: '26–34 min',
           description: 'Dip negatives weighted, hard rows, strict knee raises.',
           battlePlan: 'Weighted Eccentric Dip\n• 5 × 2–3 (RPE 6–7), 120s rest\nParallel Bar Row (feet extended)\n• 4 × 8–10 (RPE 6), 75s rest\nParallel Bar Knee Raise\n• 4 × 10–12 (RPE 6), 60–75s rest',
@@ -1500,7 +1500,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Midrange Control',
+          name: 'Midrange Control (Parallel Bars)',
           duration: '26–34 min',
           description: 'Dip 1.5 reps, chest-to-bar rows, tuck L-sit holds for advanced challenge.',
           battlePlan: 'Dips (1.5 reps: half up, down, full press)\n• 4 × 4–6 (RPE 6), 120s rest\nChest-to-Bar Parallel Bar Row\n• 4 × 8–10 (RPE 6), 75s rest\nTuck L-Sit Hold\n• 4 × 12–18s (RPE 6), 60–75s rest',
