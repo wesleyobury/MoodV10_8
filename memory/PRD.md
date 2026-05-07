@@ -14,6 +14,12 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-07] **Added 7 KB Swing workouts** to the existing `Kettlebells` block in `frontend/data/compound-legs-workouts-data.ts` (alongside the 9 KB Lunge entries already there):
+  - **Beginner (3)**: KB Controlled Swing, KB Swing Reset, KB Swing Hold
+  - **Intermediate (3)**: KB Swing Tempo, KB Swing Ladder, KB Swing Continuous
+  - **Advanced (1)**: KB Swing Intervals
+  - Each workout uses one of the 3 user-supplied swing reference images. Surfaces in the standard Kettlebells equipment carousel together with the lunges. `tsc --noEmit` clean.
+
 - [2026-05-07] **Kettlebells equipment now has real workouts** in Muscle Gainer → Legs → Compound:
   - **`frontend/app/legs-equipment.tsx`**: Wired `kettlebells-compound` (and `pendulum-squat-compound`) into the `Compound` equipment bucket so selections actually flow into the workout-display screen (previously dead-link).
   - **`frontend/data/compound-legs-workouts-data.ts`**: Added new `Kettlebells` equipment block with 9 lunge workouts (3 per intensity), each carouseling through the 3 user-supplied KB lunge reference images:

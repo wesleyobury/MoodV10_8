@@ -3058,6 +3058,81 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'You should never feel rushed.'
             }
           ]
+        },
+        {
+          name: 'KB Controlled Swing',
+          duration: '10–12 min',
+          description: 'Basic swings building hip hinge mechanics and coordination',
+          battlePlan: '3 rounds\n• 12–15 reps\nRest 60s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/ajm4hd60_kb%20swing.png',
+          intensityReason: 'Foundational hip hinge teaches power transfer through the posterior chain',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Hips drive the movement',
+              description: 'Arms should feel passive, not active.'
+            },
+            {
+              icon: 'pulse',
+              title: 'Snap, don’t lift',
+              description: 'If shoulders work, reset your hinge.'
+            },
+            {
+              icon: 'checkmark-circle',
+              title: 'Finish feeling confident',
+              description: 'Not out of breath or overwhelmed.'
+            }
+          ]
+        },
+        {
+          name: 'KB Swing Reset',
+          duration: '10–12 min',
+          description: 'Swings with resets reinforcing clean hinge positioning',
+          battlePlan: '3 rounds\n• 10 reps\nRest 60s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/pj2fe7fs_kb%20swing%202.png',
+          intensityReason: 'Resets reinforce hinge mechanics rep-by-rep before adding volume',
+          moodTips: [
+            {
+              icon: 'refresh',
+              title: 'Reset each rep fully',
+              description: 'Build proper habits early.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stay tight at the top',
+              description: 'Glutes finish the rep.'
+            },
+            {
+              icon: 'timer',
+              title: 'Move with control',
+              description: 'No rushing reps.'
+            }
+          ]
+        },
+        {
+          name: 'KB Swing Hold',
+          duration: '10–12 min',
+          description: 'Swings with top holds improving control and positioning',
+          battlePlan: '3 rounds\n• 10 reps (1s hold)\nRest 60s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/qt6ggg2u_kb%20swing%203.png',
+          intensityReason: 'Top holds build glute lockout and position awareness',
+          moodTips: [
+            {
+              icon: 'pause',
+              title: 'Pause at the top',
+              description: 'Feel full glute contraction.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay tall and locked in',
+              description: 'No leaning back.'
+            },
+            {
+              icon: 'shield',
+              title: 'Control the bell',
+              description: 'Don’t let it control you.'
+            }
+          ]
         }
       ],
       intermediate: [
@@ -3135,6 +3210,81 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Challenging, but never sloppy.'
             }
           ]
+        },
+        {
+          name: 'KB Swing Tempo',
+          duration: '14–16 min',
+          description: 'Swings with controlled returns increasing time under tension',
+          battlePlan: '4 rounds\n• 12 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/ajm4hd60_kb%20swing.png',
+          intensityReason: 'Controlled return phase doubles posterior chain time under tension',
+          moodTips: [
+            {
+              icon: 'arrow-down',
+              title: 'Control the drop',
+              description: 'Don’t let gravity take over.'
+            },
+            {
+              icon: 'flash',
+              title: 'Explode every rep',
+              description: 'Power still matters.'
+            },
+            {
+              icon: 'flame',
+              title: 'Fatigue should build gradually',
+              description: 'If not, increase load.'
+            }
+          ]
+        },
+        {
+          name: 'KB Swing Ladder',
+          duration: '14–16 min',
+          description: 'Progressive rep ladder increasing output and endurance',
+          battlePlan: '10-12-15-12-10 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/pj2fe7fs_kb%20swing%202.png',
+          intensityReason: 'Ladder structure builds power output across an endurance window',
+          moodTips: [
+            {
+              icon: 'timer',
+              title: 'Pace early rounds',
+              description: 'Don’t burn out too soon.'
+            },
+            {
+              icon: 'flash',
+              title: 'Stay explosive late',
+              description: 'Power shouldn’t drop.'
+            },
+            {
+              icon: 'pulse',
+              title: 'Feel lungs and legs working',
+              description: 'Full-body fatigue expected.'
+            }
+          ]
+        },
+        {
+          name: 'KB Swing Continuous',
+          duration: '14–16 min',
+          description: 'Continuous swings building endurance and conditioning',
+          battlePlan: '4 rounds\n• 20 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/qt6ggg2u_kb%20swing%203.png',
+          intensityReason: 'Unbroken sets train aerobic capacity alongside hinge endurance',
+          moodTips: [
+            {
+              icon: 'refresh',
+              title: 'No breaks mid-set',
+              description: 'Stay moving.'
+            },
+            {
+              icon: 'body',
+              title: 'Keep hinge consistent',
+              description: 'Don’t squat it.'
+            },
+            {
+              icon: 'pulse',
+              title: 'Fatigue should feel steady',
+              description: 'Not chaotic.'
+            }
+          ]
         }
       ],
       advanced: [
@@ -3210,6 +3360,31 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               icon: 'flame',
               title: 'Push close to failure',
               description: 'Last reps should feel questionable.'
+            }
+          ]
+        },
+        {
+          name: 'KB Swing Intervals',
+          duration: '16–18 min',
+          description: 'High-output swings performed in timed explosive intervals',
+          battlePlan: '5 rounds\n• 20s on / 20s off\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/ajm4hd60_kb%20swing.png',
+          intensityReason: 'Timed intervals demand max power output rep after rep',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Every rep is max effort',
+              description: 'Treat it like a sprint.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stay sharp under fatigue',
+              description: 'Don’t lose hinge form.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push to your limit',
+              description: 'Final rounds should be brutal.'
             }
           ]
         }
