@@ -419,27 +419,21 @@ export function generateSweatBurnFatCarts(
 ): GeneratedCart[] {
   const { byRoleModality } = buildSweatPool();
 
-  const flavors: { flavor: Flavor; title: string; focus: string }[] = [
-    { flavor: 'cardio',     title: 'Cardio-Leaning Sweat',     focus: 'Cardio-driven session with a resistance accent.' },
-    { flavor: 'balanced',   title: 'Balanced Sweat',           focus: 'Even split of cardio and resistance work.' },
-    { flavor: 'resistance', title: 'Resistance-Leaning Sweat', focus: 'Resistance-driven session with a cardio accent.' },
-  ];
+  const flavors: Flavor[] = ['cardio', 'balanced', 'resistance'];
 
   const globalUsed = new Set<string>();
   const carts: GeneratedCart[] = [];
 
   for (let i = 0; i < flavors.length; i++) {
-    const { flavor, title, focus } = flavors[i];
+    const flavor = flavors[i];
     const built = buildSweatCart(intensity, flavor, byRoleModality, globalUsed, moodCard, workoutType);
     if (built.exercises.length === 0) continue;
 
     carts.push({
       id: `sweat-cart-${i + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
-      title,
-      focus,
-      exercises: built.exercises,
-      totalDuration: `${built.totalDurationMin} min`,
-      equipmentList: built.equipmentList,
+      workouts: built.exercises,
+      totalDuration: built.totalDurationMin,
+      intensity,
     });
   }
 
