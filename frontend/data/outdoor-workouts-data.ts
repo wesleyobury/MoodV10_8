@@ -14,6 +14,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 5 min brisk walk\n• 6 rounds: 1 min easy jog + 1 min walk\n• 5 min easy walk',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240858/mood_app/workout_images/z01f1fdc_download_4_.jpg',
           intensityReason: 'Short jog bouts lift heart rate gently while protecting joints.',
+          session_type: 'interval',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'body',
@@ -34,6 +36,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 5 min easy jog\n• 15–20 min continuous easy→steady\n• 3–5 min walk',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240841/mood_app/workout_images/hi2nsiep_download_5_.jpg',
           intensityReason: 'Gradual pace rise improves aerobic economy with low stress.',
+          session_type: 'continuous',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'hand-left',
@@ -54,6 +58,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 4 min brisk walk\n• 6 rounds: 2 min run + 2 min walk\n• 2–4 min walk',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240824/mood_app/workout_images/4842p5as_download_6_.jpg',
           intensityReason: 'Alternating run and walk develops endurance and steady rhythm.',
+          session_type: 'interval',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'walk',
@@ -76,6 +82,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 8 min easy\n• 10–12 min easy\n• 8–10 min tempo (RPE 7–8)\n• 4–5 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240858/mood_app/workout_images/z01f1fdc_download_4_.jpg',
           intensityReason: 'Late controlled tempo adds stress while preserving technique.',
+          session_type: 'tempo',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'walk',
@@ -96,6 +104,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 8 min easy\n• 1 hard/1 easy\n• 2 hard/2 easy\n• 3 hard/3 easy\n• 2 hard/2 easy\n• 1 hard/1 easy\n• 5 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240841/mood_app/workout_images/hi2nsiep_download_5_.jpg',
           intensityReason: 'Variable surges elevate output and sharpen pacing control.',
+          session_type: 'fartlek',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'trending-up',
@@ -116,6 +126,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 8–10 min easy\n• 20 min steady (talk in phrases)\n• 4–6 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240824/mood_app/workout_images/4842p5as_download_6_.jpg',
           intensityReason: 'Continuous sub-tempo builds durability and running economy.',
+          session_type: 'continuous',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'trending-up',
@@ -138,6 +150,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 10 min easy + 3x20s strides (40s easy)\n• 3x: 8 min threshold + 2 min easy\n• 6–8 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240858/mood_app/workout_images/z01f1fdc_download_4_.jpg',
           intensityReason: 'Repeated threshold bouts raise LT while preserving form quality.',
+          session_type: 'threshold',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'walk',
@@ -158,6 +172,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 10 min easy\n• 10x: 1 min hard + 1 min easy\n• 8–10 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240841/mood_app/workout_images/hi2nsiep_download_5_.jpg',
           intensityReason: 'One-minute surges build power and aerobic sharpness efficiently.',
+          session_type: 'fartlek',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'body',
@@ -178,6 +194,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 10 min easy\n• 10 min steady\n• 10 min tempo\n• 8–10 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240824/mood_app/workout_images/4842p5as_download_6_.jpg',
           intensityReason: 'Stepwise intensity rise builds resilience and precise pacing.',
+          session_type: 'tempo',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'trending-up',
@@ -206,6 +224,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 8 min easy\n• 6x: 30s 90–110 RPM + 90s easy\n• 6–8 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240827/mood_app/workout_images/69v88tej_download_1_.jpg',
           intensityReason: 'Short spin-ups add leg speed with minimal joint loading.',
+          session_type: 'technique',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'bicycle',
@@ -226,6 +246,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 6–8 min easy\n• 6x: 1 min RPE 6 + 1 min easy\n• 5–6 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240842/mood_app/workout_images/i40y65gs_download_2_.jpg',
           intensityReason: 'One-minute efforts lift heart rate safely and smoothly.',
+          session_type: 'interval',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'bicycle',
@@ -246,6 +268,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 10 min easy\n• 3x3 min moderate + 2 min easy\n• 5–8 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240848/mood_app/workout_images/o68zu5hu_download_3_.jpg',
           intensityReason: 'Mostly easy riding with pick-ups enhances aerobic base.',
+          session_type: 'continuous',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'body',
@@ -268,6 +292,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 10 min easy + 3x20s spin-ups\n• 3x: 8 min RPE 7–8 + 3 min easy\n• 6–8 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240827/mood_app/workout_images/69v88tej_download_1_.jpg',
           intensityReason: 'Near-threshold work boosts power and repeatable endurance.',
+          session_type: 'threshold',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'bicycle',
@@ -288,6 +314,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 10 min easy\n• 3x: (1 min RPE 7, 1 min RPE 8) x4 + 3 min easy\n• 6–8 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240842/mood_app/workout_images/i40y65gs_download_2_.jpg',
           intensityReason: 'Fluctuating around threshold trains breath and control.',
+          session_type: 'threshold',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'leaf',
@@ -308,6 +336,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 10 min easy\n• 5x: 2 min 60–70 RPM RPE 7 + 2 min easy\n• 6–8 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240848/mood_app/workout_images/o68zu5hu_download_3_.jpg',
           intensityReason: 'Low-cadence seated grinds build strength with safety.',
+          session_type: 'interval',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'body',
@@ -330,6 +360,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 12 min easy + 3x15s high cadence\n• 6x: 2 min RPE 9 + 2 min easy\n• 8–10 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240827/mood_app/workout_images/69v88tej_download_1_.jpg',
           intensityReason: 'Short hard reps raise aerobic ceiling with quality rest.',
+          session_type: 'interval',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'body',
@@ -350,6 +382,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 12 min easy\n• 4 hard + 4 easy\n• 6 hard + 6 easy\n• 8 hard + 8 easy\n• 6 hard + 6 easy\n• 4 hard + 4 easy\n• 6–8 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240842/mood_app/workout_images/i40y65gs_download_2_.jpg',
           intensityReason: 'Stepwise threshold sets build durable pacing control.',
+          session_type: 'threshold',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'bicycle',
@@ -370,6 +404,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 12 min easy\n• 10x: 30s RPE 9 + 90s easy\n• 8–10 min easy',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240848/mood_app/workout_images/o68zu5hu_download_3_.jpg',
           intensityReason: 'High-torque sprints train snap and smooth transitions.',
+          session_type: 'sprint',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'body',
@@ -398,6 +434,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 10x25 Freestyle, 30–45s rest (own pace if needed)\n• 4x25 Backstroke easy, 30–45s rest\n• 50 easy Freestyle',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240834/mood_app/workout_images/aj6v6kqd_fss.jpg',
           intensityReason: 'Very short repeats reduce fatigue and shoulder strain safely.',
+          session_type: 'interval',
+          intensity_cost: 1,
           moodTips: [
             {
               icon: 'leaf',
@@ -418,6 +456,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 6x25 Freestyle, 30–45s rest (own pace)\n• 4x25 Backstroke, 30–45s rest\n• 4x25 Breaststroke, 40–60s rest\n• 50 easy choice',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240838/mood_app/workout_images/ctmkdqkg_backs.jpg',
           intensityReason: 'Variety at self-selected pace builds comfort and confidence.',
+          session_type: 'technique',
+          intensity_cost: 1,
           moodTips: [
             {
               icon: 'hand-left',
@@ -438,6 +478,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 6x50 Freestyle easy-moderate, 40–60s rest\n• 4x25 Kick easy (choice), 30–45s rest\n• 50 easy Freestyle',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240851/mood_app/workout_images/u6pkmpnl_fss2.jpg',
           intensityReason: 'Short 50s with rest build pacing awareness and ease strain.',
+          session_type: 'interval',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'water',
@@ -460,6 +502,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 12x50 Freestyle steady, 25–45s rest (own pace ok)\n• 100 easy Freestyle',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240853/mood_app/workout_images/w5dwgsls_download_23_.jpg',
           intensityReason: 'Steady 50s improve rhythm and base with flexible rests.',
+          session_type: 'interval',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'hand-left',
@@ -480,6 +524,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 6x50 Freestyle steady, 25–40s rest\n• 4x50 Backstroke steady, 30–45s rest\n• 4x50 Breaststroke steady, 35–60s rest\n• 100 easy Freestyle',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240835/mood_app/workout_images/bh9k9ord_bs.jpg',
           intensityReason: 'Balanced stroke work builds coordination under control.',
+          session_type: 'technique',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'body',
@@ -500,6 +546,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 6x100 Freestyle easy-moderate, 45–75s rest (own pace)\n• 100 easy Freestyle',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240851/mood_app/workout_images/u6pkmpnl_fss2.jpg',
           intensityReason: 'Longer 100s build pacing control without heavy fatigue.',
+          session_type: 'continuous',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'leaf',
@@ -522,6 +570,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 8x100 Freestyle strong, 45–75s rest\n• 200 easy Freestyle',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240834/mood_app/workout_images/aj6v6kqd_fss.jpg',
           intensityReason: 'Firm 100s with rest sustain speed and technique quality.',
+          session_type: 'interval',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'hand-left',
@@ -542,6 +592,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 4x100 Freestyle, 40–60s\n• 3x100 Backstroke, 45–75s\n• 3x100 Breaststroke, 60–90s\n• 200 easy Freestyle',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240835/mood_app/workout_images/bh9k9ord_bs.jpg',
           intensityReason: 'Longer mixed repeats build resilience and balance safely.',
+          session_type: 'technique',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'body',
@@ -562,6 +614,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 50 Freestyle, 30–45s\n• 100 Freestyle, 45–75s\n• 150 Freestyle, 60–90s\n• 100 Freestyle, 45–75s\n• 50 Freestyle, 30–45s\n• 100 easy Freestyle',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240853/mood_app/workout_images/w5dwgsls_download_23_.jpg',
           intensityReason: 'Progressing distances train pacing and efficiency steadily.',
+          session_type: 'interval',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'leaf',
@@ -590,6 +644,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 4x 25 yd uphill high knees (walk down)\n• 4x 25 yd uphill side shuffle L/R (alt) (walk down)\n• 4x 30 yd uphill easy jog (walk down)',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240833/mood_app/workout_images/904pke23_download_9_.jpg',
           intensityReason: 'Short uphill drills build coordination and confidence safely.',
+          session_type: 'drill',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'body',
@@ -610,6 +666,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 4x 20 yd uphill skips (walk down)\n• 4x 20 yd uphill marching high knees (walk down)\n• 4x 20 yd uphill backpedal (walk down)',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240840/mood_app/workout_images/fuxu9rk0_download_8_.jpg',
           intensityReason: 'Marching, skipping, backpedal build timing and balance.',
+          session_type: 'drill',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'body',
@@ -630,6 +688,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 3 rounds:\n\n25 yd uphill side shuffle L\n25 yd uphill side shuffle R\n25 yd uphill karaoke (lead L)\n25 yd uphill karaoke (lead R)\n30 yd uphill easy jog\nWalk down between each',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240850/mood_app/workout_images/ts9r3lf1_download_15_.jpg',
           intensityReason: 'Lateral and rotational steps enhance hip strength safely.',
+          session_type: 'drill',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'body',
@@ -650,6 +710,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 8x 20–25 yd uphill sprints, full walk down',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240831/mood_app/workout_images/8d9vosf3_download_12_.jpg',
           intensityReason: 'Very short incline sprints teach speed with low impact.',
+          session_type: 'sprint',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'trending-up',
@@ -672,6 +734,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 6x 12–15 uphill bounds (walk down)\n• 6x 25–30 yd uphill skips for height (walk down)\n• 6x 25–30 yd uphill sprints (walk down)',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240859/mood_app/workout_images/zqqramht_download_13_.jpg',
           intensityReason: 'Bounds, skips, sprints build elastic strength safely.',
+          session_type: 'plyo',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'trending-up',
@@ -692,6 +756,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 4 rounds:\n\n30 yd uphill karaoke (lead L)\n30 yd uphill karaoke (lead R)\n25 yd uphill side shuffle L\n25 yd uphill side shuffle R\n25 yd uphill backpedal\n25 yd uphill sprint\nWalk down between reps',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240850/mood_app/workout_images/ts9r3lf1_download_15_.jpg',
           intensityReason: 'Lateral and rotational moves challenge balance safely.',
+          session_type: 'drill',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'body',
@@ -712,6 +778,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 6 sets:\n\n20 yd uphill walking lunges\n6–8 uphill broad jumps (~20 yd)\n20 yd uphill sprint\nWalk down recovery',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240856/mood_app/workout_images/xyu6atdo_download_10_.jpg',
           intensityReason: 'Lunges and jumps pre-fatigue, then sprints build posture.',
+          session_type: 'strength_circuit',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'body',
@@ -732,6 +800,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 10x 30–40 yd uphill sprints, full walk down',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240831/mood_app/workout_images/8d9vosf3_download_12_.jpg',
           intensityReason: 'Short fast sprints improve power with full recovery.',
+          session_type: 'sprint',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'trending-up',
@@ -754,6 +824,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 3 rounds:\n\n40 yd uphill sprint\n30 yd uphill high knees\n12–15 uphill bounds\n30 yd uphill karaoke (each lead)\n30 yd uphill side shuffle (each)\nWalk down between all',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240821/mood_app/workout_images/0c0jva1u_download_11_.jpg',
           intensityReason: 'Varied drills challenge stiffness, power, and precision.',
+          session_type: 'hybrid',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'body',
@@ -774,6 +846,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 8 sets:\n\n15–20 yd uphill bear crawl\n20 yd uphill backpedal\n20–25 yd uphill sprint\nWalk down recovery',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240837/mood_app/workout_images/cno97kue_download_14_.jpg',
           intensityReason: 'Crawling loads core; sprints add speed under fatigue.',
+          session_type: 'strength_circuit',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'body',
@@ -794,6 +868,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 6 sets:\n\n25 yd uphill skips for distance\n6–8 uphill broad jumps (~20–25 yd)\n30 yd uphill sprint\nWalk down',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240859/mood_app/workout_images/zqqramht_download_13_.jpg',
           intensityReason: 'Jumps prime tissues; sprints reinforce fast mechanics.',
+          session_type: 'plyo',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'trending-up',
@@ -814,6 +890,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 12x 20–25 yd uphill sprints, full walk down',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240831/mood_app/workout_images/8d9vosf3_download_12_.jpg',
           intensityReason: 'Very short sprints train quickness with low cumulative load.',
+          session_type: 'sprint',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'trending-up',
@@ -842,6 +920,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 3 rounds:\n\n12 bench squats\n10 incline push-ups (bench)\n8 bench dips\n60s easy walk',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240819/mood_app/workout_images/0aaca0zk_download_16_.jpg',
           intensityReason: 'Simple bodyweight moves build strength with joint safety.',
+          session_type: 'strength_circuit',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'body',
@@ -862,6 +942,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 3 rounds:\n\n10 step-ups/side (bench)\n8 bench rows (underhand)\n8–10 bench dips\n150–200 m easy jog\n• 60–90s rest',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240839/mood_app/workout_images/f9t1jnvw_download_17_.jpg',
           intensityReason: 'Alternating strength and jog sustains HR without spikes.',
+          session_type: 'strength_circuit',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'trending-up',
@@ -882,6 +964,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 3 rounds:\n\n8 walking lunges/side\n8–10 incline push-ups\n8 bench dips\n60s easy walk',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240845/mood_app/workout_images/jzueym21_download_18_.jpg',
           intensityReason: 'Gentle pairing improves movement quality and stability.',
+          session_type: 'strength_circuit',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'body',
@@ -904,6 +988,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 4 rounds:\n\n10 bench rows\n10 push-ups\n10–12 dips\n10 step-ups/side\n200 m run\n• Rest 60–90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240854/mood_app/workout_images/xmpcsqgf_download_22_.jpg',
           intensityReason: 'Balanced upper/lower work with runs sustains output.',
+          session_type: 'strength_circuit',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'body',
@@ -924,6 +1010,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 20 min EMOM:\n\nMin 1: 10–12 dips\nMin 2: 10 bench jumps or step-ups/side\nMin 3: 10–12 push-ups\nMin 4: 200 m run',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240844/mood_app/workout_images/ixf6e9ex_download_20_.jpg',
           intensityReason: 'EMOM timing preserves quality while managing fatigue.',
+          session_type: 'hybrid',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'trending-up',
@@ -944,6 +1032,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 4 rounds:\n\n12 bench dips\n15 air squats\n10 bench rows\n200 m run\n• 60–90s rest',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240819/mood_app/workout_images/0aaca0zk_download_16_.jpg',
           intensityReason: 'Mixed calisthenics and light runs train steady output.',
+          session_type: 'strength_circuit',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'body',
@@ -966,6 +1056,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 3 rounds:\n\n15 dips\n12 decline push-ups (feet on bench)\n12 bench jumps\n300 m run\n• 90s rest',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240844/mood_app/workout_images/ixf6e9ex_download_20_.jpg',
           intensityReason: 'Higher volumes with runs test posture and breathing.',
+          session_type: 'strength_circuit',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'body',
@@ -986,6 +1078,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 24 min alternating EMOM:\n\nOdd: 12 dips + 10 push-ups\nEven: 2x 50 m sprint (walk back)',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240854/mood_app/workout_images/xmpcsqgf_download_22_.jpg',
           intensityReason: 'Short sprints add intensity while EMOM preserves form.',
+          session_type: 'hybrid',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'trending-up',
@@ -1006,6 +1100,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 4 rounds:\n\n15 dips\n12 push-ups\n12 burpees\n200 m run\n• 60–90s rest',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240823/mood_app/workout_images/2o1s2i0l_download_19_.jpg',
           intensityReason: 'Pairing push patterns and runs increases sustained load.',
+          session_type: 'strength_circuit',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'body',
@@ -1034,6 +1130,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 2 laps easy jog\n• 2x40 m high knees (walk back)\n• 2x40 m A-skips (walk back)\n• 4x40 m relaxed strides (walk back)',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240857/mood_app/workout_images/y6eufem1_download_28_.jpg',
           intensityReason: 'Short drills improve rhythm and posture with low impact.',
+          session_type: 'drill',
+          intensity_cost: 2,
           moodTips: [
             {
               icon: 'body',
@@ -1054,6 +1152,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 2 laps easy jog\n• 2x40 m bounds (walk back)\n• 2x40 m skips for height (walk back)\n• 4x60 m straights moderate (walk back)',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240849/mood_app/workout_images/osnepsje_download_25_.jpg',
           intensityReason: 'Low-volume plyos enhance elasticity with control.',
+          session_type: 'plyo',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'trending-up',
@@ -1074,6 +1174,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 2 laps easy jog\n• 8–10x30 m sprints, full walk back',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240830/mood_app/workout_images/8chb1prv_download_29_.jpg',
           intensityReason: 'Very short sprints teach acceleration without overload.',
+          session_type: 'sprint',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'trending-up',
@@ -1094,6 +1196,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 2 laps easy jog\n• 2x100 m curves easy (straights walk)\n• 2x30 m high knees (walk back)\n• 4x40 m sprints (walk back)',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240847/mood_app/workout_images/kb9dg83f_download_30_.jpg',
           intensityReason: 'Curved running practice improves balance and control.',
+          session_type: 'drill',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'ellipse-outline',
@@ -1116,6 +1220,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 1 lap easy jog\n• 2x40 m A-skips\n• 2x40 m bounds\n• 4x150 m @ 3–5k effort, walk 150 m',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240832/mood_app/workout_images/8s808afw_download_24_.jpg',
           intensityReason: 'Drills then 150s build speed endurance with form.',
+          session_type: 'interval',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'body',
@@ -1136,6 +1242,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 1 lap easy jog\n• 6x40 m fast, walk back\n• 6x30 m fast, walk back',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240830/mood_app/workout_images/8chb1prv_download_29_.jpg',
           intensityReason: 'Short sprints sharpen turnover with full recovery.',
+          session_type: 'sprint',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'trending-up',
@@ -1156,6 +1264,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 3 rounds:\n\n30 m high knees (walk back)\n30 m A-skips (walk back)\n30 m bounds (walk back)\n60 m stride',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240857/mood_app/workout_images/y6eufem1_download_28_.jpg',
           intensityReason: 'Drills with strides build posture and elasticity safely.',
+          session_type: 'drill',
+          intensity_cost: 3,
           moodTips: [
             {
               icon: 'body',
@@ -1176,6 +1286,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 8 laps: straights moderate-fast + curves easy jog',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240847/mood_app/workout_images/kb9dg83f_download_30_.jpg',
           intensityReason: 'Alternating straights and curves teaches rhythm control.',
+          session_type: 'fartlek',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'ellipse-outline',
@@ -1198,6 +1310,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 8x40 m fast, full walk back\n• 6x60 m relaxed fast, walk back',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240830/mood_app/workout_images/8chb1prv_download_29_.jpg',
           intensityReason: 'Short sprints and relaxed strides refine max velocity.',
+          session_type: 'sprint',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'body',
@@ -1218,6 +1332,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 3 rounds:\n\n30 m high knees (walk back)\n30 m A-skips (walk back)\n30 m bounds (walk back)\n2x50 m sprints, walk back',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240832/mood_app/workout_images/8s808afw_download_24_.jpg',
           intensityReason: 'Pairing drills and sprints engrains efficient patterns.',
+          session_type: 'hybrid',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'body',
@@ -1238,6 +1354,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 4x curve fly-in + 50 m fast, walk 200 m\n• 8x30 m sprints, full walk back',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240847/mood_app/workout_images/kb9dg83f_download_30_.jpg',
           intensityReason: 'Curve entries and short sprints develop balanced speed.',
+          session_type: 'sprint',
+          intensity_cost: 5,
           moodTips: [
             {
               icon: 'ellipse-outline',
@@ -1258,6 +1376,8 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           battlePlan: '• 3 sets:\n\n20 m fast, walk back\n30 m fast, walk back\n40 m fast, walk back\n• 2–3 min walk between sets',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240825/mood_app/workout_images/4l6rndq8_download_26_.jpg',
           intensityReason: 'Progressing distances train precise force application.',
+          session_type: 'sprint',
+          intensity_cost: 4,
           moodTips: [
             {
               icon: 'trending-up',

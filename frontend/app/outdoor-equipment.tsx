@@ -196,7 +196,7 @@ export default function OutdoorEquipmentScreen() {
   // Handle intensity selection and generate workout
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
     setShowIntensityModal(false);
-    const carts = generateOutdoorCarts(intensity, moodTitle, workoutType);
+    const carts = generateOutdoorCarts(intensity, moodTitle, workoutType, selectedEquipment.map(eq => eq.name));
     
     if (carts.length > 0) {
       if (!isGuest && token) {

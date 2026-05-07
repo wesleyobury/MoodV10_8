@@ -20,7 +20,7 @@ import { quadsWorkoutDatabase } from '../data/quads-workouts-data';
 import { hamstringsWorkoutDatabase } from '../data/hamstrings-workouts-data';
 import { glutesWorkoutDatabase } from '../data/glutes-workouts-data';
 import { calvesWorkoutDatabase } from '../data/calves-workouts-data';
-import { Workout, EquipmentWorkouts, Modality, IntensityCost } from '../types/workout';
+import { Workout, EquipmentWorkouts, Modality, IntensityCost, OutdoorEnvironment, SessionType } from '../types/workout';
 import { IntensityLevel } from '../components/IntensitySelectionModal';
 import { GeneratedCart } from '../components/GeneratedWorkoutView';
 
@@ -592,13 +592,288 @@ export function generateCalisthenicsCarts(
   return generateWorkoutCarts(intensity, moodCard, workoutType, calisthenicsDatabase);
 }
 
-// Export for Outdoor/Get Outside path
+// ============================================================================
+// OUTDOOR MOOD CARD — Combo + Solo Build Logic (v2)
+// ============================================================================
+// Cart contents: 1 OR 2 workouts.
+//   • Cart A: combo (when eligible) — pairing of two workouts
+//   • Cart B: solo high-intensity session
+//   • Cart C: second combo (different pairing) when eligible & tier != beginner;
+//             otherwise solo low-intensity session
+//
+// Rules:
+//   • Same-env combos (run+run, bike+bike, ...): opener MUST be beginner-tier.
+//     Beginner users never get same-env combos (would be redundant).
+//   • Cross-env combos: prefer user-tier opener at intensity_cost <= 3;
+//     fall back to beginner-tier opener if user tier has none (this is what
+//     unblocks advanced users whose tier is all intensity 5).
+//   • Combo order: lower intensity_cost first (ties broken by beginner-tier
+//     for same-env).
+// ============================================================================
+
+const OUTDOOR_EQUIPMENT_TO_ENV: Record<string, OutdoorEnvironment> = {
+  'Outdoor Run': 'run',
+  'Bike': 'bike',
+  'Swim': 'swim',
+  'Hills': 'hills',
+  'Park workout': 'park',
+  'Track workout': 'track',
+};
+
+const ELIGIBLE_PAIRINGS: Array<[OutdoorEnvironment, OutdoorEnvironment]> = [
+  // Cross-environment
+  ['run', 'hills'],
+  ['run', 'park'],
+  ['bike', 'hills'],
+  ['bike', 'park'],
+  ['park', 'hills'],
+  // Same-environment (opener must be beginner-tier)
+  ['run', 'run'],
+  ['bike', 'bike'],
+  ['swim', 'swim'],
+  ['hills', 'hills'],
+  ['park', 'park'],
+  ['track', 'track'],
+];
+
+const isSameEnvCombo = (p: [OutdoorEnvironment, OutdoorEnvironment]) => p[0] === p[1];
+
+interface OutdoorCandidate {
+  workout: Workout;
+  equipment: string;
+  environment: OutdoorEnvironment;
+  tier: IntensityLevel;
+}
+
+function buildOutdoorPool(selectedEnvironments: OutdoorEnvironment[]): OutdoorCandidate[] {
+  const out: OutdoorCandidate[] = [];
+  for (const eq of outdoorRunWorkoutDatabase) {
+    const env = OUTDOOR_EQUIPMENT_TO_ENV[eq.equipment];
+    if (!env) continue;
+    if (!selectedEnvironments.includes(env)) continue;
+    for (const tier of ['beginner', 'intermediate', 'advanced'] as IntensityLevel[]) {
+      for (const w of eq.workouts[tier] || []) {
+        out.push({ workout: w, equipment: eq.equipment, environment: env, tier });
+      }
+    }
+  }
+  return out;
+}
+
+function rand<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function pickSameEnvCombo(
+  env: OutdoorEnvironment,
+  poolMain: OutdoorCandidate[],
+  poolBeginner: OutdoorCandidate[],
+  used: Set<string>,
+): OutdoorCandidate[] | null {
+  const openers = poolBeginner.filter(c => c.environment === env && !used.has(c.workout.name));
+  const mains = poolMain.filter(c => c.environment === env && !used.has(c.workout.name));
+  if (openers.length === 0 || mains.length === 0) return null;
+  const opener = rand(openers);
+  // Prefer different session_type for stimulus variety
+  const preferred = mains.filter(c => c.workout.session_type !== opener.workout.session_type && c.workout.name !== opener.workout.name);
+  const remaining = preferred.length > 0 ? preferred : mains.filter(c => c.workout.name !== opener.workout.name);
+  if (remaining.length === 0) return null;
+  const main = rand(remaining);
+  used.add(opener.workout.name);
+  used.add(main.workout.name);
+  return [opener, main]; // beginner opener first
+}
+
+function pickCrossEnvCombo(
+  pairing: [OutdoorEnvironment, OutdoorEnvironment],
+  poolMain: OutdoorCandidate[],
+  poolBeginner: OutdoorCandidate[],
+  used: Set<string>,
+): OutdoorCandidate[] | null {
+  const [envA, envB] = pairing;
+  const poolA_main = poolMain.filter(c => c.environment === envA && !used.has(c.workout.name));
+  const poolB_main = poolMain.filter(c => c.environment === envB && !used.has(c.workout.name));
+
+  const openerA_user = poolA_main.filter(c => (c.workout.intensity_cost ?? 3) <= 3);
+  const openerB_user = poolB_main.filter(c => (c.workout.intensity_cost ?? 3) <= 3);
+
+  let opener: OutdoorCandidate | null = null;
+  let main: OutdoorCandidate | null = null;
+
+  if (openerA_user.length > 0 && poolB_main.length > 0) {
+    opener = rand(openerA_user);
+    const remaining = poolB_main.filter(c => c.workout.name !== opener!.workout.name);
+    if (remaining.length > 0) main = rand(remaining);
+  } else if (openerB_user.length > 0 && poolA_main.length > 0) {
+    opener = rand(openerB_user);
+    const remaining = poolA_main.filter(c => c.workout.name !== opener!.workout.name);
+    if (remaining.length > 0) main = rand(remaining);
+  }
+
+  // Fallback: pull beginner-tier opener (unblocks advanced)
+  if (!opener || !main) {
+    const poolA_beg = poolBeginner.filter(c => c.environment === envA && !used.has(c.workout.name));
+    const poolB_beg = poolBeginner.filter(c => c.environment === envB && !used.has(c.workout.name));
+
+    if (poolA_beg.length > 0 && poolB_main.length > 0) {
+      opener = rand(poolA_beg);
+      main = rand(poolB_main);
+    } else if (poolB_beg.length > 0 && poolA_main.length > 0) {
+      opener = rand(poolB_beg);
+      main = rand(poolA_main);
+    } else {
+      return null;
+    }
+  }
+
+  used.add(opener.workout.name);
+  used.add(main.workout.name);
+  // Order: lower intensity_cost first
+  const oCost = opener.workout.intensity_cost ?? 3;
+  const mCost = main.workout.intensity_cost ?? 3;
+  return oCost <= mCost ? [opener, main] : [main, opener];
+}
+
+function pickCombo(
+  poolMain: OutdoorCandidate[],
+  poolBeginner: OutdoorCandidate[],
+  validCombos: Array<[OutdoorEnvironment, OutdoorEnvironment]>,
+  used: Set<string>,
+  usedPairings: Set<string>,
+  preferDifferent: boolean,
+): OutdoorCandidate[] | null {
+  let candidates = validCombos;
+  if (preferDifferent && usedPairings.size > 0) {
+    const novel = validCombos.filter(p => !usedPairings.has(`${p[0]}|${p[1]}`));
+    if (novel.length > 0) candidates = novel;
+  }
+  // Shuffle candidates so we don't always pick the first
+  const shuffled = [...candidates].sort(() => Math.random() - 0.5);
+  for (const pairing of shuffled) {
+    const result = isSameEnvCombo(pairing)
+      ? pickSameEnvCombo(pairing[0], poolMain, poolBeginner, used)
+      : pickCrossEnvCombo(pairing, poolMain, poolBeginner, used);
+    if (result) {
+      usedPairings.add(`${pairing[0]}|${pairing[1]}`);
+      return result;
+    }
+  }
+  return null;
+}
+
+function pickSolo(
+  poolMain: OutdoorCandidate[],
+  intensityPreference: 'high' | 'low',
+  used: Set<string>,
+  usedSessionTypes: Set<SessionType>,
+): OutdoorCandidate[] | null {
+  const fresh = poolMain.filter(c => !used.has(c.workout.name));
+  if (fresh.length === 0) return null;
+
+  // Prefer novel session_type
+  const novel = fresh.filter(c => c.workout.session_type && !usedSessionTypes.has(c.workout.session_type));
+  let candidates = novel.length > 0 ? novel : fresh;
+
+  candidates = [...candidates].sort((a, b) => {
+    const ac = a.workout.intensity_cost ?? 3;
+    const bc = b.workout.intensity_cost ?? 3;
+    return intensityPreference === 'high' ? bc - ac : ac - bc;
+  });
+  // Pick from top 3 to allow some variety while honoring preference
+  const topN = Math.min(3, candidates.length);
+  const pick = candidates[Math.floor(Math.random() * topN)];
+  used.add(pick.workout.name);
+  if (pick.workout.session_type) usedSessionTypes.add(pick.workout.session_type);
+  return [pick];
+}
+
+function candidatesToCart(
+  cartIdx: number,
+  picks: OutdoorCandidate[],
+  intensity: IntensityLevel,
+  moodCard: string,
+  workoutType: string,
+): GeneratedCart {
+  const items: WorkoutItem[] = picks.map(p =>
+    workoutToItem(p.workout, p.equipment, intensity, moodCard, workoutType)
+  );
+  const totalDuration = picks.reduce((sum, p) => sum + parseDuration(p.workout.duration), 0);
+  return {
+    id: `outdoor-cart-${cartIdx + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+    workouts: items,
+    totalDuration,
+    intensity,
+  };
+}
+
+// New v2 Outdoor generator — combo + solo carts based on selected environments.
 export function generateOutdoorCarts(
   intensity: IntensityLevel,
   moodCard: string = 'Get outside',
-  workoutType: string = 'Outdoor'
+  workoutType: string = 'Outdoor',
+  selectedEquipmentNames: string[] = [],
 ): GeneratedCart[] {
-  return generateWorkoutCarts(intensity, moodCard, workoutType, outdoorRunWorkoutDatabase);
+  // Resolve selected equipment names to environment enums.
+  // If none provided (legacy callers), use ALL environments.
+  let selectedEnvs: OutdoorEnvironment[];
+  if (selectedEquipmentNames.length > 0) {
+    selectedEnvs = selectedEquipmentNames
+      .map(n => OUTDOOR_EQUIPMENT_TO_ENV[n])
+      .filter((e): e is OutdoorEnvironment => !!e);
+    // Dedupe
+    selectedEnvs = Array.from(new Set(selectedEnvs));
+  } else {
+    selectedEnvs = ['run', 'bike', 'swim', 'hills', 'park', 'track'];
+  }
+
+  const pool = buildOutdoorPool(selectedEnvs);
+  const poolMain = pool.filter(c => c.tier === intensity);
+  const poolBeginner = pool.filter(c => c.tier === 'beginner');
+
+  const validCombos = ELIGIBLE_PAIRINGS.filter(([a, b]) => {
+    if (a !== b) return selectedEnvs.includes(a) && selectedEnvs.includes(b);
+    // Same-env combos require user is intermediate or advanced
+    return selectedEnvs.includes(a) && intensity !== 'beginner';
+  });
+
+  const carts: GeneratedCart[] = [];
+  const used = new Set<string>();
+  const usedPairings = new Set<string>();
+  const usedSessionTypes = new Set<SessionType>();
+
+  // Cart A — combo (if eligible), else solo high
+  if (validCombos.length > 0) {
+    const combo = pickCombo(poolMain, poolBeginner, validCombos, used, usedPairings, false);
+    if (combo) {
+      combo.forEach(c => c.workout.session_type && usedSessionTypes.add(c.workout.session_type));
+      carts.push(candidatesToCart(0, combo, intensity, moodCard, workoutType));
+    }
+  }
+  if (carts.length === 0) {
+    const solo = pickSolo(poolMain, 'high', used, usedSessionTypes);
+    if (solo) carts.push(candidatesToCart(0, solo, intensity, moodCard, workoutType));
+  }
+
+  // Cart B — solo high
+  const soloB = pickSolo(poolMain, 'high', used, usedSessionTypes);
+  if (soloB) carts.push(candidatesToCart(carts.length, soloB, intensity, moodCard, workoutType));
+
+  // Cart C — second combo (different pairing) if eligible & not beginner; else solo low
+  let cartCAdded = false;
+  if (validCombos.length >= 2 && intensity !== 'beginner') {
+    const combo = pickCombo(poolMain, poolBeginner, validCombos, used, usedPairings, true);
+    if (combo) {
+      combo.forEach(c => c.workout.session_type && usedSessionTypes.add(c.workout.session_type));
+      carts.push(candidatesToCart(carts.length, combo, intensity, moodCard, workoutType));
+      cartCAdded = true;
+    }
+  }
+  if (!cartCAdded) {
+    const soloC = pickSolo(poolMain, 'low', used, usedSessionTypes);
+    if (soloC) carts.push(candidatesToCart(carts.length, soloC, intensity, moodCard, workoutType));
+  }
+
+  return carts;
 }
 
 // Mapping of muscle group names to their databases
