@@ -20,6 +20,34 @@ export type SessionType =
   | 'technique';
 export type OutdoorEnvironment = 'run' | 'bike' | 'swim' | 'hills' | 'park' | 'track';
 
+// --- Lazy mood metadata (used by Build For Me on the I'm Feeling Lazy path) ---
+// Move Your Body sub-path
+export type MoveYourBodyEquipment =
+  | 'treadmill'
+  | 'stationary_bike'
+  | 'elliptical'
+  | 'stair_stepper'
+  | 'rowing_machine'
+  | 'assault_bike'
+  | 'skierg'
+  | 'jump_rope'
+  | 'plyo_box'
+  | 'bodyweight';
+export type LazyModality = 'cardio' | 'bodyweight';
+
+// Lift Weights sub-path
+export type LiftWeightsBodyRegion = 'upper' | 'lower' | 'full_body';
+export type LiftWeightsSubCategory =
+  | 'upper_press'
+  | 'upper_pull'
+  | 'upper_full'
+  | 'lower_quad'
+  | 'lower_hinge'
+  | 'lower_full'
+  | 'fullbody_push'
+  | 'fullbody_pull'
+  | 'fullbody_mix';
+
 // --- Calisthenics mood metadata (used by Build For Me on the Calisthenics path) ---
 export type CalisthenicsEquipment =
   | 'no_equipment'

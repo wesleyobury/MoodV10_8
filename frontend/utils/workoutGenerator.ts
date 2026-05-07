@@ -20,7 +20,20 @@ import { quadsWorkoutDatabase } from '../data/quads-workouts-data';
 import { hamstringsWorkoutDatabase } from '../data/hamstrings-workouts-data';
 import { glutesWorkoutDatabase } from '../data/glutes-workouts-data';
 import { calvesWorkoutDatabase } from '../data/calves-workouts-data';
-import { Workout, EquipmentWorkouts, Modality, IntensityCost, OutdoorEnvironment, SessionType, MovementFocus, CalisthenicsEquipment } from '../types/workout';
+import {
+  Workout,
+  EquipmentWorkouts,
+  Modality,
+  IntensityCost,
+  OutdoorEnvironment,
+  SessionType,
+  MovementFocus,
+  CalisthenicsEquipment,
+  MoveYourBodyEquipment,
+  LazyModality,
+  LiftWeightsBodyRegion,
+  LiftWeightsSubCategory,
+} from '../types/workout';
 import { IntensityLevel } from '../components/IntensitySelectionModal';
 import { GeneratedCart } from '../components/GeneratedWorkoutView';
 
@@ -487,100 +500,208 @@ export function generateLazyCarts(
   return generateWorkoutCarts(intensity, moodCard, workoutType, combinedDatabase);
 }
 
-// Export for I'm Feeling Lazy path with specific training type selection
+// ============================================================================
+// I'M FEELING LAZY — Build For Me v2
+// Two paths picked by the user before this runs:
+//   • Move Your Body  → cardio machine + bodyweight finisher carts
+//   • Lift Weights    → 1-workout machine carts (upper / lower / full body)
+// ============================================================================
+
+// Move Your Body: parent-equipment label → snake_case key
+const MB_EQUIPMENT_TO_KEY: Record<string, MoveYourBodyEquipment> = {
+  'Treadmill': 'treadmill',
+  'Stationary bike': 'stationary_bike',
+  'Elliptical': 'elliptical',
+  'Stair stepper': 'stair_stepper',
+  'Rowing machine': 'rowing_machine',
+  'Assault Bike': 'assault_bike',
+  'SkiErg': 'skierg',
+  'Jump rope': 'jump_rope',
+  'Plyo box': 'plyo_box',
+  'Body weight only': 'bodyweight',
+};
+
+interface MBCandidate {
+  workout: Workout;
+  displayEquipment: string;
+  equipment: MoveYourBodyEquipment;
+  modality: LazyModality;
+}
+
+function buildMoveYourBodyPool(intensity: IntensityLevel): MBCandidate[] {
+  const out: MBCandidate[] = [];
+  for (const eq of lazyBodyweightDatabase) {
+    const key = MB_EQUIPMENT_TO_KEY[eq.equipment];
+    if (!key) continue;
+    const modality: LazyModality = key === 'bodyweight' ? 'bodyweight' : 'cardio';
+    for (const w of eq.workouts[intensity] || []) {
+      out.push({ workout: w, displayEquipment: eq.equipment, equipment: key, modality });
+    }
+  }
+  return out;
+}
+
+// Generate 3 Move Your Body carts.
+//   Beginner       → 2 slots: [cardio, bodyweight]
+//   Int / Advanced → 3 slots: [cardio, cardio (different), bodyweight]
+export function generateMoveYourBodyCarts(
+  intensity: IntensityLevel,
+  moodCard: string = "I'm feeling lazy",
+): GeneratedCart[] {
+  const workoutType = 'Move Your Body';
+  const pool = buildMoveYourBodyPool(intensity);
+  const cardioPool = pool.filter(c => c.modality === 'cardio');
+  const bodyweightPool = pool.filter(c => c.modality === 'bodyweight');
+
+  if (cardioPool.length === 0 || bodyweightPool.length === 0) return [];
+
+  const cartSize = intensity === 'beginner' ? 2 : 3;
+  const cardioSlotsPerCart = cartSize - 1;
+
+  const carts: GeneratedCart[] = [];
+  const usedBodyweightNames = new Set<string>();
+  const usedCardioEquipByRole: Set<MoveYourBodyEquipment>[] = Array.from(
+    { length: cardioSlotsPerCart },
+    () => new Set<MoveYourBodyEquipment>(),
+  );
+
+  for (let cartIndex = 0; cartIndex < 3; cartIndex++) {
+    const cart: MBCandidate[] = [];
+    const usedEquipInCart = new Set<MoveYourBodyEquipment>();
+
+    // Cardio slot(s): equipment-unique within cart, soft cross-cart variety per role
+    for (let slotIdx = 0; slotIdx < cardioSlotsPerCart; slotIdx++) {
+      const candidates = cardioPool.filter(c => !usedEquipInCart.has(c.equipment));
+      if (candidates.length === 0) break;
+      const preferred = candidates.filter(c => !usedCardioEquipByRole[slotIdx].has(c.equipment));
+      const finalPool = preferred.length > 0 ? preferred : candidates;
+      const pick = finalPool[Math.floor(Math.random() * finalPool.length)];
+      cart.push(pick);
+      usedEquipInCart.add(pick.equipment);
+      usedCardioEquipByRole[slotIdx].add(pick.equipment);
+    }
+
+    // Bodyweight finisher: always last, prefer unused names across carts
+    let bwCandidates = bodyweightPool.filter(c => !usedBodyweightNames.has(c.workout.name));
+    if (bwCandidates.length === 0) bwCandidates = bodyweightPool; // pool exhausted — allow repeat
+    const bwPick = bwCandidates[Math.floor(Math.random() * bwCandidates.length)];
+    cart.push(bwPick);
+    usedBodyweightNames.add(bwPick.workout.name);
+
+    const items: WorkoutItem[] = cart.map(c =>
+      workoutToItem(c.workout, c.displayEquipment, intensity, moodCard, workoutType),
+    );
+    const totalDuration = items.reduce((sum, it) => sum + parseDuration(it.duration), 0);
+
+    carts.push({
+      id: `cart-${cartIndex + 1}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      workouts: items,
+      totalDuration,
+      intensity,
+    });
+  }
+
+  return carts;
+}
+
+// Lift Weights: derive sub_category from each EquipmentWorkouts.equipment label per region.
+const LW_SUBCAT_MAP: Record<LiftWeightsBodyRegion, Record<string, LiftWeightsSubCategory>> = {
+  upper: {
+    'Push': 'upper_press',
+    'Pull': 'upper_pull',
+    'Full Upper Body': 'upper_full',
+  },
+  lower: {
+    'Push': 'lower_quad',
+    'Pull': 'lower_hinge',
+    'Full Lower Body': 'lower_full',
+  },
+  full_body: {
+    'Push': 'fullbody_push',
+    'Pull': 'fullbody_pull',
+    'Full Body': 'fullbody_mix',
+  },
+};
+
+interface LWCandidate {
+  workout: Workout;
+  displayEquipment: string;
+  body_region: LiftWeightsBodyRegion;
+  sub_category: LiftWeightsSubCategory;
+}
+
+function buildLiftWeightsPool(
+  region: LiftWeightsBodyRegion,
+  intensity: IntensityLevel,
+): LWCandidate[] {
+  const db =
+    region === 'upper' ? lazyUpperBodyDatabase :
+    region === 'lower' ? lazyLowerBodyDatabase :
+    lazyFullBodyDatabase;
+  const subMap = LW_SUBCAT_MAP[region];
+
+  const out: LWCandidate[] = [];
+  for (const eq of db) {
+    const subCat = subMap[eq.equipment];
+    if (!subCat) continue;
+    for (const w of eq.workouts[intensity] || []) {
+      out.push({
+        workout: w,
+        displayEquipment: eq.equipment,
+        body_region: region,
+        sub_category: subCat,
+      });
+    }
+  }
+  return out;
+}
+
+// In-memory soft cache: avoid repeating sub-category in each region across consecutive calls.
+type LWSubCache = { upper: LiftWeightsSubCategory | null; lower: LiftWeightsSubCategory | null; full_body: LiftWeightsSubCategory | null };
+const lwLastPicks: LWSubCache = { upper: null, lower: null, full_body: null };
+
+// Generate 3 Lift Weights carts: [Upper], [Lower], [Full Body], each with 1 workout.
+export function generateLiftWeightsCarts(
+  intensity: IntensityLevel,
+  moodCard: string = "I'm feeling lazy",
+): GeneratedCart[] {
+  const workoutType = 'Lift Weights';
+  const regions: LiftWeightsBodyRegion[] = ['upper', 'lower', 'full_body'];
+  const carts: GeneratedCart[] = [];
+
+  for (let i = 0; i < regions.length; i++) {
+    const region = regions[i];
+    const regionPool = buildLiftWeightsPool(region, intensity);
+    if (regionPool.length === 0) continue;
+
+    const lastSub = lwLastPicks[region];
+    const preferred = lastSub ? regionPool.filter(c => c.sub_category !== lastSub) : regionPool;
+    const finalPool = preferred.length > 0 ? preferred : regionPool;
+    const pick = finalPool[Math.floor(Math.random() * finalPool.length)];
+
+    lwLastPicks[region] = pick.sub_category;
+
+    const item = workoutToItem(pick.workout, pick.displayEquipment, intensity, moodCard, workoutType);
+    carts.push({
+      id: `cart-${i + 1}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      workouts: [item],
+      totalDuration: parseDuration(item.duration),
+      intensity,
+    });
+  }
+
+  return carts;
+}
+
+// Backwards-compatible dispatcher used by lazy-training-type.tsx.
 export function generateLazyCartsWithType(
   intensity: IntensityLevel,
   trainingType: 'bodyweight' | 'weights',
   moodCard: string = "I'm feeling lazy",
 ): GeneratedCart[] {
-  // Determine exercise count based on training type and intensity
-  let exerciseCount: number;
-  
-  if (trainingType === 'bodyweight') {
-    // Move your body: 3 for beginner and intermediate, 4 for advanced
-    exerciseCount = intensity === 'advanced' ? 4 : 3;
-  } else {
-    // Lift weights: 1 from weights + 1 from bodyweight = 2 total
-    exerciseCount = 2;
-  }
-  
-  const workoutType = trainingType === 'bodyweight' ? 'Move Your Body' : 'Lift Weights';
-  
-  // Get databases based on training type
-  const bodyweightDatabase = lazyBodyweightDatabase;
-  const weightsDatabase = [
-    ...lazyUpperBodyDatabase,
-    ...lazyLowerBodyDatabase,
-    ...lazyFullBodyDatabase
-  ];
-  
-  const carts: GeneratedCart[] = [];
-  const cartCount = 3; // Generate 3 workout options
-  const usedWorkoutNames = new Set<string>();
-  
-  for (let i = 0; i < cartCount; i++) {
-    const workoutItems: WorkoutItem[] = [];
-    
-    if (trainingType === 'bodyweight') {
-      // Only bodyweight exercises
-      const allWorkouts = getAllWorkoutsForIntensity(bodyweightDatabase, intensity);
-      const shuffled = shuffleArray(allWorkouts);
-      
-      for (const item of shuffled) {
-        if (workoutItems.length >= exerciseCount) break;
-        if (usedWorkoutNames.has(item.workout.name)) continue;
-        
-        workoutItems.push(workoutToItem(item.workout, item.equipment, intensity, moodCard, workoutType));
-        usedWorkoutNames.add(item.workout.name);
-      }
-    } else {
-      // Lift weights: 1 bodyweight first, then 1 weight exercise
-      const bodyweightWorkouts = getAllWorkoutsForIntensity(bodyweightDatabase, intensity);
-      const weightsWorkouts = getAllWorkoutsForIntensity(weightsDatabase, intensity);
-      
-      // Shuffle both arrays
-      const shuffledBodyweight = shuffleArray(bodyweightWorkouts);
-      const shuffledWeights = shuffleArray(weightsWorkouts);
-      
-      // Add 1 bodyweight exercise first (listed first in cart)
-      for (const item of shuffledBodyweight) {
-        if (workoutItems.length >= 1) break;
-        if (usedWorkoutNames.has(item.workout.name)) continue;
-        
-        workoutItems.push(workoutToItem(item.workout, item.equipment, intensity, moodCard, 'Move Your Body'));
-        usedWorkoutNames.add(item.workout.name);
-      }
-      
-      // Add 1 weight exercise
-      for (const item of shuffledWeights) {
-        if (workoutItems.length >= 2) break;
-        if (usedWorkoutNames.has(item.workout.name)) continue;
-        
-        workoutItems.push(workoutToItem(item.workout, item.equipment, intensity, moodCard, workoutType));
-        usedWorkoutNames.add(item.workout.name);
-      }
-    }
-    
-    if (workoutItems.length === 0) {
-      usedWorkoutNames.clear();
-      continue;
-    }
-    
-    // Calculate total duration
-    const totalDuration = workoutItems.reduce(
-      (sum, item) => sum + parseDuration(item.duration),
-      0
-    );
-    
-    carts.push({
-      id: `cart-${i + 1}-${Date.now()}`,
-      workouts: workoutItems,
-      totalDuration,
-      intensity,
-    });
-  }
-  
-  return carts;
+  return trainingType === 'bodyweight'
+    ? generateMoveYourBodyCarts(intensity, moodCard)
+    : generateLiftWeightsCarts(intensity, moodCard);
 }
 
 // ============================================================================
