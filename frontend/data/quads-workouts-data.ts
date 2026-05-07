@@ -458,8 +458,3 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
     }
   }
 ];
-  }
-      ]
-    }
-  }
-];

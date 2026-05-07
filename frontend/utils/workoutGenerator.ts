@@ -20,7 +20,7 @@ import { quadsWorkoutDatabase } from '../data/quads-workouts-data';
 import { hamstringsWorkoutDatabase } from '../data/hamstrings-workouts-data';
 import { glutesWorkoutDatabase } from '../data/glutes-workouts-data';
 import { calvesWorkoutDatabase } from '../data/calves-workouts-data';
-import { Workout, EquipmentWorkouts } from '../types/workout';
+import { Workout, EquipmentWorkouts, Modality, IntensityCost } from '../types/workout';
 import { IntensityLevel } from '../components/IntensitySelectionModal';
 import { GeneratedCart } from '../components/GeneratedWorkoutView';
 
@@ -228,6 +228,221 @@ export function generateWorkoutCarts(
   return carts;
 }
 
+// ============================================================================
+// SWEAT MOOD CARD — Structured Assembly Logic
+// ============================================================================
+// Replaces the old shuffle-and-filter generator with a slot-template builder.
+// Template:
+//   Beginner    : [primer, main_block, main_block]
+//   Intermediate: [primer, main_block, main_block, finisher]
+//   Advanced    : [primer, main_block, main_block, finisher]
+// Rules per cart:
+//   • Each slot only pulls workouts whose `role` matches that slot
+//   • Modality must alternate slot-to-slot (no two cardio adjacent, no two
+//     resistance adjacent)
+//   • Every cart guaranteed ≥1 cardio + ≥1 resistance
+//   • Intensity curve: low at slot 1, peak in middle, taper but stay strong
+//   • Equipment clusters when possible (same equipment grouped to reduce
+//     transition friction)
+// 3 carts are deliberate flavors: Cardio-leaning, Balanced, Resistance-leaning.
+// ============================================================================
+
+type SlotRole = 'primer' | 'main_block' | 'finisher';
+type Flavor = 'cardio' | 'balanced' | 'resistance';
+
+interface TaggedCandidate {
+  workout: Workout;
+  equipment: string;
+}
+
+const SWEAT_TEMPLATES: Record<IntensityLevel, SlotRole[]> = {
+  beginner:     ['primer', 'main_block', 'main_block'],
+  intermediate: ['primer', 'main_block', 'main_block', 'finisher'],
+  advanced:     ['primer', 'main_block', 'main_block', 'finisher'],
+};
+
+// Pull every tagged workout (across ALL tiers) from cardio + light-weights pools.
+// We deliberately do NOT filter by `intensity` here — the user's selected
+// intensity shapes the cart through `intensity_cost` targeting, not tier
+// gating. (User's spec: roles like 'primer' are only tagged on beginner-tier
+// cardio, 'finisher' on advanced-tier; if we filter by tier we starve slots.)
+function buildSweatPool(): {
+  byRoleModality: Record<SlotRole, { cardio: TaggedCandidate[]; resistance: TaggedCandidate[] }>;
+} {
+  const empty = (): { cardio: TaggedCandidate[]; resistance: TaggedCandidate[] } => ({ cardio: [], resistance: [] });
+  const byRoleModality: Record<SlotRole, { cardio: TaggedCandidate[]; resistance: TaggedCandidate[] }> = {
+    primer: empty(),
+    main_block: empty(),
+    finisher: empty(),
+  };
+
+  const harvest = (db: EquipmentWorkouts[]) => {
+    for (const eq of db) {
+      for (const tier of ['beginner', 'intermediate', 'advanced'] as IntensityLevel[]) {
+        for (const w of eq.workouts[tier] || []) {
+          if (!w.role || !w.modality) continue;
+          byRoleModality[w.role][w.modality].push({ workout: w, equipment: eq.equipment });
+        }
+      }
+    }
+  };
+  harvest(cardioWorkoutsDatabase);
+  harvest(lightWeightsDatabase);
+  return { byRoleModality };
+}
+
+// Target intensity_cost per slot for each user-selected intensity.
+// Curve: low at slot 1, ramp to peak in middle, finisher stays strong.
+const SWEAT_COST_CURVE: Record<IntensityLevel, IntensityCost[]> = {
+  beginner:     [2, 3, 3],
+  intermediate: [2, 4, 4, 4],
+  advanced:     [3, 5, 5, 5],
+};
+
+// Pick best candidate for a slot given used names, target modality, equipment cluster pref,
+// and target intensity cost.
+function pickForSlot(
+  candidates: TaggedCandidate[],
+  usedNames: Set<string>,
+  preferredEquipment: string | null,
+  targetCost: IntensityCost
+): TaggedCandidate | null {
+  const fresh = candidates.filter(c => !usedNames.has(c.workout.name));
+  const pool = fresh.length > 0 ? fresh : candidates;
+  if (pool.length === 0) return null;
+
+  // Score by cost proximity, with strong bias toward exact match,
+  // then equipment cluster match.
+  const scored = pool.map(c => {
+    const cost = c.workout.intensity_cost ?? 3;
+    const costDiff = Math.abs(cost - targetCost);
+    const equipMatch = preferredEquipment && c.equipment === preferredEquipment ? 1 : 0;
+    return { c, score: -costDiff * 2 + equipMatch + Math.random() * 0.5 };
+  });
+  scored.sort((a, b) => b.score - a.score);
+  // Take from top 3 to keep variety run-to-run
+  const topN = Math.min(3, scored.length);
+  return scored[Math.floor(Math.random() * topN)].c;
+}
+
+// Decide modality for slot N based on flavor + previous slot modality + role available pools
+function chooseModality(
+  flavor: Flavor,
+  prevModality: Modality | null,
+  rolePool: { cardio: TaggedCandidate[]; resistance: TaggedCandidate[] }
+): Modality | null {
+  const cardioAvail = rolePool.cardio.length > 0;
+  const resAvail = rolePool.resistance.length > 0;
+  if (!cardioAvail && !resAvail) return null;
+  if (!cardioAvail) return 'resistance';
+  if (!resAvail) return 'cardio';
+
+  // Hard alternation rule: must differ from prev when both are available
+  if (prevModality === 'cardio') return 'resistance';
+  if (prevModality === 'resistance') return 'cardio';
+
+  // First slot: bias by flavor
+  if (flavor === 'cardio') return 'cardio';
+  if (flavor === 'resistance') return 'resistance';
+  // balanced — coin flip
+  return Math.random() < 0.5 ? 'cardio' : 'resistance';
+}
+
+function buildSweatCart(
+  intensity: IntensityLevel,
+  flavor: Flavor,
+  pool: ReturnType<typeof buildSweatPool>['byRoleModality'],
+  globalUsed: Set<string>,
+  moodCard: string,
+  workoutType: string
+): { exercises: WorkoutItem[]; equipmentList: string[]; totalDurationMin: number } {
+  const template = SWEAT_TEMPLATES[intensity];
+  const costCurve = SWEAT_COST_CURVE[intensity];
+  const localUsed = new Set<string>();
+  const exercises: WorkoutItem[] = [];
+  const equipmentList: string[] = [];
+  let prevModality: Modality | null = null;
+  let lastEquipment: string | null = null;
+  let totalDuration = 0;
+  let cardioCount = 0;
+  let resistanceCount = 0;
+
+  for (let slotIdx = 0; slotIdx < template.length; slotIdx++) {
+    const role = template[slotIdx];
+    const targetCost = costCurve[slotIdx] ?? 3;
+    const isLastSlot = slotIdx === template.length - 1;
+    let modality = chooseModality(flavor, prevModality, pool[role]);
+
+    // Guarantee both modalities present: if last slot and one is missing, force it
+    if (isLastSlot) {
+      if (cardioCount === 0 && pool[role].cardio.length > 0) modality = 'cardio';
+      else if (resistanceCount === 0 && pool[role].resistance.length > 0) modality = 'resistance';
+    }
+    // Mid-cart correction: if 2nd-to-last and a modality has zero count, prefer it
+    if (!isLastSlot && slotIdx === template.length - 2) {
+      if (cardioCount === 0 && pool[role].cardio.length > 0 && prevModality !== 'cardio') modality = 'cardio';
+      else if (resistanceCount === 0 && pool[role].resistance.length > 0 && prevModality !== 'resistance') modality = 'resistance';
+    }
+
+    if (!modality) continue;
+
+    const candidates = pool[role][modality];
+    const used = new Set([...globalUsed, ...localUsed]);
+    // Equipment clustering: prefer matching last equipment when same modality follows
+    const preferEquip = lastEquipment && modality === prevModality ? lastEquipment : null;
+    const pick = pickForSlot(candidates, used, preferEquip, targetCost);
+    if (!pick) continue;
+
+    const item = workoutToItem(pick.workout, pick.equipment, intensity, moodCard, workoutType);
+    exercises.push(item);
+    equipmentList.push(pick.equipment);
+    localUsed.add(pick.workout.name);
+    globalUsed.add(pick.workout.name);
+    totalDuration += parseDuration(pick.workout.duration);
+    prevModality = modality;
+    lastEquipment = pick.equipment;
+    if (modality === 'cardio') cardioCount++;
+    else resistanceCount++;
+  }
+
+  return { exercises, equipmentList, totalDurationMin: totalDuration };
+}
+
+// New structured Sweat generator — replaces shuffle-and-filter approach
+export function generateSweatBurnFatCarts(
+  intensity: IntensityLevel,
+  moodCard: string = 'Sweat / burn fat',
+  workoutType: string = 'Mixed'
+): GeneratedCart[] {
+  const { byRoleModality } = buildSweatPool();
+
+  const flavors: { flavor: Flavor; title: string; focus: string }[] = [
+    { flavor: 'cardio',     title: 'Cardio-Leaning Sweat',     focus: 'Cardio-driven session with a resistance accent.' },
+    { flavor: 'balanced',   title: 'Balanced Sweat',           focus: 'Even split of cardio and resistance work.' },
+    { flavor: 'resistance', title: 'Resistance-Leaning Sweat', focus: 'Resistance-driven session with a cardio accent.' },
+  ];
+
+  const globalUsed = new Set<string>();
+  const carts: GeneratedCart[] = [];
+
+  for (let i = 0; i < flavors.length; i++) {
+    const { flavor, title, focus } = flavors[i];
+    const built = buildSweatCart(intensity, flavor, byRoleModality, globalUsed, moodCard, workoutType);
+    if (built.exercises.length === 0) continue;
+
+    carts.push({
+      id: `sweat-cart-${i + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+      title,
+      focus,
+      exercises: built.exercises,
+      totalDuration: `${built.totalDurationMin} min`,
+      equipmentList: built.equipmentList,
+    });
+  }
+
+  return carts;
+}
+
 // Export for specific mood paths
 export function generateLightWeightsCarts(
   intensity: IntensityLevel,
@@ -244,17 +459,6 @@ export function generateCardioCarts(
   workoutType: string = 'Cardio Based'
 ): GeneratedCart[] {
   return generateWorkoutCarts(intensity, moodCard, workoutType, cardioWorkoutsDatabase);
-}
-
-// Export for combined Sweat/burn fat path (cardio + light weights)
-export function generateSweatBurnFatCarts(
-  intensity: IntensityLevel,
-  moodCard: string = 'Sweat / burn fat',
-  workoutType: string = 'Mixed'
-): GeneratedCart[] {
-  // Combine both cardio and light weights databases
-  const combinedDatabase = [...cardioWorkoutsDatabase, ...lightWeightsDatabase];
-  return generateWorkoutCarts(intensity, moodCard, workoutType, combinedDatabase);
 }
 
 // Export for Build Explosion path (bodyweight + weights)
