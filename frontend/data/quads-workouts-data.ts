@@ -45,6 +45,45 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Proper positioning ensures maximum quad engagement during hold.'
             }
           ]
+        },
+        {
+          name: 'Controlled Barbell Reverse Lunge',
+          duration: '12–14 min',
+          description: 'Reverse lunges building quad strength with stable controlled reps',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/i4zgpwgm_bb%20lunge.png',
+          intensityReason: 'Reverse lunges teach quad loading with stable balance',
+          moodTips: [
+            { icon: 'arrow-back', title: 'Step back slower than you want to', description: 'Control creates better quad loading and balance.' },
+            { icon: 'footsteps', title: 'Keep your front foot planted fully', description: 'Pressure through toes usually means instability.' },
+            { icon: 'checkmark-circle', title: 'Finish feeling confident', description: 'You should still feel smooth on your last reps.' }
+          ]
+        },
+        {
+          name: 'Supported Barbell Step-Up',
+          duration: '12–14 min',
+          description: 'Step-ups building quad strength while improving balance control',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/cut2mtn3_bb%20step%20up.png',
+          intensityReason: 'Lower box height builds quad strength with controlled balance',
+          moodTips: [
+            { icon: 'resize', title: 'Use a box height you can fully control', description: 'Too much height changes the movement completely.' },
+            { icon: 'flash', title: 'Drive through the lead leg only', description: 'Your back foot should barely assist the rep.' },
+            { icon: 'shield', title: 'Every rep should feel stable', description: 'Confidence matters more than fatigue here.' }
+          ]
+        },
+        {
+          name: 'Tempo Front Squat',
+          duration: '12–14 min',
+          description: 'Slow eccentric front squats building quad control and posture',
+          battlePlan: '3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/moogyxzc_bb%20front%20squat.png',
+          intensityReason: 'Slow eccentric amplifies quad tension under controlled posture',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Lower slower than feels natural', description: 'Most of the challenge happens on the way down.' },
+            { icon: 'arrow-up', title: 'Keep elbows high through every rep', description: 'Posture determines where tension goes.' },
+            { icon: 'checkmark-circle', title: 'Finish with clean movement left', description: 'You should feel practiced, not destroyed.' }
+          ]
         }
       ],
       intermediate: [
@@ -87,6 +126,45 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               description: 'Maintain bar position and posture throughout complex movement.'
             }
           ]
+        },
+        {
+          name: 'Front Foot Elevated Barbell Lunge',
+          duration: '14–16 min',
+          description: 'Elevated lunges increasing quad tension and range of motion',
+          battlePlan: '4 rounds\n• 8 per leg (3s eccentric)\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/i4zgpwgm_bb%20lunge.png',
+          intensityReason: 'Front-foot elevation deepens range and quad loading',
+          moodTips: [
+            { icon: 'arrow-forward', title: 'Let the knee travel forward naturally', description: 'That deeper bend is what loads the quads hardest.' },
+            { icon: 'arrow-down', title: 'Lower under full control', description: 'The eccentric should feel harder than the ascent.' },
+            { icon: 'flame', title: 'The burn should build steadily', description: 'Especially by rounds 3 and 4.' }
+          ]
+        },
+        {
+          name: 'Front Rack Knee Drive Step-Up',
+          duration: '14–16 min',
+          description: 'Front-loaded step-ups increasing quad tension and balance demand',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/cut2mtn3_bb%20step%20up.png',
+          intensityReason: 'Front-rack load adds balance demand and full quad recruitment',
+          moodTips: [
+            { icon: 'flash', title: 'Drive the knee aggressively at the top', description: 'That added force increases quad recruitment.' },
+            { icon: 'pause', title: 'Pause before stepping down', description: 'Stability is part of the challenge here.' },
+            { icon: 'shield', title: 'Your quads should stay loaded continuously', description: 'Avoid bouncing between reps.' }
+          ]
+        },
+        {
+          name: 'Heel-Elevated Front Squat Pause',
+          duration: '14–16 min',
+          description: 'Paused front squats increasing quad loading and tension buildup',
+          battlePlan: '4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/moogyxzc_bb%20front%20squat.png',
+          intensityReason: 'Heel elevation + pause biases load directly into the quads',
+          moodTips: [
+            { icon: 'arrow-forward', title: 'Let your knees travel forward confidently', description: 'That forward travel is what biases the quads.' },
+            { icon: 'pause', title: 'Pause without relaxing at depth', description: 'Stay fully braced the entire hold.' },
+            { icon: 'flame', title: 'The quad pump should become obvious', description: 'Especially during later rounds.' }
+          ]
         }
       ],
       advanced: [
@@ -128,6 +206,45 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Transition fast to hack squats next',
               description: 'Quick transition maintains fatigue for maximum quad stress.'
             }
+          ]
+        },
+        {
+          name: 'Barbell Walking Lunge Drop Set',
+          duration: '16–18 min',
+          description: 'Walking lunges extended with drops pushing quads near failure',
+          battlePlan: '3 rounds\n• 10 per leg\n• Drop → 10\n• Drop → BW walking lunges\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/i4zgpwgm_bb%20lunge.png',
+          intensityReason: 'Drop sets sustain quad effort past traditional failure',
+          moodTips: [
+            { icon: 'walk', title: 'Don’t stop walking once the burn starts', description: 'Fatigue is where this variation becomes effective.' },
+            { icon: 'arrow-down', title: 'Drop weight before form breaks', description: 'Intensity stays high without sacrificing mechanics.' },
+            { icon: 'flame', title: 'Final steps should feel brutal', description: 'You should barely finish the last stretch.' }
+          ]
+        },
+        {
+          name: 'Deficit Barbell Step-Up',
+          duration: '16–18 min',
+          description: 'Deficit step-ups increasing range, tension, and quad fatigue',
+          battlePlan: '4 rounds\n• 6–8 per leg\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/cut2mtn3_bb%20step%20up.png',
+          intensityReason: 'Increased deficit deepens range and quad loading',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Own the deepest part of the movement', description: 'More range creates more quad tension.' },
+            { icon: 'shield', title: 'Stay balanced while fatigued', description: 'Control separates strong reps from sloppy ones.' },
+            { icon: 'flame', title: 'Final rounds should slow down hard', description: 'Near failure is the goal here.' }
+          ]
+        },
+        {
+          name: 'Front Squat 1.5 Reps',
+          duration: '16–18 min',
+          description: 'Extended-rep front squats driving relentless quad tension',
+          battlePlan: '4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/moogyxzc_bb%20front%20squat.png',
+          intensityReason: '1.5 reps double time spent in the deepest quad-loading range',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Own the bottom half of every rep', description: 'That’s where the quads work hardest.' },
+            { icon: 'timer', title: 'Stay patient once fatigue hits', description: 'Rushing instantly removes tension.' },
+            { icon: 'flame', title: 'The last rounds should feel relentless', description: 'You should question the final reps.' }
           ]
         }
       ]
