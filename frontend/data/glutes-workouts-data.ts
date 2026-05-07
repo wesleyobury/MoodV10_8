@@ -24,7 +24,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Box-guided squats reinforcing glute loading and depth control',
           battlePlan: '3 rounds\n• 8 reps\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
           intensityReason: 'Box reference reinforces depth and consistent glute loading',
           moodTips: [
             { icon: 'remove', title: 'Lightly touch the box only', description: 'Don’t fully sit and lose tension.' },
@@ -37,7 +37,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Slow eccentric squats increasing glute tension and positioning',
           battlePlan: '3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
           intensityReason: 'Slow eccentric amplifies glute tension under controlled load',
           moodTips: [
             { icon: 'arrow-down', title: 'Lower slower than you want to', description: 'The eccentric is where most tension builds.' },
@@ -65,7 +65,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Squats extended with bottom pulses increasing glute tension',
           battlePlan: '4 rounds\n• 8 reps + 4 pulses\nRest 120s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
           intensityReason: 'Bottom pulses sustain glute tension in the deepest range',
           moodTips: [
             { icon: 'arrow-down', title: 'Stay close to the bottom', description: 'Pulses keep you in the hardest range longer.' },
@@ -78,7 +78,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Paused squats building glute strength from the bottom position',
           battlePlan: '4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
           intensityReason: 'Paused bottom develops strength out of the hardest position',
           moodTips: [
             { icon: 'pause', title: 'Pause without relaxing', description: 'Stay tight at full depth.' },
@@ -106,7 +106,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Extended-rep squats increasing glute tension and fatigue output',
           battlePlan: '4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
           intensityReason: '1.5 reps double time spent in the deepest glute-loading range',
           moodTips: [
             { icon: 'arrow-down', title: 'Own the bottom half of the squat', description: 'That’s where glutes work hardest.' },
@@ -119,7 +119,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'High-rep squats driving deep glute fatigue and endurance',
           battlePlan: '3 rounds\n• 15–20 reps\nRest 150s',
-          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
           intensityReason: 'High-rep volume drives deep glute fatigue and endurance',
           moodTips: [
             { icon: 'repeat', title: 'Stay in constant motion', description: 'Locking out fully gives your muscles a break.' },

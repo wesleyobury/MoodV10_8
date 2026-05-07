@@ -328,7 +328,7 @@ export default function Welcome() {
             />
             <AnimatedFeatureItem
               icon="videocam"
-              title="150+ Exercise Videos"
+              title="200+ Exercise Videos"
               description="Visual guides with coaching cues"
               delay={3000}
             />

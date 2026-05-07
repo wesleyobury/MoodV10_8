@@ -11,7 +11,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Front held bar guides posture as quads take full load',
           battlePlan: '3 rounds\n• 10–12 Light Barbell Sissy Squats\nRest 75s',
-          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241358/mood_app/workout_images/sjqdvile_bbss.jpg',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/z4gtn2yh_bb%20sissy%20squat.png',
           intensityReason: 'Teaches quad isolation through knee forward motion',
           moodTips: [
             {
@@ -31,7 +31,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Static hold reinforces posture and leg strength',
           battlePlan: '3 rounds\n• 6–8 Sissy Squats\n• Add 10s Hold each set\nRest 75s',
-          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241358/mood_app/workout_images/sjqdvile_bbss.jpg',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/fwtkmsgm_bb%20sissy%20squat%202.png',
           intensityReason: 'Iso hold at squat bottom builds quad endurance',
           moodTips: [
             {
@@ -92,7 +92,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Adds weight to sissy squat for deeper hypertrophy',
           battlePlan: '4 rounds\n• 8–10 Weighted Sissy Squats\nRest 90s',
-          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240636/mood_app/workout_images/3hob85xt_download_22_.jpg',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/z4gtn2yh_bb%20sissy%20squat.png',
           intensityReason: 'Front bar load progression maximizes quad stress',
           moodTips: [
             {
@@ -112,7 +112,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'High tension squatting style grows endurance fast',
           battlePlan: '3 rounds\n• 8 Combo Reps (half + full = 1)\nRest 90s',
-          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241358/mood_app/workout_images/sjqdvile_bbss.jpg',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/fwtkmsgm_bb%20sissy%20squat%202.png',
           intensityReason: 'Half+full rep sequence lengthens quad activation',
           moodTips: [
             {
@@ -193,7 +193,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Dual movement combo overloads quads with fatigue',
           battlePlan: '3 rounds\n• 6 Front Hold Sissy Squats\n• 6 Barbell Hack Squats\nRest 120s',
-          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241358/mood_app/workout_images/sjqdvile_bbss.jpg',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/z4gtn2yh_bb%20sissy%20squat.png',
           intensityReason: 'Pairing front and back styles crushes quad fibers',
           moodTips: [
             {
@@ -454,6 +454,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             }
           ]
         }
+      ]
+    }
+  }
+];
+  }
       ]
     }
   }
