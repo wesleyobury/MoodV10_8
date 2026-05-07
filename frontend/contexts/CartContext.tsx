@@ -19,6 +19,10 @@ export interface WorkoutItem {
     title: string;
     description: string;
   }[];
+  // Optional: Sweat metadata for Build For Me chips
+  role?: 'primer' | 'main_block' | 'finisher';
+  intensity_cost?: 1 | 2 | 3 | 4 | 5;
+  modality?: 'cardio' | 'resistance';
   // Optional: track source for analytics
   source?: 'custom' | 'build_for_me';
 }

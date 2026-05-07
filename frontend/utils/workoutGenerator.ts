@@ -93,6 +93,9 @@ function workoutToItem(
       title: tip.title,
       description: tip.description,
     })),
+    role: workout.role,
+    intensity_cost: workout.intensity_cost,
+    modality: workout.modality,
   };
 }
 
