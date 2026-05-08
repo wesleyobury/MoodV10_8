@@ -7871,10 +7871,12 @@ async def get_live_feed(
     most_common_mood = _LIVE_BUCKET_LABELS.get(top_bucket) if top_bucket else None
 
     # ---------- ENTRIES ----------
-    # Cap lookback at 48 hours — the feed should feel "live", not historical.
-    # Stretch progressively from 6h → 24h → 48h until we have at least 15 entries,
-    # then stop. Beyond 48h, we'd rather show fewer (or empty state) than stale data.
-    lookback_options = [timedelta(hours=6), timedelta(hours=24), timedelta(hours=48)]
+    # Primary window: 48 hours (feed should feel "live").
+    # Soft fallback to 7 days only if we still don't have ~15 entries —
+    # those will naturally read as older ("yesterday", "3 days ago", "last week")
+    # via _format_relative_time.
+    lookback_options = [timedelta(hours=6), timedelta(hours=24),
+                        timedelta(hours=48), timedelta(days=7)]
 
     raw_entries: List[dict] = []
     user_cache: Dict[str, dict] = {}
@@ -7966,50 +7968,51 @@ async def get_live_feed(
                 "ago_text": _format_relative_time(ts),
             })
 
-        # Inject milestone entries — users who recently crossed a threshold
-        # Only check on the broadest meaningful pull (>= 3 days lookback)
-        if window >= timedelta(days=3):
-            ms_pipeline = [
-                {"$match": {"event_type": "workout_completed",
-                            "timestamp": {"$gte": now - timedelta(days=14)}}},
-                {"$group": {"_id": "$user_id", "last_ts": {"$max": "$timestamp"}}},
-            ]
-            ms_rows = await db.user_events.aggregate(ms_pipeline).to_list(200)
-            for row in ms_rows:
-                uid = str(row["_id"]) if row["_id"] else ""
-                if not uid:
-                    continue
-                user_doc = await _get_user(uid)
-                if not user_doc:
-                    continue
-                wcount = user_doc.get("workouts_count", 0) or 0
-                if wcount in _MILESTONE_THRESHOLDS:
-                    last_ts = row["last_ts"]
-                    if last_ts.tzinfo is None:
-                        last_ts = last_ts.replace(tzinfo=timezone.utc)
-                    raw_entries.append({
-                        "id": f"milestone-{uid}-{wcount}",
-                        "type": "milestone",
-                        "user": {
-                            "id": uid,
-                            "username": user_doc.get("username") or "",
-                            "name": user_doc.get("name") or user_doc.get("username") or "Someone",
-                            "avatar": user_doc.get("avatar") or "",
-                        },
-                        # Milestones get a neutral bucket — pick a representative one
-                        "mood_bucket": "muscle",
-                        "mood_label": _LIVE_BUCKET_LABELS["muscle"],
-                        "workout_name": None,
-                        "duration_minutes": None,
-                        "milestone_count": wcount,
-                        "timestamp": last_ts.isoformat(),
-                        "ago_text": _format_relative_time(last_ts),
-                    })
-
         # Sort by timestamp desc and break if we have enough
         raw_entries.sort(key=lambda e: e["timestamp"], reverse=True)
         if len(raw_entries) >= 15:
             break
+
+    # Inject milestone entries (always, regardless of lookback iteration we landed on).
+    # Users who recently crossed a milestone threshold get a card pinned near the top
+    # of their most recent activity.
+    ms_pipeline = [
+        {"$match": {"event_type": "workout_completed",
+                    "timestamp": {"$gte": now - timedelta(days=14)}}},
+        {"$group": {"_id": "$user_id", "last_ts": {"$max": "$timestamp"}}},
+    ]
+    ms_rows = await db.user_events.aggregate(ms_pipeline).to_list(200)
+    for row in ms_rows:
+        uid = str(row["_id"]) if row["_id"] else ""
+        if not uid:
+            continue
+        user_doc = await _get_user(uid)
+        if not user_doc:
+            continue
+        wcount = user_doc.get("workouts_count", 0) or 0
+        if wcount in _MILESTONE_THRESHOLDS:
+            last_ts = row["last_ts"]
+            if last_ts.tzinfo is None:
+                last_ts = last_ts.replace(tzinfo=timezone.utc)
+            raw_entries.append({
+                "id": f"milestone-{uid}-{wcount}",
+                "type": "milestone",
+                "user": {
+                    "id": uid,
+                    "username": user_doc.get("username") or "",
+                    "name": user_doc.get("name") or user_doc.get("username") or "Someone",
+                    "avatar": user_doc.get("avatar") or "",
+                },
+                "mood_bucket": "muscle",
+                "mood_label": _LIVE_BUCKET_LABELS["muscle"],
+                "workout_name": None,
+                "duration_minutes": None,
+                "milestone_count": wcount,
+                "timestamp": last_ts.isoformat(),
+                "ago_text": _format_relative_time(last_ts),
+            })
+
+    raw_entries.sort(key=lambda e: e["timestamp"], reverse=True)
 
     entries = raw_entries[:limit]
 
