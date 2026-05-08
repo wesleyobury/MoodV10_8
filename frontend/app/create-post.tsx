@@ -32,6 +32,8 @@ import ImageCropModal from '../components/ImageCropModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import VideoFrameSelector from '../components/VideoFrameSelector';
 import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
+import { useOnboarding } from '../contexts/OnboardingContext';
+import OnboardingTip from '../components/OnboardingTip';
 
 // Safely import native modules that can crash on production iOS builds
 let captureRef: any = null;
@@ -133,6 +135,32 @@ export default function CreatePost() {
   // Transparent card ref for Instagram export
   const transparentCardRef = useRef(null);
   const [isExportingToInstagram, setIsExportingToInstagram] = useState(false);
+
+  // Onboarding Tip 3 — completion/share chips (3 small floating chips at once)
+  const onboarding = useOnboarding();
+  const [completionTipActive, setCompletionTipActive] = useState(false);
+  const completionTipTriggeredRef = useRef(false);
+
+  useEffect(() => {
+    if (completionTipTriggeredRef.current) return;
+    const timer = setTimeout(() => {
+      if (completionTipTriggeredRef.current) return;
+      if (onboarding.requestRender('completion_share')) {
+        completionTipTriggeredRef.current = true;
+        setCompletionTipActive(true);
+        onboarding.trackShown('completion_share');
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [onboarding]);
+
+  const completeCompletionTip = (action: 'tap' | 'dismiss' | 'never') => {
+    if (!completionTipActive) return;
+    setCompletionTipActive(false);
+    if (action === 'tap') onboarding.markCompleted('completion_share');
+    else if (action === 'dismiss') onboarding.markDismissed('completion_share');
+    else onboarding.markNeverShow('completion_share');
+  };
   
   // Saved achievements state
   const [savedAchievements, setSavedAchievements] = useState<any[]>([]);
@@ -1413,21 +1441,40 @@ export default function CreatePost() {
             <Text style={styles.headerTitle}>Share Your Achievement</Text>
             <Text style={styles.headerSubtitle}>Post to your feed</Text>
           </View>
-          <TouchableOpacity 
-            style={[
-              styles.postButton,
-              (!caption.trim() && selectedImages.length === 0 && !hasStatsCard) && styles.postButtonDisabled
-            ]}
-            onPress={handleCreatePost}
-            disabled={uploading || (!caption.trim() && selectedImages.length === 0 && !hasStatsCard)}
-            activeOpacity={0.7}
-          >
-            {uploading ? (
-              <ActivityIndicator size="small" color="#000" />
-            ) : (
-              <Ionicons name="send" size={20} color="#000" />
-            )}
-          </TouchableOpacity>
+          <View style={{ position: 'relative' }}>
+            <TouchableOpacity 
+              style={[
+                styles.postButton,
+                (!caption.trim() && selectedImages.length === 0 && !hasStatsCard) && styles.postButtonDisabled
+              ]}
+              onPress={() => {
+                if (completionTipActive) completeCompletionTip('tap');
+                handleCreatePost();
+              }}
+              disabled={uploading || (!caption.trim() && selectedImages.length === 0 && !hasStatsCard)}
+              activeOpacity={0.7}
+              testID="create-post-submit"
+            >
+              {uploading ? (
+                <ActivityIndicator size="small" color="#000" />
+              ) : (
+                <Ionicons name="send" size={20} color="#000" />
+              )}
+            </TouchableOpacity>
+            {/* Chip A — Post to Live + dismiss + never-show */}
+            <OnboardingTip
+              visible={completionTipActive}
+              position="bottom"
+              anchorStyle={{ top: 50, right: 0, alignItems: 'flex-end' }}
+              copy="Share with the community"
+              onTap={() => completeCompletionTip('tap')}
+              onDismiss={() => completeCompletionTip('dismiss')}
+              allowNeverShow
+              onNeverShow={() => completeCompletionTip('never')}
+              maxWidth={220}
+              testIdPrefix="tip-completion-share-a"
+            />
+          </View>
         </View>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -1715,8 +1762,12 @@ export default function CreatePost() {
                 </View>
                 <View style={styles.actionButtonsRow}>
                   {/* Instagram Share Button - Uses Instagram gradient colors */}
+                  <View style={{ position: 'relative' }}>
                   <TouchableOpacity 
-                    onPress={() => handleShareToInstagram()} 
+                    onPress={() => {
+                      if (completionTipActive) completeCompletionTip('tap');
+                      handleShareToInstagram();
+                    }}
                     style={styles.instagramButtonWrapper}
                     activeOpacity={0.8}
                     disabled={isExportingToInstagram}
@@ -1737,6 +1788,18 @@ export default function CreatePost() {
                       )}
                     </LinearGradient>
                   </TouchableOpacity>
+                  {/* Chip B — IG export */}
+                  <OnboardingTip
+                    visible={completionTipActive}
+                    position="bottom"
+                    anchorStyle={{ top: 48, right: 0, alignItems: 'flex-end' }}
+                    copy="Save to camera roll, use as IG overlay"
+                    onTap={() => completeCompletionTip('tap')}
+                    onDismiss={() => completeCompletionTip('dismiss')}
+                    maxWidth={240}
+                    testIdPrefix="tip-completion-share-b"
+                  />
+                  </View>
                   
                   {/* Save Button */}
                   <Animated.View style={{ transform: [{ scale: saveScaleAnim }] }}>
@@ -1767,6 +1830,7 @@ export default function CreatePost() {
                 <Text style={styles.editableStatsHint}>Adjust values & targets </Text>
                 <Text style={styles.editableStatsOptional}>(optional, goals are saved)</Text>
               </View>
+              <View style={{ position: 'relative' }}>
               <View style={styles.editableStatsRow}>
                 <View style={styles.editableStat}>
                   <Text style={styles.editableStatLabel}>Min</Text>
@@ -1849,6 +1913,18 @@ export default function CreatePost() {
                     selectTextOnFocus
                   />
                 </View>
+              </View>
+              {/* Chip C — editable cal/min */}
+              <OnboardingTip
+                visible={completionTipActive}
+                position="bottom"
+                anchorStyle={{ top: -52, left: 0, alignItems: 'flex-start' }}
+                copy="Tap to edit"
+                onTap={() => completeCompletionTip('tap')}
+                onDismiss={() => completeCompletionTip('dismiss')}
+                maxWidth={140}
+                testIdPrefix="tip-completion-share-c"
+              />
               </View>
               
               {/* Card + equipment toggle overlay */}

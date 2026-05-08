@@ -428,6 +428,19 @@ export const Analytics = {
     screen_name: string;
     duration_seconds: number;
   }) => trackEvent(token, 'screen_exited', metadata),
+
+  // Onboarding Tip Events
+  tipShown: (token: string, metadata: { tip_id: string }) =>
+    trackEvent(token, 'tip_shown', metadata),
+
+  tipTapped: (token: string, metadata: { tip_id: string }) =>
+    trackEvent(token, 'tip_tapped', metadata),
+
+  tipDismissed: (token: string, metadata: { tip_id: string }) =>
+    trackEvent(token, 'tip_dismissed', metadata),
+
+  tipNeverShow: (token: string, metadata: { tip_id: string }) =>
+    trackEvent(token, 'tip_never_show', metadata),
 };
 
 // Guest Analytics - for tracking guest user activity

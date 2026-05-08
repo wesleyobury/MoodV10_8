@@ -9,6 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { CartProvider, useCart } from '../contexts/CartContext';
 import { BadgeProvider } from '../contexts/BadgeContext';
+import { OnboardingProvider } from '../contexts/OnboardingContext';
 import { Analytics } from '../utils/analytics';
 import { initNotifications, notificationService } from '../utils/notifications';
 import FloatingCart from '../components/FloatingCart';
@@ -172,7 +173,7 @@ function AppProviders({ children }: { children: React.ReactNode }) {
     <AuthProvider>
       <CartProvider>
         <BadgeProviderWrapper>
-          {children}
+          <OnboardingProvider>{children}</OnboardingProvider>
         </BadgeProviderWrapper>
       </CartProvider>
     </AuthProvider>

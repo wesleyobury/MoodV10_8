@@ -19,6 +19,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
 import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
+import { useOnboarding } from '../contexts/OnboardingContext';
+import OnboardingTip from '../components/OnboardingTip';
 
 interface SessionWorkout {
   workoutName: string;
@@ -44,6 +46,43 @@ export default function WorkoutSessionScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
+
+  // Onboarding Tip 2: Form videos
+  const onboarding = useOnboarding();
+  const [formTipActive, setFormTipActive] = useState(false);
+  const formTipTriggeredRef = React.useRef(false);
+
+  // Trigger Tip 2 1.5s after exercise list renders, on first session screen view
+  useEffect(() => {
+    if (formTipTriggeredRef.current) return;
+    if (isLoading) return;
+    if (sessionWorkouts.length === 0) return;
+
+    const timer = setTimeout(() => {
+      if (formTipTriggeredRef.current) return;
+      if (onboarding.requestRender('form_videos')) {
+        formTipTriggeredRef.current = true;
+        setFormTipActive(true);
+        onboarding.trackShown('form_videos');
+      }
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [isLoading, sessionWorkouts.length, onboarding]);
+
+  const handleFormTipTap = () => {
+    setFormTipActive(false);
+    onboarding.markCompleted('form_videos');
+    setExerciseLookupVisible(true);
+  };
+  const handleFormTipDismiss = () => {
+    setFormTipActive(false);
+    onboarding.markDismissed('form_videos');
+  };
+  const handleFormTipNeverShow = () => {
+    setFormTipActive(false);
+    onboarding.markNeverShow('form_videos');
+  };
 
   useEffect(() => {
     try {
@@ -361,8 +400,36 @@ export default function WorkoutSessionScreen() {
             </View>
             <Text style={styles.battlePlanText}>{currentWorkout.battlePlan}</Text>
             
-            {/* Exercise Lookup Trigger */}
-            <ExerciseLookupTrigger onPress={() => setExerciseLookupVisible(true)} />
+            {/* Exercise Lookup Trigger with onboarding tip anchor */}
+            <View style={{ position: 'relative' }}>
+              <ExerciseLookupTrigger
+                onPress={() => {
+                  if (formTipActive) {
+                    setFormTipActive(false);
+                    onboarding.markCompleted('form_videos');
+                  }
+                  setExerciseLookupVisible(true);
+                }}
+              />
+              <OnboardingTip
+                visible={formTipActive}
+                position="top"
+                anchorStyle={{
+                  bottom: 56,
+                  left: 8,
+                  right: 8,
+                  alignItems: 'flex-start',
+                }}
+                copy="Stuck on form? Search any exercise for video cues and common mistakes."
+                onTap={handleFormTipTap}
+                onDismiss={handleFormTipDismiss}
+                allowNeverShow
+                onNeverShow={handleFormTipNeverShow}
+                pulseAccent
+                showPlayBadge
+                testIdPrefix="tip-form-videos"
+              />
+            </View>
           </View>
 
           {/* MOOD Tips */}

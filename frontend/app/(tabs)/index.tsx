@@ -31,6 +31,8 @@ import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinea
 
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
+import { useOnboarding } from '../../contexts/OnboardingContext';
+import OnboardingTip from '../../components/OnboardingTip';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CAROUSEL_PADDING = 16;
@@ -509,6 +511,59 @@ export default function WorkoutsHome() {
   const { token, isGuest } = useAuth();
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const [guestAction, setGuestAction] = useState('');
+
+  // Onboarding Tip 1: Mood scroll
+  const onboarding = useOnboarding();
+  const homeScrollRef = useRef<ScrollView>(null);
+  const moodSectionYRef = useRef<number>(0);
+  const moodSectionHeightRef = useRef<number>(0);
+  const tipTriggeredRef = useRef(false);
+  const [moodTipActive, setMoodTipActive] = useState(false);
+
+  // Trigger Tip 1 on first home render after auth + tips_state hydrated
+  useFocusEffect(
+    useCallback(() => {
+      if (tipTriggeredRef.current) return;
+      if (onboarding.requestRender('mood_scroll')) {
+        tipTriggeredRef.current = true;
+        setMoodTipActive(true);
+        onboarding.trackShown('mood_scroll');
+      }
+      return () => {
+        // Release slot on blur if we hold it
+        if (moodTipActive) onboarding.releaseRender('mood_scroll');
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onboarding.tipsState.mood_scroll, onboarding.enabled, token]),
+  );
+
+  const handleMoodTipTap = useCallback(() => {
+    setMoodTipActive(false);
+    onboarding.markCompleted('mood_scroll');
+    homeScrollRef.current?.scrollTo({
+      y: Math.max(0, moodSectionYRef.current - 24),
+      animated: true,
+    });
+  }, [onboarding]);
+
+  const handleMoodTipDismiss = useCallback(() => {
+    setMoodTipActive(false);
+    onboarding.markDismissed('mood_scroll');
+  }, [onboarding]);
+
+  // Auto-complete tip if user manually scrolls past mood cards
+  const handleHomeScroll = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      if (!moodTipActive) return;
+      const y = e.nativeEvent.contentOffset.y;
+      const target = moodSectionYRef.current;
+      if (target > 0 && y >= target - 60) {
+        setMoodTipActive(false);
+        onboarding.markCompleted('mood_scroll');
+      }
+    },
+    [moodTipActive, onboarding],
+  );
   
   useEffect(() => {
     const hour = new Date().getHours();
@@ -861,10 +916,13 @@ export default function WorkoutsHome() {
     <View style={styles.outerContainer}>
       <View style={styles.container}>
         <ScrollView 
+          ref={homeScrollRef}
           style={styles.fullScrollView}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={[styles.scrollContentContainer, { paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 40) }]}
           bounces={true}
+          onScroll={handleHomeScroll}
+          scrollEventThrottle={32}
         >
         {/* Centered MOOD Branding */}
         <View style={styles.centeredBrandingHeader}>
@@ -935,7 +993,13 @@ export default function WorkoutsHome() {
         </View>
 
         {/* Mood Selection Section */}
-        <View style={styles.moodCardsContainer}>
+        <View
+          style={styles.moodCardsContainer}
+          onLayout={(e) => {
+            moodSectionYRef.current = e.nativeEvent.layout.y;
+            moodSectionHeightRef.current = e.nativeEvent.layout.height;
+          }}
+        >
           <View style={styles.sectionTitleContainer}>
             <View style={styles.leftAccent} />
             <Text style={styles.uniqueSectionTitle}>Choose your <Text style={styles.moodHighlight}>MOOD</Text></Text>
@@ -976,6 +1040,18 @@ export default function WorkoutsHome() {
         visible={showGuestPrompt}
         onClose={() => setShowGuestPrompt(false)}
         action={guestAction}
+      />
+
+      {/* Onboarding Tip 1 — Mood scroll */}
+      <OnboardingTip
+        visible={moodTipActive}
+        position="floating-bottom-center"
+        copy="Pick your mood to start  →"
+        onTap={handleMoodTipTap}
+        onDismiss={handleMoodTipDismiss}
+        allowNeverShow={false}
+        pulseAccent
+        testIdPrefix="tip-mood-scroll"
       />
     </View>
   );

@@ -920,6 +920,11 @@ async def register(user_data: UserCreate):
         "terms_accepted_at": datetime.now(timezone.utc),  # Record when user accepted terms
         "terms_accepted_version": CURRENT_TERMS_VERSION,  # Record which version they accepted
         "privacy_accepted_at": datetime.now(timezone.utc),  # Record when user accepted privacy policy
+        "tips_state": {
+            "mood_scroll": "unseen",
+            "form_videos": "unseen",
+            "completion_share": "unseen",
+        },
     }
     
     result = await db.users.insert_one(user_doc)
@@ -6428,7 +6433,12 @@ async def get_current_user_info(
         "created_at": user.get("created_at", datetime.now(timezone.utc)).isoformat() if user.get("created_at") else datetime.now(timezone.utc).isoformat(),
         "terms_accepted_at": user.get("terms_accepted_at").isoformat() if user.get("terms_accepted_at") else None,
         "terms_accepted_version": user.get("terms_accepted_version"),
-        "current_terms_version": CURRENT_TERMS_VERSION
+        "current_terms_version": CURRENT_TERMS_VERSION,
+        "tips_state": user.get("tips_state") or {
+            "mood_scroll": "unseen",
+            "form_videos": "unseen",
+            "completion_share": "unseen",
+        },
     }
 
 
@@ -6865,6 +6875,57 @@ async def upload_profile_picture_base64(
     except Exception as e:
         logger.error(f"Base64 avatar upload error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Profile picture upload failed: {str(e)}")
+
+
+# ----- Onboarding Tips -----
+
+ALLOWED_TIP_KEYS = {"mood_scroll", "form_videos", "completion_share"}
+ALLOWED_TIP_STATES = {"unseen", "completed", "dismissed", "never"}
+
+
+class TipStateUpdate(BaseModel):
+    key: str
+    state: str
+
+
+@api_router.patch("/users/me/tips-state")
+async def update_tip_state(
+    payload: TipStateUpdate,
+    current_user_id: str = Depends(get_current_user),
+):
+    """Update a single onboarding tip state for the current user."""
+    if payload.key not in ALLOWED_TIP_KEYS:
+        raise HTTPException(status_code=400, detail="Invalid tip key")
+    if payload.state not in ALLOWED_TIP_STATES:
+        raise HTTPException(status_code=400, detail="Invalid tip state")
+
+    # mood_scroll has no "never" option (self-resolves)
+    if payload.key == "mood_scroll" and payload.state == "never":
+        raise HTTPException(status_code=400, detail="mood_scroll does not support 'never'")
+
+    user = await find_user_by_id(current_user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    update_filter = (
+        {"user_id": user["user_id"]}
+        if "user_id" in user
+        else {"_id": user["_id"]}
+    )
+    await db.users.update_one(
+        update_filter,
+        {"$set": {f"tips_state.{payload.key}": payload.state}},
+    )
+    return {"key": payload.key, "state": payload.state}
+
+
+@api_router.get("/app/onboarding-config")
+async def get_onboarding_config():
+    """Public master kill switch for onboarding tips. Default: enabled."""
+    doc = await db.app_settings.find_one({"_id": "onboarding"}, {"_id": 0})
+    enabled = True if not doc else bool(doc.get("onboarding_tips_enabled", True))
+    return {"onboarding_tips_enabled": enabled}
+
 
 @api_router.get("/users/{user_id}/is-following")
 async def check_following_status(

@@ -26,6 +26,11 @@ interface User {
   terms_accepted_at?: string | null;
   terms_accepted_version?: string | null;
   current_terms_version?: string; // From backend - what version is required
+  tips_state?: {
+    mood_scroll?: 'unseen' | 'completed' | 'dismissed';
+    form_videos?: 'unseen' | 'completed' | 'dismissed' | 'never';
+    completion_share?: 'unseen' | 'completed' | 'dismissed' | 'never';
+  };
 }
 
 interface AuthContextType {
