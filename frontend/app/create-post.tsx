@@ -136,6 +136,10 @@ export default function CreatePost() {
   const transparentCardRef = useRef(null);
   const [isExportingToInstagram, setIsExportingToInstagram] = useState(false);
 
+  // Instagram hand-off modal state (used by handleShareToInstagram)
+  const [igPromptVisible, setIgPromptVisible] = useState(false);
+  const igPromptResolveRef = useRef<((value: boolean) => void) | null>(null);
+
   // Onboarding Tip 3 — completion/share chips (3 small floating chips at once)
   const onboarding = useOnboarding();
   const [completionTipActive, setCompletionTipActive] = useState(false);
@@ -2802,16 +2806,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 6,
     marginBottom: 10,
-  },
-  achievementWorkoutPreview: {
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.06)',
-    paddingTop: 8,
-  },
-  achievementWorkoutName: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: 10,
-    lineHeight: 14,
   },
   savedAchievementIcon: {
     width: 48,

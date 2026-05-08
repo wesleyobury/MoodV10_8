@@ -17,6 +17,8 @@ export type TipPosition =
   | 'right'
   | 'floating-bottom-center';
 
+export type TipVariant = 'card' | 'minimal-down';
+
 interface OnboardingTipProps {
   visible: boolean;
   position: TipPosition;
@@ -32,6 +34,15 @@ interface OnboardingTipProps {
   anchorStyle?: ViewStyle;
   /** Optional max width override */
   maxWidth?: number;
+  /**
+   * Visual variant.
+   * - 'card' (default): solid pill/card with bg/border/X dismiss inside.
+   * - 'minimal-down': transparent — white text on top, animated downward arrow below.
+   *   The whole content is tappable (acts as the primary CTA). No X is shown
+   *   inside; if `onDismiss` matters, callers should provide a separate dismiss
+   *   gesture (long-press, scroll-away, etc.).
+   */
+  variant?: TipVariant;
 }
 
 const GOLD = '#F5C518';
@@ -52,6 +63,7 @@ export const OnboardingTip: React.FC<OnboardingTipProps> = ({
   testIdPrefix = 'onboarding-tip',
   anchorStyle,
   maxWidth = 320,
+  variant = 'card',
 }) => {
   const opacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(8)).current;
@@ -116,6 +128,36 @@ export const OnboardingTip: React.FC<OnboardingTipProps> = ({
     position === 'floating-bottom-center'
       ? styles.floatingBottomCenter
       : { position: 'absolute', ...(anchorStyle || {}) };
+
+  // Minimal-down variant: text on top, animated downward arrow below. No card.
+  if (variant === 'minimal-down') {
+    const arrowTransform = pulseAccent
+      ? [{ translateY: pulse.interpolate({ inputRange: [0, 1], outputRange: [0, 4] }) }]
+      : [];
+    return (
+      <Animated.View
+        pointerEvents="box-none"
+        style={[containerStyle, { opacity, transform: [{ translateY }] }]}
+        testID={`${testIdPrefix}-container`}
+      >
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={onTap}
+          onLongPress={onDismiss}
+          delayLongPress={350}
+          style={[styles.minimalDownWrapper, { maxWidth }]}
+          testID={`${testIdPrefix}-tap`}
+        >
+          <Text style={styles.minimalDownText} numberOfLines={2}>
+            {copy}
+          </Text>
+          <Animated.View style={{ transform: arrowTransform, marginTop: 6 }}>
+            <Ionicons name="arrow-down" size={22} color="#FFFFFF" />
+          </Animated.View>
+        </TouchableOpacity>
+      </Animated.View>
+    );
+  }
 
   return (
     <Animated.View
@@ -245,6 +287,21 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: MUTED,
     textDecorationLine: 'underline',
+  },
+  minimalDownWrapper: {
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+  },
+  minimalDownText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '600',
+    textAlign: 'center',
+    letterSpacing: 0.2,
+    textShadowColor: 'rgba(0, 0, 0, 0.6)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
   },
 });
 

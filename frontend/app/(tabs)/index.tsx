@@ -541,7 +541,7 @@ export default function WorkoutsHome() {
     setMoodTipActive(false);
     onboarding.markCompleted('mood_scroll');
     homeScrollRef.current?.scrollTo({
-      y: Math.max(0, moodSectionYRef.current - 24),
+      y: Math.max(0, moodSectionYRef.current - 34),
       animated: true,
     });
   }, [onboarding]);
@@ -1042,11 +1042,12 @@ export default function WorkoutsHome() {
         action={guestAction}
       />
 
-      {/* Onboarding Tip 1 — Mood scroll */}
+      {/* Onboarding Tip 1 — Mood scroll (minimal: text + downward arrow) */}
       <OnboardingTip
         visible={moodTipActive}
         position="floating-bottom-center"
-        copy="Pick your mood to start  →"
+        variant="minimal-down"
+        copy="Pick your mood to start"
         onTap={handleMoodTipTap}
         onDismiss={handleMoodTipDismiss}
         allowNeverShow={false}
