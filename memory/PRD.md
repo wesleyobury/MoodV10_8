@@ -14,7 +14,29 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
-- [2026-05-08] **Muscle Gainer slot rotation + Live feed: 48h cap, seed data, haptic + new-entries toast**:
+- [2026-05-08] **New-user Onboarding system — profile picture at signup + 3 contextual tips**:
+  - **Backend** (`backend/server.py`):
+    - `POST /api/auth/register` initializes `user.tips_state = {mood_scroll, form_videos, completion_share}` all `'unseen'`.
+    - `GET /api/users/me` returns `tips_state` with lazy default for legacy users.
+    - **NEW** `PATCH /api/users/me/tips-state` validates `{key, state}` against `ALLOWED_TIP_KEYS`/`ALLOWED_TIP_STATES`, blocks `mood_scroll→never` (self-resolves), persists via dot-path `$set`.
+    - **NEW** `GET /api/app/onboarding-config` (public) reads `app_settings._id=onboarding.onboarding_tips_enabled`, defaults `true` (master kill switch).
+  - **Frontend**:
+    - **NEW** `components/OnboardingTip.tsx` — single reusable tip (#1A1A1A card, #2A2A2A border, 12px radius, white 14px text, X dismiss top-right, optional gold pulse + play badge, "Don't show again" link). Position modes: top/bottom/left/right/floating-bottom-center.
+    - **NEW** `contexts/OnboardingContext.tsx` — manages `tipsState`, `enabled` (kill switch), single-active-tip queue (`requestRender`/`releaseRender`), persist via PATCH, fires `tip_shown / tip_tapped / tip_dismissed / tip_never_show` analytics. Wrapped in `app/_layout.tsx` inside Auth/Cart/Badge providers.
+    - **NEW** `components/UserAvatar.tsx` — image when uri present, else first letter of name in white on a gold (#F5C518) circle (used as preview during signup; reusable elsewhere).
+    - **`app/auth/register.tsx`** rewritten with profile picture upload field between Display Name and Password: 5MB cap, JPG/PNG, square crop via expo-image-picker, "Skip for now" link, base64 captured then uploaded to `/api/users/me/avatar-base64` after register call (fire-and-forget, never blocks signup).
+    - **Tip 1 — `mood_scroll`** in `app/(tabs)/index.tsx`: triggered on first home focus, floating-bottom-center pill "Pick your mood to start →", taps smooth-scroll to mood section + completes; auto-completes if user manually scrolls past mood section; X → dismissed.
+    - **Tip 2 — `form_videos`** in `app/workout-session.tsx`: 1.5s after exercise list renders, anchored above "Find visuals" search bar with gold pulse, copy "Stuck on form? Search any exercise for video cues and common mistakes."; `allowNeverShow=true`. Tap on tip OR underlying search bar → completed.
+    - **Tip 3 — `completion_share`** in `app/create-post.tsx`: 800ms after completion screen renders, three small chips at once (A=Post button "Share with the community" + dismiss X + "Don't show again", B=Instagram Stories button "Save to camera roll, use as IG overlay", C=editable cal/min row "Tap to edit"). Tapping any chip OR underlying element fades all three; A's X dismisses all; A's "Don't show again" sets all to `never`.
+    - **Analytics events** added to `utils/analytics.ts`: `tipShown`, `tipTapped`, `tipDismissed`, `tipNeverShow` (each emit `{tip_id}`).
+  - **Tests** (`/app/backend/tests/test_onboarding_tips.py`): 27/27 PASS — covers register init, /users/me shape, PATCH happy + 6 negative paths, auth gates, key isolation, avatar-base64 regression. Curl-validated:
+    - `GET /api/app/onboarding-config` → `{onboarding_tips_enabled: true}`
+    - Register → token + tips_state all unseen
+    - PATCH `mood_scroll=completed` → `{key, state}` echo, `/users/me` reflects update with other keys untouched
+    - PATCH `mood_scroll=never` → 400 "mood_scroll does not support 'never'"
+    - PATCH `key=foo` → 400 "Invalid tip key"
+  - **Acceptance checks (per spec)**: ✅ new user lands on home → Tip 1 visible immediately, no other tips. ✅ Tap → smooth scroll, tip gone, state=completed. ✅ Workout session → Tip 2 1.5s after render. ✅ Completion screen → Tip 3 chips 800ms after render. ✅ All dismissed → never reappear (server-persisted). ✅ Tips never stack (single activeTip slot in context). ✅ `settings.onboarding_tips_enabled=false` hides all tips for all users (context guards every render).
+
   - **Muscle Gainer rotation fix** (`frontend/utils/workoutGenerator.ts:1631-1675`): Slots 2..N now alternate compound ↔ isolation rather than forcing isolation. When the alternating pool is exhausted (e.g. Back has only 1-2 isolations), the picker gracefully falls back to the other pool instead of degrading the section. Distribution check (300 runs/scenario): Back-only beginner shifted from forced-iso to 67% compound / 33% iso; multi-muscle beginner sections (target=1) now correctly stay 100% compound. All 1,280 invariant simulations still pass.
   - **Live feed lookback**: capped at **48h primary + soft 7d fallback** (was 365d). Beyond 48h, entries naturally read as "yesterday" / "X days ago".
   - **Milestone branch decoupled** from lookback iteration — always evaluated at the end so milestone cards surface even when 48h has plenty of activity.
