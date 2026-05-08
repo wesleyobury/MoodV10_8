@@ -23,6 +23,8 @@ export interface WorkoutItem {
   role?: 'primer' | 'main_block' | 'finisher';
   intensity_cost?: 1 | 2 | 3 | 4 | 5;
   modality?: 'cardio' | 'resistance';
+  // Optional: Explosive Build For Me slot label (Activation / Power / Bonus)
+  slot_label?: string;
   // Optional: track source for analytics
   source?: 'custom' | 'build_for_me';
 }

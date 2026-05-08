@@ -281,6 +281,12 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   - **Validation [2026-02 fork session]**: Self-contained Node validator at `/tmp/test_calisthenics.mjs` runs the v2 algorithm against real data — 50 iterations × 3 carts × 3 intensities = 450 carts validated. All v2 rules pass: cart sizes correct (2/3/3), last slot is abs_eligible 100% of the time, no duplicate equipment within int/adv carts, no duplicate names across carts in same iteration. Metro cache cleared and Expo restarted with fresh bundle.
   - **Files**: `frontend/types/workout.ts`, `frontend/utils/workoutGenerator.ts`, `frontend/data/calisthenics-all-workouts-data.ts`, `frontend/data/outdoor-workouts-data.ts`, `frontend/data/cardio-workouts-data.ts`, `frontend/app/cart.tsx`, `frontend/components/GeneratedWorkoutView.tsx`.
 
+- [2026-02 fork session] **Explosive cart slot badges** — Activation / Power / Bonus.
+  - Slot order in every explosive cart is now FIXED: **slot 0 = BW (Activation)**, **slot 1 = LW (Power)**, **slot 2 = Flex (Bonus)**. Previous intensity-cost re-sequencing dropped — the spec author's slot semantics override that.
+  - **Schema**: `slot_label?: string` added to `WorkoutItem` in `frontend/contexts/CartContext.tsx`. Generator sets it per slot. Display layer prefers `slot_label` over `role` (so explosive carts show Activation/Power/Bonus while sweat carts continue to show Warm-Up/Main Set/Finisher).
+  - **Display**: same `sweatRoleLabel` style used in `frontend/components/GeneratedWorkoutView.tsx` and `frontend/app/cart.tsx` — single line of edits in each (a `slot_label || ROLE_LABEL[role]` fallback). No new style needed; matches existing badge format exactly.
+  - **Validation**: `/app/scripts/validate_explosive.py` (now persistent under `/app/scripts/`) re-runs 600 trials × 3 carts and asserts the new fixed slot order. PASS.
+
 - [2026-02 fork session] **I'm Feeling Explosive v3 generator** — flavor-aware, bodyweight + weights cart pairing.
   - **Cart shape**: 3 carts in canonical display order [plyo, loaded, dynamic]. Beginner = 2 slots (1 BW + 1 LW). Int / Adv = 3 slots (1 BW + 1 LW + 1 flex from full pool). Sequencing: lowest `intensity_cost` first; for 3-slot carts → low, high, mid (peak in middle).
   - **Hard rules**: every cart contains at least one BW and one LW workout, all workouts in a cart share the same `cart_flavor`, no `equipment` value appears in more than one cart per generation.

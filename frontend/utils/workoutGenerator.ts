@@ -535,12 +535,8 @@ function pickFromFlavoredPool(
   return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
-function sequenceExplosiveCart(items: ExplosiveCandidate[]): ExplosiveCandidate[] {
-  const sorted = [...items].sort((a, b) => a.cost - b.cost);
-  if (sorted.length <= 2) return sorted;
-  // 3 slots: low, high, mid
-  return [sorted[0], sorted[2], sorted[1]];
-}
+// Slot labels for each cart slot, in fixed slot order: BW → LW → Flex.
+const EXPLOSIVE_SLOT_LABELS = ['Activation', 'Power', 'Bonus'] as const;
 
 export function generateExplosivenessCarts(
   intensity: IntensityLevel,
@@ -602,19 +598,22 @@ export function generateExplosivenessCarts(
         // Flex slot is best-effort; not having one isn't fatal but shouldn't really happen.
       }
 
-      cartsByFlavor.set(flavor, sequenceExplosiveCart(cart));
+      cartsByFlavor.set(flavor, cart);
     }
     if (allFlavorsFilled && cartsByFlavor.size === 3) break;
   }
 
-  // Reorder to canonical display: plyo → loaded → dynamic
+  // Reorder to canonical display: plyo → loaded → dynamic.
+  // Slot order within a cart is fixed: BW (Activation) → LW (Power) → flex (Bonus).
   const carts: GeneratedCart[] = [];
   EXPLOSIVE_FLAVORS.forEach((flavor, idx) => {
     const cart = cartsByFlavor.get(flavor);
     if (!cart || cart.length === 0) return;
-    const items: WorkoutItem[] = cart.map(c =>
-      workoutToItem(c.workout, c.equipment, intensity, moodCard, workoutType),
-    );
+    const items: WorkoutItem[] = cart.map((c, slotIdx) => {
+      const item = workoutToItem(c.workout, c.equipment, intensity, moodCard, workoutType);
+      item.slot_label = EXPLOSIVE_SLOT_LABELS[slotIdx] || undefined;
+      return item;
+    });
     const totalDuration = items.reduce((sum, it) => sum + parseDuration(it.duration), 0);
     carts.push({
       id: `cart-${idx + 1}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,

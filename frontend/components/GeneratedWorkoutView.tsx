@@ -156,7 +156,8 @@ const ExerciseCard = ({
   const placeholderImage = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=200&h=200&fit=crop';
   const imageSource = item.imageUrl && item.imageUrl.length > 0 ? item.imageUrl : placeholderImage;
   // Show the role label whenever role is set (Sweat tags every workout; Outdoor tags only combo carts).
-  const sweatRoleLabel = item.role ? ROLE_LABEL[item.role] : null;
+  // Explosive carts use slot_label (Activation / Power / Bonus) — falls back to role when slot_label is unset.
+  const sweatRoleLabel = item.slot_label || (item.role ? ROLE_LABEL[item.role] : null);
 
   return (
     <View style={styles.exerciseCard}>
