@@ -441,11 +441,23 @@ class NotificationService {
 
   cleanup(): void {
     if (this.notificationListener) {
-      Notifications.removeNotificationSubscription(this.notificationListener);
+      // expo-notifications SDK 53+: subscription objects expose .remove()
+      // (Notifications.removeNotificationSubscription was deprecated/removed)
+      const sub: any = this.notificationListener;
+      if (typeof sub.remove === 'function') {
+        sub.remove();
+      } else if (typeof (Notifications as any).removeNotificationSubscription === 'function') {
+        (Notifications as any).removeNotificationSubscription(sub);
+      }
       this.notificationListener = null;
     }
     if (this.responseListener) {
-      Notifications.removeNotificationSubscription(this.responseListener);
+      const sub: any = this.responseListener;
+      if (typeof sub.remove === 'function') {
+        sub.remove();
+      } else if (typeof (Notifications as any).removeNotificationSubscription === 'function') {
+        (Notifications as any).removeNotificationSubscription(sub);
+      }
       this.responseListener = null;
     }
     this.listenersSetUp = false;
