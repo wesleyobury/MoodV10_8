@@ -33,7 +33,7 @@ import GuestPromptModal from '../components/GuestPromptModal';
 import VideoFrameSelector from '../components/VideoFrameSelector';
 import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useOnboarding } from '../contexts/OnboardingContext';
-import OnboardingTip from '../components/OnboardingTip';
+import OnboardingOverlay from '../components/OnboardingOverlay';
 
 // Safely import native modules that can crash on production iOS builds
 let captureRef: any = null;
@@ -1445,40 +1445,25 @@ export default function CreatePost() {
             <Text style={styles.headerTitle}>Share Your Achievement</Text>
             <Text style={styles.headerSubtitle}>Post to your feed</Text>
           </View>
-          <View style={{ position: 'relative' }}>
-            <TouchableOpacity 
-              style={[
-                styles.postButton,
-                (!caption.trim() && selectedImages.length === 0 && !hasStatsCard) && styles.postButtonDisabled
-              ]}
-              onPress={() => {
-                if (completionTipActive) completeCompletionTip('tap');
-                handleCreatePost();
-              }}
-              disabled={uploading || (!caption.trim() && selectedImages.length === 0 && !hasStatsCard)}
-              activeOpacity={0.7}
-              testID="create-post-submit"
-            >
-              {uploading ? (
-                <ActivityIndicator size="small" color="#000" />
-              ) : (
-                <Ionicons name="send" size={20} color="#000" />
-              )}
-            </TouchableOpacity>
-            {/* Chip A — Post to Live + dismiss + never-show */}
-            <OnboardingTip
-              visible={completionTipActive}
-              position="bottom"
-              anchorStyle={{ top: 50, right: 0, alignItems: 'flex-end' }}
-              copy="Share with the community"
-              onTap={() => completeCompletionTip('tap')}
-              onDismiss={() => completeCompletionTip('dismiss')}
-              allowNeverShow
-              onNeverShow={() => completeCompletionTip('never')}
-              maxWidth={220}
-              testIdPrefix="tip-completion-share-a"
-            />
-          </View>
+          <TouchableOpacity 
+            style={[
+              styles.postButton,
+              (!caption.trim() && selectedImages.length === 0 && !hasStatsCard) && styles.postButtonDisabled
+            ]}
+            onPress={() => {
+              if (completionTipActive) completeCompletionTip('tap');
+              handleCreatePost();
+            }}
+            disabled={uploading || (!caption.trim() && selectedImages.length === 0 && !hasStatsCard)}
+            activeOpacity={0.7}
+            testID="create-post-submit"
+          >
+            {uploading ? (
+              <ActivityIndicator size="small" color="#000" />
+            ) : (
+              <Ionicons name="send" size={20} color="#000" />
+            )}
+          </TouchableOpacity>
         </View>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -1765,8 +1750,7 @@ export default function CreatePost() {
                   <Text style={styles.attachmentType}>Achievement</Text>
                 </View>
                 <View style={styles.actionButtonsRow}>
-                  {/* Instagram Share Button - Uses Instagram gradient colors */}
-                  <View style={{ position: 'relative' }}>
+                  {/* Instagram Share Button - Bold gold-bordered to stand out */}
                   <TouchableOpacity 
                     onPress={() => {
                       if (completionTipActive) completeCompletionTip('tap');
@@ -1775,6 +1759,7 @@ export default function CreatePost() {
                     style={styles.instagramButtonWrapper}
                     activeOpacity={0.8}
                     disabled={isExportingToInstagram}
+                    testID="ig-share-button"
                   >
                     <LinearGradient
                       colors={['#833AB4', '#FD1D1D', '#F77737']}
@@ -1787,23 +1772,11 @@ export default function CreatePost() {
                       ) : (
                         <>
                           <Ionicons name="logo-instagram" size={18} color="#fff" />
-                          <Text style={styles.instagramButtonText}>Stories</Text>
+                          <Text style={styles.instagramButtonText}>IG Story</Text>
                         </>
                       )}
                     </LinearGradient>
                   </TouchableOpacity>
-                  {/* Chip B — IG export */}
-                  <OnboardingTip
-                    visible={completionTipActive}
-                    position="bottom"
-                    anchorStyle={{ top: 48, right: 0, alignItems: 'flex-end' }}
-                    copy="Save to camera roll, use as IG overlay"
-                    onTap={() => completeCompletionTip('tap')}
-                    onDismiss={() => completeCompletionTip('dismiss')}
-                    maxWidth={240}
-                    testIdPrefix="tip-completion-share-b"
-                  />
-                  </View>
                   
                   {/* Save Button */}
                   <Animated.View style={{ transform: [{ scale: saveScaleAnim }] }}>
@@ -1834,7 +1807,6 @@ export default function CreatePost() {
                 <Text style={styles.editableStatsHint}>Adjust values & targets </Text>
                 <Text style={styles.editableStatsOptional}>(optional, goals are saved)</Text>
               </View>
-              <View style={{ position: 'relative' }}>
               <View style={styles.editableStatsRow}>
                 <View style={styles.editableStat}>
                   <Text style={styles.editableStatLabel}>Min</Text>
@@ -1917,18 +1889,6 @@ export default function CreatePost() {
                     selectTextOnFocus
                   />
                 </View>
-              </View>
-              {/* Chip C — editable cal/min */}
-              <OnboardingTip
-                visible={completionTipActive}
-                position="bottom"
-                anchorStyle={{ top: -52, left: 0, alignItems: 'flex-start' }}
-                copy="Tap to edit"
-                onTap={() => completeCompletionTip('tap')}
-                onDismiss={() => completeCompletionTip('dismiss')}
-                maxWidth={140}
-                testIdPrefix="tip-completion-share-c"
-              />
               </View>
               
               {/* Card + equipment toggle overlay */}
@@ -2148,9 +2108,9 @@ export default function CreatePost() {
             </TouchableOpacity>
 
             <Ionicons name="logo-instagram" size={36} color="#FFD700" style={{ marginBottom: 12 }} />
-            <Text style={styles.igTitle}>Overlay saved to Photos</Text>
+            <Text style={styles.igTitle}>Saved to your photo album</Text>
             <Text style={styles.igBody}>
-              Instagram will open next — tap the sticker icon and pick your most recent image to add the overlay.
+              {"1.  Open Instagram and start a new Story\n2.  Tap the sticker icon (smiley face)\n3.  Pick \"Add yours\" or the photo sticker\n4.  Choose this overlay from your most recent photos\n5.  Position, post, done."}
             </Text>
 
             <TouchableOpacity
@@ -2256,6 +2216,39 @@ export default function CreatePost() {
         )}
       </Modal>
 
+      {/* Onboarding Overlay — Tip 3 (Share Your Achievement walkthrough) */}
+      <OnboardingOverlay
+        visible={completionTipActive}
+        onTapAnywhere={() => completeCompletionTip('tap')}
+        onNeverShow={() => completeCompletionTip('never')}
+        pointers={[
+          {
+            y: 130,
+            x: 'left',
+            arrowFrom: 'top-right',
+            icon: 'image-outline',
+            title: 'Add your media',
+            body: 'Tap here to upload a photo or video from your workout.',
+          },
+          {
+            y: 360,
+            x: 'right',
+            arrowFrom: 'bottom-left',
+            icon: 'create-outline',
+            title: 'Adjust values & targets',
+            body: 'Tap any number — calories, minutes, sets — to fine-tune the stat card before you post.',
+          },
+          {
+            y: 510,
+            x: 'left',
+            arrowFrom: 'top-right',
+            icon: 'logo-instagram',
+            title: 'Share to IG Stories',
+            body: 'Saves the overlay to your photo album. Then open Instagram → new Story → sticker icon → pick the saved overlay.',
+          },
+        ]}
+      />
+
     </SafeAreaView>
   );
 }
@@ -2354,27 +2347,29 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   instagramButtonWrapper: {
-    borderRadius: 10,
+    borderRadius: 12,
     overflow: 'hidden',
-    shadowColor: '#833AB4',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
+    borderWidth: 2,
+    borderColor: '#F5C518',
+    shadowColor: '#F5C518',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.45,
+    shadowRadius: 8,
+    elevation: 6,
   },
   instagramButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 10,
-    paddingHorizontal: 14,
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
   },
   instagramButtonText: {
-    fontSize: 13,
-    fontWeight: '700',
+    fontSize: 14,
+    fontWeight: '800',
     color: '#fff',
-    letterSpacing: 0.3,
+    letterSpacing: 0.6,
   },
   editableStatsHintRow: {
     flexDirection: 'row',
@@ -3122,11 +3117,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   igBody: {
-    color: '#9c9c9c',
+    color: '#c8c8c8',
     fontSize: 13,
-    lineHeight: 19,
-    textAlign: 'center',
+    lineHeight: 22,
+    textAlign: 'left',
     marginBottom: 18,
+    paddingHorizontal: 4,
   },
   igCta: {
     backgroundColor: '#FFD700',

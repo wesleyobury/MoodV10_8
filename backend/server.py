@@ -12724,27 +12724,28 @@ async def startup_db_client():
         await db.users.create_index([("username", 1)])
         await db.users.create_index([("email", 1)])
 
-        # Onboarding tips backfill — ensure form_videos and completion_share
-        # are reset to "unseen" for all existing users so the new tips show up
-        # for everyone (one-shot, idempotent — uses dedicated flag).
-        flag = await db.app_settings.find_one({"_id": "onboarding_backfill_v1"})
+        # Onboarding tips backfill — ensure tip states are reset to "unseen"
+        # for ALL users so newly-redesigned tips are seen by everyone. v2 bump
+        # is paired with the Tip 1 removal + Tip 3 overlay redesign.
+        flag = await db.app_settings.find_one({"_id": "onboarding_backfill_v2"})
         if not flag:
             try:
                 res = await db.users.update_many(
                     {},
                     {"$set": {
+                        "tips_state.mood_scroll": "unseen",
                         "tips_state.form_videos": "unseen",
                         "tips_state.completion_share": "unseen",
                     }},
                 )
                 await db.app_settings.update_one(
-                    {"_id": "onboarding_backfill_v1"},
+                    {"_id": "onboarding_backfill_v2"},
                     {"$set": {"applied_at": datetime.now(timezone.utc), "matched": res.matched_count}},
                     upsert=True,
                 )
-                logger.info(f"✅ Onboarding tips backfill applied to {res.matched_count} users")
+                logger.info(f"✅ Onboarding tips backfill v2 applied to {res.matched_count} users")
             except Exception as e:
-                logger.warning(f"Onboarding backfill skipped: {e}")
+                logger.warning(f"Onboarding backfill v2 skipped: {e}")
         
         # daily_activity indexes
         await db.daily_activity.create_index([("date", -1)])

@@ -31,8 +31,6 @@ import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinea
 
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
-import { useOnboarding } from '../../contexts/OnboardingContext';
-import OnboardingTip from '../../components/OnboardingTip';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CAROUSEL_PADDING = 16;
@@ -512,58 +510,41 @@ export default function WorkoutsHome() {
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const [guestAction, setGuestAction] = useState('');
 
-  // Onboarding Tip 1: Mood scroll
-  const onboarding = useOnboarding();
+  // Home scroll target — used by the tappable "Choose your MOOD" header
   const homeScrollRef = useRef<ScrollView>(null);
   const moodSectionYRef = useRef<number>(0);
-  const moodSectionHeightRef = useRef<number>(0);
-  const tipTriggeredRef = useRef(false);
-  const [moodTipActive, setMoodTipActive] = useState(false);
 
-  // Trigger Tip 1 on first home render after auth + tips_state hydrated
-  useFocusEffect(
-    useCallback(() => {
-      if (tipTriggeredRef.current) return;
-      if (onboarding.requestRender('mood_scroll')) {
-        tipTriggeredRef.current = true;
-        setMoodTipActive(true);
-        onboarding.trackShown('mood_scroll');
-      }
-      return () => {
-        // Release slot on blur if we hold it
-        if (moodTipActive) onboarding.releaseRender('mood_scroll');
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onboarding.tipsState.mood_scroll, onboarding.enabled, token]),
-  );
+  // Pulse animation for the "Choose your MOOD" header (subtle scale loop)
+  const moodHeaderPulse = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(moodHeaderPulse, {
+          toValue: 1,
+          duration: 1100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(moodHeaderPulse, {
+          toValue: 0,
+          duration: 1100,
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [moodHeaderPulse]);
+  const moodHeaderScale = moodHeaderPulse.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.04],
+  });
 
-  const handleMoodTipTap = useCallback(() => {
-    setMoodTipActive(false);
-    onboarding.markCompleted('mood_scroll');
+  const scrollToMoodSection = useCallback(() => {
     homeScrollRef.current?.scrollTo({
       y: Math.max(0, moodSectionYRef.current - 34),
       animated: true,
     });
-  }, [onboarding]);
-
-  const handleMoodTipDismiss = useCallback(() => {
-    setMoodTipActive(false);
-    onboarding.markDismissed('mood_scroll');
-  }, [onboarding]);
-
-  // Auto-complete tip if user manually scrolls past mood cards
-  const handleHomeScroll = useCallback(
-    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      if (!moodTipActive) return;
-      const y = e.nativeEvent.contentOffset.y;
-      const target = moodSectionYRef.current;
-      if (target > 0 && y >= target - 60) {
-        setMoodTipActive(false);
-        onboarding.markCompleted('mood_scroll');
-      }
-    },
-    [moodTipActive, onboarding],
-  );
+  }, []);
   
   useEffect(() => {
     const hour = new Date().getHours();
@@ -919,10 +900,8 @@ export default function WorkoutsHome() {
           ref={homeScrollRef}
           style={styles.fullScrollView}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={[styles.scrollContentContainer, { paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 40) }]}
+          contentContainerStyle={[styles.scrollContentContainer, { paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 16) }]}
           bounces={true}
-          onScroll={handleHomeScroll}
-          scrollEventThrottle={32}
         >
         {/* Centered MOOD Branding */}
         <View style={styles.centeredBrandingHeader}>
@@ -997,14 +976,24 @@ export default function WorkoutsHome() {
           style={styles.moodCardsContainer}
           onLayout={(e) => {
             moodSectionYRef.current = e.nativeEvent.layout.y;
-            moodSectionHeightRef.current = e.nativeEvent.layout.height;
           }}
         >
-          <View style={styles.sectionTitleContainer}>
-            <View style={styles.leftAccent} />
-            <Text style={styles.uniqueSectionTitle}>Choose your <Text style={styles.moodHighlight}>MOOD</Text></Text>
-            <View style={styles.rightAccent} />
-          </View>
+          <TouchableOpacity
+            activeOpacity={0.75}
+            onPress={scrollToMoodSection}
+            testID="home-mood-header-cta"
+          >
+            <Animated.View
+              style={[
+                styles.sectionTitleContainer,
+                { transform: [{ scale: moodHeaderScale }] },
+              ]}
+            >
+              <View style={styles.leftAccent} />
+              <Text style={styles.uniqueSectionTitle}>Choose your <Text style={styles.moodHighlight}>MOOD</Text></Text>
+              <View style={styles.rightAccent} />
+            </Animated.View>
+          </TouchableOpacity>
           <View style={styles.moodColumn}>
             {moodCards.map((mood, index) => (
               <AnimatedMoodCard
@@ -1041,19 +1030,6 @@ export default function WorkoutsHome() {
         onClose={() => setShowGuestPrompt(false)}
         action={guestAction}
       />
-
-      {/* Onboarding Tip 1 — Mood scroll (minimal: text + downward arrow) */}
-      <OnboardingTip
-        visible={moodTipActive}
-        position="floating-bottom-center"
-        variant="minimal-down"
-        copy="Pick your mood to start"
-        onTap={handleMoodTipTap}
-        onDismiss={handleMoodTipDismiss}
-        allowNeverShow={false}
-        pulseAccent
-        testIdPrefix="tip-mood-scroll"
-      />
     </View>
   );
 }
@@ -1072,7 +1048,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000', // Pure black background
   },
   scrollContentContainer: {
-    paddingBottom: 60, // Base bottom padding, will be enhanced with safe area
+    paddingBottom: 16, // tightened — used to be 60
     backgroundColor: '#000000', // Pure black background
   },
   header: {
@@ -1409,8 +1385,8 @@ const styles = StyleSheet.create({
     gap: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 16,
-    marginBottom: 8,
+    marginTop: 14,
+    marginBottom: 0,
   },
   bottomSocialButton: {
     width: 40,
