@@ -7871,9 +7871,10 @@ async def get_live_feed(
     most_common_mood = _LIVE_BUCKET_LABELS.get(top_bucket) if top_bucket else None
 
     # ---------- ENTRIES ----------
-    # Stretch lookback window invisibly: keep widening until we have at least 15 valid entries
-    lookback_options = [timedelta(hours=6), timedelta(hours=24), timedelta(days=3),
-                        timedelta(days=7), timedelta(days=30), timedelta(days=365)]
+    # Cap lookback at 48 hours — the feed should feel "live", not historical.
+    # Stretch progressively from 6h → 24h → 48h until we have at least 15 entries,
+    # then stop. Beyond 48h, we'd rather show fewer (or empty state) than stale data.
+    lookback_options = [timedelta(hours=6), timedelta(hours=24), timedelta(hours=48)]
 
     raw_entries: List[dict] = []
     user_cache: Dict[str, dict] = {}
