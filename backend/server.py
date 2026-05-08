@@ -7767,6 +7767,262 @@ async def create_post(post_data: PostCreate, current_user_id: str = Depends(get_
     logger.info(f"✅ Post created: {result.inserted_id}, has_attached_workout: {attached_workout is not None}")
     return {"message": "Post created successfully", "id": str(result.inserted_id)}
 
+# ============================================================================
+# LIVE FEED — real-time activity feed of all users' workout activity
+# ============================================================================
+
+# Map raw mood_category strings (which are inconsistent across the app) to
+# one of 6 UI mood "buckets" used by the Live tab.
+_LIVE_MOOD_RULES: List[tuple[tuple[str, ...], str, str]] = [
+    # (keywords, bucket_id, display_label)
+    (("explosion", "explosive", "power lifting", "plyometric", "explosivenes"), "explosive", "Build explosion"),
+    (("calisthenic", "bodyweight", "pull", "dip"), "calisthenics", "Calisthenics"),
+    (("outside", "outdoor", "hill"), "outdoor", "Outdoor"),
+    (("lazy", "gentle"), "lazy", "I'm feeling lazy"),
+    (("muscle gainer", "back", "chest", "biceps", "triceps", "shoulder", "leg",
+      "compound", "weight", "strength"), "muscle", "Muscle gainer"),
+    (("sweat", "burn", "hiit", "cardio"), "sweat", "Sweat / burn fat"),
+]
+
+_LIVE_BUCKET_LABELS = {
+    "sweat": "Sweat / burn fat",
+    "muscle": "Muscle gainer",
+    "explosive": "Build explosion",
+    "lazy": "I'm feeling lazy",
+    "calisthenics": "Calisthenics",
+    "outdoor": "Outdoor",
+}
+
+_MILESTONE_THRESHOLDS = [5, 10, 25, 50, 100, 250, 500, 1000]
+
+
+def _classify_live_mood(mood: Optional[str]) -> Optional[tuple[str, str]]:
+    """Classify a free-form mood_category string into one of 6 buckets.
+    Returns (bucket_id, display_label) or None if it doesn't match any bucket."""
+    if not mood:
+        return None
+    m = mood.lower()
+    for keywords, bucket, label in _LIVE_MOOD_RULES:
+        if any(k in m for k in keywords):
+            return bucket, label
+    return None
+
+
+def _format_relative_time(ts: datetime) -> str:
+    """Convert an ISO timestamp to a relative human-readable string."""
+    now = datetime.now(timezone.utc)
+    if ts.tzinfo is None:
+        ts = ts.replace(tzinfo=timezone.utc)
+    delta = now - ts
+    secs = int(delta.total_seconds())
+    if secs < 0:
+        return "just now"
+    if secs < 60:
+        return "just now"
+    if secs < 3600:
+        m = secs // 60
+        return f"{m} min ago" if m > 1 else "1 min ago"
+    if secs < 86400:
+        h = secs // 3600
+        return f"{h} hr ago" if h > 1 else "1 hr ago"
+    days = secs // 86400
+    if days == 1:
+        return "yesterday"
+    if days < 7:
+        return f"{days} days ago"
+    if days < 14:
+        return "last week"
+    return "earlier"
+
+
+@api_router.get("/feed/live")
+async def get_live_feed(
+    limit: int = 30,
+    current_user_id: str = Depends(get_current_user),
+):
+    """Live activity feed — recent workout starts, completions, and milestones
+    from ALL users (not friend-graph). Used by the Live tab."""
+    now = datetime.now(timezone.utc)
+    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    live_window_start = now - timedelta(minutes=20)  # "LIVE NOW" = started in last 20 min
+
+    # ---------- STAT HEADER ----------
+    sessions_today = await db.user_events.count_documents({
+        "event_type": {"$in": ["workout_completed", "workout_session_completed"]},
+        "timestamp": {"$gte": today_start},
+    })
+
+    # Most common mood today (by completion bucket)
+    mood_pipeline = [
+        {"$match": {
+            "event_type": {"$in": ["workout_completed", "workout_session_completed"]},
+            "timestamp": {"$gte": today_start},
+        }},
+        {"$group": {"_id": "$metadata.mood_category", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+        {"$limit": 30},
+    ]
+    bucket_counts: Dict[str, int] = {}
+    async for row in db.user_events.aggregate(mood_pipeline):
+        cls = _classify_live_mood(row.get("_id"))
+        if cls:
+            bucket_counts[cls[0]] = bucket_counts.get(cls[0], 0) + row["count"]
+    top_bucket = max(bucket_counts.items(), key=lambda x: x[1])[0] if bucket_counts else None
+    most_common_mood = _LIVE_BUCKET_LABELS.get(top_bucket) if top_bucket else None
+
+    # ---------- ENTRIES ----------
+    # Stretch lookback window invisibly: keep widening until we have at least 15 valid entries
+    lookback_options = [timedelta(hours=6), timedelta(hours=24), timedelta(days=3),
+                        timedelta(days=7), timedelta(days=30), timedelta(days=365)]
+
+    raw_entries: List[dict] = []
+    user_cache: Dict[str, dict] = {}
+
+    async def _get_user(uid: str) -> Optional[dict]:
+        if uid in user_cache:
+            return user_cache[uid]
+        try:
+            u = await db.users.find_one({"_id": ObjectId(uid)}) if len(uid) == 24 else None
+        except Exception:
+            u = None
+        user_cache[uid] = u
+        return u
+
+    seen_user_action: set = set()  # dedupe live_now per user
+    for window in lookback_options:
+        cutoff = now - window
+        # Pull recent workout events
+        cursor = db.user_events.find({
+            "event_type": {"$in": ["workout_started", "workout_completed", "workout_session_completed"]},
+            "timestamp": {"$gte": cutoff},
+            "user_id": {"$ne": None},
+        }).sort("timestamp", -1).limit(limit * 4)
+
+        events = await cursor.to_list(length=limit * 4)
+        raw_entries = []
+        seen_user_action = set()
+        for ev in events:
+            mood = (ev.get("metadata") or {}).get("mood_category")
+            classified = _classify_live_mood(mood)
+            if not classified:
+                continue
+            bucket_id, label = classified
+            uid = str(ev.get("user_id") or "")
+            if not uid:
+                continue
+            user_doc = await _get_user(uid)
+            if not user_doc:
+                continue
+
+            evtype = ev["event_type"]
+            ts = ev["timestamp"]
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+
+            if evtype == "workout_started":
+                # Only treat as LIVE NOW if recent AND not already recorded for that user
+                if ts < live_window_start:
+                    continue
+                key = (uid, "live", bucket_id)
+                if key in seen_user_action:
+                    continue
+                seen_user_action.add(key)
+                entry_type = "live_now"
+                workout_name = (ev.get("metadata") or {}).get("workout_name")
+                duration_minutes = None
+            else:
+                entry_type = "completion"
+                meta = ev.get("metadata") or {}
+                workout_name = meta.get("workout_name")
+                duration_minutes = meta.get("duration_minutes")
+                if duration_minutes is None and meta.get("duration_seconds"):
+                    try:
+                        duration_minutes = max(1, int(round(meta["duration_seconds"] / 60)))
+                    except Exception:
+                        duration_minutes = None
+                # Dedupe by (user, completion event id) — workout_completed and
+                # workout_session_completed often fire as a pair within seconds
+                key = (uid, "complete", round(ts.timestamp() / 60))
+                if key in seen_user_action:
+                    continue
+                seen_user_action.add(key)
+
+            raw_entries.append({
+                "id": str(ev["_id"]),
+                "type": entry_type,
+                "user": {
+                    "id": uid,
+                    "username": user_doc.get("username") or "",
+                    "name": user_doc.get("name") or user_doc.get("username") or "Someone",
+                    "avatar": user_doc.get("avatar") or "",
+                },
+                "mood_bucket": bucket_id,
+                "mood_label": label,
+                "workout_name": workout_name,
+                "duration_minutes": duration_minutes,
+                "milestone_count": None,
+                "timestamp": ts.isoformat(),
+                "ago_text": _format_relative_time(ts),
+            })
+
+        # Inject milestone entries — users who recently crossed a threshold
+        # Only check on the broadest meaningful pull (>= 3 days lookback)
+        if window >= timedelta(days=3):
+            ms_pipeline = [
+                {"$match": {"event_type": "workout_completed",
+                            "timestamp": {"$gte": now - timedelta(days=14)}}},
+                {"$group": {"_id": "$user_id", "last_ts": {"$max": "$timestamp"}}},
+            ]
+            ms_rows = await db.user_events.aggregate(ms_pipeline).to_list(200)
+            for row in ms_rows:
+                uid = str(row["_id"]) if row["_id"] else ""
+                if not uid:
+                    continue
+                user_doc = await _get_user(uid)
+                if not user_doc:
+                    continue
+                wcount = user_doc.get("workouts_count", 0) or 0
+                if wcount in _MILESTONE_THRESHOLDS:
+                    last_ts = row["last_ts"]
+                    if last_ts.tzinfo is None:
+                        last_ts = last_ts.replace(tzinfo=timezone.utc)
+                    raw_entries.append({
+                        "id": f"milestone-{uid}-{wcount}",
+                        "type": "milestone",
+                        "user": {
+                            "id": uid,
+                            "username": user_doc.get("username") or "",
+                            "name": user_doc.get("name") or user_doc.get("username") or "Someone",
+                            "avatar": user_doc.get("avatar") or "",
+                        },
+                        # Milestones get a neutral bucket — pick a representative one
+                        "mood_bucket": "muscle",
+                        "mood_label": _LIVE_BUCKET_LABELS["muscle"],
+                        "workout_name": None,
+                        "duration_minutes": None,
+                        "milestone_count": wcount,
+                        "timestamp": last_ts.isoformat(),
+                        "ago_text": _format_relative_time(last_ts),
+                    })
+
+        # Sort by timestamp desc and break if we have enough
+        raw_entries.sort(key=lambda e: e["timestamp"], reverse=True)
+        if len(raw_entries) >= 15:
+            break
+
+    entries = raw_entries[:limit]
+
+    return {
+        "stats": {
+            "sessions_today": sessions_today,
+            "most_common_mood": most_common_mood,
+        },
+        "entries": entries,
+    }
+
+
+
+
 @api_router.get("/posts/following")
 async def get_following_posts(
     current_user_id: str = Depends(get_current_user),

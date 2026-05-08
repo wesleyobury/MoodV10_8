@@ -36,6 +36,7 @@ import GuestPromptModal from '../../components/GuestPromptModal';
 import ReportModal from '../../components/ReportModal';
 import { preloadNextItems, prefetchThumbnails } from '../../utils/cloudinaryVideo';
 import { prefetchVideoStart } from '../../utils/mediaPrefetch';
+import LiveFeed from '../../components/LiveFeed';
 
 import { API_URL } from '../../utils/apiConfig';
 import { formatNotificationTime } from '../../utils/notificationUtils';
@@ -151,6 +152,33 @@ interface Notification {
   message: string;
 }
 
+// Pulsing gold dot used inside the "Live" tab label
+const LiveTabPulseDot: React.FC = () => {
+  const opacity = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(opacity, { toValue: 0.3, duration: 800, useNativeDriver: true }),
+        Animated.timing(opacity, { toValue: 1, duration: 800, useNativeDriver: true }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [opacity]);
+  return (
+    <Animated.View
+      style={{
+        width: 6,
+        height: 6,
+        borderRadius: 3,
+        backgroundColor: '#F5C518',
+        opacity,
+      }}
+    />
+  );
+};
+
+
 export default function Explore() {
   // Track screen time
   useScreenTime('Explore');
@@ -168,7 +196,7 @@ export default function Explore() {
   const [hasMore, setHasMore] = useState(true);
   const [showComments, setShowComments] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'forYou' | 'following' | 'notifications'>('forYou');
+  const [activeTab, setActiveTab] = useState<'forYou' | 'live' | 'notifications'>('forYou');
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchUser[]>([]);
@@ -296,6 +324,11 @@ export default function Explore() {
 
   useEffect(() => {
     // Fetch posts for both authenticated users and guests
+    // Skip post fetch on Live tab (LiveFeed manages its own data)
+    if (activeTab === 'live') {
+      setLoading(false);
+      return;
+    }
     fetchPosts();
   }, [token, activeTab, isGuest]);
 
@@ -353,9 +386,7 @@ export default function Explore() {
         // Guests only see the public "For You" feed
         endpoint = `${API_URL}/api/posts/public?limit=${limit}&skip=${skip}`;
       } else {
-        endpoint = activeTab === 'following' 
-          ? `${API_URL}/api/posts/following?limit=${limit}&skip=${skip}` 
-          : `${API_URL}/api/posts?limit=${limit}&skip=${skip}`;
+        endpoint = `${API_URL}/api/posts?limit=${limit}&skip=${skip}`;
       }
       
       console.log('Fetching posts from:', endpoint);
@@ -1201,6 +1232,7 @@ export default function Explore() {
         <TouchableOpacity
           style={[styles.feedTab, activeTab === 'forYou' && styles.feedTabActive]}
           onPress={() => setActiveTab('forYou')}
+          data-testid="feed-tab-foryou"
         >
           <Text style={[
             styles.feedTabText,
@@ -1210,19 +1242,30 @@ export default function Explore() {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.feedTab, activeTab === 'following' && styles.feedTabActive]}
-          onPress={() => setActiveTab('following')}
+          style={[styles.feedTab, activeTab === 'live' && styles.feedTabActive]}
+          onPress={() => setActiveTab('live')}
+          data-testid="feed-tab-live"
         >
-          <Text style={[
-            styles.feedTabText,
-            activeTab === 'following' && styles.feedTabTextActive
-          ]}>
-            Following
-          </Text>
+          <View style={styles.liveTabInner}>
+            <Text style={[
+              styles.feedTabText,
+              activeTab === 'live' && styles.feedTabTextActive,
+            ]}>
+              Live
+            </Text>
+            <View style={styles.liveTabDotWrap}>
+              <LiveTabPulseDot />
+            </View>
+          </View>
         </TouchableOpacity>
       </View>}
 
-      {!showSearch && activeTab !== 'notifications' && (
+      {/* Live tab content — renders the new real-time activity feed */}
+      {!showSearch && activeTab === 'live' && (
+        <LiveFeed token={token} />
+      )}
+
+      {!showSearch && activeTab !== 'notifications' && activeTab !== 'live' && (
         posts.length === 0 ? (
           <ScrollView
             style={styles.feed}
@@ -1234,9 +1277,7 @@ export default function Explore() {
               <Ionicons name="fitness" size={64} color="#666" />
               <Text style={styles.emptyTitle}>No posts yet</Text>
               <Text style={styles.emptySubtitle}>
-                {activeTab === 'following' 
-                  ? 'Follow users to see their posts here'
-                  : 'Be the first to share your fitness journey!'}
+                Be the first to share your fitness journey!
               </Text>
             </View>
           </ScrollView>
@@ -2198,15 +2239,22 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   feedTabActive: {
-    borderBottomColor: '#FFD700',
+    borderBottomColor: '#F5C518',
   },
   feedTabText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#666',
+    color: '#6B6B6B',
   },
   feedTabTextActive: {
-    color: '#FFD700',
+    color: '#FFFFFF',
+  },
+  liveTabInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  liveTabDotWrap: {
+    marginLeft: 6,
   },
   searchContainer: {
     paddingHorizontal: 16,
