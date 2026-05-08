@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,9 @@ import {
   ActivityIndicator,
   Animated,
   Easing,
+  Platform,
 } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -183,14 +185,58 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
   const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
 
-  const fetchFeed = useCallback(async () => {
+  // Track previously-seen entry IDs so we can detect "+N just landed" on refresh
+  const seenIdsRef = useRef<Set<string>>(new Set());
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const toastOpacity = useRef(new Animated.Value(0)).current;
+  const toastTranslateY = useRef(new Animated.Value(-12)).current;
+  const isFirstLoadRef = useRef(true);
+
+  const showToast = useCallback((message: string) => {
+    setToastMessage(message);
+    Animated.parallel([
+      Animated.timing(toastOpacity, { toValue: 1, duration: 220, useNativeDriver: true }),
+      Animated.timing(toastTranslateY, { toValue: 0, duration: 220, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+    ]).start();
+
+    // Auto-hide after 2.5s
+    setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(toastOpacity, { toValue: 0, duration: 220, useNativeDriver: true }),
+        Animated.timing(toastTranslateY, { toValue: -12, duration: 220, useNativeDriver: true }),
+      ]).start(() => setToastMessage(null));
+    }, 2500);
+  }, [toastOpacity, toastTranslateY]);
+
+  const fetchFeed = useCallback(async (isManualRefresh: boolean = false) => {
     try {
       const res = await fetch(`${API_URL}/api/feed/live?limit=30`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
+      const json = (await res.json()) as LiveFeedData;
+
+      // Detect newly-arrived entries (not seen on previous fetch)
+      const previouslySeen = seenIdsRef.current;
+      const newEntries = (json.entries || []).filter((e) => !previouslySeen.has(e.id));
+      const isFirst = isFirstLoadRef.current;
+
+      // Update seen set with current entries
+      seenIdsRef.current = new Set((json.entries || []).map((e) => e.id));
       setData(json);
+
+      // Toast logic — skip on the very first load (everything would be "new")
+      if (!isFirst && newEntries.length > 0) {
+        const msg = newEntries.length === 1
+          ? '+1 just landed'
+          : `+${newEntries.length} just landed`;
+        showToast(msg);
+        // Soft haptic when new content arrives during a manual refresh
+        if (isManualRefresh && Platform.OS !== 'web') {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+        }
+      }
+      isFirstLoadRef.current = false;
     } catch (err) {
       console.warn('LiveFeed fetch error:', err);
       setData({ stats: { sessions_today: 0, most_common_mood: null }, entries: [] });
@@ -198,16 +244,16 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [token]);
+  }, [token, showToast]);
 
   useEffect(() => {
-    fetchFeed();
+    fetchFeed(false);
   }, [fetchFeed]);
 
   // Poll every 30s while screen is focused
   useFocusEffect(
     useCallback(() => {
-      const id = setInterval(fetchFeed, 30000);
+      const id = setInterval(() => fetchFeed(false), 30000);
       return () => clearInterval(id);
     }, [fetchFeed])
   );
@@ -229,7 +275,11 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-    fetchFeed();
+    // Tap haptic on pull-to-refresh trigger
+    if (Platform.OS !== 'web') {
+      Haptics.selectionAsync().catch(() => {});
+    }
+    fetchFeed(true);
   };
 
   const entries = data?.entries || [];
@@ -262,19 +312,39 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
   }
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={{ paddingBottom: 32 }}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={GOLD} />}
-      data-testid="live-feed-scroll"
-    >
-      <StatHeader sessions={stats.sessions_today} mood={stats.most_common_mood} />
-      <View style={{ paddingHorizontal: 16 }}>
-        {entries.map((entry) => (
-          <FeedCard key={entry.id} entry={entry} onPress={handleCardPress} />
-        ))}
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      {/* Floating "+N just landed" toast */}
+      {toastMessage !== null && (
+        <Animated.View
+          pointerEvents="none"
+          style={[
+            styles.toast,
+            {
+              opacity: toastOpacity,
+              transform: [{ translateY: toastTranslateY }],
+            },
+          ]}
+          data-testid="live-feed-new-entries-toast"
+        >
+          <View style={styles.toastDot} />
+          <Text style={styles.toastText}>{toastMessage}</Text>
+        </Animated.View>
+      )}
+
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 32 }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={GOLD} />}
+        data-testid="live-feed-scroll"
+      >
+        <StatHeader sessions={stats.sessions_today} mood={stats.most_common_mood} />
+        <View style={{ paddingHorizontal: 16 }}>
+          {entries.map((entry) => (
+            <FeedCard key={entry.id} entry={entry} onPress={handleCardPress} />
+          ))}
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -442,6 +512,35 @@ const styles = StyleSheet.create({
     color: TEXT_SECONDARY,
     fontSize: 14,
     textAlign: 'center',
+  },
+
+  // Floating "+N just landed" toast
+  toast: {
+    position: 'absolute',
+    top: 20,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(20, 20, 20, 0.95)',
+    borderColor: 'rgba(245, 197, 24, 0.35)',
+    borderWidth: 1,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
+    zIndex: 100,
+  },
+  toastDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: GOLD,
+    marginRight: 8,
+  },
+  toastText: {
+    color: TEXT_PRIMARY,
+    fontSize: 12,
+    fontWeight: '500',
+    letterSpacing: 0.2,
   },
 });
 

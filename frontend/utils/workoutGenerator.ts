@@ -1639,44 +1639,39 @@ function pickMuscleSection(
       usedPat.add(slot1.workout.movement_pattern as MovementPattern);
   }
 
-  // Slots 2..target
+  // Slots 2..target — ROTATE between compound and isolation rather than forcing
+  // isolation. For muscles with shallow isolation pools (e.g. back has 1-2 isolations),
+  // this prevents the section from being padded with low-quality picks just to satisfy
+  // a "must include isolation" rule.
+  //
+  // Rotation: alternate types starting from the OPPOSITE of slot 1's type.
+  // At each slot, pick from the alternating pool ONLY if it has fresh options
+  // not already used (id/equipment/pattern). Otherwise, fall back to the other pool.
+  // This keeps a healthy mix when both pools are deep and gracefully degrades when
+  // one is shallow.
+  let lastPickedType: 'compound' | 'isolation' = (slot1?.workout.exercise_type === 'isolation') ? 'isolation' : 'compound';
   for (let i = 1; i < target; i++) {
-    const isLast = i === target - 1;
-    // Slot N rule:
-    //  - If target === 2: slot 2 is isolation (preferred)
-    //  - If target === 3: slot 2 may be compound or isolation; slot 3 is isolation
-    //  - If target >= 4 (legs only): handled in pickLegSection
-    let slotPool: FlavorWorkout[];
-    if (target === 2) {
-      slotPool = isolations.length > 0 ? isolations : compounds;
-    } else if (target === 3) {
-      if (i === 1) {
-        slotPool = pool;  // any
-      } else {
-        slotPool = isolations.length > 0 ? isolations : compounds;
-      }
-    } else {
-      // target === 1 already returned; target >= 4 handled above
-      slotPool = isolations.length > 0 ? isolations : pool;
-    }
+    // Preferred type for this slot is the opposite of the last one we picked
+    const wantIsolation = lastPickedType === 'compound';
+    const primaryPool = wantIsolation ? isolations : compounds;
+    const secondaryPool = wantIsolation ? compounds : isolations;
 
-    const pick = pickWithFlavor(slotPool, flavor, excludeIds, usedEq, usedPat);
+    let pick = pickWithFlavor(primaryPool, flavor, excludeIds, usedEq, usedPat);
+    if (!pick) {
+      // Primary pool exhausted (no fresh option) — fall back to secondary pool
+      pick = pickWithFlavor(secondaryPool, flavor, excludeIds, usedEq, usedPat);
+    }
     if (!pick) {
       // Last resort: pick anything not already in section
-      const fallback = pickWithFlavor(pool, flavor, excludeIds, usedEq, usedPat);
-      if (!fallback) break;
-      section.push(fallback);
-      excludeIds.add(fallback.workout.name);
-      usedEq.add(fallback.equipment);
-      if (fallback.workout.movement_pattern)
-        usedPat.add(fallback.workout.movement_pattern as MovementPattern);
-      continue;
+      pick = pickWithFlavor(pool, flavor, excludeIds, usedEq, usedPat);
+      if (!pick) break;
     }
     section.push(pick);
     excludeIds.add(pick.workout.name);
     usedEq.add(pick.equipment);
     if (pick.workout.movement_pattern)
       usedPat.add(pick.workout.movement_pattern as MovementPattern);
+    lastPickedType = pick.workout.exercise_type === 'isolation' ? 'isolation' : 'compound';
   }
 
   // Reorder section: compounds first, isolations last (preserve relative order otherwise)

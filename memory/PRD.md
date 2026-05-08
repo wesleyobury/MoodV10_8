@@ -14,6 +14,17 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-08] **Muscle Gainer slot rotation + Live feed: 48h cap, seed data, haptic + new-entries toast**:
+  - **Muscle Gainer rotation fix** (`frontend/utils/workoutGenerator.ts:1631-1675`): Slots 2..N now alternate compound ↔ isolation rather than forcing isolation. When the alternating pool is exhausted (e.g. Back has only 1-2 isolations), the picker gracefully falls back to the other pool instead of degrading the section. Distribution check (300 runs/scenario): Back-only beginner shifted from forced-iso to 67% compound / 33% iso; multi-muscle beginner sections (target=1) now correctly stay 100% compound. All 1,280 invariant simulations still pass.
+  - **Live feed lookback**: capped at **48h primary + soft 7d fallback** (was 365d). Beyond 48h, entries naturally read as "yesterday" / "X days ago".
+  - **Milestone branch decoupled** from lookback iteration — always evaluated at the end so milestone cards surface even when 48h has plenty of activity.
+  - **Seed script** `/app/scripts/seed_live_feed.py`: generates ~40 events spread across last 48h + bumps 3 users to milestone counts {5, 25, 100}. Idempotent via `seed_tag=live_feed_seed_v1`. Run again: `python /app/scripts/seed_live_feed.py`. Undo: `--clear`.
+  - **Pull-to-refresh haptic** in `frontend/components/LiveFeed.tsx`: light selection haptic on pull, light impact haptic when fresh entries land during a manual refresh (mobile only — `Platform.OS !== 'web'`).
+  - **"+N just landed" toast**: floating pill at the top of the feed, fades in/translateY when previously-unseen entry IDs appear in a refresh response. Auto-hides after 2.5s. Skips on first load (would always be "all new").
+  - Inspection script `/app/scripts/inspect_muscle_gainer_distribution.js` for ad-hoc compound/isolation distribution analysis.
+
+
+## What's Been Implemented
 - [2026-05-08] **Live tab — real-time workout activity feed (replaces "Following")**:
   - Replaced `Following` tab in `frontend/app/(tabs)/explore.tsx` with new `Live` tab. Tab type changed to `'forYou' | 'live' | 'notifications'`.
   - Tab styling per brand spec: active = white text + 2px gold (#F5C518) underline, inactive = #6B6B6B. Tiny pulsing gold dot (6px) next to "Live" label via inline `LiveTabPulseDot`.
