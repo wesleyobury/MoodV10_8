@@ -715,6 +715,31 @@ export default function CartScreen() {
             <Text style={styles.durationText}>~{getTotalDuration()} min</Text>
           </View>
         </View>
+
+        {/* Muscle Gainer Flavor Badge (bottom-right of hero) */}
+        {(() => {
+          const styles_count: Record<string, number> = {};
+          for (const it of cartItems) {
+            if (it.training_style && it.training_style !== 'mixed') {
+              styles_count[it.training_style] = (styles_count[it.training_style] || 0) + 1;
+            }
+          }
+          const top = Object.entries(styles_count).sort((a, b) => b[1] - a[1])[0];
+          if (!top) return null;
+          const flavorMap: Record<string, { label: string; icon: 'barbell' | 'fitness' | 'flame' }> = {
+            strength: { label: 'Strength', icon: 'barbell' },
+            hypertrophy: { label: 'Hypertrophy', icon: 'fitness' },
+            pump: { label: 'Pump', icon: 'flame' },
+          };
+          const fl = flavorMap[top[0]];
+          if (!fl) return null;
+          return (
+            <View style={styles.cartFlavorBadge} testID="cart-flavor-badge">
+              <Ionicons name={fl.icon} size={14} color="#FFD700" />
+              <Text style={styles.cartFlavorBadgeText}>{fl.label}</Text>
+            </View>
+          );
+        })()}
       </View>
 
       {/* Exercise List */}
@@ -980,6 +1005,27 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '600',
+  },
+  cartFlavorBadge: {
+    position: 'absolute',
+    right: 16,
+    bottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.18)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+    zIndex: 10,
+  },
+  cartFlavorBadgeText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.3,
   },
   // Content Section Styles
   contentContainer: {

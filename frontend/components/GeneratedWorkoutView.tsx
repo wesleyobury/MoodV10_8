@@ -337,6 +337,26 @@ export default function GeneratedWorkoutView({
           </Text>
         </View>
 
+        {/* Flavor Badge (bottom-right of hero) — only when set (Muscle Gainer carts) */}
+        {currentCart.flavor && (
+          <View style={styles.flavorBadge}>
+            <Ionicons
+              name={
+                currentCart.flavor === 'Strength'
+                  ? 'barbell'
+                  : currentCart.flavor === 'Hypertrophy'
+                  ? 'fitness'
+                  : 'flame'
+              }
+              size={14}
+              color="#FFD700"
+            />
+            <Text style={styles.flavorBadgeText} testID="cart-flavor-badge">
+              {currentCart.flavor}
+            </Text>
+          </View>
+        )}
+
         {/* Hero Content */}
         <View style={styles.heroContent}>
           <View style={styles.generatedBadge}>
@@ -505,6 +525,27 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     color: '#fff',
+  },
+  flavorBadge: {
+    position: 'absolute',
+    right: 16,
+    bottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.18)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+    zIndex: 10,
+  },
+  flavorBadgeText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.3,
   },
   heroContent: {
     position: 'absolute',
