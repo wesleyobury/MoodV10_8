@@ -13,6 +13,20 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **Infrastructure**: Kubernetes on Emergent platform
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
+## What's Been Implemented
+- [2026-05-08] **Live tab — real-time workout activity feed (replaces "Following")**:
+  - Replaced `Following` tab in `frontend/app/(tabs)/explore.tsx` with new `Live` tab. Tab type changed to `'forYou' | 'live' | 'notifications'`.
+  - Tab styling per brand spec: active = white text + 2px gold (#F5C518) underline, inactive = #6B6B6B. Tiny pulsing gold dot (6px) next to "Live" label via inline `LiveTabPulseDot`.
+  - New `frontend/components/LiveFeed.tsx` renders: pinned stat-header card (#141414, 14px radius) with sessions-today big number + most-common-mood + tiny pulsing gold dot, then a scrollable list of tinted feed cards.
+  - Six mood palettes (sweat #E27457 on #1F0F0B, muscle #D9CDB8 on #1A1715, explosive #9B8AE0 on #15102A, lazy #5FA68A on #0F1F1A, calisthenics #6B9CD9 on #0E1620, outdoor #B89A5F on #1F1A0B). Gold reserved for LIVE pulse / active tab underline / milestone accent only (≤2 gold elements per screen).
+  - Three entry types: `live_now` (LIVE NOW label + 5px gold pulse dot), `completion` (no label, "X finished a Y-min workout"), `milestone` (gold MILESTONE label + big white number). All cards have a "Try this workout" CTA chip.
+  - Tap → navigates to that mood's existing Build-for-Me path (sweat→workout-type, muscle→body-parts, explosive→explosiveness-type, lazy→lazy-training-type, calisthenics→calisthenics-equipment, outdoor→outdoor-equipment).
+  - Empty state: when <5 entries, shows only stat header + "Quiet right now — be the first today" (no fake activity).
+  - **New backend endpoint** `GET /api/feed/live` (in `backend/server.py`) returns `{stats: {sessions_today, most_common_mood}, entries: [...]}`. Aggregates `workout_started` (last 20 min → live_now) + `workout_completed` + `workout_session_completed` events from ALL users (no follow graph), classifies inconsistent `metadata.mood_category` strings into one of 6 buckets via `_classify_live_mood`, joins user info, formats relative timestamps via `_format_relative_time`, stretches lookback window (6h → 24h → 3d → 7d → 30d → 365d) until ≥15 entries, and emits milestone cards for users sitting exactly at thresholds {5, 10, 25, 50, 100, 250, 500, 1000}.
+  - Polls every 30s while tab focused.
+  - Tests: `/app/backend/tests/test_live_feed.py` (9 unit tests for classifier + relative time) + `/app/backend/tests/test_live_feed_api.py` (21 integration tests via testing agent) — **30/30 PASS**.
+
+
 - [2026-05-08] **Muscle Gainer cart polish — flavor badge, muscle-group dividers, compound/isolation tags**:
   - Bottom-right hero badge: gold icon (barbell / fitness / flame) + white text for Strength / Hypertrophy / Pump. Lives in both `GeneratedWorkoutView.tsx` and `cart.tsx`. The cart-screen badge derives from majority `training_style`.
   - **Subtle light-grey muscle-group divider** (`MuscleGroupDivider` component) inserted before each muscle section in both manual + auto-generated muscle gainer carts. Hairline lines flank an uppercase label (CHEST / LEGS / BICEPS, etc.). Helper `getMuscleGainerGroup()` parses `workoutType` for both formats: `"Muscle Building - <Muscle>"` (auto) and `"<Muscle>"` (manual).
