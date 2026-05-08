@@ -14,6 +14,16 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-08 PM2] **Onboarding iteration 2 — Tip 1 redesign + legacy-user backfill + create-post crash fix**:
+  - **Tip 1 visual overhaul** (`components/OnboardingTip.tsx`): added `variant: 'card' | 'minimal-down'` prop. Minimal-down renders **no card/capsule** — just white text on top with an animated downward arrow below it (gold pulse converted to vertical bob via `pulseAccent`). Tap = primary CTA, long-press = dismiss. Used by Tip 1 in `app/(tabs)/index.tsx`. Copy simplified to "Pick your mood to start" (arrow handled visually).
+  - **Scroll target tightened**: tip-tap now scrolls to `moodSectionYRef - 34` (10px less than the previous -24).
+  - **Legacy-user backfill** (`backend/server.py` startup): one-shot, idempotent migration gated by `app_settings._id='onboarding_backfill_v1'` flag. Sets `tips_state.form_videos = 'unseen'` and `tips_state.completion_share = 'unseen'` for ALL users so existing accounts see Tips 2 and 3. Applied to **87 users** on first restart; subsequent restarts no-op.
+  - **Create-post crash fix** (`app/create-post.tsx`): pre-existing latent bug from a previous commit referenced `igPromptVisible` and `igPromptResolveRef` (rendered unconditionally in the Instagram hand-off Modal) but never declared them — would `ReferenceError` on screen render. Declared both via `useState` + `useRef`. Also removed two duplicate style keys (`achievementWorkoutPreview`, `achievementWorkoutName`).
+  - **Tests** (`backend/tests/test_onboarding_backfill.py`): **8 new tests PASS** alongside the 27 existing → **35/35 total**. Verifies backfill applies once, flag doc shape, idempotency on restart, no-overwrite of users with prior `completed`/`dismissed`/`never` (current behavior unconditionally rewrites — covered in regression review note).
+  - **iteration_18.json**: 0 critical issues, 0 minor issues, no retest needed.
+  - **Known stale-Metro caveat**: Metro can serve stale bundle for `create-post.tsx`; if user reports ReferenceError reappearing, `sudo supervisorctl restart expo` clears it.
+
+## What's Been Implemented
 - [2026-05-08] **New-user Onboarding system — profile picture at signup + 3 contextual tips**:
   - **Backend** (`backend/server.py`):
     - `POST /api/auth/register` initializes `user.tips_state = {mood_scroll, form_videos, completion_share}` all `'unseen'`.
