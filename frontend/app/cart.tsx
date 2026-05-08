@@ -118,6 +118,31 @@ function costLabel(c?: number): string | null {
   return 'All-Out';
 }
 
+// Extract the muscle group from a muscle gainer WorkoutItem.
+// Supports both auto-generated items (workoutType = "Muscle Building - <Muscle>")
+// and manually-added items (workoutType = "<Muscle>").
+const MUSCLE_GROUP_NAMES = new Set([
+  'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Abs',
+  'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Legs',
+]);
+function getMuscleGainerGroup(item: WorkoutItem): string | null {
+  if (!item?.workoutType) return null;
+  if (item.workoutType.startsWith('Muscle Building')) {
+    const parts = item.workoutType.split(' - ');
+    return parts.length > 1 ? parts[parts.length - 1].trim() : null;
+  }
+  if (MUSCLE_GROUP_NAMES.has(item.workoutType)) return item.workoutType;
+  return null;
+}
+
+const MuscleGroupDivider: React.FC<{ muscle: string }> = ({ muscle }) => (
+  <View style={styles.muscleDivider} testID={`muscle-divider-${muscle.toLowerCase()}`}>
+    <View style={styles.muscleDividerLine} />
+    <Text style={styles.muscleDividerLabel}>{muscle.toUpperCase()}</Text>
+    <View style={styles.muscleDividerLine} />
+  </View>
+);
+
 const CartItemComponent: React.FC<{
   item: WorkoutItem;
   index: number;
@@ -136,6 +161,10 @@ const CartItemComponent: React.FC<{
   // Sweat path tags every workout with role; Outdoor path tags only combo carts (primer + main_block).
   // Explosive carts use slot_label (Activation / Power / Bonus). Prefer slot_label, fall back to role.
   const sweatRoleLabel = item.slot_label || (item.role ? ROLE_LABEL[item.role] : null);
+  // Muscle Gainer carts tag every workout as Compound or Isolation.
+  const typeLabel = item.exercise_type
+    ? item.exercise_type.charAt(0).toUpperCase() + item.exercise_type.slice(1)
+    : null;
   
   return (
     <View style={styles.exerciseCard}>
@@ -157,6 +186,11 @@ const CartItemComponent: React.FC<{
         <Text style={styles.exerciseDuration}>{item.duration}</Text>
         {sweatRoleLabel && (
           <Text style={styles.sweatRoleLabel}>{sweatRoleLabel}</Text>
+        )}
+        {typeLabel && (
+          <Text style={styles.sweatRoleLabel} testID="exercise-type-label">
+            {typeLabel}
+          </Text>
         )}
       </View>
       <View style={styles.exerciseActions}>
@@ -753,18 +787,25 @@ export default function CartScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 120 }}
         >
-          {cartItems.map((item, index) => (
-            <CartItemComponent
-              key={item.id}
-              item={item}
-              index={index}
-              onRemove={handleRemoveItem}
-              onMoveUp={handleMoveUp}
-              onMoveDown={handleMoveDown}
-              isFirst={index === 0}
-              isLast={index === cartItems.length - 1}
-            />
-          ))}
+          {cartItems.map((item, index) => {
+            const muscle = getMuscleGainerGroup(item);
+            const prevMuscle = index > 0 ? getMuscleGainerGroup(cartItems[index - 1]) : null;
+            const showDivider = muscle && muscle !== prevMuscle;
+            return (
+              <React.Fragment key={item.id}>
+                {showDivider && <MuscleGroupDivider muscle={muscle!} />}
+                <CartItemComponent
+                  item={item}
+                  index={index}
+                  onRemove={handleRemoveItem}
+                  onMoveUp={handleMoveUp}
+                  onMoveDown={handleMoveDown}
+                  isFirst={index === 0}
+                  isLast={index === cartItems.length - 1}
+                />
+              </React.Fragment>
+            );
+          })}
           
           {/* Add Custom Exercise Button - appears below last exercise */}
           <TouchableOpacity 
@@ -1110,6 +1151,25 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     letterSpacing: 0.4,
     marginTop: 4,
+  },
+  muscleDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 4,
+    marginTop: 14,
+    marginBottom: 8,
+  },
+  muscleDividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+  },
+  muscleDividerLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: 'rgba(255, 255, 255, 0.55)',
+    letterSpacing: 1.4,
   },
   exerciseActions: {
     flexDirection: 'row',

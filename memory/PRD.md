@@ -13,6 +13,12 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **Infrastructure**: Kubernetes on Emergent platform
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
+- [2026-05-08] **Muscle Gainer cart polish — flavor badge, muscle-group dividers, compound/isolation tags**:
+  - Bottom-right hero badge: gold icon (barbell / fitness / flame) + white text for Strength / Hypertrophy / Pump. Lives in both `GeneratedWorkoutView.tsx` and `cart.tsx`. The cart-screen badge derives from majority `training_style`.
+  - **Subtle light-grey muscle-group divider** (`MuscleGroupDivider` component) inserted before each muscle section in both manual + auto-generated muscle gainer carts. Hairline lines flank an uppercase label (CHEST / LEGS / BICEPS, etc.). Helper `getMuscleGainerGroup()` parses `workoutType` for both formats: `"Muscle Building - <Muscle>"` (auto) and `"<Muscle>"` (manual).
+  - **Compound / Isolation tag** rendered on every muscle gainer card (matches existing "Warm-Up / Main Set / Finisher / Activation / Power / Bonus" badge format). Field plumbed to `WorkoutItem` via `workoutToItem()`.
+
+
 ## What's Been Implemented
 - [2026-05-08] **Muscle Gainer "Build for Me" generator (v2 spec) + metadata tagging** for all 11 muscle group databases:
   - Added `MuscleGainerMetadata` types to `frontend/types/workout.ts`: `ExerciseType`, `MovementPattern` (37 patterns), `TrainingStyle` (`strength` / `hypertrophy` / `pump` / `mixed`).
