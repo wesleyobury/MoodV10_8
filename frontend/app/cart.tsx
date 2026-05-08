@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import HomeButton from '../components/HomeButton';
@@ -276,6 +276,15 @@ export default function CartScreen() {
       }
     }
   }, [params.generatedCarts]);
+
+  // Reset transient pressed states whenever the cart screen regains focus
+  // (e.g., user pressed Start, navigated to /workout-guidance, then came back).
+  useFocusEffect(
+    useCallback(() => {
+      setIsStarting(false);
+      setIsSaving(false);
+    }, [])
+  );
 
   // ────────────────────────────────────────────────────────
   // A2 — Hydrate cart from push notification params (cold start fix)
@@ -785,7 +794,7 @@ export default function CartScreen() {
         <ScrollView 
           style={styles.exerciseList}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 120 }}
+          contentContainerStyle={{ paddingBottom: 24 }}
         >
           {cartItems.map((item, index) => {
             const muscle = getMuscleGainerGroup(item);
