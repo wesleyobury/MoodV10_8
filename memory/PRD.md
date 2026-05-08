@@ -14,6 +14,22 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-08] **Muscle Gainer "Build for Me" generator (v2 spec) + metadata tagging** for all 11 muscle group databases:
+  - Added `MuscleGainerMetadata` types to `frontend/types/workout.ts`: `ExerciseType`, `MovementPattern` (37 patterns), `TrainingStyle` (`strength` / `hypertrophy` / `pump` / `mixed`).
+  - Programmatically tagged **880 workouts** across `chest/back/shoulders/biceps/triceps/abs/quads/hamstrings/glutes/calves/compound-legs-workouts-data.ts` via `/app/scripts/tag_muscle_gainer.py` (heuristic + spec overrides).
+  - Replaced `generateMuscleGainerCarts` in `frontend/utils/workoutGenerator.ts`. New algorithm:
+    - Volume table: 1 muscle (beg 2-3, int/adv 3-4) / 2 muscles (cap 5/6) / 3+ muscles (cap 5/6 with ancillary trim).
+    - Per-muscle slot order: compound → secondary → isolation.
+    - Legs special case: 4-slot section (2 compound from compound-legs DB + 2 isolation from sub-files; isolations from different sub-groups).
+    - 3 cart variants flavored by `training_style`: Cart 1 = Strength, Cart 2 = Hypertrophy, Cart 3 = Pump (with `mixed` fallback when flavor pool is exhausted).
+    - Equipment + movement_pattern uniqueness within each muscle section.
+    - Abs always rendered last; protected from being trimmed to 0 unless absolutely required.
+  - Validation: `/app/scripts/validate_muscle_gainer.js` runs 1,280 cart simulations across 12 scenarios × 3 tiers + 200 random multi-muscle combos — all 7 invariants pass (0 failures).
+  - Sample script `/app/scripts/sample_muscle_gainer_carts.js` for visual inspection of generated carts.
+  - Dropped legacy `LEG_COMPOUND_EXERCISES` hardcoded list and old `selectLegWorkouts`/`selectWorkoutsForMuscleGroup` helpers — all leg compound logic is now metadata-driven.
+
+
+## What's Been Implemented
 - [2026-05-07] **Added Barbell equipment to Muscle Gainer > Legs > Glutes (alphabetical)** in `frontend/app/legs-equipment.tsx` and Glutes data file:
   - New equipment id `barbell-glute` (name: 'Barbell', icon: 'barbell') inserted alphabetically as first option in Glutes equipment list.
   - Updated `equipmentPerGroup.Glutes.push` mapping (line 284) and `hasGlutesEquipment` selector (line 350) to include `barbell-glute`.

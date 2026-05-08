@@ -106,6 +106,7 @@ export interface GeneratedCart {
   workouts: WorkoutItem[];
   totalDuration: number;
   intensity: string;
+  flavor?: string;
 }
 
 interface GeneratedWorkoutViewProps {

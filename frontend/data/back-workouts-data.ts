@@ -24,7 +24,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Move light on rear flies; control beats swinging.',
               description: 'Controlled tempo maximizes rear delt activation over momentum.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Y-T Row Flow',
@@ -44,7 +48,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep forehead against pad for no neck strain.',
               description: 'Pad contact maintains neutral neck alignment throughout movement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 3,
         },
         {
           name: 'Supported One-Arm Rows',
@@ -69,7 +77,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel the lat stretch',
               description: 'Let shoulder protract slightly at the bottom.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Chest-Supported Dumbbell Rows',
@@ -94,7 +106,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Think shoulder blades first',
               description: 'Arms follow scapular movement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -116,7 +132,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Go light on reverse fly, pause 1s at top.',
               description: 'Peak contraction pause enhances rear delt development.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'W-Rear Flow',
@@ -136,7 +156,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep reps slow, avoid shrugging shoulders.',
               description: 'Controlled tempo with depressed shoulders isolates target muscles.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Paused Dumbbell Rows',
@@ -161,7 +185,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form feels tight',
               description: 'Lat and mid-back should cramp slightly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Dumbbell Row Drop Set',
@@ -186,7 +214,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps are allowed',
               description: 'Grip shouldn\'t cap back overload.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -208,7 +240,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Neutral spine always, no jerking.',
               description: 'Consistent spinal alignment prevents compensation patterns.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Y-T Row Blast',
@@ -228,7 +264,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Breathe steady during high fatigue at end.',
               description: 'Controlled breathing maintains performance through fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Dumbbell Rows',
@@ -253,7 +293,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps encouraged',
               description: 'Let lats fail before grip.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Triple Drop Dumbbell Rows',
@@ -278,7 +322,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase deep lat pump',
               description: 'Under-armpit burn is the goal.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -307,7 +355,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Tight lats protect spine',
               description: 'Lat engagement improves pulling strength and safety.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'mixed',
+          intensity_cost: 3,
         },
         {
           name: 'Row Flow Combo',
@@ -327,7 +379,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive hips back, spine neutral',
               description: 'Proper hip hinge pattern during good mornings.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Bent-Over Rows',
@@ -352,7 +408,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Back stays flat',
               description: 'Think proud chest, neutral neck.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Pause Rows',
@@ -377,7 +437,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel mid-back squeeze',
               description: 'Not arms, not hips.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -399,7 +463,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower bar under control',
               description: 'Control eccentric to fully stretch hamstrings.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Row Shrug Flow',
@@ -419,7 +487,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stabilize posture before transitioning',
               description: 'Reset form between exercises for safety and effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Barbell Row Drop Set',
@@ -444,7 +516,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps are allowed',
               description: 'Grip shouldn\'t limit back loading.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Iso-Finish Rows',
@@ -469,7 +545,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form feels crushing',
               description: 'Upper-back squeeze dominates.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -491,7 +571,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive hips and traps through lockouts',
               description: 'Complete range of motion for maximum development.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Power Complex',
@@ -511,7 +595,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode hips to drive bar fast',
               description: 'Hip drive generates power for explosive cleans.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Tempo Rows',
@@ -536,7 +624,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps protect output',
               description: 'Let back, not grip, fail.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Row Mechanical Drop',
@@ -561,7 +653,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase lat density',
               description: 'You should feel deep thickness building.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         }
       ]
     }
@@ -589,7 +685,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive elbows back, not out, when rowing.',
               description: 'Proper elbow path targets lats more effectively than rear delts.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 3,
         },
         {
           name: 'Row Swing Flow',
@@ -609,7 +709,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep chest high in suitcase deadlift.',
               description: 'Maintain proud chest to avoid rounding and target glutes properly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 3,
         },
         {
           name: 'Supported Kettlebell Rows',
@@ -634,7 +738,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel lat stretch first',
               description: 'Controlled bottom position matters.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Suitcase Kettlebell Rows',
@@ -659,7 +767,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Core assists the pull',
               description: 'Obliques should help brace.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -681,7 +793,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Suitcase pulls = anti-tilt stability focus.',
               description: 'Resist lateral flexion to build core strength and stability.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Gorilla Row Flow',
@@ -701,7 +817,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pull elbows high and wide in KB high pulls.',
               description: 'High elbow position targets upper traps and rear delts effectively.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Double Kettlebell Rows',
@@ -726,7 +846,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Mid-back should thicken',
               description: 'Strong squeeze every rep.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Gorilla Rows',
@@ -751,7 +875,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Alternate lat firing',
               description: 'One side lights up at a time.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -773,7 +901,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Row with control, don\'t twist torso.',
               description: 'Keep spine stable to isolate lats and prevent compensatory movement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Snatch Clean Flow',
@@ -793,7 +925,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep spine solid in cleans, power from hips.',
               description: 'Hip drive generates force while spine stability protects back.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Double Kettlebell Rows',
@@ -818,7 +954,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps encouraged',
               description: 'Grip shouldn\'t limit output.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Kettlebell Row Triple Drop',
@@ -843,7 +983,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase lat pump',
               description: 'Deep burn under armpits.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -871,7 +1015,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep chin tucked to maintain neutral posture.',
               description: 'Neutral neck alignment prevents cervical hyperextension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'mixed',
+          intensity_cost: 3,
         },
         {
           name: 'Twist & Hold Flow',
@@ -891,7 +1039,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Breathe steady during holds, don\'t "crank."',
               description: 'Controlled breathing maintains position without excessive strain.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'mixed',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Extensions',
@@ -916,7 +1068,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive with glutes',
               description: 'Feel glutes/hamstrings initiate so low back doesn\'t take over.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Partial Extension Burn',
@@ -941,7 +1097,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel erectors working',
               description: 'You should feel a tight "brace" through low back, not a hinge snap.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'pump',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -963,7 +1123,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower slowly, 2–3s, for stronger gains.',
               description: 'Controlled eccentric phase maximizes strength development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Extension Circuit',
@@ -983,7 +1147,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Don\'t rush side bends; full ROM and squeeze.',
               description: 'Complete range of motion with peak contraction maximizes benefits.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Pause Extensions',
@@ -1008,7 +1176,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form looks flat',
               description: 'Torso reaches parallel with glutes tight, no overextension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Extension Drop Set',
@@ -1033,7 +1205,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep ROM identical',
               description: 'Same depth and same top position through all drops.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1055,7 +1231,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Brace core before rotating under load.',
               description: 'Pre-bracing creates safe foundation for rotational movements.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Superman + Iso Hold',
@@ -1075,7 +1255,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze glutes during 20s hold to protect spine.',
               description: 'Glute activation provides spinal stability during isometric holds.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Eccentric Extensions',
@@ -1100,7 +1284,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase tension, not ego',
               description: 'Use straps/assistance if needed so back stays the limiter.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Extension Iso Burnout',
@@ -1125,7 +1313,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak contraction is rigid',
               description: 'You should feel full-body bracing with zero swinging.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1153,7 +1345,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pull elbows straight back, not out.',
               description: 'Proper elbow path targets lats more effectively than rear delts.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Wide Grip Row',
@@ -1173,7 +1369,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Avoid shrugging shoulders during pull.',
               description: 'Keep shoulders down and back to isolate target muscles.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo T-Bar Rows',
@@ -1198,7 +1398,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel mid-back tighten',
               description: 'Think squeezing shoulder blades together.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Peak Pause Rows',
@@ -1223,7 +1427,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form feels compact',
               description: 'Elbows tight, chest tall, no shrug.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1245,7 +1453,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive elbows low, past hip line.',
               description: 'Deep elbow drive maximizes lat contraction and range.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Slow Neg Row',
@@ -1265,7 +1477,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep weight lighter to maintain control.',
               description: 'Reduced load allows proper tempo execution and form.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'T-Bar Drop Set',
@@ -1290,7 +1506,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps encouraged here',
               description: 'Keep lats as the limiting factor.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Iso-Finish Rows',
@@ -1315,7 +1535,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak contraction should burn',
               description: 'That deep mid-back cramp is the goal.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1337,7 +1561,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Aim for smooth squeeze across mid-back.',
               description: 'Focus on scapular retraction and mid-trap engagement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Combo Superset',
@@ -1357,7 +1585,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeezes: think small, controlled scap retractions.',
               description: 'Bodyweight squeezes enhance muscle activation and recovery.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Tempo Rows',
@@ -1382,7 +1614,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps are acceptable',
               description: 'Prioritize back overload over grip.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Triple Drop Grinder',
@@ -1407,7 +1643,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase deep fatigue',
               description: 'You should feel lats throb, not arms.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1435,7 +1675,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lats tight on rows to build pulling base.',
               description: 'Lat engagement improves pulling strength and spinal stability.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'mixed',
+          intensity_cost: 3,
         },
         {
           name: 'Dead Row Shrug',
@@ -1455,7 +1699,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Shrugs: no bounce, pause 1 count at top.',
               description: 'Controlled shrugs with pause maximize trap activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1477,7 +1725,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Reset bar dead-stop every time in Pendlay.',
               description: 'Dead stop allows full lat engagement each rep.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Pull Combo',
@@ -1497,7 +1749,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep tight core, don\'t overextend at top.',
               description: 'Core stability prevents hyperextension during pulls.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1519,7 +1775,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pull bar into thighs at shrug peak.',
               description: 'Bar contact maximizes trap activation and stability.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Dead Clean Flow',
@@ -1539,7 +1799,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep arms relaxed until pull finish.',
               description: 'Delayed arm pull maximizes lower body power contribution.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1567,7 +1831,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pull elbows near ribs, pause each rep.',
               description: 'Controlled movement with pause maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Wide Row Intro',
@@ -1587,7 +1855,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pull to sternum level, no lower.',
               description: 'Proper pull height maximizes upper back engagement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Neutral Rows',
@@ -1612,7 +1884,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel lats stretch',
               description: 'Control the return fully.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Pause & Squeeze Rows',
@@ -1637,7 +1913,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Mid-back should light up',
               description: 'Think shoulder blades pinching.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1659,7 +1939,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold 1s at contraction for stronger squeeze.',
               description: 'Pause at peak contraction enhances muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Slow Negatives',
@@ -1679,7 +1963,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Brace abs so spine stays neutral.',
               description: 'Core engagement maintains proper spinal alignment.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Cable Row Drop Set',
@@ -1704,7 +1992,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps welcome',
               description: 'Keep grip from limiting volume.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Iso-Hold Cable Rows',
@@ -1729,7 +2021,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form feels compressed',
               description: 'Tight squeeze between shoulder blades.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1751,7 +2047,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Think "chest proud" during static phase.',
               description: 'Proud chest position maintains optimal muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Superset Grind',
@@ -1771,7 +2071,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Post-set back squeezes: keep tiny ROM, lats locked.',
               description: 'Small range squeezes enhance activation and recovery.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Long Eccentric Rows',
@@ -1796,7 +2100,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps keep lats primary',
               description: 'Forearms shouldn\'t fail first.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Triple Drop Cable Burn',
@@ -1821,7 +2129,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase lat pump',
               description: 'Deep burn under armpits = success.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1849,7 +2161,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pull bar to upper chest, pause, control the return.',
               description: 'Full range with pause enhances muscle activation and control.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Underhand Pulldown',
@@ -1869,7 +2185,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze lats and biceps hard each rep.',
               description: 'Dual muscle activation enhances strength and development.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Assisted Tempo Pulldown',
@@ -1894,7 +2214,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lats pull via elbows',
               description: 'Think "elbows to pockets" to feel the lat line engage.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Bottom-Half Pulldowns',
@@ -1919,7 +2243,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel lats, not biceps',
               description: 'If arms burn first, lighten load and drive elbows down.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1941,7 +2269,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower weight slowly to maximize tension.',
               description: 'Controlled eccentric phase enhances muscle stimulus.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Pulldown + Hold',
@@ -1961,7 +2293,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep shoulders down, blades squeezed tight.',
               description: 'Proper scapular position maintains optimal muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Pulldown Drop Set',
@@ -1986,7 +2322,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps are allowed',
               description: 'If grip limits you, strap up so lats get overloaded.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Pulse Rep Pulldowns',
@@ -2011,7 +2351,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel the lat shorten',
               description: 'You should feel a tight "cramp" under armpit at squeeze.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2033,7 +2377,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Don\'t swing stack — keep it controlled.',
               description: 'Smooth movement prevents momentum and maintains tension.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Pulldown Superset',
@@ -2053,7 +2401,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Each rep: take 3s to lower bar slowly.',
               description: 'Extended eccentric phase maximizes muscle development.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Long Eccentric Pulldowns',
@@ -2078,7 +2430,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps to keep lats primary',
               description: 'If forearms fail first, straps keep tension where it belongs.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Iso-Hold Drop Burn',
@@ -2103,7 +2459,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form is zero swing',
               description: 'Chest proud, elbows drive down, stack stays controlled.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -2131,7 +2491,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive chin above bar every rep; control the lowering phase.',
               description: 'Full range of motion with controlled eccentric builds strength.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Pull-Up Negatives',
@@ -2151,7 +2515,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep core tight throughout the lowering phase.',
               description: 'Core stability enhances control and safety during negatives.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Assisted Full-Range Pull-Ups',
@@ -2176,7 +2544,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Back initiates the pull',
               description: 'Drive elbows down before arms bend.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Assisted Pause Pull-Ups',
@@ -2201,7 +2573,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form is chest-led',
               description: 'Chest rises toward bar before chin.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -2223,7 +2599,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep elbows tucked, pull chest to bar.',
               description: 'Proper elbow path maximizes muscle activation and range.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Pull-Up + Hold',
@@ -2243,7 +2623,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold chin above bar for 3 seconds at the top of each final rep.',
               description: 'Isometric hold maximizes time under tension and strength gains.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Tempo Pull-Ups',
@@ -2268,7 +2652,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel the lat stretch',
               description: 'Eccentrics should load the lats, not arms.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Pull-Ups + Iso Finisher',
@@ -2293,7 +2681,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak contraction is motionless',
               description: 'No shaking, no bar drift.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2315,7 +2707,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Wide grip emphasizes lat stretch; neutral grip allows for more power.',
               description: 'Grip variation optimizes both width and strength development.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Chest-to-Bar Flow',
@@ -2335,7 +2731,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive chest to bar, then control the 3-5 second negative.',
               description: 'Extended range with controlled eccentric maximizes strength gains.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Weighted Pull-Ups',
@@ -2360,7 +2760,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps are acceptable',
               description: 'Don\'t let grip cap lat overload.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Eccentric Pull-Ups',
@@ -2385,7 +2789,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form stays rigid',
               description: 'Core tight, no swinging.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Burnout Pull-Up Ladder',
@@ -2410,7 +2818,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Back should fail first',
               description: 'Strap up if grip limits output.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Muscle-Up Skill Sets',
@@ -2435,7 +2847,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Quality beats volume',
               description: 'Stop before technique degrades.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         }
       ]
     }
@@ -2463,7 +2879,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep elbows tucked, pull with your lats.',
               description: 'Proper elbow position targets lats effectively while learning.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Assisted Chin-Ups',
@@ -2483,7 +2903,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Palms face you, squeeze biceps at the top.',
               description: 'Underhand grip engages biceps more for easier progression.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Neutral Grip Scap Pulls',
@@ -2508,7 +2932,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel mid-back engage',
               description: 'Activation should feel deep, not in biceps.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Assisted Neutral Pull-Ups (Tempo)',
@@ -2533,7 +2961,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form = elbows to ribs',
               description: 'Think pulling elbows down, not hands.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -2555,7 +2987,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Focus on pulling with the supinated hand, then switch.',
               description: 'Supinated hand leads pull for optimal activation pattern.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Commando Pulls',
@@ -2575,7 +3011,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep body tight, move chest side-to-side over hands.',
               description: 'Core tension maintains control during lateral movement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Grip Switch Pull-Ups',
@@ -2600,7 +3040,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Notice grip-to-lat feel',
               description: 'Different grips bias different lat fibers.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Commando Pause Pulls',
@@ -2625,7 +3069,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel unilateral lat work',
               description: 'One side should light up per rep.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2647,7 +3095,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Wide grip for lat spread, neutral for power and depth.',
               description: 'Different grips target width versus thickness development.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Archer Pulls',
@@ -2667,7 +3119,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Focus on pulling with one arm while the other provides minimal assistance.',
               description: 'Single-arm emphasis builds towards ultimate pulling strength.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Weighted Neutral Pull-Ups',
@@ -2692,7 +3148,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps allowed if needed',
               description: 'Keep lats as the limiter, not grip.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Archer Eccentrics',
@@ -2717,7 +3177,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form is rigid',
               description: 'Core tight, no swinging.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_pull',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -2745,7 +3209,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pull elbows straight back, pause at squeeze.',
               description: 'Straight elbow path with pause maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Wide Row',
@@ -2765,7 +3233,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pull bar toward upper chest line for best squeeze.',
               description: 'Upper chest pull height maximizes upper back engagement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Pause Rows',
@@ -2790,7 +3262,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel mid-back tighten',
               description: 'Think "shoulder blades together" more than arms pulling.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Partial Row Burn',
@@ -2815,7 +3291,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel rhomboids working',
               description: 'You should feel squeeze between shoulder blades, not low back.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -2837,7 +3317,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold 1s at contraction to deepen squeeze.',
               description: 'Peak contraction pause enhances muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Slow Negatives',
@@ -2857,7 +3341,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Don\'t let weight touch stack between reps.',
               description: 'Constant tension maintains muscle activation throughout set.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Row Drop Set',
@@ -2882,7 +3370,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps are fine here',
               description: 'If grip fails early, strap up so lats get full load.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Slow Negative Rows',
@@ -2907,7 +3399,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Peak form is elbows back',
               description: 'Elbows travel past ribs with chest still pinned to pad.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2929,7 +3425,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze each rep at peak for best activation.',
               description: 'Peak contraction squeeze maximizes muscle fiber recruitment.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Row Superset + Iso',
@@ -2949,7 +3449,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lock in hard squeeze during iso hold.',
               description: 'Maximum contraction during hold maximizes strength gains.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Iso Squeeze Rows',
@@ -2974,7 +3478,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase a "mid-back cramp"',
               description: 'The goal is deep squeeze, not moving more weight.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Triple Drop Row',
@@ -2999,7 +3507,11 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps are recommended',
               description: 'Keep grip from limiting back overload.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_pull',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }

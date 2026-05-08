@@ -24,7 +24,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lean back, knees push forward smoothly',
               description: 'Knee-forward motion maximizes quad activation while maintaining control.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Assisted Sissy Squat Hold',
@@ -44,7 +48,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive knees forward, chest upright',
               description: 'Proper positioning ensures maximum quad engagement during hold.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Controlled Barbell Reverse Lunge',
@@ -57,7 +65,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             { icon: 'arrow-back', title: 'Step back slower than you want to', description: 'Control creates better quad loading and balance.' },
             { icon: 'footsteps', title: 'Keep your front foot planted fully', description: 'Pressure through toes usually means instability.' },
             { icon: 'checkmark-circle', title: 'Finish feeling confident', description: 'You should still feel smooth on your last reps.' }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Supported Barbell Step-Up',
@@ -70,7 +82,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             { icon: 'resize', title: 'Use a box height you can fully control', description: 'Too much height changes the movement completely.' },
             { icon: 'flash', title: 'Drive through the lead leg only', description: 'Your back foot should barely assist the rep.' },
             { icon: 'shield', title: 'Every rep should feel stable', description: 'Confidence matters more than fatigue here.' }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Front Squat',
@@ -83,7 +99,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             { icon: 'arrow-down', title: 'Lower slower than feels natural', description: 'Most of the challenge happens on the way down.' },
             { icon: 'arrow-up', title: 'Keep elbows high through every rep', description: 'Posture determines where tension goes.' },
             { icon: 'checkmark-circle', title: 'Finish with clean movement left', description: 'You should feel practiced, not destroyed.' }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -105,7 +125,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control descent, heels flat anchored',
               description: 'Controlled movement with stable base maximizes quad activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Sissy Squat 1½ Reps',
@@ -125,7 +149,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep bar tight, don\'t roll forward',
               description: 'Maintain bar position and posture throughout complex movement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Front Foot Elevated Barbell Lunge',
@@ -138,7 +166,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             { icon: 'arrow-forward', title: 'Let the knee travel forward naturally', description: 'That deeper bend is what loads the quads hardest.' },
             { icon: 'arrow-down', title: 'Lower under full control', description: 'The eccentric should feel harder than the ascent.' },
             { icon: 'flame', title: 'The burn should build steadily', description: 'Especially by rounds 3 and 4.' }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Front Rack Knee Drive Step-Up',
@@ -151,7 +183,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             { icon: 'flash', title: 'Drive the knee aggressively at the top', description: 'That added force increases quad recruitment.' },
             { icon: 'pause', title: 'Pause before stepping down', description: 'Stability is part of the challenge here.' },
             { icon: 'shield', title: 'Your quads should stay loaded continuously', description: 'Avoid bouncing between reps.' }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Heel-Elevated Front Squat Pause',
@@ -164,7 +200,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             { icon: 'arrow-forward', title: 'Let your knees travel forward confidently', description: 'That forward travel is what biases the quads.' },
             { icon: 'pause', title: 'Pause without relaxing at depth', description: 'Stay fully braced the entire hold.' },
             { icon: 'flame', title: 'The quad pump should become obvious', description: 'Especially during later rounds.' }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -186,7 +226,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive knees forward over toes steady',
               description: 'Forward knee drive maintains quad focus throughout movement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Sissy + Hack Squat Combo',
@@ -206,7 +250,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Transition fast to hack squats next',
               description: 'Quick transition maintains fatigue for maximum quad stress.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Barbell Walking Lunge Drop Set',
@@ -219,7 +267,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             { icon: 'walk', title: 'Don’t stop walking once the burn starts', description: 'Fatigue is where this variation becomes effective.' },
             { icon: 'arrow-down', title: 'Drop weight before form breaks', description: 'Intensity stays high without sacrificing mechanics.' },
             { icon: 'flame', title: 'Final steps should feel brutal', description: 'You should barely finish the last stretch.' }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Deficit Barbell Step-Up',
@@ -232,7 +284,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             { icon: 'arrow-down', title: 'Own the deepest part of the movement', description: 'More range creates more quad tension.' },
             { icon: 'shield', title: 'Stay balanced while fatigued', description: 'Control separates strong reps from sloppy ones.' },
             { icon: 'flame', title: 'Final rounds should slow down hard', description: 'Near failure is the goal here.' }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Front Squat 1.5 Reps',
@@ -245,7 +301,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             { icon: 'arrow-down', title: 'Own the bottom half of every rep', description: 'That’s where the quads work hardest.' },
             { icon: 'timer', title: 'Stay patient once fatigue hits', description: 'Rushing instantly removes tension.' },
             { icon: 'flame', title: 'The last rounds should feel relentless', description: 'You should question the final reps.' }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -273,7 +333,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Kick straight, avoid locking knees',
               description: 'Controlled extension prevents joint stress while targeting quads.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Iso Extension Hold',
@@ -293,7 +357,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower pad smooth each rep',
               description: 'Controlled eccentric maximizes quad development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Controlled Leg Extension',
@@ -318,7 +386,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow return down',
               description: 'Control keeps tension on the muscle.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -340,7 +412,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive pad up forceful, control back',
               description: 'Explosive concentric with controlled eccentric builds strength.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_extension',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: '1½ Rep Leg Extensions',
@@ -360,7 +436,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep tempo smooth, don\'t drop pad',
               description: 'Controlled movement maintains tension throughout range.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_extension',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Pause Leg Extension',
@@ -385,7 +465,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Controlled eccentric',
               description: 'No dropping the weight stack.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_extension',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -407,7 +491,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Don\'t rush, keep controlled tempo',
               description: 'Maintain movement quality throughout all drop sets.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_extension',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Leg Extension Iso Burnout',
@@ -427,7 +515,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No bouncing pad into stack',
               description: 'Controlled movement prevents equipment damage and injury.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_extension',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Drop Set Leg Extension',
@@ -452,7 +544,11 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase quad pump',
               description: 'Burn should peak above the knee.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_extension',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }

@@ -52,6 +52,24 @@ export type LiftWeightsSubCategory =
 export type ExplosivePath = 'bodyweight' | 'weights';
 export type CartFlavor = 'plyo' | 'loaded' | 'dynamic';
 
+// --- Muscle Gainer mood metadata (used by Build For Me on the I want to gain muscle path) ---
+export type ExerciseType = 'compound' | 'isolation';
+export type TrainingStyle = 'strength' | 'hypertrophy' | 'pump' | 'mixed';
+export type MovementPattern =
+  // Push
+  | 'horizontal_press' | 'incline_press' | 'decline_press' | 'fly' | 'dip'
+  | 'vertical_press' | 'lateral_raise' | 'rear_delt' | 'front_raise' | 'upright_row'
+  | 'pushdown' | 'overhead_extension' | 'skullcrusher' | 'close_grip_press'
+  // Pull
+  | 'horizontal_pull' | 'vertical_pull' | 'shrug' | 'hyperextension' | 'deadlift'
+  | 'curl' | 'preacher_curl' | 'hammer_curl' | 'chin_up'
+  // Lower
+  | 'squat' | 'lunge' | 'leg_extension' | 'hinge' | 'leg_curl'
+  | 'hip_thrust' | 'hip_abduction' | 'kickback' | 'pull_through'
+  | 'calf_raise' | 'jump_squat'
+  // Core
+  | 'crunch' | 'leg_raise' | 'plank' | 'rotation' | 'rollout' | 'side_bend' | 'sit_up';
+
 // --- Calisthenics mood metadata (used by Build For Me on the Calisthenics path) ---
 export type CalisthenicsEquipment =
   | 'no_equipment'
@@ -96,6 +114,10 @@ export interface Workout {
   // Explosive metadata — optional, only set on explosive workouts
   path?: ExplosivePath;
   cart_flavor?: CartFlavor;
+  // Muscle Gainer metadata — optional, only set on muscle gainer workouts
+  exercise_type?: ExerciseType;
+  movement_pattern?: MovementPattern;
+  training_style?: TrainingStyle;
 }
 
 export interface EquipmentWorkouts {

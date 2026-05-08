@@ -29,7 +29,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lock out just before elbows stack',
               description: 'Peak extension creates the pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Lying DB Skullcrushers',
@@ -54,7 +58,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Extend fully, squeeze hard',
               description: 'Shortened triceps pump best'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'skullcrusher',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'DB Kickback Builder',
@@ -79,7 +87,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Light weight, hard lockout',
               description: 'Kickbacks pump from contraction'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -106,7 +118,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive to full extension',
               description: 'Stretch + lockout = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'DB Skullcrusher Burn Builder',
@@ -131,7 +147,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate load, nonstop reps',
               description: 'Burnout = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'skullcrusher',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Overhead Extension + Skullcrusher Contrast',
@@ -156,7 +176,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control both lockouts',
               description: 'Two contractions = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'skullcrusher',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -183,7 +207,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish each rep fully extended',
               description: 'Lockout drives pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'DB Extension Drop Cluster',
@@ -208,7 +236,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End every mini-set locked out',
               description: 'Peak extension seals pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Skullcrusher Burnout Hold',
@@ -233,7 +265,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate load, long hold',
               description: 'Pump > ego'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'skullcrusher',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -266,7 +302,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lock out under control',
               description: 'KBs pump at extension'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Flat KB Floor Skullcrushers',
@@ -291,7 +331,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Extend fully each rep',
               description: 'Peak contraction = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'skullcrusher',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'KB Extension + Iso Finish (45°)',
@@ -316,7 +360,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lighter bell for hold',
               description: 'Longer squeeze = better pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -343,7 +391,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive to full extension',
               description: 'Stretch + lockout = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Incline KB Skullcrushers (45°)',
@@ -368,7 +420,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish each rep locked out',
               description: 'End-range pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'skullcrusher',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'KB Burn Builder (Flat)',
@@ -393,7 +449,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Nonstop reps',
               description: 'Burnout = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -420,7 +480,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish reps fully extended',
               description: 'Lockout matters'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'KB Extension Drop Cluster (45°)',
@@ -445,7 +509,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End sets locked out',
               description: 'Contraction seals pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'KB Burnout Hold (Flat)',
@@ -470,7 +538,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lighter bell, longer hold',
               description: 'Pump > ego'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -503,7 +575,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Extend fully each rep',
               description: 'Lockout fuels pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'skullcrusher',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Close-Grip EZ Press',
@@ -528,7 +604,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Press to full extension',
               description: 'Compound lockout pumps hard'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'close_grip_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'EZ Extension + Iso Finish',
@@ -553,7 +633,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter bar for hold',
               description: 'Longer squeeze = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -580,7 +664,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive to full extension',
               description: 'Stretch + squeeze = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'skullcrusher',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'EZ Burn Builder',
@@ -605,7 +693,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate weight, nonstop reps',
               description: 'Burnout = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Skullcrusher + Close-Grip Contrast',
@@ -630,7 +722,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control both endings',
               description: 'Two contractions = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'skullcrusher',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -657,7 +753,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish reps locked out',
               description: 'Peak extension matters'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'skullcrusher',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'EZ Extension Drop Cluster',
@@ -682,7 +782,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End sets fully extended',
               description: 'Pump is in the lockout'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'EZ Burnout Hold',
@@ -707,7 +811,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lighter bar, longer hold',
               description: 'Pump > ego'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -740,7 +848,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lock out overhead deliberately',
               description: 'Shortened triceps pump fast'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Straight-Bar Cable Pushdowns',
@@ -765,7 +877,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish each rep fully extended',
               description: 'Cable tension rewards lockout'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Overhead Cable Extension + Iso Finish',
@@ -790,7 +906,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lighter pin for the hold',
               description: 'Longer squeeze = deeper pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -817,7 +937,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive to full extension',
               description: 'Stretch + lockout = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'High-to-Low Rope Extensions',
@@ -842,7 +966,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish strong at lockout',
               description: 'End-range contraction drives pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Cable Burn Builder',
@@ -867,7 +995,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate load, nonstop reps',
               description: 'Cables shine for pump work'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -894,7 +1026,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish every rep locked out overhead',
               description: 'Extension quality drives growth'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Overhead Cable Drop Cluster',
@@ -919,7 +1055,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End each mini-set fully extended',
               description: 'Lockout seals the pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Rope Pushdown Burnout Hold',
@@ -944,7 +1084,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lighter pin, longer hold',
               description: 'Pump > ego'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -972,7 +1116,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Step forward, lean slightly for rope clearance',
               description: 'Keep elbows fixed toward ceiling, extend fully.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Overhead Rope Ext',
@@ -992,7 +1140,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Brace forward lean to prevent back strain',
               description: 'Full body tension supports arm position.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1014,7 +1166,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Extend quickly, return rope over 3s',
               description: 'Keep constant rope tension, no slack.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Negative Rope Ext',
@@ -1034,7 +1190,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep constant rope tension, no slack',
               description: 'Stable elbow position ensures tricep isolation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1056,7 +1216,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Focus on form as fatigue builds',
               description: 'Each angle hits triceps differently.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Overhead 21s',
@@ -1076,7 +1240,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep elbows high, upper arms locked in',
               description: 'Control movement through each range.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1109,7 +1277,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lock out under control',
               description: 'Peak triceps contraction happens just before joints stack'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Pushdown Control',
@@ -1134,7 +1306,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Fully extend every rep',
               description: 'Shortened triceps = better pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Pushdown + Iso Finish',
@@ -1159,7 +1335,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter pin for the hold',
               description: 'Longer contraction = deeper pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1186,7 +1366,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pause at full lockout',
               description: 'Shortened triceps pump hardest'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Pushdown Burn Builder',
@@ -1211,7 +1395,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate load, nonstop reps',
               description: 'Burnout = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Density Pushdowns',
@@ -1236,7 +1424,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish reps clean',
               description: 'Lockout quality drives pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1263,7 +1455,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish every rep deliberately',
               description: 'Extension, not momentum'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Pushdown Drop Cluster',
@@ -1288,7 +1484,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End each mini-set fully extended',
               description: 'Peak contraction seals the pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Pushdown Burnout Hold',
@@ -1313,7 +1513,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lighter pin, longer hold',
               description: 'Pump > ego'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'pushdown',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1346,7 +1550,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lock out at the top',
               description: 'Bodyweight pump hits fast'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Bench Dip Control',
@@ -1371,7 +1579,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Full extension every rep',
               description: 'Shortened triceps pump best'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Dip + Iso Finish',
@@ -1396,7 +1608,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold tall, not relaxed',
               description: 'Isometric pump'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1423,7 +1639,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive to full extension',
               description: 'Lockout builds pump'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Dip Burn Builder',
@@ -1448,7 +1668,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Top-range focus',
               description: 'Triceps stay shortened'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Dip + Pushdown Contrast',
@@ -1473,7 +1697,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control both lockouts',
               description: 'Double contraction'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1500,7 +1728,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish reps locked out',
               description: 'Bodyweight pump hits hard'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Dip Drop Ladder',
@@ -1525,7 +1757,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish ladders locked out',
               description: 'Pump seals the set'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Dip Burnout Hold',
@@ -1550,7 +1786,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold tall under fatigue',
               description: 'True contraction'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1583,7 +1823,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Choose an angle you can fully lock out',
               description: 'Clean extension creates the pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Incline TRX Extensions',
@@ -1608,7 +1852,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lock out arms hard every rep',
               description: 'Shortened triceps pump fast'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'TRX Extension + Iso Finish',
@@ -1633,7 +1881,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold where arms are fully straight',
               description: 'That\'s peak contraction'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1660,7 +1912,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Extend hard at the top',
               description: 'Full lockout builds pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Paused TRX Extensions',
@@ -1685,7 +1941,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pause + full lockout = pump',
               description: 'Stretch then contraction wins'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'TRX Burn Builder',
@@ -1710,7 +1970,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Top-range dominance',
               description: 'Triceps stay shortened and pumped'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1737,7 +2001,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lock out arms before feet touch down',
               description: 'Peak extension under fatigue drives pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'TRX Extension Drop-Angle Ladder',
@@ -1762,7 +2030,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish ladders fully extended',
               description: 'Contraction seals the pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'TRX Burnout Hold',
@@ -1787,7 +2059,11 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold where arms are straight',
               description: 'True shortened position'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'overhead_extension',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }

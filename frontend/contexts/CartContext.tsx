@@ -25,6 +25,10 @@ export interface WorkoutItem {
   modality?: 'cardio' | 'resistance';
   // Optional: Explosive Build For Me slot label (Activation / Power / Bonus)
   slot_label?: string;
+  // Optional: Muscle Gainer metadata
+  exercise_type?: 'compound' | 'isolation';
+  movement_pattern?: string;
+  training_style?: 'strength' | 'hypertrophy' | 'pump' | 'mixed';
   // Optional: track source for analytics
   source?: 'custom' | 'build_for_me';
 }

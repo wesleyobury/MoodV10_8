@@ -20,6 +20,7 @@ import { quadsWorkoutDatabase } from '../data/quads-workouts-data';
 import { hamstringsWorkoutDatabase } from '../data/hamstrings-workouts-data';
 import { glutesWorkoutDatabase } from '../data/glutes-workouts-data';
 import { calvesWorkoutDatabase } from '../data/calves-workouts-data';
+import { compoundLegsWorkoutDatabase } from '../data/compound-legs-workouts-data';
 import {
   Workout,
   EquipmentWorkouts,
@@ -35,6 +36,9 @@ import {
   LiftWeightsSubCategory,
   ExplosivePath,
   CartFlavor,
+  TrainingStyle,
+  ExerciseType,
+  MovementPattern,
 } from '../types/workout';
 import { IntensityLevel } from '../components/IntensitySelectionModal';
 import { GeneratedCart } from '../components/GeneratedWorkoutView';
@@ -111,6 +115,9 @@ function workoutToItem(
     role: workout.role,
     intensity_cost: workout.intensity_cost,
     modality: workout.modality,
+    exercise_type: workout.exercise_type,
+    movement_pattern: workout.movement_pattern,
+    training_style: workout.training_style,
   };
 }
 
@@ -1344,323 +1351,416 @@ const muscleGroupDatabases: Record<string, EquipmentWorkouts[]> = {
   'Legs': [...quadsWorkoutDatabase, ...hamstringsWorkoutDatabase, ...glutesWorkoutDatabase, ...calvesWorkoutDatabase],
 };
 
-// Define primary vs ancillary muscle groups for ordering
-const PRIMARY_MUSCLE_GROUPS = ['Legs', 'Chest', 'Back', 'Shoulders', 'Quads', 'Hamstrings', 'Glutes', 'Calves'];
-const ANCILLARY_MUSCLE_GROUPS = ['Biceps', 'Triceps', 'Abs']; // Abs should always be last
+// =============================================================================
+// MUSCLE GAINER — generator (per spec: training_style flavors, volume rules,
+// compound-first slotting, ancillary trim, abs-last, equipment + pattern uniq).
+// =============================================================================
 
-// Minimum exercise counts for primary muscle groups (intermediate/advanced)
-const MIN_EXERCISES_PRIMARY: Record<string, number> = {
-  'Legs': 4,
-  'Quads': 3,
-  'Hamstrings': 3,
-  'Glutes': 3,
-  'Calves': 2,
-  'Chest': 3,
-  'Back': 3,
-  'Shoulders': 3,
+const PRIMARY_MUSCLE_GROUPS = [
+  'Legs', 'Chest', 'Back', 'Shoulders', 'Quads', 'Hamstrings', 'Glutes', 'Calves'
+];
+const ANCILLARY_MUSCLE_GROUPS = ['Biceps', 'Triceps', 'Abs'];
+const LEG_SUB_GROUPS = ['Quads', 'Hamstrings', 'Glutes', 'Calves'];
+
+type FlavorWorkout = {
+  workout: Workout;
+  equipment: string;
+  muscleGroup: string;
 };
 
-// Compound exercises for legs (must include at least 1 for legs)
-const LEG_COMPOUND_EXERCISES = [
-  'Barbell Back Squat',
-  'Front Squat',
-  'Leg Press',
-  'Romanian Deadlift',
-  'Deadlift',
-  'Bulgarian Split Squat',
-  'Lunges',
-  'Goblet Squat',
-  'Hack Squat',
-  'Sumo Deadlift',
-  'Barbell Hack Squat',
-  'Dumbbell Lunges',
-  'Walking Lunges',
-  'Smith Machine Squat',
-  'Trap Bar Deadlift',
-  'Barbell Squat',
-  'Dumbbell Squat',
-  'Split Squat',
-  'Step Up',
-  'Zercher Squat',
-];
+// Get all candidate workouts for a muscle group, scoped to selected tier.
+function getMuscleGainerPool(muscle: string, tier: IntensityLevel): FlavorWorkout[] {
+  let dbs: { db: EquipmentWorkouts[]; group: string }[] = [];
 
-// Leg sub-groups for isolation exercises
-const LEG_ISOLATION_GROUPS = ['Quads', 'Hamstrings', 'Glutes', 'Calves'];
-
-// Check if a workout is a compound leg exercise
-function isCompoundLegExercise(workoutName: string): boolean {
-  return LEG_COMPOUND_EXERCISES.some(compound => 
-    workoutName.toLowerCase().includes(compound.toLowerCase()) ||
-    compound.toLowerCase().includes(workoutName.toLowerCase())
-  );
-}
-
-// Get workouts from database with muscle group tagging
-function getWorkoutsForMuscleGroup(
-  muscleGroup: string,
-  intensity: IntensityLevel
-): { workout: Workout; equipment: string; muscleGroup: string }[] {
-  const database = muscleGroupDatabases[muscleGroup];
-  if (!database) return [];
-  
-  const workouts: { workout: Workout; equipment: string; muscleGroup: string }[] = [];
-  
-  for (const equipmentData of database) {
-    const intensityWorkouts = equipmentData.workouts[intensity] || [];
-    for (const workout of intensityWorkouts) {
-      workouts.push({
-        workout,
-        equipment: equipmentData.equipment,
-        muscleGroup: muscleGroup,
-      });
+  if (muscle === 'Legs') {
+    dbs.push({ db: compoundLegsWorkoutDatabase, group: 'Legs' });
+    for (const sub of LEG_SUB_GROUPS) {
+      const sub_db = muscleGroupDatabases[sub];
+      if (sub_db) dbs.push({ db: sub_db, group: 'Legs' });
     }
+  } else {
+    const db = muscleGroupDatabases[muscle];
+    if (db) dbs.push({ db, group: muscle });
   }
-  
-  return workouts;
-}
 
-// Special function to select leg workouts with compound-first rule
-function selectLegWorkouts(
-  intensity: IntensityLevel,
-  usedWorkoutNames: Set<string>
-): { workout: Workout; equipment: string; muscleGroup: string }[] {
-  const isBeginner = intensity === 'beginner';
-  
-  // Get compound count and isolation count based on intensity
-  const compoundCount = 2;
-  const isolationCount = isBeginner ? 1 : 2; // Beginner: 2+1=3, Int/Adv: 2+2=4
-  
-  const selected: { workout: Workout; equipment: string; muscleGroup: string }[] = [];
-  
-  // Step 1: Get all leg workouts from all sub-groups
-  const allLegWorkouts: { workout: Workout; equipment: string; muscleGroup: string }[] = [];
-  for (const subGroup of LEG_ISOLATION_GROUPS) {
-    const subGroupWorkouts = getWorkoutsForMuscleGroup(subGroup, intensity);
-    allLegWorkouts.push(...subGroupWorkouts);
-  }
-  
-  // Shuffle for variety
-  const shuffledWorkouts = shuffleArray(allLegWorkouts);
-  
-  // Step 2: Select compound exercises first
-  const compoundWorkouts = shuffledWorkouts.filter(w => 
-    isCompoundLegExercise(w.workout.name) && !usedWorkoutNames.has(w.workout.name)
-  );
-  
-  for (const compound of compoundWorkouts) {
-    if (selected.length >= compoundCount) break;
-    selected.push(compound);
-    usedWorkoutNames.add(compound.workout.name);
-  }
-  
-  // Step 3: Select isolation exercises from different sub-groups (no duplicates from same group)
-  const usedSubGroups = new Set<string>();
-  const isolationWorkouts = shuffledWorkouts.filter(w => 
-    !isCompoundLegExercise(w.workout.name) && !usedWorkoutNames.has(w.workout.name)
-  );
-  
-  for (const isolation of isolationWorkouts) {
-    if (selected.length >= compoundCount + isolationCount) break;
-    
-    // Don't pick two exercises from the same sub-group
-    if (usedSubGroups.has(isolation.muscleGroup)) continue;
-    
-    selected.push(isolation);
-    usedWorkoutNames.add(isolation.workout.name);
-    usedSubGroups.add(isolation.muscleGroup);
-  }
-  
-  // If we still need more isolation exercises (unlikely but handle edge case)
-  // Allow same sub-group but different exercises
-  if (selected.length < compoundCount + isolationCount) {
-    for (const isolation of isolationWorkouts) {
-      if (selected.length >= compoundCount + isolationCount) break;
-      if (usedWorkoutNames.has(isolation.workout.name)) continue;
-      
-      selected.push(isolation);
-      usedWorkoutNames.add(isolation.workout.name);
-    }
-  }
-  
-  // Tag all selected as "Legs" for proper grouping
-  return selected.map(w => ({
-    ...w,
-    muscleGroup: 'Legs'
-  }));
-}
-
-// Select workouts for a specific muscle group with minimum count requirements
-function selectWorkoutsForMuscleGroup(
-  muscleGroup: string,
-  intensity: IntensityLevel,
-  minCount: number,
-  maxCount: number,
-  usedWorkoutNames: Set<string>,
-  requireCompound: boolean = false
-): { workout: Workout; equipment: string; muscleGroup: string }[] {
-  const availableWorkouts = getWorkoutsForMuscleGroup(muscleGroup, intensity);
-  const selected: { workout: Workout; equipment: string; muscleGroup: string }[] = [];
-  
-  // Shuffle for randomness
-  const shuffled = shuffleArray(availableWorkouts);
-  
-  // If we need a compound exercise for legs, find one first
-  if (requireCompound) {
-    const compoundWorkout = shuffled.find(
-      w => LEG_COMPOUND_EXERCISES.some(name => 
-        w.workout.name.toLowerCase().includes(name.toLowerCase()) ||
-        name.toLowerCase().includes(w.workout.name.toLowerCase())
-      ) && !usedWorkoutNames.has(w.workout.name)
-    );
-    if (compoundWorkout) {
-      selected.push(compoundWorkout);
-      usedWorkoutNames.add(compoundWorkout.workout.name);
-    }
-  }
-  
-  // Fill remaining slots
-  for (const item of shuffled) {
-    if (usedWorkoutNames.has(item.workout.name)) continue;
-    if (selected.length >= maxCount) break;
-    
-    selected.push(item);
-    usedWorkoutNames.add(item.workout.name);
-  }
-  
-  // Ensure minimum count (allow reuse if necessary)
-  if (selected.length < minCount) {
-    for (const item of shuffled) {
-      if (selected.length >= minCount) break;
-      if (!selected.some(s => s.workout.name === item.workout.name)) {
-        selected.push(item);
+  const pool: FlavorWorkout[] = [];
+  for (const { db, group } of dbs) {
+    for (const eqData of db) {
+      const tierWorkouts = eqData.workouts[tier] || [];
+      for (const w of tierWorkouts) {
+        pool.push({ workout: w, equipment: eqData.equipment, muscleGroup: group });
       }
     }
   }
-  
-  return selected;
+  return pool;
 }
 
-// Export for Muscle Gainer path (uses selected muscle groups only)
+// Sort selected muscles into session order: primaries (user order) → ancillaries → Abs last.
+function sortMusclesForSession(selected: string[]): string[] {
+  const primaries = selected.filter(
+    m => PRIMARY_MUSCLE_GROUPS.includes(m) && m !== 'Abs'
+  );
+  const ancillaries = selected.filter(
+    m => ANCILLARY_MUSCLE_GROUPS.includes(m) && m !== 'Abs'
+  );
+  const abs = selected.includes('Abs') ? ['Abs'] : [];
+  return [...primaries, ...ancillaries, ...abs];
+}
+
+// Compute per-muscle target counts based on volume table + total cap with ancillary trim.
+function computePerMuscleTargets(
+  orderedMuscles: string[],
+  perMuscleMin: number,
+  perMuscleMax: number,
+  totalCap: number
+): Record<string, number> {
+  const targets: Record<string, number> = {};
+  for (const m of orderedMuscles) {
+    targets[m] = perMuscleMax;
+  }
+
+  // Special: Legs target = 4 (2 compound + 2 isolation) when intermediate/advanced
+  // and only Legs selected, or when Legs selected and per-muscle max ≥ 4.
+  if (orderedMuscles.includes('Legs') && perMuscleMax >= 4) {
+    targets['Legs'] = 4;
+  }
+
+  let total = orderedMuscles.reduce((s, m) => s + targets[m], 0);
+  if (total <= totalCap) return targets;
+
+  // Trim ancillaries first, down to perMuscleMin
+  const ancillariesInOrder = orderedMuscles.filter(m =>
+    ANCILLARY_MUSCLE_GROUPS.includes(m)
+  );
+  for (const m of ancillariesInOrder) {
+    while (total > totalCap && targets[m] > 1) {
+      targets[m] -= 1;
+      total -= 1;
+    }
+    if (total <= totalCap) return targets;
+  }
+
+  // If still over, trim primaries down to perMuscleMin
+  const primariesInOrder = orderedMuscles.filter(
+    m => !ANCILLARY_MUSCLE_GROUPS.includes(m)
+  );
+  for (const m of primariesInOrder) {
+    while (total > totalCap && targets[m] > perMuscleMin) {
+      targets[m] -= 1;
+      total -= 1;
+    }
+    if (total <= totalCap) return targets;
+  }
+
+  // If still over the cap (too many muscles selected to fit even at min=1),
+  // drop ancillaries (excluding Abs) to 0 first; Abs is preserved as long as
+  // possible because the spec says "Abs always rendered last".
+  const nonAbsAncillaries = ancillariesInOrder.filter(m => m !== 'Abs');
+  for (const m of nonAbsAncillaries) {
+    while (total > totalCap && targets[m] > 0) {
+      targets[m] -= 1;
+      total -= 1;
+    }
+    if (total <= totalCap) return targets;
+  }
+  // Then drop primaries from the end of the user's order to 0
+  for (let i = primariesInOrder.length - 1; i >= 0 && total > totalCap; i--) {
+    const m = primariesInOrder[i];
+    while (total > totalCap && targets[m] > 0) {
+      targets[m] -= 1;
+      total -= 1;
+    }
+  }
+  // Last resort: drop Abs to 0 only if everything else is already 0
+  if (total > totalCap && targets['Abs'] !== undefined) {
+    while (total > totalCap && targets['Abs'] > 0) {
+      targets['Abs'] -= 1;
+      total -= 1;
+    }
+  }
+
+  return targets;
+}
+
+// Pick a workout from pool with flavor preference + equipment/pattern variety.
+function pickWithFlavor(
+  pool: FlavorWorkout[],
+  flavor: TrainingStyle,
+  excludeIds: Set<string>,
+  usedEquipment: Set<string>,
+  usedPatterns: Set<MovementPattern>
+): FlavorWorkout | null {
+  let candidates = pool.filter(c => !excludeIds.has(c.workout.name));
+  if (candidates.length === 0) return null;
+
+  // Prefer the requested flavor
+  let flavorMatched = candidates.filter(c => c.workout.training_style === flavor);
+  if (flavorMatched.length > 0) {
+    candidates = flavorMatched;
+  } else {
+    const mixedFallback = candidates.filter(c => c.workout.training_style === 'mixed');
+    if (mixedFallback.length > 0) candidates = mixedFallback;
+  }
+
+  // Prefer different equipment + pattern when possible
+  const fullPreferred = candidates.filter(
+    c => !usedEquipment.has(c.equipment) &&
+         !usedPatterns.has((c.workout.movement_pattern as MovementPattern))
+  );
+  if (fullPreferred.length > 0) {
+    return fullPreferred[Math.floor(Math.random() * fullPreferred.length)];
+  }
+  // Fall back: prefer different equipment alone
+  const eqPreferred = candidates.filter(c => !usedEquipment.has(c.equipment));
+  if (eqPreferred.length > 0) {
+    return eqPreferred[Math.floor(Math.random() * eqPreferred.length)];
+  }
+  return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
+// Pick a Legs section: 2 compound + 2 isolation (or fewer if target < 4).
+function pickLegSection(
+  tier: IntensityLevel,
+  target: number,
+  flavor: TrainingStyle,
+  excludeIds: Set<string>
+): FlavorWorkout[] {
+  const compoundPool: FlavorWorkout[] = [];
+  // Compounds come from compound-legs DB
+  for (const eqData of compoundLegsWorkoutDatabase) {
+    const tierWs = eqData.workouts[tier] || [];
+    for (const w of tierWs) {
+      compoundPool.push({ workout: w, equipment: eqData.equipment, muscleGroup: 'Legs' });
+    }
+  }
+  // Isolations come from individual leg sub-files (filtered by exercise_type === 'isolation')
+  const isoPool: FlavorWorkout[] = [];
+  for (const sub of LEG_SUB_GROUPS) {
+    const subDb = muscleGroupDatabases[sub] || [];
+    for (const eqData of subDb) {
+      const tierWs = eqData.workouts[tier] || [];
+      for (const w of tierWs) {
+        if (w.exercise_type === 'isolation') {
+          isoPool.push({ workout: w, equipment: eqData.equipment, muscleGroup: 'Legs' });
+        } else if (w.exercise_type === 'compound') {
+          // Sub-file compounds (e.g., barbell squats from quads) join compound pool
+          compoundPool.push({ workout: w, equipment: eqData.equipment, muscleGroup: 'Legs' });
+        }
+      }
+    }
+  }
+
+  const compoundCount = target >= 4 ? 2 : (target >= 2 ? 1 : 1);
+  const isolationCount = target - compoundCount;
+
+  const section: FlavorWorkout[] = [];
+  const usedEq = new Set<string>();
+  const usedPat = new Set<MovementPattern>();
+  const usedSubs = new Set<string>();
+
+  // Pick compounds
+  let pool = [...compoundPool];
+  for (let i = 0; i < compoundCount; i++) {
+    const pick = pickWithFlavor(pool, flavor, excludeIds, usedEq, usedPat);
+    if (!pick) break;
+    section.push(pick);
+    excludeIds.add(pick.workout.name);
+    usedEq.add(pick.equipment);
+    if (pick.workout.movement_pattern)
+      usedPat.add(pick.workout.movement_pattern as MovementPattern);
+  }
+
+  // Pick isolations from different sub-groups
+  pool = [...isoPool];
+  for (let i = 0; i < isolationCount; i++) {
+    // Prefer different sub-group from already used
+    let sub_pool = pool.filter(c => !usedSubs.has(getLegSubGroup(c)));
+    if (sub_pool.length === 0) sub_pool = pool;
+    const pick = pickWithFlavor(sub_pool, flavor, excludeIds, usedEq, usedPat);
+    if (!pick) break;
+    section.push(pick);
+    excludeIds.add(pick.workout.name);
+    usedEq.add(pick.equipment);
+    if (pick.workout.movement_pattern)
+      usedPat.add(pick.workout.movement_pattern as MovementPattern);
+    usedSubs.add(getLegSubGroup(pick));
+  }
+
+  return section;
+}
+
+// Map an isolated leg workout back to its sub-group based on equipment.
+function getLegSubGroup(item: FlavorWorkout): string {
+  const eq = item.equipment.toLowerCase();
+  if (eq.includes('calf')) return 'Calves';
+  if (eq.includes('hip thruster') || eq.includes('glute kick') ||
+      eq.includes('hip abductor')) return 'Glutes';
+  if (eq.includes('leg curl') || eq.includes('leg-curl')) return 'Hamstrings';
+  if (eq.includes('leg extension')) return 'Quads';
+  // Fall back to inspecting movement_pattern
+  const mp = item.workout.movement_pattern;
+  if (mp === 'calf_raise') return 'Calves';
+  if (mp === 'leg_curl' || mp === 'hyperextension') return 'Hamstrings';
+  if (mp === 'leg_extension') return 'Quads';
+  if (mp === 'kickback' || mp === 'hip_thrust' || mp === 'hip_abduction') return 'Glutes';
+  return 'Other';
+}
+
+// Pick a single muscle's section: compound → secondary → isolation (with overrides).
+function pickMuscleSection(
+  muscle: string,
+  tier: IntensityLevel,
+  target: number,
+  flavor: TrainingStyle,
+  excludeIds: Set<string>
+): FlavorWorkout[] {
+  if (muscle === 'Legs') {
+    return pickLegSection(tier, target, flavor, excludeIds);
+  }
+
+  const pool = getMuscleGainerPool(muscle, tier);
+  const compounds = pool.filter(c => c.workout.exercise_type === 'compound');
+  const isolations = pool.filter(c => c.workout.exercise_type === 'isolation');
+
+  const section: FlavorWorkout[] = [];
+  const usedEq = new Set<string>();
+  const usedPat = new Set<MovementPattern>();
+
+  if (target <= 0) return section;
+
+  // Slot 1: compound (fall back to isolation if no compounds exist for this muscle)
+  const slot1Pool = compounds.length > 0 ? compounds : isolations;
+  const slot1 = pickWithFlavor(slot1Pool, flavor, excludeIds, usedEq, usedPat);
+  if (slot1) {
+    section.push(slot1);
+    excludeIds.add(slot1.workout.name);
+    usedEq.add(slot1.equipment);
+    if (slot1.workout.movement_pattern)
+      usedPat.add(slot1.workout.movement_pattern as MovementPattern);
+  }
+
+  // Slots 2..target
+  for (let i = 1; i < target; i++) {
+    const isLast = i === target - 1;
+    // Slot N rule:
+    //  - If target === 2: slot 2 is isolation (preferred)
+    //  - If target === 3: slot 2 may be compound or isolation; slot 3 is isolation
+    //  - If target >= 4 (legs only): handled in pickLegSection
+    let slotPool: FlavorWorkout[];
+    if (target === 2) {
+      slotPool = isolations.length > 0 ? isolations : compounds;
+    } else if (target === 3) {
+      if (i === 1) {
+        slotPool = pool;  // any
+      } else {
+        slotPool = isolations.length > 0 ? isolations : compounds;
+      }
+    } else {
+      // target === 1 already returned; target >= 4 handled above
+      slotPool = isolations.length > 0 ? isolations : pool;
+    }
+
+    const pick = pickWithFlavor(slotPool, flavor, excludeIds, usedEq, usedPat);
+    if (!pick) {
+      // Last resort: pick anything not already in section
+      const fallback = pickWithFlavor(pool, flavor, excludeIds, usedEq, usedPat);
+      if (!fallback) break;
+      section.push(fallback);
+      excludeIds.add(fallback.workout.name);
+      usedEq.add(fallback.equipment);
+      if (fallback.workout.movement_pattern)
+        usedPat.add(fallback.workout.movement_pattern as MovementPattern);
+      continue;
+    }
+    section.push(pick);
+    excludeIds.add(pick.workout.name);
+    usedEq.add(pick.equipment);
+    if (pick.workout.movement_pattern)
+      usedPat.add(pick.workout.movement_pattern as MovementPattern);
+  }
+
+  // Reorder section: compounds first, isolations last (preserve relative order otherwise)
+  const compoundsInSection = section.filter(s => s.workout.exercise_type === 'compound');
+  const isolationsInSection = section.filter(s => s.workout.exercise_type !== 'compound');
+  return [...compoundsInSection, ...isolationsInSection];
+}
+
+// Mapping of muscle group → labels for cart UI.
+const FLAVOR_LABELS: Record<TrainingStyle, string> = {
+  strength: 'Strength',
+  hypertrophy: 'Hypertrophy',
+  pump: 'Pump',
+  mixed: 'Mixed',
+};
+
+// Public entry — generate three flavored carts (Strength / Hypertrophy / Pump).
 export function generateMuscleGainerCarts(
   intensity: IntensityLevel,
   selectedMuscleGroups: string[] = [],
   moodCard: string = 'I want to gain muscle',
   workoutType: string = 'Muscle Building'
 ): GeneratedCart[] {
-  // If no muscle groups selected, return empty
-  if (selectedMuscleGroups.length === 0) {
-    return [];
-  }
+  if (selectedMuscleGroups.length === 0) return [];
 
-  const carts: GeneratedCart[] = [];
+  const orderedMuscles = sortMusclesForSession(selectedMuscleGroups);
+  const muscleCount = orderedMuscles.length;
   const isBeginner = intensity === 'beginner';
-  
-  // Generate 3 cart options
-  for (let cartIndex = 0; cartIndex < 3; cartIndex++) {
-    const usedWorkoutNames = new Set<string>();
-    const allWorkouts: { workout: Workout; equipment: string; muscleGroup: string }[] = [];
-    
-    // Separate muscle groups into primary and ancillary
-    const primaryGroups = selectedMuscleGroups.filter(g => PRIMARY_MUSCLE_GROUPS.includes(g));
-    const ancillaryGroups = selectedMuscleGroups.filter(g => ANCILLARY_MUSCLE_GROUPS.includes(g));
-    
-    // Sort ancillary groups to ensure Abs is last
-    ancillaryGroups.sort((a, b) => {
-      if (a === 'Abs') return 1;
-      if (b === 'Abs') return -1;
-      return 0;
-    });
-    
-    // Process primary muscle groups first
-    for (const muscleGroup of primaryGroups) {
-      // Special handling for "Legs" - use dedicated function
-      if (muscleGroup === 'Legs') {
-        const legWorkouts = selectLegWorkouts(intensity, usedWorkoutNames);
-        allWorkouts.push(...legWorkouts);
-        continue;
-      }
-      
-      // Determine exercise count for this muscle group
-      let minCount = isBeginner ? 2 : (MIN_EXERCISES_PRIMARY[muscleGroup] || 3);
-      let maxCount = isBeginner ? 3 : minCount + 1;
-      
-      // Check if this is a leg-related sub-group that needs a compound
-      const isLegSubGroup = ['Quads', 'Hamstrings', 'Glutes'].includes(muscleGroup);
-      const requireCompound = !isBeginner && isLegSubGroup;
-      
-      const groupWorkouts = selectWorkoutsForMuscleGroup(
-        muscleGroup,
-        intensity,
-        minCount,
-        maxCount,
-        usedWorkoutNames,
-        requireCompound
-      );
-      
-      allWorkouts.push(...groupWorkouts);
-    }
-    
-    // Process ancillary muscle groups (always at the end, abs last)
-    for (const muscleGroup of ancillaryGroups) {
-      // Ancillary groups should always have at least 2 exercises
-      const minCount = 2;
-      const maxCount = isBeginner ? 2 : 3;
-      
-      const groupWorkouts = selectWorkoutsForMuscleGroup(
-        muscleGroup,
-        intensity,
-        minCount,
-        maxCount,
-        usedWorkoutNames,
-        false
-      );
-      
-      allWorkouts.push(...groupWorkouts);
-    }
-    
-    // Now sort the workouts to group by muscle group consecutively
-    // Primary groups first (in order selected), then ancillary (with abs last)
-    const sortedWorkouts = sortWorkoutsByMuscleGroup(allWorkouts, [...primaryGroups, ...ancillaryGroups]);
-    
-    // Convert to WorkoutItems
-    const workoutItems = sortedWorkouts.map(item =>
-      workoutToItem(item.workout, item.equipment, intensity, moodCard, `${workoutType} - ${item.muscleGroup}`)
-    );
-    
-    // Calculate total duration
-    const totalDuration = workoutItems.reduce(
-      (sum, item) => sum + parseDuration(item.duration),
-      0
-    );
-    
-    if (workoutItems.length > 0) {
-      carts.push({
-        id: `cart-${cartIndex + 1}-${Date.now()}`,
-        workouts: workoutItems,
-        totalDuration,
-        intensity,
-      });
-    }
-  }
-  
-  return carts;
-}
 
-// Sort workouts to group by muscle group consecutively
-function sortWorkoutsByMuscleGroup(
-  workouts: { workout: Workout; equipment: string; muscleGroup: string }[],
-  muscleGroupOrder: string[]
-): { workout: Workout; equipment: string; muscleGroup: string }[] {
-  // Create a map to track the order position of each muscle group
-  const orderMap = new Map<string, number>();
-  muscleGroupOrder.forEach((group, index) => {
-    orderMap.set(group, index);
+  // Volume rules
+  let perMuscleMin: number;
+  let perMuscleMax: number;
+  let totalCap: number;
+
+  if (muscleCount === 1) {
+    perMuscleMin = isBeginner ? 2 : 3;
+    perMuscleMax = isBeginner ? 3 : 4;
+    totalCap = Number.POSITIVE_INFINITY;
+  } else if (muscleCount === 2) {
+    perMuscleMin = 2;
+    perMuscleMax = 3;
+    totalCap = isBeginner ? 5 : 6;
+  } else {
+    perMuscleMin = 1;
+    perMuscleMax = 2;
+    totalCap = isBeginner ? 5 : 6;
+  }
+
+  const targetCounts = computePerMuscleTargets(
+    orderedMuscles, perMuscleMin, perMuscleMax, totalCap
+  );
+
+  const flavors: TrainingStyle[] = ['strength', 'hypertrophy', 'pump'];
+  const carts: GeneratedCart[] = [];
+
+  flavors.forEach((flavor, cartIdx) => {
+    const sections: FlavorWorkout[] = [];
+    const excludeIds = new Set<string>();
+
+    for (const muscle of orderedMuscles) {
+      const tgt = targetCounts[muscle];
+      if (tgt <= 0) continue;
+      const section = pickMuscleSection(muscle, intensity, tgt, flavor, excludeIds);
+      sections.push(...section);
+    }
+
+    if (sections.length === 0) return;
+
+    const items = sections.map(s =>
+      workoutToItem(s.workout, s.equipment, intensity, moodCard,
+        `${workoutType} - ${s.muscleGroup}`)
+    );
+    const totalDuration = items.reduce(
+      (sum, it) => sum + parseDuration(it.duration), 0
+    );
+
+    carts.push({
+      id: `cart-mg-${cartIdx + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+      workouts: items,
+      totalDuration,
+      intensity,
+      flavor: FLAVOR_LABELS[flavor],
+    } as GeneratedCart);
   });
-  
-  // Sort workouts by their muscle group's position in the order
-  return [...workouts].sort((a, b) => {
-    const orderA = orderMap.get(a.muscleGroup) ?? 999;
-    const orderB = orderMap.get(b.muscleGroup) ?? 999;
-    return orderA - orderB;
-  });
+
+  return carts;
 }
