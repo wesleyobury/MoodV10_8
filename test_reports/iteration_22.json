@@ -1,0 +1,55 @@
+{
+  "summary": "Backend-only validation of Featured Workouts v2 (6 picks) seed + endpoints. All 13 pytest tests passed against the live preview backend. Auto-seed log confirmed replacement on startup. Endpoints exercised: GET /api/featured/bundle, GET /api/featured/config, POST /api/featured/workouts/batch.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "GET /api/featured/bundle", "issue": "Backend logged 'SLOW REQUEST: GET /api/featured/bundle took 904.27ms' on the cold call. Subsequent calls are fast (cached/warm). Worth monitoring."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_featured_workouts_v2.py",
+    "/app/test_reports/pytest/featured_workouts_v2.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "POST /api/featured/workouts/batch accepts a raw JSON array body (FastAPI signature `ids: List[str]`). This is non-conventional and easy to misuse — clients sending `{\"ids\": [...]}` get a 422. Consider wrapping in a Pydantic model `{ids: List[str]}` for a more discoverable contract; current frontend likely already adapts, but worth documenting.",
+    "Auto-seed performs full replace (delete + insert) when title-set differs. Idempotent path (already-seeded) correctly short-circuits — verified via second restart log: 'Featured workouts already seeded (6 found, correct titles)'.",
+    "Bar to Floor hero deliberately uses legacy URL (job_fit-outdoor-views/.../pu.avif) — flagged in seed_data.py with a TODO comment. Pending user-provided asset replacement.",
+    "server.py is 12,917 lines — well beyond the 700-line guideline. Recommend modularization (separate routers per domain) when feasible."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_featured_workouts_v2.py"
+  ],
+  "success_rate": {"backend": "100% (13/13)", "frontend": "N/A (out of scope)"},
+  "test_credentials": "Not required — featured endpoints are public.",
+  "seed_data_creation": "No new seed data created. Verified auto-seed produced the 6 canonical v2 workouts as defined in /app/backend/seed_data.py.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Featured Workouts v2 backend is healthy. Test file at /app/backend/tests/test_featured_workouts_v2.py is reusable as a regression suite for future seed updates. NOTE: POST /api/featured/workouts/batch expects a raw JSON array body (not {ids:[...]}), the test now sends `json=ids` directly. Frontend cart sub-path divider rendering (cart.tsx, featured-workout-detail.tsx) was NOT tested in this run — main agent should validate UI separately if needed.",
+  "rca of the issue": "N/A — no production bugs found. Two initial test failures were tester-side payload format issues fixed in test_featured_workouts_v2.py (raw List[str] body instead of {ids: List[str]} object).",
+  "verified_details": {
+    "bundle_workouts": 6,
+    "titles_present": [
+      "Sweat - Engine Builder",
+      "Outdoor - Park to Peak",
+      "Calisthenics - Bar to Floor",
+      "MOOD Mix - Air & Abs",
+      "Build Explosion - Triple Threat",
+      "Muscle Gainer - Push Day Pump"
+    ],
+    "exercise_counts": {"Sweat - Engine Builder": 3, "Outdoor - Park to Peak": 2, "Calisthenics - Bar to Floor": 3, "MOOD Mix - Air & Abs": 4, "Build Explosion - Triple Threat": 3, "Muscle Gainer - Push Day Pump": 6},
+    "workout_types_found_all_12": true,
+    "triple_threat_cartSizeOverride": 3,
+    "v2_hero_images_use_job_564800a5": ["Sweat - Engine Builder", "Outdoor - Park to Peak", "MOOD Mix - Air & Abs", "Build Explosion - Triple Threat", "Muscle Gainer - Push Day Pump"],
+    "bar_to_floor_uses_legacy_url": true,
+    "config_featuredWorkoutIds_count": 6,
+    "config_ids_match_bundle": true,
+    "batch_endpoint_returns_six_populated": true,
+    "auto_seed_log_evidence": "2026-05-11 16:23:47,155 - server - INFO - ✅ Auto-seeded 6 featured workouts / 🌱 Startup: Auto-seeded 6 featured workouts (initial replace) and on subsequent restart: '✅ Featured workouts already seeded (6 found, correct titles)' (idempotent)."
+  }
+}

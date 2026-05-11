@@ -118,27 +118,45 @@ function costLabel(c?: number): string | null {
   return 'All-Out';
 }
 
-// Extract the muscle group from a muscle gainer WorkoutItem.
-// Supports both auto-generated items (workoutType = "Muscle Building - <Muscle>")
-// and manually-added items (workoutType = "<Muscle>").
+// Sub-path divider helper. Groups cart items by their "sub-path" — the source
+// mood + path the exercise came from. Shows a labelled divider whenever the
+// sub-path changes between consecutive items (e.g. "MUSCLE GAINER - CHEST"
+// → "MUSCLE GAINER - SHOULDERS", or "SWEAT - CARDIO BASED" → "SWEAT - LIGHT
+// WEIGHTS"). Needed for mixed-mood carts and multi-section featured workouts.
 const MUSCLE_GROUP_NAMES = new Set([
   'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Abs',
   'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Legs',
 ]);
-function getMuscleGainerGroup(item: WorkoutItem): string | null {
-  if (!item?.workoutType) return null;
-  if (item.workoutType.startsWith('Muscle Building')) {
-    const parts = item.workoutType.split(' - ');
-    return parts.length > 1 ? parts[parts.length - 1].trim() : null;
+
+// Returns the divider LABEL for an item (uppercase, displayed in the divider
+// chip). Returns null when the item has no recognisable sub-path.
+function getCartSubPathLabel(item: WorkoutItem): string | null {
+  const wt = item?.workoutType;
+  if (!wt) return null;
+
+  // Auto-generated muscle gainer items: "Muscle Building - <Muscle>"
+  if (wt.startsWith('Muscle Building')) {
+    const parts = wt.split(' - ');
+    const muscle = parts.length > 1 ? parts[parts.length - 1].trim() : '';
+    return muscle ? `Muscle Gainer - ${muscle}` : 'Muscle Gainer';
   }
-  if (MUSCLE_GROUP_NAMES.has(item.workoutType)) return item.workoutType;
-  return null;
+
+  // Legacy manually-added muscle gainer items: bare muscle name
+  if (MUSCLE_GROUP_NAMES.has(wt)) {
+    return `Muscle Gainer - ${wt}`;
+  }
+
+  // Skip generic / placeholder values
+  if (wt === 'Custom' || wt === 'Workout' || wt === 'Unknown') return null;
+
+  // Default: workoutType is already in "Mood - Sub" or just "Mood" form
+  return wt;
 }
 
-const MuscleGroupDivider: React.FC<{ muscle: string }> = ({ muscle }) => (
-  <View style={styles.muscleDivider} testID={`muscle-divider-${muscle.toLowerCase()}`}>
+const MuscleGroupDivider: React.FC<{ label: string }> = ({ label }) => (
+  <View style={styles.muscleDivider} testID={`cart-subpath-divider-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
     <View style={styles.muscleDividerLine} />
-    <Text style={styles.muscleDividerLabel}>{muscle.toUpperCase()}</Text>
+    <Text style={styles.muscleDividerLabel}>{label.toUpperCase()}</Text>
     <View style={styles.muscleDividerLine} />
   </View>
 );
@@ -797,12 +815,12 @@ export default function CartScreen() {
           contentContainerStyle={{ paddingBottom: 24 }}
         >
           {cartItems.map((item, index) => {
-            const muscle = getMuscleGainerGroup(item);
-            const prevMuscle = index > 0 ? getMuscleGainerGroup(cartItems[index - 1]) : null;
-            const showDivider = muscle && muscle !== prevMuscle;
+            const subPath = getCartSubPathLabel(item);
+            const prevSubPath = index > 0 ? getCartSubPathLabel(cartItems[index - 1]) : null;
+            const showDivider = subPath && subPath !== prevSubPath;
             return (
               <React.Fragment key={item.id}>
-                {showDivider && <MuscleGroupDivider muscle={muscle!} />}
+                {showDivider && <MuscleGroupDivider label={subPath!} />}
                 <CartItemComponent
                   item={item}
                   index={index}

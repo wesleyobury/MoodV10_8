@@ -36,6 +36,26 @@ interface WorkoutExercise {
   moodTips: { icon: keyof typeof Ionicons.glyphMap; title: string; description: string }[];
 }
 
+// Sub-path divider — labels exercise groups by their source mood + sub-path
+// (e.g. "SWEAT - CARDIO BASED", "BUILD EXPLOSION - DYNAMIC", "MUSCLE GAINER - CHEST").
+// Mirrors cart.tsx so featured workouts and live carts feel cohesive.
+const _MUSCLE_GROUP_NAMES = new Set([
+  'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Abs',
+  'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Legs',
+]);
+function getExerciseSubPathLabel(ex: WorkoutExercise): string | null {
+  const wt = ex?.workoutType;
+  if (!wt) return null;
+  if (wt.startsWith('Muscle Building')) {
+    const parts = wt.split(' - ');
+    const muscle = parts.length > 1 ? parts[parts.length - 1].trim() : '';
+    return muscle ? `Muscle Gainer - ${muscle}` : 'Muscle Gainer';
+  }
+  if (_MUSCLE_GROUP_NAMES.has(wt)) return `Muscle Gainer - ${wt}`;
+  if (wt === 'Custom' || wt === 'Workout' || wt === 'Unknown') return null;
+  return wt;
+}
+
 // Define the workout data for each featured workout - using REAL workout data from the database
 const featuredWorkoutData: Record<string, {
   mood: string;
@@ -837,8 +857,23 @@ export default function FeaturedWorkoutDetail() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 120 }}
         >
-          {exercises.map((exercise, index) => (
-            <View key={index} style={styles.exerciseCard}>
+          {exercises.map((exercise, index) => {
+            const subPath = getExerciseSubPathLabel(exercise);
+            const prevSubPath = index > 0 ? getExerciseSubPathLabel(exercises[index - 1]) : null;
+            const showDivider = subPath && subPath !== prevSubPath;
+            return (
+              <React.Fragment key={index}>
+                {showDivider && (
+                  <View
+                    style={styles.subPathDivider}
+                    testID={`featured-subpath-divider-${subPath!.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                  >
+                    <View style={styles.subPathDividerLine} />
+                    <Text style={styles.subPathDividerLabel}>{subPath!.toUpperCase()}</Text>
+                    <View style={styles.subPathDividerLine} />
+                  </View>
+                )}
+                <View style={styles.exerciseCard}>
               <Image 
                 source={{ uri: exercise.imageUrl }}
                 style={styles.exerciseImage}
@@ -885,7 +920,9 @@ export default function FeaturedWorkoutDetail() {
                 </TouchableOpacity>
               </View>
             </View>
-          ))}
+              </React.Fragment>
+            );
+          })}
           
           {/* Add Custom Exercise Button */}
           <TouchableOpacity 
@@ -1085,6 +1122,25 @@ const styles = StyleSheet.create({
   exerciseImage: {
     width: 80,
     height: 80,
+  },
+  subPathDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 4,
+    marginTop: 16,
+    marginBottom: 4,
+  },
+  subPathDividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+  },
+  subPathDividerLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: 'rgba(255, 255, 255, 0.55)',
+    letterSpacing: 1.4,
   },
   exerciseInfo: {
     flex: 1,

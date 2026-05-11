@@ -1101,9 +1101,11 @@ export default function Profile() {
                         <TouchableOpacity
                           style={styles.savedWorkoutContent}
                           onPress={() => {
-                            // Check if this is a featured workout
-                            const featuredId = FEATURED_WORKOUT_IDS[savedWorkout.name];
-                            if (featuredId) {
+                            // Prefer the explicit featured_workout_id (MongoDB ObjectId)
+                            // saved at save-time. Fall back to legacy name → numeric map
+                            // for older saved records.
+                            const featuredId = savedWorkout.featured_workout_id || FEATURED_WORKOUT_IDS[savedWorkout.name];
+                            if (savedWorkout.source === 'featured' && featuredId) {
                               // Navigate to featured workout detail page
                               router.push({
                                 pathname: '/featured-workout-detail',
