@@ -915,7 +915,7 @@ export default function WorkoutsHome() {
           </View>
 
           <Text style={styles.centeredBrandTitle}>MOOD</Text>
-          <Text style={styles.centeredBrandSubtitle}>TRAIN HOW YOU FEEL</Text>
+          <Text style={styles.centeredBrandSubtitle}>TRAIN HOW YOU FEEL DAILY</Text>
 
           {/* Yellow divider beneath the tagline */}
           <View style={styles.brandDivider} />
