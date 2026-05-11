@@ -19,7 +19,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
 import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
-import { useOnboarding } from '../contexts/OnboardingContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const TIP_FORM_VIDEOS_DISMISSED_KEY = 'mood:tip:form_videos:never';
 
 interface SessionWorkout {
   workoutName: string;
@@ -46,42 +48,54 @@ export default function WorkoutSessionScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
 
-  // Onboarding Tip 2: Form videos
-  const onboarding = useOnboarding();
-  const onboardingRef = React.useRef(onboarding);
-  React.useEffect(() => { onboardingRef.current = onboarding; }, [onboarding]);
+  // Onboarding Tip 2: Form videos — uses AsyncStorage for "never" persistence
+  // instead of server tips_state. This guarantees the popup actually shows
+  // for users whose prod tips_state may have stale 'completed' values.
   const [formTipActive, setFormTipActive] = useState(false);
   const formTipTriggeredRef = React.useRef(false);
 
-  // Trigger Tip 2 1.5s after the screen mounts — fires once users start a
-  // workout from any path. NOTE: keep `onboarding` OUT of deps; AuthContext
-  // user-refresh churns the memoized context value and was clearing the timer.
+  // Trigger Tip 2 1.5s after the screen mounts — fires on every fresh entry
+  // unless the user pressed "Don't show again" in any prior session.
   useEffect(() => {
     if (formTipTriggeredRef.current) return;
-    const timer = setTimeout(() => {
-      if (formTipTriggeredRef.current) return;
-      const ob = onboardingRef.current;
-      if (ob.requestRender('form_videos')) {
-        formTipTriggeredRef.current = true;
-        setFormTipActive(true);
-        ob.trackShown('form_videos');
+    let cancelled = false;
+    (async () => {
+      try {
+        const never = await AsyncStorage.getItem(TIP_FORM_VIDEOS_DISMISSED_KEY);
+        if (never === '1' || cancelled) return;
+        const timer = setTimeout(() => {
+          if (formTipTriggeredRef.current || cancelled) return;
+          formTipTriggeredRef.current = true;
+          setFormTipActive(true);
+        }, 1500);
+        return () => clearTimeout(timer);
+      } catch {
+        // AsyncStorage unavailable — just show the tip
+        const timer = setTimeout(() => {
+          if (formTipTriggeredRef.current || cancelled) return;
+          formTipTriggeredRef.current = true;
+          setFormTipActive(true);
+        }, 1500);
+        return () => clearTimeout(timer);
       }
-    }, 1500);
-    return () => clearTimeout(timer);
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   const handleFormTipTap = () => {
     setFormTipActive(false);
-    onboarding.markCompleted('form_videos');
     setExerciseLookupVisible(true);
   };
   const handleFormTipDismiss = () => {
     setFormTipActive(false);
-    onboarding.markDismissed('form_videos');
   };
-  const handleFormTipNeverShow = () => {
+  const handleFormTipNeverShow = async () => {
     setFormTipActive(false);
-    onboarding.markNeverShow('form_videos');
+    try {
+      await AsyncStorage.setItem(TIP_FORM_VIDEOS_DISMISSED_KEY, '1');
+    } catch {
+      // best-effort
+    }
   };
 
   useEffect(() => {
@@ -405,7 +419,6 @@ export default function WorkoutSessionScreen() {
               onPress={() => {
                 if (formTipActive) {
                   setFormTipActive(false);
-                  onboarding.markCompleted('form_videos');
                 }
                 setExerciseLookupVisible(true);
               }}

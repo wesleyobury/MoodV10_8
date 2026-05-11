@@ -2266,7 +2266,7 @@ export default function CreatePost() {
         targets={[
           {
             rect: targetRects.media,
-            placement: 'below',
+            placement: 'above',
             icon: 'image-outline',
             title: 'Add your media',
             body: 'Tap here to upload a photo or video from your workout.',
