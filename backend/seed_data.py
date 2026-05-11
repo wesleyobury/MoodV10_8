@@ -11,7 +11,7 @@
 # Hero images (user-provided v2)
 _HERO_SWEAT_ENGINE = "https://customer-assets.emergentagent.com/job_564800a5-3285-4d4c-9e5c-2555c39e42a1/artifacts/1htdj9uf_sweat%20engine%20builder.png"
 _HERO_OUTDOOR_PARK = "https://customer-assets.emergentagent.com/job_564800a5-3285-4d4c-9e5c-2555c39e42a1/artifacts/3ledatp7_outdoor%20park%20to%20peak.png"
-_HERO_CALI_BAR = "https://customer-assets.emergentagent.com/job_fit-outdoor-views/artifacts/toza6up4_pu.avif"  # placeholder — user will provide
+_HERO_CALI_BAR = "https://customer-assets.emergentagent.com/job_564800a5-3285-4d4c-9e5c-2555c39e42a1/artifacts/aye1zfgm_calisthenics%20bar%20to%20floor.png"
 _HERO_MOOD_MIX = "https://customer-assets.emergentagent.com/job_564800a5-3285-4d4c-9e5c-2555c39e42a1/artifacts/wlyymgaw_mood%20mix%20air%20%26%20abs.png"
 _HERO_BUILD_TRIPLE = "https://customer-assets.emergentagent.com/job_564800a5-3285-4d4c-9e5c-2555c39e42a1/artifacts/ihtgdx5o_build%20explosion%20triple%20threat.png"
 _HERO_MG_PUSH = "https://customer-assets.emergentagent.com/job_564800a5-3285-4d4c-9e5c-2555c39e42a1/artifacts/0u8yf2qz_muscle%20gainer%20push%20day%20pump.png"
@@ -164,7 +164,7 @@ PREVIEW_FEATURED_WORKOUTS = [
         "description": "Mixed-grip pull-up ladder — hits lats, mid-back, and biceps in one block.",
         "battlePlan": "4 rounds:\n• 5 wide pull-ups\n• 5 chin-ups (palms in)\n• 5 neutral grip pull-ups\nRest 90s between rounds. Use a band if needed.",
         "duration": "12 min",
-        "imageUrl": "https://customer-assets.emergentagent.com/job_fit-outdoor-views/artifacts/toza6up4_pu.avif",
+        "imageUrl": _HERO_CALI_BAR,
         "intensityReason": "Three pull variations in one block stress every angle of the upper back",
         "difficulty": "intermediate",
         "workoutType": "Calisthenics",
@@ -200,7 +200,7 @@ PREVIEW_FEATURED_WORKOUTS = [
         "description": "Hanging knee raises + windshield wipers — the floor work, but on a bar.",
         "battlePlan": "3 rounds:\n• 10 hanging knee raises\n• 8 windshield wipers (4 each side)\n• 20s dead hang\nRest 60s between rounds.",
         "duration": "8 min",
-        "imageUrl": "https://customer-assets.emergentagent.com/job_fit-outdoor-views/artifacts/toza6up4_pu.avif",
+        "imageUrl": _HERO_CALI_BAR,
         "intensityReason": "Hanging core work loads the abs under stretch — bigger range than any floor variant",
         "difficulty": "intermediate",
         "workoutType": "Calisthenics",
