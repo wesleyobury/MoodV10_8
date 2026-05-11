@@ -28,6 +28,7 @@ import VideoThumbnail from '../../components/VideoThumbnail';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../contexts/CartContext';
 import { useBadges } from '../../contexts/BadgeContext';
+import { useDrafts } from '../../contexts/DraftsContext';
 import FollowListModal from '../../components/FollowListModal';
 import { useScreenTime } from '../../hooks/useScreenTime';
 import { GridItemSkeleton, ProfileHeaderSkeleton } from '../../components/Skeleton';
