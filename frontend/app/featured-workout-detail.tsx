@@ -36,23 +36,71 @@ interface WorkoutExercise {
   moodTips: { icon: keyof typeof Ionicons.glyphMap; title: string; description: string }[];
 }
 
-// Sub-path divider — labels exercise groups by their source mood + sub-path
-// (e.g. "SWEAT - CARDIO BASED", "BUILD EXPLOSION - DYNAMIC", "MUSCLE GAINER - CHEST").
-// Mirrors cart.tsx so featured workouts and live carts feel cohesive.
+// Sub-path divider — normalises each exercise's workoutType into the
+// canonical taxonomy used in cart.tsx:
+//   • Sweat          → CARDIO | WEIGHTS
+//   • Muscle Gainer  → <muscle group>
+//   • Build Explosion→ BODY WEIGHT | WEIGHT BASED
+//   • Lazy           → BODY WEIGHT | WEIGHT BASED
+//   • Outdoor        → OUTDOOR
+//   • Calisthenics   → CALISTHENICS
 const _MUSCLE_GROUP_NAMES = new Set([
   'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Abs',
   'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Legs',
 ]);
+const _BODYWEIGHT_EQUIPMENT = new Set([
+  'Bodyweight', 'No Equipment', 'Pull-up Bar', 'Parallel Bars', 'Bar',
+]);
 function getExerciseSubPathLabel(ex: WorkoutExercise): string | null {
-  const wt = ex?.workoutType;
+  const wt = (ex?.workoutType || '').trim();
   if (!wt) return null;
+  const wtLower = wt.toLowerCase();
+
   if (wt.startsWith('Muscle Building')) {
     const parts = wt.split(' - ');
     const muscle = parts.length > 1 ? parts[parts.length - 1].trim() : '';
-    return muscle ? `Muscle Gainer - ${muscle}` : 'Muscle Gainer';
+    return muscle || null;
   }
-  if (_MUSCLE_GROUP_NAMES.has(wt)) return `Muscle Gainer - ${wt}`;
+  if (_MUSCLE_GROUP_NAMES.has(wt)) return wt;
+  if (wtLower.startsWith('muscle gainer')) {
+    const parts = wt.split(' - ');
+    return parts.length > 1 ? parts[parts.length - 1].trim() : 'Muscle Gainer';
+  }
+
+  if (wtLower.startsWith('sweat')) {
+    if (wtLower.includes('cardio')) return 'Cardio';
+    if (wtLower.includes('weight') || wtLower.includes('resistance')) return 'Weights';
+    return 'Cardio';
+  }
+
+  if (wtLower.startsWith('build explosion') || wtLower.startsWith('explosion')) {
+    if (wtLower.includes('body weight') || wtLower.includes('bodyweight') || wtLower.includes('plyo')) {
+      return 'Body Weight';
+    }
+    return 'Weight Based';
+  }
+
+  if (wtLower.startsWith('lazy')) {
+    const equip = (ex?.equipment || '').trim();
+    if (wtLower.includes('body weight') || wtLower.includes('bodyweight') || _BODYWEIGHT_EQUIPMENT.has(equip)) {
+      return 'Body Weight';
+    }
+    return 'Weight Based';
+  }
+
+  if (wtLower.startsWith('outdoor') || wtLower.startsWith('get outside')) {
+    return 'Outdoor';
+  }
+
+  if (wtLower.startsWith('calisthenics') || wtLower.startsWith('bodyweight only')) {
+    return 'Calisthenics';
+  }
+
   if (wt === 'Custom' || wt === 'Workout' || wt === 'Unknown') return null;
+  if (wt.includes(' - ')) {
+    const parts = wt.split(' - ');
+    return parts[parts.length - 1].trim();
+  }
   return wt;
 }
 

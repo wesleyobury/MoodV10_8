@@ -118,38 +118,86 @@ function costLabel(c?: number): string | null {
   return 'All-Out';
 }
 
-// Sub-path divider helper. Groups cart items by their "sub-path" — the source
-// mood + path the exercise came from. Shows a labelled divider whenever the
-// sub-path changes between consecutive items (e.g. "MUSCLE GAINER - CHEST"
-// → "MUSCLE GAINER - SHOULDERS", or "SWEAT - CARDIO BASED" → "SWEAT - LIGHT
-// WEIGHTS"). Needed for mixed-mood carts and multi-section featured workouts.
+// Sub-path divider helper. Groups cart items by their "sub-path" within
+// each mood card using this canonical taxonomy:
+//   • Sweat          → CARDIO | WEIGHTS
+//   • Muscle Gainer  → <muscle group> (CHEST, SHOULDERS, TRICEPS, ABS, …)
+//   • Build Explosion→ BODY WEIGHT | WEIGHT BASED
+//   • Lazy           → BODY WEIGHT | WEIGHT BASED
+//   • Outdoor        → OUTDOOR
+//   • Calisthenics   → CALISTHENICS
 const MUSCLE_GROUP_NAMES = new Set([
   'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Abs',
   'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Legs',
 ]);
 
-// Returns the divider LABEL for an item (uppercase, displayed in the divider
-// chip). Returns null when the item has no recognisable sub-path.
+// Equipment names we treat as bodyweight (everything else loaded counts as
+// "weight based" for Build Explosion / Lazy carts).
+const BODYWEIGHT_EQUIPMENT = new Set([
+  'Bodyweight', 'No Equipment', 'Pull-up Bar', 'Parallel Bars', 'Bar',
+]);
+
 function getCartSubPathLabel(item: WorkoutItem): string | null {
-  const wt = item?.workoutType;
+  const wt = (item?.workoutType || '').trim();
   if (!wt) return null;
 
-  // Auto-generated muscle gainer items: "Muscle Building - <Muscle>"
+  const wtLower = wt.toLowerCase();
+
+  // ── Muscle Gainer → muscle group ─────────────────────────────
   if (wt.startsWith('Muscle Building')) {
     const parts = wt.split(' - ');
     const muscle = parts.length > 1 ? parts[parts.length - 1].trim() : '';
-    return muscle ? `Muscle Gainer - ${muscle}` : 'Muscle Gainer';
+    return muscle || null;
+  }
+  if (MUSCLE_GROUP_NAMES.has(wt)) return wt;
+  if (wtLower.startsWith('muscle gainer')) {
+    const parts = wt.split(' - ');
+    return parts.length > 1 ? parts[parts.length - 1].trim() : 'Muscle Gainer';
   }
 
-  // Legacy manually-added muscle gainer items: bare muscle name
-  if (MUSCLE_GROUP_NAMES.has(wt)) {
-    return `Muscle Gainer - ${wt}`;
+  // ── Sweat → CARDIO / WEIGHTS ─────────────────────────────────
+  if (wtLower.startsWith('sweat')) {
+    if (wtLower.includes('cardio')) return 'Cardio';
+    if (wtLower.includes('weight') || wtLower.includes('resistance')) return 'Weights';
+    return 'Cardio';
+  }
+
+  // ── Build Explosion → BODY WEIGHT / WEIGHT BASED ─────────────
+  if (wtLower.startsWith('build explosion') || wtLower.startsWith('explosion')) {
+    if (wtLower.includes('body weight') || wtLower.includes('bodyweight') || wtLower.includes('plyo')) {
+      return 'Body Weight';
+    }
+    return 'Weight Based';
+  }
+
+  // ── Lazy → BODY WEIGHT / WEIGHT BASED ────────────────────────
+  if (wtLower.startsWith('lazy')) {
+    const equip = (item?.equipment || '').trim();
+    if (wtLower.includes('body weight') || wtLower.includes('bodyweight') || BODYWEIGHT_EQUIPMENT.has(equip)) {
+      return 'Body Weight';
+    }
+    return 'Weight Based';
+  }
+
+  // ── Outdoor → OUTDOOR ────────────────────────────────────────
+  if (wtLower.startsWith('outdoor') || wtLower.startsWith('get outside')) {
+    return 'Outdoor';
+  }
+
+  // ── Calisthenics → CALISTHENICS ──────────────────────────────
+  if (wtLower.startsWith('calisthenics') || wtLower.startsWith('bodyweight only')) {
+    return 'Calisthenics';
   }
 
   // Skip generic / placeholder values
   if (wt === 'Custom' || wt === 'Workout' || wt === 'Unknown') return null;
 
-  // Default: workoutType is already in "Mood - Sub" or just "Mood" form
+  // Last-resort fallback: return whatever was after the " - " separator,
+  // or the raw string. Keeps unknown moods working without a code change.
+  if (wt.includes(' - ')) {
+    const parts = wt.split(' - ');
+    return parts[parts.length - 1].trim();
+  }
   return wt;
 }
 
