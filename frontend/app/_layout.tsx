@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { CartProvider, useCart } from '../contexts/CartContext';
 import { BadgeProvider } from '../contexts/BadgeContext';
 import { OnboardingProvider } from '../contexts/OnboardingContext';
+import { DraftsProvider } from '../contexts/DraftsContext';
 import { Analytics } from '../utils/analytics';
 import { initNotifications, notificationService } from '../utils/notifications';
 import FloatingCart from '../components/FloatingCart';
@@ -141,6 +142,7 @@ function NavigationStack() {
       <Stack.Screen name='workout-session' options={{ headerShown: false }} />
       <Stack.Screen name='settings' options={{ headerShown: false }} />
       <Stack.Screen name="admin-add-workout" options={{ headerShown: false }} />
+      <Stack.Screen name="saved-builds" options={{ headerShown: false }} />
     </Stack>
   );
 }
@@ -172,9 +174,11 @@ function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
       <CartProvider>
-        <BadgeProviderWrapper>
-          <OnboardingProvider>{children}</OnboardingProvider>
-        </BadgeProviderWrapper>
+        <DraftsProvider>
+          <BadgeProviderWrapper>
+            <OnboardingProvider>{children}</OnboardingProvider>
+          </BadgeProviderWrapper>
+        </DraftsProvider>
       </CartProvider>
     </AuthProvider>
   );

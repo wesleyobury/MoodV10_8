@@ -159,6 +159,10 @@ from notification_worker import (
 )
 from seed_data import PREVIEW_FEATURED_WORKOUTS, FEATURED_WORKOUT_IDS
 from exercises_seed_data import PREVIEW_EXERCISES
+from workout_drafts import (
+    build_workout_drafts_router,
+    ensure_workout_drafts_indexes,
+)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -12620,6 +12624,11 @@ async def debug_profile_posts_check(
         "profile_pipeline_error": pipeline_error,
     }
 
+# Workout Drafts (Saved Builds) — guests + authenticated, lifecycle-aware
+api_router.include_router(
+    build_workout_drafts_router(db, get_current_user, get_optional_current_user)
+)
+
 # Include router in main app
 app.include_router(api_router)
 
@@ -12747,6 +12756,13 @@ async def startup_db_client():
             except Exception as e:
                 logger.warning(f"Onboarding backfill v3 skipped: {e}")
         
+        # workout_drafts indexes (Saved Builds)
+        try:
+            await ensure_workout_drafts_indexes(db)
+            logger.info("✅ workout_drafts indexes ensured")
+        except Exception as e:
+            logger.warning(f"workout_drafts indexes skipped: {e}")
+
         # daily_activity indexes
         await db.daily_activity.create_index([("date", -1)])
         await db.daily_activity.create_index([("user_id", 1), ("date", -1)])

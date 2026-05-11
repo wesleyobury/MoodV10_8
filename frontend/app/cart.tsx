@@ -24,6 +24,7 @@ import AddCustomExerciseModal from '../components/AddCustomExerciseModal';
 import SendWorkoutModal from '../components/SendWorkoutModal';
 import { useCart, WorkoutItem } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useDrafts } from '../contexts/DraftsContext';
 import { Analytics } from '../utils/analytics';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -303,6 +304,7 @@ export default function CartScreen() {
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { cartItems, removeFromCart, clearCart, reorderCart, addToCart, replaceCart } = useCart();
+  const { currentDraftId, beginDraft, markReady, markStarted } = useDrafts();
   // Send-Workout-to-Friend modal state (cart-level)
   const [sendModalVisible, setSendModalVisible] = useState(false);
   const { token } = useAuth();
@@ -573,10 +575,39 @@ export default function CartScreen() {
     }
   }, [token]);
 
+  // === Saved Builds (drafts) lifecycle ===
+  // 1) On cart entry with items: create draft if needed, mark ready_to_start.
+  //    (User explicitly chose this build — cart is the "preview" surface.)
+  const draftBootRef = useRef(false);
+  useEffect(() => {
+    if (draftBootRef.current) return;
+    if (cartItems.length === 0) return;
+    draftBootRef.current = true;
+
+    const first = cartItems[0];
+    (async () => {
+      // If we don't yet have a draft attached (i.e. user added to cart organically),
+      // create one. If currentDraftId is already set (e.g. user resumed an existing
+      // draft), just mark it ready_to_start.
+      if (!currentDraftId) {
+        await beginDraft({
+          moodCategory: first.moodCard || first.workoutType || 'Sweat',
+          moodCard: first.workoutType || null,
+          resumeRoute: '/cart',
+          resumeParams: {},
+        });
+      }
+      await markReady();
+    })();
+  }, [cartItems.length, currentDraftId, beginDraft, markReady]);
+
   const handleStartWorkoutSession = () => {
     if (cartItems.length === 0) return;
     
     setIsStarting(true);
+
+    // Mark the saved-build draft as started (fire-and-forget)
+    markStarted().catch(() => {});
     
     if (token) {
       const firstWorkout = cartItems[0];

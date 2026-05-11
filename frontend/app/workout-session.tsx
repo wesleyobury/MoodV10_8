@@ -16,6 +16,7 @@ import HomeButton from '../components/HomeButton';
 import BackButton from '../components/BackButton';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useDrafts } from '../contexts/DraftsContext';
 import { Analytics } from '../utils/analytics';
 import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
@@ -43,6 +44,7 @@ export default function WorkoutSessionScreen() {
   const insets = useSafeAreaInsets();
   const { clearCart } = useCart();
   const { token } = useAuth();
+  const { markCompleted } = useDrafts();
   
   const [sessionWorkouts, setSessionWorkouts] = useState<SessionWorkout[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -276,6 +278,9 @@ export default function WorkoutSessionScreen() {
     // Clear cart
     clearCart();
     console.log('Cart cleared');
+
+    // Mark saved-build draft as completed (fire-and-forget)
+    markCompleted().catch(() => {});
     
     // Navigate to create-post with workout stats
     console.log('Navigating to create-post...');

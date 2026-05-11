@@ -184,6 +184,7 @@ export default function Profile() {
   const { token, user: authUser, updateUser, isGuest, exitGuestMode } = useAuth();
   const { addToCart } = useCart();
   const { unreadMessages, refreshBadges } = useBadges();
+  const { activeCount: savedBuildsCount, refreshCount: refreshDraftsCount } = useDrafts();
 
   const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'cards'>('posts');
   const router = useRouter();
@@ -1079,6 +1080,32 @@ export default function Profile() {
             </View>
           ) : (
             <View style={styles.savedTab}>
+              {/* Saved Builds Entry — visible only if at least 1 active draft */}
+              {savedBuildsCount > 0 ? (
+                <TouchableOpacity
+                  style={styles.savedBuildsEntry}
+                  onPress={() => router.push('/saved-builds')}
+                  activeOpacity={0.85}
+                  testID="profile-saved-builds-entry"
+                >
+                  <View style={styles.savedBuildsLeft}>
+                    <View style={styles.savedBuildsIconWrap}>
+                      <Ionicons name="bookmark" size={18} color="#0A0A0A" />
+                    </View>
+                    <View>
+                      <Text style={styles.savedBuildsTitle}>Saved Builds</Text>
+                      <Text style={styles.savedBuildsSubtitle}>Resume where you left off</Text>
+                    </View>
+                  </View>
+                  <View style={styles.savedBuildsRight}>
+                    <View style={styles.savedBuildsBadge} testID="profile-saved-builds-count">
+                      <Text style={styles.savedBuildsBadgeText}>{savedBuildsCount}</Text>
+                    </View>
+                    <Ionicons name="chevron-forward" size={18} color="#6B6B6B" />
+                  </View>
+                </TouchableOpacity>
+              ) : null}
+
               {/* Saved Workouts Section */}
               <View style={styles.savedSection}>
                 <View style={styles.savedSectionHeader}>
@@ -1696,6 +1723,43 @@ const styles = StyleSheet.create({
   savedTab: {
     flex: 1,
   },
+  // Saved Builds entry row (above saved workouts section)
+  savedBuildsEntry: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#141414',
+    borderColor: '#1F1F1F',
+    borderWidth: 1,
+    borderRadius: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    marginBottom: 18,
+  },
+  savedBuildsLeft: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+  savedBuildsIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#F5C518',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  savedBuildsTitle: { color: '#FFFFFF', fontSize: 15, fontWeight: '700' },
+  savedBuildsSubtitle: { color: '#B7B7B7', fontSize: 12, marginTop: 2 },
+  savedBuildsRight: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  savedBuildsBadge: {
+    minWidth: 22,
+    height: 22,
+    paddingHorizontal: 6,
+    borderRadius: 11,
+    backgroundColor: '#F5C518',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 6,
+  },
+  savedBuildsBadgeText: { color: '#0A0A0A', fontSize: 12, fontWeight: '700' },
   savedSection: {
     marginBottom: 24,
   },
