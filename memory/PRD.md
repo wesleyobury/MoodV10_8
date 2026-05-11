@@ -14,6 +14,15 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-11 PM2] **Onboarding iteration 7 — Tip 2 rewritten to use `OnboardingOverlay` (same format as Tip 3)**:
+  - **Root cause**: previous Tip 2 implementations used an inline `position: absolute` View. On native iOS in Expo Go this was being clipped/hidden by SafeAreaView / parent layouts / scroll containers, so it never appeared even though it rendered on web.
+  - **Fix**: rewrote Tip 2 to render via `<OnboardingOverlay>` — the exact component that ships Tip 3 reliably. Renders inside a `<Modal transparent statusBarTranslucent>` which is always on top of everything on native and immune to scroll/clipping/zIndex issues.
+  - **One target**: `searchBarRef` is attached to a `<View>` wrapper around `ExerciseLookupTrigger` (with `collapsable={false}`). On screen mount, after 1.5s, `measureInWindow` writes the rect into state and the overlay renders with `placement: 'below'`, drawing a gold curved arrow line + arrowhead that lands at the search bar's center.
+  - **Visual parity with Tip 3**: identical semi-transparent black backdrop, identical label card style, identical "Tap anywhere to dismiss" hint, identical "Don't show again" pill at the bottom.
+  - **Persistence**: AsyncStorage flag `mood:tip:form_videos:never` only set when user explicitly taps "Don't show again". Tap anywhere on the backdrop just opens the visual exercise sheet (treats it as a CTA, consistent with how Tip 3 chips work).
+  - **Verified by screenshot** (`/tmp/tip2_overlay.png`) — registered a fresh test user, navigated to `/workout-session` with mock workout data, waited 1.5s. The DOM contains: `Need a form check` ✓, `Tap the visual cues search` ✓, `Tap anywhere to dismiss` ✓, `Don't show again` ✓. Bundle (15.85 MB) contains `play-circle-outline` ×4 and the new body copy ×1.
+
+## What's Been Implemented
 - [2026-05-11 PM] **Onboarding iteration 6 — Tip 2 AsyncStorage rewrite + Tip 3 "Add your media" above media row** (PROVEN with screenshot):
   - **Tip 2 decoupled from server `tips_state`** (`app/workout-session.tsx`): the old gating on `onboarding.requestRender('form_videos')` relied on the user's prod `tips_state.form_videos` being `'unseen'`. Many users had it cached as `completed` from earlier sessions on the prod backend, so the popup never showed. Switched to a single AsyncStorage flag `mood:tip:form_videos:never` — Tip 2 now fires 1.5s after the screen mounts every time, **unless** the user explicitly tapped "Don't show again". X dismiss just closes the current instance; tapping the card opens the visual exercise sheet. Removed unused `useOnboarding` import.
   - **Tip 3 — "Add your media" repositioned**: `placement: 'below'` → `placement: 'above'`. The card now sits at the TOP of the screen (in the empty space above the media row) instead of overlapping the IG callout in the middle. Arrow still points DOWN at the media section.

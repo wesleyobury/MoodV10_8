@@ -19,6 +19,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
 import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
+import OnboardingOverlay, { type TargetRect } from '../components/OnboardingOverlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TIP_FORM_VIDEOS_DISMISSED_KEY = 'mood:tip:form_videos:never';
@@ -48,46 +49,49 @@ export default function WorkoutSessionScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
 
-  // Onboarding Tip 2: Form videos — uses AsyncStorage for "never" persistence
-  // instead of server tips_state. This guarantees the popup actually shows
-  // for users whose prod tips_state may have stale 'completed' values.
+  // Onboarding Tip 2 — uses OnboardingOverlay (same format as Tip 3) with a
+  // single target pointing to the "Find visuals" search bar. AsyncStorage
+  // flag persists "Don't show again"; otherwise the tip re-fires on each entry.
   const [formTipActive, setFormTipActive] = useState(false);
   const formTipTriggeredRef = React.useRef(false);
+  const searchBarRef = React.useRef<View>(null);
+  const [searchBarRect, setSearchBarRect] = useState<TargetRect | null>(null);
 
   // Trigger Tip 2 1.5s after the screen mounts — fires on every fresh entry
   // unless the user pressed "Don't show again" in any prior session.
   useEffect(() => {
     if (formTipTriggeredRef.current) return;
     let cancelled = false;
+    let timer: any = null;
     (async () => {
+      let never: string | null = null;
       try {
-        const never = await AsyncStorage.getItem(TIP_FORM_VIDEOS_DISMISSED_KEY);
-        if (never === '1' || cancelled) return;
-        const timer = setTimeout(() => {
-          if (formTipTriggeredRef.current || cancelled) return;
-          formTipTriggeredRef.current = true;
-          setFormTipActive(true);
-        }, 1500);
-        return () => clearTimeout(timer);
+        never = await AsyncStorage.getItem(TIP_FORM_VIDEOS_DISMISSED_KEY);
       } catch {
-        // AsyncStorage unavailable — just show the tip
-        const timer = setTimeout(() => {
-          if (formTipTriggeredRef.current || cancelled) return;
-          formTipTriggeredRef.current = true;
-          setFormTipActive(true);
-        }, 1500);
-        return () => clearTimeout(timer);
+        never = null;
       }
+      if (cancelled) return;
+      if (never === '1') return;
+      timer = setTimeout(() => {
+        if (formTipTriggeredRef.current || cancelled) return;
+        // Measure search bar position so the overlay arrow points to it
+        searchBarRef.current?.measureInWindow((x, y, w, h) => {
+          if (cancelled) return;
+          setSearchBarRect({ x, y, w, h });
+        });
+        formTipTriggeredRef.current = true;
+        setFormTipActive(true);
+      }, 1500);
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
   }, []);
 
   const handleFormTipTap = () => {
     setFormTipActive(false);
     setExerciseLookupVisible(true);
-  };
-  const handleFormTipDismiss = () => {
-    setFormTipActive(false);
   };
   const handleFormTipNeverShow = async () => {
     setFormTipActive(false);
@@ -414,15 +418,17 @@ export default function WorkoutSessionScreen() {
             </View>
             <Text style={styles.battlePlanText}>{currentWorkout.battlePlan}</Text>
             
-            {/* Exercise Lookup Trigger */}
-            <ExerciseLookupTrigger
-              onPress={() => {
-                if (formTipActive) {
-                  setFormTipActive(false);
-                }
-                setExerciseLookupVisible(true);
-              }}
-            />
+            {/* Exercise Lookup Trigger — ref'd for Tip 2 overlay positioning */}
+            <View ref={searchBarRef} collapsable={false}>
+              <ExerciseLookupTrigger
+                onPress={() => {
+                  if (formTipActive) {
+                    setFormTipActive(false);
+                  }
+                  setExerciseLookupVisible(true);
+                }}
+              />
+            </View>
           </View>
 
           {/* MOOD Tips */}
@@ -512,47 +518,21 @@ export default function WorkoutSessionScreen() {
         onClose={() => setExerciseLookupVisible(false)}
       />
 
-      {/* Onboarding Tip 2 — bottom-of-screen popup (visible regardless of scroll position) */}
-      {formTipActive && (
-        <View
-          style={styles.formTipFloatingWrap}
-          pointerEvents="box-none"
-          testID="tip-form-videos-container"
-        >
-          <TouchableOpacity
-            style={styles.formTipCard}
-            activeOpacity={0.9}
-            onPress={handleFormTipTap}
-            testID="tip-form-videos-tap"
-          >
-            <View style={styles.formTipIconWrap}>
-              <Ionicons name="play" size={12} color="#000" />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.formTipTitle}>Need a form check?</Text>
-              <Text style={styles.formTipBody}>
-                Tap to open visual exercise cues — videos for every move.
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={handleFormTipDismiss}
-              style={styles.formTipClose}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              testID="tip-form-videos-dismiss"
-            >
-              <Ionicons name="close" size={14} color="#888" />
-            </TouchableOpacity>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleFormTipNeverShow}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            style={{ alignSelf: 'center', marginTop: 6 }}
-            testID="tip-form-videos-never-show"
-          >
-            <Text style={styles.formTipNever}>Don&apos;t show again</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      {/* Onboarding Tip 2 — full-screen overlay (same format as Tip 3) */}
+      <OnboardingOverlay
+        visible={formTipActive && !!searchBarRect}
+        onTapAnywhere={handleFormTipTap}
+        onNeverShow={handleFormTipNeverShow}
+        targets={[
+          {
+            rect: searchBarRect,
+            placement: 'below',
+            icon: 'play-circle-outline',
+            title: 'Need a form check?',
+            body: 'Tap the visual cues search above to open video tutorials for every exercise.',
+          },
+        ]}
+      />
     </SafeAreaView>
   );
 }
