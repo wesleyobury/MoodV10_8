@@ -1,19 +1,26 @@
 /**
- * API Configuration - Locked Production URL
+ * API Configuration
  *
- * IMPORTANT: EXPO_PUBLIC_BACKEND_URL is locked to the production backend.
- * Preview deployments must NOT overwrite frontend .env or app.json.
- * The frontend always points to the production backend for dev/TestFlight builds.
+ * - **Development (Expo Go + web preview)**: respects `EXPO_PUBLIC_BACKEND_URL`
+ *   from `frontend/.env`, including `*.preview.emergentagent.com` URLs. This
+ *   lets devs iterate against the preview backend without manual overrides.
+ * - **Production EAS/TestFlight builds**: locked to the production backend
+ *   below. Any preview URL accidentally baked into a production bundle is
+ *   rejected and falls back to PRODUCTION_BACKEND_URL.
  */
 
 import Constants from 'expo-constants';
 
 // ── LOCKED PRODUCTION BACKEND ──
-// This is the ONLY backend URL the frontend should ever use.
-// Do NOT change this to a preview domain.
+// Used for production EAS/TestFlight builds and as the final safety fallback.
 const PRODUCTION_BACKEND_URL = 'https://bug-busters-13.emergent.host';
 
-// Detect preview domains (must never be used)
+// __DEV__ is a React Native global: true in Expo Go / Metro / web dev,
+// false in release/EAS production bundles.
+declare const __DEV__: boolean;
+const IS_DEV = typeof __DEV__ !== 'undefined' ? __DEV__ : false;
+
+// Detect preview domains (allowed in dev, rejected in production builds)
 const isPreviewDomain = (url: string): boolean =>
   url.includes('.preview.emergentagent.com');
 
@@ -21,26 +28,26 @@ const isPreviewDomain = (url: string): boolean =>
 const normalize = (url: string): string =>
   url.trim().replace(/\/+$/, '');
 
-// Get API URL safely — always resolves to production
+// Get API URL safely
 const getApiUrl = (): string => {
-  // 1. Try environment variable (EAS injects this at build time)
+  // 1. Try environment variable (EAS injects this at build time, or .env in dev)
   const envUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
   if (envUrl && envUrl.trim() !== '') {
     const normalized = normalize(envUrl);
-    if (!isPreviewDomain(normalized)) {
+    if (IS_DEV || !isPreviewDomain(normalized)) {
       return normalized;
     }
-    console.warn('⚠️ Rejecting preview env URL — using production:', normalized);
+    console.warn('⚠️ Production build: rejecting preview env URL — using production:', normalized);
   }
 
   // 2. Try Expo config (EAS build config)
   const configUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL;
   if (typeof configUrl === 'string' && configUrl.trim() !== '') {
     const normalized = normalize(configUrl);
-    if (!isPreviewDomain(normalized)) {
+    if (IS_DEV || !isPreviewDomain(normalized)) {
       return normalized;
     }
-    console.warn('⚠️ Rejecting preview config URL — using production:', normalized);
+    console.warn('⚠️ Production build: rejecting preview config URL — using production:', normalized);
   }
 
   // 3. Locked production fallback — ALWAYS resolves, never empty
