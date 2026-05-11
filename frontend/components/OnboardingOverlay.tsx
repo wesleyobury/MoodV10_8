@@ -120,6 +120,8 @@ const PointerCallout: React.FC<{ target: OverlayTarget; index: number }> = ({
   target,
   index,
 }) => {
+  const [cardH, setCardH] = React.useState(92);
+
   if (!target.rect) return null;
   const { x, y, w, h } = target.rect;
 
@@ -129,8 +131,6 @@ const PointerCallout: React.FC<{ target: OverlayTarget; index: number }> = ({
 
   // Decide whether to place card ABOVE or BELOW the target
   const placeAbove = ty > SCREEN_H * 0.5;
-  // Approx card height (varies w/ body length but we use a reasonable estimate)
-  const CARD_H_EST = 92;
 
   // Card top-left position
   let cardX = Math.min(
@@ -145,8 +145,8 @@ const PointerCallout: React.FC<{ target: OverlayTarget; index: number }> = ({
   let arrowFromY: number;
   let arrowToY: number;
   if (placeAbove) {
-    cardY = Math.max(SIDE_MARGIN + 40, y - CARD_H_EST - CARD_GAP - 30);
-    arrowFromY = cardY + CARD_H_EST; // bottom of card
+    cardY = Math.max(SIDE_MARGIN + 40, y - cardH - CARD_GAP - 30);
+    arrowFromY = cardY + cardH; // bottom of card
     arrowToY = y - 4; // just above target's top edge
   } else {
     cardY = y + h + CARD_GAP + 26;
@@ -212,6 +212,10 @@ const PointerCallout: React.FC<{ target: OverlayTarget; index: number }> = ({
           styles.labelCard,
           { left: cardX, top: cardY, width: CARD_W },
         ]}
+        onLayout={(e) => {
+          const h2 = e.nativeEvent.layout.height;
+          if (Math.abs(h2 - cardH) > 2) setCardH(h2);
+        }}
       >
         <View style={styles.labelTitleRow}>
           {target.icon && (
