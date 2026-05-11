@@ -2266,21 +2266,24 @@ export default function CreatePost() {
         targets={[
           {
             rect: targetRects.media,
+            placement: 'below',
             icon: 'image-outline',
             title: 'Add your media',
             body: 'Tap here to upload a photo or video from your workout.',
           },
           {
-            rect: targetRects.stats,
-            icon: 'create-outline',
-            title: 'Adjust values & targets',
-            body: 'Tap any number — calories, minutes, sets — to fine-tune the stat card before you post.',
-          },
-          {
             rect: targetRects.ig,
+            placement: 'above',
             icon: 'logo-instagram',
             title: 'Share to IG Stories',
             body: 'Saves the overlay to your photo album. Then open Instagram → new Story → sticker icon → pick the saved overlay.',
+          },
+          {
+            rect: targetRects.stats,
+            placement: 'below',
+            icon: 'create-outline',
+            title: 'Adjust values & targets',
+            body: 'Tap any number — calories, minutes, sets — to fine-tune the stat card before you post.',
           },
         ]}
       />

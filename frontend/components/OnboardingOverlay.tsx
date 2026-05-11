@@ -29,6 +29,8 @@ export interface OverlayTarget {
   body: string;
   /** Optional ion-icon shown before the title */
   icon?: keyof typeof Ionicons.glyphMap;
+  /** Force placement instead of auto-flip based on screen position */
+  placement?: 'above' | 'below';
 }
 
 interface Props {
@@ -130,7 +132,9 @@ const PointerCallout: React.FC<{ target: OverlayTarget; index: number }> = ({
   const ty = y + h / 2;
 
   // Decide whether to place card ABOVE or BELOW the target
-  const placeAbove = ty > SCREEN_H * 0.5;
+  const placeAbove = target.placement
+    ? target.placement === 'above'
+    : ty > SCREEN_H * 0.5;
 
   // Card top-left position
   let cardX = Math.min(
@@ -242,8 +246,6 @@ const styles = StyleSheet.create({
   labelCard: {
     position: 'absolute',
     backgroundColor: '#1A1A1A',
-    borderColor: GOLD,
-    borderWidth: 1,
     borderRadius: 12,
     paddingVertical: 10,
     paddingHorizontal: 12,

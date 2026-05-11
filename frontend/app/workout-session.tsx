@@ -20,7 +20,6 @@ import { Analytics } from '../utils/analytics';
 import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
 import { useOnboarding } from '../contexts/OnboardingContext';
-import OnboardingTip from '../components/OnboardingTip';
 
 interface SessionWorkout {
   workoutName: string;
@@ -54,14 +53,11 @@ export default function WorkoutSessionScreen() {
   const [formTipActive, setFormTipActive] = useState(false);
   const formTipTriggeredRef = React.useRef(false);
 
-  // Trigger Tip 2 1.5s after exercise list renders, on first session screen view.
-  // NOTE: keeping `onboarding` out of the dep array — otherwise context churn
-  // (e.g. AuthContext refreshes user) would clear the setTimeout before it fires.
+  // Trigger Tip 2 1.5s after the screen mounts — fires once users start a
+  // workout from any path. NOTE: keep `onboarding` OUT of deps; AuthContext
+  // user-refresh churns the memoized context value and was clearing the timer.
   useEffect(() => {
     if (formTipTriggeredRef.current) return;
-    if (isLoading) return;
-    if (sessionWorkouts.length === 0) return;
-
     const timer = setTimeout(() => {
       if (formTipTriggeredRef.current) return;
       const ob = onboardingRef.current;
@@ -71,9 +67,8 @@ export default function WorkoutSessionScreen() {
         ob.trackShown('form_videos');
       }
     }, 1500);
-
     return () => clearTimeout(timer);
-  }, [isLoading, sessionWorkouts.length]);
+  }, []);
 
   const handleFormTipTap = () => {
     setFormTipActive(false);
@@ -405,36 +400,16 @@ export default function WorkoutSessionScreen() {
             </View>
             <Text style={styles.battlePlanText}>{currentWorkout.battlePlan}</Text>
             
-            {/* Exercise Lookup Trigger with onboarding tip anchor */}
-            <View style={{ position: 'relative' }}>
-              <ExerciseLookupTrigger
-                onPress={() => {
-                  if (formTipActive) {
-                    setFormTipActive(false);
-                    onboarding.markCompleted('form_videos');
-                  }
-                  setExerciseLookupVisible(true);
-                }}
-              />
-              <OnboardingTip
-                visible={formTipActive}
-                position="top"
-                anchorStyle={{
-                  bottom: 56,
-                  left: 8,
-                  right: 8,
-                  alignItems: 'flex-start',
-                }}
-                copy="Stuck on form? Search any exercise for video cues and common mistakes."
-                onTap={handleFormTipTap}
-                onDismiss={handleFormTipDismiss}
-                allowNeverShow
-                onNeverShow={handleFormTipNeverShow}
-                pulseAccent
-                showPlayBadge
-                testIdPrefix="tip-form-videos"
-              />
-            </View>
+            {/* Exercise Lookup Trigger */}
+            <ExerciseLookupTrigger
+              onPress={() => {
+                if (formTipActive) {
+                  setFormTipActive(false);
+                  onboarding.markCompleted('form_videos');
+                }
+                setExerciseLookupVisible(true);
+              }}
+            />
           </View>
 
           {/* MOOD Tips */}
@@ -523,6 +498,48 @@ export default function WorkoutSessionScreen() {
         visible={exerciseLookupVisible}
         onClose={() => setExerciseLookupVisible(false)}
       />
+
+      {/* Onboarding Tip 2 — bottom-of-screen popup (visible regardless of scroll position) */}
+      {formTipActive && (
+        <View
+          style={styles.formTipFloatingWrap}
+          pointerEvents="box-none"
+          testID="tip-form-videos-container"
+        >
+          <TouchableOpacity
+            style={styles.formTipCard}
+            activeOpacity={0.9}
+            onPress={handleFormTipTap}
+            testID="tip-form-videos-tap"
+          >
+            <View style={styles.formTipIconWrap}>
+              <Ionicons name="play" size={12} color="#000" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.formTipTitle}>Need a form check?</Text>
+              <Text style={styles.formTipBody}>
+                Tap to open visual exercise cues — videos for every move.
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={handleFormTipDismiss}
+              style={styles.formTipClose}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              testID="tip-form-videos-dismiss"
+            >
+              <Ionicons name="close" size={14} color="#888" />
+            </TouchableOpacity>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleFormTipNeverShow}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            style={{ alignSelf: 'center', marginTop: 6 }}
+            testID="tip-form-videos-never-show"
+          >
+            <Text style={styles.formTipNever}>Don&apos;t show again</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -805,5 +822,62 @@ const styles = StyleSheet.create({
   upcomingWorkoutMeta: {
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.6)',
+  },
+
+  /* Onboarding Tip 2 — floating popup */
+  formTipFloatingWrap: {
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    bottom: 32,
+    zIndex: 9999,
+  },
+  formTipCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1A1A1A',
+    borderRadius: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    paddingRight: 30,
+    gap: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.5,
+    shadowRadius: 14,
+    elevation: 10,
+  },
+  formTipIconWrap: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: '#F5C518',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  formTipTitle: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  formTipBody: {
+    color: 'rgba(255, 255, 255, 0.78)',
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  formTipClose: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  formTipNever: {
+    color: 'rgba(255, 255, 255, 0.55)',
+    fontSize: 11,
+    textDecorationLine: 'underline',
   },
 });

@@ -1,0 +1,43 @@
+{
+  "summary": "Iteration 21 — Onboarding iteration-5 fixes verified. Backend regression PASSES 56/56: new test_onboarding_backfill_v3.py 12/12 + test_onboarding_backfill_v2.py 9/9 + test_onboarding_backfill.py 8/8 + test_onboarding_tips.py 27/27. Backfill v3 confirmed at the data layer: app_settings._id='onboarding_backfill_v3' doc present with applied_at + matched=97 (per spec); backend log line '✅ Onboarding tips backfill v3 applied to 97 users' present; v2 doc also retained for compat. All non-test users have tips_state.mood_scroll/.form_videos/.completion_share == 'unseen' (strict zero violations after excluding v2_user_/v3_user_ prefixed test rows). Idempotency verified: a manually PATCHed 'completed' state is NOT reset on subsequent reads (flag gate works). Frontend source-level audit confirms ALL iter-21 edits: (a) workout-session.tsx lines 49-71: useOnboarding ref pattern + formTipTriggeredRef + 1.5s setTimeout with deps `[]` + requestRender('form_videos') gate; (b) workout-session.tsx lines 502-542: floating popup rendered AFTER `</ScrollView>` (line 494) and BEFORE `</SafeAreaView>` (line 543), with styles.formTipFloatingWrap = {position:'absolute', left:16, right:16, bottom:32, zIndex:9999} (lines 828-834), gold #F5C518 play badge (formTipIconWrap), title 'Need a form check?', body about visual exercise cues, X close (formTipClose top:8/right:8 absolute), 'Don't show again' link (formTipNever), all 4 required testIDs present (tip-form-videos-container, tip-form-videos-tap, tip-form-videos-dismiss, tip-form-videos-never-show); (c) no `OnboardingTip` import (only `useOnboarding`) — grep confirmed; (d) OnboardingOverlay.tsx line 32-33 adds `placement?: 'above' | 'below'`, lines 135-137 prioritise `target.placement` over auto-flip (`ty > SCREEN_H * 0.5`), labelCard style (lines 246-257) no longer has `borderColor: GOLD, borderWidth: 1` — plain #1A1A1A card with shadow only; (e) create-post.tsx lines 2266-2288: targets array order is media→ig→stats with placements 'below'/'above'/'below' as specified. Frontend Metro smoke at localhost:3000 bundles cleanly to the Terms & Privacy gate; 0 pageerrors; only the by-design 'Rejecting preview env URL' warning + benign deprecation warnings. E2E browser walkthrough into workout-session/create-post still blocked by the carryover env-skew issue (Expo bundle pins API_BASE_URL=https://bug-busters-13.emergent.host while preview backend is at live-feed-preview.preview.emergentagent.com), explicitly accepted in main agent's review request as 'Code review is sufficient if E2E navigation is blocked.'",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_onboarding_backfill_v3.py",
+    "/app/backend/tests/test_onboarding_backfill_v2.py",
+    "/app/backend/tests/test_onboarding_backfill.py",
+    "/app/backend/tests/test_onboarding_tips.py",
+    "/app/test_reports/pytest/onboarding_iter21_results.xml"
+  ],
+  "action_items": [
+    "(carryover from iter-19/20, still UNRESOLVED) Reconcile Expo bundle's hardcoded production API_BASE_URL with the preview backend. Until then, E2E browser-driven assertion of overlay arrow placement & Tip 2 floating popup cannot run against the test backend; only source-level audit is possible.",
+    "(carryover from iter-19) Wrap expo-notifications subscription cleanup as `sub?.remove?.()` instead of `Notifications.removeNotificationSubscription(sub)` to fix the first-load TypeError on /create-post navigation."
+  ],
+  "critical_code_review_comments": [
+    "workout-session.tsx Tip 2: spec says 'renders OUTSIDE the ScrollView/SafeAreaView so it doesn't get clipped'. Implementation places the popup AFTER `</ScrollView>` (line 494) but still INSIDE `</SafeAreaView>` (line 543). With position:absolute + zIndex:9999 + safe-area top padding only on the container, this is functionally equivalent for the intended UX (popup pinned 32px from screen bottom regardless of scroll). However, if iOS adds bottom inset padding to SafeAreaView in a later RN version, the bottom:32 could land above the inset. Consider moving the floating wrap outside SafeAreaView entirely (sibling, wrapped in a top-level <Fragment>) for maximum scroll/inset immunity.",
+    "create-post.tsx is now 3179 lines (was 3176 in iter-20) — continues to grow. The targets array spec (lines 2266-2288) is minimal but the file urgently needs splitting into ShareAchievementForm, MediaPicker, EditableStats, InstagramShare modules.",
+    "OnboardingOverlay.tsx labelCard now has only shadow (no gold border). Visual contrast is fine on dark backgrounds, but on the white/light overlay regions the card may lack edge definition. Consider a 1px rgba(255,255,255,0.08) subtle border as a middle-ground if visual feedback indicates the cards feel 'floaty'.",
+    "Backfill v3 logic (server.py 12730-12748) is gated solely on the v3 doc existence. If v3 backfill ever needs to run a 4th time (different reset criteria), the team must bump to v4 — not delete the v3 doc — to preserve audit history. Suggest a `version` field on the doc to make this explicit, e.g. {_id:'onboarding_backfill', version:3, ...}, with the gate checking `doc?.version === 3`.",
+    "Idempotency caveat: the v3 backfill resets ALL users to 'unseen', overwriting any 'completed'/'never' choices users already made. This is BY DESIGN per the review request ('users who already auto-completed tips get a clean replay'), but it WILL annoy power users who explicitly chose 'Don't show again' in iter-19/20. Consider a future, more-conservative backfill that only resets users whose state==='completed' but trackShown was never called (the auto-complete scenario), preserving explicit 'never' choices."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_onboarding_backfill_v3.py (new file, 12 tests)"
+  ],
+  "success_rate": {
+    "backend": "100% (56/56 onboarding tests: v3 12/12 + v2 9/9 + v1 8/8 + tips 27/27)",
+    "frontend": "100% source-level audit (all 4 frontend spec items verified line-numbered + Metro bundle clean). E2E browser walkthrough into workout-session and create-post not executed — env-skew blocker carried over and explicitly accepted by main agent."
+  },
+  "test_credentials": "Backend tests register throwaway users on the fly: pattern `v3_user_<ts>_<hex>@example.com` / BackfillV3Pass123!. Admin: officialmoodapp (per /app/memory/test_credentials.md).",
+  "seed_data_creation": "test_onboarding_backfill_v3.py creates one throwaway user per test module on the preview backend. Username pattern v3_user_<ts>_<hex> is excluded from the 'all-users-unseen' assertion to avoid false-positives after the test PATCHes their state.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iter-21 deliverables (Tip 2 floating-popup redesign, Tip 3 forced placement, gold border removal, v3 backfill) are all VERIFIED at source + backend levels. Backend regression is fully green: 56/56 onboarding tests. The ONLY remaining gap is end-to-end browser assertion of Tip 2 visual position and Tip 3 arrow alignment — requires resolving the env-skew (Expo bundle hardcoded to prod API). Once resolved, recommended Playwright probes: (1) navigate to /workout-session with a valid session, wait 1.6s, assert [data-testid='tip-form-videos-container'] is visible with bounding box.bottom > 0.85 * viewport_height; (2) navigate to /create-post with completionTipActive=true, assert [data-testid='onboarding-overlay-pointer-0/1/2'] arrows align to media (below), ig (above), stats (below) regions respectively. Backfill v3 reset 97 users — beware that any prior 'completed' or 'never' test fixtures have been wiped; future onboarding tests must register fresh users (which is what current tests do).",
+  "rca of the issue": "No new issue in iter-21. Carryover root cause: the Expo bundle hardcodes API_BASE_URL=https://bug-busters-13.emergent.host (verified via console log: '🔗 API_BASE_URL = https://bug-busters-13.emergent.host' + 'Rejecting preview env URL'). This is BY DESIGN per main agent, so UI cannot be E2E-tested against the preview backend where v3 backfill ran. Mitigation: source-level audit + direct Mongo verification (this report) confirm all main-agent edits are present and the v3 backfill executed successfully on the preview backend with matched=97."
+}
