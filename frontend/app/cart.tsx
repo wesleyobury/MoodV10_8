@@ -400,6 +400,10 @@ export default function CartScreen() {
             const result = await resp.json();
             const workout = result.workouts?.[0];
             if (workout?.exercises?.length) {
+              const heroUrl = workout.imageUrl || workout.image_url || workout.heroImageUrl || '';
+              const fullTitle = workout.mood && workout.title && !workout.title.toLowerCase().startsWith(workout.mood.toLowerCase())
+                ? `${workout.mood} - ${workout.title}`
+                : (workout.title || '');
               const items: WorkoutItem[] = workout.exercises.map((ex: any) => ({
                 id: ex.exerciseId || ex.id || ex.name || `hydrate-${Date.now()}`,
                 name: ex.name || '',
@@ -414,6 +418,8 @@ export default function CartScreen() {
                 moodCard: ex.moodCard || workout.title || (params.workoutTitle as string) || 'Featured Workout',
                 moodTips: ex.moodTips || [],
                 source: 'build_for_me' as const,
+                featuredHeroImage: heroUrl || undefined,
+                featuredTitle: fullTitle || undefined,
               }));
               console.log(`🛒 Cart hydrated from featuredId fetch (${items.length} exercises)`);
               replaceCart(items);
@@ -786,6 +792,21 @@ export default function CartScreen() {
 
   const moodInfo = getMoodInfo();
 
+  // === Featured workout context (hero image + full title for split) ===
+  // If the cart was populated from a featured workout, each item carries
+  // featuredHeroImage + featuredTitle. We prefer the workout's hero image over
+  // the first exercise's image, and split the title "Calisthenics - Bar to Floor"
+  // into mood ("Calisthenics") + subtitle ("Bar to Floor") for the hero card.
+  const featuredHeroImage = cartItems[0]?.featuredHeroImage;
+  const featuredTitle = cartItems[0]?.featuredTitle;
+  const featuredSplit = featuredTitle && featuredTitle.includes(' - ')
+    ? {
+        mood: featuredTitle.split(' - ')[0].trim(),
+        subtitle: featuredTitle.split(' - ').slice(1).join(' - ').trim(),
+      }
+    : null;
+
+
   // Empty state (but not if we're hydrating from a push notification)
   if (cartItems.length === 0 && !hydrating) {
     return (
@@ -825,7 +846,7 @@ export default function CartScreen() {
       {/* Hero Image Section */}
       <View style={styles.heroContainer}>
         <Image
-          source={{ uri: cartItems[0]?.imageUrl }}
+          source={{ uri: featuredHeroImage || cartItems[0]?.imageUrl }}
           style={styles.heroImage}
           resizeMode="cover"
         />
@@ -846,9 +867,11 @@ export default function CartScreen() {
         
         {/* Hero Content */}
         <View style={styles.heroContent}>
-          <Text style={styles.moodLabel}>{moodInfo.mood}</Text>
+          <Text style={styles.moodLabel}>{featuredSplit?.mood || moodInfo.mood}</Text>
           <Text style={styles.workoutTitle}>
-            {isGeneratedWorkout && dynamicTitle ? dynamicTitle : moodInfo.type}
+            {featuredSplit?.subtitle
+              ? featuredSplit.subtitle
+              : (isGeneratedWorkout && dynamicTitle ? dynamicTitle : moodInfo.type)}
           </Text>
           <View style={styles.durationBadge}>
             <Ionicons name="time-outline" size={14} color="#FFD700" />

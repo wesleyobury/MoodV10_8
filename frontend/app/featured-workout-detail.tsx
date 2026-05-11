@@ -827,6 +827,11 @@ export default function FeaturedWorkoutDetail() {
         workoutType: exercise.workoutType,
         moodCard: exercise.moodCard,
         moodTips: exercise.moodTips,
+        // Attach featured-workout context so the cart hero uses the workout's
+        // hero image + full title (e.g. "Calisthenics - Bar to Floor"),
+        // not the first exercise's image.
+        featuredHeroImage: workout.image || workout.imageUrl,
+        featuredTitle: workout.title,
       };
       addToCart(cartItem);
       addedCount++;

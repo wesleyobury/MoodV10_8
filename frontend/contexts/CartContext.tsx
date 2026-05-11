@@ -31,6 +31,9 @@ export interface WorkoutItem {
   training_style?: 'strength' | 'hypertrophy' | 'pump' | 'mixed';
   // Optional: track source for analytics
   source?: 'custom' | 'build_for_me';
+  // Optional: featured-workout context (used on the cart hero card)
+  featuredHeroImage?: string;
+  featuredTitle?: string; // e.g. "Calisthenics - Bar to Floor"
 }
 
 interface CartContextType {

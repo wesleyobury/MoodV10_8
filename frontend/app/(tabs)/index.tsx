@@ -226,7 +226,12 @@ const WorkoutCarouselCard = ({
       
       {/* Bottom info - mood + workout format */}
       <View style={styles.carouselInfo}>
-        <Text style={styles.carouselTitle}>{workout.mood} - {workout.title}</Text>
+        <Text style={styles.carouselTitle}>
+          {workout.title && workout.mood &&
+           workout.title.toLowerCase().trim().startsWith(workout.mood.toLowerCase().trim())
+            ? workout.title
+            : `${workout.mood} - ${workout.title}`}
+        </Text>
         <Text style={styles.carouselDuration}>{workout.duration}</Text>
       </View>
     </TouchableOpacity>
