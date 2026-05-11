@@ -10,72 +10,69 @@ import {
   Easing,
   Dimensions,
 } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Line, Polygon } from 'react-native-svg';
 import { Ionicons } from '@expo/vector-icons';
 
-interface PointerSpec {
-  /** Card y position (top, in dp) */
+export interface TargetRect {
+  x: number;
   y: number;
-  /** Card horizontal anchor */
-  x: 'left' | 'right' | 'center';
-  /** Title shown at top of the small label card */
+  w: number;
+  h: number;
+}
+
+export interface OverlayTarget {
+  /** Measured screen rect of the underlying element (measureInWindow) */
+  rect: TargetRect | null;
+  /** Headline shown above the body copy */
   title: string;
-  /** Body copy for the label */
+  /** Multi-line body copy */
   body: string;
-  /** Optional icon shown before the title */
+  /** Optional ion-icon shown before the title */
   icon?: keyof typeof Ionicons.glyphMap;
-  /** Direction the curved arrow points to from the card */
-  arrowFrom: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'right' | 'left';
 }
 
 interface Props {
   visible: boolean;
-  pointers: PointerSpec[];
+  targets: OverlayTarget[];
   onTapAnywhere: () => void;
   onNeverShow: () => void;
 }
 
-const { width: SCREEN_W } = Dimensions.get('window');
 const GOLD = '#F5C518';
+const { width: SCREEN_W, height: SCREEN_H } = Dimensions.get('window');
+const CARD_W = 220;
+const CARD_GAP = 14; // gap between target edge and card
+const SIDE_MARGIN = 16;
 
 /**
- * Full-screen semi-transparent onboarding overlay.
- * Renders a dark backdrop covering the entire screen with multiple
- * label cards anchored at preset (x, y) positions, each with a curved
- * arrow drawn via SVG. Tapping ANYWHERE on the backdrop dismisses the
- * overlay (calls onTapAnywhere). A pinned "Never show again" button
- * sits at the bottom — tapping it calls onNeverShow.
+ * Full-screen semi-transparent onboarding overlay. Each target carries its
+ * own measured screen rect; the overlay positions a label card adjacent to
+ * the target with a straight arrow line + arrowhead that lands exactly on
+ * the target's center, regardless of device size.
+ *
+ * Tapping ANY empty area of the backdrop fires onTapAnywhere. The
+ * "Don't show again" pill at the bottom fires onNeverShow.
  */
 export const OnboardingOverlay: React.FC<Props> = ({
   visible,
-  pointers,
+  targets,
   onTapAnywhere,
   onNeverShow,
 }) => {
   const opacity = useRef(new Animated.Value(0)).current;
-  const labelTranslate = useRef(new Animated.Value(8)).current;
 
   useEffect(() => {
     if (visible) {
-      Animated.parallel([
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: 240,
-          easing: Easing.out(Easing.quad),
-          useNativeDriver: true,
-        }),
-        Animated.timing(labelTranslate, {
-          toValue: 0,
-          duration: 320,
-          easing: Easing.out(Easing.quad),
-          useNativeDriver: true,
-        }),
-      ]).start();
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 220,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }).start();
     } else {
       opacity.setValue(0);
-      labelTranslate.setValue(8);
     }
-  }, [visible, opacity, labelTranslate]);
+  }, [visible, opacity]);
 
   if (!visible) return null;
 
@@ -89,33 +86,8 @@ export const OnboardingOverlay: React.FC<Props> = ({
     >
       <TouchableWithoutFeedback onPress={onTapAnywhere}>
         <Animated.View style={[styles.backdrop, { opacity }]}>
-          {pointers.map((p, idx) => (
-            <Animated.View
-              key={idx}
-              pointerEvents="none"
-              style={[
-                styles.pointerWrapper,
-                pointerPositionStyle(p),
-                { transform: [{ translateY: labelTranslate }] },
-              ]}
-              testID={`onboarding-overlay-pointer-${idx}`}
-            >
-              <ArrowSvg from={p.arrowFrom} />
-              <View style={styles.labelCard}>
-                <View style={styles.labelTitleRow}>
-                  {p.icon && (
-                    <Ionicons
-                      name={p.icon}
-                      size={14}
-                      color={GOLD}
-                      style={{ marginRight: 6 }}
-                    />
-                  )}
-                  <Text style={styles.labelTitle}>{p.title}</Text>
-                </View>
-                <Text style={styles.labelBody}>{p.body}</Text>
-              </View>
-            </Animated.View>
+          {targets.map((t, idx) => (
+            <PointerCallout key={idx} target={t} index={idx} />
           ))}
 
           {/* Bottom CTA bar */}
@@ -144,83 +116,127 @@ export const OnboardingOverlay: React.FC<Props> = ({
   );
 };
 
-function pointerPositionStyle(p: PointerSpec) {
-  const base: any = { position: 'absolute', top: p.y };
-  if (p.x === 'left') base.left = 18;
-  else if (p.x === 'right') base.right = 18;
-  else base.alignSelf = 'center';
-  return base;
-}
+const PointerCallout: React.FC<{ target: OverlayTarget; index: number }> = ({
+  target,
+  index,
+}) => {
+  if (!target.rect) return null;
+  const { x, y, w, h } = target.rect;
 
-function ArrowSvg({ from }: { from: PointerSpec['arrowFrom'] }) {
-  // Simple curved arrow drawn via SVG. The path origin is roughly the
-  // edge of the label card; the tip points toward the target element.
-  const W = 90;
-  const H = 60;
-  let path = '';
-  let arrowHead = '';
-  switch (from) {
-    case 'top-right':
-      path = 'M 8 8 Q 60 8, 80 50';
-      arrowHead = 'M 80 50 l -10 -2 m 10 2 l -2 -10';
-      break;
-    case 'top-left':
-      path = 'M 82 8 Q 30 8, 10 50';
-      arrowHead = 'M 10 50 l 10 -2 m -10 2 l 2 -10';
-      break;
-    case 'bottom-right':
-      path = 'M 8 52 Q 60 52, 80 10';
-      arrowHead = 'M 80 10 l -10 2 m 10 -2 l -2 10';
-      break;
-    case 'bottom-left':
-      path = 'M 82 52 Q 30 52, 10 10';
-      arrowHead = 'M 10 10 l 10 2 m -10 -2 l 2 10';
-      break;
-    case 'right':
-      path = 'M 4 30 Q 40 30, 84 30';
-      arrowHead = 'M 84 30 l -10 -4 m 10 4 l -10 4';
-      break;
-    case 'left':
-      path = 'M 86 30 Q 50 30, 6 30';
-      arrowHead = 'M 6 30 l 10 -4 m -10 4 l 10 4';
-      break;
-  }
-  return (
-    <Svg
-      width={W}
-      height={H}
-      style={[
-        styles.arrowSvg,
-        from.startsWith('top-')
-          ? { bottom: -H + 4 }
-          : from.startsWith('bottom-')
-            ? { top: -H + 4 }
-            : { top: 8 },
-        from.endsWith('right')
-          ? { left: -W + 24 }
-          : from.endsWith('left')
-            ? { right: -W + 24 }
-            : {},
-      ]}
-    >
-      <Path d={path} stroke={GOLD} strokeWidth={2.5} fill="none" />
-      <Path d={arrowHead} stroke={GOLD} strokeWidth={2.5} fill="none" strokeLinecap="round" />
-    </Svg>
+  // Target center
+  const tx = x + w / 2;
+  const ty = y + h / 2;
+
+  // Decide whether to place card ABOVE or BELOW the target
+  const placeAbove = ty > SCREEN_H * 0.5;
+  // Approx card height (varies w/ body length but we use a reasonable estimate)
+  const CARD_H_EST = 92;
+
+  // Card top-left position
+  let cardX = Math.min(
+    Math.max(SIDE_MARGIN, tx - CARD_W / 2),
+    SCREEN_W - CARD_W - SIDE_MARGIN,
   );
-}
+  // If target is near a screen edge, snap card to opposite side for clarity
+  if (tx < SCREEN_W * 0.35) cardX = Math.max(SIDE_MARGIN, x);
+  if (tx > SCREEN_W * 0.65) cardX = Math.min(SCREEN_W - CARD_W - SIDE_MARGIN, x + w - CARD_W);
+
+  let cardY: number;
+  let arrowFromY: number;
+  let arrowToY: number;
+  if (placeAbove) {
+    cardY = Math.max(SIDE_MARGIN + 40, y - CARD_H_EST - CARD_GAP - 30);
+    arrowFromY = cardY + CARD_H_EST; // bottom of card
+    arrowToY = y - 4; // just above target's top edge
+  } else {
+    cardY = y + h + CARD_GAP + 26;
+    arrowFromY = cardY - 4; // just above card's top edge
+    arrowToY = y + h + 4; // just below target's bottom edge
+  }
+
+  // Arrow x: from card-edge midpoint nearest to target's center
+  const cardCenterX = cardX + CARD_W / 2;
+  const arrowFromX = cardCenterX;
+  const arrowToX = tx;
+
+  // SVG bounding box that contains both endpoints
+  const svgLeft = Math.min(arrowFromX, arrowToX) - 14;
+  const svgTop = Math.min(arrowFromY, arrowToY) - 14;
+  const svgW = Math.abs(arrowToX - arrowFromX) + 28;
+  const svgH = Math.abs(arrowToY - arrowFromY) + 28;
+  const lineFromX = arrowFromX - svgLeft;
+  const lineFromY = arrowFromY - svgTop;
+  const lineToX = arrowToX - svgLeft;
+  const lineToY = arrowToY - svgTop;
+
+  // Arrowhead — small triangle at (lineToX, lineToY) rotated toward target
+  const angle = Math.atan2(lineToY - lineFromY, lineToX - lineFromX);
+  const HEAD = 9;
+  const ax = lineToX;
+  const ay = lineToY;
+  const p1x = ax - HEAD * Math.cos(angle - Math.PI / 6);
+  const p1y = ay - HEAD * Math.sin(angle - Math.PI / 6);
+  const p2x = ax - HEAD * Math.cos(angle + Math.PI / 6);
+  const p2y = ay - HEAD * Math.sin(angle + Math.PI / 6);
+
+  return (
+    <View
+      pointerEvents="none"
+      style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0 }}
+      testID={`onboarding-overlay-pointer-${index}`}
+    >
+      {/* Arrow */}
+      <Svg
+        width={svgW}
+        height={svgH}
+        style={{ position: 'absolute', left: svgLeft, top: svgTop }}
+      >
+        <Line
+          x1={lineFromX}
+          y1={lineFromY}
+          x2={lineToX}
+          y2={lineToY}
+          stroke={GOLD}
+          strokeWidth={2.5}
+          strokeLinecap="round"
+        />
+        <Polygon
+          points={`${ax},${ay} ${p1x},${p1y} ${p2x},${p2y}`}
+          fill={GOLD}
+        />
+      </Svg>
+
+      {/* Card */}
+      <View
+        style={[
+          styles.labelCard,
+          { left: cardX, top: cardY, width: CARD_W },
+        ]}
+      >
+        <View style={styles.labelTitleRow}>
+          {target.icon && (
+            <Ionicons
+              name={target.icon}
+              size={14}
+              color={GOLD}
+              style={{ marginRight: 6 }}
+            />
+          )}
+          <Text style={styles.labelTitle}>{target.title}</Text>
+        </View>
+        <Text style={styles.labelBody}>{target.body}</Text>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.78)',
   },
-  pointerWrapper: {
-    maxWidth: 240,
-  },
-  arrowSvg: {
-    position: 'absolute',
-  },
   labelCard: {
+    position: 'absolute',
     backgroundColor: '#1A1A1A',
     borderColor: GOLD,
     borderWidth: 1,
@@ -269,6 +285,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   neverShowText: {
     color: '#FFFFFF',

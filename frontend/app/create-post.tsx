@@ -140,23 +140,46 @@ export default function CreatePost() {
   const [igPromptVisible, setIgPromptVisible] = useState(false);
   const igPromptResolveRef = useRef<((value: boolean) => void) | null>(null);
 
-  // Onboarding Tip 3 — completion/share chips (3 small floating chips at once)
+  // Onboarding Tip 3 — completion/share overlay (full-screen)
   const onboarding = useOnboarding();
+  const onboardingRef = useRef(onboarding);
+  useEffect(() => { onboardingRef.current = onboarding; }, [onboarding]);
   const [completionTipActive, setCompletionTipActive] = useState(false);
   const completionTipTriggeredRef = useRef(false);
+
+  // Refs for measuring target positions so the overlay can align pointers accurately
+  const mediaRowRef = useRef<View>(null);
+  const editableStatsRowRef = useRef<View>(null);
+  const igButtonRef = useRef<View>(null);
+  const [targetRects, setTargetRects] = useState<{
+    media: { x: number; y: number; w: number; h: number } | null;
+    stats: { x: number; y: number; w: number; h: number } | null;
+    ig: { x: number; y: number; w: number; h: number } | null;
+  }>({ media: null, stats: null, ig: null });
 
   useEffect(() => {
     if (completionTipTriggeredRef.current) return;
     const timer = setTimeout(() => {
       if (completionTipTriggeredRef.current) return;
-      if (onboarding.requestRender('completion_share')) {
+      const ob = onboardingRef.current;
+      if (ob.requestRender('completion_share')) {
+        // Measure target positions now that the screen has rendered
+        const measure = (ref: React.RefObject<View>, key: 'media' | 'stats' | 'ig') => {
+          ref.current?.measureInWindow((x, y, w, h) => {
+            setTargetRects((prev) => ({ ...prev, [key]: { x, y, w, h } }));
+          });
+        };
+        measure(mediaRowRef, 'media');
+        measure(editableStatsRowRef, 'stats');
+        measure(igButtonRef, 'ig');
+
         completionTipTriggeredRef.current = true;
         setCompletionTipActive(true);
-        onboarding.trackShown('completion_share');
+        ob.trackShown('completion_share');
       }
     }, 800);
     return () => clearTimeout(timer);
-  }, [onboarding]);
+  }, []);
 
   const completeCompletionTip = (action: 'tap' | 'dismiss' | 'never') => {
     if (!completionTipActive) return;
@@ -825,41 +848,58 @@ export default function CreatePost() {
   };
 
   const handleShareToInstagram = async () => {
-    if (!workoutStats || !transparentCardRef.current) {
-      showAlert('Error', 'Unable to share. Please try again.');
-      return;
-    }
-    
-    setIsExportingToInstagram(true);
-    
+    // Top-level guard — never let an error from this flow bubble up and crash
+    // the screen (which would kick the user back to login).
     try {
+      if (isExportingToInstagram) return; // single-flight guard
+
+      if (!workoutStats || !transparentCardRef.current) {
+        showAlert('Error', 'Unable to share. Please try again.');
+        return;
+      }
+
+      setIsExportingToInstagram(true);
+
       if (Platform.OS === 'web') {
         // For web, use html2canvas and download
         const html2canvas = (await import('html2canvas')).default;
         const canvas = await html2canvas(transparentCardRef.current, {
-          backgroundColor: null, // Transparent background
+          backgroundColor: null,
           scale: 2,
           logging: false,
           useCORS: true,
         });
         const imageUri = canvas.toDataURL('image/png');
-        
-        // On web, download the image
         const link = document.createElement('a');
         link.download = `mood_workout_${Date.now()}.png`;
         link.href = imageUri;
         link.click();
-        
-        showAlert('Image Downloaded', 'Your workout overlay has been downloaded. Open Instagram Stories and add it as a sticker on your photo!');
+
+        showAlert(
+          'Image Downloaded',
+          'Your workout overlay has been downloaded. Open Instagram Stories and add it as a sticker on your photo!',
+        );
       } else {
-        // For native (iOS/Android), use direct Instagram Stories share
         await shareToInstagramStoriesDirect();
       }
-    } catch (error) {
-      console.error('Error sharing to Instagram:', error);
-      showAlert('Error', 'Failed to create Instagram share image. Please try again.');
+    } catch (error: any) {
+      // Catch EVERYTHING — including native module crashes, permission errors,
+      // canvas/captureRef failures, and unhandled URL scheme rejections.
+      console.error('Error sharing to Instagram:', error?.message || error);
+      try {
+        showAlert(
+          'Couldn\u2019t share to Instagram',
+          'Something went wrong. The overlay may have been saved to your photo album — open Instagram → new Story → sticker icon to add it manually.',
+        );
+      } catch {}
     } finally {
       setIsExportingToInstagram(false);
+      // Ensure the IG prompt modal isn't left mounted in a stuck state
+      if (igPromptResolveRef.current) {
+        try { igPromptResolveRef.current(false); } catch {}
+        igPromptResolveRef.current = null;
+      }
+      setIgPromptVisible(false);
     }
   };
 
@@ -1474,7 +1514,7 @@ export default function CreatePost() {
           </View>
 
           {/* 1. Media Picker Section - FIRST */}
-          <View style={styles.attachmentCard}>
+          <View style={styles.attachmentCard} ref={mediaRowRef} collapsable={false}>
             <View style={styles.attachmentHeader}>
               <View style={styles.attachmentLabelContainer}>
                 <Ionicons name="images" size={14} color="rgba(255, 255, 255, 0.5)" />
@@ -1752,6 +1792,8 @@ export default function CreatePost() {
                 <View style={styles.actionButtonsRow}>
                   {/* Instagram Share Button - Bold gold-bordered to stand out */}
                   <TouchableOpacity 
+                    ref={igButtonRef}
+                    collapsable={false}
                     onPress={() => {
                       if (completionTipActive) completeCompletionTip('tap');
                       handleShareToInstagram();
@@ -1807,7 +1849,7 @@ export default function CreatePost() {
                 <Text style={styles.editableStatsHint}>Adjust values & targets </Text>
                 <Text style={styles.editableStatsOptional}>(optional, goals are saved)</Text>
               </View>
-              <View style={styles.editableStatsRow}>
+              <View style={styles.editableStatsRow} ref={editableStatsRowRef} collapsable={false}>
                 <View style={styles.editableStat}>
                   <Text style={styles.editableStatLabel}>Min</Text>
                   <TextInput
@@ -2221,27 +2263,21 @@ export default function CreatePost() {
         visible={completionTipActive}
         onTapAnywhere={() => completeCompletionTip('tap')}
         onNeverShow={() => completeCompletionTip('never')}
-        pointers={[
+        targets={[
           {
-            y: 130,
-            x: 'left',
-            arrowFrom: 'top-right',
+            rect: targetRects.media,
             icon: 'image-outline',
             title: 'Add your media',
             body: 'Tap here to upload a photo or video from your workout.',
           },
           {
-            y: 360,
-            x: 'right',
-            arrowFrom: 'bottom-left',
+            rect: targetRects.stats,
             icon: 'create-outline',
             title: 'Adjust values & targets',
             body: 'Tap any number — calories, minutes, sets — to fine-tune the stat card before you post.',
           },
           {
-            y: 510,
-            x: 'left',
-            arrowFrom: 'top-right',
+            rect: targetRects.ig,
             icon: 'logo-instagram',
             title: 'Share to IG Stories',
             body: 'Saves the overlay to your photo album. Then open Instagram → new Story → sticker icon → pick the saved overlay.',

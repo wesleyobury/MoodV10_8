@@ -49,10 +49,14 @@ export default function WorkoutSessionScreen() {
 
   // Onboarding Tip 2: Form videos
   const onboarding = useOnboarding();
+  const onboardingRef = React.useRef(onboarding);
+  React.useEffect(() => { onboardingRef.current = onboarding; }, [onboarding]);
   const [formTipActive, setFormTipActive] = useState(false);
   const formTipTriggeredRef = React.useRef(false);
 
-  // Trigger Tip 2 1.5s after exercise list renders, on first session screen view
+  // Trigger Tip 2 1.5s after exercise list renders, on first session screen view.
+  // NOTE: keeping `onboarding` out of the dep array — otherwise context churn
+  // (e.g. AuthContext refreshes user) would clear the setTimeout before it fires.
   useEffect(() => {
     if (formTipTriggeredRef.current) return;
     if (isLoading) return;
@@ -60,15 +64,16 @@ export default function WorkoutSessionScreen() {
 
     const timer = setTimeout(() => {
       if (formTipTriggeredRef.current) return;
-      if (onboarding.requestRender('form_videos')) {
+      const ob = onboardingRef.current;
+      if (ob.requestRender('form_videos')) {
         formTipTriggeredRef.current = true;
         setFormTipActive(true);
-        onboarding.trackShown('form_videos');
+        ob.trackShown('form_videos');
       }
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, [isLoading, sessionWorkouts.length, onboarding]);
+  }, [isLoading, sessionWorkouts.length]);
 
   const handleFormTipTap = () => {
     setFormTipActive(false);
