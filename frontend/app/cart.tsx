@@ -799,6 +799,16 @@ export default function CartScreen() {
   // into mood ("Calisthenics") + subtitle ("Bar to Floor") for the hero card.
   const featuredHeroImage = cartItems[0]?.featuredHeroImage;
   const featuredTitle = cartItems[0]?.featuredTitle;
+  // BUNDLE-VERIFY: Unique marker for fix verification. If you see this in console,
+  // you are running the cart-hero v2 bundle.
+  React.useEffect(() => {
+    console.log('🎯 CART_HERO_FIX_V2_ACTIVE', {
+      hasFeaturedHeroImage: !!featuredHeroImage,
+      hasFeaturedTitle: !!featuredTitle,
+      itemCount: cartItems.length,
+    });
+  }, [featuredHeroImage, featuredTitle, cartItems.length]);
+
   const featuredSplit = featuredTitle && featuredTitle.includes(' - ')
     ? {
         mood: featuredTitle.split(' - ')[0].trim(),

@@ -187,6 +187,11 @@ export default function Profile() {
   const { unreadMessages, refreshBadges } = useBadges();
   const { activeCount: savedBuildsCount, refreshCount: refreshDraftsCount } = useDrafts();
 
+  // BUNDLE-VERIFY: Unique marker so we can verify you're running the profile-fix v2 bundle.
+  useEffect(() => {
+    console.log('🎯 PROFILE_DRAFTS_FIX_V2_ACTIVE', { savedBuildsCount });
+  }, [savedBuildsCount]);
+
   const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'cards'>('posts');
   const router = useRouter();
 
