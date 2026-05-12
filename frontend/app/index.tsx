@@ -8,7 +8,6 @@ import {
   Animated,
   Modal,
   ScrollView,
-  Image,
   ActivityIndicator,
 } from 'react-native';
 import { router } from 'expo-router';
@@ -17,9 +16,15 @@ import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGr
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaskedView from '@react-native-masked-view/masked-view';
+import { Video, ResizeMode } from 'expo-av';
 
 const { width, height } = Dimensions.get('window');
 const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
+
+const BG_VIDEO_URI =
+  'https://customer-assets.emergentagent.com/job_7265629c-a6f3-4835-9e18-63c8e5b41c71/artifacts/8wjuf0hd_bg.mov';
+const VIDEO_FADE_IN_DELAY_MS = 600;
+const VIDEO_FADE_IN_DURATION_MS = 900;
 
 // Animated Feature Item Component
 const AnimatedFeatureItem = ({ icon, title, description, delay = 0 }: { 
@@ -101,6 +106,24 @@ export default function Welcome() {
   const insets = useSafeAreaInsets();
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState<boolean | null>(null);
+
+  // Video background fade-in
+  const videoRef = useRef<Video>(null);
+  const videoOpacity = useRef(new Animated.Value(0)).current;
+  const [videoReady, setVideoReady] = useState(false);
+
+  useEffect(() => {
+    if (!videoReady) return;
+    // Delay fade-in so the first frame is decoded and crisp before reveal.
+    const t = setTimeout(() => {
+      Animated.timing(videoOpacity, {
+        toValue: 1,
+        duration: VIDEO_FADE_IN_DURATION_MS,
+        useNativeDriver: true,
+      }).start();
+    }, VIDEO_FADE_IN_DELAY_MS);
+    return () => clearTimeout(t);
+  }, [videoReady, videoOpacity]);
 
   useEffect(() => {
     checkPrivacyAccepted();
@@ -277,6 +300,29 @@ export default function Welcome() {
       </Modal>
 
       <View style={styles.simplifiedGradient}>
+        {/* Full-screen looping background video — fades in 600ms after first
+            frame is decoded so users never see a jank-y load. */}
+        <Animated.View
+          pointerEvents="none"
+          style={[styles.videoLayer, { opacity: videoOpacity }]}
+          testID="landing-bg-video"
+        >
+          <Video
+            ref={videoRef}
+            source={{ uri: BG_VIDEO_URI }}
+            style={StyleSheet.absoluteFill}
+            resizeMode={ResizeMode.COVER}
+            shouldPlay
+            isLooping
+            isMuted
+            useNativeControls={false}
+            progressUpdateIntervalMillis={1000}
+            onReadyForDisplay={() => setVideoReady(true)}
+          />
+        </Animated.View>
+        {/* Dark scrim — keeps the hero copy + buttons legible over any frame. */}
+        <View pointerEvents="none" style={styles.videoScrim} />
+
         <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={[styles.content, { paddingTop: insets.top, paddingBottom: insets.bottom }]}
@@ -285,14 +331,6 @@ export default function Welcome() {
         >
           {/* Hero Section */}
           <View style={styles.heroSection}>
-            <View style={styles.logoContainer}>
-              <Image 
-                source={require('../assets/images/header-logo.png')}
-                style={styles.logoImage}
-                resizeMode='contain'
-              />
-            </View>
-
             <View style={styles.titleContainer}>
               <MaskedView
                 maskElement={
@@ -371,6 +409,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
   },
+  videoLayer: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#000000',
+  },
+  videoScrim: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+  },
   content: {
     flexGrow: 1,
     paddingHorizontal: 20,
@@ -378,7 +424,7 @@ const styles = StyleSheet.create({
   },
   heroSection: {
     alignItems: 'center',
-    paddingTop: height * 0.06, // Reduced from 0.1 to move content up
+    paddingTop: height * 0.12, // bumped up since the logo is gone
   },
   logoContainer: {
     marginBottom: 16,
@@ -439,7 +485,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    backgroundColor: 'rgba(255, 215, 0, 0.18)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
