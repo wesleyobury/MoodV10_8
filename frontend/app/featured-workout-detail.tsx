@@ -857,10 +857,11 @@ export default function FeaturedWorkoutDetail() {
 
   return (
     <View style={styles.container}>
-      {/* Hero Image - Uses first exercise's image */}
+      {/* Hero Image — uses workout.heroImageUrl (carousel-matching).
+          Falls back to first exercise's image only if hero is missing. */}
       <View style={styles.heroContainer}>
         <Image
-          source={{ uri: exercises[0]?.imageUrl || workout.image }}
+          source={{ uri: workout.image || exercises[0]?.imageUrl }}
           style={styles.heroImage}
           resizeMode="cover"
         />
