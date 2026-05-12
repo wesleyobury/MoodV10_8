@@ -812,6 +812,19 @@ export default function FeaturedWorkoutDetail() {
 
   // Add all exercises to cart
   const handleAddAllToCart = () => {
+    // === HERO PASS-THROUGH (FEATURED_CART_HERO_V3) ============================
+    // Capture the hero image from the in-memory carousel/detail-screen state
+    // BEFORE we begin pushing exercises. We do NOT re-fetch from MongoDB.
+    // Whatever value is rendering as the hero on this screen is exactly what
+    // the cart will render as its hero.
+    const heroImageUrl: string = (workout?.image as string) || '';
+    const featuredTitle: string = (workout?.title as string) || '';
+    setCartMeta({
+      source: 'featured-carousel',
+      heroImageUrl,
+      title: featuredTitle,
+    });
+
     let addedCount = 0;
     exercises.forEach((exercise, index) => {
       const cartItem: WorkoutItem = {
@@ -827,11 +840,6 @@ export default function FeaturedWorkoutDetail() {
         workoutType: exercise.workoutType,
         moodCard: exercise.moodCard,
         moodTips: exercise.moodTips,
-        // Attach featured-workout context so the cart hero uses the workout's
-        // hero image + full title (e.g. "Calisthenics - Bar to Floor"),
-        // not the first exercise's image.
-        featuredHeroImage: workout.image || workout.imageUrl,
-        featuredTitle: workout.title,
       };
       addToCart(cartItem);
       addedCount++;

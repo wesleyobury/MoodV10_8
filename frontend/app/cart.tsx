@@ -303,7 +303,7 @@ export default function CartScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
-  const { cartItems, removeFromCart, clearCart, reorderCart, addToCart, replaceCart } = useCart();
+  const { cartItems, removeFromCart, clearCart, reorderCart, addToCart, replaceCart, cartMeta, setCartMeta } = useCart();
   const { currentDraftId, beginDraft, markReady, markStarted } = useDrafts();
   // Send-Workout-to-Friend modal state (cart-level)
   const [sendModalVisible, setSendModalVisible] = useState(false);
@@ -404,6 +404,13 @@ export default function CartScreen() {
               const fullTitle = workout.mood && workout.title && !workout.title.toLowerCase().startsWith(workout.mood.toLowerCase())
                 ? `${workout.mood} - ${workout.title}`
                 : (workout.title || '');
+              // FEATURED_CART_HERO_V3: attach hero meta at the action site
+              // (here, the push/deep-link hydration path) — not per-item.
+              setCartMeta({
+                source: 'featured-carousel',
+                heroImageUrl: heroUrl || undefined,
+                title: fullTitle || undefined,
+              });
               const items: WorkoutItem[] = workout.exercises.map((ex: any) => ({
                 id: ex.exerciseId || ex.id || ex.name || `hydrate-${Date.now()}`,
                 name: ex.name || '',
@@ -418,8 +425,6 @@ export default function CartScreen() {
                 moodCard: ex.moodCard || workout.title || (params.workoutTitle as string) || 'Featured Workout',
                 moodTips: ex.moodTips || [],
                 source: 'build_for_me' as const,
-                featuredHeroImage: heroUrl || undefined,
-                featuredTitle: fullTitle || undefined,
               }));
               console.log(`🛒 Cart hydrated from featuredId fetch (${items.length} exercises)`);
               replaceCart(items);
@@ -602,7 +607,7 @@ export default function CartScreen() {
           resumeParams: {},
           generatedWorkout: cartItems,
           thumbnailUrl:
-            first.featuredHeroImage ||
+            (cartMeta?.source === 'featured-carousel' && cartMeta?.heroImageUrl) ||
             first.imageUrl ||
             undefined,
         });
@@ -796,29 +801,43 @@ export default function CartScreen() {
 
   const moodInfo = getMoodInfo();
 
-  // === Featured workout context (hero image + full title for split) ===
-  // If the cart was populated from a featured workout, each item carries
-  // featuredHeroImage + featuredTitle. We prefer the workout's hero image over
-  // the first exercise's image, and split the title "Calisthenics - Bar to Floor"
-  // into mood ("Calisthenics") + subtitle ("Bar to Floor") for the hero card.
-  const featuredHeroImage = cartItems[0]?.featuredHeroImage;
-  const featuredTitle = cartItems[0]?.featuredTitle;
-  // BUNDLE-VERIFY: Unique marker for fix verification. If you see this in console,
-  // you are running the cart-hero v2 bundle.
-  React.useEffect(() => {
-    console.log('🎯 CART_HERO_FIX_V2_ACTIVE', {
-      hasFeaturedHeroImage: !!featuredHeroImage,
-      hasFeaturedTitle: !!featuredTitle,
-      itemCount: cartItems.length,
-    });
-  }, [featuredHeroImage, featuredTitle, cartItems.length]);
+  // === HERO IMAGE PRIORITY — FEATURED_CART_HERO_V3 ===========================
+  // Do NOT change without updating featured-cart spec.
+  // Featured carts pass `heroImageUrl` from the carousel's in-memory state
+  // via CartContext.setCartMeta(). Custom / Build-For-Me carts fall back to
+  // the first exercise's imageUrl.
+  const cartHeroImage =
+    (cartMeta?.source === 'featured-carousel' && cartMeta?.heroImageUrl)
+      ? cartMeta.heroImageUrl
+      : cartItems[0]?.imageUrl;
 
+  // Title split for the hero card: "Outdoor - Park to Peak" → mood "Outdoor",
+  // subtitle "Park to Peak". Only applies when meta provides a title.
+  const featuredTitle = cartMeta?.title;
   const featuredSplit = featuredTitle && featuredTitle.includes(' - ')
     ? {
         mood: featuredTitle.split(' - ')[0].trim(),
         subtitle: featuredTitle.split(' - ').slice(1).join(' - ').trim(),
       }
     : null;
+
+  // Observability: log which branch fired + assert featured carts always have
+  // a heroImageUrl. Silent regressions become loud.
+  React.useEffect(() => {
+    if (cartItems.length === 0) return;
+    console.log('🎯 FEATURED_CART_HERO_V3_ACTIVE', {
+      source: cartMeta?.source || 'none',
+      heroImageUrl: cartMeta?.heroImageUrl || null,
+      resolved: cartHeroImage,
+      itemCount: cartItems.length,
+    });
+    if (cartMeta?.source === 'featured-carousel' && !cartMeta?.heroImageUrl) {
+      console.error(
+        'FEATURED_CART_HERO_V3 BROKEN: featured cart missing heroImageUrl',
+        { cartMeta, firstItem: cartItems[0] }
+      );
+    }
+  }, [cartMeta?.source, cartMeta?.heroImageUrl, cartHeroImage, cartItems.length]);
 
 
   // Empty state (but not if we're hydrating from a push notification)
@@ -860,7 +879,7 @@ export default function CartScreen() {
       {/* Hero Image Section */}
       <View style={styles.heroContainer}>
         <Image
-          source={{ uri: featuredHeroImage || cartItems[0]?.imageUrl }}
+          source={{ uri: cartHeroImage }}
           style={styles.heroImage}
           resizeMode="cover"
         />
