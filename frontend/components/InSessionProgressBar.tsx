@@ -32,7 +32,22 @@ interface InSessionProgressBarProps {
 const ITEM_WIDTH = 76;
 const ITEM_GAP = 12;
 const SCROLL_PADDING = 16;
-const ROW_HEIGHT_ESTIMATE = 56; // approx per-row height inside expanded list
+const ROW_HEIGHT_ESTIMATE = 56;
+
+// Palette: light/mid grays with gold reserved for the active icon and accents.
+const C = {
+  barBg: '#1f1f22',            // mid-gray bar surface
+  rowBg: '#26262a',            // slightly lighter expanded surface
+  borderSubtle: 'rgba(255, 255, 255, 0.08)',
+  borderActive: 'rgba(255, 215, 0, 0.45)',
+  labelDefault: 'rgba(235, 235, 240, 0.85)',
+  labelMuted: 'rgba(235, 235, 240, 0.55)',
+  iconUpcomingBg: 'rgba(255, 255, 255, 0.08)',
+  iconUpcomingBorder: 'rgba(255, 255, 255, 0.22)',
+  iconCompletedBg: 'rgba(255, 255, 255, 0.18)',
+  gold: '#FFD700',
+  goldDim: 'rgba(255, 215, 0, 0.85)',
+};
 
 export default function InSessionProgressBar({
   exercises,
@@ -43,7 +58,6 @@ export default function InSessionProgressBar({
   const [expanded, setExpanded] = useState(false);
   const expandAnim = useRef(new Animated.Value(0)).current;
 
-  // Auto-scroll: pin active to position-2 of 4; clamp at edges.
   useEffect(() => {
     if (!scrollRef.current) return;
     const itemAdvance = ITEM_WIDTH + ITEM_GAP;
@@ -54,7 +68,6 @@ export default function InSessionProgressBar({
     return () => clearTimeout(t);
   }, [currentIndex]);
 
-  // Animate expand/collapse
   useEffect(() => {
     Animated.timing(expandAnim, {
       toValue: expanded ? 1 : 0,
@@ -63,7 +76,6 @@ export default function InSessionProgressBar({
     }).start();
   }, [expanded, expandAnim]);
 
-  // Swipe gesture on the floating chevron.
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (_e, g) =>
@@ -79,7 +91,6 @@ export default function InSessionProgressBar({
     inputRange: [0, 1],
     outputRange: [
       0,
-      // Title row (~28) + N rows + bottom padding (~8)
       Math.min(28 + exercises.length * ROW_HEIGHT_ESTIMATE + 8, 360),
     ],
   });
@@ -115,19 +126,15 @@ export default function InSessionProgressBar({
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                   >
-                    <Ionicons name={iconName} size={14} color="#0c0c0c" />
+                    <Ionicons name={iconName} size={14} color="#1a1a1a" />
                   </LinearGradient>
                 ) : isCompleted ? (
                   <View style={styles.circleCompleted}>
-                    <Ionicons name="checkmark" size={14} color="#0c0c0c" />
+                    <Ionicons name="checkmark" size={14} color={C.gold} />
                   </View>
                 ) : (
                   <View style={styles.circleUpcoming}>
-                    <Ionicons
-                      name={iconName}
-                      size={14}
-                      color="rgba(255, 215, 0, 0.7)"
-                    />
+                    <Ionicons name={iconName} size={14} color={C.goldDim} />
                   </View>
                 )}
                 <Text
@@ -145,8 +152,7 @@ export default function InSessionProgressBar({
           })}
         </ScrollView>
 
-        {/* Floating chevron — absolutely positioned, no extra vertical
-            spacing in the bar. */}
+        {/* Floating chevron — overlays the bar, no extra vertical spacing. */}
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => setExpanded((v) => !v)}
@@ -158,12 +164,11 @@ export default function InSessionProgressBar({
           <Ionicons
             name={expanded ? 'chevron-up' : 'chevron-down'}
             size={16}
-            color="rgba(255, 215, 0, 0.8)"
+            color={C.gold}
           />
         </TouchableOpacity>
       </View>
 
-      {/* Expandable detail panel — lists ALL exercises with one-sentence summary */}
       <Animated.View
         style={[styles.detailPanel, { maxHeight: expandedHeight }]}
         testID="in-session-progress-detail"
@@ -194,9 +199,14 @@ export default function InSessionProgressBar({
                 ]}
                 testID={`in-session-detail-row-${idx}`}
               >
-                <View style={styles.detailIndex}>
+                <View
+                  style={[
+                    styles.detailIndex,
+                    isActive && styles.detailIndexActive,
+                  ]}
+                >
                   {isCompleted ? (
-                    <Ionicons name="checkmark" size={12} color="#0c0c0c" />
+                    <Ionicons name="checkmark" size={12} color={C.gold} />
                   ) : (
                     <Text
                       style={[
@@ -240,9 +250,9 @@ export default function InSessionProgressBar({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#111111',
+    backgroundColor: C.barBg,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 215, 0, 0.2)',
+    borderBottomColor: C.borderSubtle,
   },
   barWrap: {
     position: 'relative',
@@ -251,7 +261,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: SCROLL_PADDING,
-    paddingRight: SCROLL_PADDING + 22, // small reserve under the floating chevron
+    paddingRight: SCROLL_PADDING + 22,
     gap: ITEM_GAP,
     alignItems: 'flex-start',
   },
@@ -273,7 +283,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 215, 0, 0.55)',
+    backgroundColor: C.iconCompletedBg,
     marginBottom: 2,
   },
   circleUpcoming: {
@@ -283,23 +293,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 215, 0, 0.5)',
-    backgroundColor: 'transparent',
+    borderColor: C.iconUpcomingBorder,
+    backgroundColor: C.iconUpcomingBg,
     marginBottom: 2,
   },
   stepLabel: {
     fontSize: 10,
-    color: 'rgba(255, 255, 255, 0.75)',
+    color: C.labelDefault,
     textAlign: 'center',
     fontWeight: '500',
     lineHeight: 12,
   },
   stepLabelActive: {
-    color: '#FFD700',
+    color: C.gold,
     fontWeight: '700',
   },
   stepLabelUpcoming: {
-    color: 'rgba(255, 255, 255, 0.55)',
+    color: C.labelMuted,
   },
   chevronFloating: {
     position: 'absolute',
@@ -310,10 +320,11 @@ const styles = StyleSheet.create({
     borderRadius: 11,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
   },
   detailPanel: {
     overflow: 'hidden',
+    backgroundColor: C.rowBg,
   },
   detailScrollContent: {
     paddingHorizontal: 16,
@@ -322,7 +333,7 @@ const styles = StyleSheet.create({
   },
   detailHeader: {
     fontSize: 12,
-    color: '#FFD700',
+    color: C.gold,
     fontWeight: '700',
     textTransform: 'uppercase',
     letterSpacing: 0.6,
@@ -333,28 +344,31 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingVertical: 8,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.06)',
+    borderTopColor: C.borderSubtle,
   },
   detailRowActive: {
-    borderTopColor: 'rgba(255, 215, 0, 0.35)',
+    borderTopColor: C.borderActive,
   },
   detailIndex: {
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: 'rgba(255, 215, 0, 0.18)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
     marginTop: 1,
   },
+  detailIndexActive: {
+    backgroundColor: 'rgba(255, 215, 0, 0.18)',
+  },
   detailIndexText: {
     fontSize: 11,
     fontWeight: '700',
-    color: 'rgba(255, 215, 0, 0.8)',
+    color: C.labelMuted,
   },
   detailIndexTextActive: {
-    color: '#FFD700',
+    color: C.gold,
   },
   detailRowText: {
     flex: 1,
@@ -362,19 +376,19 @@ const styles = StyleSheet.create({
   detailRowTitle: {
     fontSize: 13,
     fontWeight: '700',
-    color: 'rgba(255, 255, 255, 0.85)',
+    color: C.labelDefault,
   },
   detailRowTitleActive: {
-    color: '#FFD700',
+    color: C.gold,
   },
   detailRowEquipment: {
     fontSize: 12,
     fontWeight: '500',
-    color: 'rgba(255, 255, 255, 0.55)',
+    color: C.labelMuted,
   },
   detailRowSummary: {
     fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.7)',
+    color: 'rgba(235, 235, 240, 0.7)',
     lineHeight: 16,
     marginTop: 2,
   },
