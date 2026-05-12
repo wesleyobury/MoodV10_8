@@ -56,6 +56,10 @@ interface BeginDraftArgs {
   resumeParams?: Record<string, any>;
   stepCount?: number;
   currentStep?: number;
+  // NEW: allow seeding the draft immediately with cart contents so we don't
+  // depend on the 500ms autosave window to capture the workout.
+  generatedWorkout?: WorkoutItem[];
+  thumbnailUrl?: string;
 }
 
 interface DraftsContextType {
@@ -230,6 +234,14 @@ export const DraftsProvider: React.FC<DraftsProviderProps> = ({ children }) => {
         resume_params: args.resumeParams || {},
         step_count: args.stepCount || 0,
         current_step: args.currentStep || 0,
+        // Seed generated_workout + thumbnail at creation so a saved draft is
+        // immediately resumable — no dependency on the autosave debounce.
+        generated_workout: args.generatedWorkout && args.generatedWorkout.length > 0
+          ? args.generatedWorkout
+          : null,
+        thumbnail_url: args.thumbnailUrl ||
+          (args.generatedWorkout && args.generatedWorkout[0]?.imageUrl) ||
+          undefined,
         status: 'in_progress',
       };
       const res = await fetch(`${API_URL}/api/workout-drafts`, {
@@ -291,10 +303,25 @@ export const DraftsProvider: React.FC<DraftsProviderProps> = ({ children }) => {
   // If there's no current draft AND a cart item has been added, we DO NOT auto-create —
   // creation happens explicitly via `beginDraft` called from the cart screen on first
   // addition (mood + sub-card are known there).
+  //
+  // Multi-draft semantics: when the cart transitions from non-empty → empty (user
+  // trashed it), we DETACH `currentDraftId` so the next batch of cart additions
+  // spawns a NEW draft instead of overwriting the previous one.
+  const prevCartLenRef = useRef(0);
   useEffect(() => {
+    const len = cartItems.length;
+    const prev = prevCartLenRef.current;
+    prevCartLenRef.current = len;
+
+    // Detach on non-empty → empty transition (user cleared cart)
+    if (prev > 0 && len === 0 && currentDraftIdRef.current) {
+      currentDraftIdRef.current = null;
+      setCurrentDraftIdState(null);
+      return;
+    }
+
     if (suppressAutoSaveRef.current) return;
     if (!currentDraftIdRef.current) return;
-    if (!Array.isArray(cartItems)) return;
 
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     saveTimerRef.current = setTimeout(() => {

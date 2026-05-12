@@ -582,8 +582,10 @@ export default function CartScreen() {
   }, [token]);
 
   // === Saved Builds (drafts) lifecycle ===
-  // 1) On cart entry with items: create draft if needed, mark ready_to_start.
-  //    (User explicitly chose this build — cart is the "preview" surface.)
+  // 1) On cart entry with items: create draft if needed (seeded with the live
+  //    cart contents so resume works immediately), then mark ready_to_start.
+  //    The seed avoids the 500ms autosave race that previously left freshly
+  //    created drafts with NULL generated_workout.
   const draftBootRef = useRef(false);
   useEffect(() => {
     if (draftBootRef.current) return;
@@ -592,20 +594,22 @@ export default function CartScreen() {
 
     const first = cartItems[0];
     (async () => {
-      // If we don't yet have a draft attached (i.e. user added to cart organically),
-      // create one. If currentDraftId is already set (e.g. user resumed an existing
-      // draft), just mark it ready_to_start.
       if (!currentDraftId) {
         await beginDraft({
           moodCategory: first.moodCard || first.workoutType || 'Sweat',
           moodCard: first.workoutType || null,
           resumeRoute: '/cart',
           resumeParams: {},
+          generatedWorkout: cartItems,
+          thumbnailUrl:
+            first.featuredHeroImage ||
+            first.imageUrl ||
+            undefined,
         });
       }
       await markReady();
     })();
-  }, [cartItems.length, currentDraftId, beginDraft, markReady]);
+  }, [cartItems, currentDraftId, beginDraft, markReady]);
 
   const handleStartWorkoutSession = () => {
     if (cartItems.length === 0) return;
