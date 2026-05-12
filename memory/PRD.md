@@ -14,6 +14,13 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+## What's Been Implemented
+- [2026-05-12 PM2] **In-session progress bar — exercise tracking + expandable detail panel**:
+  - **New component `frontend/components/InSessionProgressBar.tsx`**: horizontal scrollable bar of equipment icons (one per session exercise), max ~4 visible at once, auto-scrolls on `currentIndex` change to keep the active step pinned at position-2 of 4 (clamped at start/end). Three icon states: active (gold gradient + equipment Ionicon), completed (dim gold + checkmark), upcoming (outlined). Chevron strip with tap + swipe-down PanResponder expands a detail panel showing equipment / workout title / first-1–2-sentence description snippet for the CURRENT exercise only. Default collapsed.
+  - **Pure helpers `frontend/utils/inSessionProgress.ts`**: `getEquipmentIcon()` with exact-match + fuzzy-contains fallback over 30+ equipment names (Kettlebells, Dumbbells, Battle Ropes, Sled, Hills, …), `getDescriptionSnippet()` returns first 1–2 sentences with whitespace collapsing and a 140-char truncation fallback.
+  - **Scoped integration** in `app/workout-guidance.tsx`: branches on `isSession && sessionWorkouts.length > 0`. Pre-session/preview screens still render the original 4-step mood/type/equipment/intensity metadata bar — no regressions to equipment selection, workout selection, or onboarding flows.
+  - **Unit tests** (`utils/inSessionProgress.test.ts` — 8/8 PASS via `yarn test:in-session-progress`): description snippet branches (empty, multi-sentence, single sentence, truncation, whitespace), equipment icon resolution (exact, fuzzy, unknown).
+
 - [2026-05-11 PM4] **Saved Builds — persistent in-progress workout drafts** (BACKEND 15/15 TESTS PASS):
   - **New collection `workout_drafts`** with full lifecycle (`in_progress` → `ready_to_start` → `started` → `completed`, plus `abandoned` and `expired`). 30-day TTL, 30-min auto-abandon, cap of 20 active drafts per identity (auto-prune oldest non-pinned), pin cap of 3.
   - **Backend** (`backend/workout_drafts.py` — modular APIRouter wired into `server.py` at `/api/workout-drafts`): `POST` create, `GET` list (excludes completed by default), `GET /count` (for badge), `GET /{id}` (bumps last_viewed_at), `PATCH /{id}` (status transitions + pin), `DELETE /{id}`, `POST /merge` (guest device_id → authed user). Identity isolation by `user_id` (authed) or `device_id` (guest). Indexes: `(user_id, status, last_modified_at)`, `(device_id, user_id, status)`, `(expires_at)`.

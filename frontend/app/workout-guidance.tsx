@@ -23,6 +23,7 @@ import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
 import { TextWithTermLinks } from '../components/TermDefinitionPopup';
 import { API_URL } from '../utils/apiConfig';
+import InSessionProgressBar from '../components/InSessionProgressBar';
 
 interface MOODTip {
   icon: keyof typeof Ionicons.glyphMap;
@@ -737,7 +738,14 @@ export default function WorkoutGuidanceScreen() {
         <HomeButton />
       </View>
 
-      {/* Extended Progress Bar - 4 Steps: Mood > Type > Equipment > Intensity */}
+      {/* Progress Bar — in-session uses exercise-tracking bar; preview keeps the original 4-step metadata bar. */}
+      {isSession && sessionWorkouts.length > 0 ? (
+        <InSessionProgressBar
+          exercises={sessionWorkouts}
+          currentIndex={currentSessionIndex}
+          workoutTitle={(params.featuredWorkoutTitle as string) || displayWorkoutType}
+        />
+      ) : (
       <View style={styles.extendedProgressContainer}>
         <View style={styles.extendedProgressContent}>
           {/* Step 1: Mood Card */}
@@ -793,6 +801,7 @@ export default function WorkoutGuidanceScreen() {
           </View>
         </View>
       </View>
+      )}
 
       {/* Timer Section - Compact */}
       <View style={styles.timerContainer}>
