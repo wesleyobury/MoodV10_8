@@ -21,8 +21,8 @@ import { Video, ResizeMode } from 'expo-av';
 const { width, height } = Dimensions.get('window');
 const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
 
-const BG_VIDEO_URI =
-  'https://customer-assets.emergentagent.com/job_7265629c-a6f3-4835-9e18-63c8e5b41c71/artifacts/8wjuf0hd_bg.mov';
+// Background video — bundled locally for instant load on every launch.
+const BG_VIDEO_SOURCE = require('../assets/videos/bg.mp4');
 const VIDEO_FADE_IN_DELAY_MS = 600;
 const VIDEO_FADE_IN_DURATION_MS = 900;
 
@@ -309,7 +309,7 @@ export default function Welcome() {
         >
           <Video
             ref={videoRef}
-            source={{ uri: BG_VIDEO_URI }}
+            source={BG_VIDEO_SOURCE}
             style={StyleSheet.absoluteFill}
             resizeMode={ResizeMode.COVER}
             shouldPlay
