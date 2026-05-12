@@ -163,6 +163,7 @@ from workout_drafts import (
     build_workout_drafts_router,
     ensure_workout_drafts_indexes,
 )
+from sync_hero_images import sync_featured_hero_images
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -12762,6 +12763,16 @@ async def startup_db_client():
             logger.info("✅ workout_drafts indexes ensured")
         except Exception as e:
             logger.warning(f"workout_drafts indexes skipped: {e}")
+
+        # Sync featured-workout hero images from seed_data.py into MongoDB.
+        # Auto-seed only fires on title mismatch — hero image changes alone
+        # never trigger it, so we explicitly push them on every startup.
+        # Idempotent: only PATCHes docs whose heroImageUrl differs.
+        try:
+            checked, updated = await sync_featured_hero_images(db)
+            logger.info(f"✅ hero-image sync: {updated}/{checked} updated")
+        except Exception as e:
+            logger.warning(f"hero-image sync skipped: {e}")
 
         # daily_activity indexes
         await db.daily_activity.create_index([("date", -1)])

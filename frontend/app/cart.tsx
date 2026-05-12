@@ -26,6 +26,7 @@ import { useCart, WorkoutItem } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useDrafts } from '../contexts/DraftsContext';
 import { Analytics } from '../utils/analytics';
+import { resolveCartHeroImage, isFeaturedHeroBroken } from '../utils/cartHero';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 import { API_URL } from '../utils/apiConfig';
@@ -802,14 +803,10 @@ export default function CartScreen() {
   const moodInfo = getMoodInfo();
 
   // === HERO IMAGE PRIORITY — FEATURED_CART_HERO_V3 ===========================
-  // Do NOT change without updating featured-cart spec.
-  // Featured carts pass `heroImageUrl` from the carousel's in-memory state
-  // via CartContext.setCartMeta(). Custom / Build-For-Me carts fall back to
-  // the first exercise's imageUrl.
-  const cartHeroImage =
-    (cartMeta?.source === 'featured-carousel' && cartMeta?.heroImageUrl)
-      ? cartMeta.heroImageUrl
-      : cartItems[0]?.imageUrl;
+  // Resolution lives in /utils/cartHero.ts — pure function, unit-tested
+  // (see /utils/cartHero.test.ts: three-branch coverage).
+  // Do NOT inline this logic again — the test guards regressions.
+  const cartHeroImage = resolveCartHeroImage(cartMeta, cartItems[0]);
 
   // Title split for the hero card: "Outdoor - Park to Peak" → mood "Outdoor",
   // subtitle "Park to Peak". Only applies when meta provides a title.
@@ -821,17 +818,20 @@ export default function CartScreen() {
       }
     : null;
 
-  // Observability: log which branch fired + assert featured carts always have
-  // a heroImageUrl. Silent regressions become loud.
+  // Observability:
+  //   - success log is DEV-only (would otherwise spam prod and drown real signal)
+  //   - broken-state assertion is ALWAYS on (loud silent regressions)
   React.useEffect(() => {
     if (cartItems.length === 0) return;
-    console.log('🎯 FEATURED_CART_HERO_V3_ACTIVE', {
-      source: cartMeta?.source || 'none',
-      heroImageUrl: cartMeta?.heroImageUrl || null,
-      resolved: cartHeroImage,
-      itemCount: cartItems.length,
-    });
-    if (cartMeta?.source === 'featured-carousel' && !cartMeta?.heroImageUrl) {
+    if (__DEV__) {
+      console.log('🎯 FEATURED_CART_HERO_V3_ACTIVE', {
+        source: cartMeta?.source || 'none',
+        heroImageUrl: cartMeta?.heroImageUrl || null,
+        resolved: cartHeroImage,
+        itemCount: cartItems.length,
+      });
+    }
+    if (isFeaturedHeroBroken(cartMeta)) {
       console.error(
         'FEATURED_CART_HERO_V3 BROKEN: featured cart missing heroImageUrl',
         { cartMeta, firstItem: cartItems[0] }
