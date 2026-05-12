@@ -1,57 +1,80 @@
 /**
- * API Configuration
+ * API Configuration — self-describing, env-driven, no hardcoded URLs.
  *
- * - **Development (Expo Go + web preview)**: respects `EXPO_PUBLIC_BACKEND_URL`
- *   from `frontend/.env`, including `*.preview.emergentagent.com` URLs. This
- *   lets devs iterate against the preview backend without manual overrides.
- * - **Production EAS/TestFlight builds**: locked to the production backend
- *   below. Any preview URL accidentally baked into a production bundle is
- *   rejected and falls back to PRODUCTION_BACKEND_URL.
+ * Resolution order:
+ *   1. process.env.EXPO_PUBLIC_API_URL      ← canonical, used in .env.* files
+ *   2. process.env.EXPO_PUBLIC_BACKEND_URL  ← legacy alias (back-compat)
+ *   3. Constants.expoConfig?.extra?.EXPO_PUBLIC_API_URL (EAS injects at build)
+ *   4. Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL (legacy)
+ *
+ * Origin validation:
+ *   - Production builds (`!__DEV__`): strict allowlist (`PROD_ALLOWED_ORIGINS`).
+ *     Anything else falls back to the first prod origin.
+ *   - Non-production (Expo Go, web preview, dev clients): permissive (any
+ *     https/http URL accepted) — preview URLs change too often to be locked
+ *     by hostname.
  */
 
 import Constants from 'expo-constants';
-
-// ── LOCKED PRODUCTION BACKEND ──
-// Used for production EAS/TestFlight builds and as the final safety fallback.
-const PRODUCTION_BACKEND_URL = 'https://bug-busters-13.emergent.host';
 
 // __DEV__ is a React Native global: true in Expo Go / Metro / web dev,
 // false in release/EAS production bundles.
 declare const __DEV__: boolean;
 const IS_DEV = typeof __DEV__ !== 'undefined' ? __DEV__ : false;
 
-// Detect preview domains (allowed in dev, rejected in production builds)
-const isPreviewDomain = (url: string): boolean =>
-  url.includes('.preview.emergentagent.com');
+// ── Production allowlist — only enforced when !__DEV__ ──
+// Add/remove entries here when production hosts change. Regex allowed.
+const PROD_ALLOWED_ORIGINS: Array<string | RegExp> = [
+  'https://bug-busters-13.emergent.host',
+  // Add prod aliases here if/when introduced:
+  // /^https:\/\/api\.mood\.app$/,
+];
 
-// Normalize URL (remove trailing slashes)
-const normalize = (url: string): string =>
-  url.trim().replace(/\/+$/, '');
+// First entry is the locked production fallback.
+const PRODUCTION_FALLBACK = (() => {
+  const first = PROD_ALLOWED_ORIGINS[0];
+  return typeof first === 'string' ? first : 'https://bug-busters-13.emergent.host';
+})();
 
-// Get API URL safely
+const normalize = (url: string): string => url.trim().replace(/\/+$/, '');
+
+const isAllowedOrigin = (url: string): boolean => {
+  // Non-prod: permissive — any well-formed http(s) URL is allowed.
+  // Preview/dev URLs change every fork; we trust env config.
+  if (IS_DEV) return /^https?:\/\/[^\s]+$/i.test(url);
+  // Prod: strict allowlist.
+  return PROD_ALLOWED_ORIGINS.some((rule) =>
+    typeof rule === 'string' ? url === rule : rule.test(url)
+  );
+};
+
+const readEnv = (): string | undefined => {
+  // 1 + 2: process.env (preferred; .env.* files inject these)
+  const fromProcess =
+    process.env.EXPO_PUBLIC_API_URL || process.env.EXPO_PUBLIC_BACKEND_URL;
+  if (fromProcess && fromProcess.trim() !== '') return fromProcess;
+
+  // 3 + 4: Expo config (EAS-injected at build time)
+  const extra = (Constants.expoConfig?.extra || {}) as Record<string, unknown>;
+  const fromConfig =
+    (extra.EXPO_PUBLIC_API_URL as string | undefined) ||
+    (extra.EXPO_PUBLIC_BACKEND_URL as string | undefined);
+  if (fromConfig && fromConfig.trim() !== '') return fromConfig;
+
+  return undefined;
+};
+
 const getApiUrl = (): string => {
-  // 1. Try environment variable (EAS injects this at build time, or .env in dev)
-  const envUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
-  if (envUrl && envUrl.trim() !== '') {
-    const normalized = normalize(envUrl);
-    if (IS_DEV || !isPreviewDomain(normalized)) {
-      return normalized;
-    }
-    console.warn('⚠️ Production build: rejecting preview env URL — using production:', normalized);
+  const raw = readEnv();
+  if (raw) {
+    const normalized = normalize(raw);
+    if (isAllowedOrigin(normalized)) return normalized;
+    console.warn(
+      `⚠️  API URL not in allowlist for current build (IS_DEV=${IS_DEV}): ${normalized}. ` +
+        `Falling back to ${PRODUCTION_FALLBACK}.`
+    );
   }
-
-  // 2. Try Expo config (EAS build config)
-  const configUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL;
-  if (typeof configUrl === 'string' && configUrl.trim() !== '') {
-    const normalized = normalize(configUrl);
-    if (IS_DEV || !isPreviewDomain(normalized)) {
-      return normalized;
-    }
-    console.warn('⚠️ Production build: rejecting preview config URL — using production:', normalized);
-  }
-
-  // 3. Locked production fallback — ALWAYS resolves, never empty
-  return PRODUCTION_BACKEND_URL;
+  return PRODUCTION_FALLBACK;
 };
 
 // Final resolved API URL
@@ -59,14 +82,16 @@ export const API_URL = getApiUrl();
 export const AUTH_URL = API_URL;
 
 /**
- * Validate and log API configuration on startup
+ * Validate and log API configuration on startup.
  */
 export const validateApiConfig = async (): Promise<boolean> => {
   console.log('========================================');
   console.log('🔧 API CONFIGURATION');
   console.log('========================================');
+  console.log('IS_DEV:', IS_DEV);
   console.log('API_URL:', API_URL);
   console.log('AUTH_URL:', AUTH_URL);
+  console.log('process.env.EXPO_PUBLIC_API_URL:', process.env.EXPO_PUBLIC_API_URL || '(not set)');
   console.log('process.env.EXPO_PUBLIC_BACKEND_URL:', process.env.EXPO_PUBLIC_BACKEND_URL || '(not set)');
   console.log('Constants.expoConfig?.extra:', JSON.stringify(Constants.expoConfig?.extra || {}));
   console.log('========================================');
@@ -75,7 +100,6 @@ export const validateApiConfig = async (): Promise<boolean> => {
     console.error('❌ CRITICAL: API_URL is empty!');
     return false;
   }
-
   if (!API_URL.startsWith('http://') && !API_URL.startsWith('https://')) {
     console.error('❌ CRITICAL: API_URL is not absolute:', API_URL);
     return false;
@@ -87,14 +111,12 @@ export const validateApiConfig = async (): Promise<boolean> => {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
-
     if (response.ok) {
       console.log('✅ Health check passed!');
       return true;
-    } else {
-      console.warn('⚠️ Health check non-OK status:', response.status);
-      return false;
     }
+    console.warn('⚠️ Health check non-OK status:', response.status);
+    return false;
   } catch (error) {
     console.warn('⚠️ Health check failed:', error);
     return false;
@@ -102,7 +124,7 @@ export const validateApiConfig = async (): Promise<boolean> => {
 };
 
 /**
- * Build absolute URL for API endpoints
+ * Build absolute URL for API endpoints.
  */
 export const buildApiUrl = (path: string): string => {
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
@@ -110,7 +132,7 @@ export const buildApiUrl = (path: string): string => {
 };
 
 /**
- * OAuth callback URLs
+ * OAuth callback URLs.
  */
 export const OAUTH_CALLBACKS = {
   google: `${API_URL}/api/auth/callback/google`,

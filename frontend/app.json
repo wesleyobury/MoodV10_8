@@ -82,17 +82,10 @@
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "ef2c8520-832c-4806-beb0-80b9db1a6214"
-      },
-      "EXPO_PUBLIC_BACKEND_URL": "https://bug-busters-13.emergent.host"
+      "router": {}
     },
     "runtimeVersion": {
       "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/ef2c8520-832c-4806-beb0-80b9db1a6214"
     }
   }
 }
