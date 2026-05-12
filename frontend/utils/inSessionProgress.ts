@@ -64,3 +64,18 @@ export const getDescriptionSnippet = (description?: string): string => {
   }
   return matches.slice(0, 2).join('').trim();
 };
+
+/**
+ * Returns just the first sentence from a description. Falls back to a 90-char
+ * truncation when no sentence terminator is present.
+ */
+export const getFirstSentence = (description?: string): string => {
+  if (!description) return '';
+  const cleaned = description.replace(/\s+/g, ' ').trim();
+  if (!cleaned) return '';
+  const matches = cleaned.match(/[^.!?]+[.!?]+(\s|$)/g);
+  if (!matches || matches.length === 0) {
+    return cleaned.length > 90 ? cleaned.slice(0, 87).trim() + '…' : cleaned;
+  }
+  return matches[0].trim();
+};

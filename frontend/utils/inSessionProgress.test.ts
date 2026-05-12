@@ -7,7 +7,7 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 
-import { getDescriptionSnippet, getEquipmentIcon } from './inSessionProgress';
+import { getDescriptionSnippet, getEquipmentIcon, getFirstSentence } from './inSessionProgress';
 
 test('getDescriptionSnippet — empty / undefined input returns empty string', () => {
   assert.equal(getDescriptionSnippet(undefined), '');
@@ -57,4 +57,30 @@ test('getEquipmentIcon — unknown / empty returns generic fitness', () => {
   assert.equal(getEquipmentIcon(undefined), 'fitness');
   assert.equal(getEquipmentIcon(''), 'fitness');
   assert.equal(getEquipmentIcon('Some Mystery Tool'), 'fitness');
+});
+
+test('getFirstSentence — empty input', () => {
+  assert.equal(getFirstSentence(undefined), '');
+  assert.equal(getFirstSentence(''), '');
+  assert.equal(getFirstSentence('   '), '');
+});
+
+test('getFirstSentence — returns only the first sentence', () => {
+  const desc = 'Complete as many rounds as possible in 15 minutes. This builds power. Third sentence.';
+  assert.equal(getFirstSentence(desc), 'Complete as many rounds as possible in 15 minutes.');
+});
+
+test('getFirstSentence — handles single sentence intact', () => {
+  assert.equal(
+    getFirstSentence('Only one descriptive sentence here.'),
+    'Only one descriptive sentence here.'
+  );
+});
+
+test('getFirstSentence — truncates and ellipsises when no terminator', () => {
+  const desc =
+    'this is a really long block of text without any terminator that should be truncated when it exceeds the soft limit';
+  const out = getFirstSentence(desc);
+  assert.ok(out.endsWith('…'));
+  assert.ok(out.length <= 90);
 });
