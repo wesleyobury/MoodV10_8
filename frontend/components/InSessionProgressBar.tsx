@@ -76,6 +76,31 @@ export default function InSessionProgressBar({
     }).start();
   }, [expanded, expandAnim]);
 
+  // Continuous up/down bounce on the chevron so users notice it's tappable.
+  const chevronBounce = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(chevronBounce, {
+          toValue: 1,
+          duration: 700,
+          useNativeDriver: true,
+        }),
+        Animated.timing(chevronBounce, {
+          toValue: 0,
+          duration: 700,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [chevronBounce]);
+  const chevronTranslateY = chevronBounce.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-3, 3],
+  });
+
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (_e, g) =>
@@ -161,11 +186,18 @@ export default function InSessionProgressBar({
           testID="in-session-progress-chevron"
           {...panResponder.panHandlers}
         >
-          <Ionicons
-            name={expanded ? 'chevron-up' : 'chevron-down'}
-            size={16}
-            color={C.gold}
-          />
+          <Animated.View
+            style={[
+              styles.chevronCircle,
+              { transform: [{ translateY: chevronTranslateY }] },
+            ]}
+          >
+            <Ionicons
+              name={expanded ? 'chevron-up' : 'chevron-down'}
+              size={16}
+              color={C.gold}
+            />
+          </Animated.View>
         </TouchableOpacity>
       </View>
 
@@ -319,9 +351,19 @@ const styles = StyleSheet.create({
     right: 6,
     top: 0,
     bottom: 0,
-    width: 22,
+    width: 26,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  chevronCircle: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 215, 0, 0.14)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.30)',
   },
   detailPanel: {
     overflow: 'hidden',
