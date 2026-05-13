@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { View, Text, StyleSheet, Dimensions, Animated, Easing } from 'react-native';
-import Svg, { Circle, G, Defs, LinearGradient, Stop } from 'react-native-svg';
+import Svg, { Circle, G, Defs, LinearGradient, Stop, Path } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as ExpoLinearGradient } from './SafeLinearGradient';
 
 // Safely import MaskedView - it can fail in production iOS builds
@@ -115,6 +116,7 @@ interface WorkoutStatsCardProps {
   minuteTarget?: number;
   showRingPulse?: boolean;
   showEquipment?: boolean;
+  variant?: 'rings' | 'simple' | 'heartrate';
 }
 
 // Calculate intensity percentage based on workout characteristics
@@ -155,6 +157,64 @@ function getStrokeDasharray(progress: number, radius: number): { dashArray: stri
   };
 }
 
+// Synthesize a plausible Apple-Watch-style heart-rate curve from intensity + duration.
+// Warm-up rise, plateau with interval variation, cool-down. Deterministic per inputs.
+function computeHeartRate(intensity: number, durationMin: number): {
+  points: number[]; avg: number; peak: number;
+} {
+  const COUNT = 40;
+  const base = 70;
+  const peakBpm = Math.round(base + Math.min(Math.max(intensity, 0.3), 0.95) * 110); // ~103–191
+  const points: number[] = [];
+  for (let i = 0; i < COUNT; i++) {
+    const t = i / (COUNT - 1);
+    let bpm: number;
+    if (t < 0.12) {
+      bpm = base + (peakBpm - base) * (t / 0.12) * 0.75;
+    } else if (t > 0.9) {
+      bpm = base + 18 + (peakBpm - base) * ((1 - t) / 0.1) * 0.4;
+    } else {
+      const localWave = Math.sin(t * Math.PI * 6) * 9;
+      const microWave = Math.sin(t * Math.PI * 16) * 4;
+      const intervalSpike = Math.sin(t * Math.PI * 3.2) * 6;
+      bpm = peakBpm * 0.86 + localWave + microWave + intervalSpike;
+    }
+    points.push(Math.max(60, Math.min(peakBpm + 4, Math.round(bpm))));
+  }
+  const peak = Math.max(...points);
+  const avg = Math.round(points.reduce((a, b) => a + b, 0) / points.length);
+  return { points, avg, peak };
+}
+
+// Build an SVG path string for the heart-rate area chart.
+function buildHeartRatePath(points: number[], width: number, height: number, padding = 4): {
+  line: string; area: string;
+} {
+  if (points.length === 0) return { line: '', area: '' };
+  const min = Math.min(...points) - 5;
+  const max = Math.max(...points) + 5;
+  const range = Math.max(max - min, 1);
+  const innerW = width - padding * 2;
+  const innerH = height - padding * 2;
+  const step = innerW / (points.length - 1);
+  const coords = points.map((p, i) => {
+    const x = padding + i * step;
+    const y = padding + innerH - ((p - min) / range) * innerH;
+    return { x, y };
+  });
+  let line = `M ${coords[0].x.toFixed(1)} ${coords[0].y.toFixed(1)}`;
+  for (let i = 1; i < coords.length; i++) {
+    const prev = coords[i - 1];
+    const cur = coords[i];
+    const cpx = (prev.x + cur.x) / 2;
+    line += ` Q ${cpx.toFixed(1)} ${prev.y.toFixed(1)}, ${cur.x.toFixed(1)} ${cur.y.toFixed(1)}`;
+  }
+  const area =
+    `${line} L ${coords[coords.length - 1].x.toFixed(1)} ${(padding + innerH).toFixed(1)} ` +
+    `L ${coords[0].x.toFixed(1)} ${(padding + innerH).toFixed(1)} Z`;
+  return { line, area };
+}
+
 export default function WorkoutStatsCard({ 
   workouts, 
   totalDuration, 
@@ -166,7 +226,8 @@ export default function WorkoutStatsCard({
   calorieTarget = DEFAULT_CALORIE_TARGET,
   minuteTarget = DEFAULT_MINUTE_TARGET,
   showRingPulse = false,
-  showEquipment = true,
+  showEquipment = false,
+  variant = 'rings',
 }: WorkoutStatsCardProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -450,6 +511,141 @@ export default function WorkoutStatsCard({
       </Svg>
     );
   };
+
+  // ============================================
+  // ALT VARIANTS: SIMPLE + HEARTRATE
+  // ============================================
+  // Two-word split label for the bottom-right stat slot (e.g. "LEG / DAY").
+  const splitLabel = useMemo(() => {
+    const raw = (displayMoodCategory || 'WORKOUT').toUpperCase().trim();
+    const words = raw.split(/[\s\/]+/).filter(Boolean);
+    if (words.length === 0) return ['MOOD'];
+    if (words.length === 1) return [words[0]];
+    return [words[0], words[1]];
+  }, [displayMoodCategory]);
+
+  const heartRate = useMemo(
+    () => computeHeartRate(intensityValue, displayDuration),
+    [intensityValue, displayDuration]
+  );
+
+  // Shared frame: dark card when opaque, fully transparent when used as IG overlay.
+  const wrapInFrame = (content: React.ReactNode) => {
+    if (transparent) {
+      return (
+        <View style={[styles.transparentContainer, { width: CARD_WIDTH, height: CARD_HEIGHT }]}>
+          {content}
+        </View>
+      );
+    }
+    return (
+      <Animated.View style={[styles.container, { width: CARD_WIDTH, height: CARD_HEIGHT, opacity: fadeAnim }]}>
+        <View style={styles.innerContainer}>
+          <ExpoLinearGradient
+            colors={['rgba(255, 215, 0, 0.05)', 'rgba(255, 215, 0, 0.01)', 'transparent']}
+            style={styles.radialGradient}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 0.5 }}
+          />
+          {content}
+        </View>
+      </Animated.View>
+    );
+  };
+
+  // Exercise list shared by simple + heartrate variants.
+  const renderExerciseList = () => (
+    <View style={styles.altExercisesSection}>
+      {workouts.slice(0, 5).map((workout, index) => {
+        const name = workout.workoutTitle || workout.workoutName;
+        const label = showEquipment && workout.equipment && workout.equipment !== 'None'
+          ? `${name} \u2022 ${workout.equipment}`
+          : name;
+        const display = label.length > 36 ? label.slice(0, 33) + '...' : label;
+        return (
+          <View key={index} style={styles.altExerciseRow}>
+            <View style={styles.altExerciseDot} />
+            <Text style={[styles.altExerciseText, transparent && styles.altTextShadow]} numberOfLines={1}>
+              {display}
+            </Text>
+          </View>
+        );
+      })}
+      {workouts.length > 5 && (
+        <Text style={[styles.altMoreExercises, transparent && styles.altTextShadow]}>
+          +{workouts.length - 5} more
+        </Text>
+      )}
+    </View>
+  );
+
+  // ---- Variant: SIMPLE — MOOD header + exercises + 4-stat bottom pill
+  if (variant === 'simple') {
+    return wrapInFrame(
+      <View style={styles.altCardInner}>
+        <Text style={[styles.altMoodHeader, transparent && styles.altTextShadow]}>MOOD</Text>
+        {renderExerciseList()}
+        <View style={styles.simpleStatsPill}>
+          <View style={styles.simpleStatCell}>
+            <Text style={[styles.simpleStatValue, styles.simpleStatValueGold]}>{estimatedCalories}</Text>
+            <Text style={styles.simpleStatLabel}>CAL</Text>
+          </View>
+          <View style={styles.simpleStatDivider} />
+          <View style={styles.simpleStatCell}>
+            <Text style={styles.simpleStatValue}>{displayDuration}</Text>
+            <Text style={styles.simpleStatLabel}>MIN</Text>
+          </View>
+          <View style={styles.simpleStatDivider} />
+          <View style={styles.simpleStatCell}>
+            <Text style={styles.simpleStatValue}>{Math.round(intensityValue * 100)}%</Text>
+            <Text style={styles.simpleStatLabel}>INTENSITY</Text>
+          </View>
+          <View style={styles.simpleStatDivider} />
+          <View style={styles.simpleStatCell}>
+            {splitLabel.map((w, i) => (
+              <Text key={i} style={[styles.simpleStatValueSplit, styles.simpleStatValueGold]}>{w}</Text>
+            ))}
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  // ---- Variant: HEARTRATE — MOOD header + exercises + synthetic HR area chart
+  if (variant === 'heartrate') {
+    const chartW = CARD_WIDTH - 56;
+    const chartH = 110;
+    const { line, area } = buildHeartRatePath(heartRate.points, chartW, chartH);
+    return wrapInFrame(
+      <View style={styles.altCardInner}>
+        <Text style={[styles.altMoodHeader, transparent && styles.altTextShadow]}>MOOD</Text>
+        {renderExerciseList()}
+        <View style={styles.hrSection}>
+          <View style={styles.hrHeaderRow}>
+            <View style={styles.hrHeaderLeft}>
+              <Ionicons name="heart" size={12} color="#FF4D6D" />
+              <Text style={[styles.hrLabel, transparent && styles.altTextShadow]}>HEART RATE</Text>
+            </View>
+            <Text style={[styles.hrStat, transparent && styles.altTextShadow]}>
+              avg <Text style={styles.hrStatValue}>{heartRate.avg}</Text>  ·  peak <Text style={styles.hrStatValue}>{heartRate.peak}</Text>  bpm
+            </Text>
+          </View>
+          <View style={styles.hrChartContainer}>
+            <Svg width={chartW} height={chartH}>
+              <Defs>
+                <LinearGradient id="hrAreaGradient" x1="0" y1="0" x2="0" y2="1">
+                  <Stop offset="0%" stopColor="#FF4D6D" stopOpacity="0.55" />
+                  <Stop offset="100%" stopColor="#FF4D6D" stopOpacity="0.02" />
+                </LinearGradient>
+              </Defs>
+              <Path d={area} fill="url(#hrAreaGradient)" />
+              <Path d={line} stroke="#FF4D6D" strokeWidth={1.8} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </Svg>
+          </View>
+        </View>
+      </View>
+    );
+  }
 
   // ============================================
   // TRANSPARENT VERSION (Instagram Stories Export)
@@ -1004,5 +1200,142 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 3,
+  },
+
+  // ============================================
+  // ALT VARIANTS — SIMPLE + HEARTRATE
+  // ============================================
+  altCardInner: {
+    flex: 1,
+    paddingTop: 28,
+    paddingHorizontal: 24,
+    paddingBottom: 22,
+  },
+  altMoodHeader: {
+    fontSize: 56,
+    lineHeight: 60,
+    fontWeight: '800',
+    color: '#FFD700',
+    letterSpacing: 6,
+    textAlign: 'left',
+  },
+  altTextShadow: {
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
+  },
+  altExercisesSection: {
+    flex: 1,
+    marginTop: 14,
+    justifyContent: 'flex-start',
+  },
+  altExerciseRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 6,
+  },
+  altExerciseDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: '#FFD700',
+    marginRight: 12,
+  },
+  altExerciseText: {
+    flex: 1,
+    fontSize: 15,
+    color: '#FFFFFF',
+    fontWeight: '500',
+    letterSpacing: 0.3,
+  },
+  altMoreExercises: {
+    fontSize: 11,
+    color: 'rgba(255, 255, 255, 0.5)',
+    marginTop: 4,
+    marginLeft: 17,
+    fontStyle: 'italic',
+  },
+
+  // SIMPLE — 4-stat bottom pill (matches user's screenshot)
+  simpleStatsPill: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    height: 96,
+    backgroundColor: 'rgba(10, 10, 10, 0.92)',
+    borderRadius: 18,
+    paddingVertical: 10,
+    marginTop: 10,
+  },
+  simpleStatCell: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  simpleStatDivider: {
+    width: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+    marginVertical: 14,
+  },
+  simpleStatValue: {
+    fontSize: 30,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    letterSpacing: -0.5,
+    lineHeight: 34,
+  },
+  simpleStatValueSplit: {
+    fontSize: 18,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+    lineHeight: 22,
+    textAlign: 'center',
+  },
+  simpleStatValueGold: {
+    color: '#FFD700',
+  },
+  simpleStatLabel: {
+    fontSize: 9,
+    color: 'rgba(255, 255, 255, 0.55)',
+    letterSpacing: 1.5,
+    marginTop: 4,
+    fontWeight: '600',
+  },
+
+  // HEARTRATE
+  hrSection: {
+    marginTop: 8,
+  },
+  hrHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  hrHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  hrLabel: {
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.75)',
+    fontWeight: '700',
+    letterSpacing: 1.5,
+  },
+  hrStat: {
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.55)',
+    letterSpacing: 0.5,
+  },
+  hrStatValue: {
+    color: '#FF4D6D',
+    fontWeight: '700',
+  },
+  hrChartContainer: {
+    backgroundColor: 'rgba(255, 77, 109, 0.05)',
+    borderRadius: 14,
+    paddingVertical: 6,
+    paddingHorizontal: 4,
   },
 });

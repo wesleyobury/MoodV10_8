@@ -109,7 +109,13 @@ export default function CreatePost() {
   const [minuteTarget, setMinuteTarget] = useState(60);
   
   // Equipment toggle for achievement card exercise labels
-  const [showEquipment, setShowEquipment] = useState(true);
+  // Default OFF so the title is the focus; user can toggle on.
+  const [showEquipment, setShowEquipment] = useState(false);
+
+  // Achievement card variant — swipeable between 3 designs on the share screen.
+  const CARD_VARIANTS = ['rings', 'simple', 'heartrate'] as const;
+  type CardVariant = (typeof CARD_VARIANTS)[number];
+  const [cardVariant, setCardVariant] = useState<CardVariant>('rings');
   
   // Permission notice modal state
   const [showPermissionModal, setShowPermissionModal] = useState(false);
@@ -1940,18 +1946,50 @@ export default function CreatePost() {
               
               {/* Card + equipment toggle overlay */}
               <View style={styles.cardWithToggleContainer}>
-                <View style={styles.statsCardWrapper} ref={statsCardRef} collapsable={false}>
-                  <WorkoutStatsCard 
-                    {...workoutStats} 
-                    editedDuration={editedDuration}
-                    editedCalories={editedCalories}
-                    calorieTarget={calorieTarget}
-                    minuteTarget={minuteTarget}
-                    showRingPulse={true}
-                    showEquipment={showEquipment}
-                  />
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  onMomentumScrollEnd={(e) => {
+                    const cardW = e.nativeEvent.layoutMeasurement.width;
+                    const idx = Math.round(e.nativeEvent.contentOffset.x / cardW);
+                    const next = CARD_VARIANTS[Math.max(0, Math.min(CARD_VARIANTS.length - 1, idx))];
+                    if (next !== cardVariant) setCardVariant(next);
+                  }}
+                  scrollEventThrottle={16}
+                  decelerationRate="fast"
+                  style={styles.variantScroll}
+                  contentContainerStyle={styles.variantScrollContent}
+                >
+                  {CARD_VARIANTS.map((v) => (
+                    <View key={v} style={styles.statsCardWrapper}>
+                      <WorkoutStatsCard
+                        {...workoutStats}
+                        editedDuration={editedDuration}
+                        editedCalories={editedCalories}
+                        calorieTarget={calorieTarget}
+                        minuteTarget={minuteTarget}
+                        showRingPulse={v === 'rings'}
+                        showEquipment={showEquipment}
+                        variant={v}
+                      />
+                    </View>
+                  ))}
+                </ScrollView>
+
+                {/* Variant dots indicator */}
+                <View style={styles.variantDotsRow} pointerEvents="none">
+                  {CARD_VARIANTS.map((v) => (
+                    <View
+                      key={v}
+                      style={[
+                        styles.variantDot,
+                        v === cardVariant && styles.variantDotActive,
+                      ]}
+                    />
+                  ))}
                 </View>
-                
+
                 {/* Equipment toggle — overlayed on bottom of card, share screen only */}
                 <TouchableOpacity
                   testID="equipment-toggle"
@@ -1965,7 +2003,21 @@ export default function CreatePost() {
                   <Text style={styles.equipmentToggleLabel}>include equipment name</Text>
                 </TouchableOpacity>
               </View>
-              
+
+              {/* Hidden opaque capture mirror — single active variant, used for in-post embed */}
+              <View style={styles.hiddenCardContainer} ref={statsCardRef} collapsable={false}>
+                <WorkoutStatsCard
+                  {...workoutStats}
+                  editedDuration={editedDuration}
+                  editedCalories={editedCalories}
+                  calorieTarget={calorieTarget}
+                  minuteTarget={minuteTarget}
+                  showRingPulse={false}
+                  showEquipment={showEquipment}
+                  variant={cardVariant}
+                />
+              </View>
+
               {/* Hidden transparent card for Instagram export */}
               <View style={styles.hiddenCardContainer} ref={transparentCardRef} collapsable={false}>
                 <WorkoutStatsCard 
@@ -1976,6 +2028,7 @@ export default function CreatePost() {
                   calorieTarget={calorieTarget}
                   minuteTarget={minuteTarget}
                   showEquipment={showEquipment}
+                  variant={cardVariant}
                 />
               </View>
               
@@ -2495,13 +2548,38 @@ const styles = StyleSheet.create({
     color: '#FFD700',
   },
   statsCardWrapper: {
+    width: SCREEN_WIDTH,
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center',
-    marginVertical: 6,
+    paddingVertical: 6,
     backgroundColor: '#000',
-    borderRadius: 0,
-    overflow: 'hidden',
+  },
+  variantScroll: {
+    width: SCREEN_WIDTH,
+    alignSelf: 'center',
+  },
+  variantScrollContent: {
+    alignItems: 'center',
+  },
+  variantDotsRow: {
+    position: 'absolute',
+    bottom: 12,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 6,
+    zIndex: 10,
+  },
+  variantDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+  },
+  variantDotActive: {
+    backgroundColor: '#FFD700',
+    width: 18,
   },
   saveExplanation: {
     flexDirection: 'row',
