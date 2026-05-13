@@ -36,8 +36,8 @@ const ROW_HEIGHT_ESTIMATE = 56;
 
 // Palette: light/mid grays with gold reserved for the active icon and accents.
 const C = {
-  barBg: '#1f1f22',            // mid-gray bar surface
-  rowBg: '#26262a',            // slightly lighter expanded surface
+  barBg: '#111111',            // matches timer row background
+  rowBg: '#1a1a1a',            // slightly lighter expanded surface
   borderSubtle: 'rgba(255, 255, 255, 0.08)',
   borderActive: 'rgba(255, 215, 0, 0.45)',
   labelDefault: 'rgba(235, 235, 240, 0.85)',
@@ -91,7 +91,7 @@ export default function InSessionProgressBar({
     inputRange: [0, 1],
     outputRange: [
       0,
-      Math.min(28 + exercises.length * ROW_HEIGHT_ESTIMATE + 8, 360),
+      Math.min(40 + exercises.length * ROW_HEIGHT_ESTIMATE + 16, 380),
     ],
   });
 
@@ -263,11 +263,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: SCROLL_PADDING,
     paddingRight: SCROLL_PADDING + 22,
     gap: ITEM_GAP,
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexGrow: 1,
   },
   stepItem: {
     width: ITEM_WIDTH,
+    height: 56,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   circleActive: {
     width: 30,
@@ -328,8 +332,8 @@ const styles = StyleSheet.create({
   },
   detailScrollContent: {
     paddingHorizontal: 16,
-    paddingTop: 4,
-    paddingBottom: 8,
+    paddingTop: 12,
+    paddingBottom: 16,
   },
   detailHeader: {
     fontSize: 12,
