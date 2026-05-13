@@ -1339,8 +1339,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     lineHeight: 18,
   },
-});
- credentialsDescription: {
+  credentialsDescription: {
     fontSize: 15,
     color: '#999',
     lineHeight: 22,
@@ -1400,18 +1399,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#000',
-  },
-  settingsItemSubtext: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 2,
-  },
-  healthFooter: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 6,
-    marginBottom: 4,
-    paddingHorizontal: 4,
-    lineHeight: 18,
   },
 });

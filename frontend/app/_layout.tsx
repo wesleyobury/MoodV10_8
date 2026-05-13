@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { CartProvider, useCart } from '../contexts/CartContext';
 import { BadgeProvider } from '../contexts/BadgeContext';
 import { OnboardingProvider } from '../contexts/OnboardingContext';
+import { OnboardingFunnelProvider } from '../contexts/OnboardingFunnelContext';
 import { DraftsProvider } from '../contexts/DraftsContext';
 import { HealthProvider } from '../contexts/HealthContext';
 import HealthOnboardingGate from '../components/HealthOnboardingGate';
@@ -148,6 +149,7 @@ function NavigationStack() {
       <Stack.Screen name="onboarding/medical-disclaimer" options={{ headerShown: false, gestureEnabled: false }} />
       <Stack.Screen name="onboarding/health-intro" options={{ headerShown: false, gestureEnabled: false }} />
       <Stack.Screen name="onboarding/health-connect" options={{ headerShown: false, gestureEnabled: false }} />
+      <Stack.Screen name="onboarding-funnel" options={{ headerShown: false, gestureEnabled: false }} />
     </Stack>
   );
 }
@@ -183,7 +185,9 @@ function AppProviders({ children }: { children: React.ReactNode }) {
         <DraftsProvider>
           <BadgeProviderWrapper>
             <OnboardingProvider>
-              <HealthProvider>{children}</HealthProvider>
+              <OnboardingFunnelProvider>
+                <HealthProvider>{children}</HealthProvider>
+              </OnboardingFunnelProvider>
             </OnboardingProvider>
           </BadgeProviderWrapper>
         </DraftsProvider>

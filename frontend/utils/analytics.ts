@@ -479,6 +479,48 @@ export const Analytics = {
 
   shareCompleted: (token: string, metadata: Record<string, any>) =>
     trackEvent(token, 'share_completed', metadata),
+
+  // Onboarding funnel — Phase A of the paid launch.
+  // The funnel runs before login; events are routed to both authenticated and
+  // guest pipelines so the funnel can be analyzed end-to-end pre- and
+  // post-account creation.
+  onboardingStepViewed: (token: string | null, metadata: { step: number; question?: string }) =>
+    token
+      ? trackEvent(token, 'onboarding_step_viewed', metadata)
+      : trackGuestEvent('onboarding_step_viewed', metadata),
+
+  onboardingStepCompleted: (
+    token: string | null,
+    metadata: { step: number; question?: string; answer?: any; time_spent_ms?: number }
+  ) =>
+    token
+      ? trackEvent(token, 'onboarding_step_completed', metadata)
+      : trackGuestEvent('onboarding_step_completed', metadata),
+
+  onboardingCompleted: (token: string | null, metadata: Record<string, any>) =>
+    token
+      ? trackEvent(token, 'onboarding_completed', metadata)
+      : trackGuestEvent('onboarding_completed', metadata),
+
+  onboardingAbandoned: (token: string | null, metadata: { step: number }) =>
+    token
+      ? trackEvent(token, 'onboarding_abandoned', metadata)
+      : trackGuestEvent('onboarding_abandoned', metadata),
+
+  revealScreenViewed: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'reveal_screen_viewed', metadata)
+      : trackGuestEvent('reveal_screen_viewed', metadata),
+
+  revealCtaTapped: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'reveal_cta_tapped', metadata)
+      : trackGuestEvent('reveal_cta_tapped', metadata),
+
+  medicalDisclaimerAccepted: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'medical_disclaimer_accepted', metadata)
+      : trackGuestEvent('medical_disclaimer_accepted', metadata),
 };
 
 // Guest Analytics - for tracking guest user activity

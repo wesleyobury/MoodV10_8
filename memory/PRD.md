@@ -14,7 +14,20 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
-- [2026-02-13] **HealthKit Live Heart-Rate Streaming + Shareable Recap (iOS)** — add-on to the HealthKit foundation:
+- [2026-05-13] **Paid Launch — Phase A: Onboarding Funnel + Reveal (Parts 1–3 of the v1.0 paid launch spec)** — 11-screen forward-only funnel with personalized cinematic reveal.
+  - **Brand single source of truth** (`constants/brand.ts`): `COLORS`, `BRAND_GRADIENT = ['#FFD700', '#FFA500']` (gold→orange from the MOOD landing wordmark), `FUNNEL_TOTAL_STEPS = 8`. Final accent hex can swap here without touching screens.
+  - **Funnel state** (`contexts/OnboardingFunnelContext.tsx`): typed `FunnelAnswers` + per-step timing tracker. Persisted to AsyncStorage, rehydrated on mount. Provider added to root `_layout.tsx`.
+  - **Shared chrome**: `components/onboarding/FunnelLayout.tsx` (animated brand-gradient progress bar, "Step X / 8", gated Continue CTA); `components/onboarding/OptionPill.tsx`.
+  - **8 forward-only screens** under `app/onboarding-funnel/`: step-1-mood (6 cards w/ mood gradients), step-2-build-for-me (teach moment, 3 BFM chips + slide-up preview per mood), step-3-goal, step-4-level, step-5-barrier, step-6-length, step-7-equipment, step-8-social-proof (4.8★ + athlete count; count placeholder, NOT faked).
+  - **Reveal sequence**: `reveal-loading.tsx` (3 personalized lines fade in/out ~2.5s each + slow brand-gradient pulse, no spinners) → `reveal-payoff.tsx` (cinematic hero, `[FirstName], built for you.`, 3 preview cards, "Start your first workout →" CTA → existing `/onboarding/medical-disclaimer` chain).
+  - **Analytics events** added: `onboarding_step_viewed/completed/abandoned`, `onboarding_completed`, `reveal_screen_viewed`, `reveal_cta_tapped`, `medical_disclaimer_accepted`. Dual-pipeline (auth + guest).
+  - **Stack registration**: `onboarding-funnel` group registered in root `_layout.tsx` with `gestureEnabled: false`.
+  - **Pre-existing bug fix**: orphaned `});` at `app/settings.tsx:1342` that split a StyleSheet was blocking the entire Metro bundle. Merged + removed duplicate keys.
+  - **Smoke test**: bundler succeeds; mobile-viewport screenshot of `/onboarding-funnel/step-1-mood` renders cleanly with all expected elements.
+  - **DEFERRED to subsequent sessions**: Phase B free-tier + paywall (Parts 5, 7), Phase C StoreKit 2 (Part 8), Phase D Founding Members + 5/15/2026 cutoff migration (Part 9), Phase E lapsed routing + Settings/Delete-Account (Parts 10, 11), Phase F Skia chart migration (Part 6), Phase G analytics provider wrapper + mock biometric provider (Parts 12, 13), Phase H EAS Build → TestFlight. Funnel currently reachable only via direct URL — entry wiring is Phase B's job (depends on gating logic).
+
+## What's Been Implemented (older)
+ + Shareable Recap (iOS)** — add-on to the HealthKit foundation:
   - **Native module additions** (`modules/mood-healthkit/ios/MoodHealthKitModule.swift`): added `heartRate` to read permissions, plus two new async functions `startHeartRateStream()` / `stopHeartRateStream()` backed by an `HKAnchoredObjectQuery` with `updateHandler`. Each new sample fires an `onHeartRateSample` event (`{ bpm, timestamp }`) to JS. Multiple start calls replace the in-flight query (idempotent).
   - **Config plugin updated** to the v2 usage string: *"MOOD reads your heart rate, HRV, sleep, and activity to personalize workouts and track your live heart rate during sessions."*
   - **JS bridge** (`modules/mood-healthkit/src/index.ts`): `subscribeHeartRateStream(listener)` returns `{ remove }` that both unsubscribes the listener AND stops the native query — single call to clean everything up.
