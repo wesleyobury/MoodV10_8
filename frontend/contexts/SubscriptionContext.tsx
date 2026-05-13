@@ -48,6 +48,12 @@ interface SubscriptionState {
   hasUsedFreeSession: boolean;
   /** Number of generations consumed in the initial free flow. Cap = 3. */
   freeGenerationsUsed: number;
+  /**
+   * Most-recent paywall trigger source. Persisted across the trial-start →
+   * purchase journey so `subscription_purchased` carries the same
+   * attribution as the original `paywall_viewed` event.
+   */
+  lastConversionTrigger: PaywallTrigger | null;
 }
 
 interface SubscriptionContextValue extends SubscriptionState {
@@ -69,6 +75,13 @@ interface SubscriptionContextValue extends SubscriptionState {
   dismissPaywall: () => void;
   /** Set status. Phase C wires this to StoreKit transaction observers. */
   setStatus: (status: SubscriptionStatus) => void;
+  /**
+   * The trigger that opened the most recent paywall. Stays sticky through
+   * trial_started → subscription_purchased so conversion attribution works
+   * across the multi-event funnel. Cleared on `clearConversionTrigger()`.
+   */
+  lastConversionTrigger: PaywallTrigger | null;
+  clearConversionTrigger: () => void;
 }
 
 /* --------------------------- Constants --------------------------- */
@@ -80,6 +93,7 @@ const DEFAULT_STATE: SubscriptionState = {
   status: 'none',
   hasUsedFreeSession: false,
   freeGenerationsUsed: 0,
+  lastConversionTrigger: null,
 };
 
 const ACTIVE_STATUSES: SubscriptionStatus[] = ['active', 'in_trial', 'founding_member'];
@@ -97,6 +111,7 @@ async function readState(): Promise<SubscriptionState> {
       freeGenerationsUsed: Number.isFinite(parsed.freeGenerationsUsed)
         ? parsed.freeGenerationsUsed
         : 0,
+      lastConversionTrigger: parsed.lastConversionTrigger ?? null,
     };
   } catch {
     return DEFAULT_STATE;
@@ -164,7 +179,25 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   }, []);
 
   const openPaywall = useCallback((trigger?: PaywallTrigger) => {
-    setPendingTrigger(trigger ?? 'unknown');
+    const resolved = trigger ?? 'unknown';
+    setPendingTrigger(resolved);
+    // Persist as the active conversion trigger so downstream `trial_started`
+    // and `subscription_purchased` events can attribute correctly.
+    setState((prev) => {
+      if (prev.lastConversionTrigger === resolved) return prev;
+      const next = { ...prev, lastConversionTrigger: resolved };
+      writeState(next);
+      return next;
+    });
+  }, []);
+
+  const clearConversionTrigger = useCallback(() => {
+    setState((prev) => {
+      if (prev.lastConversionTrigger === null) return prev;
+      const next = { ...prev, lastConversionTrigger: null };
+      writeState(next);
+      return next;
+    });
   }, []);
 
   const dismissPaywall = useCallback(() => {
@@ -190,6 +223,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       pendingTrigger,
       dismissPaywall,
       setStatus,
+      clearConversionTrigger,
     }),
     [
       state,
@@ -202,6 +236,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       pendingTrigger,
       dismissPaywall,
       setStatus,
+      clearConversionTrigger,
     ]
   );
 

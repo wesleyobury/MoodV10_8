@@ -17,6 +17,7 @@ import Constants from 'expo-constants';
 import HomeButton from '../components/HomeButton';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import Toast from '../components/Toast';
 import { Analytics, GuestAnalytics } from '../utils/analytics';
 import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
@@ -274,6 +275,7 @@ export default function WorkoutGuidanceScreen() {
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
   
   const { token } = useAuth();
+  const { canStartWorkout, openPaywall, recordStartFreeWorkout } = useSubscription();
   
   // Timer that calculates elapsed time from start timestamp
   // This ensures timer continues even when app is in background
@@ -302,6 +304,21 @@ export default function WorkoutGuidanceScreen() {
   
   const handleStartPauseTimer = () => {
     if (!isRunning) {
+      // Phase B free-tier gate: a fresh "Start Workout" tap must check the
+      // subscription state. Founding members + active/in-trial users pass
+      // through; free users get exactly one session, then the paywall.
+      if (!canStartWorkout) {
+        Analytics.startWorkoutTapped(token, {
+          allowed: false,
+          trigger_source: 'start_workout_after_free_session',
+        });
+        openPaywall('start_workout_after_free_session');
+        return;
+      }
+      Analytics.startWorkoutTapped(token, { allowed: true });
+      // Mark the free session as consumed BEFORE state mutation so an
+      // accidental double-tap can't race past the gate.
+      recordStartFreeWorkout();
       // Starting fresh
       setStartTimestamp(Date.now());
       setPausedTime(0);

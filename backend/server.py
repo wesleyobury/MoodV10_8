@@ -488,6 +488,12 @@ async def auto_seed_exercises():
 # Format: YYYY-MM-DD
 CURRENT_TERMS_VERSION = "2025-01-19"
 
+# Phase D — Paid Launch Founding Member cutoff (Part 9 of the v1.0 spec).
+# Confirmed by Wes: every account whose `created_at < 2026-05-15 UTC` is
+# treated as a Founding Member with lifetime Premium access. Migration runs
+# on every startup and is idempotent.
+FOUNDING_MEMBER_CUTOFF = datetime(2026, 5, 15, 0, 0, 0, tzinfo=timezone.utc)
+
 # Cloudinary Configuration
 cloudinary.config(
     cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
@@ -729,6 +735,14 @@ class UserResponse(BaseModel):
     workouts_count: int = 0
     current_streak: int = 0
     created_at: datetime
+    # Phase D — Paid Launch Founding Member system (Part 9 of v1.0 spec).
+    # `founding_member` is set true for any account created before the
+    # FOUNDING_MEMBER_CUTOFF (2026-05-15). Founding members bypass the paywall
+    # entirely and have lifetime access. `founding_member_modal_seen` gates
+    # the one-time celebration modal on first login after the cutoff ships.
+    founding_member: bool = False
+    founding_member_at: Optional[datetime] = None
+    founding_member_modal_seen: bool = False
 
 class WorkoutCreate(BaseModel):
     title: str
@@ -1686,6 +1700,33 @@ async def get_auth_me(
         "admin_matched_by": matched_by,
         "admin_allowlist": ADMIN_ALLOWLIST,  # Show what the allowlist contains for debugging
         "is_admin_flag": user.get("is_admin", False),  # Show the legacy flag value
+        # Phase D — Founding Member surface. The frontend uses this to
+        # short-circuit every paywall gate and to show the one-time
+        # celebration modal exactly once.
+        "founding_member": bool(user.get("founding_member", False)),
+        "founding_member_at": (
+            user["founding_member_at"].isoformat()
+            if isinstance(user.get("founding_member_at"), datetime)
+            else None
+        ),
+        "founding_member_modal_seen": bool(user.get("founding_member_modal_seen", False)),
+    }
+
+
+@api_router.post("/auth/founding-member/mark-seen")
+async def mark_founding_member_modal_seen(current_user_id: str = Depends(get_current_user)):
+    """
+    Phase D — Idempotent flag flip for the one-time Founding Member modal.
+    Called by the frontend after the user dismisses the celebration modal.
+    No-op for non-founding accounts.
+    """
+    result = await db.users.update_one(
+        {"_id": ObjectId(current_user_id), "founding_member": True},
+        {"$set": {"founding_member_modal_seen": True}},
+    )
+    return {
+        "ok": True,
+        "updated": result.modified_count == 1,
     }
 
 
@@ -13072,6 +13113,36 @@ async def startup_db_client():
             logger.info(f"✅ Startup: Exercises OK ({exercises_result.get('count')} found)")
     except Exception as e:
         logger.error(f"❌ Startup: Failed to auto-seed exercises: {e}")
+
+    # Phase D — Founding Member migration (Part 9 of the v1.0 paid launch).
+    # Flips `founding_member = true` for every user account whose `created_at`
+    # precedes the FOUNDING_MEMBER_CUTOFF (2026-05-15 00:00 UTC, confirmed by
+    # Wes). Idempotent — skipped on accounts that are already flagged.
+    try:
+        cutoff = FOUNDING_MEMBER_CUTOFF
+        result = await db.users.update_many(
+            {
+                "created_at": {"$lt": cutoff},
+                "founding_member": {"$ne": True},
+            },
+            {
+                "$set": {
+                    "founding_member": True,
+                    "founding_member_at": cutoff,
+                }
+            },
+        )
+        if result.modified_count:
+            logger.info(
+                f"🏆 Founding Member migration: flipped {result.modified_count} accounts "
+                f"(cutoff {cutoff.isoformat()})"
+            )
+        else:
+            logger.info(
+                f"✅ Founding Member migration: nothing to do (cutoff {cutoff.isoformat()})"
+            )
+    except Exception as e:
+        logger.error(f"❌ Founding Member migration failed: {e}")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():

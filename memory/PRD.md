@@ -14,6 +14,26 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-13] **Paid Launch — Phase D: Founding Member system (Part 9) + Phase B gate wiring + trigger-source attribution.** Lifetime-Premium short-circuit for day-one users + the actual gate that fires the paywall on session start.
+  - **Backend** (`server.py`):
+    - `FOUNDING_MEMBER_CUTOFF = datetime(2026, 5, 15, 0, 0, 0, tzinfo=timezone.utc)` per Wes.
+    - Startup migration flips `founding_member = true` + `founding_member_at = cutoff` for every user with `created_at < cutoff` whose flag isn't already set. **Already ran in preview — 103 accounts flipped on first run**, second run is `nothing to do` (idempotent ✅).
+    - `UserResponse` model gains `founding_member`, `founding_member_at`, `founding_member_modal_seen` (all default false / None).
+    - `GET /api/auth/me` now returns the 3 founding fields.
+    - `POST /api/auth/founding-member/mark-seen` — idempotent flag flip, no-op for non-founding accounts. Verified via curl (401 on bogus token).
+  - **Frontend gates**:
+    - `contexts/AuthContext.tsx`: `User` interface gains the 3 founding fields.
+    - `components/FoundingMemberGate.tsx` (mounted at root): on auth load, flips `SubscriptionContext.status` → `'founding_member'` so every paywall gate short-circuits. If `founding_member_modal_seen` is still false, shows the celebration modal exactly once, then `POST /mark-seen` + optimistic `updateUser`.
+    - `components/FoundingMemberBadge.tsx`: small gold pill ("FOUNDING MEMBER" + lifetime star icon) with optional "Day-one MOOD." caption. Mounted into `app/(tabs)/profile.tsx` below the bio.
+  - **Phase B gate wiring**:
+    - `app/workout-guidance.tsx` (the session-start chokepoint, NOT `workout-session.tsx`): `handleStartPauseTimer` now checks `canStartWorkout` before kicking off a session. Free users without active access get redirected to the paywall via `openPaywall('start_workout_after_free_session')`. Allowed users get `recordStartFreeWorkout()` (idempotent) and the `start_workout_tapped` event fires with `allowed: true`.
+    - `app/create-post.tsx` (the recap screen): free-session footer block "YOUR FREE SESSION IS COMPLETE / Next workout requires MOOD Premium. / Start 7-day free trial → / Maybe later" renders only when `workoutStats` is present AND `!hasActiveAccess` AND `hasUsedFreeSession`. Trial CTA fires the paywall with `recap_footer_cta` trigger.
+  - **Trigger-source attribution (the user-requested polish)**:
+    - `SubscriptionState` gains `lastConversionTrigger`. Set when `openPaywall(trigger)` fires. Persisted to AsyncStorage so it survives app backgrounding mid-conversion.
+    - `subscription_purchased` analytics event signature widened to accept optional `trigger_source`. Phase C's real StoreKit purchase flow will tag the event with `lastConversionTrigger` then call `clearConversionTrigger()`. This means `paywall_viewed` → `trial_started` → `subscription_purchased` all carry the SAME attribution token end-to-end — direct PostHog/Segment funnel.
+  - **New analytics events** (Phase D): `founding_member_modal_shown`, `founding_member_modal_dismissed`.
+  - **Generation cap (Part 5) — STILL NOT WIRED**: deferred again because generation entry points are route-distributed across many `*-workout-display.tsx` files. Wiring it well needs a focused scan — flagged as the next ticket below.
+
 - [2026-05-13] **Paid Launch — Phase B Foundation: Subscription State + Paywall Modal (Parts 5 & 7)** — free-tier mechanics state machine + production-ready paywall modal, plumbed into the root layout. **Wiring** of `canGenerate` / `canStartWorkout` into the actual generation + workout-session entry points is the next ticket (intentionally separated — touches many screens, needs a focused review).
   - **`contexts/SubscriptionContext.tsx`** — typed state machine:
     - `status: 'none' | 'in_trial' | 'active' | 'lapsed' | 'founding_member'`

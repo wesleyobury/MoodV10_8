@@ -52,7 +52,8 @@ const APPLE_DISCLOSURE =
 
 export function PaywallModal() {
   const insets = useSafeAreaInsets();
-  const { pendingTrigger, dismissPaywall, setStatus } = useSubscription();
+  const { pendingTrigger, dismissPaywall, setStatus, lastConversionTrigger, clearConversionTrigger } =
+    useSubscription();
   const { token } = useAuth();
   const [plan, setPlan] = useState<Plan>('annual');
   const visible = pendingTrigger !== null;
@@ -77,10 +78,15 @@ export function PaywallModal() {
   }, [pendingTrigger]);
 
   const handleStartTrial = () => {
+    // Tag the trial start with the originating paywall trigger. The same
+    // attribution sticks through `subscription_purchased` via
+    // `lastConversionTrigger` (cleared on conversion completion in Phase C).
     Analytics.trialStarted(token, { plan, trigger_source: pendingTrigger ?? 'unknown' });
     // PHASE C — StoreKit 2: replace this stub with a real
     // `await SKProductRequest.purchase()` flow and read the resolved
-    // status from the transaction observer instead.
+    // status from the transaction observer instead. When the purchase
+    // actually completes, fire `subscriptionPurchased` with
+    // `trigger_source: lastConversionTrigger` then `clearConversionTrigger()`.
     setStatus('in_trial');
     dismissPaywall();
   };

@@ -31,6 +31,12 @@ interface User {
     form_videos?: 'unseen' | 'completed' | 'dismissed' | 'never';
     completion_share?: 'unseen' | 'completed' | 'dismissed' | 'never';
   };
+  // Phase D — Paid Launch Founding Members (Part 9). Hydrated from
+  // /api/auth/me. The frontend reads these to short-circuit paywall gates
+  // and to show the one-time celebration modal exactly once.
+  founding_member?: boolean;
+  founding_member_at?: string | null;
+  founding_member_modal_seen?: boolean;
 }
 
 interface AuthContextType {

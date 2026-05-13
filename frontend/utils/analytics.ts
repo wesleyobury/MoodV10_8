@@ -538,7 +538,7 @@ export const Analytics = {
       ? trackEvent(token, 'trial_cancelled', metadata)
       : trackGuestEvent('trial_cancelled', metadata),
 
-  subscriptionPurchased: (token: string | null, metadata: { plan: 'annual' | 'monthly' }) =>
+  subscriptionPurchased: (token: string | null, metadata: { plan: 'annual' | 'monthly'; trigger_source?: string | null }) =>
     token
       ? trackEvent(token, 'subscription_purchased', metadata)
       : trackGuestEvent('subscription_purchased', metadata),
@@ -562,6 +562,17 @@ export const Analytics = {
     token
       ? trackEvent(token, 'start_workout_tapped', metadata)
       : trackGuestEvent('start_workout_tapped', metadata),
+
+  // Founding Member — Phase D paid launch.
+  foundingMemberModalShown: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'founding_member_modal_shown', metadata)
+      : trackGuestEvent('founding_member_modal_shown', metadata),
+
+  foundingMemberModalDismissed: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'founding_member_modal_dismissed', metadata)
+      : trackGuestEvent('founding_member_modal_dismissed', metadata),
 };
 
 // Guest Analytics - for tracking guest user activity

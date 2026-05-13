@@ -27,6 +27,7 @@ import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WorkoutStatsCard from '../components/WorkoutStatsCard';
 import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import ImageCropModal from '../components/ImageCropModal';
 import GuestPromptModal from '../components/GuestPromptModal';
@@ -89,6 +90,7 @@ export default function CreatePost() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { user, token, isLoading, isGuest, exitGuestMode } = useAuth();
+  const { hasActiveAccess, hasUsedFreeSession, openPaywall } = useSubscription();
   const [caption, setCaption] = useState('');
   const [selectedMedia, setSelectedMedia] = useState<MediaItem[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -2115,6 +2117,46 @@ export default function CreatePost() {
             By uploading, you confirm you own this content or have the rights to use it.
           </Text>
 
+          {/*
+            Phase B paid-launch — free session recap footer.
+            Only renders when:
+              • the user just completed a workout (workoutStats present), AND
+              • they're not a paying member / founding member, AND
+              • they've consumed their one free live session.
+            The "Maybe later" path dismisses silently; the trial CTA fires
+            the paywall with `recap_footer_cta` trigger so attribution carries
+            through to the eventual `subscription_purchased`.
+          */}
+          {workoutStats && !hasActiveAccess && hasUsedFreeSession ? (
+            <View style={styles.freeSessionFooter} data-testid="free-session-footer">
+              <Text style={styles.freeSessionEyebrow}>YOUR FREE SESSION IS COMPLETE</Text>
+              <Text style={styles.freeSessionBody}>Next workout requires MOOD Premium.</Text>
+              <TouchableOpacity
+                style={styles.freeSessionCta}
+                onPress={() => openPaywall('recap_footer_cta')}
+                data-testid="free-session-trial-cta"
+                testID="free-session-trial-cta"
+              >
+                <LinearGradient
+                  colors={['#FFD700', '#FFA500']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.freeSessionCtaGradient}
+                >
+                  <Text style={styles.freeSessionCtaLabel}>Start 7-day free trial →</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.freeSessionSecondary}
+                onPress={() => router.replace('/(tabs)')}
+                data-testid="free-session-maybe-later"
+                testID="free-session-maybe-later"
+              >
+                <Text style={styles.freeSessionSecondaryLabel}>Maybe later</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
+
           {/* Bottom Spacing */}
           <View style={styles.bottomSpacer} />
         </ScrollView>
@@ -3049,6 +3091,57 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 8,
     fontStyle: 'italic',
+  },
+  // Phase B free-session recap footer
+  freeSessionFooter: {
+    marginTop: 24,
+    marginHorizontal: 16,
+    padding: 22,
+    borderRadius: 16,
+    backgroundColor: '#1A1A1A',
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.18)',
+    alignItems: 'center',
+  },
+  freeSessionEyebrow: {
+    fontSize: 11,
+    letterSpacing: 1.8,
+    color: '#FFD700',
+    fontWeight: '700',
+    marginBottom: 10,
+  },
+  freeSessionBody: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontWeight: '600',
+    letterSpacing: -0.2,
+    textAlign: 'center',
+    marginBottom: 18,
+  },
+  freeSessionCta: {
+    width: '100%',
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 6,
+  },
+  freeSessionCtaGradient: {
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  freeSessionCtaLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#0c0c0c',
+    letterSpacing: 0.3,
+  },
+  freeSessionSecondary: {
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  freeSessionSecondaryLabel: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.5)',
+    fontWeight: '500',
   },
   // Loading Overlay Styles
   loadingOverlay: {

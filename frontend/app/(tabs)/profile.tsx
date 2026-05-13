@@ -33,6 +33,7 @@ import FollowListModal from '../../components/FollowListModal';
 import { useScreenTime } from '../../hooks/useScreenTime';
 import { GridItemSkeleton, ProfileHeaderSkeleton } from '../../components/Skeleton';
 import GuestPromptModal from '../../components/GuestPromptModal';
+import { FoundingMemberBadge } from '../../components/FoundingMemberBadge';
 
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
@@ -851,6 +852,12 @@ export default function Profile() {
               )}
             </View>
             <Text style={styles.bio}>{user.bio}</Text>
+            {/* Phase D — Founding Member badge surfaces lifetime-Premium status. */}
+            {authUser?.founding_member ? (
+              <View style={{ marginTop: 10 }}>
+                <FoundingMemberBadge caption testID="profile-founding-member-badge" />
+              </View>
+            ) : null}
           </View>
 
           <View style={styles.buttonRow}>
