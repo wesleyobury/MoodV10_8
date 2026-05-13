@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
+import { useSubscription } from '../contexts/SubscriptionContext';
+import { useAuth } from '../contexts/AuthContext';
+import { Analytics } from '../utils/analytics';
 
 interface ChooseForMeButtonProps {
   onPress: () => void;
@@ -17,6 +20,13 @@ interface ChooseForMeButtonProps {
   variant?: 'workoutType' | 'equipment' | 'muscleGroup';
   noAnimation?: boolean;
   hideOrText?: boolean;
+  /**
+   * Optional opt-out for the Phase B free-tier guard. Defaults to `false`
+   * (i.e. guarded). Used for non-generation callers (e.g. the Build For Me
+   * teach moment inside the onboarding funnel where the user is being
+   * shown the flow, not consuming a generation).
+   */
+  bypassFreeTierGuard?: boolean;
 }
 
 const BORDER_RADIUS = 12;
@@ -34,12 +44,35 @@ export default function ChooseForMeButton({
   style,
   variant = 'workoutType',
   noAnimation = false,
-  hideOrText = false
+  hideOrText = false,
+  bypassFreeTierGuard = false,
 }: ChooseForMeButtonProps) {
   const fadeAnim = useRef(new Animated.Value(variant === 'muscleGroup' || noAnimation ? 1 : 0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const shimmerAnim = useRef(new Animated.Value(0)).current;
   const [isPressed, setIsPressed] = useState(false);
+
+  // Phase B free-tier guard. Every "Build For Me" tap is a generation, so the
+  // 3-generation cap is enforced HERE (single chokepoint across all 6 moods).
+  // Founding members + active/in-trial users sail through. The hook is read
+  // unconditionally so React Hooks rules stay happy regardless of the prop.
+  const { canGenerate, recordGeneration, openPaywall } = useSubscription();
+  const { token } = useAuth();
+
+  const handlePress = () => {
+    if (bypassFreeTierGuard) {
+      onPress();
+      return;
+    }
+    if (!canGenerate) {
+      Analytics.workoutGenerated(token, { generation_index: -1 });
+      openPaywall('generate_after_cap');
+      return;
+    }
+    recordGeneration();
+    Analytics.workoutGenerated(token, {});
+    onPress();
+  };
 
   const backgroundColor = COLORS[variant];
 
@@ -130,7 +163,7 @@ export default function ChooseForMeButton({
             { backgroundColor },
             disabled && styles.buttonDisabled
           ]}
-          onPress={onPress}
+          onPress={handlePress}
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
           disabled={disabled}

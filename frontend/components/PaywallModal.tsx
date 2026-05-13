@@ -28,9 +28,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
-import { BRAND_GRADIENT, COLORS } from '../constants/brand';import { useSubscription } from '../contexts/SubscriptionContext';
+import { BRAND_GRADIENT, COLORS } from '../constants/brand';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import { useAuth } from '../contexts/AuthContext';
+import { apiFetch } from '../utils/api';
 
 type Plan = 'annual' | 'monthly';
 
@@ -59,11 +61,28 @@ export function PaywallModal() {
   const visible = pendingTrigger !== null;
 
   // Fire view event whenever the modal mounts with a fresh trigger.
+  // Also persist the trigger to the user record so Apple's eventual
+  // server-to-server day-7 charge webhook can stamp the
+  // `subscription_purchased` analytics event with the original attribution.
   useEffect(() => {
     if (visible && pendingTrigger) {
       Analytics.paywallViewed(token, { trigger_source: pendingTrigger });
+      if (token) {
+        apiFetch('/api/subscription/record-trigger', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ trigger: pendingTrigger, plan }),
+        }).catch(() => {
+          // Silent — the local `lastConversionTrigger` is still authoritative
+          // for client-side analytics. Server-side attribution will recover
+          // on the next paywall open.
+        });
+      }
     }
-  }, [visible, pendingTrigger, token]);
+  }, [visible, pendingTrigger, token, plan]);
 
   const headline = useMemo(() => {
     switch (pendingTrigger) {

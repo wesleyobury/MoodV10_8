@@ -14,7 +14,18 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
-- [2026-05-13] **Paid Launch — Phase D: Founding Member system (Part 9) + Phase B gate wiring + trigger-source attribution.** Lifetime-Premium short-circuit for day-one users + the actual gate that fires the paywall on session start.
+- [2026-05-13] **Paid Launch — Generation cap wiring (Part 5) + Server-side trigger-source attribution.** The remaining Phase B gate + the funnel-attribution loop closed end-to-end across the day-7 trial-to-paid boundary.
+  - **Generation cap (Part 5) — single chokepoint**: rather than hunting every `*-workout-display.tsx`, wired the guard directly into `components/ChooseForMeButton.tsx` (the shared "Build For Me" component used by all 6 mood entry routes — `lazy-training-type`, `outdoor-equipment`, `calisthenics-equipment`, `explosiveness-type`, `body-parts`, `workout-type`). Press handler now reads `useSubscription()`:
+    - Active access (founding/in-trial/active) → straight through.
+    - `canGenerate === false` → `openPaywall('generate_after_cap')` + analytics `workout_generated` event with `generation_index: -1` (rejected sentinel).
+    - Otherwise → `recordGeneration()` (idempotent counter bump) + `workout_generated` analytics + original `onPress`.
+    - New `bypassFreeTierGuard` prop for the onboarding teach moment (Step 2) where Build For Me is shown but no generation is consumed.
+  - **Server-side trigger-source attribution (small wire change)**:
+    - `POST /api/subscription/record-trigger` shipped. Persists `subscription.last_trigger_source / last_trigger_plan / last_trigger_at` to the user record. Verified via curl (401 on bogus token).
+    - `PaywallModal` fires this endpoint (fire-and-forget) the moment it mounts with a fresh trigger. Silent failure: the local `lastConversionTrigger` is still authoritative for client-side analytics; server recovers on the next paywall open.
+    - **Why this closes the loop**: Apple's day-7 trial-to-paid charge fires a server-to-server `SUBSCRIBED` / `DID_CHANGE_RENEWAL_STATUS` notification — NOT from the client. The Phase C StoreKit webhook handler reads `subscription.last_trigger_source` from this record and stamps the `subscription_purchased` event with the original paywall attribution. Net result: `paywall_viewed` → `trial_started` → `subscription_purchased` all carry the SAME `trigger_source` even though the final event fires 7 days later from a different process.
+
+
   - **Backend** (`server.py`):
     - `FOUNDING_MEMBER_CUTOFF = datetime(2026, 5, 15, 0, 0, 0, tzinfo=timezone.utc)` per Wes.
     - Startup migration flips `founding_member = true` + `founding_member_at = cutoff` for every user with `created_at < cutoff` whose flag isn't already set. **Already ran in preview — 103 accounts flipped on first run**, second run is `nothing to do` (idempotent ✅).

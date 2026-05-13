@@ -1730,6 +1730,47 @@ async def mark_founding_member_modal_seen(current_user_id: str = Depends(get_cur
     }
 
 
+class SubscriptionTriggerRecord(BaseModel):
+    """
+    Phase B paid-launch — paywall trigger attribution payload.
+    `trigger` is one of: start_workout_after_free_session, generate_after_cap,
+    recap_footer_cta, locked_premium_feature, settings_subscribe, unknown.
+    """
+    trigger: str
+    plan: Optional[str] = None  # 'annual' | 'monthly' | None at trigger time
+
+
+@api_router.post("/subscription/record-trigger")
+async def record_subscription_trigger(
+    payload: SubscriptionTriggerRecord,
+    current_user_id: str = Depends(get_current_user),
+):
+    """
+    Phase B + C — Persist the paywall trigger that opened the current
+    conversion attempt on the user record. When Apple's server-to-server
+    notification (`SUBSCRIBED` / `DID_CHANGE_RENEWAL_STATUS` / etc.) fires
+    on the day-7 trial-to-paid charge, the StoreKit webhook handler reads
+    `subscription.last_trigger_source` from this record and stamps the
+    `subscription_purchased` event with the matching attribution.
+
+    This closes the funnel-attribution loop end-to-end:
+      paywall_viewed → trial_started → subscription_purchased
+    all carry the SAME `trigger_source` even though the final purchase
+    event fires 7 days later from Apple's server (not the client).
+    """
+    await db.users.update_one(
+        {"_id": ObjectId(current_user_id)},
+        {
+            "$set": {
+                "subscription.last_trigger_source": payload.trigger,
+                "subscription.last_trigger_plan": payload.plan,
+                "subscription.last_trigger_at": datetime.now(timezone.utc),
+            }
+        },
+    )
+    return {"ok": True}
+
+
 # Auth Tracking Endpoints
 
 @api_router.get("/auth/sessions")
