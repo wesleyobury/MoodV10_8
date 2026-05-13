@@ -11,9 +11,11 @@ import { CartProvider, useCart } from '../contexts/CartContext';
 import { BadgeProvider } from '../contexts/BadgeContext';
 import { OnboardingProvider } from '../contexts/OnboardingContext';
 import { OnboardingFunnelProvider } from '../contexts/OnboardingFunnelContext';
+import { SubscriptionProvider } from '../contexts/SubscriptionContext';
 import { DraftsProvider } from '../contexts/DraftsContext';
 import { HealthProvider } from '../contexts/HealthContext';
 import HealthOnboardingGate from '../components/HealthOnboardingGate';
+import { PaywallModal } from '../components/PaywallModal';
 import { Analytics } from '../utils/analytics';
 import { initNotifications, notificationService } from '../utils/notifications';
 import FloatingCart from '../components/FloatingCart';
@@ -163,6 +165,7 @@ function AppContent() {
       <HealthOnboardingGate />
       <NavigationStack />
       <FloatingCart />
+      <PaywallModal />
     </>
   );
 }
@@ -186,7 +189,9 @@ function AppProviders({ children }: { children: React.ReactNode }) {
           <BadgeProviderWrapper>
             <OnboardingProvider>
               <OnboardingFunnelProvider>
-                <HealthProvider>{children}</HealthProvider>
+                <SubscriptionProvider>
+                  <HealthProvider>{children}</HealthProvider>
+                </SubscriptionProvider>
               </OnboardingFunnelProvider>
             </OnboardingProvider>
           </BadgeProviderWrapper>

@@ -17,6 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Video, ResizeMode } from 'expo-av';
+import { useSubscription, PaywallTrigger } from '../contexts/SubscriptionContext';
 
 const { width, height } = Dimensions.get('window');
 const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
@@ -98,6 +99,36 @@ const AnimatedFeatureItem = ({ icon, title, description, delay = 0 }: {
         <Text style={styles.featureTitle}>{title}</Text>
         <Text style={styles.featureDescription}>{description}</Text>
       </View>
+    </View>
+  );
+};
+
+/**
+ * Dev-only helper to fire the paywall from the landing screen — lets us
+ * demo each trigger variant without having to walk the full free-tier flow.
+ * Stripped from production bundles by Metro since __DEV__ folds to `false`.
+ */
+const DevPaywallTrigger = () => {
+  const { openPaywall, status } = useSubscription();
+  const triggers: { label: string; trigger: PaywallTrigger }[] = [
+    { label: 'start', trigger: 'start_workout_after_free_session' },
+    { label: 'gen-cap', trigger: 'generate_after_cap' },
+    { label: 'recap', trigger: 'recap_footer_cta' },
+  ];
+  return (
+    <View style={styles.devPaywallRow}>
+      <Text style={styles.devSkipText}>[dev] paywall ({status}):</Text>
+      {triggers.map((t) => (
+        <TouchableOpacity
+          key={t.trigger}
+          onPress={() => openPaywall(t.trigger)}
+          style={styles.devPaywallPill}
+          testID={`dev-paywall-${t.label}`}
+          data-testid={`dev-paywall-${t.label}`}
+        >
+          <Text style={styles.devPaywallPillText}>{t.label}</Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 };
@@ -393,6 +424,25 @@ export default function Welcome() {
                 <Text style={styles.primaryButtonText}>Get Started</Text>
               </LinearGradient>
             </TouchableOpacity>
+
+            {/*
+              Dev-only shortcut so we can demo the paid-launch funnel without
+              having to deep-link by URL or go through register. Stripped from
+              production bundles by Metro since __DEV__ folds to `false`.
+            */}
+            {__DEV__ ? (
+              <>
+                <TouchableOpacity
+                  style={styles.devSkipButton}
+                  onPress={() => router.push('/onboarding-funnel/step-1-mood')}
+                  testID="dev-skip-to-funnel"
+                  data-testid="dev-skip-to-funnel"
+                >
+                  <Text style={styles.devSkipText}>[dev] Skip to onboarding funnel →</Text>
+                </TouchableOpacity>
+                <DevPaywallTrigger />
+              </>
+            ) : null}
           </View>
         </ScrollView>
       </View>
@@ -522,6 +572,37 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#0c0c0c',
+  },
+  devSkipButton: {
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  devSkipText: {
+    fontSize: 12,
+    color: 'rgba(255,215,0,0.55)',
+    fontWeight: '500',
+    letterSpacing: 0.3,
+  },
+  devPaywallRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    gap: 6,
+    paddingVertical: 4,
+  },
+  devPaywallPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.3)',
+  },
+  devPaywallPillText: {
+    fontSize: 10,
+    color: 'rgba(255,215,0,0.85)',
+    fontWeight: '600',
+    letterSpacing: 0.3,
   },
   // Privacy Modal Styles
   modalOverlay: {

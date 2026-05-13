@@ -521,6 +521,47 @@ export const Analytics = {
     token
       ? trackEvent(token, 'medical_disclaimer_accepted', metadata)
       : trackGuestEvent('medical_disclaimer_accepted', metadata),
+
+  // Monetization funnel — Phase B paid launch.
+  paywallViewed: (token: string | null, metadata: { trigger_source: string }) =>
+    token
+      ? trackEvent(token, 'paywall_viewed', metadata)
+      : trackGuestEvent('paywall_viewed', metadata),
+
+  trialStarted: (token: string | null, metadata: { plan: 'annual' | 'monthly'; trigger_source: string }) =>
+    token
+      ? trackEvent(token, 'trial_started', metadata)
+      : trackGuestEvent('trial_started', metadata),
+
+  trialCancelled: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'trial_cancelled', metadata)
+      : trackGuestEvent('trial_cancelled', metadata),
+
+  subscriptionPurchased: (token: string | null, metadata: { plan: 'annual' | 'monthly' }) =>
+    token
+      ? trackEvent(token, 'subscription_purchased', metadata)
+      : trackGuestEvent('subscription_purchased', metadata),
+
+  subscriptionRestored: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'subscription_restored', metadata)
+      : trackGuestEvent('subscription_restored', metadata),
+
+  subscriptionLapsed: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'subscription_lapsed', metadata)
+      : trackGuestEvent('subscription_lapsed', metadata),
+
+  workoutGenerated: (token: string | null, metadata: { generation_index?: number; mood?: string }) =>
+    token
+      ? trackEvent(token, 'workout_generated', metadata)
+      : trackGuestEvent('workout_generated', metadata),
+
+  startWorkoutTapped: (token: string | null, metadata: { allowed: boolean; trigger_source?: string } & Record<string, any>) =>
+    token
+      ? trackEvent(token, 'start_workout_tapped', metadata)
+      : trackGuestEvent('start_workout_tapped', metadata),
 };
 
 // Guest Analytics - for tracking guest user activity

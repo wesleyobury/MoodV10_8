@@ -14,6 +14,31 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-13] **Paid Launch — Phase B Foundation: Subscription State + Paywall Modal (Parts 5 & 7)** — free-tier mechanics state machine + production-ready paywall modal, plumbed into the root layout. **Wiring** of `canGenerate` / `canStartWorkout` into the actual generation + workout-session entry points is the next ticket (intentionally separated — touches many screens, needs a focused review).
+  - **`contexts/SubscriptionContext.tsx`** — typed state machine:
+    - `status: 'none' | 'in_trial' | 'active' | 'lapsed' | 'founding_member'`
+    - `hasUsedFreeSession: boolean` (set true on free workout start, idempotent)
+    - `freeGenerationsUsed: number` (cap `FREE_GENERATION_CAP = 3`)
+    - Derived `hasActiveAccess`, `canGenerate`, `canStartWorkout` flags. Founding Member status short-circuits every gate.
+    - Imperative API: `openPaywall(trigger)`, `dismissPaywall()`, `recordGeneration()`, `recordStartFreeWorkout()`, `setStatus()`.
+    - `PaywallTrigger` enum: `start_workout_after_free_session`, `generate_after_cap`, `recap_footer_cta`, `locked_premium_feature`, `settings_subscribe`, `unknown`.
+    - Persisted to `@mood_subscription_state_v1` AsyncStorage with rehydrate-on-mount. Phase C will replace persistence with StoreKit 2 transaction observers — the consumer API stays stable.
+  - **`components/PaywallModal.tsx`** — mounted once near root, listens to `pendingTrigger`:
+    - Visual frame mirrors `GuestPromptModal.tsx` (slide-up bottom sheet, `#1a1a1a` surface, close button top-right, gold→orange CTA, link row).
+    - Headline adapts to trigger source (`"You hit your free limit."`, `"Next workout, on Premium."`, `"Train how you feel."`).
+    - 5 value bullets per spec.
+    - Annual / Monthly plan cards, annual selected by default with "Save 34%" badge.
+    - Apple required subscription disclosure rendered verbatim.
+    - Privacy · Terms · Restore Purchases link row + "Manage subscription in App Store" deep-link (opens `apps.apple.com/account/subscriptions`).
+    - **`handleStartTrial` is a stub** that flips status to `in_trial` locally — Phase C replaces it with real StoreKit purchase flow.
+  - **Analytics events** added: `paywall_viewed`, `trial_started`, `trial_cancelled`, `subscription_purchased`, `subscription_restored`, `subscription_lapsed`, `workout_generated`, `start_workout_tapped`. Dual-pipeline (auth + guest).
+  - **Root layout** wired: `SubscriptionProvider` nested inside `OnboardingFunnelProvider`, `<PaywallModal />` mounted alongside `<FloatingCart />`.
+  - **Dev-only landing helpers** (Metro strips when `__DEV__` is false):
+    - "[dev] Skip to onboarding funnel →" pill (Phase A).
+    - "[dev] paywall (status): start | gen-cap | recap" trigger row — lets us QA all 3 trigger variants without walking the free flow. Useful for TestFlight demo.
+  - **Smoke test**: paywall renders correctly via dev trigger — gold lock ring, dynamic headline, plan cards, disclosure, link row, all on dark `#0A0A0A`. Screenshot verified at mobile viewport. `tsc --noEmit` zero new errors.
+  - **NOT yet wired into generation/start screens** (next ticket): `Build For Me` / `Generate Again` CTAs need to call `canGenerate → openPaywall('generate_after_cap')`; `workout-session.tsx` start-of-session check needs `canStartWorkout → openPaywall('start_workout_after_free_session')`; recap screen footer needs the "YOUR FREE SESSION IS COMPLETE" / "Start 7-day free trial →" block.
+
 - [2026-05-13] **Paid Launch — Phase A: Onboarding Funnel + Reveal (Parts 1–3 of the v1.0 paid launch spec)** — 11-screen forward-only funnel with personalized cinematic reveal.
   - **Brand single source of truth** (`constants/brand.ts`): `COLORS`, `BRAND_GRADIENT = ['#FFD700', '#FFA500']` (gold→orange from the MOOD landing wordmark), `FUNNEL_TOTAL_STEPS = 8`. Final accent hex can swap here without touching screens.
   - **Funnel state** (`contexts/OnboardingFunnelContext.tsx`): typed `FunnelAnswers` + per-step timing tracker. Persisted to AsyncStorage, rehydrated on mount. Provider added to root `_layout.tsx`.
