@@ -261,7 +261,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: SCROLL_PADDING,
-    paddingRight: SCROLL_PADDING + 22,
     gap: ITEM_GAP,
     alignItems: 'center',
     justifyContent: 'center',
@@ -318,13 +317,11 @@ const styles = StyleSheet.create({
   chevronFloating: {
     position: 'absolute',
     right: 6,
-    bottom: 2,
+    top: 0,
+    bottom: 0,
     width: 22,
-    height: 22,
-    borderRadius: 11,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
   },
   detailPanel: {
     overflow: 'hidden',

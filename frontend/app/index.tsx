@@ -23,7 +23,7 @@ const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
 
 // Background video — bundled locally for instant load on every launch.
 const BG_VIDEO_SOURCE = require('../assets/videos/bg.mp4');
-const VIDEO_FADE_IN_DELAY_MS = 600;
+const VIDEO_FADE_IN_DELAY_MS = 0;
 const VIDEO_FADE_IN_DURATION_MS = 900;
 
 // Animated Feature Item Component
