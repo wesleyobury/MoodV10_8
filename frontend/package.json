@@ -3,7 +3,9 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
+    "sync-env": "node ./scripts/sync-env.js",
+    "prestart": "node ./scripts/sync-env.js",
+    "start": "expo start --clear --tunnel --port 3000",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",

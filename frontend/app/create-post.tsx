@@ -2597,7 +2597,7 @@ const styles = StyleSheet.create({
   },
   equipmentToggleOverlay: {
     position: 'absolute',
-    bottom: 12,
+    top: 12,
     right: 12,
     flexDirection: 'row',
     alignItems: 'center',
