@@ -21,7 +21,8 @@ import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import { useAuth } from '../contexts/AuthContext';
-import { isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
+import { useHealth } from '../contexts/HealthContext';
+import { Analytics, isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
 import { getNotificationStatus, openNotificationSettings, initNotifications, type NotifStatus } from '../utils/notifications';
 import BackButton from '../components/BackButton';
 
@@ -39,6 +40,7 @@ export default function Settings() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { token, logout, user, updateUser } = useAuth();
+  const { status: healthStatus, available: healthAvailable, requestPermissions: requestHealthPermissions } = useHealth();
   const [isDeleting, setIsDeleting] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   
@@ -394,11 +396,67 @@ export default function Settings() {
           </TouchableOpacity>
         </View>
 
+        {/* Health Data Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Health Data</Text>
+
+          {healthAvailable ? (
+            <TouchableOpacity
+              style={styles.settingsItem}
+              data-testid="settings-health-row"
+              onPress={async () => {
+                if (token) {
+                  Analytics.settingsHealthRowTapped(token, {
+                    status: healthStatus,
+                  });
+                }
+                if (healthStatus === 'determined') {
+                  // Deep-link to iOS Settings so the user can fine-tune per-metric grants.
+                  Linking.openURL('x-apple-health://').catch(() => {
+                    Linking.openURL('app-settings:').catch(() => {});
+                  });
+                } else {
+                  await requestHealthPermissions();
+                }
+              }}
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="heart-outline" size={20} color="#FFD700" />
+                <View>
+                  <Text style={styles.settingsItemText}>
+                    {healthStatus === 'determined' ? 'Manage in iOS Settings' : 'Connect Apple Health'}
+                  </Text>
+                  <Text style={styles.settingsItemSubtext}>
+                    {healthStatus === 'determined'
+                      ? 'Recovery metrics connected'
+                      : 'Read 5 recovery metrics to personalize workouts'}
+                  </Text>
+                </View>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color="#666" />
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.settingsItem}>
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="heart-outline" size={20} color="#555" />
+                <View>
+                  <Text style={[styles.settingsItemText, { color: '#888' }]}>Apple Health unavailable</Text>
+                  <Text style={styles.settingsItemSubtext}>Only supported on iPhone</Text>
+                </View>
+              </View>
+            </View>
+          )}
+
+          <Text style={styles.healthFooter}>
+            MOOD reads 5 metrics. We never write, sell, or share your health data.
+          </Text>
+        </View>
+
         {/* Legal Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Legal</Text>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={() => router.push('/terms-of-service')}
           >
@@ -1260,5 +1318,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
     marginTop: 2,
+  },
+  healthFooter: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 6,
+    marginBottom: 4,
+    paddingHorizontal: 4,
+    lineHeight: 18,
   },
 });

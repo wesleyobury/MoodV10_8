@@ -70,6 +70,7 @@
         }
       ],
       "./plugins/withCxx17Fix",
+      "./plugins/withMoodHealthKit",
       "expo-font",
       "expo-web-browser"
     ],

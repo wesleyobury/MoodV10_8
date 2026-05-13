@@ -28,6 +28,7 @@ import { useScreenTime } from '../../hooks/useScreenTime';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import { useFeaturedWorkouts, FeaturedWorkout } from '../../hooks/useFeaturedWorkouts';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
+import HealthSyncIndicator from '../../components/HealthSyncIndicator';
 
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
@@ -924,6 +925,9 @@ export default function WorkoutsHome() {
 
           {/* Yellow divider beneath the tagline */}
           <View style={styles.brandDivider} />
+
+          {/* Quiet "Synced 2m ago" indicator — hidden if no HealthKit permission */}
+          <HealthSyncIndicator />
         </View>
 
         {/* Progress Tracker - Animated Counting Stats */}

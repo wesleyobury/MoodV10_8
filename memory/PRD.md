@@ -14,6 +14,18 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-02-13] **HealthKit integration (Apple Health, read-only)** — Swift native module + Expo config plugin + RN UI:
+  - **Native module `modules/mood-healthkit/`**: Swift `MoodHealthKitModule` (iOS 16+, Expo Modules API) exposing exactly two JS-facing async functions — `requestPermissions()` (triggers native HealthKit sheet) and `fetchSnapshot()` (reads 5 metrics: restingHeartRate, heartRateVariabilitySDNN, sleepAnalysis asleep-duration last night, activeEnergyBurned yesterday total, stepCount yesterday total). Plus `getAuthorizationStatus()` helper.
+  - **Config plugin `plugins/withMoodHealthKit.js`**: injects `com.apple.developer.healthkit` entitlement and `NSHealthShareUsageDescription = "MOOD reads your heart rate, HRV, sleep, and activity to personalize workouts based on your recovery."`. Registered in `app.json`.
+  - **RN context `contexts/HealthContext.tsx`**: persists last snapshot to AsyncStorage, refreshes on app foreground + on indicator tap, fails silently if permissions denied. Snapshot is intentionally NOT yet fed into workout generation (separate ticket per spec).
+  - **3-screen onboarding flow** (`app/onboarding/medical-disclaimer.tsx` → `health-intro.tsx` → `health-connect.tsx`), gated by `components/HealthOnboardingGate.tsx` (routes authenticated users to disclaimer on first session). Medical disclaimer text mirrored into Terms of Service.
+  - **Sync indicator** (`components/HealthSyncIndicator.tsx`): single-line "Synced 2m ago", opacity 0.55, monochrome, no emoji/badges. Tap → silent refresh with 0.8s opacity dip. Hidden entirely when permission isn't granted. Relative time ticks every 60s.
+  - **Settings screen "Health Data" section**: deep-links to iOS Settings if already granted, else triggers connect flow. Footer reminds users MOOD never writes/sells/shares health data.
+  - **Analytics**: 5 new events (`health_permission_prompted`, `health_permission_granted`, `health_permission_denied`, `health_snapshot_refreshed`, `settings_health_row_tapped`) wired through existing `Analytics` namespace in `utils/analytics.ts`.
+  - **Unit tests** (`utils/healthSyncFormat.test.ts` — 9/9 PASS): relative-time formatter ("just now", "1m ago", "12m ago", "2h ago", "3d ago", null/garbage handling, future-time clamping).
+  - **Out of scope (NOT built)**: snapshot → workout generation injection, paid tier, subscriptions, account system, Whoop/Oura/Garmin APIs, Android, HealthKit write-back, trend charts.
+  - **Delivery path**: EAS Build → TestFlight. The HealthKit native module CANNOT run in Expo Go or in this Linux pod — needs a custom dev client / TestFlight build and a real iPhone (ideally paired with an Apple Watch for HRV / resting HR data).
+
 ## What's Been Implemented
 - [2026-05-12 PM2] **In-session progress bar — exercise tracking + expandable detail panel**:
   - **New component `frontend/components/InSessionProgressBar.tsx`**: horizontal scrollable bar of equipment icons (one per session exercise), max ~4 visible at once, auto-scrolls on `currentIndex` change to keep the active step pinned at position-2 of 4 (clamped at start/end). Three icon states: active (gold gradient + equipment Ionicon), completed (dim gold + checkmark), upcoming (outlined). Chevron strip with tap + swipe-down PanResponder expands a detail panel showing equipment / workout title / first-1–2-sentence description snippet for the CURRENT exercise only. Default collapsed.

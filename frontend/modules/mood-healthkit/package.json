@@ -1,0 +1,7 @@
+{
+  "name": "mood-healthkit",
+  "version": "1.0.0",
+  "description": "MOOD HealthKit bridge — read-only access to 5 recovery metrics.",
+  "main": "src/index.ts",
+  "private": true
+}

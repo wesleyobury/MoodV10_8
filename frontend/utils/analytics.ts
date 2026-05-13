@@ -441,6 +441,22 @@ export const Analytics = {
 
   tipNeverShow: (token: string, metadata: { tip_id: string }) =>
     trackEvent(token, 'tip_never_show', metadata),
+
+  // HealthKit Events
+  healthPermissionPrompted: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'health_permission_prompted', metadata),
+
+  healthPermissionGranted: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'health_permission_granted', metadata),
+
+  healthPermissionDenied: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'health_permission_denied', metadata),
+
+  healthSnapshotRefreshed: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'health_snapshot_refreshed', metadata),
+
+  settingsHealthRowTapped: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'settings_health_row_tapped', metadata),
 };
 
 // Guest Analytics - for tracking guest user activity
