@@ -22,11 +22,23 @@ public class MoodHealthKitModule: Module {
     if let t = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) { types.insert(t) }
     if let t = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned) { types.insert(t) }
     if let t = HKObjectType.quantityType(forIdentifier: .stepCount) { types.insert(t) }
+    if let t = HKObjectType.quantityType(forIdentifier: .heartRate) { types.insert(t) }
     return types
   }
 
+  // MARK: - Live heart-rate streaming
+  // An HKAnchoredObjectQuery with updateHandler streams new samples as they
+  // arrive on the iPhone (typically forwarded from a paired Apple Watch every
+  // ~5s during a workout). We keep one query alive per session; multiple
+  // start calls replace any in-flight query.
+  private var liveHRQuery: HKAnchoredObjectQuery?
+  private let liveHRQueue = DispatchQueue(label: "com.official.moodapp.healthkit.liveHR")
+
   public func definition() -> ModuleDefinition {
     Name("MoodHealthKit")
+
+    // JS subscribes to this event during a workout to receive live HR samples.
+    Events("onHeartRateSample")
 
     Constants([
       "isHealthDataAvailable": HKHealthStore.isHealthDataAvailable()
@@ -73,6 +85,64 @@ public class MoodHealthKitModule: Module {
       Task {
         let snapshot = await Self.buildSnapshot(store: storeRef)
         promise.resolve(snapshot)
+      }
+    }
+
+    /// Begin streaming live heart-rate samples. Each new sample fires an
+    /// `onHeartRateSample` event with `{ bpm: Double, timestamp: String (ISO) }`.
+    /// Multiple start calls are idempotent — any in-flight query is replaced.
+    AsyncFunction("startHeartRateStream") { (promise: Promise) in
+      guard HKHealthStore.isHealthDataAvailable(),
+            let hrType = HKObjectType.quantityType(forIdentifier: .heartRate) else {
+        promise.resolve(false)
+        return
+      }
+      self.liveHRQueue.async {
+        // Stop any in-flight query first.
+        if let existing = self.liveHRQuery {
+          self.store.stop(existing)
+          self.liveHRQuery = nil
+        }
+
+        // Stream only samples that arrive after this moment. We don't want to
+        // replay historical samples into the live UI.
+        let predicate = HKQuery.predicateForSamples(withStart: Date(), end: nil, options: .strictStartDate)
+
+        let handler: (HKAnchoredObjectQuery, [HKSample]?, [HKDeletedObject]?, HKQueryAnchor?, Error?) -> Void = { [weak self] _, samples, _, _, _ in
+          guard let self = self, let qSamples = samples as? [HKQuantitySample], !qSamples.isEmpty else { return }
+          let bpmUnit = HKUnit.count().unitDivided(by: .minute())
+          let iso = ISO8601DateFormatter()
+          for s in qSamples {
+            let bpm = s.quantity.doubleValue(for: bpmUnit)
+            self.sendEvent("onHeartRateSample", [
+              "bpm": bpm,
+              "timestamp": iso.string(from: s.endDate)
+            ])
+          }
+        }
+
+        let query = HKAnchoredObjectQuery(
+          type: hrType,
+          predicate: predicate,
+          anchor: nil,
+          limit: HKObjectQueryNoLimit,
+          resultsHandler: handler
+        )
+        query.updateHandler = handler
+        self.liveHRQuery = query
+        self.store.execute(query)
+        promise.resolve(true)
+      }
+    }
+
+    /// Stop the live HR stream. Safe to call multiple times.
+    AsyncFunction("stopHeartRateStream") { (promise: Promise) in
+      self.liveHRQueue.async {
+        if let q = self.liveHRQuery {
+          self.store.stop(q)
+          self.liveHRQuery = nil
+        }
+        promise.resolve(true)
       }
     }
   }

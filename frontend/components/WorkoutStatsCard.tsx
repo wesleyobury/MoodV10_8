@@ -117,6 +117,11 @@ interface WorkoutStatsCardProps {
   showRingPulse?: boolean;
   showEquipment?: boolean;
   variant?: 'rings' | 'simple' | 'heartrate';
+  /** Real heart-rate samples (BPM) captured during the workout. When non-empty
+   *  and `variant === 'heartrate'`, these replace the synthesized curve. */
+  heartRateSamples?: number[];
+  /** Real avg/peak from the captured samples; falls back to synth if absent. */
+  heartRateRealStats?: { avg: number; peak: number };
 }
 
 // Calculate intensity percentage based on workout characteristics
@@ -242,6 +247,8 @@ export default function WorkoutStatsCard({
   showRingPulse = false,
   showEquipment = false,
   variant = 'rings',
+  heartRateSamples,
+  heartRateRealStats,
 }: WorkoutStatsCardProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -656,11 +663,18 @@ export default function WorkoutStatsCard({
     );
   }
 
-  // ---- Variant: HEARTRATE — MOOD header + exercises + synthetic HR area chart
+  // ---- Variant: HEARTRATE — MOOD header + exercises + HR area chart.
+  // When real Apple-Watch samples were captured for this session, swap them in
+  // for the synthesized curve. Otherwise we fall back to the deterministic
+  // synth so the share card never looks empty.
   if (variant === 'heartrate') {
     const chartW = CARD_WIDTH - 56;
     const chartH = 110;
-    const { line, area } = buildHeartRatePath(heartRate.points, chartW, chartH);
+    const usingReal = !!(heartRateSamples && heartRateSamples.length >= 2);
+    const points = usingReal ? heartRateSamples! : heartRate.points;
+    const avg = usingReal ? (heartRateRealStats?.avg ?? Math.round(points.reduce((a, b) => a + b, 0) / points.length)) : heartRate.avg;
+    const peak = usingReal ? (heartRateRealStats?.peak ?? Math.max(...points)) : heartRate.peak;
+    const { line, area } = buildHeartRatePath(points, chartW, chartH);
     return wrapInFrame(
       <View style={styles.altCardInner}>
         {renderMoodHeader()}
@@ -672,7 +686,7 @@ export default function WorkoutStatsCard({
               <Text style={[styles.hrLabel, transparent && styles.altTextShadow]}>HEART RATE</Text>
             </View>
             <Text style={[styles.hrStat, transparent && styles.altTextShadow]}>
-              avg <Text style={styles.hrStatValue}>{heartRate.avg}</Text>  ·  peak <Text style={styles.hrStatValue}>{heartRate.peak}</Text>  bpm
+              avg <Text style={styles.hrStatValue}>{avg}</Text>  ·  peak <Text style={styles.hrStatValue}>{peak}</Text>  bpm
             </Text>
           </View>
           <View style={styles.hrChartContainer}>

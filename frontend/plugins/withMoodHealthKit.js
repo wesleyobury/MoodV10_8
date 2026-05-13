@@ -10,7 +10,7 @@
 const { withEntitlementsPlist, withInfoPlist } = require('@expo/config-plugins');
 
 const USAGE_DESCRIPTION =
-  'MOOD reads your heart rate, HRV, sleep, and activity to personalize workouts based on your recovery.';
+  'MOOD reads your heart rate, HRV, sleep, and activity to personalize workouts and track your live heart rate during sessions.';
 
 function withHealthKitEntitlement(config) {
   return withEntitlementsPlist(config, (cfg) => {

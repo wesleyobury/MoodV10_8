@@ -457,6 +457,28 @@ export const Analytics = {
 
   settingsHealthRowTapped: (token: string, metadata: Record<string, any>) =>
     trackEvent(token, 'settings_health_row_tapped', metadata),
+
+  // Workout Session (live HR + recap)
+  workoutSessionStarted: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'workout_session_started', metadata),
+
+  workoutSessionEnded: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'workout_session_ended', metadata),
+
+  hrSamplesCapturedCount: (token: string, metadata: { count: number }) =>
+    trackEvent(token, 'hr_samples_captured_count', metadata),
+
+  workoutRecapViewed: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'workout_recap_viewed', metadata),
+
+  shareToInstagramTapped: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'share_to_instagram_tapped', metadata),
+
+  shareToCameraRollTapped: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'share_to_camera_roll_tapped', metadata),
+
+  shareCompleted: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'share_completed', metadata),
 };
 
 // Guest Analytics - for tracking guest user activity

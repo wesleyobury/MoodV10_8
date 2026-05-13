@@ -45,6 +45,15 @@ export default function WorkoutSessionScreen() {
   const { clearCart } = useCart();
   const { token } = useAuth();
   const { markCompleted } = useDrafts();
+  const { status: healthStatus } = useHealth();
+
+  // Live heart-rate streaming. Samples accumulate in a ref so the updateHandler
+  // doesn't blow up re-renders during long sessions; the stream is started
+  // once on mount and torn down on unmount or session end.
+  const hrSamplesRef = useRef<LiveHeartRateSample[]>([]);
+  const hrSubRef = useRef<{ remove: () => Promise<void> } | null>(null);
+  const sessionStartRef = useRef<string>(new Date().toISOString());
+  const [showNoWatchToast, setShowNoWatchToast] = useState(false);
   
   const [sessionWorkouts, setSessionWorkouts] = useState<SessionWorkout[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -104,6 +113,50 @@ export default function WorkoutSessionScreen() {
     }
   };
 
+  // ─────────────────────────────────────────────────────────────────
+  // Live heart-rate stream lifecycle.
+  // Starts once when the session screen mounts (subject to permission).
+  // Stops on unmount AND in handleFinishSession (whichever fires first).
+  // ─────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (healthStatus !== 'determined') return;
+    let cancelled = false;
+    sessionStartRef.current = new Date().toISOString();
+    hrSamplesRef.current = [];
+
+    if (token) {
+      Analytics.workoutSessionStarted(token, {
+        started_at: sessionStartRef.current,
+      });
+    }
+
+    (async () => {
+      const sub = await subscribeHeartRateStream((sample) => {
+        hrSamplesRef.current.push(sample);
+      });
+      if (cancelled) {
+        sub.remove().catch(() => {});
+        return;
+      }
+      hrSubRef.current = sub;
+    })();
+
+    const watchTimer = setTimeout(() => {
+      if (hrSamplesRef.current.length === 0) {
+        setShowNoWatchToast(true);
+      }
+    }, 30_000);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(watchTimer);
+      if (hrSubRef.current) {
+        hrSubRef.current.remove().catch(() => {});
+        hrSubRef.current = null;
+      }
+    };
+  }, [healthStatus, token]);
+
   useEffect(() => {
     try {
       const workoutsParam = params.sessionWorkouts as string;
@@ -121,6 +174,56 @@ export default function WorkoutSessionScreen() {
       setIsLoading(false);
     }
   }, [params]);
+
+  // ─────────────────────────────────────────────────────────────────
+  // Live heart-rate stream lifecycle.
+  // Starts once when the session screen mounts (subject to permission).
+  // Stops on unmount AND in handleFinishSession (whichever fires first).
+  // ─────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (healthStatus !== 'determined') return;
+    let cancelled = false;
+    sessionStartRef.current = new Date().toISOString();
+    hrSamplesRef.current = [];
+
+    if (token) {
+      Analytics.workoutSessionStarted(token, {
+        started_at: sessionStartRef.current,
+      });
+    }
+
+    (async () => {
+      const sub = await subscribeHeartRateStream((sample) => {
+        hrSamplesRef.current.push(sample);
+        // Throttled state update so the screen can show a live count without
+        // re-rendering on every single sample (cheap enough at 5s cadence,
+        // but keeps the door open for higher-frequency sources later).
+        setHrSampleCount(hrSamplesRef.current.length);
+      });
+      if (cancelled) {
+        sub.remove().catch(() => {});
+        return;
+      }
+      hrSubRef.current = sub;
+    })();
+
+    // Apple Watch detection — if zero samples land in the first 30s after a
+    // permission-granted start, gently nudge the user. Don't block anything.
+    const watchTimer = setTimeout(() => {
+      if (hrSamplesRef.current.length === 0) {
+        setShowNoWatchToast(true);
+      }
+    }, 30_000);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(watchTimer);
+      if (hrSubRef.current) {
+        hrSubRef.current.remove().catch(() => {});
+        hrSubRef.current = null;
+      }
+    };
+  }, [healthStatus, token]);
 
   const currentWorkout = sessionWorkouts[currentIndex];
   const isLastWorkout = currentIndex === sessionWorkouts.length - 1;
@@ -281,13 +384,50 @@ export default function WorkoutSessionScreen() {
 
     // Mark saved-build draft as completed (fire-and-forget)
     markCompleted().catch(() => {});
-    
-    // Navigate to create-post with workout stats
+
+    // ─────────── Stop live HR stream + persist session ───────────
+    if (hrSubRef.current) {
+      hrSubRef.current.remove().catch(() => {});
+      hrSubRef.current = null;
+    }
+    const samples = [...hrSamplesRef.current];
+    const endedAt = new Date().toISOString();
+    let recapStats: { avg: number; peak: number } | undefined;
+    let recapBpmSeries: number[] | undefined;
+    if (samples.length > 0) {
+      const userAge = (await loadUserAge()) ?? 30; // Default age 30 if not set in Settings
+      const stats = computeHeartRateStats(samples, userAge);
+      const persisted: PersistedSession = {
+        id: `${sessionStartRef.current}-${endedAt}`,
+        startedAt: sessionStartRef.current,
+        endedAt,
+        workoutType: moodCategory,
+        heartRateSamples: samples,
+        stats,
+      };
+      appendSession(persisted).catch(() => {});
+      if (stats) {
+        recapStats = { avg: stats.avgHR, peak: stats.maxHR };
+        recapBpmSeries = samples.map((s) => s.bpm).filter((b) => Number.isFinite(b) && b > 0);
+      }
+    }
+    if (token) {
+      Analytics.workoutSessionEnded(token, {
+        ended_at: endedAt,
+        samples_captured: samples.length,
+      });
+      Analytics.hrSamplesCapturedCount(token, { count: samples.length });
+    }
+
+    // Navigate to create-post with workout stats + (optional) HR data
     console.log('Navigating to create-post...');
     router.push({
       pathname: '/create-post',
       params: {
-        workoutStats: JSON.stringify(workoutStatsData)
+        workoutStats: JSON.stringify(workoutStatsData),
+        heartRateSeries: recapBpmSeries ? JSON.stringify(recapBpmSeries) : '',
+        heartRateAvg: recapStats ? String(recapStats.avg) : '',
+        heartRatePeak: recapStats ? String(recapStats.peak) : '',
       }
     });
     console.log('Navigation command sent');
@@ -537,6 +677,16 @@ export default function WorkoutSessionScreen() {
             body: 'Tap the visual cues search above to open video tutorials for every exercise.',
           },
         ]}
+      />
+
+      {/* Apple Watch nudge — fires once if no HR sample lands in the first 30s
+          after a permission-granted session start. Non-blocking. */}
+      <Toast
+        message="Wear your Apple Watch to track heart rate"
+        visible={showNoWatchToast}
+        onHide={() => setShowNoWatchToast(false)}
+        duration={4000}
+        type="info"
       />
     </SafeAreaView>
   );

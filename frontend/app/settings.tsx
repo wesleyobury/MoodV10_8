@@ -22,6 +22,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import { useAuth } from '../contexts/AuthContext';
 import { useHealth } from '../contexts/HealthContext';
+import { loadUserAge, saveUserAge } from '../utils/workoutSessionStorage';
 import { Analytics, isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
 import { getNotificationStatus, openNotificationSettings, initNotifications, type NotifStatus } from '../utils/notifications';
 import BackButton from '../components/BackButton';
@@ -42,6 +43,17 @@ export default function Settings() {
   const { token, logout, user, updateUser } = useAuth();
   const { status: healthStatus, available: healthAvailable, requestPermissions: requestHealthPermissions } = useHealth();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [userAge, setUserAge] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadUserAge().then((age) => {
+      if (!cancelled) setUserAge(age);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const [showTerms, setShowTerms] = useState(false);
   
   // Analytics opt-out state
@@ -1254,6 +1266,81 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   credentialsDescription: {
+    fontSize: 15,
+    color: '#999',
+    lineHeight: 22,
+    marginBottom: 24,
+  },
+  inputSection: {
+    marginBottom: 20,
+  },
+  inputLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 8,
+  },
+  credentialInput: {
+    backgroundColor: '#1a1a1a',
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 16,
+    color: '#fff',
+    borderWidth: 1,
+    borderColor: '#333',
+  },
+  passwordInputContainer: {
+    position: 'relative',
+  },
+  eyeButton: {
+    position: 'absolute',
+    right: 16,
+    top: 16,
+    padding: 4,
+  },
+  dividerLine: {
+    height: 1,
+    backgroundColor: '#333',
+    marginVertical: 20,
+  },
+  credentialsNote: {
+    fontSize: 13,
+    color: '#666',
+    lineHeight: 20,
+    marginTop: 8,
+    marginBottom: 24,
+    fontStyle: 'italic',
+  },
+  updateButton: {
+    backgroundColor: '#FFD700',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  updateButtonDisabled: {
+    backgroundColor: '#333',
+  },
+  updateButtonText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#000',
+  },
+  settingsItemSubtext: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 2,
+  },
+  healthFooter: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 6,
+    marginBottom: 4,
+    paddingHorizontal: 4,
+    lineHeight: 18,
+  },
+});
+ credentialsDescription: {
     fontSize: 15,
     color: '#999',
     lineHeight: 22,

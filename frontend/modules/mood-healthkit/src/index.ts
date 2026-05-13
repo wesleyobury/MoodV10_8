@@ -36,6 +36,14 @@ interface NativeModuleShape {
   getAuthorizationStatus(): Promise<HealthAuthorizationStatus>;
   requestPermissions(): Promise<{ granted: boolean; reason: string }>;
   fetchSnapshot(): Promise<BiometricSnapshot | null>;
+  startHeartRateStream(): Promise<boolean>;
+  stopHeartRateStream(): Promise<boolean>;
+  addListener(eventName: string, listener: (...args: any[]) => void): { remove: () => void };
+}
+
+export interface LiveHeartRateSample {
+  bpm: number;
+  timestamp: string;
 }
 
 const native = requireOptionalNativeModule<NativeModuleShape>('MoodHealthKit');
@@ -71,4 +79,38 @@ export const fetchSnapshot = async (): Promise<BiometricSnapshot | null> => {
   } catch {
     return null;
   }
+};
+
+/** Begin streaming live HR samples. The returned subscription removes the
+ *  listener AND stops the native query — always call it when the session ends. */
+export const subscribeHeartRateStream = async (
+  listener: (sample: LiveHeartRateSample) => void,
+): Promise<{ remove: () => Promise<void> }> => {
+  if (!native) {
+    return { remove: async () => {} };
+  }
+  const sub = native.addListener('onHeartRateSample', (event: any) => {
+    if (event && typeof event.bpm === 'number' && typeof event.timestamp === 'string') {
+      listener({ bpm: event.bpm, timestamp: event.timestamp });
+    }
+  });
+  try {
+    await native.startHeartRateStream();
+  } catch {
+    // start failed — listener will simply never fire; remove() is still safe
+  }
+  return {
+    remove: async () => {
+      try {
+        sub.remove();
+      } catch {
+        // ignore
+      }
+      try {
+        await native.stopHeartRateStream();
+      } catch {
+        // ignore
+      }
+    },
+  };
 };

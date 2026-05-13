@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -94,6 +94,28 @@ export default function CreatePost() {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [workoutStats, setWorkoutStats] = useState<WorkoutStats | null>(null);
+
+  // Optional live heart-rate payload forwarded by workout-session.tsx. When
+  // present, the 'heartrate' variant renders these real samples instead of
+  // the synthesized fallback curve.
+  const heartRateSeries = useMemo<number[] | undefined>(() => {
+    const raw = params.heartRateSeries as string | undefined;
+    if (!raw) return undefined;
+    try {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length >= 2) return arr.map(Number).filter((n) => Number.isFinite(n) && n > 0);
+    } catch {
+      // ignore
+    }
+    return undefined;
+  }, [params.heartRateSeries]);
+
+  const heartRateRealStats = useMemo<{ avg: number; peak: number } | undefined>(() => {
+    const avg = parseInt((params.heartRateAvg as string) || '', 10);
+    const peak = parseInt((params.heartRatePeak as string) || '', 10);
+    if (Number.isFinite(avg) && Number.isFinite(peak)) return { avg, peak };
+    return undefined;
+  }, [params.heartRateAvg, params.heartRatePeak]);
   const [hasStatsCard, setHasStatsCard] = useState(false);
   const [saveButtonPressed, setSaveButtonPressed] = useState(false);
   const statsCardRef = useRef(null);
@@ -362,6 +384,11 @@ export default function CreatePost() {
         const stats = JSON.parse(params.workoutStats as string);
         setWorkoutStats(stats);
         setHasStatsCard(true);
+        if (token) {
+          Analytics.workoutRecapViewed(token, {
+            has_heart_rate: !!params.heartRateSeries,
+          });
+        }
         
         // Randomized workout emojis
         const workoutEmojis = ['⚡', '💪', '🏋️', '🏃', '💦', '🔥', '🎯', '✨', '🚀', '💥'];
@@ -869,6 +896,13 @@ export default function CreatePost() {
         return;
       }
 
+      if (token) {
+        Analytics.shareToInstagramTapped(token, {
+          has_heart_rate: !!heartRateSeries,
+          samples: heartRateSeries?.length ?? 0,
+        });
+      }
+
       setIsExportingToInstagram(true);
 
       if (Platform.OS === 'web') {
@@ -951,6 +985,12 @@ export default function CreatePost() {
       return;
     }
     await MediaLibrary.saveToLibraryAsync(uri);
+    if (token) {
+      Analytics.shareCompleted(token, {
+        destination: 'instagram_stories',
+        has_heart_rate: !!heartRateSeries,
+      });
+    }
 
     // 3) Check if Instagram is installed and open Stories camera
     const canOpenStories = await Linking.canOpenURL('instagram://story-camera');
@@ -1972,6 +2012,8 @@ export default function CreatePost() {
                         showRingPulse={v === 'rings'}
                         showEquipment={showEquipment}
                         variant={v}
+                        heartRateSamples={heartRateSeries}
+                        heartRateRealStats={heartRateRealStats}
                       />
                     </View>
                   ))}
@@ -2015,6 +2057,8 @@ export default function CreatePost() {
                   showRingPulse={false}
                   showEquipment={showEquipment}
                   variant={cardVariant}
+                  heartRateSamples={heartRateSeries}
+                  heartRateRealStats={heartRateRealStats}
                 />
               </View>
 
@@ -2029,6 +2073,8 @@ export default function CreatePost() {
                   minuteTarget={minuteTarget}
                   showEquipment={showEquipment}
                   variant={cardVariant}
+                  heartRateSamples={heartRateSeries}
+                  heartRateRealStats={heartRateRealStats}
                 />
               </View>
               
