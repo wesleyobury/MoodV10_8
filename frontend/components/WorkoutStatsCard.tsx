@@ -529,6 +529,34 @@ export default function WorkoutStatsCard({
   // Per-mount random seed for heart-rate variant. Real tracking will replace this.
   const [hrSeed] = useState<number>(() => Math.random());
 
+  // MOOD header that exactly matches the landing page (index.tsx).
+  // Landing recipe: fontSize 48 / bold / letterSpacing 2 / center-mask /
+  // LinearGradient #FFD700 → #FFA500 horizontal. MaskedView is loaded with a
+  // safe-import fallback at module top — when unavailable, render flat gold.
+  const renderMoodHeader = () => {
+    const moodTextStyle = [
+      styles.altMoodHeader,
+      transparent && styles.altTextShadow,
+    ];
+    if (!MaskedView) {
+      return <Text style={moodTextStyle}>MOOD</Text>;
+    }
+    return (
+      <View style={styles.altMoodHeaderWrap}>
+        <MaskedView
+          maskElement={<Text style={moodTextStyle}>MOOD</Text>}
+        >
+          <ExpoLinearGradient
+            colors={['#FFD700', '#FFA500']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.altMoodGradient}
+          />
+        </MaskedView>
+      </View>
+    );
+  };
+
   // ============================================
   // ALT VARIANTS: SIMPLE + HEARTRATE
   // ============================================
@@ -600,7 +628,7 @@ export default function WorkoutStatsCard({
   if (variant === 'simple') {
     return wrapInFrame(
       <View style={styles.altCardInner}>
-        <Text style={[styles.altMoodHeader, transparent && styles.altTextShadow]}>MOOD</Text>
+        {renderMoodHeader()}
         {renderExerciseList()}
         <View style={styles.simpleStatsPill}>
           <View style={styles.simpleStatCell}>
@@ -635,7 +663,7 @@ export default function WorkoutStatsCard({
     const { line, area } = buildHeartRatePath(heartRate.points, chartW, chartH);
     return wrapInFrame(
       <View style={styles.altCardInner}>
-        <Text style={[styles.altMoodHeader, transparent && styles.altTextShadow]}>MOOD</Text>
+        {renderMoodHeader()}
         {renderExerciseList()}
         <View style={styles.hrSection}>
           <View style={styles.hrHeaderRow}>
@@ -1233,12 +1261,20 @@ const styles = StyleSheet.create({
     paddingBottom: 18,
   },
   altMoodHeader: {
-    fontSize: 44,
-    lineHeight: 48,
-    fontWeight: '800',
-    color: '#FFD700',
-    letterSpacing: 0,
+    // EXACT match to landing page (index.tsx → styles.title)
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#fff',
+    letterSpacing: 2,
     textAlign: 'left',
+  },
+  altMoodHeaderWrap: {
+    height: 60,
+    alignSelf: 'flex-start',
+  },
+  altMoodGradient: {
+    width: 200,
+    height: 60,
   },
   altTextShadow: {
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
@@ -1279,7 +1315,9 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
 
-  // SIMPLE — 4-stat bottom pill (matches user's screenshot)
+  // SIMPLE — 4-stat bottom pill. Stat typography mirrors the rings variant's
+  // durationValue/centerCalorieValue/intensityValue: thin (300/400), -1
+  // letterSpacing, gold accent on CAL + SPLIT, white on MIN + INTENSITY.
   simpleStatsPill: {
     flexDirection: 'row',
     alignItems: 'stretch',
@@ -1301,16 +1339,18 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   simpleStatValue: {
-    fontSize: 26,
-    fontWeight: '800',
+    // matches rings variant durationValue: 24/300/-1/white
+    fontSize: 24,
+    fontWeight: '300',
     color: '#FFFFFF',
-    letterSpacing: -0.3,
-    lineHeight: 30,
+    letterSpacing: -1,
+    lineHeight: 28,
   },
   simpleStatValueSplit: {
+    // thin matches the rest of the pill; smaller because two lines stack
     fontSize: 15,
-    fontWeight: '800',
-    letterSpacing: 0.5,
+    fontWeight: '300',
+    letterSpacing: 0,
     lineHeight: 18,
     textAlign: 'center',
   },
@@ -1318,11 +1358,12 @@ const styles = StyleSheet.create({
     color: '#FFD700',
   },
   simpleStatLabel: {
+    // matches rings variant centerCalorieLabel: 9/white@50%
     fontSize: 9,
     color: 'rgba(255, 255, 255, 0.5)',
-    letterSpacing: 1.5,
+    letterSpacing: 1.2,
     marginTop: 3,
-    fontWeight: '600',
+    fontWeight: '400',
   },
 
   // HEARTRATE — gold theme to match brand
