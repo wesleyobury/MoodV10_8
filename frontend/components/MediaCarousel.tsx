@@ -50,20 +50,26 @@ const MediaCarousel = memo(({ media, postId, isPostVisible = true, onIndexChange
   // Visibility state for video optimization - renamed to avoid shadowing
   const [isInCenter, setIsInCenter] = useState(isPostVisible);
   const visibilityTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const [stationaryFor500ms, setStationaryFor500ms] = useState(false);
+  const [stationaryAfterGate, setStationaryAfterGate] = useState(false);
+
+  // Wait for the post to stay >=50% visible for VIDEO_AUTOPLAY_GATE_MS before
+  // mounting the player. The gate avoids loading videos the user is scrolling
+  // past, but is cancellable — if visibility flips false before the timer
+  // fires, no video network request is made. Phase 1 trim: 500ms → 150ms.
+  const VIDEO_AUTOPLAY_GATE_MS = 150;
 
   // Update center state based on visibility prop
   useEffect(() => {
     if (isPostVisible) {
       visibilityTimerRef.current = setTimeout(() => {
-        setStationaryFor500ms(true);
+        setStationaryAfterGate(true);
         setIsInCenter(true);
-      }, 500);
+      }, VIDEO_AUTOPLAY_GATE_MS);
     } else {
       if (visibilityTimerRef.current) {
         clearTimeout(visibilityTimerRef.current);
       }
-      setStationaryFor500ms(false);
+      setStationaryAfterGate(false);
       setIsInCenter(false);
     }
 
@@ -134,7 +140,7 @@ const MediaCarousel = memo(({ media, postId, isPostVisible = true, onIndexChange
                 <SmartVideoPlayer 
                   uri={mediaUrl}
                   coverUrl={coverUrl}
-                  isActive={index === activeIndex && stationaryFor500ms}
+                  isActive={index === activeIndex && stationaryAfterGate}
                   postIsInCenter={isInCenter}
                 />
               ) : (
