@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form, Request, Response, Header
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form, Request, Response, Header, BackgroundTasks
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -7431,6 +7431,79 @@ def get_cloudinary_video_thumbnail(public_id: str, timestamp: float = 2.0) -> st
     """Generate a thumbnail URL for a video at a specific timestamp"""
     return f"https://res.cloudinary.com/{os.environ.get('CLOUDINARY_CLOUD_NAME')}/video/upload/so_{timestamp},w_400,h_400,c_fill/{public_id}.jpg"
 
+
+# =========================================================================
+# PHASE 1: Eager video transcodes (HLS + MP4 + tall poster)
+# =========================================================================
+#
+# Why: the explore feed transforms each Cloudinary video URL at render time
+# into HLS / MP4 / poster URLs via utils/cloudinaryVideo.ts. On a cold view,
+# Cloudinary derives those on-demand (1–3s for first-frame). Eager-baking
+# them at upload time turns every first view into a CDN cache hit.
+#
+# The eager transform STRINGS below must byte-match the client's runtime
+# transform strings; otherwise the eager output is unused.
+# Client strings live in /app/frontend/utils/cloudinaryVideo.ts:
+#   - hlsUrlFromPublicId:    f_m3u8,q_auto,vc_h264,w_1920,h_1080,c_limit
+#   - mp4UrlFromPublicId:    f_auto,q_auto,vc_h264,w_1280,h_720,c_limit
+#   - posterUrlFromPublicId: so_1,f_jpg,q_auto,w_720
+#
+# `f_auto` resolves per-Accept-header, so we eager BOTH f_mp4 and f_auto
+# until the client is updated in Phase 2 to use f_mp4 explicitly.
+# =========================================================================
+
+VIDEO_EAGER_TRANSFORMS = [
+    # HLS adaptive manifest (iOS primary)
+    {
+        "streaming_profile": None,  # raw transform string mode
+        "raw_transformation": "f_m3u8,q_auto,vc_h264,w_1920,h_1080,c_limit",
+    },
+    # 720p MP4 (Android/web fallback) — explicit f_mp4
+    {
+        "raw_transformation": "f_mp4,q_auto,vc_h264,w_1280,h_720,c_limit",
+    },
+    # 720p MP4 (matches today's client `f_auto` chain so cache hits without app change)
+    {
+        "raw_transformation": "f_auto,q_auto,vc_h264,w_1280,h_720,c_limit",
+    },
+    # Tall 720w poster used by SmartVideoPlayer thumbnail
+    {
+        "raw_transformation": "so_1,f_jpg,q_auto,w_720",
+    },
+]
+
+
+def _cloudinary_eager_kwargs() -> dict:
+    """Build the eager + webhook kwargs for cloudinary calls."""
+    webhook_url = os.environ.get("CLOUDINARY_EAGER_WEBHOOK_URL", "").strip()
+    kwargs = {
+        "eager": [{"raw_transformation": t["raw_transformation"]} for t in VIDEO_EAGER_TRANSFORMS],
+        "eager_async": True,
+    }
+    if webhook_url:
+        kwargs["eager_notification_url"] = webhook_url
+    return kwargs
+
+
+def trigger_video_eager_transcodes(public_id: str) -> None:
+    """
+    Fire-and-forget: request async eager HLS + MP4 + poster for a video.
+    Safe to call from BackgroundTasks. Errors are logged, not raised.
+    """
+    if not public_id:
+        return
+    try:
+        kwargs = _cloudinary_eager_kwargs()
+        cloudinary.uploader.explicit(
+            public_id,
+            type="upload",
+            resource_type="video",
+            **kwargs,
+        )
+        logger.info(f"🎬 EAGER_QUEUED public_id={public_id} transforms={len(kwargs['eager'])}")
+    except Exception as e:
+        logger.warning(f"⚠️ EAGER_QUEUE_FAILED public_id={public_id} err={e}")
+
 @api_router.get("/uploads/{filename}")
 async def get_uploaded_file(filename: str):
     """Serve uploaded media files - Legacy endpoint for old local files"""
@@ -7443,6 +7516,7 @@ async def get_uploaded_file(filename: str):
 
 @api_router.post("/upload")
 async def upload_file(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     current_user_id: str = Depends(get_current_user)
 ):
@@ -7522,6 +7596,10 @@ async def upload_file(
         
         logger.info(f"✅ Cloudinary upload successful: {secure_url}")
         
+        # PHASE 1: queue async HLS + MP4 + tall poster eager transcodes (only for videos)
+        if is_video and result.get("public_id"):
+            background_tasks.add_task(trigger_video_eager_transcodes, result["public_id"])
+        
         response_data = {
             "message": "File uploaded successfully to cloud storage",
             "url": secure_url,
@@ -7547,6 +7625,7 @@ async def upload_file(
 
 @api_router.post("/upload/multiple")
 async def upload_multiple_files(
+    background_tasks: BackgroundTasks,
     files: List[UploadFile] = File(...),
     current_user_id: str = Depends(get_current_user)
 ):
@@ -7620,6 +7699,9 @@ async def upload_multiple_files(
                     cover_urls.append(result["eager"][0].get("secure_url"))
                 else:
                     cover_urls.append(get_cloudinary_video_thumbnail(result["public_id"]))
+                # PHASE 1: queue async HLS + MP4 + tall poster eager transcodes
+                if result.get("public_id"):
+                    background_tasks.add_task(trigger_video_eager_transcodes, result["public_id"])
             else:
                 # For images, use the image itself as cover
                 cover_urls.append(secure_url)
@@ -10739,6 +10821,7 @@ async def bootstrap_staging(
 
 @api_router.post("/admin/exercises/upload-video")
 async def upload_exercise_video(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     current_user_id: str = Depends(require_admin)
 ):
@@ -10782,6 +10865,10 @@ async def upload_exercise_video(
             timestamp = int(time.time())
             thumbnail_url = f"https://res.cloudinary.com/{os.environ.get('CLOUDINARY_CLOUD_NAME')}/video/upload/so_1.0,w_400,h_400,c_fill/{result['public_id']}.jpg?t={timestamp}"
         
+        # PHASE 1: queue async HLS + MP4 + tall poster eager transcodes
+        if result.get("public_id"):
+            background_tasks.add_task(trigger_video_eager_transcodes, result["public_id"])
+        
         return {
             "success": True,
             "video_url": video_url,
@@ -10790,6 +10877,62 @@ async def upload_exercise_video(
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error uploading video: {str(e)}")
+
+
+# =========================================================================
+# PHASE 1: Cloudinary eager-transcode webhook
+# =========================================================================
+# Receives notifications when async HLS/MP4/poster derivations complete.
+# Idempotent — Cloudinary may retry. We just log + record completion.
+# To wire up: set CLOUDINARY_EAGER_WEBHOOK_URL in backend/.env to e.g.
+#   https://<your-public-host>/api/cloudinary/eager-webhook
+# =========================================================================
+@api_router.post("/cloudinary/eager-webhook")
+async def cloudinary_eager_webhook(request: Request):
+    try:
+        payload = await request.json()
+    except Exception:
+        payload = {}
+
+    notification_type = payload.get("notification_type", "")
+    public_id = payload.get("public_id", "")
+    batch_id = payload.get("batch_id", "")
+    eager_results = payload.get("eager", []) or []
+
+    logger.info(
+        f"🎬 EAGER_WEBHOOK type={notification_type} public_id={public_id} "
+        f"batch={batch_id} derivations={len(eager_results)}"
+    )
+
+    # Best-effort persistence for observability (collection auto-created).
+    try:
+        await db.video_eager_status.update_one(
+            {"public_id": public_id},
+            {
+                "$set": {
+                    "public_id": public_id,
+                    "last_notification_type": notification_type,
+                    "last_batch_id": batch_id,
+                    "derivations": [
+                        {
+                            "transformation": d.get("transformation"),
+                            "url": d.get("secure_url") or d.get("url"),
+                            "bytes": d.get("bytes"),
+                            "status": d.get("status", "complete"),
+                        }
+                        for d in eager_results
+                    ],
+                    "updated_at": datetime.now(timezone.utc),
+                }
+            },
+            upsert=True,
+        )
+    except Exception as e:
+        logger.warning(f"⚠️ EAGER_WEBHOOK persist failed: {e}")
+
+    # Cloudinary expects a 2xx within ~10s or it will retry.
+    return {"ok": True}
+
 
 @api_router.get("/exercises/search")
 async def search_exercises(
