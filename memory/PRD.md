@@ -14,7 +14,20 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
-- [2026-05-13] **Paid Launch — Generation cap wiring (Part 5) + Server-side trigger-source attribution.** The remaining Phase B gate + the funnel-attribution loop closed end-to-end across the day-7 trial-to-paid boundary.
+- [2026-05-13] **Paid Launch — Phase E (Settings/Subscription section) + Phase G (Analytics provider abstraction).** Two thin slices that unlock TestFlight readiness without blocking on App Store Connect product IDs.
+  - **Phase E — Settings → Subscription section** (`app/settings.tsx`):
+    - Status row reflects `SubscriptionContext.status`: `'Not subscribed'`, `'Free trial active'`, `'MOOD Premium'`, `'Subscription lapsed'`, `'Founding Member'`, each with a brand-aligned subtitle. Founding members get "Day-one MOOD. Lifetime access.".
+    - "Manage in App Store" row (paying members only — Founding members hidden since they have no Apple subscription) deep-links to `https://apps.apple.com/account/subscriptions`.
+    - "Start 7-day free trial" row (non-paying members) opens the paywall with `settings_subscribe` trigger source — flows through the same attribution loop as the in-app gates.
+    - "Restore Purchases" row fires `settings_restore_purchases_tapped` analytics; Phase C wires the actual `Transaction.currentEntitlements` flow.
+    - Delete Account already exists per user — left untouched.
+  - **Phase G — Analytics provider abstraction** (`utils/analyticsProvider.ts`):
+    - Pluggable `AnalyticsProvider` interface: `id`, optional `init()`, required `track(event, props, ctx)`. Failures are swallowed at both the provider and dispatcher level so a broken SDK can never crash the app or block other providers.
+    - `registerProvider(p)` / `unregisterProvider(id)` / `dispatch(event, props, ctx)` / `listProviders()`.
+    - **Zero-cost migration path**: existing `trackEvent()` + `trackGuestEvent()` now ALSO call `dispatch()` after their backend POST. Today no providers are registered → fan-out is a no-op. To wire PostHog/Segment/Amplitude later: import the provider, call `registerProvider(p)` once at boot. **No call-site changes**. The 100+ `Analytics.foo()` invocations stay exactly as they are.
+    - This is precisely what was requested earlier: "scaffold a typed track(event, props) wrapper for now and keep the analytics provider abstracted so we can wire PostHog, Segment, or a custom /api/analytics endpoint later without refactoring the app."
+
+ The remaining Phase B gate + the funnel-attribution loop closed end-to-end across the day-7 trial-to-paid boundary.
   - **Generation cap (Part 5) — single chokepoint**: rather than hunting every `*-workout-display.tsx`, wired the guard directly into `components/ChooseForMeButton.tsx` (the shared "Build For Me" component used by all 6 mood entry routes — `lazy-training-type`, `outdoor-equipment`, `calisthenics-equipment`, `explosiveness-type`, `body-parts`, `workout-type`). Press handler now reads `useSubscription()`:
     - Active access (founding/in-trial/active) → straight through.
     - `canGenerate === false` → `openPaywall('generate_after_cap')` + analytics `workout_generated` event with `generation_index: -1` (rejected sentinel).

@@ -22,12 +22,30 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import { useAuth } from '../contexts/AuthContext';
 import { useHealth } from '../contexts/HealthContext';
+import { useSubscription, SubscriptionStatus } from '../contexts/SubscriptionContext';
 import { loadUserAge, saveUserAge } from '../utils/workoutSessionStorage';
 import { Analytics, isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
 import { getNotificationStatus, openNotificationSettings, initNotifications, type NotifStatus } from '../utils/notifications';
 import BackButton from '../components/BackButton';
 
 import { API_URL } from '../utils/apiConfig';
+
+// Phase E paid-launch — Subscription section copy.
+const SUBSCRIPTION_STATUS_LABEL: Record<SubscriptionStatus, string> = {
+  none: 'Not subscribed',
+  in_trial: 'Free trial active',
+  active: 'MOOD Premium',
+  lapsed: 'Subscription lapsed',
+  founding_member: 'Founding Member',
+};
+
+const SUBSCRIPTION_STATUS_SUBLABEL: Record<SubscriptionStatus, string> = {
+  none: 'Start a 7-day trial to unlock Premium.',
+  in_trial: 'Renews to MOOD Premium after the trial.',
+  active: 'Renews automatically. Cancel anytime.',
+  lapsed: 'Restart your subscription to keep training.',
+  founding_member: 'Day-one MOOD. Lifetime access.',
+};
 const SUPPORT_EMAIL = 'wes@officialmoodapp.com';
 
 // External URLs for legal pages
@@ -42,6 +60,7 @@ export default function Settings() {
   const insets = useSafeAreaInsets();
   const { token, logout, user, updateUser } = useAuth();
   const { status: healthStatus, available: healthAvailable, requestPermissions: requestHealthPermissions } = useHealth();
+  const { status: subscriptionStatus, hasActiveAccess, openPaywall } = useSubscription();
   const [isDeleting, setIsDeleting] = useState(false);
   const [userAge, setUserAge] = useState<number | null>(null);
 
@@ -405,6 +424,84 @@ export default function Settings() {
               </View>
             </View>
             <Ionicons name="chevron-forward" size={18} color='#666' />
+          </TouchableOpacity>
+        </View>
+
+        {/* Subscription Section — Phase E paid launch (Part 11). */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Subscription</Text>
+
+          <View style={styles.settingsItem} data-testid="settings-subscription-status">
+            <View style={styles.settingsItemLeft}>
+              <Ionicons
+                name={hasActiveAccess ? 'star' : 'lock-closed-outline'}
+                size={20}
+                color="#FFD700"
+              />
+              <View>
+                <Text style={styles.settingsItemText}>
+                  {SUBSCRIPTION_STATUS_LABEL[subscriptionStatus]}
+                </Text>
+                <Text style={styles.settingsItemSubtext}>
+                  {SUBSCRIPTION_STATUS_SUBLABEL[subscriptionStatus]}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          {hasActiveAccess && subscriptionStatus !== 'founding_member' ? (
+            <TouchableOpacity
+              style={styles.settingsItem}
+              data-testid="settings-manage-subscription"
+              onPress={() => {
+                // Apple's universal deep-link surface for the user's
+                // active App Store subscriptions list.
+                Linking.openURL('https://apps.apple.com/account/subscriptions').catch(() => {});
+              }}
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="cog-outline" size={20} color="#FFD700" />
+                <View>
+                  <Text style={styles.settingsItemText}>Manage in App Store</Text>
+                  <Text style={styles.settingsItemSubtext}>Change plan, cancel, or update billing</Text>
+                </View>
+              </View>
+              <Ionicons name="open-outline" size={18} color="#666" />
+            </TouchableOpacity>
+          ) : null}
+
+          {!hasActiveAccess ? (
+            <TouchableOpacity
+              style={styles.settingsItem}
+              data-testid="settings-subscribe"
+              onPress={() => openPaywall('settings_subscribe')}
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="sparkles" size={20} color="#FFD700" />
+                <View>
+                  <Text style={styles.settingsItemText}>Start 7-day free trial</Text>
+                  <Text style={styles.settingsItemSubtext}>Unlock unlimited workouts + live HR</Text>
+                </View>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color="#666" />
+            </TouchableOpacity>
+          ) : null}
+
+          <TouchableOpacity
+            style={styles.settingsItem}
+            data-testid="settings-restore-purchases"
+            onPress={() => {
+              // PHASE C — wire to `Transaction.currentEntitlements`.
+              Analytics.settingsRestorePurchasesTapped(token, {});
+            }}
+          >
+            <View style={styles.settingsItemLeft}>
+              <Ionicons name="refresh-outline" size={20} color="#FFD700" />
+              <View>
+                <Text style={styles.settingsItemText}>Restore Purchases</Text>
+                <Text style={styles.settingsItemSubtext}>Re-sync your active subscription</Text>
+              </View>
+            </View>
           </TouchableOpacity>
         </View>
 

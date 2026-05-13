@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import * as Localization from 'expo-localization';
 import { API_URL } from './apiConfig';
+import { dispatch as dispatchToProviders } from './analyticsProvider';
 
 // Storage keys
 const GUEST_DEVICE_ID_KEY = 'guest_device_id';
@@ -121,6 +122,12 @@ export const trackEvent = async (
     if (!response.ok) {
       console.log(`Analytics tracking failed for ${eventType}:`, response.status);
     }
+
+    // Phase G — fan-out to any externally-registered providers (PostHog /
+    // Segment / etc.). Today no providers are registered, so this is a
+    // cheap no-op. Tomorrow `registerProvider(posthog)` flips it on with
+    // zero call-site changes.
+    dispatchToProviders(eventType, metadata || {}, { token });
   } catch (error) {
     // Silently fail - don't block user flow
     console.log('Analytics tracking error:', error);
@@ -164,6 +171,10 @@ export const trackGuestEvent = async (
     if (!response.ok) {
       console.log(`Guest analytics tracking failed for ${eventType}:`, response.status);
     }
+
+    // Phase G — same provider fan-out for guest events (the funnel runs
+    // pre-login, so PostHog/Segment also need to see these).
+    dispatchToProviders(eventType, { ...metadata, is_guest: true }, { token: null, deviceId });
   } catch (error) {
     // Silently fail - don't block user flow
     console.log('Guest analytics tracking error:', error);
@@ -573,6 +584,11 @@ export const Analytics = {
     token
       ? trackEvent(token, 'founding_member_modal_dismissed', metadata)
       : trackGuestEvent('founding_member_modal_dismissed', metadata),
+
+  settingsRestorePurchasesTapped: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'settings_restore_purchases_tapped', metadata)
+      : trackGuestEvent('settings_restore_purchases_tapped', metadata),
 };
 
 // Guest Analytics - for tracking guest user activity
