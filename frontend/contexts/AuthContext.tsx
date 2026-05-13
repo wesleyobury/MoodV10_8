@@ -356,7 +356,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
           const mergedCount = await aliasGuestToUser(authToken);
           console.log(`✅ Merged ${mergedCount} guest events to new user account`);
         }
-        
+
+        // Phase A/B paid launch — every freshly-registered account should
+        // run through the 8-step onboarding funnel + reveal payoff before
+        // it sees the home tabs. FoundingMemberGate later short-circuits
+        // the paywall for accounts that pre-date the 2026-05-15 cutoff,
+        // but they still get the funnel teach moment (it's intentionally
+        // a teach moment, not a paywall trigger). Flag is consumed +
+        // cleared by `<FunnelEntryGate />` at root.
+        await AsyncStorage.setItem('@mood_needs_funnel', 'true');
+
         await fetchCurrentUser(authToken);
       } else {
         throw new Error(result.error || 'Registration failed');

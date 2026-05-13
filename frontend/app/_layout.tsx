@@ -17,6 +17,7 @@ import { HealthProvider } from '../contexts/HealthContext';
 import HealthOnboardingGate from '../components/HealthOnboardingGate';
 import { PaywallModal } from '../components/PaywallModal';
 import { FoundingMemberGate } from '../components/FoundingMemberGate';
+import { FunnelEntryGate } from '../components/FunnelEntryGate';
 import { Analytics } from '../utils/analytics';
 import { initNotifications, notificationService } from '../utils/notifications';
 import FloatingCart from '../components/FloatingCart';
@@ -168,6 +169,7 @@ function AppContent() {
       <FloatingCart />
       <PaywallModal />
       <FoundingMemberGate />
+      <FunnelEntryGate />
     </>
   );
 }

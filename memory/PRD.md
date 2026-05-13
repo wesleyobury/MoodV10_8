@@ -14,7 +14,12 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
-- [2026-05-13] **Paid Launch — Phase E (Settings/Subscription section) + Phase G (Analytics provider abstraction).** Two thin slices that unlock TestFlight readiness without blocking on App Store Connect product IDs.
+- [2026-05-13] **Paid Launch — PostHog provider scaffold + Funnel entry-point wiring.** Two unlocks: one for post-launch analytics, one for the new-user experience.
+  - **`utils/posthogProvider.ts`** — drop-in `AnalyticsProvider` ready to register the moment the project key arrives. Uses dynamic `require()` so missing `posthog-react-native` doesn't crash the bundle (becomes a silent no-op until installed). Stitches guest→authenticated identity automatically via `identify(token)` on the first authenticated event after a session start. Activation = 4 lines: `yarn add posthog-react-native`, add `EXPO_PUBLIC_POSTHOG_KEY` to `.env`, `import { registerPostHogProvider } from '../utils/posthogProvider'` + `registerPostHogProvider()` once in `_layout.tsx`. **None of the 100+ `Analytics.foo()` call sites change.** Because the trigger-source attribution loop is already wired through to `subscription_purchased`, the PostHog conversion funnel dashboard lights up the day this is enabled.
+  - **`components/FunnelEntryGate.tsx`** — the missing entry-point. `AuthContext.register()` now sets a `@mood_needs_funnel` AsyncStorage flag immediately after a successful registration. `<FunnelEntryGate />` mounts at root, watches for the flag, and routes the user to `/onboarding-funnel/step-1-mood` exactly once via `router.replace()` (so the funnel becomes the back-stack root). Latched via `useRef` so react-strict-mode double-mounts can't fire it twice. Founding members still get the funnel teach-moment (per spec — it's not a paywall trigger). Existing/returning logins skip the funnel entirely because the flag is only set during `register()`.
+  - The dev `[dev] Skip to onboarding funnel →` button on the landing page is preserved for TestFlight demos.
+
+
   - **Phase E — Settings → Subscription section** (`app/settings.tsx`):
     - Status row reflects `SubscriptionContext.status`: `'Not subscribed'`, `'Free trial active'`, `'MOOD Premium'`, `'Subscription lapsed'`, `'Founding Member'`, each with a brand-aligned subtitle. Founding members get "Day-one MOOD. Lifetime access.".
     - "Manage in App Store" row (paying members only — Founding members hidden since they have no Apple subscription) deep-links to `https://apps.apple.com/account/subscriptions`.
