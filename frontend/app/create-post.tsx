@@ -657,7 +657,11 @@ export default function CreatePost() {
         mediaTypes: ['videos'],
         allowsEditing: false,
         videoMaxDuration: 30, // 30 seconds max
-        videoQuality: ImagePicker.UIImagePickerControllerQualityType.Medium,
+        // Cap recording at 1080p H.264 to keep upload size + storage bounded.
+        // `videoQuality` is the Android/legacy iOS knob; `videoExportPreset`
+        // is the iOS-only exact 1080p preset.
+        videoQuality: ImagePicker.UIImagePickerControllerQualityType.High,
+        videoExportPreset: ImagePicker.VideoExportPreset.H264_1920x1080,
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
@@ -702,16 +706,17 @@ export default function CreatePost() {
     }
 
     try {
-      // Pick video with transcoding enabled to handle slow-mo and ProRes videos
-      // Using HighestQuality export preset to transcode problematic formats to H.264
-      // This converts slow-mo, ProRes, and HEVC videos to standard H.264 format
+      // Pick video with transcoding enabled to handle slow-mo and ProRes videos.
+      // `H264_1920x1080` caps the export at 1080p H.264 — converts slow-mo,
+      // ProRes, HEVC and 4K masters down to a sane, broadly-compatible format
+      // before upload. Saves bandwidth on cellular and storage forever.
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['videos'],
         allowsMultipleSelection: false,
         allowsEditing: false,
         videoMaxDuration: 30, // 30 seconds max
-        // Enable transcoding to H.264 - this handles slow-mo, ProRes, HEVC videos
-        videoExportPreset: ImagePicker.VideoExportPreset.HighestQuality,
+        videoQuality: ImagePicker.UIImagePickerControllerQualityType.High,
+        videoExportPreset: ImagePicker.VideoExportPreset.H264_1920x1080,
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {

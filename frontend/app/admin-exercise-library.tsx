@@ -179,6 +179,10 @@ export default function AdminExerciseLibrary() {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Videos,
         quality: 0.8,
+        // Cap exercise-library uploads at 1080p H.264 — matches our delivery
+        // ladder (HLS 1080p / MP4 720p) so we never ingest a 4K master.
+        videoQuality: ImagePicker.UIImagePickerControllerQualityType.High,
+        videoExportPreset: ImagePicker.VideoExportPreset.H264_1920x1080,
       });
 
       if (!result.canceled && result.assets[0]) {

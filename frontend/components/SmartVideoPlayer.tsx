@@ -151,17 +151,18 @@ useEffect(() => {
     }
   }, [audioConfigured]);
 
-  // Stop video when scrolled off-center
+  // Pause + mute when scrolled off-center, but DO NOT unload the player.
+  // The Video component stays mounted so scrolling back is instant (no
+  // reload, no thumbnail flash, no buffer rebuild). FlatList's windowSize
+  // already unmounts cards far enough away to bound memory.
   useEffect(() => {
     if (!isInCenter && shouldLoadVideo) {
       if (videoRef.current) {
-        videoRef.current.stopAsync().catch(() => {});
-        videoRef.current.unloadAsync().catch(() => {});
+        videoRef.current.pauseAsync().catch(() => {});
+        videoRef.current.setIsMutedAsync(true).catch(() => {});
       }
-      setShouldLoadVideo(false);
       setIsPlaying(false);
       setIsMuted(true);
-      setPosition(0);
     }
   }, [isInCenter, shouldLoadVideo]);
 
