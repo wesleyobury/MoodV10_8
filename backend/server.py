@@ -489,10 +489,12 @@ async def auto_seed_exercises():
 CURRENT_TERMS_VERSION = "2025-01-19"
 
 # Phase D — Paid Launch Founding Member cutoff (Part 9 of the v1.0 spec).
-# Confirmed by Wes: every account whose `created_at < 2026-05-15 UTC` is
-# treated as a Founding Member with lifetime Premium access. Migration runs
-# on every startup and is idempotent.
-FOUNDING_MEMBER_CUTOFF = datetime(2026, 5, 15, 0, 0, 0, tzinfo=timezone.utc)
+# Updated 2026-05-14: cutoff moved forward to TODAY (2026-05-14 00:00 UTC)
+# per product decision. Every account whose `created_at < 2026-05-14 UTC` is
+# treated as a Founding Member with lifetime Premium access. Anyone signing
+# up today or later is on the paid tier. Migration runs on every startup and
+# is idempotent (only flips False→True, never demotes existing founders).
+FOUNDING_MEMBER_CUTOFF = datetime(2026, 5, 14, 0, 0, 0, tzinfo=timezone.utc)
 
 # Cloudinary Configuration
 cloudinary.config(
@@ -737,7 +739,7 @@ class UserResponse(BaseModel):
     created_at: datetime
     # Phase D — Paid Launch Founding Member system (Part 9 of v1.0 spec).
     # `founding_member` is set true for any account created before the
-    # FOUNDING_MEMBER_CUTOFF (2026-05-15). Founding members bypass the paywall
+    # FOUNDING_MEMBER_CUTOFF (2026-05-14, updated). Founding members bypass the paywall
     # entirely and have lifetime access. `founding_member_modal_seen` gates
     # the one-time celebration modal on first login after the cutoff ships.
     founding_member: bool = False
@@ -13343,8 +13345,9 @@ async def startup_db_client():
 
     # Phase D — Founding Member migration (Part 9 of the v1.0 paid launch).
     # Flips `founding_member = true` for every user account whose `created_at`
-    # precedes the FOUNDING_MEMBER_CUTOFF (2026-05-15 00:00 UTC, confirmed by
-    # Wes). Idempotent — skipped on accounts that are already flagged.
+    # precedes the FOUNDING_MEMBER_CUTOFF (now 2026-05-14 00:00 UTC; bumped
+    # forward 2026-05-14 per product decision so today's signups are paying).
+    # Idempotent — skipped on accounts that are already flagged.
     try:
         cutoff = FOUNDING_MEMBER_CUTOFF
         result = await db.users.update_many(
