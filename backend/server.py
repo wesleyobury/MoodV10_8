@@ -8454,6 +8454,21 @@ async def get_live_feed(
         }).sort("timestamp", -1).limit(limit * 4)
 
         events = await cursor.to_list(length=limit * 4)
+        # Sort completion-pair sibling events so that `workout_completed`
+        # (which carries `workout_snapshot_id`) is iterated BEFORE
+        # `workout_session_completed` (which does not) when both fire
+        # within the same minute. Keeps the existing newest-first global
+        # ordering otherwise. Without this the session-completed event
+        # wins the dedupe and the feed entry loses its snapshot id.
+        def _sort_key(e):
+            ts = e["timestamp"]
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+            # newer first, then prefer workout_completed within the same minute
+            type_priority = 0 if e.get("event_type") == "workout_completed" else 1
+            return (-int(ts.timestamp() // 60), type_priority, -ts.timestamp())
+        events.sort(key=_sort_key)
+
         raw_entries = []
         seen_user_action = set()
         for ev in events:
@@ -8511,6 +8526,32 @@ async def get_live_feed(
                 meta_for_snapshot.get("workout_snapshot_id")
                 or meta_for_snapshot.get("snapshot_id")
             )
+
+            # FALLBACK — for legacy completions that fired BEFORE the
+            # single-workout snapshot patch (commit on 2026-05-14 PM), the
+            # event has no workout_snapshot_id in its metadata. Look up the
+            # user's `workout_cards` collection for a card created within
+            # ±15 min of the event timestamp and reuse its snapshot id.
+            # This fills in lazy / single-workout paths historically.
+            if entry_type == "completion" and not workout_snapshot_id:
+                try:
+                    near_window = timedelta(minutes=15)
+                    card = await db.workout_cards.find_one(
+                        {
+                            "user_id": uid,
+                            "created_at": {
+                                "$gte": ts - near_window,
+                                "$lte": ts + near_window,
+                            },
+                            "workout_snapshot_id": {"$ne": None, "$exists": True},
+                        },
+                        sort=[("created_at", -1)],
+                    )
+                    if card and card.get("workout_snapshot_id"):
+                        workout_snapshot_id = card["workout_snapshot_id"]
+                except Exception:
+                    # Fail open — fallback is best-effort.
+                    pass
 
             raw_entries.append({
                 "id": str(ev["_id"]),
