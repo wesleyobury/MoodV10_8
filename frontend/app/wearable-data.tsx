@@ -32,6 +32,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useHealth } from '../contexts/HealthContext';
 import type { BiometricSnapshot } from '../modules/mood-healthkit/src';
+import { getHealthKitDiagnostics } from '../modules/mood-healthkit/src';
 
 const GOLD = '#FFD700';
 
@@ -317,6 +318,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 19,
     marginBottom: 18,
+  },
+  diagBox: {
+    width: '100%',
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    borderColor: '#1a1a1a',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 10,
+    marginTop: 4,
+  },
+  diagLine: {
+    color: '#888',
+    fontSize: 11,
+    fontFamily: 'SpaceMono',
+    lineHeight: 16,
   },
   cta: {
     backgroundColor: GOLD,

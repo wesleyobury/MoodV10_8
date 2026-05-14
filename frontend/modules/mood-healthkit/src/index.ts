@@ -48,6 +48,15 @@ export interface LiveHeartRateSample {
 
 const native = requireOptionalNativeModule<NativeModuleShape>('MoodHealthKit');
 
+/** Raw probe values for the in-app diagnostics card on the wearable-data
+ *  screen. Lets us tell apart "module wasn't compiled into this build" from
+ *  "module loaded but iOS reports HealthKit unavailable on this device". */
+export const getHealthKitDiagnostics = () => ({
+  platformOS: Platform.OS,
+  nativeModuleRegistered: !!native,
+  isHealthDataAvailable: native?.isHealthDataAvailable ?? null,
+});
+
 /** True if HealthKit is reachable from this build. False in Expo Go / non-iOS. */
 export const isHealthKitAvailable = (): boolean => {
   if (Platform.OS !== 'ios') return false;
