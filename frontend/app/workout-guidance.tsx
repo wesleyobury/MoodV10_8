@@ -673,20 +673,70 @@ export default function WorkoutGuidanceScreen() {
     } else {
       // Single workout - save to profile and navigate back
       console.log('🔙 Single workout completed, saving to profile...');
-      
-      // Track single workout completion
+
+      const totalDurationMins = parseInt(duration.split(' ')[0]) || 0;
+
+      // Create a workout snapshot so this single workout can be
+      // replicated from the Live Feed "Try this workout" deep link.
+      // Mirrors the multi-workout session path at line ~562 — without
+      // this, single-workout paths (e.g. "I'm feeling lazy" → body
+      // part → one workout) leave their Live Feed cards with no
+      // snapshot to hydrate, forcing the viewer back to mood selection.
+      let workoutSnapshotId: string | null = null;
       if (token) {
-        const totalDurationMins = parseInt(duration.split(' ')[0]) || 0;
+        const singleCompletedWorkout = {
+          workoutTitle: workoutName,
+          workoutName: workoutName,
+          equipment: equipment,
+          duration: duration,
+          difficulty: difficulty,
+          moodCategory: workoutType || moodCard || 'Workout',
+          imageUrl: imageUrl || '',
+          description: description || '',
+          battlePlan: battlePlan || '',
+          intensityReason: intensityReason || '',
+          moodTips: Array.isArray(moodTips) ? moodTips : [],
+        };
+        try {
+          console.log('📸 Creating workout snapshot (single-workout path)...');
+          const snapshotResponse = await fetch(`${API_URL}/api/workout-snapshots`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              workouts: [singleCompletedWorkout],
+              total_duration: totalDurationMins,
+              mood_category: workoutType || moodCard || 'Workout',
+            }),
+          });
+          if (snapshotResponse.ok) {
+            const snapshotData = await snapshotResponse.json();
+            workoutSnapshotId = snapshotData.id;
+            console.log('✅ Single-workout snapshot created:', workoutSnapshotId);
+          } else {
+            console.error('❌ Failed to create single-workout snapshot:', await snapshotResponse.text());
+          }
+        } catch (err) {
+          console.error('❌ Error creating single-workout snapshot:', err);
+        }
+      }
+
+      // Track single workout completion (now with snapshot_id so the
+      // Live Feed entry can deep-link into a hydrated cart).
+      if (token) {
         Analytics.workoutCompleted(token, {
           mood_category: workoutType || 'Unknown',
           difficulty: difficulty,
           equipment: equipment,
           duration_minutes: totalDurationMins,
           exercises_completed: 1,
+          workout_snapshot_id: workoutSnapshotId || undefined,
         });
-        console.log('📊 Tracked single workout completed');
+        console.log('📊 Tracked single workout completed', workoutSnapshotId ? `(snap ${workoutSnapshotId})` : '(no snap)');
       }
-      
+
       // Prepare workout data for saving
       const completedWorkout = {
         workoutTitle: workoutName,
@@ -695,8 +745,8 @@ export default function WorkoutGuidanceScreen() {
         duration: duration,
         difficulty: difficulty,
       };
-      
-      const totalDuration = parseInt(duration.split(' ')[0]) || 0;
+
+      const totalDuration = totalDurationMins;
       const completedAt = new Date().toLocaleDateString('en-US', { 
         month: 'short', 
         day: 'numeric', 

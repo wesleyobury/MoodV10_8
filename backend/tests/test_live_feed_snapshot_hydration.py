@@ -157,3 +157,70 @@ def test_live_feed_snapshot_hydration_flow():
     assert "name" not in w0
     assert "workoutType" not in w0
     assert "moodCard" not in w0
+
+
+def test_single_workout_snapshot_round_trip():
+    """Single-workout paths (e.g. "I'm feeling lazy" → body part →
+    one exercise) used to skip snapshot creation, leaving the Live
+    Feed entry with no workout_snapshot_id and forcing viewers back
+    to mood sub-selection. Verifies the snapshot endpoint accepts the
+    1-workout payload that `workout-guidance.tsx`'s single-workout
+    branch now posts."""
+    token = _register_user()
+    h = {"Authorization": f"Bearer {token}"}
+
+    single = {
+        "workouts": [
+            {
+                "workoutTitle": "Gentle Movement",
+                "workoutName": "Gentle Movement",
+                "equipment": "Bodyweight",
+                "duration": "15 min",
+                "difficulty": "beginner",
+                "moodCategory": "I'm feeling lazy - Lower Body",
+                "imageUrl": "https://example.com/lazy.jpg",
+                "description": "Easy recovery flow.",
+                "battlePlan": "Light stretch + slow squats.",
+                "intensityReason": "Recovery",
+                "moodTips": [],
+            },
+        ],
+        "total_duration": 15,
+        "mood_category": "I'm feeling lazy - Lower Body",
+    }
+    snap_resp = requests.post(
+        f"{BASE_URL}/api/workout-snapshots",
+        headers=h, json=single, timeout=20,
+    )
+    assert snap_resp.status_code == 200, snap_resp.text
+    snap_id = snap_resp.json()["id"]
+
+    # Fire the analytics event the single-workout branch fires
+    ev_resp = requests.post(
+        f"{BASE_URL}/api/analytics/track",
+        headers=h,
+        json={
+            "event_type": "workout_completed",
+            "metadata": {
+                "mood_category": "I'm feeling lazy - Lower Body",
+                "difficulty": "beginner",
+                "equipment": "Bodyweight",
+                "duration_minutes": 15,
+                "exercises_completed": 1,
+                "workout_snapshot_id": snap_id,
+            },
+        },
+        timeout=20,
+    )
+    assert ev_resp.status_code == 200, ev_resp.text
+
+    # Live feed should now route this to the lazy bucket (not muscle)
+    # AND surface the snapshot id so the client can hydrate.
+    feed_resp = requests.get(f"{BASE_URL}/api/feed/live?limit=50", timeout=20)
+    assert feed_resp.status_code == 200
+    entries = feed_resp.json().get("entries", [])
+    matches = [e for e in entries if e.get("workout_snapshot_id") == snap_id]
+    assert matches, f"single-workout snapshot {snap_id} not surfaced"
+    assert matches[0]["mood_bucket"] == "lazy", (
+        f"expected lazy bucket, got {matches[0]['mood_bucket']}"
+    )

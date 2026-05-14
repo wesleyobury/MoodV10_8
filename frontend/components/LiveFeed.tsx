@@ -513,9 +513,9 @@ const styles = StyleSheet.create({
     right: 14,
   },
   cardAvatarImg: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
   },
   cardAvatarFallback: {
     backgroundColor: 'rgba(255,255,255,0.04)',
