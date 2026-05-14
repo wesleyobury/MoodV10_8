@@ -8288,15 +8288,38 @@ async def create_post(post_data: PostCreate, current_user_id: str = Depends(get_
 
 # Map raw mood_category strings (which are inconsistent across the app) to
 # one of 6 UI mood "buckets" used by the Live tab.
+#
+# Order matters — rules are evaluated top-to-bottom and the first match wins.
+# We deliberately check explicit mood-name keywords FIRST so that strings
+# like "Sweat - Light Weights" or "Build Explosion - Body Weight" are
+# classified by their parent mood (Sweat / Explosive) instead of getting
+# misrouted to the muscle bucket via a loose substring match on "weight".
 _LIVE_MOOD_RULES: List[tuple[tuple[str, ...], str, str]] = [
     # (keywords, bucket_id, display_label)
-    (("explosion", "explosive", "power lifting", "plyometric", "explosivenes"), "explosive", "Build explosion"),
-    (("calisthenic", "bodyweight", "pull", "dip"), "calisthenics", "Calisthenics"),
-    (("outside", "outdoor", "hill"), "outdoor", "Outdoor"),
+    # 1. SWEAT — first because Sweat sub-paths often include the words
+    #    "weights" / "cardio" / "hiit" that overlap with other rules.
+    (("sweat", "burn fat", "hiit", "cardio"), "sweat", "Sweat / burn fat"),
+    # 2. EXPLOSIVE — second because Explosive sub-paths include
+    #    "Body Weight" / "Light Weights" which would otherwise leak into
+    #    calisthenics or muscle.
+    (("explosion", "explosive", "plyometric", "power lifting", "explosivenes"),
+     "explosive", "Build explosion"),
+    # 3. OUTDOOR — explicit mood-name + hill/park identifiers.
+    (("outdoor", "outside", "hill", "park to peak"), "outdoor", "Outdoor"),
+    # 4. LAZY
     (("lazy", "gentle"), "lazy", "I'm feeling lazy"),
-    (("muscle gainer", "back", "chest", "biceps", "triceps", "shoulder", "leg",
-      "compound", "weight", "strength"), "muscle", "Muscle gainer"),
-    (("sweat", "burn", "hiit", "cardio"), "sweat", "Sweat / burn fat"),
+    # 5. CALISTHENICS — "bodyweight" / "body weight" only land here after
+    #    explosive has had its chance (Explosive bodyweight workouts are
+    #    NOT calisthenics from a user-intent standpoint).
+    (("calisthenic", "bodyweight", "body weight", "pull bar", "dip bar"),
+     "calisthenics", "Calisthenics"),
+    # 6. MUSCLE — explicit "muscle" identifier first.
+    (("muscle gainer", "muscle building"), "muscle", "Muscle gainer"),
+    # 7. MUSCLE — muscle-group / lift identifiers. Only triggered when none
+    #    of the explicit mood names matched above, so it now safely covers
+    #    cart titles like "Legs", "Back & Bis Volume", "Compound Push".
+    (("back", "chest", "biceps", "triceps", "shoulder", "leg",
+      "abs", "compound", "weights", "strength"), "muscle", "Muscle gainer"),
 ]
 
 _LIVE_BUCKET_LABELS = {

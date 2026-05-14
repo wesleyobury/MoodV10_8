@@ -71,17 +71,23 @@ def live_feed_response(auth_headers):
 # --------------------------- Auth ---------------------------
 
 class TestAuth:
-    def test_requires_auth(self):
+    def test_guest_access_allowed(self):
+        """Live feed is intentionally public so the Live tab is never
+        empty for guest sessions (social-proof for unauthenticated
+        users). Auth is best-effort for analytics attribution only."""
         r = requests.get(f"{BASE_URL}/api/feed/live", timeout=15)
-        assert r.status_code in (401, 403), f"expected 401/403 got {r.status_code}"
+        assert r.status_code == 200, f"expected 200 got {r.status_code}"
 
-    def test_invalid_token_rejected(self):
+    def test_invalid_token_falls_back_to_guest(self):
+        """A malformed bearer token should be silently treated as
+        unauthenticated rather than rejecting the request — guests
+        and broken sessions both get the public feed."""
         r = requests.get(
             f"{BASE_URL}/api/feed/live",
             headers={"Authorization": "Bearer not.a.valid.jwt"},
             timeout=15,
         )
-        assert r.status_code in (401, 403)
+        assert r.status_code == 200
 
     def test_valid_token_accepted(self, auth_headers):
         r = requests.get(f"{BASE_URL}/api/feed/live", headers=auth_headers, timeout=30)
