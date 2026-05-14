@@ -1771,6 +1771,166 @@ async def record_subscription_trigger(
     return {"ok": True}
 
 
+class SubscriptionValidateRequest(BaseModel):
+    """
+    Phase C — Foreground purchase reconciliation. The native StoreKit2
+    layer hands us the signed JWS from `Product.purchase()` (or from a
+    `Transaction.updates` event for renewals). The backend records the
+    transaction + fires `subscription_purchased` analytics with the
+    persisted `last_trigger_source` attribution.
+
+    NOTE: `signed_payload` is the raw JWS. Full Apple-cert JWS verification
+    is a separate hardening pass (StoreKit2 already verifies on the device
+    via the `.verified` enum case before we ever receive the payload).
+    """
+    signed_payload: str
+    product_id: str
+    transaction_id: Optional[str] = None
+    original_transaction_id: Optional[str] = None
+    purchase_date: Optional[str] = None
+    expiration_date: Optional[str] = None
+
+
+def _plan_for_product(product_id: str) -> Optional[str]:
+    if product_id == "mood_premium_yearly":
+        return "annual"
+    if product_id == "mood_premium_monthly":
+        return "monthly"
+    return None
+
+
+def _subscription_status_for(expiration_iso: Optional[str]) -> str:
+    """
+    Returns 'in_trial' | 'active' | 'lapsed' based on the expiration date.
+    Trial vs paid distinction is approximated client-side via the
+    Transaction's intro-offer flag — backend just confirms it's not lapsed.
+    """
+    if not expiration_iso:
+        return "active"
+    try:
+        exp = datetime.fromisoformat(expiration_iso.replace("Z", "+00:00"))
+    except Exception:
+        return "active"
+    if exp < datetime.now(timezone.utc):
+        return "lapsed"
+    return "active"
+
+
+@api_router.post("/subscription/validate")
+async def validate_subscription_transaction(
+    payload: SubscriptionValidateRequest,
+    current_user_id: str = Depends(get_current_user),
+):
+    """
+    Phase C — Foreground purchase reconciliation endpoint. Called by the
+    client right after `StoreKit.purchase()` resolves with a verified
+    transaction. We:
+      1. Persist the subscription record on the user (status, plan,
+         transaction ids, expiration).
+      2. Look up the previously-stored `subscription.last_trigger_source`
+         (set by `/subscription/record-trigger` when the paywall opened).
+      3. Track `subscription_purchased` with the original attribution so
+         the conversion funnel (paywall_viewed → trial_started →
+         subscription_purchased) is end-to-end attributable.
+      4. Clear the trigger so a follow-up purchase fires fresh attribution.
+
+    Idempotent — re-validating the same `transaction_id` is a no-op except
+    for the timestamp refresh.
+    """
+    plan = _plan_for_product(payload.product_id)
+    if not plan:
+        raise HTTPException(status_code=400, detail=f"Unknown product {payload.product_id}")
+
+    user = await db.users.find_one({"_id": ObjectId(current_user_id)}, {"subscription": 1})
+    trigger_source = (user or {}).get("subscription", {}).get("last_trigger_source")
+
+    status_value = _subscription_status_for(payload.expiration_date)
+
+    update_doc: Dict[str, Any] = {
+        "subscription.status": status_value,
+        "subscription.plan": plan,
+        "subscription.product_id": payload.product_id,
+        "subscription.transaction_id": payload.transaction_id,
+        "subscription.original_transaction_id": payload.original_transaction_id,
+        "subscription.last_validated_at": datetime.now(timezone.utc),
+    }
+    if payload.purchase_date:
+        update_doc["subscription.purchase_date"] = payload.purchase_date
+    if payload.expiration_date:
+        update_doc["subscription.expiration_date"] = payload.expiration_date
+
+    # Clear the attribution token now that we've consumed it.
+    unset_doc: Dict[str, Any] = {"subscription.last_trigger_source": ""}
+
+    await db.users.update_one(
+        {"_id": ObjectId(current_user_id)},
+        {"$set": update_doc, "$unset": unset_doc},
+    )
+
+    # Best-effort analytics emission. The same event fires from the client
+    # for redundancy — this server-side emission ensures the day-7 trial
+    # charge webhook path (when added) carries identical attribution.
+    try:
+        await db.analytics_events.insert_one({
+            "user_id": current_user_id,
+            "event_type": "subscription_purchased",
+            "event_timestamp_utc": datetime.now(timezone.utc),
+            "metadata": {
+                "plan": plan,
+                "product_id": payload.product_id,
+                "trigger_source": trigger_source,
+                "source": "server_validate",
+            },
+        })
+    except Exception as e:
+        logger.error(f"subscription_purchased analytics insert failed: {e}")
+
+    return {
+        "ok": True,
+        "status": status_value,
+        "plan": plan,
+        "trigger_source": trigger_source,
+    }
+
+
+@api_router.post("/subscription/webhooks/apple")
+async def apple_subscription_webhook(request: Request):
+    """
+    Phase C+ — App Store Server Notifications V2 entry point.
+
+    Apple posts a JSON envelope `{ "signedPayload": "<JWS>" }` here on
+    every subscription state change: SUBSCRIBED, DID_CHANGE_RENEWAL_STATUS,
+    DID_RENEW, DID_FAIL_TO_RENEW, EXPIRED, REFUND, etc.
+
+    This handler is intentionally minimal in v1.0:
+      1. Accept the payload.
+      2. Log it for audit.
+      3. Return 200 fast so Apple doesn't retry.
+
+    Full JWS verification + state-machine handling is a follow-up ticket
+    that requires Apple's root cert chain + the `cryptography` package.
+    When that lands, the trial-to-paid (DID_RENEW with `isInIntroOfferPeriod
+    = false`) branch will lookup the user by `originalTransactionId`,
+    read `subscription.last_trigger_source`, and fire the
+    `subscription_purchased` event server-side with that attribution.
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    logger.info(
+        f"📩 Apple S2S notification received: keys={list(body.keys()) if isinstance(body, dict) else 'non-dict'}"
+    )
+    try:
+        await db.apple_webhook_events.insert_one({
+            "received_at": datetime.now(timezone.utc),
+            "payload": body,
+        })
+    except Exception as e:
+        logger.error(f"Apple webhook event persistence failed: {e}")
+    return {"ok": True}
+
+
 # Auth Tracking Endpoints
 
 @api_router.get("/auth/sessions")

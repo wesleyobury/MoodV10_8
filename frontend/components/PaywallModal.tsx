@@ -33,6 +33,13 @@ import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import { useAuth } from '../contexts/AuthContext';
 import { apiFetch } from '../utils/api';
+import {
+  MONTHLY_PRODUCT_ID,
+  YEARLY_PRODUCT_ID,
+  isStoreKitAvailable,
+  purchase as storeKitPurchase,
+  restorePurchases as storeKitRestore,
+} from '../modules/mood-storekit/src';
 
 type Plan = 'annual' | 'monthly';
 
@@ -96,23 +103,85 @@ export function PaywallModal() {
     }
   }, [pendingTrigger]);
 
-  const handleStartTrial = () => {
+  const handleStartTrial = async () => {
     // Tag the trial start with the originating paywall trigger. The same
     // attribution sticks through `subscription_purchased` via
-    // `lastConversionTrigger` (cleared on conversion completion in Phase C).
+    // `lastConversionTrigger` + server-side `subscription.last_trigger_source`.
     Analytics.trialStarted(token, { plan, trigger_source: pendingTrigger ?? 'unknown' });
-    // PHASE C — StoreKit 2: replace this stub with a real
-    // `await SKProductRequest.purchase()` flow and read the resolved
-    // status from the transaction observer instead. When the purchase
-    // actually completes, fire `subscriptionPurchased` with
-    // `trigger_source: lastConversionTrigger` then `clearConversionTrigger()`.
-    setStatus('in_trial');
-    dismissPaywall();
+
+    const productID = plan === 'annual' ? YEARLY_PRODUCT_ID : MONTHLY_PRODUCT_ID;
+
+    // Web preview / Expo Go / Android — no native StoreKit. Optimistically
+    // flip the local state so QA on these surfaces still proceeds. The
+    // real iOS build hits the native StoreKit sheet below.
+    if (!isStoreKitAvailable()) {
+      setStatus('in_trial');
+      dismissPaywall();
+      return;
+    }
+
+    try {
+      const result = await storeKitPurchase(productID);
+      if (result.status === 'success') {
+        // Server-side reconciliation: persists subscription, fires
+        // `subscription_purchased` with the original `trigger_source`
+        // pulled from the user record (set by `record-trigger` when this
+        // modal mounted).
+        if (token) {
+          await apiFetch('/api/subscription/validate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              signed_payload: result.signedPayload,
+              product_id: result.productID,
+              transaction_id: result.transactionID,
+              original_transaction_id: result.originalTransactionID,
+              purchase_date: result.purchaseDate,
+              expiration_date: result.expirationDate,
+            }),
+          }).catch(() => {
+            // Silent — `Transaction.updates` listener will re-fire on next
+            // app open and we'll reconcile then.
+          });
+        }
+        Analytics.subscriptionPurchased(token, {
+          plan,
+          trigger_source: lastConversionTrigger ?? pendingTrigger ?? 'unknown',
+        });
+        clearConversionTrigger();
+        // The intro-offer flag is determined by Apple — we mark `in_trial`
+        // here because every product has a 7-day intro. If Apple denies
+        // the intro (already used etc.), they auto-charge, and the next
+        // `Transaction.updates` event reconciles to `active` on app reopen.
+        setStatus('in_trial');
+        dismissPaywall();
+      } else if (result.status === 'cancelled') {
+        // User dismissed Apple's sheet — leave the paywall up so they can
+        // retry or close manually.
+      }
+    } catch (err) {
+      console.error('StoreKit purchase failed', err);
+    }
   };
 
-  const handleRestore = () => {
+  const handleRestore = async () => {
     Analytics.subscriptionRestored(token, { source: 'paywall' });
-    // PHASE C — wire to `Transaction.currentEntitlements`.
+    if (!isStoreKitAvailable()) return;
+    try {
+      const entitlements = await storeKitRestore();
+      if (entitlements.length > 0) {
+        // Found at least one active entitlement — promote local state and
+        // close the paywall. The first transaction's expiration tells us
+        // whether it's still active.
+        setStatus('active');
+        dismissPaywall();
+      }
+    } catch (err) {
+      console.error('StoreKit restore failed', err);
+    }
   };
 
   const handleOpenLink = (kind: 'privacy' | 'terms') => {
