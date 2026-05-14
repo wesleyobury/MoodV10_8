@@ -44,15 +44,24 @@ function resolvePreviewUrl() {
   return null;
 }
 
-function buildEnvBody(url) {
-  return [
+function buildEnvBody(url, file) {
+  const base = [
     `EXPO_PUBLIC_API_URL=${url}`,
     `EXPO_PUBLIC_BACKEND_URL=${url}`,
     `EXPO_USE_FAST_RESOLVER=1`,
     `EXPO_USE_STATIC=false`,
     `EXPO_PACKAGER_PROXY_URL=${url}`,
-    '',
-  ].join('\n');
+  ];
+  // Dev-only flag — flips the new-user signup flow so the paywall fires
+  // immediately after the reveal-payoff CTA instead of waiting for the
+  // first completed free workout. Kept OUT of `.env.preview` (preview
+  // EAS builds opt in via eas.json) and OUT of `.env` (which is sourced
+  // for production-style runs).
+  if (file === '.env.development') {
+    base.push('EXPO_PUBLIC_FORCE_SIGNUP_PAYWALL=true');
+  }
+  base.push('');
+  return base.join('\n');
 }
 
 function writeIfChanged(filePath, content) {
@@ -82,11 +91,10 @@ async function main() {
     process.exit(1);
   }
 
-  const body = buildEnvBody(url);
   const changed = [];
   for (const f of ENV_FILES) {
     const full = path.join(FRONTEND_DIR, f);
-    if (writeIfChanged(full, body)) changed.push(f);
+    if (writeIfChanged(full, buildEnvBody(url, f))) changed.push(f);
   }
 
   console.log(`🔗 sync-env: target = ${url}`);
