@@ -36,6 +36,10 @@ export default function Register() {
   const [avatarUri, setAvatarUri] = useState<string | null>(null);
   const [avatarBase64, setAvatarBase64] = useState<string | null>(null);
   const [pickingImage, setPickingImage] = useState(false);
+  // App Store compliance (2026-05-14): single required acknowledgement
+  // checkbox covering fitness-not-medical-advice + physically-able-to-exercise
+  // + Terms + Privacy. Submit stays disabled until this is true.
+  const [acknowledged, setAcknowledged] = useState(false);
 
   const { register } = useAuth();
 
@@ -108,6 +112,13 @@ export default function Register() {
   };
 
   const handleRegister = async () => {
+    if (!acknowledged) {
+      Alert.alert(
+        'Acknowledgement required',
+        'Please confirm the fitness disclaimer to continue.',
+      );
+      return;
+    }
     if (!username.trim() || !email.trim() || !password.trim()) {
       Alert.alert('Error', 'Please fill in all required fields');
       return;
@@ -359,18 +370,75 @@ export default function Register() {
               </View>
 
               <TouchableOpacity
-                style={styles.registerButton}
+                style={[
+                  styles.registerButton,
+                  !acknowledged && styles.registerButtonDisabled,
+                ]}
                 onPress={handleRegister}
+                disabled={!acknowledged}
                 testID="register-submit-button"
               >
                 <LinearGradient
-                  colors={['#FFD700', '#FFA500']}
+                  colors={
+                    acknowledged
+                      ? ['#FFD700', '#FFA500']
+                      : ['#3a3a3a', '#2a2a2a']
+                  }
                   style={styles.registerButtonGradient}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                 >
-                  <Text style={styles.registerButtonText}>Create Account</Text>
+                  <Text
+                    style={[
+                      styles.registerButtonText,
+                      !acknowledged && styles.registerButtonTextDisabled,
+                    ]}
+                  >
+                    Create Account
+                  </Text>
                 </LinearGradient>
+              </TouchableOpacity>
+
+              {/* App Store compliance — required acknowledgement (2026-05-14).
+                  Single checkbox covering fitness-not-medical-advice +
+                  physically-able-to-exercise + Terms + Privacy. */}
+              <TouchableOpacity
+                style={styles.ackRow}
+                activeOpacity={0.7}
+                onPress={() => setAcknowledged((v) => !v)}
+                testID="register-ack-row"
+              >
+                <View
+                  style={[
+                    styles.ackCheckbox,
+                    acknowledged && styles.ackCheckboxChecked,
+                  ]}
+                  testID="register-ack-checkbox"
+                >
+                  {acknowledged && (
+                    <Ionicons name="checkmark" size={14} color="#0c0c0c" />
+                  )}
+                </View>
+                <Text style={styles.ackText}>
+                  I acknowledge MOOD provides fitness guidance, not medical
+                  advice, and I am physically able to exercise. I agree to the{' '}
+                  <Text
+                    style={styles.ackLink}
+                    onPress={() => router.push('/terms-of-service')}
+                    testID="register-ack-terms-link"
+                  >
+                    Terms of Service
+                  </Text>{' '}
+                  and{' '}
+                  <Text
+                    style={styles.ackLink}
+                    onPress={() => router.push('/privacy-policy')}
+                    testID="register-ack-privacy-link"
+                  >
+                    Privacy Policy
+                  </Text>
+                  .
+                </Text>
               </TouchableOpacity>
             </View>
 
@@ -413,12 +481,47 @@ const styles = StyleSheet.create({
   passwordInput: { paddingRight: 40 },
   eyeIcon: { position: 'absolute', right: 16, padding: 4 },
   registerButton: { borderRadius: 12, overflow: 'hidden', marginTop: 8 },
+  registerButtonDisabled: { opacity: 0.65 },
   registerButtonGradient: {
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
   },
   registerButtonText: { fontSize: 16, fontWeight: 'bold', color: '#0c0c0c' },
+  registerButtonTextDisabled: { color: '#888' },
+  // App Store compliance acknowledgement row
+  ackRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 14,
+    paddingHorizontal: 4,
+  },
+  ackCheckbox: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    borderWidth: 1.5,
+    borderColor: '#666',
+    marginRight: 10,
+    marginTop: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+  ackCheckboxChecked: {
+    backgroundColor: '#FFD700',
+    borderColor: '#FFD700',
+  },
+  ackText: {
+    flex: 1,
+    color: 'rgba(255,255,255,0.78)',
+    fontSize: 12,
+    lineHeight: 18,
+  },
+  ackLink: {
+    color: '#FFD700',
+    textDecorationLine: 'underline',
+  },
   footer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' },
   footerText: { fontSize: 14, color: '#888' },
   footerLink: { fontSize: 14, color: '#FFD700', fontWeight: '600' },

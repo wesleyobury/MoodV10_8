@@ -25,6 +25,7 @@ import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
 import { TextWithTermLinks } from '../components/TermDefinitionPopup';
 import { API_URL } from '../utils/apiConfig';
 import InSessionProgressBar from '../components/InSessionProgressBar';
+import { SessionSafetyBanner } from '../components/SessionSafetyBanner';
 
 interface MOODTip {
   icon: keyof typeof Ionicons.glyphMap;

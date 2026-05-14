@@ -941,6 +941,13 @@ async def register(user_data: UserCreate):
         "terms_accepted_at": datetime.now(timezone.utc),  # Record when user accepted terms
         "terms_accepted_version": CURRENT_TERMS_VERSION,  # Record which version they accepted
         "privacy_accepted_at": datetime.now(timezone.utc),  # Record when user accepted privacy policy
+        # App Store compliance (Part 1 of the App Store Compliance ticket,
+        # 2026-05-14): single-checkbox acknowledgement at signup that the
+        # user (a) understands MOOD is fitness guidance not medical advice,
+        # (b) is physically able to exercise, (c) accepts Terms + Privacy.
+        # Stored alongside the existing `terms_accepted_at` for back-compat
+        # and to give compliance an explicit field to audit against.
+        "acknowledged_terms_at": datetime.now(timezone.utc),
         "tips_state": {
             "mood_scroll": "unseen",
             "form_videos": "unseen",
