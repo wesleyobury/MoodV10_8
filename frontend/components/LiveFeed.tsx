@@ -301,6 +301,12 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
       // athlete ran, then route straight to /cart (mirrors the Explore
       // tab's "Try this workout" replicate behavior). Falls back to the
       // mood sub-selection nav if the snapshot fetch fails for any reason.
+      //
+      // The snapshot is persisted with workout-session field names
+      // (`workoutName`/`workoutTitle`/`moodCategory`), but the cart context
+      // expects `WorkoutItem` shape (`name`/`workoutType`/`moodCard`/`id`).
+      // We normalize here (mirrors `normalize_snapshot_to_attached_workout`
+      // on the server + the cart-item builder in `post-detail.tsx`).
       if (entry.workout_snapshot_id) {
         try {
           const res = await fetch(
@@ -309,10 +315,39 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
           );
           if (res.ok) {
             const snap = await res.json();
-            const cartItems = Array.isArray(snap?.workouts) ? snap.workouts : [];
+            const rawItems: any[] = Array.isArray(snap?.workouts) ? snap.workouts : [];
+            const moodCategory: string =
+              snap?.mood_category ||
+              rawItems[0]?.moodCategory ||
+              rawItems[0]?.workoutType ||
+              nav.title;
+            const snapshotId: string = String(snap?.id || entry.workout_snapshot_id);
+
+            const cartItems = rawItems
+              .map((w, idx) => {
+                const name = w.name || w.workoutName || w.workoutTitle;
+                if (!name) return null;
+                return {
+                  id: w.id || `live-snapshot-${snapshotId}-${idx}`,
+                  name,
+                  duration: String(w.duration || '10 min'),
+                  description: w.description || w.battlePlan || '',
+                  battlePlan: w.battlePlan || '',
+                  imageUrl: w.imageUrl || '',
+                  intensityReason: w.intensityReason || '',
+                  equipment: w.equipment || 'Bodyweight',
+                  difficulty: w.difficulty || 'intermediate',
+                  workoutType: w.workoutType || w.moodCategory || moodCategory,
+                  moodCard: w.moodCard || w.moodCategory || moodCategory,
+                  moodTips: Array.isArray(w.moodTips) ? w.moodTips : [],
+                  source: 'build_for_me' as const,
+                };
+              })
+              .filter((x): x is NonNullable<typeof x> => x !== null);
+
             if (cartItems.length > 0) {
               clearCart();
-              cartItems.forEach((w: any) => addToCart(w));
+              cartItems.forEach((w) => addToCart(w));
               if (token) {
                 Analytics.tryWorkoutClicked(token, {
                   workout_name: entry.workout_name || entry.mood_label,

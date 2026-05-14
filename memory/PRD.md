@@ -14,6 +14,16 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-14 PM] **Live Feed "Try this workout" cart hydration fix + Founding Member badge caption removal**:
+  - **Root cause** of broken cart hydration: workout snapshots are persisted with the workout-session field names (`workoutName` / `workoutTitle` / `moodCategory` — see `app/workout-session.tsx::handleFinishSession`) but `CartContext.WorkoutItem` expects `name` / `workoutType` / `moodCard` / `id`. Live Feed was pushing the raw snapshot dicts straight into `addToCart`, so the cart rendered empty names, missing dividers, and incorrect grouping.
+  - **Fix** (`components/LiveFeed.tsx::handleCardPress`): added an inline mapper that mirrors `normalize_snapshot_to_attached_workout` on the server and the cart-item builder in `app/post-detail.tsx::handleTryWorkout`. Generates a stable `id` per item (`live-snapshot-<snapshotId>-<idx>`), copies `workoutName`/`workoutTitle` → `name`, `moodCategory` → `workoutType`/`moodCard`, and fills sane defaults for `equipment` / `difficulty` / `duration` / `imageUrl` / `battlePlan` etc. Items with no resolvable name are dropped (defensive null-guard).
+  - **Founding Member badge** (`components/FoundingMemberBadge.tsx`): removed the now-unused `caption` prop (the "Day-one MOOD." subhead had already been deleted from the JSX in commit 618d44d1 but the prop and orphaned style remained). `app/(tabs)/profile.tsx` updated to pass just `testID`. Final badge UI: small gold-ring pill with star icon + "FOUNDING MEMBER" label — no caption underneath.
+  - **End-to-end regression test** (`backend/tests/test_live_feed_snapshot_hydration.py` — **1/1 PASS**): registers a fresh user → POST `/api/workout-snapshots` with the exact payload shape `workout-session.tsx` sends → fires `workout_completed` analytics with `metadata.workout_snapshot_id` → GET `/api/feed/live` and asserts the entry surfaces the snapshot_id → GET `/api/workout-snapshots/{id}` and asserts the persisted workouts contain `workoutName`/`workoutTitle`/`equipment`/`battlePlan` (the keys the client mapper expects) and explicitly NOT `name`/`workoutType`/`moodCard` (locking the mapper as the canonical normalization point).
+  - **TypeScript** `tsc --noEmit` clean on the touched files. Pre-existing errors in `utils/analytics.ts` / `utils/cloudinaryVideo.ts` unchanged.
+  - **Verified live**: backend curl chain (register → snapshot → analytics → feed → hydration) returns the expected shape on the preview backend. Native cart-rendering verification requires a TestFlight build.
+
+
+## What's Been Implemented
 - [2026-05-14] **ToS version-bump re-consent system (App Store compliance enhancement).**
   - **Backend (`server.py`)** — two new endpoints + one enhancement:
     - `GET /api/legal/active-version` (public, no auth) → `{ terms_version, privacy_version }`. Sourced from the existing `CURRENT_TERMS_VERSION` constant.

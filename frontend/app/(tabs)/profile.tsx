@@ -855,7 +855,7 @@ export default function Profile() {
             {/* Phase D — Founding Member badge surfaces lifetime-Premium status. */}
             {authUser?.founding_member ? (
               <View style={{ marginTop: 10 }}>
-                <FoundingMemberBadge caption testID="profile-founding-member-badge" />
+                <FoundingMemberBadge testID="profile-founding-member-badge" />
               </View>
             ) : null}
           </View>

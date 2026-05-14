@@ -2,8 +2,7 @@
  * FoundingMemberBadge — small gold pill displayed next to the username on
  * the profile screen for accounts created before the Phase D cutoff.
  *
- * Visually quiet by design: gold ring, transparent fill, tiny lock-open
- * icon. Pairs with the subhead caption "Day-one MOOD." per the v1.0 spec.
+ * Visually quiet by design: gold ring, transparent fill, tiny star icon.
  */
 
 import React from 'react';
@@ -13,11 +12,10 @@ import { COLORS } from '../constants/brand';
 
 interface Props {
   size?: 'sm' | 'md';
-  caption?: boolean;
   testID?: string;
 }
 
-export function FoundingMemberBadge({ size = 'md', caption = false, testID }: Props) {
+export function FoundingMemberBadge({ size = 'md', testID }: Props) {
   const compact = size === 'sm';
   return (
     <View style={styles.wrap} testID={testID} data-testid={testID}>
