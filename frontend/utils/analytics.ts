@@ -219,6 +219,11 @@ export const Analytics = {
     mood_category?: string;
     difficulty?: string;
     equipment?: string;
+    // Set when a session-start snapshot is created in cart.tsx so that
+    // the Live tab "Live now" cards can hydrate "Try this workout" using
+    // the same snapshot pipeline as completion cards.
+    workout_snapshot_id?: string;
+    workout_name?: string;
   }) => trackEvent(token, 'workout_started', metadata),
 
   workoutCompleted: (token: string, metadata: {

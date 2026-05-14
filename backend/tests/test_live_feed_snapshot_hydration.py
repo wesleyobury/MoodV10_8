@@ -224,3 +224,46 @@ def test_single_workout_snapshot_round_trip():
     assert matches[0]["mood_bucket"] == "lazy", (
         f"expected lazy bucket, got {matches[0]['mood_bucket']}"
     )
+
+
+def test_workout_started_with_snapshot_surfaces_as_live_now():
+    """Session-start snapshots (created by cart.tsx::handleStartWorkoutSession)
+    must surface on the Live tab as `live_now` entries with a hydratable
+    `workout_snapshot_id`. Without this, the "just started" cards would
+    fall back to mood sub-selection on tap."""
+    token = _register_user()
+    h = {"Authorization": f"Bearer {token}"}
+
+    snap_resp = requests.post(
+        f"{BASE_URL}/api/workout-snapshots",
+        headers=h, json=_snapshot_payload(), timeout=20,
+    )
+    assert snap_resp.status_code == 200, snap_resp.text
+    snap_id = snap_resp.json()["id"]
+
+    # Fire workout_started — analytics.workoutStarted now carries the snap id
+    ev_resp = requests.post(
+        f"{BASE_URL}/api/analytics/track",
+        headers=h,
+        json={
+            "event_type": "workout_started",
+            "metadata": {
+                "mood_category": "Sweat - Light Weights",
+                "difficulty": "intermediate",
+                "equipment": "Bodyweight",
+                "workout_snapshot_id": snap_id,
+                "workout_name": "Sweat circuit",
+            },
+        },
+        timeout=20,
+    )
+    assert ev_resp.status_code == 200, ev_resp.text
+
+    feed_resp = requests.get(f"{BASE_URL}/api/feed/live?limit=50", timeout=20)
+    assert feed_resp.status_code == 200
+    entries = feed_resp.json().get("entries", [])
+    matches = [e for e in entries if e.get("workout_snapshot_id") == snap_id]
+    assert matches, f"workout_started snapshot {snap_id} not surfaced as live_now"
+    entry = matches[0]
+    assert entry["type"] == "live_now"
+    assert entry["mood_bucket"] == "sweat"

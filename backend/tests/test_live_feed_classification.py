@@ -89,6 +89,17 @@ def test_lazy_subpaths():
     assert _b("I'm feeling lazy - Gentle Movement") == "lazy"
     assert _b("Lazy - Lower Body") == "lazy"
     assert _b("Gentle stretching") == "lazy"
+    # Regression: the lazy "Move Your Body" / "Just move your body"
+    # sub-paths were UNCLASSIFIED before — events got dropped from the
+    # feed entirely.
+    assert _b("Move Your Body") == "lazy"
+    assert _b("Just move your body") == "lazy"
+    assert _b("Move your body - Bodyweight") == "lazy"
+    # Regression: the lazy "Lift Weights" sub-path (capital L) used to
+    # leak into muscle because of the loose "weights" keyword. Distinct
+    # from the legacy generic "Light weights" muscle string.
+    assert _b("Lift Weights") == "lazy"
+    assert _b("Lift weights") == "lazy"
 
 
 # ---------- FEATURED WORKOUTS ----------

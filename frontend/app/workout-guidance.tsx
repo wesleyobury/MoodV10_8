@@ -559,9 +559,13 @@ export default function WorkoutGuidanceScreen() {
             year: 'numeric' 
           });
 
-          // Create workout snapshot for persistent access (Try this workout feature)
-          let workoutSnapshotId: string | null = null;
-          if (token) {
+          // Create workout snapshot for persistent access (Try this workout feature).
+          // If cart.tsx already created a session-start snapshot and threaded
+          // the id through `workoutSnapshotId` param, reuse it (so the
+          // live_now and completion feed cards share the same snapshot
+          // and we don't pay for a duplicate). Otherwise create one now.
+          let workoutSnapshotId: string | null = (params.workoutSnapshotId as string) || null;
+          if (token && !workoutSnapshotId) {
             try {
               console.log('📸 Creating workout snapshot for Try this workout feature...');
               const snapshotResponse = await fetch(`${API_URL}/api/workout-snapshots`, {
@@ -587,6 +591,8 @@ export default function WorkoutGuidanceScreen() {
             } catch (error) {
               console.error('❌ Error creating workout snapshot:', error);
             }
+          } else if (workoutSnapshotId) {
+            console.log('♻️  Reusing session-start snapshot:', workoutSnapshotId);
           }
 
           const workoutStatsData = {

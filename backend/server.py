@@ -8306,8 +8306,11 @@ _LIVE_MOOD_RULES: List[tuple[tuple[str, ...], str, str]] = [
      "explosive", "Build explosion"),
     # 3. OUTDOOR — explicit mood-name + hill/park identifiers.
     (("outdoor", "outside", "hill", "park to peak"), "outdoor", "Outdoor"),
-    # 4. LAZY
-    (("lazy", "gentle"), "lazy", "I'm feeling lazy"),
+    # 4. LAZY — both the "Lift Weights" and "Move Your Body" sub-paths.
+    #    `lift weights` is distinct from the generic `light weights`
+    #    muscle fallback (the latter stays in rule 7).
+    (("lazy", "gentle", "move your body", "just move", "lift weights"),
+     "lazy", "I'm feeling lazy"),
     # 5. CALISTHENICS — "bodyweight" / "body weight" only land here after
     #    explosive has had its chance (Explosive bodyweight workouts are
     #    NOT calisthenics from a user-intent standpoint).

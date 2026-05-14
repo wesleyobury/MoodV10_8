@@ -617,24 +617,74 @@ export default function CartScreen() {
     })();
   }, [cartItems, currentDraftId, beginDraft, markReady]);
 
-  const handleStartWorkoutSession = () => {
+  const handleStartWorkoutSession = async () => {
     if (cartItems.length === 0) return;
-    
+
     setIsStarting(true);
 
     // Mark the saved-build draft as started (fire-and-forget)
     markStarted().catch(() => {});
-    
+
+    const firstWorkout = cartItems[0];
+    const sessionMoodCategory =
+      firstWorkout.moodCard || firstWorkout.workoutType || 'Workout';
+
+    // Create a session-start workout snapshot so the Live tab's "Live
+    // now" card for this session can hydrate "Try this workout" via the
+    // same snapshot pipeline used for completion cards. The completion
+    // path in workout-guidance.tsx will reuse this same snapshot id (we
+    // thread it through `workoutSnapshotId` param) instead of creating
+    // a duplicate.
+    let sessionSnapshotId: string | null = null;
     if (token) {
-      const firstWorkout = cartItems[0];
+      try {
+        const totalDurationMins = cartItems.reduce(
+          (sum, w) => sum + (parseInt(String(w.duration).split(' ')[0]) || 0),
+          0,
+        );
+        const snapshotWorkouts = cartItems.map((w) => ({
+          workoutTitle: w.name,
+          workoutName: w.name,
+          equipment: w.equipment,
+          duration: w.duration,
+          difficulty: w.difficulty,
+          moodCategory: w.workoutType || w.moodCard || sessionMoodCategory,
+          imageUrl: w.imageUrl || '',
+          description: w.description || '',
+          battlePlan: w.battlePlan || '',
+          intensityReason: w.intensityReason || '',
+          moodTips: Array.isArray(w.moodTips) ? w.moodTips : [],
+        }));
+        const res = await fetch(`${API_URL}/api/workout-snapshots`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            workouts: snapshotWorkouts,
+            total_duration: totalDurationMins,
+            mood_category: sessionMoodCategory,
+          }),
+        });
+        if (res.ok) {
+          const snap = await res.json();
+          sessionSnapshotId = snap?.id || null;
+        }
+      } catch {
+        // Snapshot creation is best-effort. Live-now hydration will
+        // fall back to mood sub-selection if this fails.
+      }
+
       Analytics.workoutStarted(token, {
-        mood_category: firstWorkout.moodCard || firstWorkout.workoutType,
+        mood_category: sessionMoodCategory,
         difficulty: firstWorkout.difficulty,
         equipment: firstWorkout.equipment,
+        workout_name: firstWorkout.name,
+        workout_snapshot_id: sessionSnapshotId || undefined,
       });
     }
-    
-    const firstWorkout = cartItems[0];
+
     router.push({
       pathname: '/workout-guidance',
       params: {
@@ -661,7 +711,11 @@ export default function CartScreen() {
         }))),
         currentSessionIndex: '0',
         isSession: 'true',
-        moodTips: encodeURIComponent(JSON.stringify(firstWorkout.moodTips || []))
+        moodTips: encodeURIComponent(JSON.stringify(firstWorkout.moodTips || [])),
+        // Reuse this snapshot at completion time so we don't create a
+        // duplicate. workout-guidance.tsx falls back to creating its own
+        // if this param is missing (e.g. older nav paths).
+        workoutSnapshotId: sessionSnapshotId || '',
       }
     });
   };
