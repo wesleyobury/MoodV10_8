@@ -19,6 +19,7 @@ import { PaywallModal } from '../components/PaywallModal';
 import { FoundingMemberGate } from '../components/FoundingMemberGate';
 import { LegalReacceptGate } from '../components/LegalReacceptGate';
 import { FunnelEntryGate } from '../components/FunnelEntryGate';
+import ProfilePicPromptGate from '../components/ProfilePicPromptGate';
 import { Analytics } from '../utils/analytics';
 import { initNotifications, notificationService } from '../utils/notifications';
 import FloatingCart from '../components/FloatingCart';
@@ -172,6 +173,7 @@ function AppContent() {
       <FoundingMemberGate />
       <LegalReacceptGate />
       <FunnelEntryGate />
+      <ProfilePicPromptGate />
     </>
   );
 }

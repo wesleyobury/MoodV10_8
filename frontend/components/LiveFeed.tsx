@@ -167,31 +167,36 @@ const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void
         )}
       </View>
 
-      {showLabel && (
-        <View style={styles.labelRow}>
-          {entry.type === 'live_now' && <PulseDot size={5} color={GOLD} />}
-          <Text
-            style={[
-              styles.labelText,
-              { color: labelColor, marginLeft: entry.type === 'live_now' ? 6 : 0 },
-            ]}
-          >
-            {labelText}
+      {/* Top text column — reserves right padding so the absolutely-positioned
+          avatar never overlaps the title/label/sentence. Bottom row keeps its
+          full width for the timestamp + Try-this-workout button. */}
+      <View style={styles.cardTextColumn}>
+        {showLabel && (
+          <View style={styles.labelRow}>
+            {entry.type === 'live_now' && <PulseDot size={5} color={GOLD} />}
+            <Text
+              style={[
+                styles.labelText,
+                { color: labelColor, marginLeft: entry.type === 'live_now' ? 6 : 0 },
+              ]}
+            >
+              {labelText}
+            </Text>
+          </View>
+        )}
+
+        {entry.type === 'milestone' ? (
+          <Text style={styles.milestoneNumber} data-testid={`live-milestone-count-${entry.id}`}>
+            {entry.milestone_count} workouts
           </Text>
-        </View>
-      )}
+        ) : (
+          <Text style={[styles.moodWord, { color: palette.accent }]} data-testid={`live-mood-${entry.mood_bucket}-${entry.id}`}>
+            {entry.mood_label}
+          </Text>
+        )}
 
-      {entry.type === 'milestone' ? (
-        <Text style={styles.milestoneNumber} data-testid={`live-milestone-count-${entry.id}`}>
-          {entry.milestone_count} workouts
-        </Text>
-      ) : (
-        <Text style={[styles.moodWord, { color: palette.accent }]} data-testid={`live-mood-${entry.mood_bucket}-${entry.id}`}>
-          {entry.mood_label}
-        </Text>
-      )}
-
-      <Text style={styles.sentence}>{sentence}</Text>
+        <Text style={styles.sentence}>{sentence}</Text>
+      </View>
 
       <View style={styles.bottomRow}>
         <Text style={[styles.timestamp, { color: withAlpha(palette.accent, 0.5) }]}>
@@ -573,6 +578,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  // Top text column reserves space for the absolutely-positioned 44px avatar
+  // (right:14 + width:44 + 10px breathing room = ~68px). Bottom row stays full
+  // width so the Try-this-workout button sits flush right.
+  cardTextColumn: {
+    paddingRight: 68,
   },
   labelRow: {
     flexDirection: 'row',
