@@ -6698,6 +6698,20 @@ async def get_current_user_info(
     response.headers["X-Admin-Effective"] = str(is_admin).lower()
     response.headers["X-Admin-Matched-By"] = matched_by
     
+    # Phase D — Founding Member surface (also needed for the profile badge
+    # and Settings status row). Mirrors the same logic from /api/auth/me so
+    # the client's AuthContext.user can use either endpoint interchangeably.
+    subscription_doc = user.get("subscription") or {}
+    raw_status = subscription_doc.get("status")
+    expiration_iso = subscription_doc.get("expiration_date")
+    if raw_status in ("active", "in_trial") and isinstance(expiration_iso, str):
+        try:
+            exp_dt = datetime.fromisoformat(expiration_iso.replace("Z", "+00:00"))
+            if exp_dt < datetime.now(timezone.utc):
+                raw_status = "lapsed"
+        except Exception:
+            pass
+
     # Return user data including terms acceptance status
     return {
         "id": str(user["_id"]),
@@ -6721,6 +6735,26 @@ async def get_current_user_info(
             "form_videos": "unseen",
             "completion_share": "unseen",
         },
+        # Phase D — Founding Member fields. Required by `<FoundingMemberBadge>`
+        # on the profile screen AND by `FoundingMemberGate` which flips the
+        # SubscriptionContext status to 'founding_member' on every load.
+        # Without these on this endpoint (which is what AuthContext actually
+        # calls), pre-cutoff accounts showed "Free trial active" in Settings
+        # and were missing the gold badge on their profile.
+        "founding_member": bool(user.get("founding_member", False)),
+        "founding_member_at": (
+            user["founding_member_at"].isoformat()
+            if isinstance(user.get("founding_member_at"), datetime)
+            else None
+        ),
+        "founding_member_modal_seen": bool(user.get("founding_member_modal_seen", False)),
+        # Phase C — StoreKit subscription mirror (used by `<SubscriptionContext>`
+        # to rehydrate live entitlement state on every app launch). Founding
+        # members short-circuit this in the gate, so it's a no-op for them.
+        "subscription_status": raw_status,
+        "subscription_plan": subscription_doc.get("plan"),
+        "subscription_product_id": subscription_doc.get("product_id"),
+        "subscription_expiration_date": expiration_iso,
     }
 
 

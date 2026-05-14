@@ -618,13 +618,16 @@ export default function WorkoutGuidanceScreen() {
               console.log('📊 Tracked featured workout completed:', featuredWorkoutId);
             }
             
-            // Track general workout completion
+            // Track general workout completion — include the snapshot ID
+            // so the Live Feed can deep-link from this user's completion
+            // card straight into the viewer's hydrated cart.
             Analytics.workoutCompleted(token, {
               mood_category: overallMoodCategory,
               difficulty: firstWorkout?.difficulty,
               equipment: firstWorkout?.equipment,
               duration_minutes: totalDuration,
               exercises_completed: sessionWorkouts.length,
+              workout_snapshot_id: workoutSnapshotId || undefined,
             });
             
             // Track workout session completed with elapsed time
