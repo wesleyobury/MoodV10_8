@@ -368,13 +368,16 @@ export default function WorkoutSessionScreen() {
         });
       }
       
-      // Also track general workout completion
+      // Also track general workout completion. The snapshot ID is
+      // included so the Live Feed can deep-link from the completion card
+      // into a hydrated cart (Try-this-workout from the Live tab).
       Analytics.workoutCompleted(token, {
         mood_category: firstWorkout.workoutType || 'Unknown',
         difficulty: firstWorkout.difficulty,
         equipment: firstWorkout.equipment,
         duration_minutes: totalDuration,
-        exercises_completed: sessionWorkouts.length
+        exercises_completed: sessionWorkouts.length,
+        workout_snapshot_id: workoutSnapshotId || undefined,
       });
     }
 

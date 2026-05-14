@@ -227,6 +227,11 @@ export const Analytics = {
     equipment?: string;
     duration_minutes?: number;
     exercises_completed?: number;
+    // Phase 7 — included on completion so the Live Feed entry can carry
+    // an opaque pointer back to the full cart. Tapping "Try this workout"
+    // on a feed entry fetches /api/workout-snapshots/{id} and hydrates the
+    // viewer's cart with the exact exercises the original athlete ran.
+    workout_snapshot_id?: string;
   }) => trackEvent(token, 'workout_completed', metadata),
 
   workoutSkipped: (token: string, metadata: {

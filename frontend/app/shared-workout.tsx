@@ -1,22 +1,33 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import WorkoutCard from '../components/WorkoutCard';
 import { Workout } from '../types/workout';
+import { useCart } from '../contexts/CartContext';
 
 /**
- * Renders a single shared workout in its original "workout cart" form.
- * Reached via deep navigation from a chat WorkoutShareMessageCard.
+ * Renders a shared workout reached via deep navigation from a chat
+ * WorkoutShareMessageCard.
  *
- * Recipient sees the same WorkoutCard the sender saw — they can preview,
- * add it to their own cart, edit it, swipe through (only one item here),
- * etc., flowing into the standard battle-plan / share screens from there.
+ * Two payload shapes are supported:
+ *   A) `data.workout = Workout` — legacy single-workout share. Renders
+ *      it via `WorkoutCard` as before.
+ *   B) `data.workout.workouts = Workout[]` — full cart share (new format
+ *      shipped 2026-05-14). Hydrates the recipient's cart with the
+ *      sender's exact exercises (mirroring the Explore "Try this
+ *      workout" replicate flow) and routes straight to `/cart`. This
+ *      avoids dumping the recipient on the mood sub-selection screen
+ *      and matches the original sender's complete build.
  */
 export default function SharedWorkoutScreen() {
   const insets = useSafeAreaInsets();
   const { payload } = useLocalSearchParams<{ payload?: string }>();
+  const { clearCart, addToCart } = useCart();
+  // Latched so the cart hydration only fires once per mount (React Strict
+  // Mode double-mount safety).
+  const hydratedRef = useRef(false);
 
   const data = useMemo(() => {
     try {
@@ -28,6 +39,22 @@ export default function SharedWorkoutScreen() {
       return null;
     }
   }, [payload]);
+
+  // Shape B — full cart payload. Hydrate + redirect.
+  useEffect(() => {
+    if (hydratedRef.current) return;
+    const items: Workout[] | undefined = data?.workout?.workouts;
+    if (!Array.isArray(items) || items.length === 0) return;
+    hydratedRef.current = true;
+    clearCart();
+    // Cart context's `WorkoutItem` is structurally compatible with the
+    // `Workout` payload coming over the wire (created by the sender from
+    // their own cart). We cast through `unknown` because the two type
+    // names live in different modules with the same shape but different
+    // optional-field signatures.
+    items.forEach((w) => addToCart(w as unknown as Parameters<typeof addToCart>[0]));
+    router.replace('/cart');
+  }, [data, clearCart, addToCart]);
 
   if (!data || !data.workout) {
     return (

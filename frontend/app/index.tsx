@@ -198,12 +198,26 @@ export default function Welcome() {
     router.push('/terms-of-service');
   };
 
-  const handleGetStarted = () => {
-    if (hasAcceptedPrivacy) {
-      router.push('/auth/login');
-    } else {
+  const handleGetStarted = async () => {
+    if (!hasAcceptedPrivacy) {
       setShowPrivacyModal(true);
+      return;
     }
+    // Brand-new authenticated user just landed back here from registration
+    // (FunnelEntryGate set `@mood_needs_funnel` and re-routed to `/` so the
+    // user could watch the video first). Consume the flag and push into the
+    // 8-step funnel exactly once.
+    try {
+      const needsFunnel = await AsyncStorage.getItem('@mood_needs_funnel');
+      if (needsFunnel === 'true') {
+        await AsyncStorage.removeItem('@mood_needs_funnel');
+        router.replace('/onboarding-funnel/step-1-mood');
+        return;
+      }
+    } catch {
+      /* fall through to login */
+    }
+    router.push('/auth/login');
   };
   
   return (

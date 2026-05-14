@@ -10,6 +10,7 @@ import {
   Animated,
   Easing,
   Platform,
+  Image,
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
@@ -17,6 +18,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { API_URL } from '../utils/apiConfig';
 import { Analytics } from '../utils/analytics';
+import { useCart } from '../contexts/CartContext';
 
 // ===== Brand tokens =====
 const GOLD = '#F5C518';
@@ -58,6 +60,10 @@ interface LiveEntry {
   milestone_count: number | null;
   timestamp: string;
   ago_text: string;
+  // Phase 7 — surfaced from completion event metadata so Try-this-workout
+  // can hydrate the viewer's cart with the exact exercises the original
+  // athlete ran (instead of dumping them into mood sub-selection).
+  workout_snapshot_id?: string | null;
 }
 
 interface LiveFeedData {
@@ -134,6 +140,33 @@ const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void
       {/* subtle accent wash to lift card off the black background */}
       <View pointerEvents="none" style={[styles.cardAccentWash, { backgroundColor: semiBg }]} />
 
+      {/* User avatar — small circular pic at the top-right corner so the
+          existing copy + LIVE/MILESTONE label below it don't get pushed
+          around. Falls back to an initial-letter circle when the user
+          hasn't uploaded an avatar. */}
+      <View style={styles.cardAvatar} pointerEvents="none">
+        {entry.user.avatar ? (
+          <Image
+            source={{ uri: entry.user.avatar }}
+            style={styles.cardAvatarImg}
+            data-testid={`live-feed-avatar-${entry.id}`}
+          />
+        ) : (
+          <View
+            style={[
+              styles.cardAvatarImg,
+              styles.cardAvatarFallback,
+              { borderColor: withAlpha(palette.accent, 0.4) },
+            ]}
+            data-testid={`live-feed-avatar-fallback-${entry.id}`}
+          >
+            <Text style={[styles.cardAvatarFallbackText, { color: palette.accent }]}>
+              {(userName[0] || '?').toUpperCase()}
+            </Text>
+          </View>
+        )}
+      </View>
+
       {showLabel && (
         <View style={styles.labelRow}>
           {entry.type === 'live_now' && <PulseDot size={5} color={GOLD} />}
@@ -184,6 +217,7 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
+  const { clearCart, addToCart } = useCart();
 
   // Track previously-seen entry IDs so we can detect "+N just landed" on refresh
   const seenIdsRef = useRef<Set<string>>(new Set());
@@ -259,8 +293,42 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
   );
 
   const handleCardPress = useCallback(
-    (entry: LiveEntry) => {
+    async (entry: LiveEntry) => {
       const nav = MOOD_NAV[entry.mood_bucket] || MOOD_NAV.muscle;
+
+      // Phase 7 — if the original completion event carried a snapshot ID,
+      // hydrate the viewer's cart with the exact exercises the original
+      // athlete ran, then route straight to /cart (mirrors the Explore
+      // tab's "Try this workout" replicate behavior). Falls back to the
+      // mood sub-selection nav if the snapshot fetch fails for any reason.
+      if (entry.workout_snapshot_id) {
+        try {
+          const res = await fetch(
+            `${API_URL}/api/workout-snapshots/${entry.workout_snapshot_id}`,
+            { headers: token ? { Authorization: `Bearer ${token}` } : {} },
+          );
+          if (res.ok) {
+            const snap = await res.json();
+            const cartItems = Array.isArray(snap?.workouts) ? snap.workouts : [];
+            if (cartItems.length > 0) {
+              clearCart();
+              cartItems.forEach((w: any) => addToCart(w));
+              if (token) {
+                Analytics.tryWorkoutClicked(token, {
+                  workout_name: entry.workout_name || entry.mood_label,
+                  mood_category: nav.title,
+                  source: 'live_feed_snapshot',
+                });
+              }
+              router.push('/cart');
+              return;
+            }
+          }
+        } catch {
+          /* fall through to legacy mood sub-selection nav */
+        }
+      }
+
       if (token) {
         Analytics.tryWorkoutClicked(token, {
           workout_name: entry.workout_name || entry.mood_label,
@@ -270,7 +338,7 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
       }
       router.push({ pathname: nav.pathname as any, params: { mood: nav.title } });
     },
-    [router, token]
+    [router, token, clearCart, addToCart]
   );
 
   const onRefresh = () => {
@@ -402,6 +470,27 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     left: 10,
+  },
+  // Per-card user avatar (top-right of the card body)
+  cardAvatar: {
+    position: 'absolute',
+    top: 14,
+    right: 14,
+  },
+  cardAvatarImg: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+  },
+  cardAvatarFallback: {
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cardAvatarFallbackText: {
+    fontSize: 12,
+    fontWeight: '700',
   },
   statHeaderRow: {
     flexDirection: 'row',

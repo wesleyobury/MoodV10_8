@@ -8431,6 +8431,16 @@ async def get_live_feed(
                     continue
                 seen_user_action.add(key)
 
+            # Pull the workout_snapshot_id (if any) so the client can hydrate
+            # a Try-this-workout cart from the Live tab. Live-now events
+            # generally don't carry it; completions do (set by the analytics
+            # call in workout-session.tsx on session end).
+            meta_for_snapshot = ev.get("metadata") or {}
+            workout_snapshot_id = (
+                meta_for_snapshot.get("workout_snapshot_id")
+                or meta_for_snapshot.get("snapshot_id")
+            )
+
             raw_entries.append({
                 "id": str(ev["_id"]),
                 "type": entry_type,
@@ -8447,6 +8457,7 @@ async def get_live_feed(
                 "milestone_count": None,
                 "timestamp": ts.isoformat(),
                 "ago_text": _format_relative_time(ts),
+                "workout_snapshot_id": workout_snapshot_id,
             })
 
         # Sort by timestamp desc and break if we have enough
