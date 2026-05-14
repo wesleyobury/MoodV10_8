@@ -1,20 +1,15 @@
 /**
- * ProfilePicPromptGate — "increase profile pic visibility across the app".
+ * ProfilePicPromptGate — premium 2nd-open profile-pic nudge.
  *
- * Behaviour spec (2026-05-14 product decision):
- *  • On a user's 2nd authenticated app open we surface a modal nudging them
- *    to add a profile pic. Tapping "Add now" launches the image picker and
- *    uploads via the existing `/api/users/me/avatar-base64` endpoint, then
- *    immediately marks the prompt complete.
- *  • Tapping "Skip" dismisses the modal but flips on a persistent top
- *    banner that follows the user everywhere they navigate inside the
- *    authenticated app. The banner is non-dismissable and only goes away
- *    once the user actually sets an avatar.
- *  • Users that already have an avatar never see either UI.
- *
- * Counting "app opens": tracked per-user-id in AsyncStorage. A given user is
- * incremented at most once per mount of this component (a single cold start
- * or login transition) so re-renders never double-bump the counter.
+ * Spec (2026-05-14 v2):
+ *  • Fires ONLY after a user reaches the authenticated home screen (a
+ *    `/(tabs)` route). Cold-start auto-login pre-tabs renders are ignored
+ *    so the modal never lands on splash, funnel, onboarding, or auth.
+ *  • Shows AT MOST ONCE per user (forever). If the user taps "Maybe later"
+ *    we mark `modal_seen` and never bug them again. No persistent banner.
+ *  • Premium visual: gold→orange gradient CTA, no card borders, soft shadow.
+ *  • Tracked per-user-id in AsyncStorage; one bump per JS-runtime session
+ *    via a module-level Set sentinel so re-renders don't double-count.
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -25,104 +20,94 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+import { usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { useAuth } from '../contexts/AuthContext';
 import { API_URL } from '../utils/apiConfig';
 
 const COUNT_KEY = (userId: string) => `@mood_app_open_count_${userId}`;
-const SESSION_FLAG_KEY = (userId: string) => `@mood_app_open_session_${userId}`;
 const MODAL_SEEN_KEY = (userId: string) => `@mood_pic_prompt_modal_seen_${userId}`;
 const PROMPT_TRIGGER_THRESHOLD = 2; // 2nd open
 
-/**
- * Increment the per-user "app open" counter exactly once per process
- * lifetime per user. Returns the resulting count (post-increment).
- */
+/** Process-scope sentinel so background→foreground re-renders within the
+ *  same JS runtime don't repeatedly bump the per-user open counter. */
+const BUMPED_THIS_SESSION = new Set<string>();
+
+/** True only when the current route is an authenticated home tab. We don't
+ *  want the modal to land on splash / onboarding / funnel / auth screens. */
+function isOnHomeTab(pathname: string | null | undefined): boolean {
+  if (!pathname) return false;
+  // Expo Router collapses `app/(tabs)/index.tsx` into `/` and other tab files
+  // into `/<name>`. We treat the root and the explicit tab routes as home.
+  // We explicitly exclude any path containing 'onboarding', 'funnel', 'auth',
+  // or 'reset-password' so the modal stays gated to post-auth navigation.
+  if (/(onboarding|funnel|auth|reset-password|shared-workout)/i.test(pathname)) {
+    return false;
+  }
+  return true;
+}
+
 async function bumpOpenCountOnce(userId: string): Promise<number> {
   try {
-    // Process-scope sentinel — survives re-renders but resets on cold start.
-    const sessionKey = SESSION_FLAG_KEY(userId);
-    // We use a module-level Set as the session sentinel (declared below) so
-    // background→foreground cycles don't re-bump within the same JS runtime.
     if (BUMPED_THIS_SESSION.has(userId)) {
       const existing = await AsyncStorage.getItem(COUNT_KEY(userId));
       return existing ? parseInt(existing, 10) || 0 : 0;
     }
     BUMPED_THIS_SESSION.add(userId);
-
     const raw = await AsyncStorage.getItem(COUNT_KEY(userId));
     const next = (raw ? parseInt(raw, 10) || 0 : 0) + 1;
     await AsyncStorage.setItem(COUNT_KEY(userId), String(next));
-    // The session key is unused at runtime — kept as a debug breadcrumb so
-    // we can diff between cold-start sessions in logs if needed.
-    AsyncStorage.setItem(sessionKey, String(Date.now())).catch(() => {});
     return next;
   } catch {
     return 0;
   }
 }
 
-const BUMPED_THIS_SESSION = new Set<string>();
-
 export default function ProfilePicPromptGate() {
   const { user, token, updateUser } = useAuth();
-  const insets = useSafeAreaInsets();
+  const pathname = usePathname();
 
   const [showModal, setShowModal] = useState(false);
-  const [showBanner, setShowBanner] = useState(false);
   const [uploading, setUploading] = useState(false);
   const evaluatedForUserRef = useRef<string | null>(null);
 
-  // Evaluate once per user.id arrival. We don't watch `user.avatar` here —
-  // when the user uploads a pic the auth context update naturally re-renders
-  // and the gate clauses below fall through to "nothing to show".
+  // We only run the bump+evaluate ONCE per user, and only after the user has
+  // actually navigated into the tabs / home area post-auth. Subsequent route
+  // changes within tabs don't re-trigger anything.
   useEffect(() => {
     const uid = user?.id;
-    if (!uid || !token) {
-      setShowModal(false);
-      setShowBanner(false);
-      return;
-    }
+    if (!uid || !token) return;
+    if (user?.avatar) return;
+    if (!isOnHomeTab(pathname)) return;
     if (evaluatedForUserRef.current === uid) return;
     evaluatedForUserRef.current = uid;
 
     let cancelled = false;
     (async () => {
-      const count = await bumpOpenCountOnce(uid);
-      const hasAvatar = Boolean(user?.avatar && user.avatar.length > 0);
-      if (cancelled || hasAvatar) return;
-
-      // Banner is sticky for any qualifying open (count >= threshold) once
-      // user has no avatar, regardless of whether they've seen the modal.
-      const qualifies = count >= PROMPT_TRIGGER_THRESHOLD;
-      if (!qualifies) return;
-
       const modalSeenRaw = await AsyncStorage.getItem(MODAL_SEEN_KEY(uid));
       if (cancelled) return;
-      if (!modalSeenRaw) {
+      // One-and-done — if user has already seen the modal we never show it
+      // again, regardless of open count. No persistent banner either.
+      if (modalSeenRaw) return;
+
+      const count = await bumpOpenCountOnce(uid);
+      if (cancelled) return;
+      if (count >= PROMPT_TRIGGER_THRESHOLD) {
         setShowModal(true);
-      } else {
-        setShowBanner(true);
       }
     })();
-
     return () => {
       cancelled = true;
     };
-  }, [user?.id, user?.avatar, token]);
+  }, [user?.id, user?.avatar, token, pathname]);
 
-  // Watch avatar — if the user uploads via another flow (settings, register),
-  // tear down any visible UI immediately.
+  // Hide immediately if avatar appears via any other path (settings, register).
   useEffect(() => {
-    if (user?.avatar) {
-      setShowModal(false);
-      setShowBanner(false);
-    }
+    if (user?.avatar) setShowModal(false);
   }, [user?.avatar]);
 
   const markModalSeen = useCallback(async () => {
@@ -131,7 +116,7 @@ export default function ProfilePicPromptGate() {
     try {
       await AsyncStorage.setItem(MODAL_SEEN_KEY(uid), '1');
     } catch {
-      /* ignore — banner state still reflects the right UI in-memory */
+      /* in-memory state still reflects the right UI */
     }
   }, [user?.id]);
 
@@ -148,7 +133,6 @@ export default function ProfilePicPromptGate() {
           reader.onerror = reject;
           reader.readAsDataURL(blob);
         });
-
         const uploadRes = await fetch(`${API_URL}/api/users/me/avatar-base64`, {
           method: 'POST',
           headers: {
@@ -157,12 +141,10 @@ export default function ProfilePicPromptGate() {
           },
           body: JSON.stringify({ image_data: base64 }),
         });
-
         if (!uploadRes.ok) throw new Error(`Upload failed: ${uploadRes.status}`);
         const data = await uploadRes.json();
         updateUser({ avatar: data.url });
         setShowModal(false);
-        setShowBanner(false);
         await markModalSeen();
       } catch (err) {
         console.error('ProfilePicPromptGate upload error:', err);
@@ -198,199 +180,167 @@ export default function ProfilePicPromptGate() {
   const handleSkip = useCallback(async () => {
     await markModalSeen();
     setShowModal(false);
-    setShowBanner(true);
   }, [markModalSeen]);
 
   if (!user?.id || user.avatar) return null;
 
   return (
-    <>
-      {/* 2nd-open modal */}
-      <Modal
-        visible={showModal}
-        transparent
-        animationType="fade"
-        onRequestClose={handleSkip}
-      >
-        <View style={styles.backdrop}>
-          <View style={styles.card} data-testid="profile-pic-prompt-modal">
-            <View style={styles.iconCircle}>
-              <Ionicons name="person-circle-outline" size={48} color="#FFD700" />
+    <Modal
+      visible={showModal}
+      transparent
+      animationType="fade"
+      onRequestClose={handleSkip}
+    >
+      <View style={styles.backdrop}>
+        <View style={styles.card} data-testid="profile-pic-prompt-modal">
+          {/* Gold-orange halo behind the icon for premium depth */}
+          <View style={styles.iconHaloWrap}>
+            <LinearGradient
+              colors={['rgba(255, 215, 0, 0.32)', 'rgba(255, 140, 0, 0.05)']}
+              style={styles.iconHalo}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0.5, y: 1 }}
+            />
+            <View style={styles.iconInner}>
+              <Ionicons name="person-circle" size={56} color="#FFD700" />
             </View>
-            <Text style={styles.title}>Add a profile picture</Text>
-            <Text style={styles.body}>
-              People connect with faces. Add a profile pic so your activity, posts and shared
-              workouts stand out across MOOD.
-            </Text>
+          </View>
 
-            <TouchableOpacity
+          <Text style={styles.title}>Add a profile picture</Text>
+          <Text style={styles.body}>
+            People connect with faces. A profile pic makes your activity, posts and
+            shared workouts stand out across MOOD.
+          </Text>
+
+          <TouchableOpacity
+            style={styles.primaryBtnWrap}
+            onPress={handleAddNow}
+            disabled={uploading}
+            activeOpacity={0.9}
+            data-testid="profile-pic-prompt-add-btn"
+          >
+            <LinearGradient
+              colors={['#FFD700', '#FFA500', '#FF8A00']}
               style={styles.primaryBtn}
-              onPress={handleAddNow}
-              disabled={uploading}
-              data-testid="profile-pic-prompt-add-btn"
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
             >
               {uploading ? (
                 <ActivityIndicator color="#0c0c0c" />
               ) : (
                 <Text style={styles.primaryBtnText}>Add now</Text>
               )}
-            </TouchableOpacity>
+            </LinearGradient>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.secondaryBtn}
-              onPress={handleSkip}
-              disabled={uploading}
-              data-testid="profile-pic-prompt-skip-btn"
-            >
-              <Text style={styles.secondaryBtnText}>Maybe later</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      {/* Persistent top banner — only when modal already seen + still no avatar */}
-      {showBanner && !showModal ? (
-        <View
-          pointerEvents="box-none"
-          style={[styles.bannerWrap, { top: Math.max(insets.top, Platform.OS === 'ios' ? 44 : 12) + 4 }]}
-        >
           <TouchableOpacity
-            style={styles.banner}
-            onPress={handleAddNow}
-            activeOpacity={0.9}
-            data-testid="profile-pic-prompt-banner"
+            style={styles.secondaryBtn}
+            onPress={handleSkip}
+            disabled={uploading}
+            data-testid="profile-pic-prompt-skip-btn"
           >
-            <View style={styles.bannerIconCircle}>
-              {uploading ? (
-                <ActivityIndicator color="#FFD700" size="small" />
-              ) : (
-                <Ionicons name="camera" size={16} color="#FFD700" />
-              )}
-            </View>
-            <View style={styles.bannerTextCol}>
-              <Text style={styles.bannerTitle} numberOfLines={1}>
-                Add a profile picture
-              </Text>
-              <Text style={styles.bannerSub} numberOfLines={1}>
-                Tap to upload — stand out across the app
-              </Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color="#888" />
+            <Text style={styles.secondaryBtnText}>Maybe later</Text>
           </TouchableOpacity>
         </View>
-      ) : null}
-    </>
+      </View>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.78)',
+    backgroundColor: 'rgba(0, 0, 0, 0.82)',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,
   },
   card: {
     width: '100%',
-    maxWidth: 420,
-    backgroundColor: '#0a0a0a',
-    borderColor: '#1a1a1a',
-    borderWidth: 1,
-    borderRadius: 18,
-    padding: 24,
+    maxWidth: 380,
+    backgroundColor: '#101010',
+    borderRadius: 24,
+    paddingTop: 30,
+    paddingBottom: 22,
+    paddingHorizontal: 26,
     alignItems: 'center',
+    // Soft drop shadow for premium depth (no border).
+    shadowColor: '#000',
+    shadowOpacity: 0.55,
+    shadowOffset: { width: 0, height: 18 },
+    shadowRadius: 36,
+    elevation: 14,
   },
-  iconCircle: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    backgroundColor: 'rgba(255, 215, 0, 0.10)',
-    borderColor: 'rgba(255, 215, 0, 0.30)',
-    borderWidth: 1,
+  iconHaloWrap: {
+    width: 96,
+    height: 96,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    marginBottom: 18,
+  },
+  iconHalo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: 48,
+  },
+  iconInner: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#181818',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '700',
-    marginBottom: 8,
+    marginBottom: 10,
     textAlign: 'center',
+    letterSpacing: -0.3,
   },
   body: {
-    color: '#a0a0a0',
+    color: 'rgba(255, 255, 255, 0.62)',
     fontSize: 14,
-    lineHeight: 20,
+    lineHeight: 21,
     textAlign: 'center',
-    marginBottom: 22,
+    marginBottom: 26,
+    paddingHorizontal: 4,
+  },
+  primaryBtnWrap: {
+    width: '100%',
+    borderRadius: 999,
+    overflow: 'hidden',
+    marginBottom: 6,
+    // Inner glow shadow on the CTA for premium pop
+    shadowColor: '#FFA500',
+    shadowOpacity: 0.4,
+    shadowOffset: { width: 0, height: 6 },
+    shadowRadius: 14,
+    elevation: 6,
   },
   primaryBtn: {
-    width: '100%',
-    backgroundColor: '#FFD700',
-    paddingVertical: 14,
-    borderRadius: 999,
+    paddingVertical: 15,
     alignItems: 'center',
-    marginBottom: 10,
+    justifyContent: 'center',
   },
   primaryBtnText: {
     color: '#0c0c0c',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '700',
+    letterSpacing: 0.2,
   },
   secondaryBtn: {
-    paddingVertical: 10,
+    paddingVertical: 14,
     alignItems: 'center',
   },
   secondaryBtnText: {
-    color: '#888',
+    color: 'rgba(255, 255, 255, 0.45)',
     fontSize: 14,
     fontWeight: '500',
-  },
-  bannerWrap: {
-    position: 'absolute',
-    left: 12,
-    right: 12,
-    zIndex: 1000,
-  },
-  banner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(20,20,20,0.96)',
-    borderColor: 'rgba(255, 215, 0, 0.35)',
-    borderWidth: 1,
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.5,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  bannerIconCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: 'rgba(255,215,0,0.10)',
-    borderColor: 'rgba(255,215,0,0.30)',
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-  },
-  bannerTextCol: {
-    flex: 1,
-  },
-  bannerTitle: {
-    color: '#fff',
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  bannerSub: {
-    color: '#888',
-    fontSize: 11,
-    marginTop: 2,
+    letterSpacing: 0.2,
   },
 });
