@@ -33,6 +33,8 @@ import {
 } from '../../contexts/OnboardingFunnelContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { Analytics } from '../../utils/analytics';
+import { useSubscription } from '../../contexts/SubscriptionContext';
+import { FORCE_SIGNUP_PAYWALL } from '../../utils/devFlags';
 
 const { height } = Dimensions.get('window');
 
@@ -44,6 +46,7 @@ export default function RevealPayoff() {
   const router = useRouter();
   const { answers } = useOnboardingFunnel();
   const { user, token } = useAuth();
+  const { openPaywall } = useSubscription();
 
   const firstName =
     (user?.name && user.name.split(' ')[0]) || user?.username || 'Athlete';
@@ -65,6 +68,17 @@ export default function RevealPayoff() {
       workout_length: answers.workoutLength,
       equipment: answers.equipment,
     });
+
+    // Dev/sandbox: force the paywall to appear as the final onboarding
+    // step so QA can rehearse the end-to-end signup → payment flow on
+    // TestFlight without having to complete a free workout first.
+    // Inert in production builds (env var not compiled in).
+    // The medical-disclaimer route is still pushed underneath so when
+    // the user dismisses the paywall they land on the existing happy
+    // path (medical → health-intro → health-connect → /(tabs)).
+    if (FORCE_SIGNUP_PAYWALL) {
+      openPaywall('post_onboarding_dev');
+    }
     router.replace('/onboarding/medical-disclaimer');
   };
 

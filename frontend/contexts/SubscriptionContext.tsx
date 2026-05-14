@@ -40,6 +40,7 @@ export type PaywallTrigger =
   | 'recap_footer_cta'
   | 'locked_premium_feature'
   | 'settings_subscribe'
+  | 'post_onboarding_dev'
   | 'unknown';
 
 interface SubscriptionState {

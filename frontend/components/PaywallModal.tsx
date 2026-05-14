@@ -98,6 +98,8 @@ export function PaywallModal() {
       case 'start_workout_after_free_session':
       case 'recap_footer_cta':
         return 'Next workout, on Premium.';
+      case 'post_onboarding_dev':
+        return 'Unlock your full plan.';
       default:
         return 'Train how you feel.';
     }
