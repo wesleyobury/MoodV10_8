@@ -11,3 +11,8 @@
 ## Profile / general test user (legacy, from previous fork)
 - Username: `profile_test_user`
 - User ID: `69a9f998d81c5ed227b55ce9`
+
+## Subscription sync test users (created 2026-05-14, ephemeral)
+- Pattern: `substest_<unix-ms>` / `substest_<unix-ms>@example.com` / password `TestPass1234567`
+- Created on-the-fly by `backend/tests/test_subscription_status_sync.py` — not preserved between runs.
+

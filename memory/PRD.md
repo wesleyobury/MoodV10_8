@@ -14,6 +14,30 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-14] **P0 / P1a / P1b / P1c cleanup pass — hero resolver extraction + StoreKit receipt sync + unlimited generations + expo-video migration:**
+  - **P0 — Featured hero image resolver extracted** (`utils/featuredHeroImage.ts`):
+    - Pure function `resolveFeaturedHeroImage(workout, exercises)` replaces the inline `workout.image || exercises[0]?.imageUrl` expression that had silently regressed across previous sessions.
+    - Treats whitespace-only / null / empty strings as missing (prevents the broken-image flash when seed data is dirty).
+    - Returns `undefined` (NOT empty string) when both sources are missing so the underlying `<Image>` placeholder shows cleanly.
+    - Companion helper `isFeaturedHeroFallback()` for telemetry/dev warnings.
+    - **Unit tests** `utils/featuredHeroImage.test.ts` — **7/7 PASS** via `yarn test:featured-hero` (covers priority, fallback, whitespace, null workout, empty exercises, missing first-exercise URL).
+    - `app/featured-workout-detail.tsx` now imports and calls the resolver in the hero `<Image>` source. Backend pytest unchanged, no API surface impact.
+  - **P1a — StoreKit receipt sync in `GET /api/auth/me`** (`backend/server.py`):
+    - Response now includes `subscription_status` / `subscription_plan` / `subscription_product_id` / `subscription_expiration_date` mirrored from the persisted `subscription` sub-doc (set by `/subscription/validate` and the Apple S2S webhook).
+    - Self-corrects stale `'active'` → `'lapsed'` when the stored `expiration_date` is in the past — prevents the client from showing entitlement while waiting for Apple's S2S webhook after a lapse.
+    - Frontend `User` interface (AuthContext) gained the 4 new fields. `FoundingMemberGate` adds a second `useEffect` that mirrors `subscription_status` → `SubscriptionContext.setStatus()` on every auth load (founding members still take precedence). Handles the reinstall edge case where AsyncStorage is wiped but the Apple receipt is still valid.
+    - **Backend tests** `backend/tests/test_subscription_status_sync.py` — **7/7 PASS** (new-user defaults to null, active/in_trial/lapsed mirroring, stale-expiration self-correction, founding-member coexistence, auth gate unchanged at 401/403).
+  - **P1b — Unlimited free generations** (`contexts/SubscriptionContext.tsx`):
+    - `FREE_GENERATION_CAP` flipped from `3` → `Number.POSITIVE_INFINITY` per product decision. `canGenerate` derived flag is now always true for free users; `ChooseForMeButton` will never fire the `generate_after_cap` paywall trigger.
+    - Counter + `recordGeneration()` left in place so the cap can be re-introduced without touching call sites (clean A/B test path).
+    - Live workout session start remains gated by `hasUsedFreeSession` — i.e. free users can generate as many workouts as they want but still hit the paywall after their first completed live session, matching the v1.0 monetization model the user verbally confirmed.
+  - **P1c — `expo-av` → `expo-video` migration for `SmartVideoPlayer.tsx`** (`components/SmartVideoPlayer.tsx`):
+    - Installed `expo-video@^3.0.16` alongside the existing `expo-av` (which remains for create-post, index, ExerciseLookupSheet, VideoFrameSelector — those are separate migration tickets).
+    - Rewrote the player with the new declarative API: `useVideoPlayer(source, setup)` returns a player handle, `<VideoView player={player} contentFit="cover" />` renders it. Replaced imperative `videoRef.unloadAsync()` retry with key-bump-driven player recreation.
+    - Status + playback events wired via `useEventListener(player, 'statusChange'|'playingChange', ...)` updating local state (cleaner than the old `onPlaybackStatusUpdate` callback chain).
+    - Behavior preserved end-to-end: thumbnail-first render, HLS-on-iOS with MP4 fallback, pause+mute when off-center / inactive / backgrounded, 10s load timeout with 3-retry chain, mute toggle, progress bar.
+    - `tsc --noEmit` clean for SmartVideoPlayer + all consumer files. Cannot fully test in the Linux pod (Expo Go won't reliably exercise the native video session) — needs TestFlight verification.
+
 - [2026-05-14] **Paid Launch — Phase C: StoreKit 2 native module + backend reconciliation (Part 8) — end-to-end paid flow live.**
   - **`modules/mood-storekit/`** — full Expo native module, mirroring the `mood-healthkit` template:
     - `MoodStoreKitModule.swift` exposes `getProducts(ids)`, `purchase(productID)`, `restorePurchases()`, `currentEntitlements()`, plus a long-running `Transaction.updates` listener that fires `onTransactionUpdate` events to JS for renewals, family-share, ask-to-buy approvals, and most importantly the **day-7 trial-to-paid conversion** that happens server-side on Apple's side.

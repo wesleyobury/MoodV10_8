@@ -86,7 +86,19 @@ interface SubscriptionContextValue extends SubscriptionState {
 
 /* --------------------------- Constants --------------------------- */
 
-export const FREE_GENERATION_CAP = 3;
+/**
+ * Free-tier generation cap.
+ *
+ * Set to `Number.POSITIVE_INFINITY` on 2026-05-14 per product decision —
+ * unlimited AI workout generations for free users (the live-session start
+ * remains gated by `hasUsedFreeSession`, so the paywall still fires after
+ * the first completed session).
+ *
+ * Keeping the constant + `recordGeneration()` counter in place so we can
+ * dial the cap back in later (e.g. A/B test reintroducing a 3-generation
+ * cap) without touching every call site.
+ */
+export const FREE_GENERATION_CAP = Number.POSITIVE_INFINITY;
 const STORAGE_KEY = '@mood_subscription_state_v1';
 
 const DEFAULT_STATE: SubscriptionState = {

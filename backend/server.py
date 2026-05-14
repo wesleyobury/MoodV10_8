@@ -1692,6 +1692,25 @@ async def get_auth_me(
     response.headers["X-Admin-Effective"] = str(is_admin).lower()
     response.headers["X-Admin-Matched-By"] = matched_by
     
+    # Phase C — StoreKit receipt status sync. We surface the persisted
+    # `subscription.status` (set by /subscription/validate and the Apple
+    # webhook) so the client `SubscriptionContext` can rehydrate the live
+    # entitlement on every app launch — handles the reinstall edge case
+    # where AsyncStorage is gone but the Apple receipt is still valid.
+    # If the stored expiration is in the past we self-correct to 'lapsed'
+    # so the client doesn't show stale 'active' for a few minutes while
+    # waiting on Apple's S2S webhook.
+    subscription_doc = user.get("subscription") or {}
+    raw_status = subscription_doc.get("status")
+    expiration_iso = subscription_doc.get("expiration_date")
+    if raw_status in ("active", "in_trial") and isinstance(expiration_iso, str):
+        try:
+            exp_dt = datetime.fromisoformat(expiration_iso.replace("Z", "+00:00"))
+            if exp_dt < datetime.now(timezone.utc):
+                raw_status = "lapsed"
+        except Exception:
+            pass
+
     return {
         "user_id": str(user["_id"]),
         "username": user.get("username", ""),
@@ -1710,6 +1729,13 @@ async def get_auth_me(
             else None
         ),
         "founding_member_modal_seen": bool(user.get("founding_member_modal_seen", False)),
+        # Phase C — StoreKit receipt sync (read-only mirror of the
+        # persisted subscription doc; client uses this to rehydrate
+        # entitlement state on app launch).
+        "subscription_status": raw_status,
+        "subscription_plan": subscription_doc.get("plan"),
+        "subscription_product_id": subscription_doc.get("product_id"),
+        "subscription_expiration_date": expiration_iso,
     }
 
 

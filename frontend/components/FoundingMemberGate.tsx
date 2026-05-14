@@ -42,6 +42,22 @@ export function FoundingMemberGate() {
     }
   }, [user?.founding_member, status, setStatus]);
 
+  // (1.5) Phase C — StoreKit receipt status sync.
+  // If the user is NOT a founding member, mirror the persisted
+  // `subscription_status` from /auth/me into SubscriptionContext so the
+  // entitlement rehydrates on every app launch. Founding members short-
+  // circuit above and never get a paying subscription doc, so the order
+  // here is safe.
+  useEffect(() => {
+    if (user?.founding_member) return; // founding members are handled above
+    const remote = user?.subscription_status;
+    if (!remote) return; // unauthenticated or no receipt on file
+    if (remote === status) return; // already in sync
+    if (remote === 'active' || remote === 'in_trial' || remote === 'lapsed') {
+      setStatus(remote);
+    }
+  }, [user?.founding_member, user?.subscription_status, status, setStatus]);
+
   // (2) surface the modal exactly once.
   useEffect(() => {
     if (user?.founding_member && !user?.founding_member_modal_seen) {

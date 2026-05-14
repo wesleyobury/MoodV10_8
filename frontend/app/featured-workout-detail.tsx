@@ -18,6 +18,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useCart, WorkoutItem } from '../contexts/CartContext';
 import { Analytics, GuestAnalytics } from '../utils/analytics';
 import AddCustomExerciseModal from '../components/AddCustomExerciseModal';
+import { resolveFeaturedHeroImage } from '../utils/featuredHeroImage';
 
 import { API_URL } from '../utils/apiConfig';
 
@@ -858,10 +859,11 @@ export default function FeaturedWorkoutDetail() {
   return (
     <View style={styles.container}>
       {/* Hero Image — uses workout.heroImageUrl (carousel-matching).
-          Falls back to first exercise's image only if hero is missing. */}
+          Falls back to first exercise's image only if hero is missing.
+          Resolver logic extracted to utils/featuredHeroImage.ts (unit-tested). */}
       <View style={styles.heroContainer}>
         <Image
-          source={{ uri: workout.image || exercises[0]?.imageUrl }}
+          source={{ uri: resolveFeaturedHeroImage(workout, exercises) }}
           style={styles.heroImage}
           resizeMode="cover"
         />

@@ -37,6 +37,15 @@ interface User {
   founding_member?: boolean;
   founding_member_at?: string | null;
   founding_member_modal_seen?: boolean;
+  // Phase C — StoreKit receipt status mirror. /api/auth/me reflects the
+  // persisted subscription doc (set by /subscription/validate and the
+  // Apple S2S webhook). Used by SubscriptionContext to rehydrate the
+  // entitlement on every app launch (handles the reinstall edge case
+  // where AsyncStorage is wiped but the Apple receipt is still valid).
+  subscription_status?: 'active' | 'in_trial' | 'lapsed' | null;
+  subscription_plan?: 'annual' | 'monthly' | null;
+  subscription_product_id?: string | null;
+  subscription_expiration_date?: string | null;
 }
 
 interface AuthContextType {
