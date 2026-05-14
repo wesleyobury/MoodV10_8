@@ -559,6 +559,28 @@ export default function Settings() {
           <Text style={styles.healthFooter}>
             MOOD reads 5 metrics. We never write, sell, or share your health data.
           </Text>
+
+          {/* Wearable Data drill-down — surfaces every tracked metric in
+              a dedicated screen. Always available (handles its own empty
+              state when HealthKit is offline or no data has synced yet). */}
+          <TouchableOpacity
+            style={styles.settingsItem}
+            onPress={() => router.push('/wearable-data')}
+            testID="settings-wearable-data-row"
+            // @ts-ignore — RN treats `data-testid` as a string prop on web.
+            data-testid="settings-wearable-data-row"
+          >
+            <View style={styles.settingsItemLeft}>
+              <Ionicons name="watch-outline" size={20} color="#FFD700" />
+              <View>
+                <Text style={styles.settingsItemText}>Wearable Data</Text>
+                <Text style={styles.settingsItemSubtext}>
+                  View metrics from your watch & wearables
+                </Text>
+              </View>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="#666" />
+          </TouchableOpacity>
         </View>
 
         {/* Legal Section */}
