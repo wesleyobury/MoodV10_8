@@ -30,7 +30,6 @@ export function FoundingMemberBadge({ size = 'md', caption = false, testID }: Pr
         />
         <Text style={[styles.label, compact && styles.labelSm]}>FOUNDING MEMBER</Text>
       </View>
-      {caption ? <Text style={styles.caption}>Day-one MOOD.</Text> : null}
     </View>
   );
 }
