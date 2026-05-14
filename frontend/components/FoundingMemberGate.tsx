@@ -58,8 +58,30 @@ export function FoundingMemberGate() {
     }
   }, [user?.founding_member, user?.subscription_status, status, setStatus]);
 
-  // (2) surface the modal exactly once.
+  // (2) surface the modal exactly once — and only AFTER the user has
+  // actively logged in / registered (i.e. the token transitioned from
+  // null → set during this app session). The `authTransitionedRef` latch
+  // prevents the modal from popping the moment a cold-start hydrates a
+  // pre-existing session — historically that produced a confusing welcome
+  // sheet on every app entry, including in dev mode. Guests (token=null)
+  // are also a no-op here.
+  const authTransitionedRef = React.useRef(false);
+  const prevTokenRef = React.useRef<string | null | undefined>(undefined);
   useEffect(() => {
+    // First observation just records baseline state — don't act on it.
+    if (prevTokenRef.current === undefined) {
+      prevTokenRef.current = token;
+      return;
+    }
+    if (!prevTokenRef.current && token) {
+      authTransitionedRef.current = true;
+    }
+    prevTokenRef.current = token;
+  }, [token]);
+
+  useEffect(() => {
+    if (!token) return; // guests + signed-out: never show
+    if (!authTransitionedRef.current) return; // only show after an active sign-in
     if (user?.founding_member && !user?.founding_member_modal_seen) {
       setVisible(true);
       Analytics.foundingMemberModalShown(token, {});
@@ -106,8 +128,8 @@ export function FoundingMemberGate() {
             <Text style={styles.eyebrow}>WELCOME BACK</Text>
             <Text style={styles.headline}>You&apos;re a Founding Member.</Text>
             <Text style={styles.body}>
-              Thank you for being here from day one. You have lifetime access to MOOD Premium. No
-              catch. No expiration.
+              Thank you for being here from day one. You have full MOOD Premium access for as
+              long as the app exists in its current form — no charge, no expiration on our end.
             </Text>
             <TouchableOpacity
               onPress={handleDismiss}

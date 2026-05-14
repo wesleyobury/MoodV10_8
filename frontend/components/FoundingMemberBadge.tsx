@@ -24,7 +24,7 @@ export function FoundingMemberBadge({ size = 'md', caption = false, testID }: Pr
       <View style={[styles.pill, compact && styles.pillSm]}>
         <Ionicons
           name="star"
-          size={compact ? 11 : 13}
+          size={compact ? 9 : 10}
           color={COLORS.accent}
           style={styles.icon}
         />
@@ -42,34 +42,35 @@ const styles = StyleSheet.create({
   pill: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 4,
-    paddingHorizontal: 10,
+    paddingVertical: 2,
+    paddingHorizontal: 7,
     borderRadius: 999,
-    borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.55)',
-    backgroundColor: 'rgba(255,215,0,0.08)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255,215,0,0.35)',
+    backgroundColor: 'transparent',
   },
   pillSm: {
-    paddingVertical: 2,
-    paddingHorizontal: 8,
+    paddingVertical: 1,
+    paddingHorizontal: 6,
   },
   icon: {
-    marginRight: 6,
+    marginRight: 4,
+    opacity: 0.85,
   },
   label: {
-    fontSize: 10,
-    letterSpacing: 1.4,
-    color: COLORS.accent,
-    fontWeight: '700',
+    fontSize: 8.5,
+    letterSpacing: 1.0,
+    color: 'rgba(255,215,0,0.85)',
+    fontWeight: '600',
   },
   labelSm: {
-    fontSize: 9,
-    letterSpacing: 1.2,
+    fontSize: 7.5,
+    letterSpacing: 0.9,
   },
   caption: {
-    marginTop: 4,
-    fontSize: 11,
-    color: 'rgba(255,255,255,0.42)',
+    marginTop: 3,
+    fontSize: 10,
+    color: 'rgba(255,255,255,0.38)',
     fontStyle: 'italic',
   },
 });

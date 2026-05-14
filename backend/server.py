@@ -8353,10 +8353,24 @@ def _format_relative_time(ts: datetime) -> str:
 @api_router.get("/feed/live")
 async def get_live_feed(
     limit: int = 30,
-    current_user_id: str = Depends(get_current_user),
+    authorization: Optional[str] = Header(None),
 ):
     """Live activity feed — recent workout starts, completions, and milestones
-    from ALL users (not friend-graph). Used by the Live tab."""
+    from ALL users (not friend-graph). Used by the Live tab.
+
+    Public read-only — guests (no Authorization header) can see the feed too
+    so the Live tab is never empty on first launch. We don't personalize the
+    response, so dropping the auth requirement is safe."""
+    # Best-effort auth so we can attribute analytics if a user is signed in,
+    # but we deliberately swallow auth failures and treat the request as
+    # anonymous. Guests should still see the global feed.
+    current_user_id: Optional[str] = None
+    if authorization and authorization.startswith("Bearer "):
+        try:
+            current_user_id = await get_current_user(authorization=authorization)
+        except Exception:
+            current_user_id = None
+
     now = datetime.now(timezone.utc)
     today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
     live_window_start = now - timedelta(minutes=20)  # "LIVE NOW" = started in last 20 min
