@@ -20,6 +20,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
+import * as MediaLibrary from 'expo-media-library';
 import { useAuth } from '../contexts/AuthContext';
 import { useHealth } from '../contexts/HealthContext';
 import { useSubscription, SubscriptionStatus } from '../contexts/SubscriptionContext';
@@ -100,14 +101,18 @@ export default function Settings() {
   useEffect(() => {
     if (!isAdmin) return;
     const checkDebug = async () => {
-      const Consts = require('expo-constants').default;
-      const version = Consts.expoConfig?.version ?? Consts.nativeAppVersion ?? 'unknown';
-      const buildNum = Consts.expoConfig?.ios?.buildNumber ?? Consts.nativeBuildVersion ?? 'unknown';
+      const version = Constants.expoConfig?.version ?? Constants.nativeAppVersion ?? 'unknown';
+      const buildNum = Constants.expoConfig?.ios?.buildNumber ?? Constants.nativeBuildVersion ?? 'unknown';
       const build = `BUILD: ${version} (${buildNum})`;
       let hasML = false;
       try {
-        const ML = await import('expo-media-library');
-        await ML.getPermissionsAsync();
+        // STATIC import (top of file) — using dynamic `await import('expo-media-library')`
+        // here triggered an Expo SDK 54 cold-start race condition that crashed
+        // the app on the very first Settings navigation after launch (the
+        // native bridge wasn't ready when the dynamic import fired). With a
+        // static top-level import the module is initialized alongside the
+        // rest of the JS bundle and the call is instant + crash-free.
+        await MediaLibrary.getPermissionsAsync();
         hasML = true;
       } catch {}
       const info = `${build}\nHAS ExpoMediaLibrary: ${hasML}`;
