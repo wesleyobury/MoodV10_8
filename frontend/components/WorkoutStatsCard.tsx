@@ -637,9 +637,14 @@ export default function WorkoutStatsCard({
       <View style={styles.altCardInner}>
         {renderMoodHeader()}
         {renderExerciseList()}
+        {/* Stats row — Cal · Min · Intensity · Mood-split. All four values
+            share the same neutral white treatment (no gold accent) for a
+            consistent, less-busy IG sticker. The split label uses
+            numberOfLines={1} + adjustsFontSizeToFit so multi-word
+            categories like "MUSCLE GAINER" never break mid-word. */}
         <View style={styles.simpleStatsPill}>
           <View style={styles.simpleStatCell}>
-            <Text style={[styles.simpleStatValue, styles.simpleStatValueGold]}>{estimatedCalories}</Text>
+            <Text style={styles.simpleStatValue}>{estimatedCalories}</Text>
             <Text style={styles.simpleStatLabel}>CAL</Text>
           </View>
           <View style={styles.simpleStatDivider} />
@@ -655,7 +660,16 @@ export default function WorkoutStatsCard({
           <View style={styles.simpleStatDivider} />
           <View style={styles.simpleStatCell}>
             {splitLabel.map((w, i) => (
-              <Text key={i} style={[styles.simpleStatValueSplit, styles.simpleStatValueGold]}>{w}</Text>
+              <Text
+                key={i}
+                style={styles.simpleStatValueSplit}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.55}
+                ellipsizeMode="clip"
+              >
+                {w}
+              </Text>
             ))}
           </View>
         </View>
@@ -1411,7 +1425,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   hrChartContainer: {
-    backgroundColor: 'rgba(255, 215, 0, 0.04)',
+    // Heart-rate chart sits on the dark card body; no tinted background
+    // (previously had a 4% gold wash that read as a translucent rectangle
+    // through the IG transparent overlay). Keep the rounded paddings so
+    // the SVG line/area still has breathing room.
+    backgroundColor: 'transparent',
     borderRadius: 14,
     paddingVertical: 6,
     paddingHorizontal: 4,

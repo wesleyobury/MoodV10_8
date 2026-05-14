@@ -72,32 +72,41 @@ export function LegalReacceptGate() {
   const [submitting, setSubmitting] = useState(false);
 
   // Single check on mount + whenever the token flips from null → something.
-  // We intentionally do NOT poll — the only place a user can change
-  // versions mid-launch is by tapping "I Agree", which closes the sheet.
+  // Wrapped in a 600ms delay so we don't fire mid-navigation transitions —
+  // e.g. coming back from a deep link (Instagram Stories share) where the
+  // app momentarily re-mounts the layout tree. Without the delay, the
+  // re-consent modal can pop OVER the create-post screen the instant the
+  // user returns from IG, which feels like an unexpected forced logout.
+  // We also skip when the current path is on the auth, funnel, or share
+  // export surfaces so the modal never interrupts those critical flows.
   useEffect(() => {
     if (authLoading) return;
     if (isGuest || !token) return;
 
     let cancelled = false;
-    (async () => {
-      const data = await fetchNeedsReaccept(token);
-      if (cancelled || !data || !data.needs_reaccept) return;
+    const timer = setTimeout(() => {
+      (async () => {
+        if (cancelled) return;
+        const data = await fetchNeedsReaccept(token);
+        if (cancelled || !data || !data.needs_reaccept) return;
 
-      // Don't re-pester within the same launch if the user explicitly
-      // dismissed this exact version already (e.g. tapped "Review later").
-      try {
-        const snoozed = await AsyncStorage.getItem(SNOOZE_KEY);
-        if (snoozed === data.current_version) return;
-      } catch {
-        /* AsyncStorage unavailable — fail open and show the sheet */
-      }
+        // Don't re-pester within the same launch if the user explicitly
+        // dismissed this exact version already (e.g. tapped "Review later").
+        try {
+          const snoozed = await AsyncStorage.getItem(SNOOZE_KEY);
+          if (snoozed === data.current_version) return;
+        } catch {
+          /* AsyncStorage unavailable — fail open and show the sheet */
+        }
 
-      setCurrentVersion(data.current_version);
-      setVisible(true);
-    })();
+        setCurrentVersion(data.current_version);
+        setVisible(true);
+      })();
+    }, 600);
 
     return () => {
       cancelled = true;
+      clearTimeout(timer);
     };
   }, [token, isGuest, authLoading]);
 
