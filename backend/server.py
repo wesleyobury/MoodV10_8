@@ -6920,9 +6920,63 @@ async def update_credentials(
         logger.error(f"Error updating credentials: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to update credentials")
 
+@api_router.get("/legal/active-version")
+async def legal_active_version():
+    """Public — returns the currently published ToS/Privacy version.
+
+    Used by the frontend on app launch (`LegalReacceptSheet`) to decide if
+    a re-consent sheet is needed for an authenticated user. Kept public/no-
+    auth so the value is also available to the marketing site if it ever
+    needs to render the same version label.
+    """
+    return {
+        "terms_version": CURRENT_TERMS_VERSION,
+        "privacy_version": CURRENT_TERMS_VERSION,  # bumped together for now
+    }
+
+
+@api_router.get("/legal/needs-reaccept")
+async def legal_needs_reaccept(current_user_id: str = Depends(get_current_user)):
+    """Authenticated — tells the client whether to surface the re-consent
+    sheet. The sheet must be shown when the user's stored
+    `terms_accepted_version` does NOT equal the live `CURRENT_TERMS_VERSION`
+    or has never been recorded. Audit fields are also returned for the
+    client's optimistic UI."""
+    user = await db.users.find_one(
+        {"_id": ObjectId(current_user_id)},
+        {
+            "terms_accepted_version": 1,
+            "terms_accepted_at": 1,
+            "acknowledged_terms_at": 1,
+        },
+    )
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user_version = user.get("terms_accepted_version")
+    needs = user_version != CURRENT_TERMS_VERSION
+
+    def _iso(v):
+        return v.isoformat() if isinstance(v, datetime) else None
+
+    return {
+        "needs_reaccept": bool(needs),
+        "current_version": CURRENT_TERMS_VERSION,
+        "user_version": user_version,
+        "terms_accepted_at": _iso(user.get("terms_accepted_at")),
+        "acknowledged_terms_at": _iso(user.get("acknowledged_terms_at")),
+    }
+
+
 @api_router.post("/users/me/accept-terms")
 async def accept_terms(current_user_id: str = Depends(get_current_user)):
-    """Record user's acceptance of Terms of Service and Privacy Policy"""
+    """Record user's acceptance of Terms of Service and Privacy Policy.
+
+    Used both at signup-flow re-entry AND for the in-app version-bump
+    re-consent sheet (`LegalReacceptSheet`). Stamps both the legacy
+    `terms_accepted_at` and the App-Store-compliance `acknowledged_terms_at`
+    so audit queries against either field always see the latest acceptance.
+    """
     try:
         now = datetime.now(timezone.utc)
         
@@ -6933,6 +6987,8 @@ async def accept_terms(current_user_id: str = Depends(get_current_user)):
                     "terms_accepted_at": now,
                     "terms_accepted_version": CURRENT_TERMS_VERSION,
                     "privacy_accepted_at": now,
+                    # App Store compliance audit field — keep in sync.
+                    "acknowledged_terms_at": now,
                 }
             }
         )

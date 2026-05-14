@@ -14,6 +14,16 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - **3rd Party**: Cloudinary (media), Expo Push Notifications, Vercel (mood-admin)
 
 ## What's Been Implemented
+- [2026-05-14] **ToS version-bump re-consent system (App Store compliance enhancement).**
+  - **Backend (`server.py`)** — two new endpoints + one enhancement:
+    - `GET /api/legal/active-version` (public, no auth) → `{ terms_version, privacy_version }`. Sourced from the existing `CURRENT_TERMS_VERSION` constant.
+    - `GET /api/legal/needs-reaccept` (auth required) → `{ needs_reaccept, current_version, user_version, terms_accepted_at, acknowledged_terms_at }`. Compares the user's stamped `terms_accepted_version` against the live constant; returns `True` when missing, null, or stale.
+    - `POST /api/users/me/accept-terms` (existing endpoint) — now ALSO stamps `acknowledged_terms_at` alongside `terms_accepted_at`/`terms_accepted_version`/`privacy_accepted_at`, so the App-Store-compliance audit field is always current after a re-consent.
+  - **Frontend (`components/LegalReacceptGate.tsx`)** — new lightweight bottom-sheet modal mounted from `app/_layout.tsx` (alongside `<FoundingMemberGate />`). On auth load (single check, no polling): hits `/legal/needs-reaccept`, and if the user is stale, shows a non-blocking sheet with the disclaimer text + "I Agree" CTA + Review-later snooze + inline links to `/terms-of-service` and `/privacy-policy`. The snooze stores the current_version in AsyncStorage (`@mood_legal_reaccept_snoozed_version_v1`) so the user isn't pestered again within the same launch — but a future version bump clears it automatically. Guests and unauthenticated users are skipped.
+  - **Backend tests** `backend/tests/test_legal_reaccept.py` — **6/6 PASS** (public endpoint, auth gate on `/needs-reaccept`, fresh-user-doesn't-need, stale-version triggers, accept-terms clears + bumps both audit fields, null-version edge case). Existing subscription tests **7/7 PASS** = **13/13 total**, zero regressions.
+  - **Audit trail** — every acceptance stamps `terms_accepted_at`, `terms_accepted_version`, `privacy_accepted_at`, AND `acknowledged_terms_at`. App Review responses can quote any of the four fields.
+  - **Scope guards honored** — no new full-screen step, no blocking interaction, no rebuild of the signup flow.
+
 - [2026-05-14] **App Store Compliance pass (signup acknowledgement, settings legal, in-workout safety banner) + Founding Member cutoff bump to TODAY + iOS build 46→47 / Android versionCode 2→3.**
   - **Founding Member cutoff moved forward** — `FOUNDING_MEMBER_CUTOFF` flipped from `2026-05-15 00:00 UTC` → `2026-05-14 00:00 UTC` (today, start of day UTC). All pre-cutoff users retain founding-member status (migration only flips False→True, never demotes). Anyone signing up today or later is on the paid tier and routes through the StoreKit paywall. Verified live: a fresh registration just now returned `founding_member=false`, `subscription_status=null`.
   - **iOS build** bumped `46 → 47` in `app.json`. **Android `versionCode`** bumped `2 → 3`. Required before pushing the next TestFlight / Play track build.
