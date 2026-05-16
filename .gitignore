@@ -93,3 +93,12 @@ mood-admin/node_modules/@next/swc-linux-arm64-gnu/next-swc.linux-arm64-gnu.node
 mood-admin/node_modules/@next/swc-linux-arm64-musl/next-swc.linux-arm64-musl.node
 backend/uploads/47ba125c-9b6b-454b-bca5-836aa71a12bd.mov
 -e 
+-e 
+# Environment and credential files
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
