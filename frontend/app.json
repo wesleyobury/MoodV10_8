@@ -11,7 +11,7 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.official.moodapp",
-      "buildNumber": "51",
+      "buildNumber": "52",
       "supportsTablet": true,
       "infoPlist": {
         "CFBundleDisplayName": "MOOD",
@@ -30,7 +30,7 @@
     },
     "android": {
       "package": "com.official.moodapp",
-      "versionCode": 4,
+      "versionCode": 5,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"
