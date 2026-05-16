@@ -161,9 +161,25 @@ export default function WearableDataScreen() {
             <Ionicons name="watch-outline" size={42} color="#555" />
             <Text style={styles.emptyTitle}>Wearables unavailable</Text>
             <Text style={styles.emptyBody}>
-              MOOD reads health metrics from Apple Health on iPhone. Open
-              MOOD on your iPhone to connect a wearable and start tracking.
+              {(() => {
+                const diag = getHealthKitDiagnostics();
+                if (diag.platformOS !== 'ios') {
+                  return 'MOOD reads health metrics from Apple Health on iPhone. Open MOOD on your iPhone to connect a wearable and start tracking.';
+                }
+                if (!diag.nativeModuleRegistered) {
+                  return "Your current build doesn't include the HealthKit native module. Rebuild the dev client (eas build --profile development --platform ios --clear-cache) and reinstall. TestFlight builds include it automatically.";
+                }
+                if (diag.isHealthDataAvailable === false) {
+                  return 'Your iPhone reports HealthKit as unavailable. This is unusual — make sure the Apple Health app is installed and that you signed in to iCloud. Restart your phone and try again.';
+                }
+                return 'HealthKit is loaded but reported as unavailable. Pull down to refresh or restart the app.';
+              })()}
             </Text>
+            <View style={styles.diagBox} testID="wearable-data-diagnostics">
+              {Object.entries(getHealthKitDiagnostics()).map(([k, v]) => (
+                <Text key={k} style={styles.diagLine}>{k}: {String(v)}</Text>
+              ))}
+            </View>
           </View>
         )}
 
@@ -204,6 +220,11 @@ export default function WearableDataScreen() {
                 </Text>
               </TouchableOpacity>
             )}
+            <View style={styles.diagBox} testID="wearable-data-diagnostics">
+              {Object.entries(getHealthKitDiagnostics()).map(([k, v]) => (
+                <Text key={k} style={styles.diagLine}>{k}: {String(v)}</Text>
+              ))}
+            </View>
           </View>
         )}
 
@@ -270,6 +291,12 @@ export default function WearableDataScreen() {
               Read-only access — MOOD never writes, sells, or shares your
               health data.
             </Text>
+
+            <View style={styles.diagBox} testID="wearable-data-diagnostics">
+              {Object.entries(getHealthKitDiagnostics()).map(([k, v]) => (
+                <Text key={k} style={styles.diagLine}>{k}: {String(v)}</Text>
+              ))}
+            </View>
           </>
         )}
       </ScrollView>

@@ -88,6 +88,12 @@
         "projectId": "ef2c8520-832c-4806-beb0-80b9db1a6214"
       }
     },
+    "updates": {
+      "url": "https://u.expo.dev/ef2c8520-832c-4806-beb0-80b9db1a6214",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
     "runtimeVersion": {
       "policy": "appVersion"
     }

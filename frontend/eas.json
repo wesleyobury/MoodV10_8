@@ -7,9 +7,11 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
+      "channel": "preview",
       "env": {
         "EXPO_PUBLIC_FORCE_SIGNUP_PAYWALL": "true"
       },
@@ -22,6 +24,7 @@
     },
     "production": {
       "distribution": "store",
+      "channel": "production",
       "node": "20.19.4",
       "env": {
         "EXPO_PUBLIC_BACKEND_URL": "https://bug-busters-13.emergent.host"
