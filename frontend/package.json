@@ -18,7 +18,10 @@
     "verify": "../scripts/verify-deploy.sh",
     "test:cart-hero": "node --import tsx --test utils/cartHero.test.ts",
     "test:in-session-progress": "node --import tsx --test utils/inSessionProgress.test.ts",
-    "test:featured-hero": "node --import tsx --test utils/featuredHeroImage.test.ts"
+    "test:featured-hero": "node --import tsx --test utils/featuredHeroImage.test.ts",
+    "preflight": "bash scripts/preflight-build.sh",
+    "build:ios:dev": "yarn preflight && eas build --profile development --platform ios --clear-cache",
+    "build:ios:tf": "yarn preflight && eas build --profile preview --platform ios --clear-cache"
   },
   "dependencies": {
     "@expo/ngrok": "^4.1.3",
