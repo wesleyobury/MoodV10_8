@@ -37,3 +37,7 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+# Generated native directories (managed Expo workflow)
+ios/
+android/

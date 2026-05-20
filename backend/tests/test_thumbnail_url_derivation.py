@@ -52,7 +52,8 @@ class TestDerivePostMediaFieldsFunction:
         from server import derive_post_media_fields
         assert callable(derive_post_media_fields)
     
-    def test_video_detection_mp4_extension(self):
+    def test_video_detection_mp4ls /app/frontend/ios 2>/dev/null && echo 'IOS DIR EXISTS' || echo 'NO IOS DIR'
+    _extension(self):
         """Test .mp4 extension is detected as video"""
         from server import derive_post_media_fields
         post = {"media_urls": ["https://example.com/video.mp4"]}
