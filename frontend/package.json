@@ -12,9 +12,9 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "reset": "rm -rf node_modules/.cache .expo .metro-cache && (command -v watchman >/dev/null 2>&1 && watchman watch-del-all || true) && expo start --clear --tunnel --port 3000",
-    "env:dev": "cp .env.development .env && echo '→ .env now mirrors .env.development'",
-    "env:preview": "cp .env.preview .env && echo '→ .env now mirrors .env.preview'",
-    "env:prod": "cp .env.production .env && echo '→ .env now mirrors .env.production'",
+    "env:dev": "cp .env.development .env && echo '\u2192 .env now mirrors .env.development'",
+    "env:preview": "cp .env.preview .env && echo '\u2192 .env now mirrors .env.preview'",
+    "env:prod": "cp .env.production .env && echo '\u2192 .env now mirrors .env.production'",
     "verify": "../scripts/verify-deploy.sh",
     "test:cart-hero": "node --import tsx --test utils/cartHero.test.ts",
     "test:in-session-progress": "node --import tsx --test utils/inSessionProgress.test.ts",
@@ -94,5 +94,12 @@
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "workspaces": [
     "modules/*"
-  ]
+  ],
+  "expo": {
+    "autolinking": {
+      "searchPaths": [
+        "./modules"
+      ]
+    }
+  }
 }
