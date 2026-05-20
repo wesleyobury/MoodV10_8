@@ -41,3 +41,4 @@ app-example
 # Generated native directories (managed Expo workflow)
 ios/
 android/
+package-lock.json
