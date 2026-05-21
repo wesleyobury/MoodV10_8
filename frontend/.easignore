@@ -3,3 +3,5 @@ android/
 node_modules/
 .expo/
 *.log
+package-lock.json
+npm-shrinkwrap.json

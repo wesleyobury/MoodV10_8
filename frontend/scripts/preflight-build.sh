@@ -61,15 +61,27 @@ for MOD in modules/mood-healthkit modules/mood-storekit; do
 done
 ok "Local modules tracked with all required files"
 
-# 7. package.json wiring
+# 7. package.json wiring — yarn workspaces approach (NOT searchPaths)
 node -e "
 const p = require('./package.json');
+const ws = p.workspaces || [];
+const wsList = Array.isArray(ws) ? ws : (ws.packages || []);
+if (!wsList.includes('modules/*')) { console.error('✗ package.json: workspaces must include \"modules/*\"'); process.exit(1); }
 const sp = p.expo?.autolinking?.searchPaths || [];
-if (!sp.includes('./modules')) { console.error('✗ package.json: expo.autolinking.searchPaths must include \"./modules\"'); process.exit(1); }
-const badDeps = Object.keys(p.dependencies || {}).filter(k => /^mood-/.test(k));
-if (badDeps.length) { console.error('✗ package.json: remove these from dependencies (use searchPaths instead): ' + badDeps.join(', ')); process.exit(1); }
+if (sp.includes('./modules')) { console.error('✗ package.json: expo.autolinking.searchPaths must NOT include \"./modules\" — causes duplicate detection with workspaces'); process.exit(1); }
+const deps = p.dependencies || {};
+for (const m of ['mood-healthkit', 'mood-storekit']) {
+  if (!deps[m]) { console.error('✗ package.json: dependencies must include \"' + m + '\": \"*\" for workspace resolution'); process.exit(1); }
+  if (/^file:/.test(deps[m])) { console.error('✗ package.json: ' + m + ' must NOT use file: — use \"*\" for workspace symlink resolution'); process.exit(1); }
+}
 " || exit 1
-ok "package.json autolinking config correct"
+ok "package.json workspaces + module deps configured correctly"
+
+# 7b. package-lock.json must not exist (would make EAS use npm instead of yarn → workspaces break)
+if [[ -f "package-lock.json" ]]; then
+  fail "package-lock.json exists — EAS may use npm and break yarn workspaces. Delete it: rm package-lock.json"
+fi
+ok "No package-lock.json present (yarn workspaces preserved)"
 
 # 8. Local autolinking can actually see the modules
 echo "── Running autolinking probe (slow) ──"
