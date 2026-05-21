@@ -15,7 +15,7 @@ import requests
 import os
 
 # Get API URL from environment
-BASE_URL = os.environ.get('EXPO_PUBLIC_BACKEND_URL', 'https://backend-diagnostics-4.preview.emergentagent.com')
+BASE_URL = os.environ.get('EXPO_PUBLIC_BACKEND_URL', 'https://free-tier-limit-2.preview.emergentagent.com')
 
 # Test credentials
 TEST_USER = "moodtester2025"

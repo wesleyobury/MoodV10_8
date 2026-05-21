@@ -17,7 +17,7 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - [2026-05-14 PM3] **Forgot-password deep link fix + Live Feed avatar overlap + Profile pic prompt + Paywall 2nd-session lock verified**:
   - **Forgot-password "dead button" fix**: Email clients (iOS Mail, Gmail iOS) strip custom URL schemes — the `moodapp://reset-password?token=...` link in our email body was silently failing on tap. Wrapped it in an HTTPS bounce page:
     - Added `GET /api/auth/reset-redirect?token=...` (FastAPI `HTMLResponse`) in `backend/server.py`. Returns a tiny branded page with **3 layers** of redirect to the `moodapp://` scheme: `<meta http-equiv="refresh">`, JS `window.location.replace`, and a manual "Open MOOD" button fallback for Safari/cases that block auto-redirect.
-    - Added env var `PASSWORD_RESET_PUBLIC_BASE` (preview = `https://mood-generation-cap.preview.emergentagent.com`). When set, the email button URL is built as `{base}/api/auth/reset-redirect?token=...`; when unset (dev), falls back to the raw scheme.
+    - Added env var `PASSWORD_RESET_PUBLIC_BASE` (preview = `https://free-tier-limit-2.preview.emergentagent.com`). When set, the email button URL is built as `{base}/api/auth/reset-redirect?token=...`; when unset (dev), falls back to the raw scheme.
     - Updated email helper text from "copy paste into MOOD app" → "copy paste into your phone's browser" (it's an https URL now, browser will hand off to the app).
     - `from html import escape as html_escape` + `HTMLResponse` imported. Token defense-in-depth HTML-escaped before embedding.
     - **Tests** `backend/tests/test_password_reset_redirect.py` — **4/4 PASS**. Covers: HTML+deep-link present, HTML-escape on hostile tokens, missing-token graceful, content-type assertion.

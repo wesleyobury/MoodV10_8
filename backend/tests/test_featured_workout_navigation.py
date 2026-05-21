@@ -19,7 +19,7 @@ import os
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 if not BASE_URL:
     # Fallback for local testing
-    BASE_URL = "https://backend-diagnostics-4.preview.emergentagent.com"
+    BASE_URL = "https://free-tier-limit-2.preview.emergentagent.com"
 
 TEST_USER = "moodtester2025"
 TEST_PASSWORD = "Test1234!"

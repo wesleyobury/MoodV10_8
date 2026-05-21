@@ -11,7 +11,7 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.official.moodapp",
-      "buildNumber": "56",
+      "buildNumber": "57",
       "supportsTablet": true,
       "infoPlist": {
         "CFBundleDisplayName": "MOOD",

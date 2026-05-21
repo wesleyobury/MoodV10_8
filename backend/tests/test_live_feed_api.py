@@ -30,7 +30,7 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 BASE_URL = (
     os.environ.get("REACT_APP_BACKEND_URL")
     or os.environ.get("EXPO_PUBLIC_BACKEND_URL")
-    or "https://cart-button-fixes.preview.emergentagent.com"
+    or "https://free-tier-limit-2.preview.emergentagent.com"
 ).rstrip("/")
 
 JWT_SECRET = os.environ.get("JWT_SECRET")

@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from bson import ObjectId
 
 # Use PUBLIC URL for testing
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://backend-diagnostics-4.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://free-tier-limit-2.preview.emergentagent.com').rstrip('/')
 
 # MongoDB direct connection for index verification
 from motor.motor_asyncio import AsyncIOMotorClient

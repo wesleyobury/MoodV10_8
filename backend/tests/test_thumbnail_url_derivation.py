@@ -19,7 +19,7 @@ import sys
 # Add backend path to import derive_post_media_fields
 sys.path.insert(0, '/app/backend')
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://backend-diagnostics-4.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://free-tier-limit-2.preview.emergentagent.com').rstrip('/')
 
 # Test credentials
 TEST_USERNAME = "thumbtest"
