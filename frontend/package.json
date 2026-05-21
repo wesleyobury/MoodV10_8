@@ -5,6 +5,7 @@
   "scripts": {
     "sync-env": "node ./scripts/sync-env.js",
     "prestart": "node ./scripts/sync-env.js",
+    "postinstall": "echo '===EAS POSTINSTALL DIAG===' && ls -la node_modules/mood-healthkit node_modules/mood-storekit 2>&1 || echo 'SYMLINKS NOT CREATED ON EAS'",
     "start": "expo start --clear --tunnel --port 3000",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
