@@ -70,8 +70,7 @@
         }
       ],
       "./plugins/withCxx17Fix",
-      "./plugins/withMoodgit log origin/main..HEAD --oneline 2>&1; git log HEAD..origin/main --oneline 2>&1; git ls-files frontend/modules | head -20; git ls-files frontend/plugins; git ls-files frontend/.easignore; cat frontend/.gitignore; cat frontend/modules/.gitignore 2>&1; git branch --show-current
-      ",
+      "./plugins/withMoodHealthKit",
       "expo-font",
       "expo-web-browser"
     ],
