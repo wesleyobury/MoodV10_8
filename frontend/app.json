@@ -11,7 +11,7 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.official.moodapp",
-      "buildNumber": "59",
+      "buildNumber": "60",
       "supportsTablet": true,
       "infoPlist": {
         "CFBundleDisplayName": "MOOD",
@@ -70,7 +70,8 @@
         }
       ],
       "./plugins/withCxx17Fix",
-      "./plugins/withMoodHealthKit",
+      "./plugins/withMoodgit log origin/main..HEAD --oneline 2>&1; git log HEAD..origin/main --oneline 2>&1; git ls-files frontend/modules | head -20; git ls-files frontend/plugins; git ls-files frontend/.easignore; cat frontend/.gitignore; cat frontend/modules/.gitignore 2>&1; git branch --show-current
+      ",
       "expo-font",
       "expo-web-browser"
     ],
