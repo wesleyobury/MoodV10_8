@@ -43,8 +43,8 @@ yarn-error.*
 app-example
 
 # Generated native directories (managed Expo workflow)
-ios/
-android/
+/ios/
+/android/
 package-lock.json
 
 # === EAS-specific extras ===
