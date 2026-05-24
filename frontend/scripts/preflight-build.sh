@@ -76,27 +76,34 @@ for MOD in modules/mood-healthkit modules/mood-storekit; do
 done
 ok "Local modules tracked with all required ios/ source files"
 
-# 7. package.json must NOT use yarn workspaces or file: deps for local modules.
-#    They cause autolinking to silently drop duplicates in EAS CI.
+# 7. package.json must declare local modules as file: deps + disable the
+#    default ./modules auto-scan to avoid duplicate detection.  This is the
+#    bulletproof path: yarn copies modules/* into node_modules/*, and the
+#    standard node_modules walk discovers them regardless of how autolinking
+#    infers appRoot on EAS.
 node -e "
 const p = require('./package.json');
 if (p.workspaces) {
-  console.error('✗ package.json: \"workspaces\" must be REMOVED — caused autolinking duplicate-drop on EAS');
+  console.error('✗ package.json: \"workspaces\" must be REMOVED');
   process.exit(1);
 }
-const deps = { ...(p.dependencies || {}), ...(p.devDependencies || {}) };
+const deps = p.dependencies || {};
 for (const m of ['mood-healthkit', 'mood-storekit']) {
-  if (deps[m]) {
-    console.error('✗ package.json: must NOT list \"' + m + '\" as a dependency — autolinking scans ./modules by default');
-    process.exit(1);
-  }
+  const d = deps[m];
+  if (!d) { console.error('✗ package.json: dependencies[\"' + m + '\"] missing — must be \"file:./modules/' + m + '\"'); process.exit(1); }
+  if (!/^file:\\.\\/modules\\//.test(d)) { console.error('✗ package.json: dependencies[\"' + m + '\"] = \"' + d + '\" must be a file: dep pointing at ./modules/'); process.exit(1); }
+}
+const nm = p.expo && p.expo.autolinking && p.expo.autolinking.nativeModulesDir;
+if (!nm || nm === './modules' || nm === 'modules' || nm === './modules/') {
+  console.error('✗ package.json: expo.autolinking.nativeModulesDir must be overridden to a non-existent path to disable the default ./modules scan (prevents duplicates with file: deps)');
+  process.exit(1);
 }
 if (!p.scripts || !/verify-local-modules\\.js/.test(p.scripts.postinstall || '')) {
-  console.error('✗ package.json: postinstall must invoke scripts/verify-local-modules.js (the safety net)');
+  console.error('✗ package.json: postinstall must invoke scripts/verify-local-modules.js');
   process.exit(1);
 }
 " || exit 1
-ok "package.json: no workspaces, no local-module deps, postinstall verifier wired"
+ok "package.json: file: deps + disabled ./modules scan + postinstall verifier wired"
 
 # 7b. package-lock.json must not exist (forces yarn, keeps lockfile single-source-of-truth)
 [[ -f "package-lock.json" ]] && fail "package-lock.json exists — delete it (yarn-only build)"
@@ -107,15 +114,36 @@ ok "No package-lock.json present"
 node scripts/verify-local-modules.js > /dev/null || fail "verify-local-modules.js exits non-zero — fix the modules"
 ok "verify-local-modules.js passes on current tree"
 
-# 8. Autolinking probe — must see both modules with no duplicates
+# 8. Autolinking probe — must see both modules with no duplicates.
+#    Uses `resolve --json` (the EXACT command Cocoapods invokes on EAS)
+#    instead of `search`, so this matches production behavior.
 echo "── Running autolinking probe (slow) ──"
-OUT=$(npx --no-install expo-modules-autolinking search --platform ios 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g')
-echo "$OUT" | grep -q "mood-healthkit" || fail "autolinking does not see mood-healthkit"
-echo "$OUT" | grep -q "mood-storekit"  || fail "autolinking does not see mood-storekit"
-# Reject duplicates — the bug that killed builds 51-54
-echo "$OUT" | awk "/'mood-healthkit'/,/^  }/"  | grep -q "duplicates: \[\]" || fail "mood-healthkit shows duplicates — autolinking will silently drop it"
-echo "$OUT" | awk "/'mood-storekit'/,/^  }/"   | grep -q "duplicates: \[\]" || fail "mood-storekit shows duplicates — autolinking will silently drop it"
-ok "Autolinking sees both custom modules with no duplicates"
+RESOLVE_JSON=$(npx --no-install expo-modules-autolinking resolve --platform ios --json 2>&1)
+echo "$RESOLVE_JSON" | node -e "
+let buf = '';
+process.stdin.on('data', d => buf += d);
+process.stdin.on('end', () => {
+  let data;
+  try { data = JSON.parse(buf); }
+  catch (e) { console.error('✗ autolinking resolve --json did not return JSON:\n' + buf.slice(0, 500)); process.exit(1); }
+  const mods = data.modules || [];
+  const names = mods.map(m => m.packageName);
+  const need = ['mood-healthkit', 'mood-storekit'];
+  for (const n of need) {
+    if (!names.includes(n)) {
+      console.error('✗ autolinking does not see ' + n + '. Got ' + mods.length + ' modules: ' + names.join(', '));
+      process.exit(1);
+    }
+  }
+  for (const m of mods) {
+    if (need.includes(m.packageName) && (m.duplicates || []).length > 0) {
+      console.error('✗ ' + m.packageName + ' has duplicates: ' + JSON.stringify(m.duplicates));
+      process.exit(1);
+    }
+  }
+  console.log('autolinking resolve sees ' + mods.length + ' modules, both mood-* present, no duplicates');
+})" || exit 1
+ok "Autolinking (resolve --json, prod path) sees both custom modules with no duplicates"
 
 echo ""
 echo "${GREEN}── All preflight checks passed. Safe to run eas build. ──${RESET}"
