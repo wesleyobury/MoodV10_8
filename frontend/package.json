@@ -5,7 +5,7 @@
   "scripts": {
     "sync-env": "node ./scripts/sync-env.js",
     "prestart": "node ./scripts/sync-env.js",
-    "postinstall": "rm -rf node_modules/mood-healthkit node_modules/mood-storekit && cp -RL modules/mood-healthkit node_modules/mood-healthkit && cp -RL modules/mood-storekit node_modules/mood-storekit && echo '===EAS POSTINSTALL DIAG===' && ls -la node_modules/mood-healthkit node_modules/mood-storekit",
+    "postinstall": "node ./scripts/verify-local-modules.js",
     "start": "expo start --clear --tunnel --port 3000",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
