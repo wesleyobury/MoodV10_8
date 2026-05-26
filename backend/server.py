@@ -490,12 +490,14 @@ async def auto_seed_exercises():
 CURRENT_TERMS_VERSION = "2025-01-19"
 
 # Phase D — Paid Launch Founding Member cutoff (Part 9 of the v1.0 spec).
-# Updated 2026-05-14: cutoff moved forward to TODAY (2026-05-14 00:00 UTC)
-# per product decision. Every account whose `created_at < 2026-05-14 UTC` is
-# treated as a Founding Member with lifetime Premium access. Anyone signing
-# up today or later is on the paid tier. Migration runs on every startup and
-# is idempotent (only flips False→True, never demotes existing founders).
-FOUNDING_MEMBER_CUTOFF = datetime(2026, 5, 14, 0, 0, 0, tzinfo=timezone.utc)
+# Updated 2026-05-26: cutoff moved forward to 2026-05-26 00:00 UTC per product
+# decision (previously 2026-05-14). Every account whose `created_at <
+# 2026-05-26 UTC` is treated as a Founding Member with lifetime Premium access.
+# Anyone signing up on/after the cutoff is on the paid tier. Migration runs on
+# every startup and is idempotent (only flips False→True, never demotes
+# existing founders), so bumping the cutoff forward additively flips any
+# accounts created between the old and new cutoffs into Founding Members.
+FOUNDING_MEMBER_CUTOFF = datetime(2026, 5, 26, 0, 0, 0, tzinfo=timezone.utc)
 
 # Cloudinary Configuration
 cloudinary.config(
@@ -740,9 +742,10 @@ class UserResponse(BaseModel):
     created_at: datetime
     # Phase D — Paid Launch Founding Member system (Part 9 of v1.0 spec).
     # `founding_member` is set true for any account created before the
-    # FOUNDING_MEMBER_CUTOFF (2026-05-14, updated). Founding members bypass the paywall
-    # entirely and have lifetime access. `founding_member_modal_seen` gates
-    # the one-time celebration modal on first login after the cutoff ships.
+    # FOUNDING_MEMBER_CUTOFF (2026-05-26, bumped from 2026-05-14). Founding
+    # members bypass the paywall entirely and have lifetime access.
+    # `founding_member_modal_seen` gates the one-time celebration modal on
+    # first login after the cutoff ships.
     founding_member: bool = False
     founding_member_at: Optional[datetime] = None
     founding_member_modal_seen: bool = False
@@ -13634,9 +13637,12 @@ async def startup_db_client():
 
     # Phase D — Founding Member migration (Part 9 of the v1.0 paid launch).
     # Flips `founding_member = true` for every user account whose `created_at`
-    # precedes the FOUNDING_MEMBER_CUTOFF (now 2026-05-14 00:00 UTC; bumped
-    # forward 2026-05-14 per product decision so today's signups are paying).
-    # Idempotent — skipped on accounts that are already flagged.
+    # precedes the FOUNDING_MEMBER_CUTOFF (now 2026-05-26 00:00 UTC; bumped
+    # forward from 2026-05-14 per product decision on 2026-05-26 so signups
+    # through 2026-05-25 are still grandfathered onto the lifetime tier).
+    # Idempotent — skipped on accounts that are already flagged. Bumping the
+    # cutoff forward additively flips any new accounts in the widened window
+    # to Founding Member on next startup.
     try:
         cutoff = FOUNDING_MEMBER_CUTOFF
         result = await db.users.update_many(

@@ -87,9 +87,9 @@ These are baked into `backend/server.py`'s `@app.on_event("startup")` and **will
 | `sync_featured_hero_images` | 13474 | Overwrites featured-workout `heroImageUrl` from `seed_data.py` on every startup. | **🔴 DRY-RUN-FIRST.** If admins have manually customized featured-workout hero images in prod, this trashes them every boot. **Audit admin overrides first** via `db.featured_workouts.find({}, {title:1, heroImageUrl:1})`. |
 | Auto-seed featured workouts | 13620 | Only inserts if the collection is empty *or* a title mismatch is detected. | **🟢 SAFE-ON-PROD** if you have featured workouts already. |
 | Auto-seed exercises | 13627 | Same shape as above. | **🟢 SAFE-ON-PROD.** |
-| **Founding-member migration** | 13635–13664 | Flips `founding_member = true` for every user whose `created_at` < `FOUNDING_MEMBER_CUTOFF` (`2026-05-14 00:00 UTC`). One-way. **Every account in your live DB that signed up before that date gets lifetime free.** | **🔴 DRY-RUN-FIRST.** Confirm the cutoff is still the intended business rule before pointing this backend at prod. Easy to flip in code, impossible to flip back at scale once written. |
+| **Founding-member migration** | 13637–13668 | Flips `founding_member = true` for every user whose `created_at` < `FOUNDING_MEMBER_CUTOFF` (`2026-05-26 00:00 UTC`, bumped from 2026-05-14 on 2026-05-26). One-way. **Every account in your live DB that signed up before that date gets the lifetime-free flag.** No functional effect today — the live app has no paid tier, so the flag is dormant until a paywall ships. | **🟢 SAFE-ON-PROD** (confirmed 2026-05-26: no paid tier live, flag is currently dormant). Bumping the cutoff forward later is also safe — the migration is additive and never demotes existing founders. |
 
-If you want to **defer** the founding-member migration until you've verified the cutoff, comment out lines 13635–13664 before first boot. Re-enable after confirmation.
+If you want to **defer** the founding-member migration until you've verified the cutoff, comment out lines 13637–13668 before first boot. Re-enable after confirmation.
 
 If you want to **defer** `onboarding_backfill_v3`, pre-insert the guard flag so the migration thinks it's already run:
 
@@ -134,14 +134,14 @@ Not a writer. The new code's `$lookup` (server.py 7679–7686) hydrates `post.au
 
 Use `scripts/audit_post_authors.py` — see section 5.
 
-### 4.5 Subscription continuity — **MANUAL DECISION, NO SCRIPT**
+### 4.5 Subscription continuity — **NOT APPLICABLE (no paid tier live)**
 
-If the live app currently uses RevenueCat and you switch to this repo's StoreKit 2 direct path, you need to decide whether to:
+Confirmed 2026-05-26: the live App Store app has **no paid tier**. There are no existing RevenueCat or StoreKit subscribers to migrate. This section is a no-op for the upcoming release.
 
-- (a) Keep RevenueCat and not use `mood-storekit` (frontend bypass).
-- (b) Migrate by importing RevenueCat's subscriber export into `db.users.subscription` and `db.apple_webhook_events`. This is a one-time ETL job, scoped per your RevenueCat schema.
-
-Do **not** ship the new build without a decision here, or paying users will appear unsubscribed and may hit the paywall.
+For future reference, when you do ship a paid tier:
+- This repo wires `mood-storekit` (direct StoreKit 2 + Apple Server Notifications via `apple_webhook_events`). RevenueCat is not in the codebase.
+- Founding members (every user with `founding_member: true`, set by the migration in section 3 against accounts created before `FOUNDING_MEMBER_CUTOFF = 2026-05-26 00:00 UTC`) will bypass the paywall entirely.
+- Anyone who signs up on or after 2026-05-26 will be a paying user when the paywall ships.
 
 ---
 
@@ -195,7 +195,7 @@ MONGO_URL="$PROD_MONGO_URL" DB_NAME=mood_app python scripts/audit_post_authors.p
 4. Run them with `--apply`. Confirm counts went to zero on a second dry-run.
 5. Boot the new backend pointed at the staging clone. Tail the logs through `@app.on_event("startup")`:
    - Confirm `Onboarding tips backfill v3 applied to N users` matches your user count.
-   - Confirm `Founding Member migration: flipped N accounts` is the number of accounts created before `2026-05-14`.
+   - Confirm `Founding Member migration: flipped N accounts` is the number of accounts created before `2026-05-26`.
    - Confirm `Post author_id migration` is `{matched: ..., modified: 0-or-low}` (low because most posts already have it).
    - Confirm `hero-image sync` does what you expect (`updated/checked`).
 6. Run the mobile app (TestFlight build) against the staging clone. Smoke-test:
@@ -228,12 +228,41 @@ Reality check: an App Store binary can't be "rolled back" — only the backend c
 
 ---
 
-## 8. Open questions you owe yourself an answer to before shipping
+## 8. Open questions — ANSWERED 2026-05-26
 
-- Does the live app use RevenueCat or direct StoreKit 2?
-- Is `FOUNDING_MEMBER_CUTOFF = 2026-05-14` still the intended cutoff, or do you want to push it?
-- Is `extra.eas.projectId = ef2c8520-832c-4806-beb0-80b9db1a6214` the same EAS project that owns the live APNs key + OTA channel?
-- Were any featured-workout hero images manually customized in the live admin UI? (If yes, audit before `sync_featured_hero_images` overwrites them.)
-- Is the Apple Developer Team for this build the same Team that signed the live app?
+- **Does the live app use RevenueCat or direct StoreKit 2?**
+  **Answer: No paid tier on the live app.** Subscription continuity is a non-issue for this release. Section 4.5 is now a no-op. (For reference: this repo's future paid tier wires direct StoreKit 2 + Apple Server Notifications via `apple_webhook_events`. No RevenueCat dependency anywhere in the codebase.)
 
-Write the answers next to each bullet. Don't let yourself skip one.
+- **Is `FOUNDING_MEMBER_CUTOFF = 2026-05-14` still the intended cutoff, or do you want to push it?**
+  **Answer: Pushed to `2026-05-26 00:00 UTC`.** Committed in `backend/server.py` line 498 and confirmed in boot log: `Founding Member migration: nothing to do (cutoff 2026-05-26T00:00:00+00:00)`. Every account whose `created_at < 2026-05-26 UTC` is grandfathered as a Founding Member on first boot against the prod DB. The flag is currently dormant (no paid tier) — it only matters when the paywall ships.
+
+- **Is `extra.eas.projectId = ef2c8520-832c-4806-beb0-80b9db1a6214` the same EAS project that owns the live APNs key + OTA channel?**
+  **Answer: Yes — same project.** No EAS credentials migration needed. Existing installs continue receiving push notifications and OTA updates from this build. (`frontend/eas.json` production profile: Apple ID `wesleyogsbury@gmail.com`, ASC App ID `6756556024`, Apple Team `49L95GRFNU`.)
+
+- **Were any featured-workout hero images manually customized in the live admin UI?**
+  **Answer: No.** `sync_featured_hero_images` is safe to run on every boot — nothing to trample.
+
+- **Is the Apple Developer Team for this build the same Team that signed the live app?**
+  **Answer: Yes — same Team (`49L95GRFNU`).** Apple Sign-In stable user identifiers will continue resolving to the same accounts; no Apple-Sign-In user becomes a stranger.
+
+### Net residual risk after answers
+
+| Risk surface | Status |
+|---|---|
+| Apple Sign-In user identity continuity | ✅ same Team → stable user IDs preserved |
+| Push notifications | ✅ same EAS project → APNs key already on file |
+| OTA update channel | ✅ same EAS project → existing installs receive updates from this build |
+| Featured workout hero images | ✅ no admin overrides → sync-on-boot is safe |
+| Subscription continuity | ✅ no live paid tier → not applicable |
+| Founding-member migration | ✅ flag dormant (no paywall live), cutoff bumped to 2026-05-26 |
+| `JWT_SECRET` parity | ⚠️ still your responsibility — copy the live value into the new backend env or expect a one-time mass logout |
+| `CLOUDINARY_*` parity | ⚠️ still your responsibility — same Cloudinary cloud, or all existing media 404 |
+| `MONGO_URL` pointed at the existing prod DB | ⚠️ still your responsibility — the entire premise of this runbook |
+| Legacy users missing `user_id` / `name` | ⚠️ run `scripts/backfill_user_id.py --dry-run` against staging clone first to learn the count |
+| Posts with orphan `author_id` | ⚠️ run `scripts/audit_post_authors.py` against staging clone for visibility |
+| iOS version/build bump above the live App Store record | ⚠️ set at build-submit time, not now |
+| `android.versionCode` above the live Play Store record (if shipping Android) | ⚠️ current value `7` looks low — verify before submitting |
+| `ios.deploymentTarget: 16.0` cutting off iOS 15 users | ⚠️ decide whether that's acceptable |
+| `ios.associatedDomains` for Universal Links | ⚠️ if live app uses Universal Links, add them back; if only `moodapp://` scheme, skip |
+
+The remaining items are all configuration/parity checks, not data-loss risks. The data-side of the cutover is now substantially de-risked.
