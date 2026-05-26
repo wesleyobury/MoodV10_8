@@ -22,7 +22,13 @@ import Constants from 'expo-constants';
 import { BarChart, LineChart } from 'react-native-chart-kit';
 import BackButton from '../components/BackButton';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
+import {
+  secureStorage,
+  AUTH_TOKEN_KEY,
+  AUTH_TOKEN_STORED_AT_KEY,
+  AUTH_TOKEN_LAST_VALIDATED_KEY,
+} from '../utils/secureStorage';
 const screenWidth = Dimensions.get('window').width;
 
 const ADMIN_USERNAME = 'officialmoodapp';
@@ -321,6 +327,19 @@ export default function AdminDashboard() {
     admin_matched_by?: string;
     admin_allowlist?: string[];
   } | null>(null);
+
+  // Session diagnostics (visible only to the officialmoodapp admin).
+  // Tracks how the auth token is persisted client-side so silent-logout
+  // reports can be diagnosed without another TestFlight build.
+  const [sessionDiag, setSessionDiag] = useState<{
+    storage_backend: string;
+    token_present: boolean;
+    token_tail: string | null;
+    stored_at: string | null;
+    last_validated_at: string | null;
+    age_label: string;
+    last_validated_label: string;
+  } | null>(null);
   
   // Heartbeat interval
   const heartbeatRef = useRef<NodeJS.Timeout | null>(null);
@@ -347,6 +366,49 @@ export default function AdminDashboard() {
     
     fetchDebugMeta();
   }, []);
+
+  // Populate Session Diagnostics — only meaningful for admin; cheap enough to always run.
+  useEffect(() => {
+    const fmtAge = (iso: string | null): string => {
+      if (!iso) return 'never';
+      const t = Date.parse(iso);
+      if (Number.isNaN(t)) return 'invalid';
+      const secs = Math.max(0, Math.floor((Date.now() - t) / 1000));
+      if (secs < 60) return `${secs}s ago`;
+      const mins = Math.floor(secs / 60);
+      if (mins < 60) return `${mins}m ago`;
+      const hrs = Math.floor(mins / 60);
+      if (hrs < 24) return `${hrs}h ago`;
+      const days = Math.floor(hrs / 24);
+      return `${days}d ago`;
+    };
+
+    const loadDiag = async () => {
+      try {
+        const [storedToken, storedAt, lastValidated] = await Promise.all([
+          secureStorage.get(AUTH_TOKEN_KEY),
+          secureStorage.get(AUTH_TOKEN_STORED_AT_KEY),
+          secureStorage.get(AUTH_TOKEN_LAST_VALIDATED_KEY),
+        ]);
+        setSessionDiag({
+          storage_backend: secureStorage.backendLabel,
+          token_present: !!storedToken,
+          token_tail: storedToken ? `…${storedToken.slice(-8)}` : null,
+          stored_at: storedAt,
+          last_validated_at: lastValidated,
+          age_label: fmtAge(storedAt),
+          last_validated_label: fmtAge(lastValidated),
+        });
+      } catch (e) {
+        // Best-effort — diagnostics only
+        console.warn('Session diagnostics load failed:', e);
+      }
+    };
+
+    loadDiag();
+    const intervalId = setInterval(loadDiag, 30000); // refresh every 30s for live "ago" labels
+    return () => clearInterval(intervalId);
+  }, [token]);
 
   // Check authorization via API - now using /api/auth/me for detailed admin info
   useEffect(() => {
@@ -907,7 +969,60 @@ export default function AdminDashboard() {
           <Text style={styles.debugLabel}>Allowlist: </Text>
           <Text style={styles.debugValue}>{adminAuthInfo?.admin_allowlist?.join(', ') || 'loading...'}</Text>
         </Text>
+
+        {/* Session Diagnostics — only for the officialmoodapp admin */}
+        {user?.username?.toLowerCase() === ADMIN_USERNAME.toLowerCase() && (
+          <>
+            <View style={styles.debugDivider} />
+            <Text style={[styles.debugTitle, { fontSize: 13, marginBottom: 4 }]} testID="session-diag-heading">
+              🧭 Session Diagnostics
+            </Text>
+            <Text style={styles.debugText} testID="session-diag-storage">
+              <Text style={styles.debugLabel}>Storage: </Text>
+              <Text style={styles.debugValue}>{sessionDiag?.storage_backend || 'loading...'}</Text>
+            </Text>
+            <Text style={styles.debugText} testID="session-diag-token">
+              <Text style={styles.debugLabel}>Token: </Text>
+              <Text style={[
+                styles.debugValue,
+                sessionDiag && !sessionDiag.token_present && styles.debugWarning,
+                sessionDiag && sessionDiag.token_present && styles.debugSuccess,
+              ]}>
+                {sessionDiag
+                  ? sessionDiag.token_present
+                    ? `✅ present (${sessionDiag.token_tail})`
+                    : '❌ missing'
+                  : 'loading...'}
+              </Text>
+            </Text>
+            <Text style={styles.debugText} testID="session-diag-age">
+              <Text style={styles.debugLabel}>Token age: </Text>
+              <Text style={styles.debugValue}>
+                {sessionDiag?.age_label || 'loading...'}
+                {sessionDiag?.stored_at ? `  (${sessionDiag.stored_at})` : ''}
+              </Text>
+            </Text>
+            <Text style={styles.debugText} testID="session-diag-validated">
+              <Text style={styles.debugLabel}>Last validated: </Text>
+              <Text style={styles.debugValue}>
+                {sessionDiag?.last_validated_label || 'loading...'}
+                {sessionDiag?.last_validated_at ? `  (${sessionDiag.last_validated_at})` : ''}
+              </Text>
+            </Text>
+          </>
+        )}
       </View>
+
+      {/* Add Workout (Admin Tools) */}
+      <TouchableOpacity
+        style={styles.addWorkoutCta}
+        onPress={() => router.push('/admin-add-workout' as any)}
+        testID="admin-go-add-workout"
+      >
+        <Ionicons name="add-circle" size={20} color="#0c0c0c" />
+        <Text style={styles.addWorkoutCtaText}>Add Workout</Text>
+        <Ionicons name="chevron-forward" size={18} color="#0c0c0c" />
+      </TouchableOpacity>
 
       {/* Time Period Selector */}
       <View style={styles.periodSelector}>
@@ -2791,6 +2906,25 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     backgroundColor: '#0c0c0c',
+  },
+  addWorkoutCta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#FFD700',
+    marginHorizontal: 16,
+    marginTop: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    borderRadius: 12,
+  },
+  addWorkoutCtaText: {
+    flex: 1,
+    color: '#0c0c0c',
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.3,
   },
   periodChip: {
     paddingHorizontal: 16,

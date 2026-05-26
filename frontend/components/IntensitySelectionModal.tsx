@@ -8,7 +8,7 @@ import {
   Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { BlurView } from 'expo-blur';
 
 export type IntensityLevel = 'beginner' | 'intermediate' | 'advanced';

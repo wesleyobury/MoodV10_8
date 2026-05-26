@@ -11,7 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
@@ -24,7 +24,7 @@ import { generateMuscleGainerCarts } from '../utils/workoutGenerator';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 
-const API_URL = Constants.expoConfig?.extra?.EXPO_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
 
 const { width } = Dimensions.get('window');
 
@@ -97,6 +97,8 @@ export default function BodyPartsScreen() {
   const insets = useSafeAreaInsets();
   const params = useLocalSearchParams();
   const [selectedBodyParts, setSelectedBodyParts] = useState<Selection[]>([]);
+  // Ref to the main content ScrollView so we can scroll Continue / Build For Me into view
+  const contentScrollRef = useRef<ScrollView>(null);
   const [expandedBodyPart, setExpandedBodyPart] = useState<string>('');
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const expandAnim = useRef(new Animated.Value(0)).current;
@@ -255,6 +257,10 @@ export default function BodyPartsScreen() {
       } else {
         // Add to selection
         setSelectedBodyParts(prev => [...prev, { bodyPart: bodyPartName }]);
+        // Scroll the bottom CTAs (Build For Me + Continue) into view
+        requestAnimationFrame(() => {
+          contentScrollRef.current?.scrollToEnd({ animated: true });
+        });
       }
     }
   };
@@ -268,6 +274,10 @@ export default function BodyPartsScreen() {
     } else {
       // Add this sub-option (allow multiple arm selections)
       setSelectedBodyParts(prev => [...prev, { bodyPart: 'Arms', subOption: subOptionName }]);
+      // Scroll the bottom CTAs into view
+      requestAnimationFrame(() => {
+        contentScrollRef.current?.scrollToEnd({ animated: true });
+      });
     }
   };
 
@@ -398,7 +408,7 @@ export default function BodyPartsScreen() {
       </View>
 
       {/* Body Parts Grid */}
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false} ref={contentScrollRef}>
         <View style={styles.bodyPartsGrid}>
           {bodyParts.map((bodyPart) => {
             const isSelected = isBodyPartSelected(bodyPart.name);
@@ -527,30 +537,41 @@ export default function BodyPartsScreen() {
           onPress={handleBuildForMePress}
           disabled={selectedBodyParts.length === 0 || (remainingUses <= 0 && !isGuest)}
           variant="muscleGroup"
+          hideOrText={true}
         />
-      </ScrollView>
 
-      {/* Continue Button */}
-      {selectedBodyParts.length > 0 && (
-        <View style={styles.bottomContainer}>
-          <TouchableOpacity 
-            style={styles.continueButton}
-            onPress={handleContinue}
-          >
-            <LinearGradient
-              colors={['#FFD700', '#FFA500']}
-              style={styles.continueButtonGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
+        {/* Continue Button - below Build for Me, users scroll to see it */}
+        {selectedBodyParts.length > 0 && (
+          <View style={styles.inlineBottomContainer}>
+            {/* "or" divider between Build for Me and Continue */}
+            <View style={styles.orDividerContainer}>
+              <View style={styles.orDividerLine} />
+              <Text style={styles.orDividerText}>or</Text>
+              <View style={styles.orDividerLine} />
+            </View>
+            
+            <TouchableOpacity 
+              style={styles.continueButton}
+              onPress={handleContinue}
             >
-              <Text style={styles.continueButtonText}>
-                Continue
-              </Text>
-              <Ionicons name="arrow-forward" size={20} color='#0c0c0c' style={styles.buttonIcon} />
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      )}
+              <LinearGradient
+                colors={['#FFD700', '#FFA500']}
+                style={styles.continueButtonGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
+                <Text style={styles.continueButtonText}>
+                  Continue
+                </Text>
+                <Ionicons name="arrow-forward" size={20} color='#0c0c0c' style={styles.buttonIcon} />
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        )}
+        
+        {/* Bottom padding for scroll */}
+        <View style={{ height: 40 }} />
+      </ScrollView>
 
       {/* Intensity Selection Modal */}
       <IntensitySelectionModal
@@ -845,5 +866,29 @@ const styles = StyleSheet.create({
   },
   buttonIcon: {
     marginLeft: 4,
+  },
+  inlineBottomContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 0,
+    marginTop: 0,
+  },
+  orDividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+    marginTop: 4,
+  },
+  orDividerLine: {
+    width: 40,
+    height: 1,
+    backgroundColor: 'rgba(100, 100, 100, 0.4)',
+  },
+  orDividerText: {
+    color: 'rgba(150, 150, 150, 0.8)',
+    fontSize: 13,
+    fontWeight: '400',
+    paddingHorizontal: 16,
+    textTransform: 'lowercase',
   },
 });

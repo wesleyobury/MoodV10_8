@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
@@ -22,7 +22,7 @@ import { generateExplosivenessCarts } from '../utils/workoutGenerator';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
 
 interface ExplosivenessTypeOption {
   id: string;
@@ -367,10 +367,10 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   optionsContainer: {
-    gap: 20,
+    gap: 16,
   },
   chooseForMeContainer: {
-    marginTop: 16,
+    marginTop: 8,
   },
   optionContainer: {
     marginBottom: 0,

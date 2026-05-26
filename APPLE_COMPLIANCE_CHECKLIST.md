@@ -265,7 +265,7 @@ This document provides a comprehensive checklist for Apple App Store compliance,
 ## 8. APP STORE CONNECT SETTINGS CHECKLIST
 
 ### 8.1 App Information
-- [ ] Privacy Policy URL: `https://sites.google.com/...` (already set)
+- [ ] Privacy Policy URL: `https://www.officialmood.app/...` (already set)
 - [ ] EULA: Use Apple Standard EULA (no custom required)
 
 ### 8.2 App Privacy

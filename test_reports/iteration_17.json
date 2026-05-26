@@ -1,0 +1,41 @@
+{
+  "summary": "Backend-only testing of the new-user onboarding tips system. Created /app/backend/tests/test_onboarding_tips.py with 27 pytest cases covering all 5 surface areas: (1) GET /api/app/onboarding-config (public, default-true, no Mongo _id leak), (2) POST /api/auth/register initializes tips_state with all 3 keys ='unseen', (3) GET /api/users/me always returns tips_state with mood_scroll/form_videos/completion_share (lazy-default proxy: shape always present, no _id/password leak), (4) PATCH /api/users/me/tips-state happy paths (mood_scroll->completed, form_videos->never, completion_share->never, dismissed) AND negative paths (mood_scroll->never => 400, 5x invalid keys => 400, 6x invalid states => 400, missing fields => 422, no auth => 403, bad token => 401, key isolation), (5) regression on POST /api/users/me/avatar-base64 (endpoint reachable, requires auth, no 500 on empty body). 27/27 PASS against the live preview URL.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "PATCH /api/users/me/tips-state", "issue": "PATCH success body returns only {key, state} — does not echo the full updated tips_state dict. Frontend must follow up with GET /users/me (or update locally) to see the merged object. Acceptable but a small UX nit."},
+      {"endpoint": "GET /api/users/me", "issue": "Lazy-default for legacy users is implemented inline (user.get('tips_state') or {...}). True legacy verification (user doc with no tips_state field) was tested as a shape proxy — the response always includes the 3 keys — but no synthetic legacy doc was inserted via Mongo. Code path is straightforward and visually verified at server.py:6437."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_onboarding_tips.py",
+    "/app/test_reports/pytest/onboarding_tips_results.xml"
+  ],
+  "action_items": [
+    "(Optional) Consider returning the full tips_state object from PATCH /users/me/tips-state so clients don't need a follow-up GET to refresh state.",
+    "(Optional) Add an explicit unit test that inserts a legacy user doc (no tips_state field) directly via Mongo and asserts GET /users/me returns the lazy default — currently covered as a shape proxy."
+  ],
+  "critical_code_review_comments": [
+    "server.py is now 12,894 lines — same code-bloat issue flagged in iteration_16. The new onboarding endpoints (~50 lines at 6880-6927) should ideally live in a dedicated module (e.g., backend/onboarding.py) along with ALLOWED_TIP_KEYS / ALLOWED_TIP_STATES / TipStateUpdate.",
+    "PATCH /users/me/tips-state uses dot-path $set ('tips_state.mood_scroll') which is correct. However, find_user_by_id() is called only to resolve the update_filter — the same lookup is repeated in /users/me. Minor inefficiency, not a bug.",
+    "GET /api/app/onboarding-config has no caching headers; every page load hits Mongo. For a public, mostly-static kill switch consider a 60s Cache-Control: public, max-age=60 to reduce DB load.",
+    "The lazy default in /users/me uses `user.get('tips_state') or {...}` — if a future migration writes an EMPTY dict {}, this will replace it with all-unseen rather than treating it as 'all keys completed/missing individually'. Use `... if user.get('tips_state') is None else {**defaults, **user['tips_state']}` for safer merge semantics.",
+    "Pydantic model TipStateUpdate has no field validators — relies entirely on inline string-set checks. Could be tightened with Literal['mood_scroll','form_videos','completion_share'] / Literal['unseen','completed','dismissed','never'] so OpenAPI docs reflect the contract and validation runs at parse time.",
+    "Master kill switch is read on every onboarding-config call but never written anywhere in the codebase — there is no admin endpoint to flip onboarding_tips_enabled. Documented as 'default true' so this is by design, but worth confirming."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_onboarding_tips.py (new)"
+  ],
+  "success_rate": {"backend": "100% (27/27 tests passed)", "frontend": "not tested (skipped per request)"},
+  "test_credentials": "Tests create fresh users via POST /api/auth/register on each module load (username=tips_user_<ts>_<rand>, email=tips_user_<ts>_<rand>@example.com, password=TipsTestPass123!). No pre-seeded credentials needed.",
+  "seed_data_creation": "Each pytest run creates 1 throwaway user via /api/auth/register (module-scoped fixture). User docs accumulate in DB — consider adding cleanup if test cadence is high.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "test_onboarding_tips.py is fully self-contained and idempotent — it creates a fresh user every run and exercises all 4 new behaviors plus avatar-base64 regression. Run: pytest /app/backend/tests/test_onboarding_tips.py -v. Backend URL is auto-resolved from /app/frontend/.env (handles both REACT_APP_BACKEND_URL and EXPO_PUBLIC_BACKEND_URL since this is a React Native/Expo app). All 13 review-request scenarios are covered, plus 14 extra edge cases (parametrized invalid keys/states, missing fields, bad token, key isolation, no _id leak, regression).",
+  "rca of the issue": "No issues to RCA — implementation matches the spec end-to-end. Happy paths and all negative paths behave exactly as documented in the agent_to_agent_context_note."
+}

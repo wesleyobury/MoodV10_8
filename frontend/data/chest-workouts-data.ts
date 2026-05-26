@@ -29,7 +29,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No spotter needed',
               description: 'This should feel controlled, not risky.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Pause & Control',
@@ -54,7 +58,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use safeties if alone',
               description: 'Pauses increase time under load.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Slow Confidence',
@@ -79,7 +87,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Use one if fatigue causes loss of control.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Light Bar Burn',
@@ -104,7 +116,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Have safeties set',
               description: 'High-rep fatigue sneaks up fast.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'pump',
+          intensity_cost: 2,
         }
       ],
       intermediate: [
@@ -131,7 +147,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Fatigue accumulates quickly in clusters.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Working Sets',
@@ -156,7 +176,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Useful on final sets as load climbs.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Strength Pauses',
@@ -181,7 +205,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter advised',
               description: 'Long pauses increase fatigue per rep.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Press & Fire',
@@ -206,7 +234,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space first',
               description: 'Fast transitions matter for safety.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -233,7 +265,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter strongly recommended',
               description: 'Output stays high under fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Precision',
@@ -258,7 +294,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Especially on final sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Bench Drop Authority',
@@ -283,7 +323,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter required',
               description: 'This set pushes close to failure.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Press & Explode',
@@ -308,7 +352,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear the area',
               description: 'Plyos demand space and focus.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -341,7 +389,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No spotter needed',
               description: 'This should feel confident, not risky.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Incline Control',
@@ -366,7 +418,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use safeties if solo',
               description: 'Pauses increase time under load.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Slow Incline',
@@ -391,7 +447,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Helpful if control fades late.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Incline Burn',
@@ -416,7 +476,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Set safeties',
               description: 'Fatigue builds fast at high reps.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'pump',
+          intensity_cost: 2,
         }
       ],
       intermediate: [
@@ -443,7 +507,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Fatigue accumulates quickly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Working Incline',
@@ -468,7 +536,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Useful on later sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Upper Chest Holds',
@@ -493,7 +565,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter advised',
               description: 'Long pauses increase fatigue per rep.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Incline & Fire',
@@ -518,7 +594,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space first',
               description: 'Fast transitions require focus.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -545,7 +625,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter strongly recommended',
               description: 'Output stays high under fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Incline',
@@ -570,7 +654,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Especially on final sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Incline Drop Cascade',
@@ -595,7 +683,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter required',
               description: 'This set pushes close to failure.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Press & Explode',
@@ -620,7 +712,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear the area',
               description: 'Plyos demand space and focus.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'incline_press',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -653,7 +749,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No spotter needed',
               description: 'Choose control over load.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Paused Dumbbell Control',
@@ -678,7 +778,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower bells carefully',
               description: 'Fatigue affects balance quickly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Slow Dumbbell Press',
@@ -703,7 +807,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Helpful as weights increase.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Dumbbell Burn',
@@ -728,7 +836,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drop bells safely',
               description: 'Don\'t fight fatigue down.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'pump',
+          intensity_cost: 2,
         }
       ],
       intermediate: [
@@ -755,7 +867,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space',
               description: 'Dumbbells demand control when tired.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Working Dumbbells',
@@ -780,7 +896,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Useful for heavier sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Dumbbell Holds',
@@ -805,7 +925,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower bells carefully',
               description: 'Fatigue shifts balance fast.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Press & Drive',
@@ -830,7 +954,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear floor space',
               description: 'Fast transitions matter.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -857,7 +985,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Heavy dumbbells get unstable fast.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Dumbbells',
@@ -882,7 +1014,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Especially for final sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Dumbbell Drop Cascade',
@@ -907,7 +1043,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter strongly recommended',
               description: 'Fatigue rises fast.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Press & Explode',
@@ -932,7 +1072,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space first',
               description: 'Plyos need space.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -947,7 +1091,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Foundational decline pressing for lower chest confidence.',
           battlePlan: 'Instructions: Use a load you could complete for 2 more reps.\nSets: 4\nRest: 75–90s\n\n• Decline Barbell Press — 4 × 8',
-          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241311/mood_app/workout_images/kd2t1cpd_dbpp.jpg',
+          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241316/mood_app/workout_images/r1uig0ll_download_4_.jpg',
           intensityReason: 'Foundational decline pressing for lower chest confidence.',
           moodTips: [
             {
@@ -965,7 +1109,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No spotter needed',
               description: 'This should feel stable and repeatable.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Decline Control',
@@ -990,7 +1138,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use safeties if solo',
               description: 'Pauses extend time under load.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Slow Decline',
@@ -1015,7 +1167,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Helpful as fatigue builds.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Decline Burn',
@@ -1040,7 +1196,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Set safeties',
               description: 'High-rep fatigue accumulates fast.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'pump',
+          intensity_cost: 2,
         }
       ],
       intermediate: [
@@ -1049,7 +1209,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–18 min',
           description: 'Cluster decline pressing to maintain output and control.',
           battlePlan: 'Instructions: 15s breaths between mini-sets.\nSets: 4\nRest: 2:00 between clusters\n\n• Decline Press — 4 × (4 / 4 / 4)',
-          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241311/mood_app/workout_images/kd2t1cpd_dbpp.jpg',
+          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241316/mood_app/workout_images/r1uig0ll_download_4_.jpg',
           intensityReason: 'Cluster decline pressing to maintain output and control.',
           moodTips: [
             {
@@ -1067,7 +1227,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Fatigue builds quickly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Working Decline',
@@ -1092,7 +1256,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Useful on later sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Lower Chest Holds',
@@ -1117,7 +1285,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter advised',
               description: 'Pauses amplify fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Decline & Drive',
@@ -1142,7 +1314,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space first',
               description: 'Fast transitions matter.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1151,7 +1327,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–20 min',
           description: 'Heavy decline clusters to sustain lower chest power.',
           battlePlan: 'Instructions: Short breaths, full recovery between sets.\nSets: 5\nRest: 2:00\n\n• Decline Press — 5 × (3 / 3 / 3)',
-          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241311/mood_app/workout_images/kd2t1cpd_dbpp.jpg',
+          imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241316/mood_app/workout_images/r1uig0ll_download_4_.jpg',
           intensityReason: 'Heavy decline clusters to sustain lower chest power.',
           moodTips: [
             {
@@ -1169,7 +1345,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter strongly recommended',
               description: 'Output stays high under fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Decline',
@@ -1194,7 +1374,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Especially on final sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Decline Drop Cascade',
@@ -1219,7 +1403,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter required',
               description: 'This set is pushed hard.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Press & Explode',
@@ -1244,7 +1432,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear the area',
               description: 'Plyos demand space.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'decline_press',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1277,7 +1469,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No spotter needed',
               description: 'Smith provides built-in safety.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Smith Control',
@@ -1302,7 +1498,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use safeties',
               description: 'Pauses increase fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Slow Smith Press',
@@ -1327,7 +1527,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Fatigue builds subtly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Smith Burn',
@@ -1352,7 +1556,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Rack quickly',
               description: 'Fatigue builds fast.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'pump',
+          intensity_cost: 2,
         }
       ],
       intermediate: [
@@ -1379,7 +1587,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Helpful at higher loads.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Working Smith',
@@ -1404,7 +1616,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Helpful on later sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Smith Holds',
@@ -1429,7 +1645,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use safeties',
               description: 'Fatigue accumulates.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Smith & Push',
@@ -1454,7 +1674,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear floor space',
               description: 'Fast transitions matter.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1481,7 +1705,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Output stays high under fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Smith',
@@ -1506,7 +1734,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Especially on final sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Smith Drop Cascade',
@@ -1531,7 +1763,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter required',
               description: 'This set pushes hard.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Smith & Explode',
@@ -1556,7 +1792,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space',
               description: 'Plyos demand room.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1589,7 +1829,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No spotter needed',
               description: 'Machine provides safety.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Machine Control',
@@ -1614,7 +1858,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe but focused',
               description: 'Machine allows intensity.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Slow Machine Press',
@@ -1639,7 +1887,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Seat locked in',
               description: 'Stability first.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Machine Burn',
@@ -1664,7 +1916,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Breathe rhythmically',
               description: 'Steady breathing pattern.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'pump',
+          intensity_cost: 2,
         }
       ],
       intermediate: [
@@ -1691,7 +1947,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe but demanding',
               description: 'Machine allows intensity.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Working Machine',
@@ -1716,7 +1976,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push hard safely',
               description: 'Machine provides safety.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Machine Holds',
@@ -1741,7 +2005,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe to push hard',
               description: 'Machine provides support.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Press & Burn',
@@ -1766,7 +2034,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear floor space',
               description: 'Fast transitions matter.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1793,7 +2065,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push safely',
               description: 'Machine allows intensity.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Machine',
@@ -1818,7 +2094,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe heavy work',
               description: 'Machine provides support.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Machine Drop Cascade',
@@ -1843,7 +2123,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe to empty the tank',
               description: 'Machine provides safety.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Press & Explode',
@@ -1868,7 +2152,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space',
               description: 'Plyos need room.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'horizontal_press',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1901,7 +2189,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No spotter needed',
               description: 'Machine provides safety.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Fly Control',
@@ -1926,7 +2218,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Light weight preferred',
               description: 'Focus on feeling the stretch.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Slow Fly',
@@ -1951,7 +2247,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Quiet stack',
               description: 'Control throughout.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Fly Burn',
@@ -1976,7 +2276,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Breathe steadily',
               description: 'Rhythmic breathing.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'pump',
+          intensity_cost: 2,
         }
       ],
       intermediate: [
@@ -2003,7 +2307,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control the stretch',
               description: 'Full range of motion.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Working Flyes',
@@ -2028,7 +2336,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push safely',
               description: 'Machine provides support.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Fly Holds',
@@ -2053,7 +2365,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe to push hard',
               description: 'Machine provides support.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Fly & Push',
@@ -2078,7 +2394,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Quick transitions',
               description: 'Keep intensity high.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2105,7 +2425,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push safely',
               description: 'Machine allows intensity.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Flyes',
@@ -2130,7 +2454,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe heavy isolation',
               description: 'Machine provides support.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Fly Drop Cascade',
@@ -2155,7 +2483,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe to empty tank',
               description: 'Machine provides safety.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Fly & Explode',
@@ -2180,7 +2512,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space',
               description: 'Plyos need room.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -2213,7 +2549,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No spotter needed',
               description: 'Cables are self-limiting.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Cable Control',
@@ -2238,7 +2578,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Light weight preferred',
               description: 'Focus on the squeeze.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Slow Cables',
@@ -2263,7 +2607,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control the stacks',
               description: 'Quiet throughout.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Cable Burn',
@@ -2288,7 +2636,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Breathe steady',
               description: 'Rhythmic breathing.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'pump',
+          intensity_cost: 2,
         }
       ],
       intermediate: [
@@ -2315,7 +2667,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control the stretch',
               description: 'Full range.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Working Cables',
@@ -2340,7 +2696,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push safely',
               description: 'Cables are forgiving.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Cable Holds',
@@ -2365,7 +2725,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe to push',
               description: 'Cables allow intensity.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Cable & Push',
@@ -2390,7 +2754,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Fast transitions',
               description: 'Keep intensity high.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2417,7 +2785,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push hard safely',
               description: 'Cables are forgiving.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Cables',
@@ -2442,7 +2814,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe heavy work',
               description: 'Cables provide control.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Cable Drop Cascade',
@@ -2467,7 +2843,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Safe to empty tank',
               description: 'Cables are forgiving.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Cable & Explode',
@@ -2492,7 +2872,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space',
               description: 'Plyos need room.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'fly',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -2525,7 +2909,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use assistance freely',
               description: 'Build strength safely.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Dip Control',
@@ -2550,7 +2938,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Assistance encouraged',
               description: 'Focus on form.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Slow Dips',
@@ -2575,7 +2967,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use assistance',
               description: 'Build control safely.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Dip Burn',
@@ -2600,7 +2996,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop before form breaks',
               description: 'Quality over quantity.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'pump',
+          intensity_cost: 2,
         }
       ],
       intermediate: [
@@ -2627,7 +3027,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Assistance allowed',
               description: 'If needed for quality.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Working Dips',
@@ -2652,7 +3056,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Add assistance if needed',
               description: 'Quality over ego.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Dip Holds',
@@ -2677,7 +3085,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Assistance encouraged',
               description: 'For quality reps.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Dip & Push',
@@ -2702,7 +3114,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space',
               description: 'Fast transitions.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2729,7 +3145,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Add weight only if clean',
               description: 'Earn the load.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Dips',
@@ -2754,7 +3174,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'For heavy sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Dip Drop Cascade',
@@ -2779,7 +3203,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Assistance ready',
               description: 'For the burnout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Dip & Explode',
@@ -2804,7 +3232,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Clear space',
               description: 'Plyos need room.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'dip',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }

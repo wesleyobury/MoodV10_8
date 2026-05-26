@@ -18,7 +18,26 @@ from typing import Optional, List, Dict, Any
 from bson import ObjectId
 from enum import Enum
 
+# Import standardized push copy
+from push_copy import build_push_content, get_engagement_action
+
 logger = logging.getLogger(__name__)
+
+
+def _safe_first(val) -> str:
+    """Safely get the first element from a list, dict, or None.
+    
+    cover_urls may be stored as a dict ({"0": "url"}) from React Native
+    instead of a list (["url"]). This helper handles both.
+    """
+    if not val:
+        return ""
+    if isinstance(val, list):
+        return val[0] if val else ""
+    if isinstance(val, dict):
+        # Try int key 0 first, then string key "0", then first value
+        return val.get(0) or val.get("0") or next(iter(val.values()), "")
+    return ""
 
 # ============================================
 # NOTIFICATION TYPES & CONSTANTS
@@ -70,11 +89,11 @@ SUGGESTION_COPY_LIBRARY = [
 
 # Deep link URL schemes
 DEEP_LINK_SCHEMES = {
-    NotificationType.LIKE: "mood://notifications",  # Go to notifications tab
-    NotificationType.COMMENT: "mood://notifications",  # Go to notifications tab
+    NotificationType.LIKE: "mood://post/{entity_id}",  # Open the liked post
+    NotificationType.COMMENT: "mood://post/{entity_id}",  # Open the commented post
     NotificationType.FOLLOW: "mood://notifications",  # Go to notifications tab
-    NotificationType.MENTION: "mood://notifications",  # Go to notifications tab
-    NotificationType.REPLY: "mood://notifications",  # Go to notifications tab
+    NotificationType.MENTION: "mood://post/{entity_id}",  # Open the mentioned post
+    NotificationType.REPLY: "mood://post/{entity_id}",  # Open the replied post
     NotificationType.MESSAGE: "mood://chat/{entity_id}",
     NotificationType.FEATURED_WORKOUT: "mood://cart/{entity_id}",  # Go directly to cart
     NotificationType.WORKOUT_REMINDER: "mood://home",  # Go to home
@@ -106,38 +125,39 @@ class NotificationService:
         platform: str,  # 'ios', 'android', 'web'
         device_id: Optional[str] = None
     ) -> dict:
-        """Register or update a device push token"""
+        """Register or update a device push token using upsert to prevent duplicates.
+        
+        A push token is device-specific. If the same token is re-registered
+        (even by a different user after logout/login), we upsert on the token
+        field to guarantee exactly one document per token.
+        """
         now = datetime.now(timezone.utc)
         
-        # Check if token already exists for this user
-        existing = await self.db.device_tokens.find_one({
-            "user_id": user_id,
-            "token": token
-        })
+        result = await self.db.device_tokens.update_one(
+            {"token": token},
+            {
+                "$set": {
+                    "user_id": user_id,
+                    "platform": platform,
+                    "device_id": device_id,
+                    "last_active": now,
+                    "is_valid": True,
+                },
+                "$setOnInsert": {
+                    "token": token,
+                    "created_at": now,
+                },
+            },
+            upsert=True,
+        )
         
-        if existing:
-            # Update last_active
-            await self.db.device_tokens.update_one(
-                {"_id": existing["_id"]},
-                {"$set": {"last_active": now, "platform": platform}}
-            )
-            return {"status": "updated", "id": str(existing["_id"])}
-        
-        # Insert new token
-        doc = {
-            "user_id": user_id,
-            "token": token,
-            "platform": platform,
-            "device_id": device_id,
-            "created_at": now,
-            "last_active": now,
-            "is_valid": True
-        }
-        
-        result = await self.db.device_tokens.insert_one(doc)
-        logger.info(f"📱 Registered device token for user {user_id[:8]}... on {platform}")
-        
-        return {"status": "created", "id": str(result.inserted_id)}
+        if result.upserted_id:
+            logger.info(f"📱 Registered NEW device token for user {user_id[:8]}... on {platform}")
+            return {"status": "created", "id": str(result.upserted_id)}
+        else:
+            logger.info(f"📱 Updated device token for user {user_id[:8]}... on {platform}")
+            existing = await self.db.device_tokens.find_one({"token": token}, {"_id": 1})
+            return {"status": "updated", "id": str(existing["_id"]) if existing else "unknown"}
     
     async def unregister_device_token(self, user_id: str, token: str) -> bool:
         """Remove a device token"""
@@ -155,45 +175,77 @@ class NotificationService:
         )
     
     async def get_user_tokens(self, user_id: str) -> List[str]:
-        """Get all valid push tokens for a user"""
-        tokens = await self.db.device_tokens.find({
-            "user_id": user_id,
-            "is_valid": True
-        }).to_list(10)
+        """Get all valid push tokens for a user (unique by DB constraint)"""
+        tokens = await self.db.device_tokens.find(
+            {"user_id": user_id, "is_valid": True},
+            {"token": 1, "_id": 0},
+        ).to_list(10)
         
-        return [t["token"] for t in tokens]
+        # Defensive dedup in case legacy duplicates still exist
+        seen = set()
+        unique = []
+        for t in tokens:
+            tok = t["token"]
+            if tok not in seen:
+                seen.add(tok)
+                unique.append(tok)
+        return unique
     
     # ----------------------------------------
     # NOTIFICATION SETTINGS
     # ----------------------------------------
     
+    @staticmethod
+    def _resolve_post_author_id(post: dict) -> str:
+        """Resolve the canonical author of a post, checking multiple field names.
+        
+        Returns the author ID as a string, or "" if none found.
+        Priority: author_id > user_id > creator_id > owner_id
+        """
+        for key in ("author_id", "user_id", "creator_id", "owner_id"):
+            val = post.get(key)
+            if val:
+                return str(val)
+        return ""
+    
     async def get_user_settings(self, user_id: str) -> dict:
-        """Get notification settings for a user, with defaults"""
+        """Get notification settings for a user, with defaults.
+        
+        CRITICAL: MongoDB may store None for unset fields. Python's
+        dict.get(key, default) returns None (not the default) when the key
+        EXISTS with value None. We must coalesce None -> default explicitly.
+        """
         settings = await self.db.notification_settings.find_one({"user_id": user_id})
         
         if not settings:
             # Return defaults
             return self._get_default_settings(user_id)
         
+        def _bool(val, default: bool) -> bool:
+            return val if val is not None else default
+        
+        def _str(val, default: str) -> str:
+            return val if val is not None else default
+        
         return {
             "user_id": settings["user_id"],
-            "notifications_enabled": settings.get("notifications_enabled", True),
-            "likes_enabled": settings.get("likes_enabled", True),
-            "likes_from_following_only": settings.get("likes_from_following_only", False),
-            "comments_enabled": settings.get("comments_enabled", True),
-            "comments_from_following_only": settings.get("comments_from_following_only", False),
-            "messages_enabled": settings.get("messages_enabled", True),
-            "follows_enabled": settings.get("follows_enabled", True),
-            "workout_reminders_enabled": settings.get("workout_reminders_enabled", True),
-            "featured_workouts_enabled": settings.get("featured_workouts_enabled", True),
-            "following_digest_enabled": settings.get("following_digest_enabled", True),
-            "following_digest_frequency": settings.get("following_digest_frequency", "daily"),  # daily, 3x_week, off
-            "featured_suggestions_enabled": settings.get("featured_suggestions_enabled", True),
-            "quiet_hours_enabled": settings.get("quiet_hours_enabled", False),
-            "quiet_hours_start": settings.get("quiet_hours_start", "22:00"),
-            "quiet_hours_end": settings.get("quiet_hours_end", "08:00"),
-            "digest_time": settings.get("digest_time", "18:00"),
-            "timezone": settings.get("timezone", "America/New_York"),
+            "notifications_enabled": _bool(settings.get("notifications_enabled"), True),
+            "likes_enabled": _bool(settings.get("likes_enabled"), True),
+            "likes_from_following_only": _bool(settings.get("likes_from_following_only"), False),
+            "comments_enabled": _bool(settings.get("comments_enabled"), True),
+            "comments_from_following_only": _bool(settings.get("comments_from_following_only"), False),
+            "messages_enabled": _bool(settings.get("messages_enabled"), True),
+            "follows_enabled": _bool(settings.get("follows_enabled"), True),
+            "workout_reminders_enabled": _bool(settings.get("workout_reminders_enabled"), True),
+            "featured_workouts_enabled": _bool(settings.get("featured_workouts_enabled"), True),
+            "following_digest_enabled": _bool(settings.get("following_digest_enabled"), True),
+            "following_digest_frequency": _str(settings.get("following_digest_frequency"), "daily"),
+            "featured_suggestions_enabled": _bool(settings.get("featured_suggestions_enabled"), True),
+            "quiet_hours_enabled": _bool(settings.get("quiet_hours_enabled"), False),
+            "quiet_hours_start": _str(settings.get("quiet_hours_start"), "22:00"),
+            "quiet_hours_end": _str(settings.get("quiet_hours_end"), "08:00"),
+            "digest_time": _str(settings.get("digest_time"), "18:00"),
+            "timezone": _str(settings.get("timezone"), "America/New_York"),
         }
     
     def _get_default_settings(self, user_id: str) -> dict:
@@ -260,11 +312,14 @@ class NotificationService:
         image_url: Optional[str] = None,
         metadata: Optional[dict] = None,
         group_key: Optional[str] = None,
+        dedupe_key: Optional[str] = None,
         send_push: bool = True
     ) -> Optional[str]:
         """
-        Create a notification and optionally send push
-        Returns notification ID or None if not created
+        Create a notification and optionally send push.
+        dedupe_key: if provided and a notification with this key already exists
+                    for the same user, skip creation (prevents spam from rapid re-likes etc).
+        Returns notification ID or None if not created.
         """
         now = datetime.now(timezone.utc)
         
@@ -272,7 +327,7 @@ class NotificationService:
         settings = await self.get_user_settings(user_id)
         
         if not settings.get("notifications_enabled", True):
-            logger.debug(f"Notifications disabled for user {user_id[:8]}...")
+            logger.info(f"TRACE-NOTIF: type={notification_type.value} entity_id={entity_id} actor={actor_id} recipient={user_id} decision=SKIPPED reason=prefs_disabled")
             return None
         
         # Check type-specific settings
@@ -292,7 +347,7 @@ class NotificationService:
         
         setting_key = type_setting_map.get(notification_type)
         if setting_key and not settings.get(setting_key, True):
-            logger.debug(f"{notification_type.value} notifications disabled for user {user_id[:8]}...")
+            logger.info(f"TRACE-NOTIF: type={notification_type.value} entity_id={entity_id} actor={actor_id} recipient={user_id} decision=SKIPPED reason=type_blocked({setting_key})")
             return None
         
         # Check "from following only" settings for likes/comments
@@ -305,8 +360,18 @@ class NotificationService:
                     "following_id": ObjectId(actor_id)
                 })
                 if not is_following:
-                    logger.debug(f"Skipping {notification_type.value} from non-followed user")
+                    logger.info(f"TRACE-NOTIF: type={notification_type.value} entity_id={entity_id} actor={actor_id} recipient={user_id} decision=SKIPPED reason=following_only")
                     return None
+        
+        # Dedupe check: if this exact event already produced a notification, skip
+        if dedupe_key:
+            existing = await self.db.notifications.find_one({
+                "user_id": user_id,
+                "metadata.dedupe_key": dedupe_key
+            })
+            if existing:
+                logger.info(f"TRACE-NOTIF: type={notification_type.value} entity_id={entity_id} actor={actor_id} recipient={user_id} decision=SKIPPED reason=idempotency dedupe_key={dedupe_key}")
+                return str(existing["_id"])
         
         # Generate deep link
         deep_link = self._generate_deep_link(notification_type, actor_id, entity_id)
@@ -322,7 +387,7 @@ class NotificationService:
             "entity_type": entity_type,
             "image_url": image_url,
             "deep_link": deep_link,
-            "metadata": metadata or {},
+            "metadata": {**(metadata or {}), **({"dedupe_key": dedupe_key} if dedupe_key else {})},
             "group_key": group_key,
             "created_at": now,
             "read_at": None,
@@ -334,23 +399,42 @@ class NotificationService:
         notification_id = str(result.inserted_id)
         logger.info(f"🔔 Insert result acknowledged: {result.acknowledged}, id: {notification_id}")
         
-        logger.info(f"🔔 Created notification {notification_type.value} for user {user_id[:8]}...")
+        # Explicit NOTIF-CREATED trace — includes media_type for video engagement proof
+        media_type = (metadata or {}).get("media_type", "unknown")
+        logger.info(
+            f"🔔 NOTIF-CREATED: id={notification_id} type={notification_type.value} "
+            f"entity_id={entity_id} recipient={user_id[:8]}... actor={actor_id[:8] + '...' if actor_id else 'None'} "
+            f"media_type={media_type}"
+        )
         
         # Send push if enabled and not in quiet hours
         if send_push:
+            logger.info(f"🔔 PUSH-PATH: send_push=True type={notification_type.value} user={user_id[:8]}... dedupe_key={dedupe_key}")
             in_quiet_hours = self._is_in_quiet_hours(settings)
+            logger.info(f"🔔 PUSH-PATH: quiet_hours_enabled={settings.get('quiet_hours_enabled')}, in_quiet_hours={in_quiet_hours}")
             if in_quiet_hours:
-                logger.debug(f"User {user_id[:8]}... is in quiet hours, skipping push")
+                logger.info(f"🔔 PUSH-PATH: BLOCKED by quiet hours for user {user_id[:8]}... type={notification_type.value}")
             else:
-                await self._send_push_notification(
-                    user_id=user_id,
-                    notification_id=notification_id,
-                    title=title,
-                    body=body,
-                    deep_link=deep_link,
-                    notification_type=notification_type,
-                    image_url=image_url
-                )
+                logger.info(f"🔔 PUSH-PATH: Calling _send_push_notification type={notification_type.value} user={user_id[:8]}...")
+                try:
+                    push_result = await self._send_push_notification(
+                        user_id=user_id,
+                        notification_id=notification_id,
+                        title=title,
+                        body=body,
+                        deep_link=deep_link,
+                        notification_type=notification_type,
+                        image_url=image_url,
+                        metadata=metadata,
+                        event_key=dedupe_key,
+                    )
+                    logger.info(f"🔔 PUSH-PATH: _send_push_notification returned={push_result} for type={notification_type.value} user={user_id[:8]}...")
+                except Exception as push_err:
+                    logger.error(f"🔔 PUSH-PATH: EXCEPTION in _send_push_notification: {push_err}")
+                    import traceback
+                    logger.error(traceback.format_exc())
+        else:
+            logger.info(f"🔔 PUSH-PATH: send_push=False, skipping push for type={notification_type.value} user={user_id[:8]}...")
         
         # Track analytics
         await self._track_notification_event(user_id, "notification_created", notification_type.value)
@@ -376,7 +460,7 @@ class NotificationService:
     
     def _is_in_quiet_hours(self, settings: dict) -> bool:
         """Check if current time is within user's quiet hours"""
-        if not settings.get("quiet_hours_enabled", True):
+        if not settings.get("quiet_hours_enabled", False):
             return False
         
         try:
@@ -404,6 +488,38 @@ class NotificationService:
             return False
     
     # ----------------------------------------
+    # PUSH SEND LOG (IDEMPOTENCY)
+    # ----------------------------------------
+
+    async def _check_and_log_push_send(
+        self,
+        user_id: str,
+        push_type: str,
+        event_key: str,
+    ) -> bool:
+        """Check if this push was already sent. Returns True if already sent (skip).
+        
+        Uses a unique index on (user_id, type, event_key) in push_send_log
+        to guarantee at-most-once delivery per event per user.
+        """
+        try:
+            await self.db.push_send_log.insert_one({
+                "user_id": user_id,
+                "type": push_type,
+                "event_key": event_key,
+                "created_at": datetime.now(timezone.utc),
+            })
+            return False  # Not a duplicate, proceed with send
+        except Exception as e:
+            # Duplicate key error (code 11000) means already sent
+            if "11000" in str(e) or "duplicate key" in str(e).lower():
+                logger.info(f"🔔 PushSendLog: duplicate for user={user_id[:8]}... type={push_type} key={event_key}")
+                return True
+            # For other errors, log but allow the send to proceed
+            logger.warning(f"PushSendLog check error: {e}")
+            return False
+
+    # ----------------------------------------
     # PUSH NOTIFICATION DELIVERY
     # ----------------------------------------
     
@@ -415,27 +531,96 @@ class NotificationService:
         body: str,
         deep_link: str,
         notification_type: NotificationType,
-        image_url: Optional[str] = None
+        image_url: Optional[str] = None,
+        metadata: Optional[dict] = None,
+        event_key: Optional[str] = None,
     ) -> bool:
-        """Send push notification via Expo Push API"""
+        """Send push notification via Expo Push API with idempotency check"""
+        logger.info(f"🔔 SEND-PUSH: ENTER type={notification_type.value} user={user_id[:8]}... event_key={event_key}")
+        
+        # Idempotency: skip if this exact event was already pushed to this user
+        if event_key:
+            already_sent = await self._check_and_log_push_send(
+                user_id=user_id,
+                push_type=notification_type.value,
+                event_key=event_key,
+            )
+            if already_sent:
+                logger.info(f"🔔 SEND-PUSH: BLOCKED by idempotency (push_send_log duplicate) type={notification_type.value} user={user_id[:8]}...")
+                return False
+            logger.info(f"🔔 SEND-PUSH: idempotency check passed for type={notification_type.value}")
+
         tokens = await self.get_user_tokens(user_id)
         
+        logger.info(f"🔔 SEND-PUSH: tokens={len(tokens)} for user={user_id[:8]}... type={notification_type.value}")
+        
         if not tokens:
-            logger.debug(f"No push tokens for user {user_id[:8]}...")
+            logger.info(f"🔔 SEND-PUSH: NO TOKENS for user {user_id[:8]}... — push NOT sent for type={notification_type.value}")
             return False
         
-        # Build push message
+        logger.info(f"🔔 SEND-PUSH: Found {len(tokens)} token(s) for user {user_id[:8]}... type={notification_type.value}")
+        
+        # Build base data payload
+        data_payload: Dict[str, Any] = {
+            "notification_id": notification_id,
+            "type": notification_type.value,
+            "deep_link": deep_link,
+        }
+
+        # Enrich engagement pushes (like, comment, follow, mention) with
+        # actor + target info so the mobile client can route properly
+        if notification_type in [NotificationType.LIKE, NotificationType.COMMENT, NotificationType.MENTION, NotificationType.REPLY]:
+            # Extract entity_id from the deep link (format: mood://post/{entity_id})
+            entity_from_link = deep_link.rsplit("/", 1)[-1] if "/" in deep_link else ""
+            data_payload["targetType"] = "post"
+            data_payload["targetId"] = entity_from_link
+
+        # Enrich featured_workout pushes with workout context so the
+        # mobile client can populate the cart directly from the push data
+        if notification_type == NotificationType.FEATURED_WORKOUT and metadata:
+            workout_id = metadata.get("workout_id")
+            data_payload["workoutId"] = workout_id
+            data_payload["workoutTitle"] = metadata.get("workout_name", "")
+            # Fetch the full workout doc to include exercise cart items
+            if workout_id:
+                try:
+                    workout_doc = await self.db.featured_workouts.find_one(
+                        {"_id": ObjectId(workout_id)},
+                        {"_id": 0}
+                    )
+                    if workout_doc and "exercises" in workout_doc:
+                        # Include full exercise data for cart + workout session screens
+                        cart_items = []
+                        for ex in workout_doc["exercises"][:10]:  # cap at 10 for payload size
+                            cart_items.append({
+                                "id": ex.get("exerciseId") or ex.get("id") or ex.get("name", ""),
+                                "name": ex.get("name", ""),
+                                "duration": ex.get("duration", ""),
+                                "description": ex.get("description", ""),
+                                "battlePlan": ex.get("battlePlan", ""),
+                                "imageUrl": ex.get("imageUrl") or ex.get("image_url", ""),
+                                "intensityReason": ex.get("intensityReason", ""),
+                                "equipment": ex.get("equipment", "None"),
+                                "difficulty": ex.get("difficulty", ""),
+                                "workoutType": ex.get("workoutType", ""),
+                                "moodCard": ex.get("moodCard", ""),
+                                "moodTips": ex.get("moodTips", []),
+                            })
+                        data_payload["cartItems"] = cart_items
+                        # Also include workout-level hero image
+                        if workout_doc.get("heroImageUrl"):
+                            data_payload["heroImageUrl"] = workout_doc["heroImageUrl"]
+                except Exception as e:
+                    logger.warning(f"Could not fetch workout exercises for push data: {e}")
+
+        # Build push messages
         messages = []
         for token in tokens:
-            message = {
+            message: Dict[str, Any] = {
                 "to": token,
                 "title": title,
                 "body": body,
-                "data": {
-                    "notification_id": notification_id,
-                    "type": notification_type.value,
-                    "deep_link": deep_link,
-                },
+                "data": data_payload,
                 "sound": "default",
                 "priority": "high",
             }
@@ -526,6 +711,31 @@ class NotificationService:
                 }
             },
             {"$unwind": {"path": "$actor", "preserveNullAndEmptyArrays": True}},
+            # Live lookup: fetch post thumbnail when metadata is missing it
+            {
+                "$lookup": {
+                    "from": "posts",
+                    "let": {
+                        "eid": "$entity_id",
+                        "etype": "$entity_type",
+                        "existing_thumb": "$metadata.post_thumbnail"
+                    },
+                    "pipeline": [
+                        {"$match": {
+                            "$expr": {
+                                "$and": [
+                                    {"$eq": ["$$etype", "post"]},
+                                    {"$in": ["$$existing_thumb", [None, ""]]},
+                                    {"$ne": ["$$eid", None]},
+                                    {"$eq": ["$_id", {"$toObjectId": "$$eid"}]}
+                                ]
+                            }
+                        }},
+                        {"$project": {"cover_urls": 1, "media_urls": 1}}
+                    ],
+                    "as": "_post_lookup"
+                }
+            },
             {
                 "$project": {
                     "id": {"$toString": "$_id"},
@@ -538,6 +748,27 @@ class NotificationService:
                     "entity_type": 1,
                     "created_at": 1,
                     "read_at": 1,
+                    "metadata": 1,
+                    # Prefer metadata thumbnail, fall back to live post lookup
+                    "target_thumbnail_url": {
+                        "$ifNull": [
+                            "$metadata.post_thumbnail",
+                            {"$ifNull": [
+                                "$metadata.post_preview",
+                                {"$let": {
+                                    "vars": {
+                                        "post": {"$arrayElemAt": ["$_post_lookup", 0]}
+                                    },
+                                    "in": {
+                                        "$ifNull": [
+                                            {"$arrayElemAt": ["$$post.cover_urls", 0]},
+                                            {"$arrayElemAt": ["$$post.media_urls", 0]}
+                                        ]
+                                    }
+                                }}
+                            ]}
+                        ]
+                    },
                     "actor": {
                         "id": {"$toString": "$actor._id"},
                         "username": "$actor.username",
@@ -550,6 +781,19 @@ class NotificationService:
         ]
         
         notifications = await self.db.notifications.aggregate(pipeline).to_list(limit)
+        
+        # Backfill metadata in DB for any notifications that needed live lookup (fire-and-forget)
+        for notif in notifications:
+            if notif.get("type") in ["like", "comment", "mention", "reply"] and notif.get("target_thumbnail_url") and not (notif.get("metadata") or {}).get("post_thumbnail"):
+                # Async backfill so next fetch is fast
+                try:
+                    await self.db.notifications.update_one(
+                        {"_id": ObjectId(notif["id"])},
+                        {"$set": {"metadata.post_thumbnail": notif["target_thumbnail_url"]}}
+                    )
+                except Exception:
+                    pass
+        
         return notifications
     
     async def get_unread_count(self, user_id: str) -> int:
@@ -596,6 +840,40 @@ class NotificationService:
         return result.deleted_count > 0
     
     # ----------------------------------------
+    # CLOUDINARY VIDEO THUMBNAIL HELPERS
+    # ----------------------------------------
+    
+    def _is_cloudinary_video(self, url: str) -> bool:
+        """Check if a URL is a Cloudinary video URL"""
+        if not url:
+            return False
+        return 'cloudinary.com' in url and '/video/' in url
+    
+    def _get_cloudinary_video_thumbnail(self, video_url: str) -> str:
+        """
+        Generate a Cloudinary video thumbnail URL from a video URL.
+        Transforms /video/upload/... to /video/upload/so_0,f_jpg,.../
+        This generates a thumbnail from the first frame (so_0 = start offset 0).
+        """
+        if not video_url or 'cloudinary.com' not in video_url:
+            return video_url
+        
+        try:
+            # Insert thumbnail transformation after /upload/
+            # so_0 = start offset 0 (first frame)
+            # f_jpg = output as JPEG
+            # w_400 = width 400px for small thumbnail
+            if '/video/upload/' in video_url:
+                return video_url.replace(
+                    '/video/upload/',
+                    '/video/upload/so_0,f_jpg,w_400/'
+                )
+            return video_url
+        except Exception as e:
+            logger.warning(f"Failed to generate video thumbnail: {e}")
+            return video_url
+    
+    # ----------------------------------------
     # EVENT TRIGGERS (for social actions)
     # ----------------------------------------
     
@@ -629,22 +907,32 @@ class NotificationService:
         post_id: str,
         comment_text: str
     ) -> Optional[str]:
-        """Trigger notification when someone comments on a post"""
+        """Trigger notification when someone comments on a post - IG-style copy"""
+        logger.info(f"TRACE-NOTIF: type=comment entity_id={post_id} actor={commenter_id} trigger_entry=True")
+        
         # Get post and commenter info
         post = await self.db.posts.find_one({"_id": ObjectId(post_id)})
         if not post:
+            logger.warning(f"TRACE-NOTIF: type=comment entity_id={post_id} actor={commenter_id} recipient=? decision=SKIPPED reason=missing_post")
             return None
         
-        post_author_id = post.get("author_id")
-        if not post_author_id or str(post_author_id) == commenter_id:
-            # Don't notify yourself
+        post_author_id = self._resolve_post_author_id(post)
+        
+        if not post_author_id:
+            logger.warning(f"TRACE-NOTIF: type=comment entity_id={post_id} actor={commenter_id} recipient=? decision=SKIPPED reason=missing_recipient keys={[k for k in post.keys() if k != '_id']}")
+            return None
+        
+        if post_author_id == commenter_id:
+            logger.info(f"TRACE-NOTIF: type=comment entity_id={post_id} actor={commenter_id} recipient={post_author_id} decision=SKIPPED reason=self_comment")
             return None
         
         commenter = await self.db.users.find_one({"_id": ObjectId(commenter_id)})
         if not commenter:
+            logger.warning(f"TRACE-NOTIF: type=comment entity_id={post_id} actor={commenter_id} decision=SKIPPED reason=commenter_not_found")
             return None
         
         commenter_name = commenter.get("name") or commenter.get("username", "Someone")
+        commenter_username = commenter.get("username", "Someone")
         avatar = commenter.get("avatar") or commenter.get("avatar_url")
         
         # Truncate comment for body
@@ -653,20 +941,32 @@ class NotificationService:
         # Get post preview image - prefer cover (thumbnail) for faster loading
         media_urls = post.get("media_urls", [])
         cover_urls = post.get("cover_urls", [])
-        post_thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
+        post_thumbnail = _safe_first(cover_urls) or _safe_first(media_urls) or None
         
+        # If it's a video URL, generate Cloudinary video thumbnail
+        if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
+            post_thumbnail = self._get_cloudinary_video_thumbnail(post_thumbnail)
+        
+        logger.info(f"🔔 Comment notification: post_thumbnail={post_thumbnail[:50] if post_thumbnail else 'None'}...")
+        
+        # Detect media_type for the NOTIF-CREATED log line
+        first_url = (_safe_first(media_urls) or "").lower()
+        media_type = "video" if any(ext in first_url for ext in (".mp4", ".mov", ".m3u8", "/video")) else ("image" if first_url else "unknown")
+        
+        # IG-style: "username commented on your photo."
         return await self.create_notification(
             user_id=str(post_author_id),
             notification_type=NotificationType.COMMENT,
             title="New Comment",
-            body=f'{commenter_name}: "{truncated_comment}"',
+            body=f'{commenter_username} commented: "{truncated_comment}"',
             actor_id=commenter_id,
             entity_id=post_id,
             entity_type="post",
             image_url=avatar,
             metadata={
-                "commenter_username": commenter.get("username"),
-                "post_thumbnail": post_thumbnail
+                "commenter_username": commenter_username,
+                "post_thumbnail": post_thumbnail,
+                "media_type": media_type
             }
         )
     
@@ -726,6 +1026,21 @@ class NotificationService:
         # Truncate comment for body
         truncated_comment = comment_text[:50] + "..." if len(comment_text) > 50 else comment_text
         
+        # Get post preview image for the notification thumbnail
+        post = await self.db.posts.find_one({"_id": ObjectId(post_id)})
+        post_thumbnail = None
+        if post:
+            media_urls = post.get("media_urls", [])
+            cover_urls = post.get("cover_urls", [])
+            # Prefer cover (thumbnail) over full media for faster loading
+            post_thumbnail = _safe_first(cover_urls) or _safe_first(media_urls) or None
+            
+            # If it's a video URL, generate Cloudinary video thumbnail
+            if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
+                post_thumbnail = self._get_cloudinary_video_thumbnail(post_thumbnail)
+        
+        logger.info(f"🔔 Mention notification: post_thumbnail={post_thumbnail[:50] if post_thumbnail else 'None'}...")
+        
         return await self.create_notification(
             user_id=mentioned_user_id,
             notification_type=NotificationType.MENTION,
@@ -737,7 +1052,8 @@ class NotificationService:
             image_url=avatar,
             metadata={
                 "mentioner_username": mentioner.get("username"),
-                "comment_preview": truncated_comment
+                "comment_preview": truncated_comment,
+                "post_thumbnail": post_thumbnail
             }
         )
     
@@ -763,6 +1079,19 @@ class NotificationService:
         # Truncate reply for body
         truncated_reply = reply_text[:50] + "..." if len(reply_text) > 50 else reply_text
         
+        # Get post preview image for the notification thumbnail
+        post = await self.db.posts.find_one({"_id": ObjectId(post_id)})
+        post_thumbnail = None
+        if post:
+            media_urls = post.get("media_urls", [])
+            cover_urls = post.get("cover_urls", [])
+            # Prefer cover (thumbnail) over full media for faster loading
+            post_thumbnail = _safe_first(cover_urls) or _safe_first(media_urls) or None
+            
+            # If it's a video URL, generate Cloudinary video thumbnail
+            if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
+                post_thumbnail = self._get_cloudinary_video_thumbnail(post_thumbnail)
+        
         return await self.create_notification(
             user_id=parent_comment_author_id,
             notification_type=NotificationType.REPLY,
@@ -774,7 +1103,8 @@ class NotificationService:
             image_url=avatar,
             metadata={
                 "replier_username": replier.get("username"),
-                "reply_preview": truncated_reply
+                "reply_preview": truncated_reply,
+                "post_thumbnail": post_thumbnail
             }
         )
     
@@ -789,8 +1119,11 @@ class NotificationService:
         BUNDLED ONLY - no single-like spam.
         If >3 likes in 10 min, bundle into one notification.
         """
+        logger.info(f"TRACE-NOTIF: type=like entity_id={post_id} actor={liker_id} recipient={post_author_id} trigger_entry=True")
+        
         # Don't notify yourself
         if liker_id == post_author_id:
+            logger.info(f"TRACE-NOTIF: type=like entity_id={post_id} actor={liker_id} recipient={post_author_id} decision=SKIPPED reason=self_like")
             return None
         
         now = datetime.now(timezone.utc)
@@ -819,7 +1152,22 @@ class NotificationService:
             media_urls = post.get("media_urls", [])
             cover_urls = post.get("cover_urls", [])
             # Prefer cover (thumbnail) over full media for faster loading
-            post_thumbnail = cover_urls[0] if cover_urls else (media_urls[0] if media_urls else None)
+            post_thumbnail = _safe_first(cover_urls) or _safe_first(media_urls) or None
+            
+            # If it's a video URL, generate Cloudinary video thumbnail
+            if post_thumbnail and self._is_cloudinary_video(post_thumbnail):
+                post_thumbnail = self._get_cloudinary_video_thumbnail(post_thumbnail)
+        
+        logger.info(f"🔔 Like notification: post_thumbnail={post_thumbnail[:50] if post_thumbnail else 'None'}...")
+        
+        # Detect media_type for the NOTIF-CREATED log line
+        media_type = "unknown"
+        if post:
+            first_url = (_safe_first(post.get("media_urls")) or "").lower()
+            if any(ext in first_url for ext in (".mp4", ".mov", ".m3u8", "/video")):
+                media_type = "video"
+            elif first_url:
+                media_type = "image"
         
         # Bundle key for grouping
         bundle_key = f"likes_{post_id}_{now.strftime('%Y%m%d%H')}"
@@ -849,45 +1197,69 @@ class NotificationService:
                         }
                     }
                 )
+                logger.info(f"🔔 Like notification: updated bundle, count={like_count}")
                 return str(existing_bundle["_id"])
             else:
                 # Create new bundled notification
                 return await self.create_notification(
                     user_id=post_author_id,
                     notification_type=NotificationType.LIKE,
-                    title="New Likes",
+                    title="New like",
                     body=f"{liker_name} and {recent_likes} others liked your post",
                     actor_id=liker_id,
                     entity_id=post_id,
                     entity_type="post",
                     image_url=avatar,
                     group_key=bundle_key,
-                    metadata={"like_count": recent_likes + 1, "last_liker": liker_name, "post_thumbnail": post_thumbnail},
+                    dedupe_key=f"like:{post_id}:{liker_id}",
+                    metadata={"like_count": recent_likes + 1, "last_liker": liker_name, "post_thumbnail": post_thumbnail, "media_type": media_type},
                     send_push=True
                 )
         else:
-            # Not enough for bundle yet - store but DON'T push (likes only bundled)
+            # Single like — send push immediately (Instagram-style)
+            logger.info(f"🔔 Like notification: sending single-like push for post {post_id[:8]}...")
             return await self.create_notification(
                 user_id=post_author_id,
                 notification_type=NotificationType.LIKE,
-                title="New Like",
+                title="New like",
                 body=f"{liker_name} liked your post",
                 actor_id=liker_id,
                 entity_id=post_id,
                 entity_type="post",
                 image_url=avatar,
                 group_key=bundle_key,
-                metadata={"like_count": 1, "post_thumbnail": post_thumbnail},
-                send_push=False  # Don't push single likes - only bundled
+                dedupe_key=f"like:{post_id}:{liker_id}",
+                metadata={"like_count": 1, "post_thumbnail": post_thumbnail, "media_type": media_type},
+                send_push=True
             )
     
+    async def get_admin_user_id(self) -> Optional[str]:
+        """Get the admin user ID (officialmoodapp) for server-initiated notifications"""
+        admin = await self.db.users.find_one(
+            {"username": "officialmoodapp"},
+            {"_id": 1}
+        )
+        if admin:
+            return str(admin["_id"])
+        # Fallback: try any admin user
+        admin = await self.db.users.find_one(
+            {"is_admin": True},
+            {"_id": 1}
+        )
+        return str(admin["_id"]) if admin else None
+
     async def trigger_workout_reminder(
         self,
         user_id: str,
-        custom_message: Optional[str] = None
+        custom_message: Optional[str] = None,
+        actor_id: Optional[str] = None
     ) -> Optional[str]:
         """Trigger a workout reminder notification with motivational copy"""
         import random
+        
+        # Use provided actor_id or look up admin user
+        if not actor_id:
+            actor_id = await self.get_admin_user_id()
         
         # Pick random copy from library
         copy = custom_message or random.choice(SUGGESTION_COPY_LIBRARY)
@@ -897,6 +1269,8 @@ class NotificationService:
             notification_type=NotificationType.WORKOUT_REMINDER,
             title="Time to Move",
             body=copy,
+            actor_id=actor_id,
+            dedupe_key=f"workout_reminder:{user_id}:{datetime.now(timezone.utc).strftime('%Y%m%d')}",
             metadata={"copy_variant": copy}
         )
     
@@ -905,27 +1279,68 @@ class NotificationService:
         user_id: str,
         workout_id: str,
         workout_name: str,
-        workout_image: Optional[str] = None
+        workout_image: Optional[str] = None,
+        custom_title: Optional[str] = None,
+        custom_body: Optional[str] = None,
+        actor_id: Optional[str] = None
     ) -> Optional[str]:
-        """Trigger notification for a new featured workout drop"""
+        """Trigger notification for a new featured workout drop.
+        
+        If custom_title/custom_body are provided, use them exactly (authored copy).
+        Otherwise, use workout_name as title and random body from copy library.
+        actor_id is the admin who sent the push (shown as sender in notification feed).
+        """
+        # Always ensure actor_id is set for server-initiated pushes
+        if not actor_id:
+            actor_id = await self.get_admin_user_id()
+        
+        deep_link = f"mood://cart?featuredId={workout_id}"
+
+        if custom_title and custom_body:
+            title = custom_title
+            body = custom_body
+        elif custom_title:
+            title = custom_title
+            push_content = build_push_content(notif_type="featured_workout", deep_link=deep_link)
+            body = push_content["body"]
+        elif custom_body:
+            title = workout_name
+            body = custom_body
+        else:
+            # Default: use workout name as title (so banner shows it)
+            title = workout_name
+            push_content = build_push_content(notif_type="featured_workout", deep_link=deep_link)
+            body = push_content["body"]
+        
         return await self.create_notification(
             user_id=user_id,
             notification_type=NotificationType.FEATURED_WORKOUT,
-            title="New Featured Workout",
-            body=f'"{workout_name}" just dropped',
+            title=title,
+            body=body,
+            actor_id=actor_id,
             entity_id=workout_id,
             entity_type="featured_workout",
             image_url=workout_image,
-            metadata={"workout_name": workout_name}
+            dedupe_key=f"featured_workout:{workout_id}:{user_id}",
+            metadata={
+                "workout_name": workout_name,
+                "workout_id": workout_id,
+                "workout_image": workout_image,
+            }
         )
     
     async def trigger_featured_suggestion(
         self,
         user_id: str,
-        custom_copy: Optional[str] = None
+        custom_copy: Optional[str] = None,
+        actor_id: Optional[str] = None
     ) -> Optional[str]:
         """Trigger a featured suggestion push with motivational copy"""
         import random
+        
+        # Always ensure actor_id is set for server-initiated pushes
+        if not actor_id:
+            actor_id = await self.get_admin_user_id()
         
         # Pick random copy from library
         copy = custom_copy or random.choice(SUGGESTION_COPY_LIBRARY)
@@ -935,6 +1350,8 @@ class NotificationService:
             notification_type=NotificationType.FEATURED_SUGGESTION,
             title="MOOD",
             body=copy,
+            actor_id=actor_id,
+            dedupe_key=f"featured_suggestion:{user_id}:{datetime.now(timezone.utc).strftime('%Y%m%d%H')}",
             metadata={"copy_variant": copy}
         )
     
@@ -943,7 +1360,10 @@ class NotificationService:
         workout_id: str,
         workout_name: str,
         workout_image: Optional[str] = None,
-        target_user_ids: Optional[List[str]] = None
+        target_user_ids: Optional[List[str]] = None,
+        custom_title: Optional[str] = None,
+        custom_body: Optional[str] = None,
+        sender_user_id: Optional[str] = None
     ) -> int:
         """
         Admin function: Send featured workout notification to all users
@@ -973,7 +1393,10 @@ class NotificationService:
                 user_id=user_id,
                 workout_id=workout_id,
                 workout_name=workout_name,
-                workout_image=workout_image
+                workout_image=workout_image,
+                custom_title=custom_title,
+                custom_body=custom_body,
+                actor_id=sender_user_id
             )
             if result:
                 count += 1
@@ -984,13 +1407,17 @@ class NotificationService:
     async def send_featured_suggestion_to_all(
         self,
         custom_copy: Optional[str] = None,
-        target_user_ids: Optional[List[str]] = None
+        target_user_ids: Optional[List[str]] = None,
+        sender_user_id: Optional[str] = None
     ) -> int:
         """
         Admin function: Send featured suggestion to all users
         or a specific list of users.
         """
         import random
+        
+        # Resolve admin actor_id for sender attribution
+        actor_id = sender_user_id or await self.get_admin_user_id()
         
         if target_user_ids:
             users = await self.db.users.find(
@@ -1014,7 +1441,8 @@ class NotificationService:
             
             result = await self.trigger_featured_suggestion(
                 user_id=user_id,
-                custom_copy=copy
+                custom_copy=copy,
+                actor_id=actor_id
             )
             if result:
                 count += 1

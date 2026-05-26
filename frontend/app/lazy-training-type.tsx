@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
@@ -18,11 +18,11 @@ import HomeButton from '../components/HomeButton';
 import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
-import { generateLazyCarts } from '../utils/workoutGenerator';
+import { generateLazyCartsWithType } from '../utils/workoutGenerator';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
 
 interface LazyTrainingTypeOption {
   id: string;
@@ -146,6 +146,11 @@ export default function LazyTrainingTypeScreen() {
   };
 
   const handleBuildForMe = () => {
+    // Require training type selection first (similar to muscle gainer)
+    if (!selectedOption) {
+      Alert.alert('Select Training Type', 'Please select a training type first before using Build for Me.', [{ text: 'OK' }]);
+      return;
+    }
     if (isGuest) { setShowGuestPrompt(true); return; }
     if (remainingUses <= 0) { Alert.alert('Daily Limit Reached', 'You can only use Build for Me 3 times per day.', [{ text: 'OK' }]); return; }
     setShowIntensityModal(true);
@@ -153,14 +158,21 @@ export default function LazyTrainingTypeScreen() {
 
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
     setShowIntensityModal(false);
-    const carts = generateLazyCarts(intensity, moodTitle, 'Mixed Lazy');
+    
+    if (!selectedOption) return;
+    
+    // Use the new function with training type
+    const trainingType = selectedOption.id as 'bodyweight' | 'weights';
+    const workoutType = trainingType === 'bodyweight' ? 'Move Your Body' : 'Lift Weights';
+    const carts = generateLazyCartsWithType(intensity, trainingType, moodTitle);
+    
     if (carts.length > 0) {
       if (!isGuest && token) {
         try {
           const response = await fetch(`${API_URL}/api/choose-for-me/generate`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ carts: carts.map(cart => ({ id: cart.id, workouts: cart.workouts.map(w => ({ name: w.name, duration: w.duration, equipment: w.equipment, description: w.description, imageUrl: w.imageUrl })), totalDuration: cart.totalDuration, intensity: cart.intensity, moodCard: moodTitle, workoutType: 'Mixed Lazy' })), moodCard: moodTitle, intensity }),
+            body: JSON.stringify({ carts: carts.map(cart => ({ id: cart.id, workouts: cart.workouts.map(w => ({ name: w.name, duration: w.duration, equipment: w.equipment, description: w.description, imageUrl: w.imageUrl })), totalDuration: cart.totalDuration, intensity: cart.intensity, moodCard: moodTitle, workoutType: workoutType })), moodCard: moodTitle, intensity }),
           });
           if (response.ok) { const data = await response.json(); setRemainingUses(data.remaining_uses); }
           else if (response.status === 429) { Alert.alert('Daily Limit Reached', 'You can only use Build for Me 3 times per day.', [{ text: 'OK' }]); return; }
@@ -237,7 +249,11 @@ export default function LazyTrainingTypeScreen() {
                 />
                 {index === 1 && (
                   <View style={styles.chooseForMeContainer}>
-                    <ChooseForMeButton onPress={handleBuildForMe} />
+                    <ChooseForMeButton 
+                      onPress={handleBuildForMe} 
+                      disabled={!selectedOption}
+                      noAnimation={true}
+                    />
                   </View>
                 )}
               </View>

@@ -16,7 +16,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useNavigation } from '@react-navigation/native';
@@ -27,14 +27,18 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useCart, WorkoutItem } from '../../contexts/CartContext';
 import { useBadges } from '../../contexts/BadgeContext';
 import MediaCarousel from '../../components/MediaCarousel';
+import ErrorBoundary from '../../components/ErrorBoundary';
 import CommentsBottomSheet from '../../components/CommentsBottomSheet';
 import { Analytics, GuestAnalytics } from '../../utils/analytics';
 import { useScreenTime } from '../../hooks/useScreenTime';
 import { PostSkeleton } from '../../components/Skeleton';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import ReportModal from '../../components/ReportModal';
+import { preloadNextItems, prefetchThumbnails } from '../../utils/cloudinaryVideo';
+import { prefetchVideoStart } from '../../utils/mediaPrefetch';
+import LiveFeed from '../../components/LiveFeed';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../../utils/apiConfig';
 import { formatNotificationTime } from '../../utils/notificationUtils';
 
 interface Author {
@@ -148,6 +152,33 @@ interface Notification {
   message: string;
 }
 
+// Pulsing gold dot used inside the "Live" tab label
+const LiveTabPulseDot: React.FC = () => {
+  const opacity = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(opacity, { toValue: 0.3, duration: 800, useNativeDriver: true }),
+        Animated.timing(opacity, { toValue: 1, duration: 800, useNativeDriver: true }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [opacity]);
+  return (
+    <Animated.View
+      style={{
+        width: 6,
+        height: 6,
+        borderRadius: 3,
+        backgroundColor: '#F5C518',
+        opacity,
+      }}
+    />
+  );
+};
+
+
 export default function Explore() {
   // Track screen time
   useScreenTime('Explore');
@@ -165,7 +196,7 @@ export default function Explore() {
   const [hasMore, setHasMore] = useState(true);
   const [showComments, setShowComments] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'forYou' | 'following' | 'notifications'>('forYou');
+  const [activeTab, setActiveTab] = useState<'forYou' | 'live' | 'notifications'>('forYou');
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchUser[]>([]);
@@ -176,13 +207,70 @@ export default function Explore() {
   const router = useRouter();
   const { token, user, isGuest } = useAuth();
   const { addToCart, clearCart } = useCart();
-  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollViewRef = useRef<FlatList>(null);
   const insets = useSafeAreaInsets();
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const postLayoutsRef = useRef<{ [key: string]: { y: number; height: number } }>({});
   const PAGE_SIZE = 20;
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const [guestAction, setGuestAction] = useState('');
+
+  // Track whether this tab is focused — clear visiblePostId when not focused
+  // so no videos or audio play when user is on a different tab
+  const [isTabFocused, setIsTabFocused] = useState(true);
+  
+  useFocusEffect(
+    useCallback(() => {
+      setIsTabFocused(true);
+      return () => {
+        setIsTabFocused(false);
+        setVisiblePostId(null); // Stop all videos when leaving the tab
+      };
+    }, [])
+  );
+
+  // FlatList viewability config for tracking visible posts (Instagram-style)
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50,
+    minimumViewTime: 300,
+  }).current;
+
+  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    if (viewableItems.length > 0) {
+      const topItem = viewableItems[0]?.item;
+      if (topItem?.id) {
+        setVisiblePostId(topItem.id);
+      }
+    } else {
+      setVisiblePostId(null);
+    }
+  }).current;
+
+  // Preload video thumbnails + initial segments for upcoming posts
+  useEffect(() => {
+    if (!visiblePostId || posts.length === 0) return;
+    const currentIndex = posts.findIndex(p => p.id === visiblePostId);
+    if (currentIndex === -1) return;
+
+    // Look ahead 3 items for video posts — prefetch thumbnails + HLS manifests + MP4 start
+    const upcoming = posts.slice(currentIndex + 1, currentIndex + 4);
+    const videoItems = upcoming
+      .filter(p => p.media_urls?.some(url => /\.(mp4|mov|avi|webm|mkv|m4v|m3u8)/i.test(url)))
+      .map(p => ({
+        id: p.id,
+        video_url: p.media_urls.find(url => /\.(mp4|mov|avi|webm|mkv|m4v|m3u8)/i.test(url)) || p.media_urls[0],
+        thumbnail_url: p.cover_urls?.[0] || null,
+      }));
+
+    if (videoItems.length > 0) {
+      // Prefetch thumbnails for all upcoming video items
+      prefetchThumbnails(videoItems).catch(() => {});
+      // Aggressive: prefetch initial video segment for the very next video
+      if (videoItems[0]?.video_url) {
+        prefetchVideoStart(videoItems[0].video_url);
+      }
+    }
+  }, [visiblePostId, posts]);
   
   // Handle tab navigation from query parameter
   useEffect(() => {
@@ -236,6 +324,11 @@ export default function Explore() {
 
   useEffect(() => {
     // Fetch posts for both authenticated users and guests
+    // Skip post fetch on Live tab (LiveFeed manages its own data)
+    if (activeTab === 'live') {
+      setLoading(false);
+      return;
+    }
     fetchPosts();
   }, [token, activeTab, isGuest]);
 
@@ -253,13 +346,13 @@ export default function Explore() {
       if (activeTab === 'notifications') {
         setActiveTab('forYou');
         if (scrollViewRef.current) {
-          scrollViewRef.current.scrollTo({ y: 0, animated: true });
+          scrollViewRef.current.scrollToOffset({ offset: 0, animated: true });
         }
       }
       // Double tap detected (within 300ms) - scroll to top
       else if (timeSinceLastTap < 300) {
         if (scrollViewRef.current) {
-          scrollViewRef.current.scrollTo({ y: 0, animated: true });
+          scrollViewRef.current.scrollToOffset({ offset: 0, animated: true });
         }
         if (activeTab !== 'forYou') {
           setActiveTab('forYou');
@@ -293,9 +386,7 @@ export default function Explore() {
         // Guests only see the public "For You" feed
         endpoint = `${API_URL}/api/posts/public?limit=${limit}&skip=${skip}`;
       } else {
-        endpoint = activeTab === 'following' 
-          ? `${API_URL}/api/posts/following?limit=${limit}&skip=${skip}` 
-          : `${API_URL}/api/posts?limit=${limit}&skip=${skip}`;
+        endpoint = `${API_URL}/api/posts?limit=${limit}&skip=${skip}`;
       }
       
       console.log('Fetching posts from:', endpoint);
@@ -411,8 +502,15 @@ export default function Explore() {
         const data = await response.json();
         const rawNotifications = data.notifications || [];
         
-        // Map backend notification format to frontend format
-        const mappedNotifications = rawNotifications.map((n: any) => ({
+        console.log(`🔔 NOTIF-DIAG: raw notifications count = ${rawNotifications.length}`);
+        if (rawNotifications.length > 0) {
+          console.log('🔔 NOTIF-DIAG: raw sample[0]:', JSON.stringify(rawNotifications[0]).substring(0, 300));
+        }
+        
+        // Map backend notification format to frontend format, excluding DMs/messages
+        const mappedNotifications = rawNotifications
+          .filter((n: any) => n.type !== 'message' && n.type !== 'dm' && n.type !== 'chat')
+          .map((n: any) => ({
           id: n.id,
           type: n.type,
           user: {
@@ -422,11 +520,33 @@ export default function Explore() {
             avatar: n.actor?.avatar || null,
           },
           post_id: n.entity_type === 'post' ? n.entity_id : undefined,
-          post_preview: n.image_url || null,
+          post_preview: n.target_thumbnail_url || n.metadata?.post_thumbnail || n.image_url || null,
           comment_text: n.body,
           created_at: n.created_at,
-          message: n.body || n.title || '',
+          // Strip actor name/username from body to avoid duplication with @username prefix
+          message: (() => {
+            const raw = n.body || n.title || '';
+            const actorName = n.actor?.name || '';
+            const actorUsername = n.actor?.username || '';
+            let cleaned = raw;
+            // Remove leading "Name " or "username " from body
+            if (actorName && cleaned.startsWith(actorName + ' ')) {
+              cleaned = cleaned.slice(actorName.length + 1);
+            } else if (actorName && cleaned.startsWith(actorName + ': ')) {
+              cleaned = cleaned.slice(actorName.length + 2);
+            } else if (actorUsername && cleaned.startsWith(actorUsername + ' ')) {
+              cleaned = cleaned.slice(actorUsername.length + 1);
+            } else if (actorUsername && cleaned.startsWith('@' + actorUsername + ' ')) {
+              cleaned = cleaned.slice(actorUsername.length + 2);
+            }
+            return cleaned;
+          })(),
         }));
+        
+        console.log(`🔔 NOTIF-DIAG: mapped notifications count = ${mappedNotifications.length}`);
+        if (mappedNotifications.length > 0) {
+          console.log('🔔 NOTIF-DIAG: mapped sample[0]:', JSON.stringify(mappedNotifications[0]).substring(0, 300));
+        }
         
         setNotifications(mappedNotifications);
       }
@@ -439,20 +559,33 @@ export default function Explore() {
   };
 
   // Fetch notifications when tab changes to notifications
-  // This calls markAllNotificationsRead on server to clear badge permanently
+  // Only mark as read AFTER successful fetch, not before
   useEffect(() => {
     if (activeTab === 'notifications' && !isGuest && token) {
-      // Mark all as read on SERVER (authoritative)
-      markAllNotificationsRead();
-      // Then fetch notifications for display
-      fetchNotifications();
+      // Fetch first, then mark as read after a short delay
+      fetchNotifications().then(() => {
+        // Mark as read after user has seen the list
+        setTimeout(() => {
+          markAllNotificationsRead();
+        }, 1500);
+      });
     }
-  }, [activeTab, token, isGuest, markAllNotificationsRead]);
+  }, [activeTab, token, isGuest]);
 
   const onRefreshNotifications = () => {
     setNotificationsRefreshing(true);
     fetchNotifications();
   };
+
+  // Refetch notifications on screen focus when on notifications tab
+  useFocusEffect(
+    useCallback(() => {
+      if (activeTab === 'notifications' && !isGuest && token) {
+        console.log('🔔 NOTIF-DIAG: screen focused, refetching notifications');
+        fetchNotifications();
+      }
+    }, [activeTab, isGuest, token])
+  );
 
   // Format time ago for notifications - use shared utility
   const formatTimeAgo = (dateString: string) => {
@@ -1099,6 +1232,7 @@ export default function Explore() {
         <TouchableOpacity
           style={[styles.feedTab, activeTab === 'forYou' && styles.feedTabActive]}
           onPress={() => setActiveTab('forYou')}
+          data-testid="feed-tab-foryou"
         >
           <Text style={[
             styles.feedTabText,
@@ -1108,350 +1242,347 @@ export default function Explore() {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.feedTab, activeTab === 'following' && styles.feedTabActive]}
-          onPress={() => setActiveTab('following')}
+          style={[styles.feedTab, activeTab === 'live' && styles.feedTabActive]}
+          onPress={() => setActiveTab('live')}
+          data-testid="feed-tab-live"
         >
-          <Text style={[
-            styles.feedTabText,
-            activeTab === 'following' && styles.feedTabTextActive
-          ]}>
-            Following
-          </Text>
+          <View style={styles.liveTabInner}>
+            <Text style={[
+              styles.feedTabText,
+              activeTab === 'live' && styles.feedTabTextActive,
+            ]}>
+              Live
+            </Text>
+            <View style={styles.liveTabDotWrap}>
+              <LiveTabPulseDot />
+            </View>
+          </View>
         </TouchableOpacity>
       </View>}
 
-      {!showSearch && activeTab !== 'notifications' && <ScrollView
-        ref={scrollViewRef}
-        style={styles.feed}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#FFD700" />
-        }
-        onScroll={({ nativeEvent }) => {
-          const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
-          const paddingToBottom = 100;
-          if (layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
-            if (!loadingMore && hasMore) {
-              fetchPosts(true);
+      {/* Live tab content — renders the new real-time activity feed */}
+      {!showSearch && activeTab === 'live' && (
+        <LiveFeed token={token} />
+      )}
+
+      {!showSearch && activeTab !== 'notifications' && activeTab !== 'live' && (
+        posts.length === 0 ? (
+          <ScrollView
+            style={styles.feed}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#FFD700" />
             }
-          }
-          
-          // Determine which post is visible
-          const scrollY = nativeEvent.contentOffset.y;
-          const viewportCenter = scrollY + (layoutMeasurement.height / 2);
-          
-          // Find the post that's most visible
-          for (const postId of Object.keys(postLayoutsRef.current)) {
-            const layout = postLayoutsRef.current[postId];
-            if (layout && viewportCenter >= layout.y && viewportCenter <= layout.y + layout.height) {
-              if (visiblePostId !== postId) {
-                setVisiblePostId(postId);
-              }
-              break;
-            }
-          }
-        }}
-        scrollEventThrottle={100}
-      >
-        {posts.length === 0 ? (
-          <View style={styles.emptyState}>
-            <Ionicons name="fitness" size={64} color="#666" />
-            <Text style={styles.emptyTitle}>No posts yet</Text>
-            <Text style={styles.emptySubtitle}>
-              {activeTab === 'following' 
-                ? 'Follow users to see their posts here'
-                : 'Be the first to share your fitness journey!'}
-            </Text>
-          </View>
+          >
+            <View style={styles.emptyState}>
+              <Ionicons name="fitness" size={64} color="#666" />
+              <Text style={styles.emptyTitle}>No posts yet</Text>
+              <Text style={styles.emptySubtitle}>
+                Be the first to share your fitness journey!
+              </Text>
+            </View>
+          </ScrollView>
         ) : (
-          posts.map((post) => {
-            const likeScale = likeAnimations[post.id]
-              ? likeAnimations[post.id].interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0, 1],
-                })
-              : new Animated.Value(0);
-
-            return (
-              <View 
-                key={post.id} 
-                style={styles.postCard}
-                onLayout={(event) => {
-                  const { y, height } = event.nativeEvent.layout;
-                  postLayoutsRef.current[post.id] = { y, height };
-                }}
-              >
-                {/* Post Header */}
-                <View style={styles.postHeader}>
-                  <TouchableOpacity
-                    style={styles.authorInfo}
-                    onPress={() => handleProfile(post.author.id)}
-                  >
-                    {post.author.avatar ? (
-                      <Image 
-                        source={{ 
-                          uri: post.author.avatar.startsWith('http') 
-                            ? post.author.avatar 
-                            : `${API_URL}${post.author.avatar}` 
-                        }} 
-                        style={styles.avatar}
-                        contentFit="cover"
-                        transition={100}
-                        cachePolicy="memory-disk"
-                      />
-                    ) : (
-                      <View style={[styles.avatar, styles.avatarPlaceholder]}>
-                        <Ionicons name="person" size={20} color="#666" />
-                      </View>
-                    )}
-                    <View>
-                      <Text style={styles.authorName}>{post.author.name || post.author.username}</Text>
-                      <Text style={styles.authorUsername}>@{post.author.username}</Text>
-                    </View>
-                  </TouchableOpacity>
-                  {/* 3-dot menu for post options */}
-                  <TouchableOpacity
-                    style={styles.postMenuButton}
-                    onPress={() => {
-                      setSelectedMenuPost(post);
-                      setShowPostMenu(true);
-                    }}
-                  >
-                    <Ionicons name="ellipsis-horizontal" size={20} color="#888" />
-                  </TouchableOpacity>
-                </View>
-
-                {/* Post Media (Images and Videos) */}
-                {post.media_urls.length > 0 && (
-                  <View>
-                    <MediaCarousel 
-                      media={post.media_urls.map(url => {
-                        // If URL doesn't start with http/https, prepend backend URL
-                        if (!url.startsWith('http')) {
-                          return url.startsWith('/') ? `${API_URL}${url}` : `${API_URL}/api/uploads/${url}`;
-                        }
-                        return url;
-                      })}
-                      isPostVisible={visiblePostId === post.id}
-                      coverUrls={post.cover_urls}
-                      onIndexChange={(index) => {
-                        setCarouselIndexes(prev => ({ ...prev, [post.id]: index }));
-                        
-                        // Trigger animation when swiping to the last slide (workout completion card)
-                        if (post.workout_data && 
-                            post.workout_data.workouts && 
-                            post.workout_data.workouts.length > 0 && 
-                            index === post.media_urls.length - 1) {
-                          // Create animation if it doesn't exist
-                          if (!tryWorkoutAnimations[post.id]) {
-                            tryWorkoutAnimations[post.id] = new Animated.Value(0);
-                          }
-                          // Reset and play animation
-                          tryWorkoutAnimations[post.id].setValue(0);
-                          Animated.spring(tryWorkoutAnimations[post.id], {
-                            toValue: 1,
-                            useNativeDriver: true,
-                            tension: 50,
-                            friction: 7,
-                          }).start();
-                        }
-                      }}
-                    />
-                    
-                    {/* Try This Workout Button - Only show on workout completion card (last slide) */}
-                    {post.workout_data && 
-                     post.workout_data.workouts && 
-                     post.workout_data.workouts.length > 0 && 
-                     (carouselIndexes[post.id] ?? 0) === post.media_urls.length - 1 && (
-                      <Animated.View
-                        style={[
-                          styles.tryWorkoutButtonContainer,
-                          {
-                            opacity: tryWorkoutAnimations[post.id] || 1,
-                            transform: [
-                              {
-                                scale: tryWorkoutAnimations[post.id] 
-                                  ? tryWorkoutAnimations[post.id].interpolate({
-                                      inputRange: [0, 0.5, 1],
-                                      outputRange: [0.8, 1.05, 1],
-                                    })
-                                  : 1,
-                              },
-                              {
-                                translateX: tryWorkoutAnimations[post.id]
-                                  ? tryWorkoutAnimations[post.id].interpolate({
-                                      inputRange: [0, 1],
-                                      outputRange: [20, 0],
-                                    })
-                                  : 0,
-                              },
-                            ],
-                          },
-                        ]}
-                      >
-                        <TouchableOpacity 
-                          style={styles.tryWorkoutButton}
-                          onPress={() => handleReplicateWorkout(post)}
-                          activeOpacity={0.8}
-                        >
-                          {/* Shimmer overlay */}
-                          <Animated.View
-                            style={[
-                              styles.shimmerOverlay,
-                              {
-                                transform: [
-                                  {
-                                    translateX: shimmerAnim.interpolate({
-                                      inputRange: [0, 1],
-                                      outputRange: [-150, 150],
-                                    }),
-                                  },
-                                ],
-                              },
-                            ]}
-                          >
-                            <LinearGradient
-                              colors={[
-                                'transparent',
-                                'rgba(255, 215, 0, 0.15)',
-                                'rgba(255, 255, 255, 0.25)',
-                                'rgba(255, 215, 0, 0.15)',
-                                'transparent',
-                              ]}
-                              start={{ x: 0, y: 0.5 }}
-                              end={{ x: 1, y: 0.5 }}
-                              style={styles.shimmerGradient}
-                            />
-                          </Animated.View>
-                          <Ionicons name="chevron-forward" size={14} color="#FFD700" />
-                          <Text style={styles.tryWorkoutButtonText}>Try this workout</Text>
-                        </TouchableOpacity>
-                      </Animated.View>
-                    )}
-                    
-                    {likeAnimations[post.id] && (
-                      <Animated.View
-                        style={[
-                          styles.likeAnimationContainer,
-                          {
-                            opacity: likeScale,
-                            transform: [
-                              {
-                                scale: likeScale.interpolate({
-                                  inputRange: [0, 1],
-                                  outputRange: [0, 1.5],
-                                }),
-                              },
-                            ],
-                          },
-                        ]}
-                        pointerEvents="none"
-                      >
-                        <Ionicons name="heart" size={80} color="#FFD700" />
-                      </Animated.View>
-                    )}
+          <FlatList
+            ref={scrollViewRef}
+            data={posts}
+            keyExtractor={(item) => item.id}
+            style={styles.feed}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#FFD700" />
+            }
+            onEndReached={() => {
+              if (!loadingMore && hasMore) {
+                fetchPosts(true);
+              }
+            }}
+            onEndReachedThreshold={0.5}
+            viewabilityConfig={viewabilityConfig}
+            onViewableItemsChanged={onViewableItemsChanged}
+            removeClippedSubviews={true}
+            windowSize={5}
+            maxToRenderPerBatch={3}
+            initialNumToRender={3}
+            ListFooterComponent={() => (
+              <>
+                {loadingMore && (
+                  <View style={styles.loadingMore}>
+                    <ActivityIndicator size="small" color="#FFD700" />
+                    <Text style={styles.loadingMoreText}>Loading more posts...</Text>
                   </View>
                 )}
+                {!hasMore && posts.length > 0 && (
+                  <View style={styles.endOfPosts}>
+                    <Text style={styles.endOfPostsText}>You've reached the end!</Text>
+                  </View>
+                )}
+              </>
+            )}
+            renderItem={({ item: post }) => {
+              const likeScale = likeAnimations[post.id]
+                ? likeAnimations[post.id].interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 1],
+                  })
+                : new Animated.Value(0);
 
-                {/* Post Actions */}
-                <View style={styles.postActions}>
-                  <View style={styles.leftActions}>
+              return (
+                <View style={styles.postCard}>
+                  {/* Post Header */}
+                  <View style={styles.postHeader}>
                     <TouchableOpacity
+                      style={styles.authorInfo}
+                      onPress={() => handleProfile(post.author.id)}
+                    >
+                      {post.author.avatar ? (
+                        <Image 
+                          source={{ 
+                            uri: post.author.avatar.startsWith('http') 
+                              ? post.author.avatar 
+                              : `${API_URL}${post.author.avatar}` 
+                          }} 
+                          style={styles.avatar}
+                          contentFit="cover"
+                          transition={100}
+                          cachePolicy="memory-disk"
+                        />
+                      ) : (
+                        <View style={[styles.avatar, styles.avatarPlaceholder]}>
+                          <Ionicons name="person" size={20} color="#666" />
+                        </View>
+                      )}
+                      <View>
+                        <Text style={styles.authorName}>{post.author.name || post.author.username}</Text>
+                        <Text style={styles.authorUsername}>@{post.author.username}</Text>
+                      </View>
+                    </TouchableOpacity>
+                    {/* 3-dot menu for post options */}
+                    <TouchableOpacity
+                      style={styles.postMenuButton}
+                      onPress={() => {
+                        setSelectedMenuPost(post);
+                        setShowPostMenu(true);
+                      }}
+                    >
+                      <Ionicons name="ellipsis-horizontal" size={20} color="#888" />
+                    </TouchableOpacity>
+                  </View>
+
+                  {/* Post Media (Images and Videos) */}
+                  {post.media_urls.length > 0 && (
+                    <View>
+                      <ErrorBoundary>
+                        <MediaCarousel 
+                          media={post.media_urls.map(url => {
+                            if (!url.startsWith('http')) {
+                              return url.startsWith('/') ? `${API_URL}${url}` : `${API_URL}/api/uploads/${url}`;
+                            }
+                            return url;
+                          })}
+                          postId={post.id}
+                          isPostVisible={visiblePostId === post.id}
+                          coverUrls={post.cover_urls}
+                          onIndexChange={(index) => {
+                            setCarouselIndexes(prev => ({ ...prev, [post.id]: index }));
+                            
+                            if (post.workout_data && 
+                                post.workout_data.workouts && 
+                                post.workout_data.workouts.length > 0 && 
+                                index === post.media_urls.length - 1) {
+                              if (!tryWorkoutAnimations[post.id]) {
+                                tryWorkoutAnimations[post.id] = new Animated.Value(0);
+                              }
+                              tryWorkoutAnimations[post.id].setValue(0);
+                              Animated.spring(tryWorkoutAnimations[post.id], {
+                                toValue: 1,
+                                useNativeDriver: true,
+                                tension: 50,
+                                friction: 7,
+                              }).start();
+                            }
+                          }}
+                        />
+                      </ErrorBoundary>
+                      
+                      {/* Try This Workout Button */}
+                      {post.workout_data && 
+                       post.workout_data.workouts && 
+                       post.workout_data.workouts.length > 0 && 
+                       (carouselIndexes[post.id] ?? 0) === post.media_urls.length - 1 && (
+                        <Animated.View
+                          style={[
+                            styles.tryWorkoutButtonContainer,
+                            {
+                              opacity: tryWorkoutAnimations[post.id] || 1,
+                              transform: [
+                                {
+                                  scale: tryWorkoutAnimations[post.id] 
+                                    ? tryWorkoutAnimations[post.id].interpolate({
+                                        inputRange: [0, 0.5, 1],
+                                        outputRange: [0.8, 1.05, 1],
+                                      })
+                                    : 1,
+                                },
+                                {
+                                  translateX: tryWorkoutAnimations[post.id]
+                                    ? tryWorkoutAnimations[post.id].interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [20, 0],
+                                      })
+                                    : 0,
+                                },
+                              ],
+                            },
+                          ]}
+                        >
+                          <TouchableOpacity 
+                            style={styles.tryWorkoutButton}
+                            onPress={() => handleReplicateWorkout(post)}
+                            activeOpacity={0.8}
+                          >
+                            <Animated.View
+                              style={[
+                                styles.shimmerOverlay,
+                                {
+                                  transform: [
+                                    {
+                                      translateX: shimmerAnim.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [-150, 150],
+                                      }),
+                                    },
+                                  ],
+                                },
+                              ]}
+                            >
+                              <LinearGradient
+                                colors={[
+                                  'transparent',
+                                  'rgba(255, 215, 0, 0.15)',
+                                  'rgba(255, 255, 255, 0.25)',
+                                  'rgba(255, 215, 0, 0.15)',
+                                  'transparent',
+                                ]}
+                                start={{ x: 0, y: 0.5 }}
+                                end={{ x: 1, y: 0.5 }}
+                                style={styles.shimmerGradient}
+                              />
+                            </Animated.View>
+                            <Ionicons name="chevron-forward" size={14} color="#FFD700" />
+                            <Text style={styles.tryWorkoutButtonText}>Try this workout</Text>
+                          </TouchableOpacity>
+                        </Animated.View>
+                      )}
+                      
+                      {likeAnimations[post.id] && (
+                        <Animated.View
+                          style={[
+                            styles.likeAnimationContainer,
+                            {
+                              opacity: likeScale,
+                              transform: [
+                                {
+                                  scale: likeScale.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [0, 1.5],
+                                  }),
+                                },
+                              ],
+                            },
+                          ]}
+                          pointerEvents="none"
+                        >
+                          <Ionicons name="heart" size={80} color="#FFD700" />
+                        </Animated.View>
+                      )}
+                    </View>
+                  )}
+
+                  {/* Post Actions */}
+                  <View style={styles.postActions}>
+                    <View style={styles.leftActions}>
+                      <TouchableOpacity
+                        style={styles.actionButton}
+                        onPress={() => handleLike(post.id)}
+                      >
+                        <View style={styles.socialIconContainer}>
+                          <Ionicons
+                            name={post.is_liked ? 'heart' : 'heart-outline'}
+                            size={22}
+                            color={post.is_liked ? '#FF6B6B' : 'rgba(255,255,255,0.7)'}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.actionButton}
+                        onPress={() => handleComments(post.id)}
+                      >
+                        <View style={styles.socialIconContainer}>
+                          <Ionicons name="chatbubble-outline" size={20} color="rgba(255,255,255,0.7)" />
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity 
                       style={styles.actionButton}
-                      onPress={() => handleLike(post.id)}
+                      onPress={() => handleSave(post.id)}
                     >
                       <View style={styles.socialIconContainer}>
-                        <Ionicons
-                          name={post.is_liked ? 'heart' : 'heart-outline'}
-                          size={22}
-                          color={post.is_liked ? '#FF6B6B' : 'rgba(255,255,255,0.7)'}
+                        <Ionicons 
+                          name={post.is_saved ? 'bookmark' : 'bookmark-outline'} 
+                          size={20} 
+                          color={post.is_saved ? '#FFD700' : 'rgba(255,255,255,0.7)'} 
                         />
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.actionButton}
-                      onPress={() => handleComments(post.id)}
-                    >
-                      <View style={styles.socialIconContainer}>
-                        <Ionicons name="chatbubble-outline" size={20} color="rgba(255,255,255,0.7)" />
-                      </View>
-                    </TouchableOpacity>
                   </View>
-                  <TouchableOpacity 
-                    style={styles.actionButton}
-                    onPress={() => handleSave(post.id)}
-                  >
-                    <View style={styles.socialIconContainer}>
-                      <Ionicons 
-                        name={post.is_saved ? 'bookmark' : 'bookmark-outline'} 
-                        size={20} 
-                        color={post.is_saved ? '#FFD700' : 'rgba(255,255,255,0.7)'} 
-                      />
-                    </View>
-                  </TouchableOpacity>
-                </View>
 
-                {/* Likes Count */}
-                <View style={styles.likesSection}>
-                  <Text style={styles.likesText}>
-                    {post.likes_count} {post.likes_count === 1 ? 'like' : 'likes'}
-                  </Text>
-                </View>
-
-                {/* Caption */}
-                {post.caption && (
-                  <View style={styles.captionSection}>
-                    <Text style={styles.caption}>
-                      <Text style={styles.captionUsername}>@{post.author.username} </Text>
-                      {post.caption}
+                  {/* Likes Count */}
+                  <View style={styles.likesSection}>
+                    <Text style={styles.likesText}>
+                      {post.likes_count} {post.likes_count === 1 ? 'like' : 'likes'}
                     </Text>
                   </View>
-                )}
 
-                {/* Comments Preview */}
-                {post.first_comment && (
-                  <View style={styles.firstCommentContainer}>
-                    <Text style={styles.firstCommentText} numberOfLines={2}>
-                      <Text style={styles.firstCommentUsername}>
-                        {post.first_comment.author.username}
+                  {/* Caption */}
+                  {post.caption && (
+                    <View style={styles.captionSection}>
+                      <Text style={styles.caption}>
+                        <Text style={styles.captionUsername}>@{post.author.username} </Text>
+                        {post.caption}
                       </Text>
-                      {'  '}{post.first_comment.text}
-                    </Text>
-                  </View>
-                )}
-                <TouchableOpacity onPress={() => handleComments(post.id)}>
-                  <Text style={styles.viewComments}>
-                    {post.comments_count > 0 
-                      ? `View all ${post.comments_count} ${post.comments_count === 1 ? 'comment' : 'comments'}`
-                      : 'Add a comment...'
-                    }
-                  </Text>
-                </TouchableOpacity>
+                    </View>
+                  )}
 
-                {/* Timestamp */}
-                <Text style={styles.timestamp}>
-                  {new Date(post.created_at).toLocaleDateString()}
-                </Text>
-              </View>
-            );
-          })
-        )}
-        
-        {/* Loading more indicator */}
-        {loadingMore && (
-          <View style={styles.loadingMore}>
-            <ActivityIndicator size="small" color="#FFD700" />
-            <Text style={styles.loadingMoreText}>Loading more posts...</Text>
-          </View>
-        )}
-        
-        {/* End of posts indicator */}
-        {!hasMore && posts.length > 0 && (
-          <View style={styles.endOfPosts}>
-            <Text style={styles.endOfPostsText}>You've reached the end!</Text>
-          </View>
-        )}
-      </ScrollView>}
+                  {/* Comments Preview */}
+                  {post.first_comment && (
+                    <View style={styles.firstCommentContainer}>
+                      <Text style={styles.firstCommentText} numberOfLines={2}>
+                        <Text style={styles.firstCommentUsername}>
+                          {post.first_comment.author.username}
+                        </Text>
+                        {'  '}{post.first_comment.text}
+                      </Text>
+                    </View>
+                  )}
+                  <TouchableOpacity onPress={() => handleComments(post.id)}>
+                    <Text style={styles.viewComments}>
+                      {post.comments_count > 0 
+                        ? `View all ${post.comments_count} ${post.comments_count === 1 ? 'comment' : 'comments'}`
+                        : 'Add a comment...'
+                      }
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/* Timestamp */}
+                  <Text style={styles.timestamp}>
+                    {new Date(post.created_at).toLocaleDateString()}
+                  </Text>
+                </View>
+              );
+            }}
+          />
+        )
+      )}
 
       {/* Notifications Tab Content */}
       {activeTab === 'notifications' && !showSearch && (
@@ -2108,15 +2239,22 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   feedTabActive: {
-    borderBottomColor: '#FFD700',
+    borderBottomColor: '#F5C518',
   },
   feedTabText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#666',
+    color: '#6B6B6B',
   },
   feedTabTextActive: {
-    color: '#FFD700',
+    color: '#FFFFFF',
+  },
+  liveTabInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  liveTabDotWrap: {
+    marginLeft: 6,
   },
   searchContainer: {
     paddingHorizontal: 16,

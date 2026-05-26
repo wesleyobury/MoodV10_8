@@ -4,6 +4,9 @@ import Constants from 'expo-constants';
 import { trackEvent, aliasGuestToUser, GuestAnalytics } from '../utils/analytics';
 import TermsAcceptanceModal from '../components/TermsAcceptanceModal';
 import { resetNotificationSession } from '../utils/notificationUtils';
+import { API_URL, validateApiConfig } from '../utils/apiConfig';
+import { apiFetch } from '../utils/api';
+import { secureStorage, AUTH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY, AUTH_TOKEN_LAST_VALIDATED_KEY } from '../utils/secureStorage';
 
 // Terms version must match backend CURRENT_TERMS_VERSION
 // Update this when terms change to force re-acceptance for all users
@@ -23,6 +26,26 @@ interface User {
   terms_accepted_at?: string | null;
   terms_accepted_version?: string | null;
   current_terms_version?: string; // From backend - what version is required
+  tips_state?: {
+    mood_scroll?: 'unseen' | 'completed' | 'dismissed';
+    form_videos?: 'unseen' | 'completed' | 'dismissed' | 'never';
+    completion_share?: 'unseen' | 'completed' | 'dismissed' | 'never';
+  };
+  // Phase D — Paid Launch Founding Members (Part 9). Hydrated from
+  // /api/auth/me. The frontend reads these to short-circuit paywall gates
+  // and to show the one-time celebration modal exactly once.
+  founding_member?: boolean;
+  founding_member_at?: string | null;
+  founding_member_modal_seen?: boolean;
+  // Phase C — StoreKit receipt status mirror. /api/auth/me reflects the
+  // persisted subscription doc (set by /subscription/validate and the
+  // Apple S2S webhook). Used by SubscriptionContext to rehydrate the
+  // entitlement on every app launch (handles the reinstall edge case
+  // where AsyncStorage is wiped but the Apple receipt is still valid).
+  subscription_status?: 'active' | 'in_trial' | 'lapsed' | null;
+  subscription_plan?: 'annual' | 'monthly' | null;
+  subscription_product_id?: string | null;
+  subscription_expiration_date?: string | null;
 }
 
 interface AuthContextType {
@@ -45,8 +68,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Prioritize process.env for development/preview environments
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+// API_URL is now imported from utils/apiConfig.ts with production fallback
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -76,7 +98,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       try {
         console.log('🔐 Initializing auth...');
-        console.log('API_URL:', API_URL);
+        
+        // Validate API configuration and log for debugging
+        await validateApiConfig();
         
         // Safety timeout - ensure we never hang
         const timeoutPromise = new Promise<'timeout'>((resolve) => {
@@ -96,7 +120,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
         
         // Try to get stored token first (fast local check)
-        const storedToken = await AsyncStorage.getItem('auth_token');
+        // SecureStore is the primary source; migrate from AsyncStorage if needed.
+        const storedToken = await secureStorage.migrate(AUTH_TOKEN_KEY);
         if (storedToken) {
           console.log('Found stored token, validating with timeout...');
           
@@ -127,51 +152,63 @@ export function AuthProvider({ children }: AuthProviderProps) {
             
             if (userResp.ok) {
               const userData = await userResp.json();
-              // Check if it's the correct demo user, if not clear and re-login
-              if (userData.username === 'Ogeeezzbury') {
-                console.log('Old demo user detected, clearing and re-logging...');
-                await AsyncStorage.removeItem('auth_token');
-                // Continue to auto-login below
-              } else {
-                setToken(storedToken);
-                setUser(userData);
-                console.log('✅ Restored session for:', userData.username);
-                
-                // Check if user needs to accept current terms version (show modal after login)
-                // Show modal if: no terms accepted OR version doesn't match current version
-                const needsTermsAcceptance = !userData.terms_accepted_at || 
-                  userData.terms_accepted_version !== CURRENT_TERMS_VERSION;
-                
-                if (needsTermsAcceptance) {
-                  console.log('⚠️ User has not accepted current terms version, showing modal...');
-                  console.log('  User version:', userData.terms_accepted_version);
-                  console.log('  Current version:', CURRENT_TERMS_VERSION);
-                  setShowTermsModal(true);
-                }
-                
-                // Track app session start on successful restore (non-blocking)
-                trackEvent(storedToken, 'app_session_start', {
-                  restored_session: true,
-                }).catch(() => {}); // Ignore tracking errors
-                
-                setIsLoading(false);
-                if (timeoutId) clearTimeout(timeoutId);
-                return;
+              setToken(storedToken);
+              setUser(userData);
+              // Mark token as freshly validated
+              secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, new Date().toISOString()).catch(() => {});
+              console.log('✅ Restored session for:', userData.username);
+
+              // Check if user needs to accept current terms version (show modal after login)
+              // Show modal if: no terms accepted OR version doesn't match current version
+              const needsTermsAcceptance = !userData.terms_accepted_at ||
+                userData.terms_accepted_version !== CURRENT_TERMS_VERSION;
+
+              if (needsTermsAcceptance) {
+                console.log('⚠️ User has not accepted current terms version, showing modal...');
+                console.log('  User version:', userData.terms_accepted_version);
+                console.log('  Current version:', CURRENT_TERMS_VERSION);
+                setShowTermsModal(true);
               }
+
+              // Track app session start on successful restore (non-blocking)
+              trackEvent(storedToken, 'app_session_start', {
+                restored_session: true,
+              }).catch(() => {}); // Ignore tracking errors
+
+              setIsLoading(false);
+              if (timeoutId) clearTimeout(timeoutId);
+              return;
+            } else if (userResp.status === 401 || userResp.status === 403) {
+              // Token is truly invalid/expired per the auth endpoint — clear it
+              console.log(`Stored token invalid (${userResp.status}), clearing...`);
+              await secureStorage.delete(AUTH_TOKEN_KEY);
             } else {
-              console.log('Stored token invalid, clearing...');
-              await AsyncStorage.removeItem('auth_token');
+              // Server error (404, 500, 502, 503, etc.) — keep token, proceed optimistically
+              // Don't log out users due to transient server issues
+              console.warn(`⚠️ Non-auth error ${userResp.status} during validation, keeping session`);
+              setToken(storedToken);
+              setIsLoading(false);
+              if (timeoutId) clearTimeout(timeoutId);
+              return;
             }
           } catch (fetchError: any) {
             clearTimeout(fetchTimeoutId);
             if (fetchError.name === 'AbortError') {
-              console.warn('🕐 Auth fetch aborted (timeout), proceeding without validation');
-              // Set token optimistically
+              console.warn('🕐 Auth fetch aborted (timeout), proceeding with stored token');
+              // Set token optimistically - will be validated on next API call
               setToken(storedToken);
+              setIsLoading(false);
+              if (timeoutId) clearTimeout(timeoutId);
+              return;
             } else {
               console.warn('⚠️ Auth validation network error:', fetchError.message);
-              // Clear potentially invalid token
-              await AsyncStorage.removeItem('auth_token');
+              // KEEP the token on network errors - don't log out the user
+              // The network might just be temporarily unavailable on app cold start
+              console.log('📱 Keeping stored token despite network error (offline support)');
+              setToken(storedToken);
+              setIsLoading(false);
+              if (timeoutId) clearTimeout(timeoutId);
+              return;
             }
           }
         }
@@ -197,7 +234,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const loadStoredAuth = async () => {
     try {
-      const storedToken = await AsyncStorage.getItem('auth_token');
+      const storedToken = await secureStorage.get(AUTH_TOKEN_KEY);
       if (storedToken) {
         setToken(storedToken);
         await fetchCurrentUser(storedToken);
@@ -220,6 +257,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
+        // Mark token as freshly validated
+        secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, new Date().toISOString()).catch(() => {});
         
         // Check if user needs to accept current terms version (show modal after login)
         // Show modal if: no terms accepted OR version doesn't match current version
@@ -232,32 +271,41 @@ export function AuthProvider({ children }: AuthProviderProps) {
           console.log('  Current version:', CURRENT_TERMS_VERSION);
           setShowTermsModal(true);
         }
-      } else {
-        // Token is invalid, clear it
+      } else if (response.status === 401 || response.status === 403) {
+        // Backend explicitly says the token is invalid → log out
+        console.warn(`🔐 Auth token rejected (${response.status}), logging out`);
         await logout();
+      } else {
+        // Any other non-OK (404, 500, 502, 503, ...) is a transient/server issue.
+        // Keep the session — the user should NOT be logged out.
+        console.warn(`⚠️ /users/me non-auth error ${response.status}, keeping session`);
       }
     } catch (error) {
       console.error('Error fetching current user:', error);
-      await logout();
+      // DON'T logout on network errors - keep the token
+      // Only the explicit logout() function should clear auth
+      console.log('📱 Network error fetching user, keeping session alive');
     }
   };
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
+      console.log('🔐 Attempting login...');
+      console.log('🔗 API_URL being used:', API_URL);
+      
+      // Use safe apiFetch that handles non-JSON responses gracefully
+      const result = await apiFetch<{ token: string; user_id: string }>('/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        const { token: authToken, user_id } = data;
+      if (result.ok && result.data) {
+        const { token: authToken, user_id } = result.data;
         setToken(authToken);
-        await AsyncStorage.setItem('auth_token', authToken);
+        await secureStorage.set(AUTH_TOKEN_KEY, authToken);
+        const nowIso = new Date().toISOString();
+        await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, nowIso);
+        await secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, nowIso);
         
         // Reset notification session on login
         await resetNotificationSession();
@@ -276,7 +324,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         
         await fetchCurrentUser(authToken);
       } else {
-        throw new Error(data.detail || 'Login failed');
+        throw new Error(result.error || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -286,20 +334,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const register = async (username: string, email: string, password: string, name?: string) => {
     try {
-      const response = await fetch(`${API_URL}/api/auth/register`, {
+      console.log('📝 Attempting registration...');
+      console.log('🔗 API_URL being used:', API_URL);
+      
+      // Use safe apiFetch that handles non-JSON responses gracefully
+      const result = await apiFetch<{ token: string; user_id: string }>('/api/auth/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ username, email, password, name }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        const { token: authToken, user_id } = data;
+      if (result.ok && result.data) {
+        const { token: authToken, user_id } = result.data;
         setToken(authToken);
-        await AsyncStorage.setItem('auth_token', authToken);
+        await secureStorage.set(AUTH_TOKEN_KEY, authToken);
+        const nowIso = new Date().toISOString();
+        await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, nowIso);
+        await secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, nowIso);
         
         // Reset notification session on registration
         await resetNotificationSession();
@@ -315,10 +365,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
           const mergedCount = await aliasGuestToUser(authToken);
           console.log(`✅ Merged ${mergedCount} guest events to new user account`);
         }
-        
+
+        // Phase A/B paid launch — every freshly-registered account should
+        // run through the 8-step onboarding funnel + reveal payoff before
+        // it sees the home tabs. FoundingMemberGate later short-circuits
+        // the paywall for accounts that pre-date the 2026-05-15 cutoff,
+        // but they still get the funnel teach moment (it's intentionally
+        // a teach moment, not a paywall trigger). Flag is consumed +
+        // cleared by `<FunnelEntryGate />` at root.
+        await AsyncStorage.setItem('@mood_needs_funnel', 'true');
+
         await fetchCurrentUser(authToken);
       } else {
-        throw new Error(data.detail || 'Registration failed');
+        throw new Error(result.error || 'Registration failed');
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -328,7 +387,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem('auth_token');
+      await secureStorage.delete(AUTH_TOKEN_KEY);
+      await secureStorage.delete(AUTH_TOKEN_STORED_AT_KEY);
+      await secureStorage.delete(AUTH_TOKEN_LAST_VALIDATED_KEY);
       await AsyncStorage.removeItem('is_guest');
       setToken(null);
       setUser(null);
@@ -406,7 +467,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const refreshAuth = async () => {
     try {
       console.log('🔄 Refreshing auth from stored token...');
-      const storedToken = await AsyncStorage.getItem('auth_token');
+      const storedToken = await secureStorage.get(AUTH_TOKEN_KEY);
       if (storedToken) {
         setToken(storedToken);
         await fetchCurrentUser(storedToken);

@@ -16,9 +16,14 @@ import HomeButton from '../components/HomeButton';
 import BackButton from '../components/BackButton';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useDrafts } from '../contexts/DraftsContext';
 import { Analytics } from '../utils/analytics';
 import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
+import OnboardingOverlay, { type TargetRect } from '../components/OnboardingOverlay';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const TIP_FORM_VIDEOS_DISMISSED_KEY = 'mood:tip:form_videos:never';
 
 interface SessionWorkout {
   workoutName: string;
@@ -39,11 +44,118 @@ export default function WorkoutSessionScreen() {
   const insets = useSafeAreaInsets();
   const { clearCart } = useCart();
   const { token } = useAuth();
+  const { markCompleted } = useDrafts();
+  const { status: healthStatus } = useHealth();
+
+  // Live heart-rate streaming. Samples accumulate in a ref so the updateHandler
+  // doesn't blow up re-renders during long sessions; the stream is started
+  // once on mount and torn down on unmount or session end.
+  const hrSamplesRef = useRef<LiveHeartRateSample[]>([]);
+  const hrSubRef = useRef<{ remove: () => Promise<void> } | null>(null);
+  const sessionStartRef = useRef<string>(new Date().toISOString());
+  const [showNoWatchToast, setShowNoWatchToast] = useState(false);
   
   const [sessionWorkouts, setSessionWorkouts] = useState<SessionWorkout[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
+
+  // Onboarding Tip 2 — uses OnboardingOverlay (same format as Tip 3) with a
+  // single target pointing to the "Find visuals" search bar. AsyncStorage
+  // flag persists "Don't show again"; otherwise the tip re-fires on each entry.
+  const [formTipActive, setFormTipActive] = useState(false);
+  const formTipTriggeredRef = React.useRef(false);
+  const searchBarRef = React.useRef<View>(null);
+  const [searchBarRect, setSearchBarRect] = useState<TargetRect | null>(null);
+
+  // Trigger Tip 2 1.5s after the screen mounts — fires on every fresh entry
+  // unless the user pressed "Don't show again" in any prior session.
+  useEffect(() => {
+    if (formTipTriggeredRef.current) return;
+    let cancelled = false;
+    let timer: any = null;
+    (async () => {
+      let never: string | null = null;
+      try {
+        never = await AsyncStorage.getItem(TIP_FORM_VIDEOS_DISMISSED_KEY);
+      } catch {
+        never = null;
+      }
+      if (cancelled) return;
+      if (never === '1') return;
+      timer = setTimeout(() => {
+        if (formTipTriggeredRef.current || cancelled) return;
+        // Measure search bar position so the overlay arrow points to it
+        searchBarRef.current?.measureInWindow((x, y, w, h) => {
+          if (cancelled) return;
+          setSearchBarRect({ x, y, w, h });
+        });
+        formTipTriggeredRef.current = true;
+        setFormTipActive(true);
+      }, 1500);
+    })();
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
+
+  const handleFormTipTap = () => {
+    setFormTipActive(false);
+    setExerciseLookupVisible(true);
+  };
+  const handleFormTipNeverShow = async () => {
+    setFormTipActive(false);
+    try {
+      await AsyncStorage.setItem(TIP_FORM_VIDEOS_DISMISSED_KEY, '1');
+    } catch {
+      // best-effort
+    }
+  };
+
+  // ─────────────────────────────────────────────────────────────────
+  // Live heart-rate stream lifecycle.
+  // Starts once when the session screen mounts (subject to permission).
+  // Stops on unmount AND in handleFinishSession (whichever fires first).
+  // ─────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (healthStatus !== 'determined') return;
+    let cancelled = false;
+    sessionStartRef.current = new Date().toISOString();
+    hrSamplesRef.current = [];
+
+    if (token) {
+      Analytics.workoutSessionStarted(token, {
+        started_at: sessionStartRef.current,
+      });
+    }
+
+    (async () => {
+      const sub = await subscribeHeartRateStream((sample) => {
+        hrSamplesRef.current.push(sample);
+      });
+      if (cancelled) {
+        sub.remove().catch(() => {});
+        return;
+      }
+      hrSubRef.current = sub;
+    })();
+
+    const watchTimer = setTimeout(() => {
+      if (hrSamplesRef.current.length === 0) {
+        setShowNoWatchToast(true);
+      }
+    }, 30_000);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(watchTimer);
+      if (hrSubRef.current) {
+        hrSubRef.current.remove().catch(() => {});
+        hrSubRef.current = null;
+      }
+    };
+  }, [healthStatus, token]);
 
   useEffect(() => {
     try {
@@ -62,6 +174,56 @@ export default function WorkoutSessionScreen() {
       setIsLoading(false);
     }
   }, [params]);
+
+  // ─────────────────────────────────────────────────────────────────
+  // Live heart-rate stream lifecycle.
+  // Starts once when the session screen mounts (subject to permission).
+  // Stops on unmount AND in handleFinishSession (whichever fires first).
+  // ─────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (healthStatus !== 'determined') return;
+    let cancelled = false;
+    sessionStartRef.current = new Date().toISOString();
+    hrSamplesRef.current = [];
+
+    if (token) {
+      Analytics.workoutSessionStarted(token, {
+        started_at: sessionStartRef.current,
+      });
+    }
+
+    (async () => {
+      const sub = await subscribeHeartRateStream((sample) => {
+        hrSamplesRef.current.push(sample);
+        // Throttled state update so the screen can show a live count without
+        // re-rendering on every single sample (cheap enough at 5s cadence,
+        // but keeps the door open for higher-frequency sources later).
+        setHrSampleCount(hrSamplesRef.current.length);
+      });
+      if (cancelled) {
+        sub.remove().catch(() => {});
+        return;
+      }
+      hrSubRef.current = sub;
+    })();
+
+    // Apple Watch detection — if zero samples land in the first 30s after a
+    // permission-granted start, gently nudge the user. Don't block anything.
+    const watchTimer = setTimeout(() => {
+      if (hrSamplesRef.current.length === 0) {
+        setShowNoWatchToast(true);
+      }
+    }, 30_000);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(watchTimer);
+      if (hrSubRef.current) {
+        hrSubRef.current.remove().catch(() => {});
+        hrSubRef.current = null;
+      }
+    };
+  }, [healthStatus, token]);
 
   const currentWorkout = sessionWorkouts[currentIndex];
   const isLastWorkout = currentIndex === sessionWorkouts.length - 1;
@@ -206,26 +368,69 @@ export default function WorkoutSessionScreen() {
         });
       }
       
-      // Also track general workout completion
+      // Also track general workout completion. The snapshot ID is
+      // included so the Live Feed can deep-link from the completion card
+      // into a hydrated cart (Try-this-workout from the Live tab).
       Analytics.workoutCompleted(token, {
         mood_category: firstWorkout.workoutType || 'Unknown',
         difficulty: firstWorkout.difficulty,
         equipment: firstWorkout.equipment,
         duration_minutes: totalDuration,
-        exercises_completed: sessionWorkouts.length
+        exercises_completed: sessionWorkouts.length,
+        workout_snapshot_id: workoutSnapshotId || undefined,
       });
     }
 
     // Clear cart
     clearCart();
     console.log('Cart cleared');
-    
-    // Navigate to create-post with workout stats
+
+    // Mark saved-build draft as completed (fire-and-forget)
+    markCompleted().catch(() => {});
+
+    // ─────────── Stop live HR stream + persist session ───────────
+    if (hrSubRef.current) {
+      hrSubRef.current.remove().catch(() => {});
+      hrSubRef.current = null;
+    }
+    const samples = [...hrSamplesRef.current];
+    const endedAt = new Date().toISOString();
+    let recapStats: { avg: number; peak: number } | undefined;
+    let recapBpmSeries: number[] | undefined;
+    if (samples.length > 0) {
+      const userAge = (await loadUserAge()) ?? 30; // Default age 30 if not set in Settings
+      const stats = computeHeartRateStats(samples, userAge);
+      const persisted: PersistedSession = {
+        id: `${sessionStartRef.current}-${endedAt}`,
+        startedAt: sessionStartRef.current,
+        endedAt,
+        workoutType: moodCategory,
+        heartRateSamples: samples,
+        stats,
+      };
+      appendSession(persisted).catch(() => {});
+      if (stats) {
+        recapStats = { avg: stats.avgHR, peak: stats.maxHR };
+        recapBpmSeries = samples.map((s) => s.bpm).filter((b) => Number.isFinite(b) && b > 0);
+      }
+    }
+    if (token) {
+      Analytics.workoutSessionEnded(token, {
+        ended_at: endedAt,
+        samples_captured: samples.length,
+      });
+      Analytics.hrSamplesCapturedCount(token, { count: samples.length });
+    }
+
+    // Navigate to create-post with workout stats + (optional) HR data
     console.log('Navigating to create-post...');
     router.push({
       pathname: '/create-post',
       params: {
-        workoutStats: JSON.stringify(workoutStatsData)
+        workoutStats: JSON.stringify(workoutStatsData),
+        heartRateSeries: recapBpmSeries ? JSON.stringify(recapBpmSeries) : '',
+        heartRateAvg: recapStats ? String(recapStats.avg) : '',
+        heartRatePeak: recapStats ? String(recapStats.peak) : '',
       }
     });
     console.log('Navigation command sent');
@@ -361,8 +566,17 @@ export default function WorkoutSessionScreen() {
             </View>
             <Text style={styles.battlePlanText}>{currentWorkout.battlePlan}</Text>
             
-            {/* Exercise Lookup Trigger */}
-            <ExerciseLookupTrigger onPress={() => setExerciseLookupVisible(true)} />
+            {/* Exercise Lookup Trigger — ref'd for Tip 2 overlay positioning */}
+            <View ref={searchBarRef} collapsable={false}>
+              <ExerciseLookupTrigger
+                onPress={() => {
+                  if (formTipActive) {
+                    setFormTipActive(false);
+                  }
+                  setExerciseLookupVisible(true);
+                }}
+              />
+            </View>
           </View>
 
           {/* MOOD Tips */}
@@ -450,6 +664,32 @@ export default function WorkoutSessionScreen() {
       <ExerciseLookupSheet
         visible={exerciseLookupVisible}
         onClose={() => setExerciseLookupVisible(false)}
+      />
+
+      {/* Onboarding Tip 2 — full-screen overlay (same format as Tip 3) */}
+      <OnboardingOverlay
+        visible={formTipActive && !!searchBarRect}
+        onTapAnywhere={handleFormTipTap}
+        onNeverShow={handleFormTipNeverShow}
+        targets={[
+          {
+            rect: searchBarRect,
+            placement: 'below',
+            icon: 'play-circle-outline',
+            title: 'Need a form check?',
+            body: 'Tap the visual cues search above to open video tutorials for every exercise.',
+          },
+        ]}
+      />
+
+      {/* Apple Watch nudge — fires once if no HR sample lands in the first 30s
+          after a permission-granted session start. Non-blocking. */}
+      <Toast
+        message="Wear your Apple Watch to track heart rate"
+        visible={showNoWatchToast}
+        onHide={() => setShowNoWatchToast(false)}
+        duration={4000}
+        type="info"
       />
     </SafeAreaView>
   );
@@ -733,5 +973,62 @@ const styles = StyleSheet.create({
   upcomingWorkoutMeta: {
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.6)',
+  },
+
+  /* Onboarding Tip 2 — floating popup */
+  formTipFloatingWrap: {
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    bottom: 32,
+    zIndex: 9999,
+  },
+  formTipCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1A1A1A',
+    borderRadius: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    paddingRight: 30,
+    gap: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.5,
+    shadowRadius: 14,
+    elevation: 10,
+  },
+  formTipIconWrap: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: '#F5C518',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  formTipTitle: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  formTipBody: {
+    color: 'rgba(255, 255, 255, 0.78)',
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  formTipClose: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  formTipNever: {
+    color: 'rgba(255, 255, 255, 0.55)',
+    fontSize: 11,
+    textDecorationLine: 'underline',
   },
 });

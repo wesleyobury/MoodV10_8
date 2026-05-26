@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -16,26 +16,36 @@ import {
   Modal,
   Dimensions,
   Linking,
+  NativeModules,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams, router as globalRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
-import * as Sharing from 'expo-sharing';
-import * as FileSystem from 'expo-file-system';
 import { Video, ResizeMode } from 'expo-av';
-import { captureRef } from 'react-native-view-shot';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WorkoutStatsCard from '../components/WorkoutStatsCard';
 import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import ImageCropModal from '../components/ImageCropModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import VideoFrameSelector from '../components/VideoFrameSelector';
-import InstagramShareModal from '../components/InstagramShareModal';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
+import { useOnboarding } from '../contexts/OnboardingContext';
+import OnboardingOverlay from '../components/OnboardingOverlay';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+// Safely import native modules that can crash on production iOS builds
+let captureRef: any = null;
+
+try {
+  captureRef = require('react-native-view-shot').captureRef;
+} catch (error) {
+  console.warn('react-native-view-shot not available:', error);
+}
+
+import { API_URL } from '../utils/apiConfig';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 // Storage keys for persisting user goals
@@ -80,11 +90,34 @@ export default function CreatePost() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { user, token, isLoading, isGuest, exitGuestMode } = useAuth();
+  const { hasActiveAccess, hasUsedFreeSession, openPaywall } = useSubscription();
   const [caption, setCaption] = useState('');
   const [selectedMedia, setSelectedMedia] = useState<MediaItem[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [workoutStats, setWorkoutStats] = useState<WorkoutStats | null>(null);
+
+  // Optional live heart-rate payload forwarded by workout-session.tsx. When
+  // present, the 'heartrate' variant renders these real samples instead of
+  // the synthesized fallback curve.
+  const heartRateSeries = useMemo<number[] | undefined>(() => {
+    const raw = params.heartRateSeries as string | undefined;
+    if (!raw) return undefined;
+    try {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length >= 2) return arr.map(Number).filter((n) => Number.isFinite(n) && n > 0);
+    } catch {
+      // ignore
+    }
+    return undefined;
+  }, [params.heartRateSeries]);
+
+  const heartRateRealStats = useMemo<{ avg: number; peak: number } | undefined>(() => {
+    const avg = parseInt((params.heartRateAvg as string) || '', 10);
+    const peak = parseInt((params.heartRatePeak as string) || '', 10);
+    if (Number.isFinite(avg) && Number.isFinite(peak)) return { avg, peak };
+    return undefined;
+  }, [params.heartRateAvg, params.heartRatePeak]);
   const [hasStatsCard, setHasStatsCard] = useState(false);
   const [saveButtonPressed, setSaveButtonPressed] = useState(false);
   const statsCardRef = useRef(null);
@@ -98,6 +131,15 @@ export default function CreatePost() {
   // Editable targets for donut rings
   const [calorieTarget, setCalorieTarget] = useState(500);
   const [minuteTarget, setMinuteTarget] = useState(60);
+  
+  // Equipment toggle for achievement card exercise labels
+  // Default OFF so the title is the focus; user can toggle on.
+  const [showEquipment, setShowEquipment] = useState(false);
+
+  // Achievement card variant — swipeable between 3 designs on the share screen.
+  const CARD_VARIANTS = ['rings', 'simple', 'heartrate'] as const;
+  type CardVariant = (typeof CARD_VARIANTS)[number];
+  const [cardVariant, setCardVariant] = useState<CardVariant>('rings');
   
   // Permission notice modal state
   const [showPermissionModal, setShowPermissionModal] = useState(false);
@@ -123,7 +165,59 @@ export default function CreatePost() {
   // Transparent card ref for Instagram export
   const transparentCardRef = useRef(null);
   const [isExportingToInstagram, setIsExportingToInstagram] = useState(false);
-  const [showInstagramShareModal, setShowInstagramShareModal] = useState(false);
+
+  // Instagram hand-off modal state (used by handleShareToInstagram)
+  const [igPromptVisible, setIgPromptVisible] = useState(false);
+  const igPromptResolveRef = useRef<((value: boolean) => void) | null>(null);
+
+  // Onboarding Tip 3 — completion/share overlay (full-screen)
+  const onboarding = useOnboarding();
+  const onboardingRef = useRef(onboarding);
+  useEffect(() => { onboardingRef.current = onboarding; }, [onboarding]);
+  const [completionTipActive, setCompletionTipActive] = useState(false);
+  const completionTipTriggeredRef = useRef(false);
+
+  // Refs for measuring target positions so the overlay can align pointers accurately
+  const mediaRowRef = useRef<View>(null);
+  const editableStatsRowRef = useRef<View>(null);
+  const igButtonRef = useRef<View>(null);
+  const [targetRects, setTargetRects] = useState<{
+    media: { x: number; y: number; w: number; h: number } | null;
+    stats: { x: number; y: number; w: number; h: number } | null;
+    ig: { x: number; y: number; w: number; h: number } | null;
+  }>({ media: null, stats: null, ig: null });
+
+  useEffect(() => {
+    if (completionTipTriggeredRef.current) return;
+    const timer = setTimeout(() => {
+      if (completionTipTriggeredRef.current) return;
+      const ob = onboardingRef.current;
+      if (ob.requestRender('completion_share')) {
+        // Measure target positions now that the screen has rendered
+        const measure = (ref: React.RefObject<View>, key: 'media' | 'stats' | 'ig') => {
+          ref.current?.measureInWindow((x, y, w, h) => {
+            setTargetRects((prev) => ({ ...prev, [key]: { x, y, w, h } }));
+          });
+        };
+        measure(mediaRowRef, 'media');
+        measure(editableStatsRowRef, 'stats');
+        measure(igButtonRef, 'ig');
+
+        completionTipTriggeredRef.current = true;
+        setCompletionTipActive(true);
+        ob.trackShown('completion_share');
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const completeCompletionTip = (action: 'tap' | 'dismiss' | 'never') => {
+    if (!completionTipActive) return;
+    setCompletionTipActive(false);
+    if (action === 'tap') onboarding.markCompleted('completion_share');
+    else if (action === 'dismiss') onboarding.markDismissed('completion_share');
+    else onboarding.markNeverShow('completion_share');
+  };
   
   // Saved achievements state
   const [savedAchievements, setSavedAchievements] = useState<any[]>([]);
@@ -292,6 +386,11 @@ export default function CreatePost() {
         const stats = JSON.parse(params.workoutStats as string);
         setWorkoutStats(stats);
         setHasStatsCard(true);
+        if (token) {
+          Analytics.workoutRecapViewed(token, {
+            has_heart_rate: !!params.heartRateSeries,
+          });
+        }
         
         // Randomized workout emojis
         const workoutEmojis = ['⚡', '💪', '🏋️', '🏃', '💦', '🔥', '🎯', '✨', '🚀', '💥'];
@@ -306,6 +405,18 @@ export default function CreatePost() {
       }
     }
   }, [params.workoutStats]);
+
+  // Auto-save: as soon as workout stats arrive on this screen (post-completion),
+  // save the workout card to the user's profile silently. The visible "Save"
+  // button still exists as a manual fallback.
+  useEffect(() => {
+    if (workoutStats && !cardSaved && !isLoading && token) {
+      handleSaveCard().catch((e) => console.warn('Auto-save failed:', e));
+    }
+    // We intentionally only watch workoutStats + auth readiness — handleSaveCard
+    // dedupes via cardSaved guard and the Save button updates state on success.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workoutStats, isLoading, token]);
 
   const pickImages = async () => {
     const maxMedia = hasStatsCard ? 4 : 5;
@@ -581,7 +692,11 @@ export default function CreatePost() {
         mediaTypes: ['videos'],
         allowsEditing: false,
         videoMaxDuration: 30, // 30 seconds max
-        videoQuality: ImagePicker.UIImagePickerControllerQualityType.Medium,
+        // Cap recording at 1080p H.264 to keep upload size + storage bounded.
+        // `videoQuality` is the Android/legacy iOS knob; `videoExportPreset`
+        // is the iOS-only exact 1080p preset.
+        videoQuality: ImagePicker.UIImagePickerControllerQualityType.High,
+        videoExportPreset: ImagePicker.VideoExportPreset.H264_1920x1080,
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
@@ -626,16 +741,17 @@ export default function CreatePost() {
     }
 
     try {
-      // Pick video with transcoding enabled to handle slow-mo and ProRes videos
-      // Using HighestQuality export preset to transcode problematic formats to H.264
-      // This converts slow-mo, ProRes, and HEVC videos to standard H.264 format
+      // Pick video with transcoding enabled to handle slow-mo and ProRes videos.
+      // `H264_1920x1080` caps the export at 1080p H.264 — converts slow-mo,
+      // ProRes, HEVC and 4K masters down to a sane, broadly-compatible format
+      // before upload. Saves bandwidth on cellular and storage forever.
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['videos'],
         allowsMultipleSelection: false,
         allowsEditing: false,
         videoMaxDuration: 30, // 30 seconds max
-        // Enable transcoding to H.264 - this handles slow-mo, ProRes, HEVC videos
-        videoExportPreset: ImagePicker.VideoExportPreset.HighestQuality,
+        videoQuality: ImagePicker.UIImagePickerControllerQualityType.High,
+        videoExportPreset: ImagePicker.VideoExportPreset.H264_1920x1080,
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
@@ -772,148 +888,138 @@ export default function CreatePost() {
   };
 
   const handleShareToInstagram = async () => {
-    if (!workoutStats || !transparentCardRef.current) {
-      showAlert('Error', 'Unable to share. Please try again.');
-      return;
-    }
-    
-    setIsExportingToInstagram(true);
-    
+    // Top-level guard — never let an error from this flow bubble up and crash
+    // the screen (which would kick the user back to login).
     try {
-      // Capture the transparent card as PNG
-      let imageUri: string;
-      
+      if (isExportingToInstagram) return; // single-flight guard
+
+      if (!workoutStats || !transparentCardRef.current) {
+        showAlert('Error', 'Unable to share. Please try again.');
+        return;
+      }
+
+      if (token) {
+        Analytics.shareToInstagramTapped(token, {
+          has_heart_rate: !!heartRateSeries,
+          samples: heartRateSeries?.length ?? 0,
+        });
+      }
+
+      setIsExportingToInstagram(true);
+
       if (Platform.OS === 'web') {
-        // For web, use html2canvas
+        // For web, use html2canvas and download
         const html2canvas = (await import('html2canvas')).default;
         const canvas = await html2canvas(transparentCardRef.current, {
-          backgroundColor: null, // Transparent background
+          backgroundColor: null,
           scale: 2,
           logging: false,
           useCORS: true,
         });
-        imageUri = canvas.toDataURL('image/png');
-        
-        // On web, download the image
+        const imageUri = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.download = `mood_workout_${Date.now()}.png`;
         link.href = imageUri;
         link.click();
-        
-        showAlert('Image Downloaded', 'Your workout overlay has been downloaded. Open Instagram Stories and add it as a sticker on your photo!');
+
+        showAlert(
+          'Image Downloaded',
+          'Your workout overlay has been downloaded. Open Instagram Stories and add it as a sticker on your photo!',
+        );
       } else {
-        // For native (iOS/Android), capture the image
-        imageUri = await captureRef(transparentCardRef.current, {
-          format: 'png',
-          quality: 1,
-          result: 'tmpfile',
-        });
-        
-        // Try to deep-link directly to Instagram Stories
-        const instagramDeepLinked = await shareToInstagramStories(imageUri);
-        
-        if (!instagramDeepLinked) {
-          // Fall back to native share sheet if Instagram isn't installed (e.g., in Expo Go)
-          const canShare = await Sharing.isAvailableAsync();
-          
-          if (canShare) {
-            await Sharing.shareAsync(imageUri, {
-              mimeType: 'image/png',
-              dialogTitle: 'Share your workout achievement',
-              UTI: 'public.png',
-            });
-          } else {
-            showAlert('Sharing not available', 'Please save the image and share it manually to Instagram.');
-          }
-        }
+        await shareToInstagramStoriesDirect();
       }
-    } catch (error) {
-      console.error('Error sharing to Instagram:', error);
-      showAlert('Error', 'Failed to create Instagram share image. Please try again.');
+    } catch (error: any) {
+      // Catch EVERYTHING — including native module crashes, permission errors,
+      // canvas/captureRef failures, and unhandled URL scheme rejections.
+      console.error('Error sharing to Instagram:', error?.message || error);
+      try {
+        showAlert(
+          'Couldn\u2019t share to Instagram',
+          'Something went wrong. The overlay may have been saved to your photo album — open Instagram → new Story → sticker icon to add it manually.',
+        );
+      } catch {}
     } finally {
       setIsExportingToInstagram(false);
-      setShowInstagramShareModal(false);
+      // Ensure the IG prompt modal isn't left mounted in a stuck state
+      if (igPromptResolveRef.current) {
+        try { igPromptResolveRef.current(false); } catch {}
+        igPromptResolveRef.current = null;
+      }
+      setIgPromptVisible(false);
     }
   };
 
-  // Helper function to share directly to Instagram Stories via deep link
-  const shareToInstagramStories = async (imageUri: string): Promise<boolean> => {
+  // Direct share to Instagram Stories via URL scheme + Photos
+  const shareToInstagramStoriesDirect = async () => {
+    if (!transparentCardRef.current) {
+      throw new Error('No card to capture');
+    }
+    
+    if (!captureRef) {
+      showAlert('Feature Unavailable', 'Screen capture is not available on this device.');
+      return;
+    }
+
+    // 1) Capture overlay as transparent PNG
+    const uri = await captureRef(transparentCardRef.current, {
+      format: 'png',
+      quality: 1,
+      result: 'tmpfile',
+      bgColor: '#00000000',
+    });
+
+    // 2) Save to Photos so Instagram can access it
+    let MediaLibrary: any;
     try {
-      // Check if Instagram is installed
-      const instagramUrl = Platform.OS === 'ios' 
-        ? 'instagram-stories://share' 
-        : 'instagram://story-camera';
-      
-      const canOpenInstagram = await Linking.canOpenURL(instagramUrl);
-      
-      if (!canOpenInstagram) {
-        console.log('Instagram is not installed');
-        return false;
+      MediaLibrary = await import('expo-media-library');
+      // This will throw if the native module isn't in the binary
+      await MediaLibrary.getPermissionsAsync();
+    } catch (e) {
+      showAlert('Unavailable', 'Photo library access is not included in this build. Please reinstall the latest development build.');
+      return;
+    }
+
+    // Now safe to request permissions
+    const { status } = await MediaLibrary.requestPermissionsAsync();
+    if (status !== 'granted') {
+      showAlert('Permission Needed', 'Enable Photos access in Settings → MOOD → Photos.');
+      return;
+    }
+    await MediaLibrary.saveToLibraryAsync(uri);
+    if (token) {
+      Analytics.shareCompleted(token, {
+        destination: 'instagram_stories',
+        has_heart_rate: !!heartRateSeries,
+      });
+    }
+
+    // 3) Check if Instagram is installed and open Stories camera
+    const canOpenStories = await Linking.canOpenURL('instagram://story-camera');
+    if (canOpenStories) {
+      // Custom Modal (with X close) instead of system Alert so user can dismiss
+      const opened = await new Promise<boolean>((resolve) => {
+        igPromptResolveRef.current = resolve;
+        setIgPromptVisible(true);
+      });
+      if (opened) {
+        await Linking.openURL('instagram://story-camera');
       }
-      
-      if (Platform.OS === 'ios') {
-        // iOS: Read the image and convert to base64 for sharing
-        const imageBase64 = await FileSystem.readAsStringAsync(imageUri, {
-          encoding: FileSystem.EncodingType.Base64,
-        });
-        
-        // iOS Instagram Stories deep link with sticker
-        // The image will be passed via the URL scheme
-        // Note: For full functionality, the app needs to be registered with Facebook
-        // For now, we'll use a workaround by opening Instagram Stories and letting user paste
-        
-        // Try opening Instagram Stories directly
-        const instagramStoriesUrl = `instagram-stories://share?source_application=com.mood.fitness`;
-        
-        try {
-          await Linking.openURL(instagramStoriesUrl);
-          
-          // Show instruction to user since we can't directly paste the sticker without native module
-          setTimeout(() => {
-            showAlert(
-              'Add Your Workout Overlay', 
-              'Instagram Stories is opening. Your workout card has been saved - tap the sticker icon and select it from your recent images to add it as an overlay!'
-            );
-          }, 500);
-          
-          // Save the image to camera roll so user can access it
-          // This requires expo-media-library, but for now we'll rely on the temp file
-          return true;
-        } catch (e) {
-          console.log('Failed to open Instagram Stories URL:', e);
-          return false;
+    } else {
+      // Fallback: Instagram not installed — use system share sheet
+      try {
+        const Sharing = await import('expo-sharing');
+        const canShare = await Sharing.isAvailableAsync();
+        if (canShare) {
+          await Sharing.shareAsync(uri, {
+            mimeType: 'image/png',
+            dialogTitle: 'Share your workout overlay',
+            UTI: 'public.png',
+          });
+          return;
         }
-      } else if (Platform.OS === 'android') {
-        // Android: Use Intent to share directly to Instagram Stories
-        try {
-          // For Android, we can use the share intent with Instagram package
-          const intentUrl = `intent://share#Intent;` +
-            `package=com.instagram.android;` +
-            `S.browser_fallback_url=https://www.instagram.com;` +
-            `end`;
-          
-          // Try opening Instagram Stories camera directly
-          const opened = await Linking.openURL('instagram://story-camera');
-          
-          if (opened) {
-            setTimeout(() => {
-              showAlert(
-                'Add Your Workout Overlay',
-                'Instagram Stories is opening. Add your workout card from your gallery as a sticker overlay!'
-              );
-            }, 500);
-            return true;
-          }
-        } catch (e) {
-          console.log('Failed to open Instagram on Android:', e);
-        }
-        return false;
-      }
-      
-      return false;
-    } catch (error) {
-      console.error('Error in shareToInstagramStories:', error);
-      return false;
+      } catch {}
+      showAlert('Saved to Photos', 'Your workout overlay has been saved to your photo library. Open Instagram and add it manually.');
     }
   };
 
@@ -1051,6 +1157,11 @@ export default function CreatePost() {
         console.log('✅ Web capture successful, data URL length:', uri.length);
         return uri;
       } else {
+        // Check if captureRef is available
+        if (!captureRef) {
+          console.warn('captureRef not available on this device');
+          return null;
+        }
         // Use react-native-view-shot for native
         const uri = await captureRef(statsCardRef.current, {
           format: 'png',
@@ -1432,9 +1543,13 @@ export default function CreatePost() {
               styles.postButton,
               (!caption.trim() && selectedImages.length === 0 && !hasStatsCard) && styles.postButtonDisabled
             ]}
-            onPress={handleCreatePost}
+            onPress={() => {
+              if (completionTipActive) completeCompletionTip('tap');
+              handleCreatePost();
+            }}
             disabled={uploading || (!caption.trim() && selectedImages.length === 0 && !hasStatsCard)}
             activeOpacity={0.7}
+            testID="create-post-submit"
           >
             {uploading ? (
               <ActivityIndicator size="small" color="#000" />
@@ -1452,7 +1567,7 @@ export default function CreatePost() {
           </View>
 
           {/* 1. Media Picker Section - FIRST */}
-          <View style={styles.attachmentCard}>
+          <View style={styles.attachmentCard} ref={mediaRowRef} collapsable={false}>
             <View style={styles.attachmentHeader}>
               <View style={styles.attachmentLabelContainer}>
                 <Ionicons name="images" size={14} color="rgba(255, 255, 255, 0.5)" />
@@ -1684,11 +1799,17 @@ export default function CreatePost() {
                         
                         {/* Workout preview list */}
                         <View style={styles.achievementWorkoutPreview}>
-                          {achievement.workouts.slice(0, 2).map((workout: any, wIndex: number) => (
-                            <Text key={wIndex} style={styles.achievementWorkoutName} numberOfLines={1}>
-                              {workout.workoutName || workout.workoutTitle}
-                            </Text>
-                          ))}
+                          {achievement.workouts.slice(0, 2).map((workout: any, wIndex: number) => {
+                            const name = workout.workoutName || workout.workoutTitle;
+                            const equip = workout.equipment && workout.equipment !== 'None' ? workout.equipment : '';
+                            const label = equip ? `${name} \u2022 ${equip}` : name;
+                            const display = label.length > 40 ? label.slice(0, 37) + '...' : label;
+                            return (
+                              <Text key={wIndex} style={styles.achievementWorkoutName} numberOfLines={1}>
+                                {display}
+                              </Text>
+                            );
+                          })}
                           {achievement.workouts.length > 2 && (
                             <Text style={styles.achievementWorkoutMore}>
                               +{achievement.workouts.length - 2} more
@@ -1722,14 +1843,34 @@ export default function CreatePost() {
                   <Text style={styles.attachmentType}>Achievement</Text>
                 </View>
                 <View style={styles.actionButtonsRow}>
-                  {/* Instagram Share Button */}
+                  {/* Instagram Share Button - Bold gold-bordered to stand out */}
                   <TouchableOpacity 
-                    onPress={() => setShowInstagramShareModal(true)} 
-                    style={styles.instagramButton}
-                    activeOpacity={0.7}
+                    ref={igButtonRef}
+                    collapsable={false}
+                    onPress={() => {
+                      if (completionTipActive) completeCompletionTip('tap');
+                      handleShareToInstagram();
+                    }}
+                    style={styles.instagramButtonWrapper}
+                    activeOpacity={0.8}
+                    disabled={isExportingToInstagram}
+                    testID="ig-share-button"
                   >
-                    <Ionicons name="logo-instagram" size={18} color="#fff" />
-                    <Text style={styles.instagramButtonText}>Stories</Text>
+                    <LinearGradient
+                      colors={['#833AB4', '#FD1D1D', '#F77737']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={styles.instagramButtonGradient}
+                    >
+                      {isExportingToInstagram ? (
+                        <ActivityIndicator size="small" color="#fff" />
+                      ) : (
+                        <>
+                          <Ionicons name="logo-instagram" size={18} color="#fff" />
+                          <Text style={styles.instagramButtonText}>IG Story</Text>
+                        </>
+                      )}
+                    </LinearGradient>
                   </TouchableOpacity>
                   
                   {/* Save Button */}
@@ -1761,7 +1902,7 @@ export default function CreatePost() {
                 <Text style={styles.editableStatsHint}>Adjust values & targets </Text>
                 <Text style={styles.editableStatsOptional}>(optional, goals are saved)</Text>
               </View>
-              <View style={styles.editableStatsRow}>
+              <View style={styles.editableStatsRow} ref={editableStatsRowRef} collapsable={false}>
                 <View style={styles.editableStat}>
                   <Text style={styles.editableStatLabel}>Min</Text>
                   <TextInput
@@ -1845,17 +1986,84 @@ export default function CreatePost() {
                 </View>
               </View>
               
-              <View style={styles.statsCardWrapper} ref={statsCardRef} collapsable={false}>
-                <WorkoutStatsCard 
-                  {...workoutStats} 
+              {/* Card + equipment toggle overlay */}
+              <View style={styles.cardWithToggleContainer}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  onMomentumScrollEnd={(e) => {
+                    const cardW = e.nativeEvent.layoutMeasurement.width;
+                    const idx = Math.round(e.nativeEvent.contentOffset.x / cardW);
+                    const next = CARD_VARIANTS[Math.max(0, Math.min(CARD_VARIANTS.length - 1, idx))];
+                    if (next !== cardVariant) setCardVariant(next);
+                  }}
+                  scrollEventThrottle={16}
+                  decelerationRate="fast"
+                  style={styles.variantScroll}
+                  contentContainerStyle={styles.variantScrollContent}
+                >
+                  {CARD_VARIANTS.map((v) => (
+                    <View key={v} style={styles.statsCardWrapper}>
+                      <WorkoutStatsCard
+                        {...workoutStats}
+                        editedDuration={editedDuration}
+                        editedCalories={editedCalories}
+                        calorieTarget={calorieTarget}
+                        minuteTarget={minuteTarget}
+                        showRingPulse={v === 'rings'}
+                        showEquipment={showEquipment}
+                        variant={v}
+                        heartRateSamples={heartRateSeries}
+                        heartRateRealStats={heartRateRealStats}
+                      />
+                    </View>
+                  ))}
+                </ScrollView>
+
+                {/* Variant dots indicator */}
+                <View style={styles.variantDotsRow} pointerEvents="none">
+                  {CARD_VARIANTS.map((v) => (
+                    <View
+                      key={v}
+                      style={[
+                        styles.variantDot,
+                        v === cardVariant && styles.variantDotActive,
+                      ]}
+                    />
+                  ))}
+                </View>
+
+                {/* Equipment toggle — overlayed on bottom of card, share screen only */}
+                <TouchableOpacity
+                  testID="equipment-toggle"
+                  style={styles.equipmentToggleOverlay}
+                  onPress={() => setShowEquipment(prev => !prev)}
+                  activeOpacity={0.7}
+                >
+                  <View style={[styles.equipmentToggleTrack, showEquipment && styles.equipmentToggleTrackOn]}>
+                    <View style={[styles.equipmentToggleThumb, showEquipment && styles.equipmentToggleThumbOn]} />
+                  </View>
+                  <Text style={styles.equipmentToggleLabel}>include equipment name</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Hidden opaque capture mirror — single active variant, used for in-post embed */}
+              <View style={styles.hiddenCardContainer} ref={statsCardRef} collapsable={false}>
+                <WorkoutStatsCard
+                  {...workoutStats}
                   editedDuration={editedDuration}
                   editedCalories={editedCalories}
                   calorieTarget={calorieTarget}
                   minuteTarget={minuteTarget}
-                  showRingPulse={true}
+                  showRingPulse={false}
+                  showEquipment={showEquipment}
+                  variant={cardVariant}
+                  heartRateSamples={heartRateSeries}
+                  heartRateRealStats={heartRateRealStats}
                 />
               </View>
-              
+
               {/* Hidden transparent card for Instagram export */}
               <View style={styles.hiddenCardContainer} ref={transparentCardRef} collapsable={false}>
                 <WorkoutStatsCard 
@@ -1865,6 +2073,10 @@ export default function CreatePost() {
                   editedCalories={editedCalories}
                   calorieTarget={calorieTarget}
                   minuteTarget={minuteTarget}
+                  showEquipment={showEquipment}
+                  variant={cardVariant}
+                  heartRateSamples={heartRateSeries}
+                  heartRateRealStats={heartRateRealStats}
                 />
               </View>
               
@@ -1904,6 +2116,46 @@ export default function CreatePost() {
           <Text style={styles.contentRightsFootnote}>
             By uploading, you confirm you own this content or have the rights to use it.
           </Text>
+
+          {/*
+            Phase B paid-launch — free session recap footer.
+            Only renders when:
+              • the user just completed a workout (workoutStats present), AND
+              • they're not a paying member / founding member, AND
+              • they've consumed their one free live session.
+            The "Maybe later" path dismisses silently; the trial CTA fires
+            the paywall with `recap_footer_cta` trigger so attribution carries
+            through to the eventual `subscription_purchased`.
+          */}
+          {workoutStats && !hasActiveAccess && hasUsedFreeSession ? (
+            <View style={styles.freeSessionFooter} data-testid="free-session-footer">
+              <Text style={styles.freeSessionEyebrow}>YOUR FREE SESSION IS COMPLETE</Text>
+              <Text style={styles.freeSessionBody}>Next workout requires MOOD Premium.</Text>
+              <TouchableOpacity
+                style={styles.freeSessionCta}
+                onPress={() => openPaywall('recap_footer_cta')}
+                data-testid="free-session-trial-cta"
+                testID="free-session-trial-cta"
+              >
+                <LinearGradient
+                  colors={['#FFD700', '#FFA500']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.freeSessionCtaGradient}
+                >
+                  <Text style={styles.freeSessionCtaLabel}>Start 7-day free trial →</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.freeSessionSecondary}
+                onPress={() => router.replace('/(tabs)')}
+                data-testid="free-session-maybe-later"
+                testID="free-session-maybe-later"
+              >
+                <Text style={styles.freeSessionSecondaryLabel}>Maybe later</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
 
           {/* Bottom Spacing */}
           <View style={styles.bottomSpacer} />
@@ -2017,6 +2269,54 @@ export default function CreatePost() {
         action='create posts'
       />
 
+      {/* Instagram Hand-off Modal — replaces system Alert; has X to dismiss. */}
+      <Modal
+        visible={igPromptVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => {
+          setIgPromptVisible(false);
+          igPromptResolveRef.current?.(false);
+          igPromptResolveRef.current = null;
+        }}
+      >
+        <View style={styles.igBackdrop}>
+          <View style={styles.igCard}>
+            <TouchableOpacity
+              style={styles.igClose}
+              onPress={() => {
+                setIgPromptVisible(false);
+                igPromptResolveRef.current?.(false);
+                igPromptResolveRef.current = null;
+              }}
+              hitSlop={12}
+              testID="instagram-prompt-close"
+            >
+              <Ionicons name="close" size={22} color="#999" />
+            </TouchableOpacity>
+
+            <Ionicons name="logo-instagram" size={36} color="#FFD700" style={{ marginBottom: 12 }} />
+            <Text style={styles.igTitle}>Saved to your photo album</Text>
+            <Text style={styles.igBody}>
+              {"1.  Open Instagram and start a new Story\n2.  Tap the sticker icon (smiley face)\n3.  Pick \"Add yours\" or the photo sticker\n4.  Choose this overlay from your most recent photos\n5.  Position, post, done."}
+            </Text>
+
+            <TouchableOpacity
+              style={styles.igCta}
+              onPress={() => {
+                setIgPromptVisible(false);
+                igPromptResolveRef.current?.(true);
+                igPromptResolveRef.current = null;
+              }}
+              activeOpacity={0.85}
+              testID="instagram-prompt-open"
+            >
+              <Text style={styles.igCtaText}>Open Instagram</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       {/* Cover Options Modal */}
       <Modal
         visible={showCoverPicker && coverPickerVideoIndex >= 0}
@@ -2104,30 +2404,36 @@ export default function CreatePost() {
         )}
       </Modal>
 
-      {/* Instagram Share Modal */}
-      {workoutStats && (
-        <InstagramShareModal
-          visible={showInstagramShareModal}
-          onClose={() => setShowInstagramShareModal(false)}
-          onShare={() => {
-            handleShareToInstagram();
-          }}
-          previewComponent={
-            <WorkoutStatsCard
-              workouts={workoutStats.workouts}
-              totalDuration={editedDuration !== undefined ? editedDuration : workoutStats.totalDuration}
-              editedCalories={editedCalories !== undefined ? editedCalories : Math.round(workoutStats.totalDuration * 8)}
-              completedAt={workoutStats.completedAt}
-              moodCategory={workoutStats.moodCategory}
-              username={user?.username || 'User'}
-              calorieTarget={calorieTarget}
-              minuteTarget={minuteTarget}
-              transparent={true}
-            />
-          }
-          isExporting={isExportingToInstagram}
-        />
-      )}
+      {/* Onboarding Overlay — Tip 3 (Share Your Achievement walkthrough) */}
+      <OnboardingOverlay
+        visible={completionTipActive}
+        onTapAnywhere={() => completeCompletionTip('tap')}
+        onNeverShow={() => completeCompletionTip('never')}
+        targets={[
+          {
+            rect: targetRects.media,
+            placement: 'above',
+            icon: 'image-outline',
+            title: 'Add your media',
+            body: 'Tap here to upload a photo or video from your workout.',
+          },
+          {
+            rect: targetRects.ig,
+            placement: 'above',
+            icon: 'logo-instagram',
+            title: 'Share to IG Stories',
+            body: 'Saves the overlay to your photo album. Then open Instagram → new Story → sticker icon → pick the saved overlay.',
+          },
+          {
+            rect: targetRects.stats,
+            placement: 'below',
+            icon: 'create-outline',
+            title: 'Adjust values & targets',
+            body: 'Tap any number — calories, minutes, sets — to fine-tune the stat card before you post.',
+          },
+        ]}
+      />
+
     </SafeAreaView>
   );
 }
@@ -2225,23 +2531,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  instagramButton: {
+  instagramButtonWrapper: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: '#F5C518',
+    shadowColor: '#F5C518',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.45,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  instagramButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: 'rgba(50, 50, 50, 0.5)',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(100, 100, 100, 0.3)',
-    minWidth: 80,
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
   },
   instagramButtonText: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: '800',
     color: '#fff',
+    letterSpacing: 0.6,
   },
   editableStatsHintRow: {
     flexDirection: 'row',
@@ -2293,6 +2606,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: -9999,
     top: 0,
+    backgroundColor: 'transparent', // CRITICAL: ensures PNG export has no background
   },
   saveCardButton: {
     flexDirection: 'row',
@@ -2322,13 +2636,38 @@ const styles = StyleSheet.create({
     color: '#FFD700',
   },
   statsCardWrapper: {
+    width: SCREEN_WIDTH,
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center',
-    marginVertical: 6,
+    paddingVertical: 6,
     backgroundColor: '#000',
-    borderRadius: 0,
-    overflow: 'hidden',
+  },
+  variantScroll: {
+    width: SCREEN_WIDTH,
+    alignSelf: 'center',
+  },
+  variantScrollContent: {
+    alignItems: 'center',
+  },
+  variantDotsRow: {
+    position: 'absolute',
+    bottom: 12,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 6,
+    zIndex: 10,
+  },
+  variantDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+  },
+  variantDotActive: {
+    backgroundColor: '#FFD700',
+    width: 18,
   },
   saveExplanation: {
     flexDirection: 'row',
@@ -2343,6 +2682,48 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: 'rgba(255, 255, 255, 0.5)',
     lineHeight: 16,
+  },
+  equipmentToggleOverlay: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    borderRadius: 10,
+    zIndex: 10,
+  },
+  equipmentToggleTrack: {
+    width: 28,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    paddingHorizontal: 2,
+  },
+  equipmentToggleTrackOn: {
+    backgroundColor: 'rgba(255,255,255,0.4)',
+  },
+  equipmentToggleThumb: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#666',
+  },
+  equipmentToggleThumbOn: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#bbb',
+  },
+  equipmentToggleLabel: {
+    fontSize: 10,
+    color: '#aaa',
+    letterSpacing: 0.1,
+  },
+  cardWithToggleContainer: {
+    position: 'relative',
   },
   attachmentHint: {
     color: 'rgba(255, 255, 255, 0.4)',
@@ -2631,16 +3012,6 @@ const styles = StyleSheet.create({
     gap: 6,
     marginBottom: 10,
   },
-  achievementWorkoutPreview: {
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.06)',
-    paddingTop: 8,
-  },
-  achievementWorkoutName: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: 10,
-    lineHeight: 14,
-  },
   savedAchievementIcon: {
     width: 48,
     height: 48,
@@ -2720,6 +3091,57 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 8,
     fontStyle: 'italic',
+  },
+  // Phase B free-session recap footer
+  freeSessionFooter: {
+    marginTop: 24,
+    marginHorizontal: 16,
+    padding: 22,
+    borderRadius: 16,
+    backgroundColor: '#1A1A1A',
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.18)',
+    alignItems: 'center',
+  },
+  freeSessionEyebrow: {
+    fontSize: 11,
+    letterSpacing: 1.8,
+    color: '#FFD700',
+    fontWeight: '700',
+    marginBottom: 10,
+  },
+  freeSessionBody: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontWeight: '600',
+    letterSpacing: -0.2,
+    textAlign: 'center',
+    marginBottom: 18,
+  },
+  freeSessionCta: {
+    width: '100%',
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 6,
+  },
+  freeSessionCtaGradient: {
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  freeSessionCtaLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#0c0c0c',
+    letterSpacing: 0.3,
+  },
+  freeSessionSecondary: {
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  freeSessionSecondaryLabel: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.5)',
+    fontWeight: '500',
   },
   // Loading Overlay Styles
   loadingOverlay: {
@@ -2917,5 +3339,62 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.6)',
     fontWeight: '500',
+  },
+  // Instagram hand-off prompt
+  igBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.72)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 28,
+  },
+  igCard: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: '#0a0a0a',
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.18)',
+    paddingTop: 26,
+    paddingBottom: 22,
+    paddingHorizontal: 22,
+    alignItems: 'center',
+  },
+  igClose: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  igTitle: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  igBody: {
+    color: '#c8c8c8',
+    fontSize: 13,
+    lineHeight: 22,
+    textAlign: 'left',
+    marginBottom: 18,
+    paddingHorizontal: 4,
+  },
+  igCta: {
+    backgroundColor: '#FFD700',
+    paddingVertical: 12,
+    paddingHorizontal: 28,
+    borderRadius: 999,
+  },
+  igCtaText: {
+    color: '#0c0c0c',
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.3,
   },
 });

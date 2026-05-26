@@ -14,30 +14,66 @@ import {
   KeyboardAvoidingView,
   Platform,
   Switch,
+  NativeModules,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
+import * as MediaLibrary from 'expo-media-library';
 import { useAuth } from '../contexts/AuthContext';
-import { isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
+import { useHealth } from '../contexts/HealthContext';
+import { useSubscription, SubscriptionStatus } from '../contexts/SubscriptionContext';
+import { loadUserAge, saveUserAge } from '../utils/workoutSessionStorage';
+import { Analytics, isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
+import { getNotificationStatus, openNotificationSettings, initNotifications, type NotifStatus } from '../utils/notifications';
 import BackButton from '../components/BackButton';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
-const SUPPORT_EMAIL = 'wesleyogsbury@gmail.com';
+import { API_URL } from '../utils/apiConfig';
+
+// Phase E paid-launch — Subscription section copy.
+const SUBSCRIPTION_STATUS_LABEL: Record<SubscriptionStatus, string> = {
+  none: 'Not subscribed',
+  in_trial: 'Free trial active',
+  active: 'MOOD Premium',
+  lapsed: 'Subscription lapsed',
+  founding_member: 'Founding Member',
+};
+
+const SUBSCRIPTION_STATUS_SUBLABEL: Record<SubscriptionStatus, string> = {
+  none: 'Start a 7-day trial to unlock Premium.',
+  in_trial: 'Renews to MOOD Premium after the trial.',
+  active: 'Renews automatically. Cancel anytime.',
+  lapsed: 'Restart your subscription to keep training.',
+  founding_member: 'Day-one MOOD. Lifetime access.',
+};
+const SUPPORT_EMAIL = 'wes@officialmoodapp.com';
 
 // External URLs for legal pages
 const EXTERNAL_URLS = {
-  termsOfService: 'https://sites.google.com/d/1IPxI-2TCXeIgIKQKjxcRcoUJNHNBjXHD/p/17nmyUORjDmp4upUwI8cMvfIRkuX_0oCv/edit',
-  privacyPolicy: 'https://sites.google.com/d/1IPxI-2TCXeIgIKQKjxcRcoUJNHNBjXHD/p/11e7szlqI_qIfmgCEeE8yOhX5lJrAHwYb/edit',
-  support: 'https://sites.google.com/d/1IPxI-2TCXeIgIKQKjxcRcoUJNHNBjXHD/p/1XhjibxEnt0V15xx32MICmpK3BnO4cNFh/edit',
+  termsOfService: 'https://www.officialmood.app/terms-of-service',
+  privacyPolicy: 'https://www.officialmood.app/privacy-policy',
+  support: 'https://www.officialmood.app/support',
 };
 
 export default function Settings() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { token, logout, user, updateUser } = useAuth();
+  const { status: healthStatus, available: healthAvailable, requestPermissions: requestHealthPermissions } = useHealth();
+  const { status: subscriptionStatus, hasActiveAccess, openPaywall } = useSubscription();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [userAge, setUserAge] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadUserAge().then((age) => {
+      if (!cancelled) setUserAge(age);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const [showTerms, setShowTerms] = useState(false);
   
   // Analytics opt-out state
@@ -53,6 +89,43 @@ export default function Settings() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+
+  // Push notification state — derived from OS permission + persisted token
+  const [notifStatus, setNotifStatus] = useState<NotifStatus>({ permission: 'undetermined', pushToken: null, registeredWithBackend: false });
+  const [pushRefreshing, setPushRefreshing] = useState(false);
+
+  // Admin debug info (temporary)
+  const isAdmin = user?.username === 'officialmoodapp';
+  const [debugInfo, setDebugInfo] = useState<string>('');
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    const checkDebug = async () => {
+      const version = Constants.expoConfig?.version ?? Constants.nativeAppVersion ?? 'unknown';
+      const buildNum = Constants.expoConfig?.ios?.buildNumber ?? Constants.nativeBuildVersion ?? 'unknown';
+      const build = `BUILD: ${version} (${buildNum})`;
+      let hasML = false;
+      try {
+        // STATIC import (top of file) — using dynamic `await import('expo-media-library')`
+        // here triggered an Expo SDK 54 cold-start race condition that crashed
+        // the app on the very first Settings navigation after launch (the
+        // native bridge wasn't ready when the dynamic import fired). With a
+        // static top-level import the module is initialized alongside the
+        // rest of the JS bundle and the call is instant + crash-free.
+        await MediaLibrary.getPermissionsAsync();
+        hasML = true;
+      } catch {}
+      const info = `${build}\nHAS ExpoMediaLibrary: ${hasML}`;
+      console.log(info);
+      setDebugInfo(info);
+    };
+    checkDebug();
+  }, [isAdmin]);
+
+  // Load notification status from OS + persisted storage on mount
+  useEffect(() => {
+    getNotificationStatus().then(setNotifStatus);
+  }, []);
 
   // Load analytics opt-out preference on mount
   useEffect(() => {
@@ -359,11 +432,167 @@ export default function Settings() {
           </TouchableOpacity>
         </View>
 
+        {/* Subscription Section — Phase E paid launch (Part 11). */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Subscription</Text>
+
+          <View style={styles.settingsItem} data-testid="settings-subscription-status">
+            <View style={styles.settingsItemLeft}>
+              <Ionicons
+                name={hasActiveAccess ? 'star' : 'lock-closed-outline'}
+                size={20}
+                color="#FFD700"
+              />
+              <View>
+                <Text style={styles.settingsItemText}>
+                  {SUBSCRIPTION_STATUS_LABEL[subscriptionStatus]}
+                </Text>
+                <Text style={styles.settingsItemSubtext}>
+                  {SUBSCRIPTION_STATUS_SUBLABEL[subscriptionStatus]}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          {hasActiveAccess && subscriptionStatus !== 'founding_member' ? (
+            <TouchableOpacity
+              style={styles.settingsItem}
+              data-testid="settings-manage-subscription"
+              onPress={() => {
+                // Apple's universal deep-link surface for the user's
+                // active App Store subscriptions list.
+                Linking.openURL('https://apps.apple.com/account/subscriptions').catch(() => {});
+              }}
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="cog-outline" size={20} color="#FFD700" />
+                <View>
+                  <Text style={styles.settingsItemText}>Manage in App Store</Text>
+                  <Text style={styles.settingsItemSubtext}>Change plan, cancel, or update billing</Text>
+                </View>
+              </View>
+              <Ionicons name="open-outline" size={18} color="#666" />
+            </TouchableOpacity>
+          ) : null}
+
+          {!hasActiveAccess ? (
+            <TouchableOpacity
+              style={styles.settingsItem}
+              data-testid="settings-subscribe"
+              onPress={() => openPaywall('settings_subscribe')}
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="sparkles" size={20} color="#FFD700" />
+                <View>
+                  <Text style={styles.settingsItemText}>Start 7-day free trial</Text>
+                  <Text style={styles.settingsItemSubtext}>Unlock unlimited workouts + live HR</Text>
+                </View>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color="#666" />
+            </TouchableOpacity>
+          ) : null}
+
+          <TouchableOpacity
+            style={styles.settingsItem}
+            data-testid="settings-restore-purchases"
+            onPress={() => {
+              // PHASE C — wire to `Transaction.currentEntitlements`.
+              Analytics.settingsRestorePurchasesTapped(token, {});
+            }}
+          >
+            <View style={styles.settingsItemLeft}>
+              <Ionicons name="refresh-outline" size={20} color="#FFD700" />
+              <View>
+                <Text style={styles.settingsItemText}>Restore Purchases</Text>
+                <Text style={styles.settingsItemSubtext}>Re-sync your active subscription</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* Health Data Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Health Data</Text>
+
+          {healthAvailable ? (
+            <TouchableOpacity
+              style={styles.settingsItem}
+              data-testid="settings-health-row"
+              onPress={async () => {
+                if (token) {
+                  Analytics.settingsHealthRowTapped(token, {
+                    status: healthStatus,
+                  });
+                }
+                if (healthStatus === 'determined') {
+                  // Deep-link to iOS Settings so the user can fine-tune per-metric grants.
+                  Linking.openURL('x-apple-health://').catch(() => {
+                    Linking.openURL('app-settings:').catch(() => {});
+                  });
+                } else {
+                  await requestHealthPermissions();
+                }
+              }}
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="heart-outline" size={20} color="#FFD700" />
+                <View>
+                  <Text style={styles.settingsItemText}>
+                    {healthStatus === 'determined' ? 'Manage in iOS Settings' : 'Connect Apple Health'}
+                  </Text>
+                  <Text style={styles.settingsItemSubtext}>
+                    {healthStatus === 'determined'
+                      ? 'Recovery metrics connected'
+                      : 'Read 5 recovery metrics to personalize workouts'}
+                  </Text>
+                </View>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color="#666" />
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.settingsItem}>
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="heart-outline" size={20} color="#555" />
+                <View>
+                  <Text style={[styles.settingsItemText, { color: '#888' }]}>Apple Health unavailable</Text>
+                  <Text style={styles.settingsItemSubtext}>Only supported on iPhone</Text>
+                </View>
+              </View>
+            </View>
+          )}
+
+          <Text style={styles.healthFooter}>
+            MOOD reads 5 metrics. We never write, sell, or share your health data.
+          </Text>
+
+          {/* Wearable Data drill-down — surfaces every tracked metric in
+              a dedicated screen. Always available (handles its own empty
+              state when HealthKit is offline or no data has synced yet). */}
+          <TouchableOpacity
+            style={styles.settingsItem}
+            onPress={() => router.push('/wearable-data')}
+            testID="settings-wearable-data-row"
+            // @ts-ignore — RN treats `data-testid` as a string prop on web.
+            data-testid="settings-wearable-data-row"
+          >
+            <View style={styles.settingsItemLeft}>
+              <Ionicons name="watch-outline" size={20} color="#FFD700" />
+              <View>
+                <Text style={styles.settingsItemText}>Wearable Data</Text>
+                <Text style={styles.settingsItemSubtext}>
+                  View metrics from your watch & wearables
+                </Text>
+              </View>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="#666" />
+          </TouchableOpacity>
+        </View>
+
         {/* Legal Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Legal</Text>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={() => router.push('/terms-of-service')}
           >
@@ -522,10 +751,159 @@ export default function Settings() {
           </TouchableOpacity>
         </View>
 
+        {/* Push Notifications — admin-only debug tools */}
+        {isAdmin && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Push Notifications</Text>
+          
+          {/* Status row — derived from OS permission + stored token */}
+          {notifStatus.permission === 'granted' && notifStatus.pushToken ? (
+            // Registered & active
+            <>
+              <View style={styles.settingsItem}>
+                <View style={styles.settingsItemLeft}>
+                  <Ionicons name="notifications" size={20} color="#4CAF50" />
+                  <View>
+                    <Text style={styles.settingsItemText}>Notifications Active</Text>
+                    <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#4CAF50' }]}>
+                      Token registered to your account
+                    </Text>
+                  </View>
+                </View>
+                <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
+              </View>
+
+              {/* Re-register (e.g. after reinstall) */}
+              <TouchableOpacity
+                style={styles.settingsItem}
+                data-testid="push-reregister-btn"
+                onPress={async () => {
+                  if (!token) return;
+                  setPushRefreshing(true);
+                  const s = await initNotifications(token);
+                  setNotifStatus(s);
+                  setPushRefreshing(false);
+                  Alert.alert('Refreshed', s.registeredWithBackend ? 'Token re-registered with backend.' : 'Could not reach backend.');
+                }}
+              >
+                <View style={styles.settingsItemLeft}>
+                  <Ionicons name="refresh-outline" size={20} color="#FFD700" />
+                  <Text style={styles.settingsItemText}>{pushRefreshing ? 'Refreshing...' : 'Re-register Token'}</Text>
+                </View>
+                {pushRefreshing ? <ActivityIndicator size="small" color="#FFD700" /> : <Ionicons name="chevron-forward" size={18} color="#666" />}
+              </TouchableOpacity>
+
+              {/* Token display */}
+              <View style={styles.settingsItem}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.settingsItemText}>Expo Push Token</Text>
+                  <Text 
+                    selectable 
+                    style={{ marginTop: 6, fontSize: 11, color: '#aaa', fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' }}
+                    data-testid="push-token-display"
+                  >
+                    {notifStatus.pushToken}
+                  </Text>
+                </View>
+              </View>
+
+              {/* Copy token */}
+              <TouchableOpacity
+                style={styles.settingsItem}
+                data-testid="push-copy-token-btn"
+                onPress={async () => {
+                  try {
+                    const ClipboardModule = require('expo-clipboard');
+                    await ClipboardModule.setStringAsync(notifStatus.pushToken);
+                  } catch {
+                    // expo-clipboard not available, token is selectable text
+                  }
+                  Alert.alert('Copied', 'Push token copied to clipboard');
+                }}
+              >
+                <View style={styles.settingsItemLeft}>
+                  <Ionicons name="copy-outline" size={20} color="#FFD700" />
+                  <Text style={styles.settingsItemText}>Copy Token</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={18} color="#666" />
+              </TouchableOpacity>
+            </>
+          ) : notifStatus.permission === 'denied' ? (
+            // Denied — "Open Settings" CTA, never re-request
+            <TouchableOpacity
+              style={styles.settingsItem}
+              data-testid="push-open-settings-btn"
+              onPress={() => openNotificationSettings()}
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="notifications-off-outline" size={20} color="#FF6B6B" />
+                <View>
+                  <Text style={styles.settingsItemText}>Notifications Disabled</Text>
+                  <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#FF6B6B' }]}>
+                    Tap to open Settings and enable notifications
+                  </Text>
+                </View>
+              </View>
+              <Ionicons name="open-outline" size={18} color="#666" />
+            </TouchableOpacity>
+          ) : (
+            // Undetermined or loading
+            <View style={styles.settingsItem}>
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="notifications-outline" size={20} color="#FFD700" />
+                <View>
+                  <Text style={styles.settingsItemText}>Notification Status</Text>
+                  <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#888' }]}>
+                    Checking permission...
+                  </Text>
+                </View>
+              </View>
+              <ActivityIndicator size="small" color="#FFD700" />
+            </View>
+          )}
+
+          {/* Test local notification */}
+          <TouchableOpacity
+            style={styles.settingsItem}
+            data-testid="push-test-local-btn"
+            onPress={async () => {
+              try {
+                const Notifications = require('expo-notifications');
+                await Notifications.scheduleNotificationAsync({
+                  content: {
+                    title: 'MOOD Test Notification',
+                    body: 'Push notifications are working!',
+                    data: { type: 'test' },
+                  },
+                  trigger: null,
+                });
+                Alert.alert('Sent', 'Local test notification fired');
+              } catch (err: any) {
+                Alert.alert('Error', err?.message || 'Could not send notification');
+              }
+            }}
+          >
+            <View style={styles.settingsItemLeft}>
+              <Ionicons name="notifications-circle-outline" size={20} color="#FFD700" />
+              <Text style={styles.settingsItemText}>Test Local Notification</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="#666" />
+          </TouchableOpacity>
+        </View>
+        )}
+
         {/* App Info */}
         <View style={styles.appInfo}>
           <Text style={styles.appVersion}>Version 1.0.0</Text>
         </View>
+
+        {/* Admin Debug Info (temporary) */}
+        {isAdmin && debugInfo !== '' && (
+          <View style={{ backgroundColor: '#1a1a1a', borderRadius: 8, padding: 12, marginHorizontal: 16, marginBottom: 16 }}>
+            <Text style={{ color: '#FF6B6B', fontWeight: '700', fontSize: 12, marginBottom: 6 }}>Admin Debug</Text>
+            <Text selectable style={{ color: '#aaa', fontSize: 11, fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace', lineHeight: 18 }}>{debugInfo}</Text>
+          </View>
+        )}
 
         {/* Sign Out Button */}
         <TouchableOpacity 
@@ -1076,5 +1454,74 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
     marginTop: 2,
+  },
+  healthFooter: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 6,
+    marginBottom: 4,
+    paddingHorizontal: 4,
+    lineHeight: 18,
+  },
+  credentialsDescription: {
+    fontSize: 15,
+    color: '#999',
+    lineHeight: 22,
+    marginBottom: 24,
+  },
+  inputSection: {
+    marginBottom: 20,
+  },
+  inputLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 8,
+  },
+  credentialInput: {
+    backgroundColor: '#1a1a1a',
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 16,
+    color: '#fff',
+    borderWidth: 1,
+    borderColor: '#333',
+  },
+  passwordInputContainer: {
+    position: 'relative',
+  },
+  eyeButton: {
+    position: 'absolute',
+    right: 16,
+    top: 16,
+    padding: 4,
+  },
+  dividerLine: {
+    height: 1,
+    backgroundColor: '#333',
+    marginVertical: 20,
+  },
+  credentialsNote: {
+    fontSize: 13,
+    color: '#666',
+    lineHeight: 20,
+    marginTop: 8,
+    marginBottom: 24,
+    fontStyle: 'italic',
+  },
+  updateButton: {
+    backgroundColor: '#FFD700',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  updateButtonDisabled: {
+    backgroundColor: '#333',
+  },
+  updateButtonText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#000',
   },
 });

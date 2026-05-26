@@ -10,7 +10,7 @@ import {
   Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Workout } from '../types/workout';
 import CustomWorkoutModal from './CustomWorkoutModal';
@@ -499,14 +499,16 @@ const styles = StyleSheet.create({
   dotsRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 12,
+    flexWrap: 'wrap',
+    gap: 6,
+    paddingHorizontal: 16,
   },
   dot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    width: 9,
+    height: 9,
+    borderRadius: 5,
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    borderWidth: 2,
+    borderWidth: 1.5,
     borderColor: 'rgba(255, 215, 0, 0.3)',
   },
   activeDot: {
@@ -519,20 +521,20 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   dotTouchArea: {
-    padding: 8,
+    padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    minWidth: 32,
-    minHeight: 32,
-    borderRadius: 16,
+    minWidth: 22,
+    minHeight: 22,
+    borderRadius: 11,
   },
   activeDotTouchArea: {
-    padding: 8,
+    padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    minWidth: 32,
-    minHeight: 32,
-    borderRadius: 16,
+    minWidth: 22,
+    minHeight: 22,
+    borderRadius: 11,
     backgroundColor: 'rgba(255, 215, 0, 0.1)',
   },
 });

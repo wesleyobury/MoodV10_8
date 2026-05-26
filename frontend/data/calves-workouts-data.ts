@@ -24,7 +24,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control descent, feel full stretch low',
               description: 'Controlled eccentric maximizes muscle development and safety.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Seated DB Calf Raise',
@@ -44,7 +48,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control stretch, avoid bouncing weight',
               description: 'Smooth movement prevents injury and maintains muscle tension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Dumbbell Supported Calf Raise',
@@ -69,7 +77,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow tempo',
               description: 'Improves mind–muscle connection.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -91,7 +103,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Rise high, control stretch, no bouncing',
               description: 'Full range with control maximizes unilateral calf development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'DB Calf Raise (Tempo + Bodyweight)',
@@ -111,7 +127,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with quick bodyweight reps',
               description: 'High-rep finisher extends training stimulus beyond failure.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Dumbbell Single-Leg Calf Raise',
@@ -136,7 +156,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control balance first',
               description: 'Stability before weight.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -158,7 +182,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Maintain full range across all drops',
               description: 'Consistent form throughout drops ensures continued effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'DB Calf Raise (Iso + Jumps)',
@@ -178,7 +206,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode into jumps, land soft on balls',
               description: 'Plyometric finish develops power and completes muscle fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Dumbbell Calf Raise Ladder',
@@ -203,7 +235,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with burn',
               description: 'Last rung should sting.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         }
       ]
     }
@@ -231,7 +267,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control descent, feel full stretch low',
               description: 'Full range of motion maximizes muscle development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Barbell Calf Raise (Elevated)',
@@ -251,7 +291,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control stretch, rise high on toes',
               description: 'Extended range maximizes muscle activation and development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Barbell Standing Calf Raise',
@@ -276,7 +320,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pause at top',
               description: 'Brief squeeze improves activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -298,7 +346,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with quick bodyweight reps',
               description: 'High-rep finisher extends stimulus beyond normal capacity.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Barbell Calf Raise (Tempo)',
@@ -318,7 +370,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep full range, don\'t cut reps short',
               description: 'Complete range of motion ensures maximum muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Barbell Tempo Calf Raise',
@@ -343,7 +399,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No bouncing reps',
               description: 'Momentum kills tension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -365,7 +425,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Maintain full range across all drops',
               description: 'Consistent form throughout ensures continued effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Barbell Calf Raise (Iso + Jumps)',
@@ -385,7 +449,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode into jumps, land soft on balls',
               description: 'Plyometric finish develops power and completes fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Barbell Calf Raise Drop Set',
@@ -410,7 +478,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase deep burn',
               description: 'Calves should fatigue fully.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -438,7 +510,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Press through balls of feet, full stretch',
               description: 'Complete range maximizes calf muscle development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Leg Press Calf Raise (Toes Out)',
@@ -458,7 +534,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control stretch, rise high on toes',
               description: 'Full range with angle variation maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Leg Press Calf Raise',
@@ -483,7 +563,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow controlled reps',
               description: 'No bouncing off sled.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -505,7 +589,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Press through ball of foot, full stretch',
               description: 'Complete range ensures maximum unilateral development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Leg Press Calf Raise',
@@ -525,7 +613,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with quick bodyweight reps',
               description: 'High-rep finisher extends training beyond machine capacity.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Leg Press Calf Pause',
@@ -550,7 +642,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Consistent tempo',
               description: 'Avoid rushing reps.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -572,7 +668,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Maintain full range across all drops',
               description: 'Consistent form throughout drops ensures effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Leg Press Calf Raise (Iso + Jumps)',
@@ -592,7 +692,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode into jumps, land soft on balls',
               description: 'Plyometric finish develops power and completes muscle fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Leg Press Calf Drop Set',
@@ -617,7 +721,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Expect deep burn',
               description: 'Calves fatigue hard here.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -645,7 +753,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control descent, feel full stretch low',
               description: 'Full range of motion maximizes muscle development safely.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Seated Calf Raise Machine',
@@ -665,7 +777,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control stretch, avoid bouncing weight',
               description: 'Smooth movement maintains tension and prevents injury.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Machine Calf Raise',
@@ -690,7 +806,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Controlled stretch',
               description: 'Heels lower slowly each rep.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -712,7 +832,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Press through ball of foot, full stretch',
               description: 'Complete range ensures maximum unilateral development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Calf Raise Machine',
@@ -732,7 +856,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with quick bodyweight reps',
               description: 'High-rep finisher extends training beyond machine limit.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Pause Machine Calf Raise',
@@ -757,7 +885,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth breathing',
               description: 'Helps sustain long sets.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -779,7 +911,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Maintain full range across all drops',
               description: 'Consistent form throughout ensures continued effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Calf Raise Machine (Iso + Jumps)',
@@ -799,7 +935,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode into jumps, land soft on balls',
               description: 'Plyometric finish develops power and completes muscle fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Machine Calf Burnout Set',
@@ -824,7 +964,11 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Burn should peak late',
               description: 'Finish set near true failure.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'calf_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }

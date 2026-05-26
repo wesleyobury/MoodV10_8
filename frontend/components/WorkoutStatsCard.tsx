@@ -1,8 +1,16 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, Animated, Easing } from 'react-native';
-import Svg, { Circle, G, Defs, LinearGradient, Stop } from 'react-native-svg';
-import { LinearGradient as ExpoLinearGradient } from 'expo-linear-gradient';
-import MaskedView from '@react-native-masked-view/masked-view';
+import Svg, { Circle, G, Defs, LinearGradient, Stop, Path } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
+import { SafeLinearGradient as ExpoLinearGradient } from './SafeLinearGradient';
+
+// Safely import MaskedView - it can fail in production iOS builds
+let MaskedView: any = null;
+try {
+  MaskedView = require('@react-native-masked-view/masked-view').default;
+} catch (error) {
+  console.warn('@react-native-masked-view not available:', error);
+}
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.88;
@@ -106,7 +114,14 @@ interface WorkoutStatsCardProps {
   editedCalories?: number;
   calorieTarget?: number;
   minuteTarget?: number;
-  showRingPulse?: boolean; // Enable soft pulsing animation on rings for share screen
+  showRingPulse?: boolean;
+  showEquipment?: boolean;
+  variant?: 'rings' | 'simple' | 'heartrate';
+  /** Real heart-rate samples (BPM) captured during the workout. When non-empty
+   *  and `variant === 'heartrate'`, these replace the synthesized curve. */
+  heartRateSamples?: number[];
+  /** Real avg/peak from the captured samples; falls back to synth if absent. */
+  heartRateRealStats?: { avg: number; peak: number };
 }
 
 // Calculate intensity percentage based on workout characteristics
@@ -147,6 +162,78 @@ function getStrokeDasharray(progress: number, radius: number): { dashArray: stri
   };
 }
 
+// Synthesize a plausible Apple-Watch-style heart-rate curve from intensity + duration.
+// Warm-up rise, plateau with interval variation, cool-down.
+// `seed` (0..1) drives a mulberry32 PRNG so each session looks unique but the
+// same seed always reproduces the same curve (stable across re-renders).
+function computeHeartRate(intensity: number, durationMin: number, seed: number = 0): {
+  points: number[]; avg: number; peak: number;
+} {
+  // mulberry32 — tiny seeded PRNG
+  let s = Math.floor((seed || 0.1234567) * 4294967296) | 0;
+  const rnd = (): number => {
+    s = (s + 0x6D2B79F5) | 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const COUNT = 40;
+  const base = 68 + Math.round(rnd() * 6); // resting 68–74
+  const peakBpm = Math.round(base + Math.min(Math.max(intensity, 0.3), 0.95) * (95 + rnd() * 25));
+  const wavePhase = rnd() * Math.PI * 2;
+  const microPhase = rnd() * Math.PI * 2;
+  const intervalPhase = rnd() * Math.PI * 2;
+  const points: number[] = [];
+  for (let i = 0; i < COUNT; i++) {
+    const t = i / (COUNT - 1);
+    let bpm: number;
+    if (t < 0.12) {
+      bpm = base + (peakBpm - base) * (t / 0.12) * (0.65 + rnd() * 0.2);
+    } else if (t > 0.9) {
+      bpm = base + 18 + (peakBpm - base) * ((1 - t) / 0.1) * 0.4;
+    } else {
+      const localWave = Math.sin(t * Math.PI * 6 + wavePhase) * (7 + rnd() * 4);
+      const microWave = Math.sin(t * Math.PI * 16 + microPhase) * (3 + rnd() * 3);
+      const intervalSpike = Math.sin(t * Math.PI * 3.2 + intervalPhase) * (5 + rnd() * 4);
+      const jitter = (rnd() - 0.5) * 3;
+      bpm = peakBpm * 0.86 + localWave + microWave + intervalSpike + jitter;
+    }
+    points.push(Math.max(60, Math.min(peakBpm + 4, Math.round(bpm))));
+  }
+  const peak = Math.max(...points);
+  const avg = Math.round(points.reduce((a, b) => a + b, 0) / points.length);
+  return { points, avg, peak };
+}
+
+// Build an SVG path string for the heart-rate area chart.
+function buildHeartRatePath(points: number[], width: number, height: number, padding = 4): {
+  line: string; area: string;
+} {
+  if (points.length === 0) return { line: '', area: '' };
+  const min = Math.min(...points) - 5;
+  const max = Math.max(...points) + 5;
+  const range = Math.max(max - min, 1);
+  const innerW = width - padding * 2;
+  const innerH = height - padding * 2;
+  const step = innerW / (points.length - 1);
+  const coords = points.map((p, i) => {
+    const x = padding + i * step;
+    const y = padding + innerH - ((p - min) / range) * innerH;
+    return { x, y };
+  });
+  let line = `M ${coords[0].x.toFixed(1)} ${coords[0].y.toFixed(1)}`;
+  for (let i = 1; i < coords.length; i++) {
+    const prev = coords[i - 1];
+    const cur = coords[i];
+    const cpx = (prev.x + cur.x) / 2;
+    line += ` Q ${cpx.toFixed(1)} ${prev.y.toFixed(1)}, ${cur.x.toFixed(1)} ${cur.y.toFixed(1)}`;
+  }
+  const area =
+    `${line} L ${coords[coords.length - 1].x.toFixed(1)} ${(padding + innerH).toFixed(1)} ` +
+    `L ${coords[0].x.toFixed(1)} ${(padding + innerH).toFixed(1)} Z`;
+  return { line, area };
+}
+
 export default function WorkoutStatsCard({ 
   workouts, 
   totalDuration, 
@@ -158,6 +245,10 @@ export default function WorkoutStatsCard({
   calorieTarget = DEFAULT_CALORIE_TARGET,
   minuteTarget = DEFAULT_MINUTE_TARGET,
   showRingPulse = false,
+  showEquipment = false,
+  variant = 'rings',
+  heartRateSamples,
+  heartRateRealStats,
 }: WorkoutStatsCardProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -442,6 +533,193 @@ export default function WorkoutStatsCard({
     );
   };
 
+  // Per-mount random seed for heart-rate variant. Real tracking will replace this.
+  const [hrSeed] = useState<number>(() => Math.random());
+
+  // MOOD header that exactly matches the landing page (index.tsx).
+  // Landing recipe: fontSize 48 / bold / letterSpacing 2 / center-mask /
+  // LinearGradient #FFD700 → #FFA500 horizontal. MaskedView is loaded with a
+  // safe-import fallback at module top — when unavailable, render flat gold.
+  const renderMoodHeader = () => {
+    const moodTextStyle = [
+      styles.altMoodHeader,
+      transparent && styles.altTextShadow,
+    ];
+    if (!MaskedView) {
+      return <Text style={moodTextStyle}>MOOD</Text>;
+    }
+    return (
+      <View style={styles.altMoodHeaderWrap}>
+        <MaskedView
+          maskElement={<Text style={moodTextStyle}>MOOD</Text>}
+        >
+          <ExpoLinearGradient
+            colors={['#FFD700', '#FFA500']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.altMoodGradient}
+          />
+        </MaskedView>
+      </View>
+    );
+  };
+
+  // ============================================
+  // ALT VARIANTS: SIMPLE + HEARTRATE
+  // ============================================
+  // Two-word split label for the bottom-right stat slot (e.g. "LEG / DAY").
+  const splitLabel = useMemo(() => {
+    const raw = (displayMoodCategory || 'WORKOUT').toUpperCase().trim();
+    const words = raw.split(/[\s\/]+/).filter(Boolean);
+    if (words.length === 0) return ['MOOD'];
+    if (words.length === 1) return [words[0]];
+    return [words[0], words[1]];
+  }, [displayMoodCategory]);
+
+  const heartRate = useMemo(
+    () => computeHeartRate(intensityValue, displayDuration, hrSeed),
+    [intensityValue, displayDuration, hrSeed]
+  );
+
+  // Shared frame: dark card when opaque, fully transparent when used as IG overlay.
+  const wrapInFrame = (content: React.ReactNode) => {
+    if (transparent) {
+      return (
+        <View style={[styles.transparentContainer, { width: CARD_WIDTH, height: CARD_HEIGHT }]}>
+          {content}
+        </View>
+      );
+    }
+    return (
+      <Animated.View style={[styles.container, { width: CARD_WIDTH, height: CARD_HEIGHT, opacity: fadeAnim }]}>
+        <View style={styles.innerContainer}>
+          <ExpoLinearGradient
+            colors={['rgba(255, 215, 0, 0.05)', 'rgba(255, 215, 0, 0.01)', 'transparent']}
+            style={styles.radialGradient}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 0.5 }}
+          />
+          {content}
+        </View>
+      </Animated.View>
+    );
+  };
+
+  // Exercise list shared by simple + heartrate variants.
+  const renderExerciseList = () => (
+    <View style={styles.altExercisesSection}>
+      {workouts.slice(0, 5).map((workout, index) => {
+        const name = workout.workoutTitle || workout.workoutName;
+        const label = showEquipment && workout.equipment && workout.equipment !== 'None'
+          ? `${name} \u2022 ${workout.equipment}`
+          : name;
+        const display = label.length > 36 ? label.slice(0, 33) + '...' : label;
+        return (
+          <View key={index} style={styles.altExerciseRow}>
+            <View style={styles.altExerciseDot} />
+            <Text style={[styles.altExerciseText, transparent && styles.altTextShadow]} numberOfLines={1}>
+              {display}
+            </Text>
+          </View>
+        );
+      })}
+      {workouts.length > 5 && (
+        <Text style={[styles.altMoreExercises, transparent && styles.altTextShadow]}>
+          +{workouts.length - 5} more
+        </Text>
+      )}
+    </View>
+  );
+
+  // ---- Variant: SIMPLE — MOOD header + exercises + 4-stat bottom pill
+  if (variant === 'simple') {
+    return wrapInFrame(
+      <View style={styles.altCardInner}>
+        {renderMoodHeader()}
+        {renderExerciseList()}
+        {/* Stats row — Cal · Min · Intensity · Mood-split. All four values
+            share the same neutral white treatment (no gold accent) for a
+            consistent, less-busy IG sticker. The split label uses
+            numberOfLines={1} + adjustsFontSizeToFit so multi-word
+            categories like "MUSCLE GAINER" never break mid-word. */}
+        <View style={styles.simpleStatsPill}>
+          <View style={styles.simpleStatCell}>
+            <Text style={styles.simpleStatValue}>{estimatedCalories}</Text>
+            <Text style={styles.simpleStatLabel}>CAL</Text>
+          </View>
+          <View style={styles.simpleStatDivider} />
+          <View style={styles.simpleStatCell}>
+            <Text style={styles.simpleStatValue}>{displayDuration}</Text>
+            <Text style={styles.simpleStatLabel}>MIN</Text>
+          </View>
+          <View style={styles.simpleStatDivider} />
+          <View style={styles.simpleStatCell}>
+            <Text style={styles.simpleStatValue}>{Math.round(intensityValue * 100)}%</Text>
+            <Text style={styles.simpleStatLabel}>INTENSITY</Text>
+          </View>
+          <View style={styles.simpleStatDivider} />
+          <View style={styles.simpleStatCell}>
+            {splitLabel.map((w, i) => (
+              <Text
+                key={i}
+                style={styles.simpleStatValueSplit}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.55}
+                ellipsizeMode="clip"
+              >
+                {w}
+              </Text>
+            ))}
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  // ---- Variant: HEARTRATE — MOOD header + exercises + HR area chart.
+  // When real Apple-Watch samples were captured for this session, swap them in
+  // for the synthesized curve. Otherwise we fall back to the deterministic
+  // synth so the share card never looks empty.
+  if (variant === 'heartrate') {
+    const chartW = CARD_WIDTH - 56;
+    const chartH = 110;
+    const usingReal = !!(heartRateSamples && heartRateSamples.length >= 2);
+    const points = usingReal ? heartRateSamples! : heartRate.points;
+    const avg = usingReal ? (heartRateRealStats?.avg ?? Math.round(points.reduce((a, b) => a + b, 0) / points.length)) : heartRate.avg;
+    const peak = usingReal ? (heartRateRealStats?.peak ?? Math.max(...points)) : heartRate.peak;
+    const { line, area } = buildHeartRatePath(points, chartW, chartH);
+    return wrapInFrame(
+      <View style={styles.altCardInner}>
+        {renderMoodHeader()}
+        {renderExerciseList()}
+        <View style={styles.hrSection}>
+          <View style={styles.hrHeaderRow}>
+            <View style={styles.hrHeaderLeft}>
+              <Ionicons name="heart" size={11} color="#FFD700" />
+              <Text style={[styles.hrLabel, transparent && styles.altTextShadow]}>HEART RATE</Text>
+            </View>
+            <Text style={[styles.hrStat, transparent && styles.altTextShadow]}>
+              avg <Text style={styles.hrStatValue}>{avg}</Text>  ·  peak <Text style={styles.hrStatValue}>{peak}</Text>  bpm
+            </Text>
+          </View>
+          <View style={styles.hrChartContainer}>
+            <Svg width={chartW} height={chartH}>
+              <Defs>
+                <LinearGradient id="hrAreaGradient" x1="0" y1="0" x2="0" y2="1">
+                  <Stop offset="0%" stopColor="#FFD700" stopOpacity="0.55" />
+                  <Stop offset="100%" stopColor="#FFD700" stopOpacity="0.02" />
+                </LinearGradient>
+              </Defs>
+              <Path d={area} fill="url(#hrAreaGradient)" />
+              <Path d={line} stroke="#FFD700" strokeWidth={1.8} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </Svg>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   // ============================================
   // TRANSPARENT VERSION (Instagram Stories Export)
   // ============================================
@@ -489,14 +767,21 @@ export default function WorkoutStatsCard({
 
           {/* Exercises List - below rings */}
           <View style={styles.transparentExercisesSection}>
-            {workouts.slice(0, 4).map((workout, index) => (
-              <View key={index} style={styles.transparentExerciseRow}>
-                <View style={styles.transparentExerciseDot} />
-                <Text style={styles.transparentExerciseText} numberOfLines={1}>
-                  {workout.workoutTitle || workout.workoutName}
-                </Text>
-              </View>
-            ))}
+            {workouts.slice(0, 4).map((workout, index) => {
+              const name = workout.workoutTitle || workout.workoutName;
+              const label = showEquipment && workout.equipment && workout.equipment !== 'None'
+                ? `${name} \u2022 ${workout.equipment}`
+                : name;
+              const display = label.length > 40 ? label.slice(0, 37) + '...' : label;
+              return (
+                <View key={index} style={styles.transparentExerciseRow}>
+                  <View style={styles.transparentExerciseDot} />
+                  <Text style={styles.transparentExerciseText} numberOfLines={1}>
+                    {display}
+                  </Text>
+                </View>
+              );
+            })}
             {workouts.length > 4 && (
               <Text style={styles.transparentMoreExercises}>+{workouts.length - 4} more</Text>
             )}
@@ -541,7 +826,8 @@ export default function WorkoutStatsCard({
           
           <Animated.View style={[styles.ringContainer, { transform: [{ scale: pulseAnim }] }]}>
             {/* Use MaskedView to apply shimmer ONLY to the ring shapes */}
-            {showRingPulse ? (
+            {/* Falls back to simple rings if MaskedView not available */}
+            {showRingPulse && MaskedView ? (
               <MaskedView
                 style={styles.maskedRingContainer}
                 maskElement={
@@ -614,14 +900,21 @@ export default function WorkoutStatsCard({
 
         {/* Exercises */}
         <View style={styles.exercisesSection}>
-          {workouts.slice(0, 4).map((workout, index) => (
-            <View key={index} style={styles.exerciseRow}>
-              <View style={styles.exerciseDot} />
-              <Text style={styles.exerciseText} numberOfLines={1}>
-                {workout.workoutTitle || workout.workoutName}
-              </Text>
-            </View>
-          ))}
+          {workouts.slice(0, 4).map((workout, index) => {
+            const name = workout.workoutTitle || workout.workoutName;
+            const label = showEquipment && workout.equipment && workout.equipment !== 'None'
+              ? `${name} \u2022 ${workout.equipment}`
+              : name;
+            const display = label.length > 40 ? label.slice(0, 37) + '...' : label;
+            return (
+              <View key={index} style={styles.exerciseRow}>
+                <View style={styles.exerciseDot} />
+                <Text style={styles.exerciseText} numberOfLines={1}>
+                  {display}
+                </Text>
+              </View>
+            );
+          })}
           {workouts.length > 4 && (
             <Text style={styles.moreExercises}>+{workouts.length - 4} more</Text>
           )}
@@ -823,7 +1116,7 @@ const styles = StyleSheet.create({
   // TRANSPARENT/INSTAGRAM EXPORT STYLES
   // ============================================
   transparentContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    backgroundColor: 'transparent',
     borderRadius: 0,
     overflow: 'hidden',
     justifyContent: 'space-between',
@@ -838,12 +1131,18 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#FFFFFF',
     letterSpacing: 0.5,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   transparentSubtitle: {
     fontSize: 8,
-    color: 'rgba(255, 255, 255, 0.5)',
+    color: '#FFFFFF',
     letterSpacing: 0.5,
     marginTop: 3,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   
   // Centered content wrapper
@@ -889,11 +1188,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#FFFFFF',
     minWidth: 40,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   transparentDataLabel: {
     fontSize: 10,
-    color: 'rgba(255, 255, 255, 0.5)',
+    color: '#FFFFFF',
     marginLeft: 3,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   
   // Center content for rings (calorie inside)
@@ -907,11 +1212,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: COLORS.caloriesStart,
     letterSpacing: -0.5,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   transparentCenterCalorieLabel: {
     fontSize: 9,
-    color: 'rgba(255, 255, 255, 0.6)',
+    color: '#FFFFFF',
     marginTop: 1,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   
   // Exercises below rings
@@ -934,14 +1245,20 @@ const styles = StyleSheet.create({
   transparentExerciseText: {
     flex: 1,
     fontSize: 11,
-    color: 'rgba(255, 255, 255, 0.75)',
+    color: '#FFFFFF',
     fontWeight: '400',
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   transparentMoreExercises: {
     fontSize: 9,
-    color: 'rgba(255, 255, 255, 0.5)',
+    color: '#FFFFFF',
     marginTop: 3,
     fontStyle: 'italic',
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   
   transparentFooter: {
@@ -949,9 +1266,172 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   transparentBrandText: {
-    fontSize: 10,
+    fontSize: 14,
     color: '#FFD700',
     fontWeight: '700',
-    letterSpacing: 3,
+    letterSpacing: 4,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
+  },
+
+  // ============================================
+  // ALT VARIANTS — SIMPLE + HEARTRATE
+  // Typography mirrors the rings variant + featured workout title:
+  // - MOOD header uses the same fontWeight as workoutTitle (800), sized up + gold.
+  // - Exercise rows match rings variant's exerciseText (12/400/white@60%).
+  // - Gold accents come from the brand's #FFD700.
+  // ============================================
+  altCardInner: {
+    flex: 1,
+    paddingTop: 24,
+    paddingHorizontal: 20,
+    paddingBottom: 18,
+  },
+  altMoodHeader: {
+    // EXACT match to landing page (index.tsx → styles.title)
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#fff',
+    letterSpacing: 2,
+    textAlign: 'left',
+  },
+  altMoodHeaderWrap: {
+    height: 60,
+    alignSelf: 'flex-start',
+  },
+  altMoodGradient: {
+    width: 200,
+    height: 60,
+  },
+  altTextShadow: {
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
+  },
+  altExercisesSection: {
+    flex: 1,
+    marginTop: 12,
+    justifyContent: 'flex-start',
+    paddingHorizontal: 0,
+  },
+  altExerciseRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 7,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.04)',
+  },
+  altExerciseDot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255, 215, 0, 0.5)',
+    marginRight: 10,
+  },
+  altExerciseText: {
+    flex: 1,
+    fontSize: 12,
+    color: 'rgba(255, 255, 255, 0.6)',
+    fontWeight: '400',
+  },
+  altMoreExercises: {
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.3)',
+    textAlign: 'center',
+    marginTop: 6,
+    fontStyle: 'italic',
+  },
+
+  // SIMPLE — 4-stat bottom pill. Stat typography mirrors the rings variant's
+  // durationValue/centerCalorieValue/intensityValue: thin (300/400), -1
+  // letterSpacing, gold accent on CAL + SPLIT, white on MIN + INTENSITY.
+  simpleStatsPill: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    height: 90,
+    backgroundColor: 'rgba(10, 10, 10, 0.92)',
+    borderRadius: 16,
+    paddingVertical: 10,
+    marginTop: 8,
+  },
+  simpleStatCell: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  simpleStatDivider: {
+    width: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+    marginVertical: 12,
+  },
+  simpleStatValue: {
+    // matches rings variant durationValue: 24/300/-1/white
+    fontSize: 24,
+    fontWeight: '300',
+    color: '#FFFFFF',
+    letterSpacing: -1,
+    lineHeight: 28,
+  },
+  simpleStatValueSplit: {
+    // thin matches the rest of the pill; smaller because two lines stack
+    fontSize: 15,
+    fontWeight: '300',
+    letterSpacing: 0,
+    lineHeight: 18,
+    textAlign: 'center',
+  },
+  simpleStatValueGold: {
+    color: '#FFD700',
+  },
+  simpleStatLabel: {
+    // matches rings variant centerCalorieLabel: 9/white@50%
+    fontSize: 9,
+    color: 'rgba(255, 255, 255, 0.5)',
+    letterSpacing: 1.2,
+    marginTop: 3,
+    fontWeight: '400',
+  },
+
+  // HEARTRATE — gold theme to match brand
+  hrSection: {
+    marginTop: 6,
+  },
+  hrHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  hrHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  hrLabel: {
+    fontSize: 10,
+    color: '#FFD700',
+    fontWeight: '600',
+    letterSpacing: 2,
+  },
+  hrStat: {
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.45)',
+    letterSpacing: 0.5,
+  },
+  hrStatValue: {
+    color: '#FFD700',
+    fontWeight: '700',
+  },
+  hrChartContainer: {
+    // Heart-rate chart sits on the dark card body; no tinted background
+    // (previously had a 4% gold wash that read as a translucent rectangle
+    // through the IG transparent overlay). Keep the rounded paddings so
+    // the SVG line/area still has breathing room.
+    backgroundColor: 'transparent',
+    borderRadius: 14,
+    paddingVertical: 6,
+    paddingHorizontal: 4,
   },
 });

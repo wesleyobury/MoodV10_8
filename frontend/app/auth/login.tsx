@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { useAuth } from '../../contexts/AuthContext';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,8 +20,8 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import Constants from 'expo-constants';
-
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../../utils/apiConfig';
+import { secureStorage, AUTH_TOKEN_KEY } from '../../utils/secureStorage';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -68,8 +68,29 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isAppleAvailable, setIsAppleAvailable] = useState(false);
   const insets = useSafeAreaInsets();
+  
+  // Hidden diagnostics trigger - 5 rapid taps on header
+  const tapCountRef = useRef(0);
+  const lastTapRef = useRef(0);
 
   const { login, refreshAuth, continueAsGuest } = useAuth();
+  
+  // Handle hidden diagnostics trigger
+  const handleHeaderTap = () => {
+    const now = Date.now();
+    // Reset if more than 500ms since last tap
+    if (now - lastTapRef.current > 500) {
+      tapCountRef.current = 0;
+    }
+    tapCountRef.current += 1;
+    lastTapRef.current = now;
+    
+    if (tapCountRef.current >= 5) {
+      tapCountRef.current = 0;
+      console.log('🔧 Opening diagnostics panel...');
+      router.push('/diagnostics');
+    }
+  };
 
   // Check if Apple Sign-In is available (iOS only)
   useEffect(() => {
@@ -146,9 +167,11 @@ export default function Login() {
       const data = await response.json();
       console.log('OAuth login successful!');
       
-      // Store session token in AsyncStorage
-      const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
-      await AsyncStorage.setItem('auth_token', data.session_token);
+      // Store session token in SecureStore (durable across app closes)
+      await secureStorage.set(AUTH_TOKEN_KEY, data.session_token);
+      const _oauthNow = new Date().toISOString();
+      await secureStorage.set('auth_token_stored_at', _oauthNow);
+      await secureStorage.set('auth_token_last_validated_at', _oauthNow);
       
       // Refresh auth context to load the new user
       await refreshAuth();
@@ -276,9 +299,11 @@ export default function Login() {
       const data = await response.json();
       console.log('Apple login successful!');
 
-      // Store session token in AsyncStorage
-      const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
-      await AsyncStorage.setItem('auth_token', data.session_token);
+      // Store session token in SecureStore (durable across app closes)
+      await secureStorage.set(AUTH_TOKEN_KEY, data.session_token);
+      const _appleNow = new Date().toISOString();
+      await secureStorage.set('auth_token_stored_at', _appleNow);
+      await secureStorage.set('auth_token_last_validated_at', _appleNow);
 
       // Refresh auth context to load the new user
       await refreshAuth();
@@ -330,11 +355,15 @@ export default function Login() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={[styles.content, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-          {/* Header */}
-          <View style={styles.header}>
+          {/* Header - Tap 5 times rapidly to open diagnostics */}
+          <TouchableOpacity 
+            style={styles.header} 
+            onPress={handleHeaderTap}
+            activeOpacity={1}
+          >
             <Text style={styles.title}>Welcome back</Text>
             <Text style={styles.subtitle}>Login to continue your fitness journey</Text>
-          </View>
+          </TouchableOpacity>
 
           {/* Google Sign In Button */}
           <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
@@ -408,6 +437,15 @@ export default function Login() {
                 />
               </TouchableOpacity>
             </View>
+
+            {/* Forgot password link */}
+            <TouchableOpacity
+              onPress={() => router.push('/auth/forgot-password')}
+              style={styles.forgotPasswordLink}
+              testID="login-forgot-password-link"
+            >
+              <Text style={styles.forgotPasswordText}>Forgot password?</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
               <LinearGradient
@@ -573,6 +611,18 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     marginTop: 8,
+  },
+  forgotPasswordLink: {
+    alignSelf: 'flex-end',
+    paddingVertical: 6,
+    paddingHorizontal: 4,
+    marginTop: -6,
+    marginBottom: 8,
+  },
+  forgotPasswordText: {
+    color: '#FFD700',
+    fontSize: 13,
+    fontWeight: '600',
   },
   loginButtonGradient: {
     height: 50,

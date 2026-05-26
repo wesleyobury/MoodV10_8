@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  Image,
   Animated,
   Easing,
   Linking,
@@ -16,6 +15,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
+import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -27,11 +27,11 @@ import { Analytics } from '../../utils/analytics';
 import { useScreenTime } from '../../hooks/useScreenTime';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import { useFeaturedWorkouts, FeaturedWorkout } from '../../hooks/useFeaturedWorkouts';
-import ExerciseLookupSheet from '../../components/ExerciseLookupSheet';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
+import HealthSyncIndicator from '../../components/HealthSyncIndicator';
 
 // Prioritize process.env for development/preview environments
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../../utils/apiConfig';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CAROUSEL_PADDING = 16;
@@ -60,13 +60,15 @@ const AnimatedStat = ({
   label, 
   isStreak = false,
   isMinutes = false,
-  delay = 0 
+  delay = 0,
+  icon,
 }: { 
   value: number; 
   label: string; 
   isStreak?: boolean;
   isMinutes?: boolean;
   delay?: number;
+  icon?: keyof typeof Ionicons.glyphMap;
 }) => {
   const [displayValue, setDisplayValue] = useState(0);
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -114,6 +116,15 @@ const AnimatedStat = ({
 
   return (
     <View style={styles.statWrapper}>
+      {/* Icon above the number — flat, no capsule per design */}
+      {icon && (
+        <Ionicons
+          name={icon}
+          size={20}
+          color={isStreak ? '#FFD700' : 'rgba(255,255,255,0.85)'}
+          style={styles.statIcon}
+        />
+      )}
       {/* Text stack */}
       <View style={styles.statContent}>
         <Text style={[
@@ -129,19 +140,7 @@ const AnimatedStat = ({
           {getLabel()}
         </Text>
       </View>
-      
-      {/* Soft spotlight glow underneath */}
-      <View style={styles.spotlightContainer}>
-        <LinearGradient
-          colors={isStreak 
-            ? ['rgba(255,200,0,0.45)', 'rgba(255,180,0,0.15)', 'rgba(255,150,0,0.0)']
-            : ['rgba(255,255,255,0.25)', 'rgba(255,255,255,0.08)', 'rgba(255,255,255,0.0)']
-          }
-          style={styles.spotlightGlow}
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 1 }}
-        />
-      </View>
+      {/* Thin line beneath - removed per design update */}
     </View>
   );
 };
@@ -174,7 +173,8 @@ const WorkoutCarouselCard = ({
   onSave,
   onUnsave,
   isSaved,
-  isSaving 
+  isSaving,
+  onSendPress,
 }: { 
   workout: CarouselWorkout; 
   onPress: () => void;
@@ -182,6 +182,7 @@ const WorkoutCarouselCard = ({
   onUnsave: () => void;
   isSaved: boolean;
   isSaving: boolean;
+  onSendPress?: () => void;
 }) => {
   return (
     <TouchableOpacity 
@@ -192,7 +193,10 @@ const WorkoutCarouselCard = ({
       <Image
         source={{ uri: workout.image }}
         style={styles.carouselImage}
-        resizeMode="cover"
+        contentFit="cover"
+        cachePolicy="disk"
+        transition={200}
+        placeholder={require('../../assets/images/icon.png')}
       />
       <View style={styles.carouselOverlay} />
       
@@ -223,7 +227,12 @@ const WorkoutCarouselCard = ({
       
       {/* Bottom info - mood + workout format */}
       <View style={styles.carouselInfo}>
-        <Text style={styles.carouselTitle}>{workout.mood} - {workout.title}</Text>
+        <Text style={styles.carouselTitle}>
+          {workout.title && workout.mood &&
+           workout.title.toLowerCase().trim().startsWith(workout.mood.toLowerCase().trim())
+            ? workout.title
+            : `${workout.mood} - ${workout.title}`}
+        </Text>
         <Text style={styles.carouselDuration}>{workout.duration}</Text>
       </View>
     </TouchableOpacity>
@@ -476,6 +485,20 @@ export default function WorkoutsHome() {
       setShuffledWorkouts(shuffled);
     }
   }, [remoteFeaturedWorkouts]);
+
+  // Pulse icon heartbeat animation — soft scale loop, ~2.5s cadence
+  const pulseScale = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseScale, { toValue: 1.18, duration: 380, useNativeDriver: true }),
+        Animated.timing(pulseScale, { toValue: 1, duration: 280, useNativeDriver: true }),
+        Animated.delay(1700),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [pulseScale]);
   
   // Use shuffled workouts for the carousel
   const featuredWorkouts = shuffledWorkouts;
@@ -492,7 +515,42 @@ export default function WorkoutsHome() {
   const { token, isGuest } = useAuth();
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const [guestAction, setGuestAction] = useState('');
-  const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
+
+  // Home scroll target — used by the tappable "Choose your MOOD" header
+  const homeScrollRef = useRef<ScrollView>(null);
+  const moodSectionYRef = useRef<number>(0);
+
+  // Pulse animation for the "Choose your MOOD" header (subtle scale loop)
+  const moodHeaderPulse = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(moodHeaderPulse, {
+          toValue: 1,
+          duration: 1100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(moodHeaderPulse, {
+          toValue: 0,
+          duration: 1100,
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [moodHeaderPulse]);
+  const moodHeaderScale = moodHeaderPulse.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.04],
+  });
+
+  const scrollToMoodSection = useCallback(() => {
+    homeScrollRef.current?.scrollTo({
+      y: Math.max(0, moodSectionYRef.current - 34),
+      animated: true,
+    });
+  }, []);
   
   useEffect(() => {
     const hour = new Date().getHours();
@@ -844,26 +902,32 @@ export default function WorkoutsHome() {
   return (
     <View style={styles.outerContainer}>
       <View style={styles.container}>
-        {/* Search Icon in Top Right */}
-        <View style={[styles.searchIconContainer, { top: insets.top + 8 }]}>
-          <TouchableOpacity 
-            style={styles.searchIconButton}
-            onPress={() => setExerciseLookupVisible(true)}
-          >
-            <Ionicons name="search" size={22} color="rgba(255, 255, 255, 0.6)" />
-          </TouchableOpacity>
-        </View>
-        
         <ScrollView 
+          ref={homeScrollRef}
           style={styles.fullScrollView}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={[styles.scrollContentContainer, { paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 40) }]}
+          contentContainerStyle={[styles.scrollContentContainer, { paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 16) }]}
           bounces={true}
         >
         {/* Centered MOOD Branding */}
         <View style={styles.centeredBrandingHeader}>
+          {/* Pulse icon flanked by hairlines (yellow EKG accent) */}
+          <View style={styles.pulseRow}>
+            <View style={styles.pulseFlankLine} />
+            <Animated.View style={{ transform: [{ scale: pulseScale }] }}>
+              <Ionicons name="pulse" size={26} color="#FFD700" style={styles.pulseIcon} />
+            </Animated.View>
+            <View style={styles.pulseFlankLine} />
+          </View>
+
           <Text style={styles.centeredBrandTitle}>MOOD</Text>
-          <Text style={styles.centeredBrandSubtitle}>TRAIN HOW YOU FEEL</Text>
+          <Text style={styles.centeredBrandSubtitle}>TRAIN HOW YOU FEEL DAILY</Text>
+
+          {/* Yellow divider beneath the tagline */}
+          <View style={styles.brandDivider} />
+
+          {/* Quiet "Synced 2m ago" indicator — hidden if no HealthKit permission */}
+          <HealthSyncIndicator />
         </View>
 
         {/* Progress Tracker - Animated Counting Stats */}
@@ -871,17 +935,20 @@ export default function WorkoutsHome() {
           <AnimatedStat 
             value={userStats.workouts} 
             label="WORKOUTS" 
+            icon="barbell-outline"
             delay={0}
           />
           <AnimatedStat 
             value={userStats.minutes} 
             label="MINUTES" 
+            icon="time-outline"
             isMinutes={true}
             delay={150}
           />
           <AnimatedStat 
             value={userStats.streak} 
             label="STREAK" 
+            icon="flame"
             isStreak={true}
             delay={300}
           />
@@ -914,12 +981,28 @@ export default function WorkoutsHome() {
         </View>
 
         {/* Mood Selection Section */}
-        <View style={styles.moodCardsContainer}>
-          <View style={styles.sectionTitleContainer}>
-            <View style={styles.leftAccent} />
-            <Text style={styles.uniqueSectionTitle}>Choose your <Text style={styles.moodHighlight}>MOOD</Text></Text>
-            <View style={styles.rightAccent} />
-          </View>
+        <View
+          style={styles.moodCardsContainer}
+          onLayout={(e) => {
+            moodSectionYRef.current = e.nativeEvent.layout.y;
+          }}
+        >
+          <TouchableOpacity
+            activeOpacity={0.75}
+            onPress={scrollToMoodSection}
+            testID="home-mood-header-cta"
+          >
+            <Animated.View
+              style={[
+                styles.sectionTitleContainer,
+                { transform: [{ scale: moodHeaderScale }] },
+              ]}
+            >
+              <View style={styles.leftAccent} />
+              <Text style={styles.uniqueSectionTitle}>Choose your <Text style={styles.moodHighlight}>MOOD</Text></Text>
+              <View style={styles.rightAccent} />
+            </Animated.View>
+          </TouchableOpacity>
           <View style={styles.moodColumn}>
             {moodCards.map((mood, index) => (
               <AnimatedMoodCard
@@ -932,19 +1015,7 @@ export default function WorkoutsHome() {
           </View>
         </View>
 
-        {/* Exercise Visual Search Section */}
-        <View style={styles.exerciseSearchSection}>
-          <TouchableOpacity
-            style={styles.exerciseSearchTrigger}
-            onPress={() => setExerciseLookupVisible(true)}
-            activeOpacity={0.7}
-          >
-            <Ionicons name="search" size={18} color="rgba(255,255,255,0.5)" />
-            <Text style={styles.exerciseSearchText}>Search workout library</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Social Icons - Below Search Bar */}
+        {/* Social Icons */}
         <View style={styles.bottomSocialContainer}>
           <TouchableOpacity 
             style={styles.bottomSocialButton}
@@ -968,12 +1039,6 @@ export default function WorkoutsHome() {
         onClose={() => setShowGuestPrompt(false)}
         action={guestAction}
       />
-
-      {/* Exercise Lookup Bottom Sheet */}
-      <ExerciseLookupSheet
-        visible={exerciseLookupVisible}
-        onClose={() => setExerciseLookupVisible(false)}
-      />
     </View>
   );
 }
@@ -992,7 +1057,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000', // Pure black background
   },
   scrollContentContainer: {
-    paddingBottom: 60, // Base bottom padding, will be enhanced with safe area
+    paddingBottom: 16, // tightened — used to be 60
     backgroundColor: '#000000', // Pure black background
   },
   header: {
@@ -1003,19 +1068,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 25,
     marginBottom: 10,
-  },
-  searchIconContainer: {
-    position: 'absolute',
-    right: 16,
-    zIndex: 100,
-  },
-  searchIconButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(28, 28, 28, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   centeredQuestionHeader: {
     alignItems: 'center',
@@ -1272,8 +1324,37 @@ const styles = StyleSheet.create({
   centeredBrandingHeader: {
     alignItems: 'center',
     paddingHorizontal: 32,
-    paddingTop: 20,
-    paddingBottom: 16,
+    paddingTop: 8,
+    paddingBottom: 12,
+  },
+  // Pulse + flanking hairlines above MOOD wordmark
+  pulseRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6,
+  },
+  pulseFlankLine: {
+    width: 36,
+    height: 1,
+    backgroundColor: '#FFD700',
+    borderRadius: 1,
+    marginHorizontal: 8,
+    opacity: 0.85,
+  },
+  pulseIcon: {
+    textShadowColor: 'rgba(255, 215, 0, 0.55)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
+  },
+  // Yellow divider below "TRAIN HOW YOU FEEL"
+  brandDivider: {
+    width: 110,
+    height: 1,
+    backgroundColor: '#FFD700',
+    borderRadius: 1,
+    marginTop: 14,
+    opacity: 0.85,
   },
   centeredBrandTitle: {
     fontSize: 42,
@@ -1313,8 +1394,8 @@ const styles = StyleSheet.create({
     gap: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 16,
-    marginBottom: 8,
+    marginTop: 14,
+    marginBottom: 0,
   },
   bottomSocialButton: {
     width: 40,
@@ -1531,24 +1612,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 8,
   },
+  statIcon: {
+    marginBottom: 6,
+    opacity: 0.9,
+  },
   statContent: {
     alignItems: 'center',
     marginBottom: 4,
   },
-  // Spotlight glow container
-  spotlightContainer: {
-    width: 80,
-    height: 24,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    overflow: 'visible',
+  // Thin line beneath stat
+  statLine: {
+    width: 40,
+    height: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    marginTop: 2,
   },
-  // Soft diffused spotlight glow - like the reference image
-  spotlightGlow: {
-    width: 70,
-    height: 20,
-    borderRadius: 35,
-    transform: [{ scaleX: 1.3 }, { scaleY: 0.6 }],
+  statLineStreak: {
+    backgroundColor: 'rgba(255, 215, 0, 0.7)',
   },
   // New top progress section styles
   // Floating Stats - NO pill, NO border, just text + spotlight glow
@@ -1618,24 +1698,4 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 215, 0, 0.7)',
   },
   // Exercise Search Section
-  exerciseSearchSection: {
-    marginTop: 24,
-    marginBottom: 8,
-    paddingHorizontal: 28,
-  },
-  exerciseSearchTrigger: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 24,
-    paddingVertical: 14,
-    paddingHorizontal: 18,
-    gap: 12,
-  },
-  exerciseSearchText: {
-    flex: 1,
-    fontSize: 16,
-    color: 'rgba(255,255,255,0.5)',
-    fontWeight: '400',
-  },
 });

@@ -23,10 +23,10 @@ import GuestPromptModal from '../components/GuestPromptModal';
 import CommentsBottomSheet from '../components/CommentsBottomSheet';
 import BackButton from '../components/BackButton';
 import Constants from 'expo-constants';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { Analytics, GuestAnalytics } from '../utils/analytics';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
 
 interface Author {
   id: string;
@@ -512,6 +512,7 @@ export default function PostDetail() {
                 }
                 return url;
               })}
+              postId={post.id}
               onIndexChange={setCarouselIndex}
               coverUrls={post.cover_urls}
             />

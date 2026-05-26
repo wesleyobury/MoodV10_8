@@ -8,18 +8,24 @@ import {
   Animated,
   Modal,
   ScrollView,
-  Image,
   ActivityIndicator,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaskedView from '@react-native-masked-view/masked-view';
+import { Video, ResizeMode } from 'expo-av';
+import { useSubscription, PaywallTrigger } from '../contexts/SubscriptionContext';
 
 const { width, height } = Dimensions.get('window');
 const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
+
+// Background video — bundled locally for instant load on every launch.
+const BG_VIDEO_SOURCE = require('../assets/videos/bg.mp4');
+const VIDEO_FADE_IN_DELAY_MS = 0;
+const VIDEO_FADE_IN_DURATION_MS = 900;
 
 // Animated Feature Item Component
 const AnimatedFeatureItem = ({ icon, title, description, delay = 0 }: { 
@@ -97,10 +103,58 @@ const AnimatedFeatureItem = ({ icon, title, description, delay = 0 }: {
   );
 };
 
+/**
+ * Dev-only helper to fire the paywall from the landing screen — lets us
+ * demo each trigger variant without having to walk the full free-tier flow.
+ * Stripped from production bundles by Metro since __DEV__ folds to `false`.
+ */
+const DevPaywallTrigger = () => {
+  const { openPaywall, status } = useSubscription();
+  const triggers: { label: string; trigger: PaywallTrigger }[] = [
+    { label: 'start', trigger: 'start_workout_after_free_session' },
+    { label: 'gen-cap', trigger: 'generate_after_cap' },
+    { label: 'recap', trigger: 'recap_footer_cta' },
+  ];
+  return (
+    <View style={styles.devPaywallRow}>
+      <Text style={styles.devSkipText}>[dev] paywall ({status}):</Text>
+      {triggers.map((t) => (
+        <TouchableOpacity
+          key={t.trigger}
+          onPress={() => openPaywall(t.trigger)}
+          style={styles.devPaywallPill}
+          testID={`dev-paywall-${t.label}`}
+          data-testid={`dev-paywall-${t.label}`}
+        >
+          <Text style={styles.devPaywallPillText}>{t.label}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+};
+
 export default function Welcome() {
   const insets = useSafeAreaInsets();
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState<boolean | null>(null);
+
+  // Video background fade-in
+  const videoRef = useRef<Video>(null);
+  const videoOpacity = useRef(new Animated.Value(0)).current;
+  const [videoReady, setVideoReady] = useState(false);
+
+  useEffect(() => {
+    if (!videoReady) return;
+    // Delay fade-in so the first frame is decoded and crisp before reveal.
+    const t = setTimeout(() => {
+      Animated.timing(videoOpacity, {
+        toValue: 1,
+        duration: VIDEO_FADE_IN_DURATION_MS,
+        useNativeDriver: true,
+      }).start();
+    }, VIDEO_FADE_IN_DELAY_MS);
+    return () => clearTimeout(t);
+  }, [videoReady, videoOpacity]);
 
   useEffect(() => {
     checkPrivacyAccepted();
@@ -144,12 +198,26 @@ export default function Welcome() {
     router.push('/terms-of-service');
   };
 
-  const handleGetStarted = () => {
-    if (hasAcceptedPrivacy) {
-      router.push('/auth/login');
-    } else {
+  const handleGetStarted = async () => {
+    if (!hasAcceptedPrivacy) {
       setShowPrivacyModal(true);
+      return;
     }
+    // Brand-new authenticated user just landed back here from registration
+    // (FunnelEntryGate set `@mood_needs_funnel` and re-routed to `/` so the
+    // user could watch the video first). Consume the flag and push into the
+    // 8-step funnel exactly once.
+    try {
+      const needsFunnel = await AsyncStorage.getItem('@mood_needs_funnel');
+      if (needsFunnel === 'true') {
+        await AsyncStorage.removeItem('@mood_needs_funnel');
+        router.replace('/onboarding-funnel/step-1-mood');
+        return;
+      }
+    } catch {
+      /* fall through to login */
+    }
+    router.push('/auth/login');
   };
   
   return (
@@ -277,17 +345,37 @@ export default function Welcome() {
       </Modal>
 
       <View style={styles.simplifiedGradient}>
-        <View style={[styles.content, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+        {/* Full-screen looping background video — fades in 600ms after first
+            frame is decoded so users never see a jank-y load. */}
+        <Animated.View
+          pointerEvents="none"
+          style={[styles.videoLayer, { opacity: videoOpacity }]}
+          testID="landing-bg-video"
+        >
+          <Video
+            ref={videoRef}
+            source={BG_VIDEO_SOURCE}
+            style={StyleSheet.absoluteFill}
+            resizeMode={ResizeMode.COVER}
+            shouldPlay
+            isLooping
+            isMuted
+            useNativeControls={false}
+            progressUpdateIntervalMillis={1000}
+            onReadyForDisplay={() => setVideoReady(true)}
+          />
+        </Animated.View>
+        {/* Dark scrim — keeps the hero copy + buttons legible over any frame. */}
+        <View pointerEvents="none" style={styles.videoScrim} />
+
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={[styles.content, { paddingTop: insets.top, paddingBottom: insets.bottom }]}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+        >
           {/* Hero Section */}
           <View style={styles.heroSection}>
-            <View style={styles.logoContainer}>
-              <Image 
-                source={require('../assets/images/header-logo.png')}
-                style={styles.logoImage}
-                resizeMode='contain'
-              />
-            </View>
-
             <View style={styles.titleContainer}>
               <MaskedView
                 maskElement={
@@ -323,7 +411,7 @@ export default function Welcome() {
             />
             <AnimatedFeatureItem
               icon="videocam"
-              title="150+ Exercise Videos"
+              title="200+ Exercise Videos"
               description="Visual guides with coaching cues"
               delay={3000}
             />
@@ -350,8 +438,27 @@ export default function Welcome() {
                 <Text style={styles.primaryButtonText}>Get Started</Text>
               </LinearGradient>
             </TouchableOpacity>
+
+            {/*
+              Dev-only shortcut so we can demo the paid-launch funnel without
+              having to deep-link by URL or go through register. Stripped from
+              production bundles by Metro since __DEV__ folds to `false`.
+            */}
+            {__DEV__ ? (
+              <>
+                <TouchableOpacity
+                  style={styles.devSkipButton}
+                  onPress={() => router.push('/onboarding-funnel/step-1-mood')}
+                  testID="dev-skip-to-funnel"
+                  data-testid="dev-skip-to-funnel"
+                >
+                  <Text style={styles.devSkipText}>[dev] Skip to onboarding funnel →</Text>
+                </TouchableOpacity>
+                <DevPaywallTrigger />
+              </>
+            ) : null}
           </View>
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -366,14 +473,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
   },
+  videoLayer: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#000000',
+  },
+  videoScrim: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+  },
   content: {
-    flex: 1,
+    flexGrow: 1,
     paddingHorizontal: 20,
     justifyContent: 'space-between',
   },
   heroSection: {
     alignItems: 'center',
-    paddingTop: height * 0.06, // Reduced from 0.1 to move content up
+    paddingTop: height * 0.12, // bumped up since the logo is gone
   },
   logoContainer: {
     marginBottom: 16,
@@ -434,7 +549,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    backgroundColor: 'rgba(255, 215, 0, 0.18)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -471,6 +586,37 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#0c0c0c',
+  },
+  devSkipButton: {
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  devSkipText: {
+    fontSize: 12,
+    color: 'rgba(255,215,0,0.55)',
+    fontWeight: '500',
+    letterSpacing: 0.3,
+  },
+  devPaywallRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    gap: 6,
+    paddingVertical: 4,
+  },
+  devPaywallPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.3)',
+  },
+  devPaywallPillText: {
+    fontSize: 10,
+    color: 'rgba(255,215,0,0.85)',
+    fontWeight: '600',
+    letterSpacing: 0.3,
   },
   // Privacy Modal Styles
   modalOverlay: {

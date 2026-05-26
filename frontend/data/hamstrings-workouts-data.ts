@@ -24,7 +24,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slight knee bend, spine neutral throughout',
               description: 'Maintain neutral spine to protect back while targeting hamstrings.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Dumbbell Good Morning (Chest Hold)',
@@ -44,7 +48,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push hips back, don\'t let chest drop',
               description: 'Hip hinge pattern protects spine while loading hamstrings.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Dumbbell Suitcase RDL',
@@ -69,7 +77,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch then stand',
               description: 'Hamstrings load before glutes.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Dumbbell Hamstring Walkouts',
@@ -94,7 +106,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop before drop',
               description: 'End set when hips fall.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -116,7 +132,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control descent for full hamstring stretch',
               description: 'Slow eccentric maximizes muscle lengthening and development.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'DB Deficit RDL',
@@ -136,7 +156,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower under strict control, drive up steady',
               description: 'Controlled movement prevents injury while maximizing benefit.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Dumbbell Staggered-Stance RDL',
@@ -161,7 +185,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow descent',
               description: 'Control lengthened phase.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -183,7 +211,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode up smooth, no jerking bar path',
               description: 'Controlled concentric prevents injury and maximizes power.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: '1½ Rep DB RDL Combo',
@@ -203,7 +235,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep tempo smooth, no bouncing at knees',
               description: 'Smooth rhythm prevents momentum and maintains muscle tension.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Dumbbell RDL Triple Drop',
@@ -228,7 +264,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Grip straps allowed',
               description: 'Hamstrings dictate failure.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Dumbbell Long-Pause RDL',
@@ -253,7 +293,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Expect deep fatigue',
               description: 'Hamstrings fail first.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -281,7 +325,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep knees soft, brace abs fully',
               description: 'Slight knee bend with core stability protects spine.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Barbell Good Morning (Light!)',
@@ -301,7 +349,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Shift hips back, spine locked neutral',
               description: 'Hip hinge movement protects spine while loading hamstrings.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'pump',
+          intensity_cost: 2,
         },
         {
           name: 'Barbell Hip Hinge Good Morning',
@@ -326,7 +378,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop at stretch',
               description: 'Depth ends when hamstrings fully lengthen.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Barbell Stiff-Leg Iso Hold',
@@ -351,7 +407,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel hamstrings shake',
               description: 'Tension should live behind knees.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'pump',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -374,7 +434,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive hips forward, squeeze glutes at lockout',
               description: 'Full hip extension with glute squeeze completes the movement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Barbell Pause RDL',
@@ -394,7 +458,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep bar tight against body always',
               description: 'Close bar path maintains hamstring tension throughout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Barbell Deficit RDL',
@@ -414,7 +482,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive hips through, don\'t round spine',
               description: 'Hip drive with spine neutral maximizes safety and power.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Barbell Tempo Good Morning',
@@ -439,7 +511,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive hips through',
               description: 'Glutes assist but hamstrings initiate.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -461,7 +537,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Don\'t rush, hold bar close body',
               description: 'Tempo control with proper bar path ensures safety and effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Barbell RDL + Rack Pull Combo',
@@ -481,7 +561,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with heavy rack pulls top half',
               description: 'Heavy partial range builds strength at strongest position.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Barbell RDL Drop Series',
@@ -506,7 +590,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps allowed',
               description: 'Hamstrings, not grip, should fail.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Barbell Lengthened-Pause RDL',
@@ -531,7 +619,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Heavy pauses fatigue quickly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -559,7 +651,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop when hamstring stretch felt',
               description: 'Range of motion should be dictated by hamstring flexibility.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Roman Chair Good Morning',
@@ -579,7 +675,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Avoid jerking torso quickly upward',
               description: 'Smooth movement prevents injury and maintains muscle tension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Hamstring-Bias Extension',
@@ -604,7 +704,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow tempo',
               description: 'Control every rep.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Iso Hinge Hold',
@@ -629,7 +733,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Breathe steadily',
               description: 'Avoid shaking out early.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -651,7 +759,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Don\'t hyperextend spine upwards',
               description: 'Controlled range prevents back hyperextension injury.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Single‑Leg Extension',
@@ -671,7 +783,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep hips square to bench pad',
               description: 'Hip stability prevents compensation and ensures proper targeting.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Extension + Pause',
@@ -696,7 +812,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Controlled ascent',
               description: 'Smooth return.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -718,7 +838,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive back up locked glutes strong',
               description: 'Explosive concentric with glute finish maximizes power development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Alternating Half + Full Extensions',
@@ -738,7 +862,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth alternating rhythm each rep',
               description: 'Consistent rhythm maintains muscle tension throughout set.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Extension Drop Set',
@@ -763,7 +891,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Posterior burn expected',
               description: 'Stop before form breaks.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Long-Hold Extension Finisher',
@@ -788,7 +920,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End when shaking starts',
               description: 'True failure point.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hyperextension',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -816,7 +952,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Curl steady, avoid pad slam return',
               description: 'Controlled movement prevents machine stress and maintains tension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Lying Leg Curl',
@@ -836,7 +976,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Raise slow, hold, lower controlled',
               description: 'Tempo control maximizes muscle activation and development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Seated Curl Slow Return',
@@ -861,7 +1005,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Seat adjusted tight',
               description: 'Hips stay locked.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Curl + Iso Hold',
@@ -886,7 +1034,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel behind knees',
               description: 'Hamstrings should dominate.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -908,7 +1060,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with hard squeeze up top',
               description: 'Peak contraction at top maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Pause Leg Curl',
@@ -928,7 +1084,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Resist pad lowering too fast',
               description: 'Controlled eccentric maintains tension and prevents momentum.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: '1½ Rep Leg Curl',
@@ -953,7 +1113,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hamstrings stay loaded',
               description: 'Constant tension focus.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Leg Curl Drop Set',
@@ -978,7 +1142,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Burn builds fast',
               description: 'Fatigue is expected.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1000,7 +1168,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep tempo matched across drops',
               description: 'Consistent movement quality throughout all drop sets.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Curl + Iso Hold',
@@ -1020,7 +1192,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stay tight as pad pulls downward',
               description: 'Maintain contraction against resistance throughout hold period.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Long-Eccentric Leg Curl',
@@ -1045,7 +1221,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Expect early fatigue',
               description: 'Hamstrings fail fast here.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Triple Drop Curl Burnout',
@@ -1070,7 +1250,11 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop at form loss',
               description: 'Quality over numbers.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_curl',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }

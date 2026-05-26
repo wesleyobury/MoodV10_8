@@ -77,15 +77,46 @@ agenthub/agents/youtube/db
 .cache/
 
 # Mobile development
-android-sdk/ -e 
-# Environment files - Emergent requires .env files for deployment
-# Don't ignore .env files for Emergent deployment
-# *.env
-# *.env.*
-backend/uploads/47ba125c-9b6b-454b-bca5-836aa71a12bd.mov
+android-sdk/
+
+# Expo logs
+frontend/expo_*.log
+
+# Large upload files
+backend/uploads/*.mov
+backend/uploads/*.mp4
+
+# Admin panel native modules
+mood-admin/node_modules/@next/swc-linux-arm64-gnu/
+mood-admin/node_modules/@next/swc-linux-arm64-musl/
 mood-admin/node_modules/@next/swc-linux-arm64-gnu/next-swc.linux-arm64-gnu.node
 mood-admin/node_modules/@next/swc-linux-arm64-musl/next-swc.linux-arm64-musl.node
+backend/uploads/47ba125c-9b6b-454b-bca5-836aa71a12bd.mov
 -e 
-# Environment files
+-e 
+# Environment and credential files
+.env
+.env.*
 *.env
-*.env.*
+credentials.json
+*.pem
+*.key
+.credentials
+-e 
+# Environment and credential files
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
+-e 
+# Environment and credential files
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials

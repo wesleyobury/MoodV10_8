@@ -1,0 +1,37 @@
+{
+  "summary": "Iteration 18: BACKEND fully tested (35/35 pass). FRONTEND headline bug — ReferenceError on create-post.tsx — VERIFIED FIXED after forcing Expo bundle rebuild (the source declarations at lines 140-141 are correct, but the deployed Metro bundle was stale on first attempt). Backend startup backfill applied to 87 users, app_settings flag set; idempotency confirmed. All tip-state PATCH/GET regression tests still pass.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_onboarding_backfill.py",
+    "/app/backend/tests/test_onboarding_tips.py",
+    "/app/test_reports/pytest/onboarding_backfill_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "create-post.tsx is 3144 lines — same file-bloat warning as iteration_17 server.py. Should be split into smaller components (PostForm, AttachmentsPicker, IgPromptModal, CompletionTipChips).",
+    "The Expo bundle was serving STALE code on first frontend test attempt — the source at create-post.tsx:140-141 had the correct useState/useRef declarations, but the previously-cached bundle still threw ReferenceError. Recommend the main agent ensure Expo/Metro hot-reload picks up create-post.tsx changes by touching the file or restarting expo when shipping fixes for runtime ReferenceErrors. (We verified with `sudo supervisorctl restart expo` then re-tested; bundle rebuilt and screen renders cleanly.)",
+    "Onboarding backfill code at server.py:12727-12747 is correct & idempotent (gated on app_settings.{_id:'onboarding_backfill_v1'}). Consider also moving this and the existing author_id / cover_urls migrations into a backend/migrations.py module — startup function is becoming a dumping ground.",
+    "The backfill log line 'Onboarding tips backfill applied to 87 users' confirms exactly the number cited in the spec; flag doc has matched=87 and applied_at."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_onboarding_backfill.py (new — 8 tests)"
+  ],
+  "success_rate": {
+    "backend": "100% (35/35: 8 new backfill + 27 existing tip-state tests)",
+    "frontend": "create-post render: PASS (no ReferenceError after Expo rebuild). Tip 1 home / Tip 2 workout / Tip 3 chips not directly UI-asserted — see context_for_next_testing_agent."
+  },
+  "test_credentials": "Tests register fresh users via /api/auth/register on each run. Sample: e2e_user_<ts>@example.com / E2eTestPass123!",
+  "seed_data_creation": "Each test run creates 1 throwaway user. No other seed data.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend backfill verified 100% on /app/backend/tests/test_onboarding_backfill.py (8 tests) + /app/backend/tests/test_onboarding_tips.py (27 tests). Run: pytest /app/backend/tests/test_onboarding_backfill.py /app/backend/tests/test_onboarding_tips.py -v. Frontend: the headline create-post ReferenceError is FIXED; we confirmed via direct URL navigation (/create-post) that Share Your Achievement renders 'Share Your Achievement' header + Media/Caption sections + send-button [data-testid=create-post-submit]. The 3 tip chips (A/B/C) and Tip 1 minimal-down on home and Tip 2 above 'Find visuals' search bar were NOT UI-asserted in this run — they require post-workout flow context to render. Source code changes (variant='minimal-down', moodSectionYRef-34, useState/useRef declarations) are present and reviewed at the cited file paths. Note: if you re-test the frontend and see ReferenceError reappearing, restart expo (sudo supervisorctl restart expo) and wait 25s — Metro bundle was caching stale code.",
+  "rca of the issue": "Headline bug 'create-post crash on igPromptVisible/igPromptResolveRef' RCA: the source file /app/frontend/app/create-post.tsx already declares both at lines 140-141 (useState/useRef). On the first browser test attempt the deployed Metro bundle was still serving the older crash-version, indicating Metro hot-reload had missed the change. Mitigation: restart expo via supervisor — after restart, the rebuilt bundle picked up the declarations and the screen rendered cleanly with no ReferenceError. No code change required from main agent; the fix is correct. Reproduction: (1) login via /api/auth/register + localStorage.setItem('auth_token', token); (2) navigate /create-post; (3) inspect console for 'igPromptVisible is not defined' — should be ABSENT now."
+}

@@ -12,9 +12,8 @@ import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import * as Localization from 'expo-localization';
-
-// Prioritize process.env for development/preview environments
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from './apiConfig';
+import { dispatch as dispatchToProviders } from './analyticsProvider';
 
 // Storage keys
 const GUEST_DEVICE_ID_KEY = 'guest_device_id';
@@ -123,6 +122,12 @@ export const trackEvent = async (
     if (!response.ok) {
       console.log(`Analytics tracking failed for ${eventType}:`, response.status);
     }
+
+    // Phase G — fan-out to any externally-registered providers (PostHog /
+    // Segment / etc.). Today no providers are registered, so this is a
+    // cheap no-op. Tomorrow `registerProvider(posthog)` flips it on with
+    // zero call-site changes.
+    dispatchToProviders(eventType, metadata || {}, { token });
   } catch (error) {
     // Silently fail - don't block user flow
     console.log('Analytics tracking error:', error);
@@ -166,6 +171,10 @@ export const trackGuestEvent = async (
     if (!response.ok) {
       console.log(`Guest analytics tracking failed for ${eventType}:`, response.status);
     }
+
+    // Phase G — same provider fan-out for guest events (the funnel runs
+    // pre-login, so PostHog/Segment also need to see these).
+    dispatchToProviders(eventType, { ...metadata, is_guest: true }, { token: null, deviceId });
   } catch (error) {
     // Silently fail - don't block user flow
     console.log('Guest analytics tracking error:', error);
@@ -210,6 +219,11 @@ export const Analytics = {
     mood_category?: string;
     difficulty?: string;
     equipment?: string;
+    // Set when a session-start snapshot is created in cart.tsx so that
+    // the Live tab "Live now" cards can hydrate "Try this workout" using
+    // the same snapshot pipeline as completion cards.
+    workout_snapshot_id?: string;
+    workout_name?: string;
   }) => trackEvent(token, 'workout_started', metadata),
 
   workoutCompleted: (token: string, metadata: {
@@ -218,6 +232,11 @@ export const Analytics = {
     equipment?: string;
     duration_minutes?: number;
     exercises_completed?: number;
+    // Phase 7 — included on completion so the Live Feed entry can carry
+    // an opaque pointer back to the full cart. Tapping "Try this workout"
+    // on a feed entry fetches /api/workout-snapshots/{id} and hydrates the
+    // viewer's cart with the exact exercises the original athlete ran.
+    workout_snapshot_id?: string;
   }) => trackEvent(token, 'workout_completed', metadata),
 
   workoutSkipped: (token: string, metadata: {
@@ -430,6 +449,156 @@ export const Analytics = {
     screen_name: string;
     duration_seconds: number;
   }) => trackEvent(token, 'screen_exited', metadata),
+
+  // Onboarding Tip Events
+  tipShown: (token: string, metadata: { tip_id: string }) =>
+    trackEvent(token, 'tip_shown', metadata),
+
+  tipTapped: (token: string, metadata: { tip_id: string }) =>
+    trackEvent(token, 'tip_tapped', metadata),
+
+  tipDismissed: (token: string, metadata: { tip_id: string }) =>
+    trackEvent(token, 'tip_dismissed', metadata),
+
+  tipNeverShow: (token: string, metadata: { tip_id: string }) =>
+    trackEvent(token, 'tip_never_show', metadata),
+
+  // HealthKit Events
+  healthPermissionPrompted: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'health_permission_prompted', metadata),
+
+  healthPermissionGranted: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'health_permission_granted', metadata),
+
+  healthPermissionDenied: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'health_permission_denied', metadata),
+
+  healthSnapshotRefreshed: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'health_snapshot_refreshed', metadata),
+
+  settingsHealthRowTapped: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'settings_health_row_tapped', metadata),
+
+  // Workout Session (live HR + recap)
+  workoutSessionStarted: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'workout_session_started', metadata),
+
+  workoutSessionEnded: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'workout_session_ended', metadata),
+
+  hrSamplesCapturedCount: (token: string, metadata: { count: number }) =>
+    trackEvent(token, 'hr_samples_captured_count', metadata),
+
+  workoutRecapViewed: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'workout_recap_viewed', metadata),
+
+  shareToInstagramTapped: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'share_to_instagram_tapped', metadata),
+
+  shareToCameraRollTapped: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'share_to_camera_roll_tapped', metadata),
+
+  shareCompleted: (token: string, metadata: Record<string, any>) =>
+    trackEvent(token, 'share_completed', metadata),
+
+  // Onboarding funnel — Phase A of the paid launch.
+  // The funnel runs before login; events are routed to both authenticated and
+  // guest pipelines so the funnel can be analyzed end-to-end pre- and
+  // post-account creation.
+  onboardingStepViewed: (token: string | null, metadata: { step: number; question?: string }) =>
+    token
+      ? trackEvent(token, 'onboarding_step_viewed', metadata)
+      : trackGuestEvent('onboarding_step_viewed', metadata),
+
+  onboardingStepCompleted: (
+    token: string | null,
+    metadata: { step: number; question?: string; answer?: any; time_spent_ms?: number }
+  ) =>
+    token
+      ? trackEvent(token, 'onboarding_step_completed', metadata)
+      : trackGuestEvent('onboarding_step_completed', metadata),
+
+  onboardingCompleted: (token: string | null, metadata: Record<string, any>) =>
+    token
+      ? trackEvent(token, 'onboarding_completed', metadata)
+      : trackGuestEvent('onboarding_completed', metadata),
+
+  onboardingAbandoned: (token: string | null, metadata: { step: number }) =>
+    token
+      ? trackEvent(token, 'onboarding_abandoned', metadata)
+      : trackGuestEvent('onboarding_abandoned', metadata),
+
+  revealScreenViewed: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'reveal_screen_viewed', metadata)
+      : trackGuestEvent('reveal_screen_viewed', metadata),
+
+  revealCtaTapped: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'reveal_cta_tapped', metadata)
+      : trackGuestEvent('reveal_cta_tapped', metadata),
+
+  medicalDisclaimerAccepted: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'medical_disclaimer_accepted', metadata)
+      : trackGuestEvent('medical_disclaimer_accepted', metadata),
+
+  // Monetization funnel — Phase B paid launch.
+  paywallViewed: (token: string | null, metadata: { trigger_source: string }) =>
+    token
+      ? trackEvent(token, 'paywall_viewed', metadata)
+      : trackGuestEvent('paywall_viewed', metadata),
+
+  trialStarted: (token: string | null, metadata: { plan: 'annual' | 'monthly'; trigger_source: string }) =>
+    token
+      ? trackEvent(token, 'trial_started', metadata)
+      : trackGuestEvent('trial_started', metadata),
+
+  trialCancelled: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'trial_cancelled', metadata)
+      : trackGuestEvent('trial_cancelled', metadata),
+
+  subscriptionPurchased: (token: string | null, metadata: { plan: 'annual' | 'monthly'; trigger_source?: string | null }) =>
+    token
+      ? trackEvent(token, 'subscription_purchased', metadata)
+      : trackGuestEvent('subscription_purchased', metadata),
+
+  subscriptionRestored: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'subscription_restored', metadata)
+      : trackGuestEvent('subscription_restored', metadata),
+
+  subscriptionLapsed: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'subscription_lapsed', metadata)
+      : trackGuestEvent('subscription_lapsed', metadata),
+
+  workoutGenerated: (token: string | null, metadata: { generation_index?: number; mood?: string }) =>
+    token
+      ? trackEvent(token, 'workout_generated', metadata)
+      : trackGuestEvent('workout_generated', metadata),
+
+  startWorkoutTapped: (token: string | null, metadata: { allowed: boolean; trigger_source?: string } & Record<string, any>) =>
+    token
+      ? trackEvent(token, 'start_workout_tapped', metadata)
+      : trackGuestEvent('start_workout_tapped', metadata),
+
+  // Founding Member — Phase D paid launch.
+  foundingMemberModalShown: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'founding_member_modal_shown', metadata)
+      : trackGuestEvent('founding_member_modal_shown', metadata),
+
+  foundingMemberModalDismissed: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'founding_member_modal_dismissed', metadata)
+      : trackGuestEvent('founding_member_modal_dismissed', metadata),
+
+  settingsRestorePurchasesTapped: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'settings_restore_purchases_tapped', metadata)
+      : trackGuestEvent('settings_restore_purchases_tapped', metadata),
 };
 
 // Guest Analytics - for tracking guest user activity

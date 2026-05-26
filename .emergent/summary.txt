@@ -1,0 +1,174 @@
+<analysis>**original_problem_statement**:
+The user reported a series of critical production bugs. The tasks were to:
+1.  **Fix Session Persistence:** Ensure users remain logged in even after swiping the app away or during brief server outages.
+2.  **Fix Guest Experience:**
+    *   Resolve an issue where the guest explore page incorrectly showed no posts yet.
+    *   Address excessively long loading times for featured workout images and their corresponding cart details in guest mode.
+3.  **Fix Profile Content:** Diagnose and fix why a user's media content was visible on the explore page but missing from their own profile grid.
+4.  **Set Production Environment:** Switch the TestFlight builds to use the production environment.
+5.  **Lock Backend URL:** Hardcode the frontend's backend URL to a specific production host () and prevent it from being overwritten by preview deployment automation.
+6.  **Re-investigate Video Notifications:** The user reported that video engagement notifications were still not firing, requesting a re-diagnosis and a test notification.
+
+**PRODUCT REQUIREMENTS**:
+1.  **Session Persistence (P0 - Completed):** The app should only log a user out on a 401 Unauthorized error, not on other server errors (like 5xx).
+2.  **Guest Explore Page (P0 - Completed):** The public posts endpoint must be robust and not crash, ensuring content is always visible to guests.
+3.  **Guest Performance (P1 - Completed):** Featured workout loading for guests must be fast, comparable to the logged-in experience.
+4.  **Profile Grid (P0 - Completed):** A user's own posts must always appear on their profile page.
+5.  **Production Environment (P0 - Completed):** The backend must run with .
+6.  **Backend URL Lock (P0 - In Progress):** The frontend must be permanently configured to point to the production backend URL, regardless of the deployment environment.
+7.  **Video Notification Verification (P0 - Completed):** Confirm that the notification system for video likes is functional.
+
+**User's preferred language**: English
+
+**what currently exists?**
+The application is a React Native (Expo) frontend with a FastAPI backend. In this session, the agent resolved several critical production bugs. Key fixes include:
+*   **Session Persistence:** Modified the frontend auth provider to only clear session tokens on a  response, preventing logouts during temporary server errors.
+*   **Guest Experience:** Fixed a backend crash on the public posts endpoint caused by a  on an optional  field. Dramatically improved guest loading times by implementing a new bundled API endpoint, switching the image carousel to use the caching-enabled , and adding  headers.
+*   **Profile Grid Bug:** Diagnosed and fixed an issue where user posts were invisible on their profile. The root cause was  being stored as a  instead of an . The agent implemented a robust query to handle both types and added a startup data migration to normalize all existing records to .
+*   **Push Notification Reliability:** Diagnosed and fixed a bug where  values in user settings were silently blocking all push notifications.
+*   The  has been set to . The final action was an attempt to hardcode the production backend URL into the frontend to prevent it from being overwritten during preview deployments. This last change has not been tested.
+
+**Last working item**:
+-   Last item agent was working: Locking the frontend's backend URL to  to prevent preview deployment configurations from overriding it. The agent modified three files: , , and  to remove dynamic URL resolution and hardcode the production URL.
+-   Status: IN PROGRESS
+-   Agent Testing Done: N
+-   Which testing method agent to use? both. First, use the screenshot tool to perform a quick smoke test to ensure the app loads data. If successful, invoke the frontend testing agent to run a full E2E test suite to confirm all API calls are correctly routed to the production backend and the application is fully functional.
+-   User Testing Done: N
+
+**All Pending/In progress Issue list**:
+-   Issue 1: Test and verify the hardcoded backend URL fix (P0)
+-   Issue 2: Unbounded database query in  (P2)
+
+**Issues Detail**:
+-   **Issue 1: Test and verify the hardcoded backend URL fix**
+    -   **Attempted fixes**: The agent hardcoded the production backend URL in , , and .
+    -   **Next debug checklist**:
+        1.  Restart the frontend supervisor service to ensure all environment changes are loaded.
+        2.  Take a screenshot of the main screen to verify the app doesn't crash and can load initial data.
+        3.  If the screenshot is successful, run the  to perform a comprehensive E2E test of all major features (login, viewing explore feed, viewing featured workouts, viewing profile).
+    -   **Why fix this issue and what will be achieved with the fix?** This is a critical configuration lock-in requested by the user to ensure TestFlight and development builds always point to the stable production backend, preventing environment-related bugs.
+    -   **Status**: IN PROGRESS
+    -   **Is recurring issue?** Y (Environment configuration has been a recurring problem).
+    -   **Should Test frontend/backend/both after fix?** Frontend
+    -   **Blocked on other issue**: None
+
+-   **Issue 2: Unbounded database query in **
+    -   **Description**: A performance warning exists for an unbounded query () at  (from a previous session) which poses a risk of Out-Of-Memory (OOM) errors.
+    -   **Attempted fixes**: None in this session.
+    -   **Next debug checklist**: Locate the query at  and refactor it to use proper database pagination with  and .
+    -   **Why fix this issue and what will be achieved with the fix?** Improves application stability and scalability, preventing potential crashes under load.
+    -   **Status**: NOT STARTED
+    -   **Is recurring issue?** Y
+    -   **Should Test frontend/backend/both after fix?** Backend
+    -   **Blocked on other issue**: None
+
+**In progress Task List**:
+-   None.
+
+**Upcoming and Future Tasks**
+-   **Future Tasks:**
+    -   **Admin Panel - Caching (P2):** Implement caching for expensive backend aggregations in .
+    -   **Data Integrity (P2):** Investigate the root cause of notifications being created without  to simplify the read path.
+
+**Completed work in this session**
+-   **Session Persistence Fix (DONE)**: Fixed logout issue by modifying  to only clear session on  errors.
+-   **Guest Experience & Performance Fixes (DONE)**:
+    -   Fixed a backend crash on the  endpoint in .
+    -   Created a new  endpoint in  to reduce network requests.
+    -   Switched the featured workout carousel in  to use  for disk caching.
+-   **Profile Grid Content Fix (DONE)**:
+    -   Fixed the profile posts query in  to handle  as both  and .
+    -   Added a startup data migration in  to convert all  s to .
+    -   Created a debug endpoint .
+-   **Push Notification Reliability Fix (DONE)**: Fixed logic in  and  where  in settings blocked pushes and added a data migration.
+-   **Video Notification Re-Diagnosis (DONE)**: Confirmed the video notification logic in  is working correctly, isolating the problem to a potential environment or proxy issue during user testing.
+-   **Environment Set to Production (DONE)**: Set  in .
+-   **Video Performance - Phase 2 (DONE)**: Implemented aggressive pre-fetching of video thumbnails and initial video segments in  and .
+
+**Earlier issues found/mentioned but not fixed**
+-   **Issue 1: Unbounded Database Query**
+    -   **Description**: A query in  at line  uses , posing a performance risk.
+    -   **Debug checklist**: Refactor the code to use database-level pagination (/).
+    -   **Why to solve this issue and what will be achieved with this?** Prevents potential out-of-memory errors and improves backend scalability.
+    -   **Should Test frontend/backend/both after fix?**: Backend
+    -   **Is recurring issue?**: Y
+
+**Known issue recurrence from previous fork**
+-   **Data Type Mismatches**: The  being  vs  is another instance of data inconsistency, similar to the   vs  issue from the previous session.
+-   **Environment Configuration**: The need to hardcode the backend URL highlights a recurring problem with environment variables being incorrectly managed between preview and production builds.
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+-   **Data Type Normalization**: Migrating  IDs to  in MongoDB to ensure query consistency.
+-   **Defensive Coding**: Handling optional dictionary keys with  to prevent  crashes.
+-   **Network Performance Optimization**: Creating a bundled API endpoint to reduce the number of client-server round trips (network waterfall).
+-   **Frontend Caching**: Using  for efficient disk-based image caching on the device.
+-   **Environment Variable Management**: The challenges of managing  and build-time variables in Expo, leading to the decision to hardcode critical configuration.
+-   **Root Cause Analysis**: Differentiating between code bugs (), data bugs ( vs. ), and environment issues (dynamic backend URLs).
+
+**key DB schema**
+-   **posts**: The  field was sometimes a ; a migration has been run to convert all instances to .
+-   **users**: The  subdocument contained  values which blocked push notifications; a migration has converted them to boolean .
+
+**All files of reference**
+-   : Major changes for profile grid fix, guest bundle endpoint,  migration, and notification settings migration.
+-   : **CRITICAL CHANGE**. Hardcoded the production backend URL.
+-   : **CRITICAL CHANGE**. Hardcoded the production backend URL.
+-   : **CRITICAL CHANGE**. Removed dynamic URL injection.
+-   : Fixed session persistence logic.
+-   : Switched to guest bundle endpoint.
+-   : Replaced  with  for caching.
+-   : New file for centralized media prefetching.
+
+**Areas that need refactoring**:
+-   The unbounded query at  must be refactored to use database pagination.
+
+**key api endpoints**
+-   : Fixed a  crash.
+-   : Fixed to correctly query posts where  could be a  or .
+-   : **NEW** endpoint created to optimize guest loading performance.
+-   : **NEW** admin-only endpoint to debug user post data consistency.
+
+**Critical Info for New Agent**
+-   **Your immediate and highest-priority task is to test the frontend URL lock**. The agent has hardcoded the production backend URL in three separate files (, , ), but this change is untested and carries a high risk of breaking all communication between the frontend and backend.
+-   Follow the testing plan outlined in Last working item: a quick screenshot test, followed by a full frontend testing agent run.
+-   The application backend is now running in  mode.
+-   The main piece of remaining technical debt is the unbounded database query in . This should be addressed after the critical URL lock is verified.
+
+**documents and test reports created in this job**
+-    (updated)
+-   Multiple test reports generated under  confirming fixes for push notifications, guest experience, and profile grid.
+
+**Last 10 User Messages and any pending HUMAN messages**
+1.  **User**: Requested to lock the frontend backend URL to  and prevent preview deployments from overwriting it. (Status: **IN PROGRESS**, fix applied but untested).
+2.  **User**: Acknowledged completion of the previous task. (Status: **ACKNOWLEDGED**).
+3.  **User**: Requested two more fixes: switch TestFlight builds to production and fix missing content on the VIBER user's profile grid. (Status: **COMPLETED**).
+4.  **User**: Acknowledged completion of the previous task. (Status: **ACKNOWLEDGED**).
+5.  **User**: Reported two critical production issues: users being logged out and guests seeing no posts with slow featured workout loading. (Status: **COMPLETED**).
+6.  **User**: Acknowledged the diagnostic and verification of the video notification system. (Status: **ACKNOWLEDGED**).
+7.  **User**: Confirmed to proceed. (Status: **ACKNOWLEDGED**).
+8.  **User**: Stated that video notifications are still not firing and provided a video URL to test with. (Status: **COMPLETED**, diagnosed as working on the backend).
+9.  **User**: Acknowledged completion of the previous task. (Status: **ACKNOWLEDGED**).
+10. **User**: Reported that push notifications (featured workout and reminders) are not sending reliably. (Status: **COMPLETED**).
+
+**Project Health Check:**
+-   **Broken**: Yes. A critical, untested change has been made to hardcode the frontend's backend URL. There is a high probability that the application is currently non-functional until this fix is verified.
+
+**3rd Party Integrations**
+-   **Cloudinary**: Used for image and video hosting.
+-   **Expo**: Used for the React Native framework and push notification services.
+
+**Testing status**
+-   Testing agent used after significant changes: YES. The agent ran the testing agent successfully to verify the profile grid fix, guest experience fixes, and push notification fixes.
+-   Troubleshoot agent used after agent stuck in loop: NO
+-   Test files created: None.
+-   Known regressions: None known, but the last change to hardcode the backend URL is very high-risk and could have broken the entire application.
+
+**Credentials to test flow:**
+-   **Admin User**: 
+-   **Test User**:  (This user had the   issue).
+
+**What agent forgot to execute**
+-   The agent did not test the final, critical change to lock the frontend backend URL across , , and . This is the immediate next action required.</analysis>

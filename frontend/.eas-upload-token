@@ -1,0 +1,5 @@
+# EAS upload cache-bust sentinel.
+# Touching this file changes the project archive hash, forcing EAS to re-upload
+# instead of reusing a stale cached archive that pre-dates the .easignore anchor fix
+# (commit 7f0a4e09). Safe to delete after a successful build.
+nonce: 2026-02-14T00:00:00Z-modules-restore

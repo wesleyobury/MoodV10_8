@@ -13,7 +13,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useAuth } from '../contexts/AuthContext';
 import notificationService, { Notification } from '../utils/notifications';
 import { formatNotificationTime } from '../utils/notificationUtils';
@@ -52,10 +52,18 @@ const NotificationItem = React.memo(({
   const typeInfo = TYPE_ICONS[notification.type] || { name: 'notifications', color: '#888' };
   const slideAnim = useRef(new Animated.Value(0)).current;
   
-  // Get content thumbnail from metadata (for likes, comments, mentions)
-  const contentThumbnail = notification.metadata?.post_thumbnail || notification.metadata?.post_preview;
-  const hasContentThumbnail = contentThumbnail && 
-    ['like', 'comment', 'mention', 'reply'].includes(notification.type);
+  // Get content thumbnail - use explicit target_thumbnail_url first, then fall back to metadata
+  // NEVER use actor avatar as fallback for content thumbnail
+  const contentThumbnail = notification.target_thumbnail_url || 
+                            notification.metadata?.post_thumbnail || 
+                            notification.metadata?.post_preview;
+  
+  // Only show content thumbnail for relevant notification types
+  const shouldShowContentThumbnail = ['like', 'comment', 'mention', 'reply'].includes(notification.type);
+  const hasValidContentThumbnail = contentThumbnail && shouldShowContentThumbnail;
+
+  // All notifications are clickable - featured_workout goes to cart, others go to home
+  const isClickable = true;
 
   return (
     <Animated.View style={[
@@ -68,7 +76,7 @@ const NotificationItem = React.memo(({
         onPress={onPress}
         activeOpacity={0.7}
       >
-        {/* Avatar or Type Icon */}
+        {/* Left: Avatar or Type Icon (actor who performed the action) */}
         <View style={styles.avatarContainer}>
           {notification.actor?.avatar ? (
             <Image
@@ -88,7 +96,7 @@ const NotificationItem = React.memo(({
         </View>
 
         {/* Content */}
-        <View style={[styles.textContainer, hasContentThumbnail && { flex: 1, marginRight: 12 }]}>
+        <View style={[styles.textContainer, shouldShowContentThumbnail && { flex: 1, marginRight: 12 }]}>
           <Text style={styles.notificationTitle} numberOfLines={1}>
             {notification.title}
           </Text>
@@ -100,18 +108,25 @@ const NotificationItem = React.memo(({
           </Text>
         </View>
 
-        {/* Content Thumbnail (post image/video) */}
-        {hasContentThumbnail && (
+        {/* Right: Content Thumbnail (post/video/workout image) - NEVER actor avatar */}
+        {shouldShowContentThumbnail && (
           <View style={styles.contentThumbnailContainer}>
-            <Image
-              source={{ uri: contentThumbnail }}
-              style={styles.contentThumbnail}
-            />
+            {hasValidContentThumbnail ? (
+              <Image
+                source={{ uri: contentThumbnail }}
+                style={styles.contentThumbnail}
+              />
+            ) : (
+              // Placeholder when no content thumbnail available
+              <View style={[styles.contentThumbnail, styles.thumbnailPlaceholder]}>
+                <Ionicons name="image-outline" size={20} color="#666" />
+              </View>
+            )}
           </View>
         )}
 
-        {/* Unread indicator */}
-        {isUnread && !hasContentThumbnail && (
+        {/* Unread indicator - only show if no content thumbnail */}
+        {isUnread && !shouldShowContentThumbnail && (
           <View style={styles.unreadDot} />
         )}
       </TouchableOpacity>
@@ -166,11 +181,20 @@ export default function NotificationsInbox() {
 
     try {
       const skip = refresh ? 0 : notifications.length;
+      console.log(`🔔 DEBUG: Fetching notifications (skip=${skip}, filter=${filter}, unreadOnly=${filter === 'unread'})`);
+      
       const fetched = await notificationService.getNotifications(
         20,
         refresh ? 0 : skip,
         filter === 'unread'
       );
+
+      // Debug logging
+      console.log(`🔔 DEBUG: Fetched ${fetched.length} notifications`);
+      console.log(`🔔 DEBUG: Notification types received:`, fetched.map(n => n.type));
+      if (fetched.length > 0) {
+        console.log(`🔔 DEBUG: First notification:`, JSON.stringify(fetched[0], null, 2));
+      }
 
       if (refresh) {
         setNotifications(fetched);
@@ -189,6 +213,7 @@ export default function NotificationsInbox() {
 
   const loadUnreadCount = async () => {
     const count = await notificationService.getUnreadCount();
+    console.log(`🔔 DEBUG: Unread notification count = ${count}`);
     setUnreadCount(count);
   };
 
@@ -247,7 +272,10 @@ export default function NotificationsInbox() {
         break;
       case 'featured_workout':
         if (entity_id) {
-          router.push(`/featured-workout?workoutId=${entity_id}`);
+          router.push({
+            pathname: '/featured-workout-detail',
+            params: { id: entity_id },
+          });
         }
         break;
       case 'workout_reminder':
@@ -565,6 +593,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFD700',
     marginLeft: 8,
     marginTop: 4,
+  },
+  contentThumbnailContainer: {
+    marginLeft: 'auto',
+  },
+  contentThumbnail: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    backgroundColor: '#1a1a1a',
+  },
+  thumbnailPlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1a1a1a',
+    borderWidth: 1,
+    borderColor: '#333',
   },
   loadingMore: {
     paddingVertical: 20,

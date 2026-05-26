@@ -28,7 +28,11 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    // Always log to console for debugging
+    console.error('🚨 ErrorBoundary caught an error:', error);
+    console.error('🚨 Error message:', error?.message);
+    console.error('🚨 Error stack:', error?.stack);
+    console.error('🚨 Component stack:', errorInfo?.componentStack);
     this.setState({ errorInfo });
   }
 
@@ -56,13 +60,17 @@ class ErrorBoundary extends Component<Props, State> {
               <Text style={styles.retryText}>Try Again</Text>
             </TouchableOpacity>
 
-            {__DEV__ && this.state.error && (
+            {/* Always show error details for debugging */}
+            {this.state.error && (
               <ScrollView style={styles.errorDetails}>
-                <Text style={styles.errorTitle}>Error Details (Dev Only):</Text>
+                <Text style={styles.errorTitle}>Error Details:</Text>
                 <Text style={styles.errorText}>{this.state.error.toString()}</Text>
+                {this.state.error.message && (
+                  <Text style={styles.errorText}>Message: {this.state.error.message}</Text>
+                )}
                 {this.state.errorInfo && (
                   <Text style={styles.errorText}>
-                    {this.state.errorInfo.componentStack}
+                    {this.state.errorInfo.componentStack?.substring(0, 500)}
                   </Text>
                 )}
               </ScrollView>

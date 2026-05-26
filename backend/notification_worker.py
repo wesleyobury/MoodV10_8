@@ -102,9 +102,10 @@ class NotificationWorker:
         hour_str = f"{current_hour:02d}:00"
         
         # Get users with matching digest time and enabled digests
+        # Use $ne: False to match both True and None (unset) values
         settings_cursor = self.db.notification_settings.find({
-            "notifications_enabled": True,
-            "following_digest_enabled": True,
+            "notifications_enabled": {"$ne": False},
+            "following_digest_enabled": {"$ne": False},
             "digest_time": hour_str,
             "following_digest_frequency": {"$ne": "off"}
         })
@@ -202,8 +203,9 @@ class NotificationWorker:
         check_time = f"{now.hour:02d}:{minute_rounded:02d}"
         
         # Find users whose quiet hours end at this time
+        # Use $ne: False to match both True and None (unset) values
         settings_cursor = self.db.notification_settings.find({
-            "notifications_enabled": True,
+            "notifications_enabled": {"$ne": False},
             "quiet_hours_enabled": True,
             "quiet_hours_end": check_time
         })
@@ -374,9 +376,12 @@ class NotificationWorker:
     # MANUAL TRIGGERS (for admin use)
     # ============================================
     
-    async def trigger_mass_workout_reminder(self, custom_message: Optional[str] = None) -> int:
+    async def trigger_mass_workout_reminder(self, custom_message: Optional[str] = None, sender_user_id: Optional[str] = None) -> int:
         """Send workout reminder to all users with reminders enabled"""
         count = 0
+        
+        # Resolve admin actor_id for sender attribution
+        actor_id = sender_user_id or await self.notification_service.get_admin_user_id()
         
         users = await self.db.users.find({"is_banned": {"$ne": True}}).to_list(10000)
         
@@ -393,7 +398,8 @@ class NotificationWorker:
             
             result = await self.notification_service.trigger_workout_reminder(
                 user_id=user_id,
-                custom_message=custom_message
+                custom_message=custom_message,
+                actor_id=actor_id
             )
             
             if result:

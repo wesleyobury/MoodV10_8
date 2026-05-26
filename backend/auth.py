@@ -2,6 +2,7 @@
 Emergent Auth Integration
 Handles Google OAuth via Emergent Auth service
 """
+import os
 import httpx
 import uuid
 from datetime import datetime, timezone, timedelta
@@ -14,7 +15,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 # Emergent Auth API endpoint
-EMERGENT_AUTH_SESSION_API = "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data"
+EMERGENT_AUTH_SESSION_API = os.environ.get('EMERGENT_AUTH_API_URL', 'https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data')
 
 class SessionDataResponse(BaseModel):
     """Response from Emergent Auth API"""
@@ -128,9 +129,10 @@ async def create_or_update_user(db: AsyncIOMotorDatabase, user_data: SessionData
 
 async def store_session(db: AsyncIOMotorDatabase, user_id: str, session_token: str) -> None:
     """
-    Store session token in database with 7-day expiry
+    Store session token in database with long-lived expiry (10 years)
+    Users stay logged in until they explicitly sign out
     """
-    expires_at = datetime.now(timezone.utc) + timedelta(days=7)
+    expires_at = datetime.now(timezone.utc) + timedelta(days=3650)
     
     await db.user_sessions.insert_one({
         "user_id": user_id,
@@ -197,7 +199,7 @@ def set_session_cookie(response: Response, session_token: str) -> None:
         secure=True,
         samesite="none",
         path="/",
-        max_age=7 * 24 * 60 * 60  # 7 days in seconds
+        max_age=10 * 365 * 24 * 60 * 60  # 10 years - stay logged in until explicit logout
     )
 
 def clear_session_cookie(response: Response) -> None:

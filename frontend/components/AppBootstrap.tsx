@@ -1,26 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Animated, TouchableOpacity, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import Constants from 'expo-constants';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// Get API URL with multiple fallbacks
-const getApiUrl = (): string => {
-  if (process.env.EXPO_PUBLIC_BACKEND_URL) {
-    return process.env.EXPO_PUBLIC_BACKEND_URL;
-  }
-  if (Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL) {
-    return Constants.expoConfig.extra.EXPO_PUBLIC_BACKEND_URL;
-  }
-  if (Constants.manifest?.extra?.EXPO_PUBLIC_BACKEND_URL) {
-    return Constants.manifest.extra.EXPO_PUBLIC_BACKEND_URL;
-  }
-  if (Constants.expoConfig?.hostUri) {
-    const host = Constants.expoConfig.hostUri.split(':')[0];
-    return `https://${host}`;
-  }
-  return '';
-};
+import { API_URL } from '../utils/apiConfig';
+import { secureStorage, AUTH_TOKEN_KEY } from '../utils/secureStorage';
 
 interface AppBootstrapProps {
   children: React.ReactNode;
@@ -129,7 +112,7 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
   // Token restore check - NON-BLOCKING
   const checkTokenRestore = useCallback(async (apiUrl: string): Promise<boolean> => {
     try {
-      const storedToken = await AsyncStorage.getItem('auth_token');
+      const storedToken = await secureStorage.get(AUTH_TOKEN_KEY);
       if (!storedToken) {
         console.log('AppBootstrap: No stored token');
         return false; // No token, but that's OK
@@ -216,7 +199,7 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
     
     console.log('AppBootstrap: Boot sequence started');
     const bootStartTime = Date.now();
-    const apiUrl = getApiUrl();
+    const apiUrl = API_URL;
     
     // Start background checks immediately (don't await)
     runBackgroundChecks(apiUrl);

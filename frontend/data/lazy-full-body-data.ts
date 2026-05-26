@@ -89,7 +89,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Vertical Stack',
+          name: 'Vertical Stack (Full Body Push)',
           duration: '28–35 min',
           description: 'Hack squats, shoulder press sequence, Pallof press core.',
           battlePlan: 'Hack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nMachine Shoulder Press\n• 4 × 8 (RPE 5), 60–75s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 5), 45–60s rest',
@@ -109,7 +109,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Smith Lines',
+          name: 'Smith Lines (Push)',
           duration: '28–35 min',
           description: 'Smith squat series, Smith bench sets, hanging knees finish.',
           battlePlan: 'Smith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith Machine Bench Press\n• 4 × 8 (RPE 5), 60–75s rest\nHanging Knee Raise\n• 3 × 10–15 (RPE 5), 60s rest',
@@ -363,7 +363,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Midrange Pull',
+          name: 'Midrange Pull (Full Body)',
           duration: '35–42 min',
           description: 'Back extension 1.5s, high rows, anti-rotation hold close.',
           battlePlan: 'Back Extension (1.5 reps, machine)\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 6), 45–60s rest',
@@ -473,7 +473,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Vertical Lines',
+          name: 'Vertical Lines (Mix)',
           duration: '32–40 min',
           description: 'Hack squat, shoulder press, pulldown series, core hold.',
           battlePlan: 'Hack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nMachine Shoulder Press\n• 4 × 8 (RPE 5), 60–75s rest\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 5), 45–60s rest',
@@ -493,7 +493,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           ]
         },
         {
-          name: 'Smith Lines',
+          name: 'Smith Lines (Mix)',
           duration: '32–40 min',
           description: 'Smith squat, Smith bench, row machine, cable chops.',
           battlePlan: 'Smith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith Machine Bench Press\n• 4 × 8 (RPE 5), 60–75s rest\nChest-Supported Row Machine\n• 3 × 8–10 (RPE 5), 60–75s rest\nLow-to-High Cable Chop\n• 3 × 8–10/side (RPE 5), 45–60s rest',

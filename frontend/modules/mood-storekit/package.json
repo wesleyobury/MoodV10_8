@@ -1,0 +1,7 @@
+{
+  "name": "mood-storekit",
+  "version": "1.0.0",
+  "description": "MOOD StoreKit 2 bridge — subscriptions, restore, entitlements.",
+  "main": "src/index.ts",
+  "private": true
+}

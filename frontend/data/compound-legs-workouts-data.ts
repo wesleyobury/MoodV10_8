@@ -24,7 +24,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push knees out, sit hips down under control',
               description: 'Slow descent builds strength and prevents knee valgus collapse.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'DB RDL',
@@ -44,7 +48,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Glide DBs down thighs until hamstring stretch',
               description: 'Feel the stretch in hamstrings before driving hips forward to stand.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Box Goblet Squat',
@@ -69,7 +77,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Move slow and steady',
               description: 'Smooth tempo builds confidence and joint control.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Supported Reverse Lunge',
@@ -94,7 +106,69 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive through front heel',
               description: 'Feel quad and glute push you up together.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'Supported Step-Ups',
+          duration: '10–12 min',
+          description: 'Step-ups with light support to build balance, control, and rhythm.',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/7tvi5pvu_db%20step%20up.png',
+          intensityReason: 'Support + light load builds confidence in the step pattern.',
+          moodTips: [
+            {
+              icon: 'hand-right',
+              title: 'Use support if needed',
+              description: 'Build confidence while learning movement.'
+            },
+            {
+              icon: 'footsteps',
+              title: 'Step fully onto box',
+              description: 'Whole foot drives upward.'
+            },
+            {
+              icon: 'time',
+              title: 'Move at your pace',
+              description: 'Control over speed.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'Controlled Walking Lunge',
+          duration: '10–12 min',
+          description: 'Forward lunges focusing on balance, rhythm, and controlled reps.',
+          battlePlan: '3 rounds\n• 8–10 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/rurzgx9a_db%20walking%20lunge.png',
+          intensityReason: 'Light load + steady cadence locks in the lunge pattern before adding intensity.',
+          moodTips: [
+            {
+              icon: 'footsteps',
+              title: 'Take comfortable steps',
+              description: 'Build confidence in balance.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright',
+              description: 'Maintain positioning.'
+            },
+            {
+              icon: 'pulse',
+              title: 'Move smoothly',
+              description: 'No rushing.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -116,7 +190,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Descend slow, avoid bouncing knee',
               description: 'Control prevents injury and maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Lateral Lunge',
@@ -136,7 +214,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep chest tall, toes forward entire set',
               description: 'Maintain posture to prevent compensations and maximize effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Front-Foot Elevated Split Squat',
@@ -161,7 +243,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow descent',
               description: 'Take a controlled 3 seconds down to build tension.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Dumbbell Squat Drop Set',
@@ -186,7 +272,98 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Posture stays locked',
               description: 'Chest tall and knees tracking forward throughout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Tempo Step-Ups',
+          duration: '14–16 min',
+          description: 'Step-ups using slow eccentrics to increase tension and control.',
+          battlePlan: '4 rounds\n• 8 per leg (3s down)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/7tvi5pvu_db%20step%20up.png',
+          intensityReason: 'Tempo eccentric stresses single-leg quads + glutes for hypertrophy.',
+          moodTips: [
+            {
+              icon: 'trending-down',
+              title: 'Control the descent',
+              description: '3-second eccentric builds stability.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay tall at top',
+              description: 'Full extension each rep.'
+            },
+            {
+              icon: 'pulse',
+              title: 'Keep rhythm steady',
+              description: 'No rushing.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'strength',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Walking Lunge Pulses',
+          duration: '14–16 min',
+          description: 'Walking lunges extended with pulses for added tension and burn.',
+          battlePlan: '3 rounds\n• 8 per leg + 3 pulses\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/rurzgx9a_db%20walking%20lunge.png',
+          intensityReason: 'Pulses extend time under tension, hammering quads and glutes mid-step.',
+          moodTips: [
+            {
+              icon: 'pulse',
+              title: 'Pulse at bottom',
+              description: 'Increase time under tension.'
+            },
+            {
+              icon: 'trending-down',
+              title: 'Stay low between steps',
+              description: 'Constant load.'
+            },
+            {
+              icon: 'flame',
+              title: 'Control fatigue',
+              description: 'Keep reps clean.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'pump',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Goblet Squat Tempo',
+          duration: '14–16 min',
+          description: 'Goblet squats using slow eccentrics to build quad control.',
+          battlePlan: '4 rounds\n• 10–12 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/tsuxq68j_db%20goblet%20squat.png',
+          intensityReason: 'Tempo eccentric maximizes quad tension without heavier loading.',
+          moodTips: [
+            {
+              icon: 'trending-down',
+              title: 'Slow descent',
+              description: '3-second eccentric.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright',
+              description: 'DB helps balance.'
+            },
+            {
+              icon: 'flag',
+              title: 'Keep depth consistent',
+              description: 'Don’t shorten reps.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -208,7 +385,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Transition quickly to maintain time under tension',
               description: 'Minimal rest between exercises keeps muscles working continuously.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Squat Iso Hold + Pulses',
@@ -228,7 +409,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep heels planted, chest upright whole time',
               description: 'Maintain proper position throughout hold and pulses for safety.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Double Dumbbell Front Squat',
@@ -253,7 +438,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Fatigue can hit suddenly in front-loaded positions.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Bulgarian Split Squat Burnout',
@@ -278,7 +467,98 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drop dumbbells if needed',
               description: 'Finish set safely with bodyweight if balance fades.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'pump',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Explosive Step-Up + Eccentric Return',
+          duration: '16–18 min',
+          description: 'Explosive step-ups paired with slow controlled eccentric returns.',
+          battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/7tvi5pvu_db%20step%20up.png',
+          intensityReason: 'Power on the way up + slow return delivers maximum single-leg load.',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Explode up hard',
+              description: 'Max power each rep.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Final sets should challenge limit.'
+            },
+            {
+              icon: 'trending-down',
+              title: 'Own the descent',
+              description: 'Build serious tension.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'strength',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Walking Lunge Drop Set',
+          duration: '16–18 min',
+          description: 'Continuous lunges extended with weight drops to near failure.',
+          battlePlan: '3 rounds\n• 10 per leg\n• Drop → 10\n• Drop → BW to failure\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/rurzgx9a_db%20walking%20lunge.png',
+          intensityReason: 'Continuous load reductions push past traditional failure for maximum burn.',
+          moodTips: [
+            {
+              icon: 'arrow-forward',
+              title: 'Keep moving forward',
+              description: 'No stopping.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Last sets should burn.'
+            },
+            {
+              icon: 'body',
+              title: 'Finish bodyweight',
+              description: 'Full burnout.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'pump',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Goblet Squat 1.5 Reps',
+          duration: '16–18 min',
+          description: 'Goblet squats using 1.5 reps to increase time under tension.',
+          battlePlan: '4 rounds\n• 8–10 reps\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/tsuxq68j_db%20goblet%20squat.png',
+          intensityReason: '1.5 reps double the bottom-half stress, maxing out quad time under tension.',
+          moodTips: [
+            {
+              icon: 'repeat',
+              title: 'Half + full rep',
+              description: 'One cycle = one rep.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Final rounds should hit limit.'
+            },
+            {
+              icon: 'trending-down',
+              title: 'Stay controlled',
+              description: 'No bouncing.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -306,7 +586,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Sit hips back, knees out, heels planted',
               description: 'Proper movement pattern prevents knee stress and maximizes power.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Reverse Lunge',
@@ -327,7 +611,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep torso upright, drive through front heel',
               description: 'Front leg does the work while maintaining proper posture.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Rack RDL',
@@ -347,7 +635,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop at stretch, don\'t let back round',
               description: 'Maintain back position - flexibility comes with time and practice.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Box Back Squat',
@@ -372,7 +664,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive straight up',
               description: 'Knees and hips rise together for clean mechanics.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Back Squat',
@@ -397,7 +693,98 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth ascent only',
               description: 'No bouncing out of the bottom.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 3,
+        },
+        {
+          name: 'Zercher Box Squat',
+          duration: '12–14 min',
+          description: 'Zercher squats using box support to reinforce depth and control',
+          battlePlan: '3 rounds\n• 8–10 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/5n35ypfy_zercher%20squat.png',
+          intensityReason: 'Box guidance teaches safe Zercher depth and bracing',
+          moodTips: [
+            {
+              icon: 'square-outline',
+              title: 'Use box for guidance',
+              description: 'Build confidence in depth.'
+            },
+            {
+              icon: 'shield',
+              title: 'Keep elbows tight',
+              description: 'Secure bar position.'
+            },
+            {
+              icon: 'timer',
+              title: 'Move controlled',
+              description: 'Focus on form.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'Barbell Static Lunge',
+          duration: '12–14 min',
+          description: 'Stationary lunges focusing on balance, control, and positioning',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/phvexum7_bb%20lunge.png',
+          intensityReason: 'Stationary stance lets beginners groove the lunge pattern',
+          moodTips: [
+            {
+              icon: 'footsteps',
+              title: 'Stay planted',
+              description: 'Build stability.'
+            },
+            {
+              icon: 'body',
+              title: 'Keep torso tall',
+              description: 'Proper posture.'
+            },
+            {
+              icon: 'timer',
+              title: 'Move controlled',
+              description: 'Build confidence.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'Bodyweight Jump Squat',
+          duration: '10–12 min',
+          description: 'Jump squats introducing explosive movement with safe mechanics',
+          battlePlan: '3 rounds\n• 8–10 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/hkwmfgkl_jump%20squat.png',
+          intensityReason: 'Bodyweight jumps teach soft landings before adding load',
+          moodTips: [
+            {
+              icon: 'arrow-down',
+              title: 'Land softly',
+              description: 'Protect joints.'
+            },
+            {
+              icon: 'flash',
+              title: 'Jump controlled',
+              description: 'Not max effort yet.'
+            },
+            {
+              icon: 'body',
+              title: 'Build comfort',
+              description: 'Focus on form.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'jump_squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -420,7 +807,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stay upright, descend slow, drive up',
               description: 'Front load forces good posture - lean forward and you\'ll drop the bar.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Bulgarian Split Squat',
@@ -440,7 +831,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower straight down — avoid hip shift',
               description: 'Keep hips square and descend vertically for maximum quad activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Rack Deficit RDL',
@@ -460,7 +855,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow 2–3s lower, drive up fast',
               description: 'Eccentric control with explosive concentric maximizes development.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Front Squat',
@@ -485,7 +884,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Front rack fatigue can end sets suddenly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Back Squat Drop Set',
@@ -510,7 +913,98 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Rack before form fails',
               description: 'Safety always overrides completion.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Tempo Zercher Squat',
+          duration: '14–16 min',
+          description: 'Zercher squats with slow eccentrics increasing tension and control',
+          battlePlan: '4 rounds\n• 6–8 reps\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/5n35ypfy_zercher%20squat.png',
+          intensityReason: 'Slow eccentric Zercher hammers the core and quads',
+          moodTips: [
+            {
+              icon: 'timer',
+              title: '3-second descent',
+              description: 'Build strength and stability.'
+            },
+            {
+              icon: 'shield',
+              title: 'Brace hard',
+              description: 'Core demand is high.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright',
+              description: 'Avoid folding.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Barbell Walking Lunge',
+          duration: '14–16 min',
+          description: 'Loaded walking lunges building unilateral strength and control',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/phvexum7_bb%20lunge.png',
+          intensityReason: 'Walking pattern adds balance demand to loaded lunge',
+          moodTips: [
+            {
+              icon: 'footsteps',
+              title: 'Step consistent',
+              description: 'Maintain rhythm.'
+            },
+            {
+              icon: 'timer',
+              title: 'Stay controlled',
+              description: 'Avoid rushing.'
+            },
+            {
+              icon: 'flash',
+              title: 'Manage fatigue',
+              description: 'Keep reps clean.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Jump Squat Repeats',
+          duration: '14–16 min',
+          description: 'Repeated jump squats improving power output and endurance',
+          battlePlan: '4 rounds\n• 10 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/hkwmfgkl_jump%20squat.png',
+          intensityReason: 'Repeated jumps build explosive endurance',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Explode each rep',
+              description: 'Max intent upward.'
+            },
+            {
+              icon: 'refresh',
+              title: 'Reset quickly',
+              description: 'Maintain rhythm.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay controlled',
+              description: 'Clean landings.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'jump_squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -532,7 +1026,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode upward with controlled breath',
               description: 'Drive up fast after pause while maintaining breathing pattern.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Walking Lunges',
@@ -552,7 +1050,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep torso tall, slow controlled descent',
               description: 'Don\'t rush - control each step for maximum effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Squat + RDL Superset',
@@ -572,7 +1074,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Breathe steady; stay tight on both',
               description: 'Maintain core bracing throughout both exercises for safety.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Back Squat',
@@ -597,7 +1103,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter or safety bars required',
               description: 'Mandatory for heavy loading.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Back Squat Burnout',
@@ -622,7 +1132,98 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End set before breakdown',
               description: 'Stop when posture degrades.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Zercher Pause Squat',
+          duration: '16–18 min',
+          description: 'Paused Zercher squats building strength in the bottom position',
+          battlePlan: '4 rounds\n• 5–6 reps\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/5n35ypfy_zercher%20squat.png',
+          intensityReason: 'Bottom pauses develop raw strength out of the hole',
+          moodTips: [
+            {
+              icon: 'pause',
+              title: 'Pause at depth',
+              description: 'Remove all momentum.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Final rounds should challenge limit.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stay tight',
+              description: 'No relaxation.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Barbell Lunge Burnout',
+          duration: '16–18 min',
+          description: 'High-rep lunges pushing full leg fatigue and endurance output',
+          battlePlan: '3 rounds\n• 12 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/phvexum7_bb%20lunge.png',
+          intensityReason: 'Volume lunges drive deep posterior + quad fatigue',
+          moodTips: [
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Last sets should burn.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright',
+              description: 'Avoid breakdown.'
+            },
+            {
+              icon: 'flash',
+              title: 'Finish strong',
+              description: 'Don’t quit early.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'pump',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Jump Squat Clusters',
+          duration: '16–18 min',
+          description: 'Clustered jump squats maintaining power output under fatigue',
+          battlePlan: '4 rounds\n• 5 + 5 + 5\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/hkwmfgkl_jump%20squat.png',
+          intensityReason: 'Cluster sets preserve max power output across reps',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Max effort jumps',
+              description: 'Every rep explosive.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Final clusters should hit limit.'
+            },
+            {
+              icon: 'alert',
+              title: 'Stay sharp',
+              description: 'Quality reps only.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'jump_squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -650,7 +1251,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Avoid locking knees, control descent',
               description: 'Soft lockout protects joints while maintaining muscle tension.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Narrow Stance Press',
@@ -670,7 +1275,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep reps slow; don\'t bounce at bottom',
               description: 'Control prevents momentum and maximizes muscle tension.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Paused Leg Press + Iso Hold',
@@ -695,7 +1304,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Iso hold to finish',
               description: 'Hold keeps legs under tension without heavy load.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'mixed',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Leg Press',
@@ -720,7 +1333,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth press upward',
               description: 'Avoid jerking the sled off the bottom.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -742,7 +1359,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep knees tracking over mid foot',
               description: 'Proper alignment prevents knee stress and maximizes power.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Single Leg Press',
@@ -762,7 +1383,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Don\'t let hips lift off pad',
               description: 'Keep hips square and pressed into back pad throughout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Leg Press Pause Reps',
@@ -787,7 +1412,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode out of pause',
               description: 'Builds power from the weakest range.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Leg Press Drop Ladder',
@@ -812,7 +1441,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Breathing controls fatigue',
               description: 'Strong exhales help push through later reps.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -834,7 +1467,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep range consistent all drops',
               description: 'Don\'t shorten range as you fatigue - maintain quality reps.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Pause Press',
@@ -854,7 +1491,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push out smooth, no jerking stack',
               description: 'Controlled movement from pause prevents joint stress.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Low-Rep Leg Press',
@@ -879,7 +1520,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter strongly recommended',
               description: 'Heavy failures occur quickly on leg press.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Leg Press Burnout',
@@ -904,7 +1549,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Expect extreme quad pump',
               description: 'Swelling and burn signal effective fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -932,7 +1581,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower until thighs parallel, push through heels',
               description: 'Good depth with heel drive maximizes leg muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Narrow Hack Squat',
@@ -952,7 +1605,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Maintain upright back pressing into pad',
               description: 'Use back pad for support while maintaining spine position.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Controlled Hack Squat',
@@ -977,7 +1634,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Press through mid-foot',
               description: 'Even pressure prevents knee drift and loss of balance.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Hack Squat Pause Reps',
@@ -1002,7 +1663,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth drive upward',
               description: 'Controlled ascent prevents joint stress and bouncing.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1024,7 +1689,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Sink into hips, don\'t lift heels',
               description: 'Heel contact maintains stability and power transfer.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Hack Squat Calf Raise',
@@ -1044,7 +1713,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep shoulders pinned hard to pad',
               description: 'Maintain shoulder contact for stability during calf raises.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Hack Squat Drop Set',
@@ -1069,7 +1742,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Expect deep quad burn',
               description: 'Intense pump signals effective fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Heel-Elevated Hack Squat',
@@ -1094,7 +1771,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel stretch before drive',
               description: 'Bottom position primes quad contraction.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Reverse Hack Squat',
@@ -1119,7 +1800,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control the descent',
               description: 'Slower lowering keeps hips and knees tracking clean.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1141,7 +1826,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Move smoothly, no bouncing at bottom',
               description: 'Control throughout entire rep sequence for safety and effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Reverse Hack Squat',
@@ -1161,7 +1850,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push heels downward, squeeze glutes at top',
               description: 'Focus on glute contraction for maximum muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Hack Squat',
@@ -1186,7 +1879,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter strongly recommended',
               description: 'Heavy hack squats can stall abruptly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Hack Squat Burnout',
@@ -1211,7 +1908,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Quad shake is expected',
               description: 'Fatigue confirms effective burnout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Reverse Hack Squat',
@@ -1236,7 +1937,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter strongly recommended',
               description: 'Heavy reverse hacks can stall without warning.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1264,7 +1969,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hips down, knees out, control down + up',
               description: 'Proper squat mechanics with cable assistance for learning.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Cable Step Through',
@@ -1284,7 +1993,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push front heel, let cable guide back',
               description: 'Cable provides assistance returning to start position.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Cable Goblet Squat',
@@ -1309,7 +2022,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth controlled reps',
               description: 'Cable tension rewards steady movement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Cable Reverse Lunge',
@@ -1334,7 +2051,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Front heel pushes floor',
               description: 'Ensures quad and glute engagement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1356,7 +2077,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hinge hips back, pull cable tight each rep',
               description: 'Maintain cable tension while performing hip hinge pattern.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Cable Split Squat',
@@ -1376,7 +2101,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drop rear knee close, drive evenly upward',
               description: 'Controlled descent with powerful drive through front leg.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Cable Squat to Row',
@@ -1401,7 +2130,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control cable return',
               description: 'Slow return maintains tension.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Cable Romanian Deadlift',
@@ -1426,7 +2159,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze glutes to stand',
               description: 'Hips finish the rep.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1448,7 +2185,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep upright torso even under heavier load',
               description: 'Cable front load helps maintain position but requires core strength.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Cable Squat to RDL',
@@ -1468,7 +2209,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stay close to stack for strong pull angle',
               description: 'Positioning relative to cable stack affects resistance curve.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Cable Squat Drop Set',
@@ -1493,7 +2238,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase continuous tension',
               description: 'Cable keeps legs loaded throughout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Cable Split Squat Advanced',
@@ -1518,7 +2267,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Brace core throughout',
               description: 'Single-leg work demands stability.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1546,7 +2299,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push floor evenly, lock out fully',
               description: 'Drive through both feet equally and complete full extension at top.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Neutral Grip Trap Bar Squat',
@@ -1566,7 +2323,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep spine tall, descend under control',
               description: 'Controlled descent maximizes muscle engagement and safety.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Trap Bar Deadlift',
@@ -1591,7 +2352,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lock out smoothly',
               description: 'No jerking or hitching at the top.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Trap Bar Deadlift',
@@ -1616,7 +2381,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Feel hamstrings load',
               description: 'Stretch signals correct positioning.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1638,7 +2407,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive hips forward to finish rep',
               description: 'Hip drive ensures complete glute activation at top of movement.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Tempo Trap Bar Squat',
@@ -1658,7 +2431,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Controlled pace — no collapse at depth',
               description: 'Maintain tension throughout range of motion for safety.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Trap Bar Drop Set',
@@ -1683,7 +2460,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Grip can assist',
               description: 'Legs and hips remain priority movers.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Trap Bar Pause Deadlift',
@@ -1708,7 +2489,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode to lockout',
               description: 'Power finishes the rep.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1730,7 +2515,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode upward from pause each rep',
               description: 'Rapid acceleration from pause develops explosive power.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: '1½ Rep Trap Bar Squat',
@@ -1750,7 +2539,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stay smooth — no bouncing between halves',
               description: 'Controlled movement pattern prevents momentum and maintains tension.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Trap Bar Deadlift',
@@ -1775,7 +2568,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Fatigue can accumulate quickly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Trap Bar Burnout Pulls',
@@ -1800,7 +2597,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop before form breaks',
               description: 'Technique always comes first.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1833,7 +2634,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth reps only',
               description: 'Avoid bouncing or rushing transitions.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Pit Shark Squat',
@@ -1858,7 +2663,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Controlled ascent',
               description: 'Stand smoothly without jerking.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Pit Shark Pause Squat',
@@ -1883,7 +2692,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive evenly upward',
               description: 'Knees and hips rise together.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Pit Shark Step-Ups',
@@ -1908,7 +2721,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive through lead heel',
               description: 'Improves quad and glute activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1935,7 +2752,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Fatigue can stall reps unexpectedly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Pit Shark Romanian Deadlift',
@@ -1960,7 +2781,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Glutes finish the lift',
               description: 'Squeeze hips through at top.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Pit Shark Drop Set Squat',
@@ -1985,7 +2810,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase quad pump',
               description: 'Continuous tension is the goal.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Pit Shark Jump Squat',
@@ -2010,7 +2839,40 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Reset fully each rep',
               description: 'Every jump should be explosive.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'jump_squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Pit Shark Step-Ups',
+          duration: '14–16 min',
+          description: 'Belt-loaded step-ups reducing spinal load while training legs',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/mt2elt9e_pit%20shark%20step%20up.png',
+          intensityReason: 'Belt-loaded step-ups train legs without compressing the spine',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Drive through front leg',
+              description: 'Let belt load legs.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay balanced',
+              description: 'Control hips.'
+            },
+            {
+              icon: 'timer',
+              title: 'Keep reps clean',
+              description: 'Don’t rush.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2037,7 +2899,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter required',
               description: 'Heavy failures can occur suddenly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Pit Shark RDL',
@@ -2062,7 +2928,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Fatigue can compromise hinge mechanics.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Pit Shark Triple Drop Squat',
@@ -2087,7 +2957,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Quad pump should peak',
               description: 'Exhaustion is intentional.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Pit Shark Jump Squat Burnout',
@@ -2112,7 +2986,40 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop when jumps slow',
               description: 'End set once explosiveness fades.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'jump_squat',
+          training_style: 'pump',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Pit Shark Step-Up Pulses',
+          duration: '16–18 min',
+          description: 'Step-ups extended with pulses to increase tension and fatigue',
+          battlePlan: '4 rounds\n• 6 per leg + 3 pulses\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/mt2elt9e_pit%20shark%20step%20up.png',
+          intensityReason: 'Top pulses extend time under tension for max quad/glute fatigue',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Pulse at top',
+              description: 'Extra contraction.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Final sets should burn.'
+            },
+            {
+              icon: 'shield',
+              title: 'Stay stable',
+              description: 'No wobble.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -2145,7 +3052,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Controlled cadence',
               description: 'Precision over speed.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Smith Squat',
@@ -2170,7 +3081,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth ascent',
               description: 'No bouncing.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Smith Reverse Lunge',
@@ -2195,7 +3110,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Front leg dominates',
               description: 'Rear leg assists balance only.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Smith Romanian Deadlift',
@@ -2220,7 +3139,40 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch without rounding',
               description: 'Depth stops before spine flexes.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'Smith Supported Step-Ups',
+          duration: '10–12 min',
+          description: 'Guided step-ups using bar support to assist balance and control',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/sijsojfi_smith%20machine%20step%20up.png',
+          intensityReason: 'Smith bar path stabilizes the step-up while you build leg strength',
+          moodTips: [
+            {
+              icon: 'shield',
+              title: 'Use bar for balance',
+              description: 'Build confidence.'
+            },
+            {
+              icon: 'footsteps',
+              title: 'Step fully up',
+              description: 'Full foot contact.'
+            },
+            {
+              icon: 'timer',
+              title: 'Move controlled',
+              description: 'No rushing.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -2247,7 +3199,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Front loading increases fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Smith Split Squat',
@@ -2272,7 +3228,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Front leg drives ascent',
               description: 'Rear leg stabilizes only.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Smith Squat Drop Set',
@@ -2297,7 +3257,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase quad pump',
               description: 'Continuous tension focus.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Smith Jump Squat',
@@ -2322,7 +3286,40 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Reset each rep',
               description: 'Explosiveness over fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'jump_squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Smith Step-Ups Tempo',
+          duration: '14–16 min',
+          description: 'Step-ups using controlled tempo for increased tension',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/sijsojfi_smith%20machine%20step%20up.png',
+          intensityReason: 'Tempo step-ups maximize quad/glute time under tension',
+          moodTips: [
+            {
+              icon: 'timer',
+              title: 'Slow descent',
+              description: '3-second eccentric.'
+            },
+            {
+              icon: 'body',
+              title: 'Stay upright',
+              description: 'Keep bar stable.'
+            },
+            {
+              icon: 'refresh',
+              title: 'Consistent rhythm',
+              description: 'No bouncing.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2349,7 +3346,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter or safeties required',
               description: 'Mandatory for heavy loading.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Smith Pause Squat',
@@ -2374,7 +3375,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive evenly upward',
               description: 'Prevents knee collapse.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Smith RDL Drop Set',
@@ -2399,7 +3404,11 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Straps allowed',
               description: 'Posterior chain should limit set.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Smith Squat Burnout',
@@ -2424,9 +3433,424 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Controlled breathing',
               description: 'One breath per rep.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Smith Step-Up Drive',
+          duration: '16–18 min',
+          description: 'Explosive step-ups focusing on power and control under load',
+          battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/sijsojfi_smith%20machine%20step%20up.png',
+          intensityReason: 'Heavy explosive step-ups develop unilateral power',
+          moodTips: [
+            {
+              icon: 'flash',
+              title: 'Explode upward',
+              description: 'Max intent each rep.'
+            },
+            {
+              icon: 'flame',
+              title: 'Push near failure',
+              description: 'Last rounds should burn.'
+            },
+            {
+              icon: 'shield',
+              title: 'Control return',
+              description: 'Stay balanced.'
+            }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
+        }
+      ]
+    }
+  },
+  {
+    equipment: 'Kettlebells',
+    icon: 'fitness',
+    workouts: {
+      beginner: [
+        {
+          name: 'KB Static Lunge',
+          duration: '10–12 min',
+          description: 'Stationary lunges building balance, control, and movement confidence',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/75iax87r_kb%20lunge.png',
+          intensityReason: 'Stationary lunges teach balance and bracing under kettlebell load',
+          moodTips: [
+            { icon: 'repeat', title: 'Make every rep identical', description: 'Same depth and stance each time builds real control.' },
+            { icon: 'flash', title: 'Feel your front leg working', description: 'If back leg dominates, shorten your stance.' },
+            { icon: 'shield', title: 'Finish feeling in control', description: 'You should have reps left, not be exhausted.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'KB Supported Step-Up',
+          duration: '10–12 min',
+          description: 'Step-ups using light support to build balance and coordination',
+          battlePlan: '3 rounds\n• 8 per leg\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/frus5rdt_kb%20step%20up.png',
+          intensityReason: 'Light support lets beginners groove balance before adding intensity',
+          moodTips: [
+            { icon: 'hand-right', title: 'Use support to stay steady', description: 'Balance comes first, not speed or load.' },
+            { icon: 'footsteps', title: 'Plant your whole foot', description: 'Driving through toes reduces stability.' },
+            { icon: 'checkmark-circle', title: 'Finish feeling confident', description: 'You should have reps left.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'KB Controlled Swing',
+          duration: '10–12 min',
+          description: 'Basic swings building hip hinge mechanics and coordination',
+          battlePlan: '3 rounds\n• 12–15 reps\nRest 60s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/ajm4hd60_kb%20swing.png',
+          intensityReason: 'Foundational hip hinge teaches power transfer through the posterior chain',
+          moodTips: [
+            { icon: 'flash', title: 'Hips drive the movement', description: 'Arms should feel passive, not active.' },
+            { icon: 'pulse', title: 'Snap, don’t lift', description: 'If shoulders work, reset your hinge.' },
+            { icon: 'checkmark-circle', title: 'Finish feeling confident', description: 'Not out of breath or overwhelmed.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'KB Deadlift',
+          duration: '10–12 min',
+          description: 'Basic hinge movement building posterior chain strength safely',
+          battlePlan: '3 rounds\n• 10–12 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/wt6q1tpv_kb%20deadlift.png',
+          intensityReason: 'Foundational hinge pattern teaches posterior chain engagement',
+          moodTips: [
+            { icon: 'arrow-back', title: 'Push hips back first', description: 'Not a squat.' },
+            { icon: 'body', title: 'Feel hamstrings stretch', description: 'That’s your cue.' },
+            { icon: 'checkmark-circle', title: 'Finish confident', description: 'Not fatigued.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        }
+      ],
+      intermediate: [
+        {
+          name: 'KB Walking Lunge',
+          duration: '14–16 min',
+          description: 'Walking lunges building unilateral strength and continuous tension',
+          battlePlan: '4 rounds\n• 8 per leg\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/3pz6hkz9_kb%20lunge%202.png',
+          intensityReason: 'Walking adds balance demand on top of unilateral leg drive',
+          moodTips: [
+            { icon: 'footsteps', title: 'Step with intention, not momentum', description: 'Feel the front leg load before stepping through.' },
+            { icon: 'arrow-down', title: 'Stay low between steps', description: 'Standing tall resets tension and makes it easier.' },
+            { icon: 'flame', title: 'Burn should build each round', description: 'If legs feel fresh late, increase intensity.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
+        },
+        {
+          name: 'KB Step-Up Tempo',
+          duration: '14–16 min',
+          description: 'Step-ups with slow eccentrics increasing tension and control',
+          battlePlan: '4 rounds\n• 8 per leg (3s down)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7j1bpxt0_kb%20step%20up%202.png',
+          intensityReason: 'Slow eccentric phase amplifies time under tension on each rep',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Own the lowering phase', description: 'If you rush down, you lose the benefit.' },
+            { icon: 'arrow-up', title: 'Drive fully at the top', description: 'Complete extension builds strength.' },
+            { icon: 'flame', title: 'Burn should build gradually', description: 'If not, increase load.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'strength',
+          intensity_cost: 4,
+        },
+        {
+          name: 'KB Swing Tempo',
+          duration: '14–16 min',
+          description: 'Swings with controlled returns increasing time under tension',
+          battlePlan: '4 rounds\n• 12 reps\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/pj2fe7fs_kb%20swing%202.png',
+          intensityReason: 'Controlled return phase doubles posterior chain time under tension',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Control the drop', description: 'Don’t let gravity take over.' },
+            { icon: 'flash', title: 'Explode every rep', description: 'Power still matters.' },
+            { icon: 'flame', title: 'Fatigue should build gradually', description: 'If not, increase load.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'strength',
+          intensity_cost: 4,
+        },
+        {
+          name: 'KB Deadlift Tempo',
+          duration: '14–16 min',
+          description: 'Deadlifts with slow eccentrics increasing time under tension',
+          battlePlan: '4 rounds\n• 10 reps (3s down)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/cbm9hqde_kb%20deadlift%202.png',
+          intensityReason: 'Slow eccentric amplifies posterior chain time under tension',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Lower slowly every rep', description: 'That’s where growth happens.' },
+            { icon: 'shield', title: 'Stay tight at bottom', description: 'No collapse.' },
+            { icon: 'flame', title: 'Tension should build', description: 'If not, increase load.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'strength',
+          intensity_cost: 4,
+        }
+      ],
+      advanced: [
+        {
+          name: 'KB Walking Lunge Drop Set',
+          duration: '16–18 min',
+          description: 'Continuous lunges extended with weight drops to near failure',
+          battlePlan: '3 rounds\n• 10 per leg → Drop → 10 → Drop → BW\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/em1qkl0b_kb%20lunge%203.png',
+          intensityReason: 'Drop sets push past comfortable rep ranges into real fatigue',
+          moodTips: [
+            { icon: 'arrow-forward', title: 'Don’t stop moving forward', description: 'The set ends when your legs say it does.' },
+            { icon: 'flash', title: 'Drop weight, not intensity', description: 'Each drop keeps effort high, not easier.' },
+            { icon: 'flame', title: 'Final set should test you', description: 'You shouldn’t be sure you’ll finish.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'pump',
+          intensity_cost: 5,
+        },
+        {
+          name: 'KB Explosive Step-Up',
+          duration: '16–18 min',
+          description: 'Explosive step-ups building power and high-output strength',
+          battlePlan: '4 rounds\n• 6 per leg\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7w1rm7gq_kb%20step%20up%203.png',
+          intensityReason: 'Explosive intent develops unilateral power and landing control',
+          moodTips: [
+            { icon: 'flash', title: 'Attack every rep upward', description: 'Power should be intentional.' },
+            { icon: 'shield', title: 'Stick the landing clean', description: 'Control proves real strength.' },
+            { icon: 'flame', title: 'Push near failure late', description: 'Last rounds should test you.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
+        },
+        {
+          name: 'KB Swing Intervals',
+          duration: '16–18 min',
+          description: 'High-output swings performed in timed explosive intervals',
+          battlePlan: '5 rounds\n• 20s on / 20s off\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/qt6ggg2u_kb%20swing%203.png',
+          intensityReason: 'Timed intervals demand max power output rep after rep',
+          moodTips: [
+            { icon: 'flash', title: 'Every rep is max effort', description: 'Treat it like a sprint.' },
+            { icon: 'shield', title: 'Stay sharp under fatigue', description: 'Don’t lose hinge form.' },
+            { icon: 'flame', title: 'Push to your limit', description: 'Final rounds should be brutal.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
+        },
+        {
+          name: 'KB Deadlift Drop Set',
+          duration: '16–18 min',
+          description: 'Deadlifts extended with weight drops pushing toward failure',
+          battlePlan: '3 rounds\n• 8 → Drop → 8 → Drop → 8\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/29ao1zhg_kb%20deadlift%203.png',
+          intensityReason: 'Weight drops sustain posterior chain effort past traditional failure',
+          moodTips: [
+            { icon: 'flash', title: 'No rest between drops', description: 'Keep intensity high.' },
+            { icon: 'flame', title: 'Push near failure', description: 'Last sets should burn.' },
+            { icon: 'shield', title: 'Maintain form under fatigue', description: 'No breakdown.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'deadlift',
+          training_style: 'pump',
+          intensity_cost: 5,
+        }
+      ]
+    }
+  },
+  {
+    equipment: 'Pendulum Squat',
+    icon: 'fitness',
+    workouts: {
+      beginner: [
+        {
+          name: 'Controlled Pendulum Squat',
+          duration: '10–12 min',
+          description: 'Machine-guided squats emphasizing control and depth',
+          battlePlan: '3 rounds\n• 10–12 Pendulum Squats\nRest 75s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/4ei74z7h_Pendullum%20squat.png',
+          intensityReason: 'Guided path lets beginners focus purely on depth and quad engagement',
+          moodTips: [
+            { icon: 'navigate', title: 'Let machine guide path', description: 'Focus on smooth movement.' },
+            { icon: 'arrow-down', title: 'Slow descent', description: 'Build tension gradually.' },
+            { icon: 'body', title: 'Push evenly', description: 'Balanced pressure prevents drift.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'Pendulum Squat Pause',
+          duration: '10–12 min',
+          description: 'Paused reps improving bottom control',
+          battlePlan: '3 rounds\n• 8–10 Squats (2s pause)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/6qfpin63_Pendullum%20squat%202.png',
+          intensityReason: 'Paused reps remove momentum and reinforce control out of the bottom',
+          moodTips: [
+            { icon: 'pause', title: 'Pause just above depth', description: 'Removes momentum.' },
+            { icon: 'shield', title: 'Stay tight', description: 'No relaxation at bottom.' },
+            { icon: 'arrow-up', title: 'Smooth drive upward', description: 'Controlled power.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 3,
+        },
+        {
+          name: 'Tempo Pendulum Squat',
+          duration: '10–12 min',
+          description: 'Slow eccentric squats building tension',
+          battlePlan: '3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/uqrxzr6n_Pendullum%20squat%203.png',
+          intensityReason: 'Slow eccentric maximises quad time under tension',
+          moodTips: [
+            { icon: 'timer', title: '3-second descent', description: 'Constant quad tension.' },
+            { icon: 'body', title: 'Stay connected to pad', description: 'Keeps movement stable.' },
+            { icon: 'arrow-up', title: 'Drive smoothly', description: 'No bouncing.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 3,
+        }
+      ],
+      intermediate: [
+        {
+          name: 'Pendulum Squat Drop Set',
+          duration: '14–16 min',
+          description: 'Extended squat sets using rapid weight drops',
+          battlePlan: '3 rounds\n• 8 Squats\n• Drop → 8\n• Drop → 8\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/4ei74z7h_Pendullum%20squat.png',
+          intensityReason: 'Back-to-back drops extend effort past traditional failure',
+          moodTips: [
+            { icon: 'flash', title: 'Immediate drops', description: 'No rest between sets.' },
+            { icon: 'trending-down', title: 'Reduce ~25%', description: 'Maintain form.' },
+            { icon: 'shield', title: 'Stay controlled', description: 'Don’t rush lighter reps.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Heel-Elevated Pendulum Squat',
+          duration: '14–16 min',
+          description: 'Quad-biased squats using heel elevation',
+          battlePlan: '4 rounds\n• 8–10 Squats\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/6qfpin63_Pendullum%20squat%202.png',
+          intensityReason: 'Heel elevation deepens range and biases the quads',
+          moodTips: [
+            { icon: 'trending-up', title: 'Heels raised', description: 'Increases quad loading.' },
+            { icon: 'resize', title: 'Deep range', description: 'Maximize stretch.' },
+            { icon: 'body', title: 'Stay upright', description: 'Prevents hip takeover.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Pendulum Squat Pulses',
+          duration: '14–16 min',
+          description: 'Squats extended with bottom pulses',
+          battlePlan: '3 rounds\n• 8 Squats + 5 pulses\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/uqrxzr6n_Pendullum%20squat%203.png',
+          intensityReason: 'Pulses keep tension where it counts most',
+          moodTips: [
+            { icon: 'pulse', title: 'Pulse at depth', description: 'Small movements increase burn.' },
+            { icon: 'arrow-down', title: 'Stay low', description: 'Keep tension constant.' },
+            { icon: 'flame', title: 'Expect fatigue early', description: 'That’s intentional.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 4,
+        }
+      ],
+      advanced: [
+        {
+          name: 'Heavy Pendulum Squat',
+          duration: '16–18 min',
+          description: 'Low-rep squats emphasizing maximal strength',
+          battlePlan: '5 rounds\n• 5–6 Squats\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/4ei74z7h_Pendullum%20squat.png',
+          intensityReason: 'Heavy low-rep work develops raw quad strength',
+          moodTips: [
+            { icon: 'shield', title: 'Brace before every rep', description: 'Treat each rep as a single.' },
+            { icon: 'arrow-down', title: 'Control eccentric', description: 'Don’t drop into bottom.' },
+            { icon: 'people', title: 'Spotter recommended', description: 'Heavy loads demand safety.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Pendulum Squat Burnout',
+          duration: '18–20 min',
+          description: 'High-rep finisher driving full quad fatigue',
+          battlePlan: '3 rounds\n• 15–20 Squats\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/6qfpin63_Pendullum%20squat%202.png',
+          intensityReason: 'High-rep volume drives quads to total fatigue',
+          moodTips: [
+            { icon: 'repeat', title: 'No lockout', description: 'Constant tension.' },
+            { icon: 'barbell', title: 'Moderate load', description: 'Allows continuous reps.' },
+            { icon: 'flame', title: 'Push through burn', description: 'That’s the goal.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Pendulum Squat 1.5 Reps',
+          duration: '18–20 min',
+          description: 'Extended reps increasing time under tension',
+          battlePlan: '4 rounds\n• 6–8 (1.5 reps)\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/uqrxzr6n_Pendullum%20squat%203.png',
+          intensityReason: '1.5 reps double time spent in the deepest range',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Half rep + full rep', description: 'One full cycle equals one rep.' },
+            { icon: 'timer', title: 'Stay controlled', description: 'No rushing.' },
+            { icon: 'flame', title: 'Deep burn expected', description: 'That’s intentional.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
   }
 ];
+

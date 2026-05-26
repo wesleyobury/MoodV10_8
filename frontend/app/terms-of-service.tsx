@@ -91,8 +91,7 @@ export default function TermsOfServiceScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Health & Fitness Disclaimer</Text>
           <Text style={styles.importantText}>
-            IMPORTANT: Users should consult a physician or other qualified healthcare professional 
-            before beginning any fitness program, exercise routine, or dietary changes.
+            MOOD is not a medical device. Workouts are suggestions, not medical advice. Consult a physician before starting any exercise program.
           </Text>
           <Text style={styles.paragraph}>
             The fitness content, workouts, and health information provided in this app are for 

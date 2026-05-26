@@ -8,13 +8,25 @@ import {
   Easing,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
+import { useSubscription } from '../contexts/SubscriptionContext';
+import { useAuth } from '../contexts/AuthContext';
+import { Analytics } from '../utils/analytics';
 
 interface ChooseForMeButtonProps {
   onPress: () => void;
   disabled?: boolean;
   style?: object;
   variant?: 'workoutType' | 'equipment' | 'muscleGroup';
+  noAnimation?: boolean;
+  hideOrText?: boolean;
+  /**
+   * Optional opt-out for the Phase B free-tier guard. Defaults to `false`
+   * (i.e. guarded). Used for non-generation callers (e.g. the Build For Me
+   * teach moment inside the onboarding funnel where the user is being
+   * shown the flow, not consuming a generation).
+   */
+  bypassFreeTierGuard?: boolean;
 }
 
 const BORDER_RADIUS = 12;
@@ -30,18 +42,43 @@ export default function ChooseForMeButton({
   onPress, 
   disabled = false, 
   style,
-  variant = 'workoutType' 
+  variant = 'workoutType',
+  noAnimation = false,
+  hideOrText = false,
+  bypassFreeTierGuard = false,
 }: ChooseForMeButtonProps) {
-  const fadeAnim = useRef(new Animated.Value(variant === 'muscleGroup' ? 1 : 0)).current;
+  const fadeAnim = useRef(new Animated.Value(variant === 'muscleGroup' || noAnimation ? 1 : 0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const shimmerAnim = useRef(new Animated.Value(0)).current;
   const [isPressed, setIsPressed] = useState(false);
 
+  // Phase B free-tier guard. Every "Build For Me" tap is a generation, so the
+  // 3-generation cap is enforced HERE (single chokepoint across all 6 moods).
+  // Founding members + active/in-trial users sail through. The hook is read
+  // unconditionally so React Hooks rules stay happy regardless of the prop.
+  const { canGenerate, recordGeneration, openPaywall } = useSubscription();
+  const { token } = useAuth();
+
+  const handlePress = () => {
+    if (bypassFreeTierGuard) {
+      onPress();
+      return;
+    }
+    if (!canGenerate) {
+      Analytics.workoutGenerated(token, { generation_index: -1 });
+      openPaywall('generate_after_cap');
+      return;
+    }
+    recordGeneration();
+    Analytics.workoutGenerated(token, {});
+    onPress();
+  };
+
   const backgroundColor = COLORS[variant];
 
-  // Fade-in on mount - no delay for muscleGroup variant
+  // Fade-in on mount - no delay for muscleGroup variant or when noAnimation is true
   useEffect(() => {
-    if (variant === 'muscleGroup') {
+    if (variant === 'muscleGroup' || noAnimation) {
       startShimmerAnimation();
       return;
     }
@@ -57,7 +94,7 @@ export default function ChooseForMeButton({
     }, 1500);
     
     return () => clearTimeout(timer);
-  }, [variant]);
+  }, [variant, noAnimation]);
 
   const startShimmerAnimation = () => {
     shimmerAnim.setValue(0);
@@ -107,11 +144,11 @@ export default function ChooseForMeButton({
         }
       ]}
     >
-      {/* "or" divider with lines */}
+      {/* Divider - can be just a line or "or" with lines */}
       <View style={styles.orDividerContainer}>
-        <View style={styles.orDividerLine} />
-        <Text style={styles.orDividerText}>or</Text>
-        <View style={styles.orDividerLine} />
+        <View style={[styles.orDividerLine, hideOrText && styles.orDividerLineFull]} />
+        {!hideOrText && <Text style={styles.orDividerText}>or</Text>}
+        {!hideOrText && <View style={styles.orDividerLine} />}
       </View>
 
       {/* Button wrapper */}
@@ -126,7 +163,7 @@ export default function ChooseForMeButton({
             { backgroundColor },
             disabled && styles.buttonDisabled
           ]}
-          onPress={onPress}
+          onPress={handlePress}
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
           disabled={disabled}
@@ -192,6 +229,9 @@ const styles = StyleSheet.create({
     width: 40,
     height: 1,
     backgroundColor: 'rgba(100, 100, 100, 0.4)',
+  },
+  orDividerLineFull: {
+    width: '100%',
   },
   orDividerText: {
     color: 'rgba(150, 150, 150, 0.8)',

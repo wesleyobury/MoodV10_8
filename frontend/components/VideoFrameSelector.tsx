@@ -9,11 +9,10 @@ import {
   Platform,
   Image,
 } from 'react-native';
-import * as VideoThumbnails from 'expo-video-thumbnails';
 import { Ionicons } from '@expo/vector-icons';
 import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import {
   GestureHandlerRootView,
   GestureDetector,
@@ -27,6 +26,19 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import * as ImageManipulator from 'expo-image-manipulator';
+
+// Safely import expo-video-thumbnails - it can crash on production iOS builds
+let VideoThumbnails: any = null;
+let videoThumbnailsAvailable = false;
+
+// Wrap in try-catch to prevent crashes on module load
+try {
+  VideoThumbnails = require('expo-video-thumbnails');
+  videoThumbnailsAvailable = true;
+} catch (error) {
+  console.warn('expo-video-thumbnails not available:', error);
+  videoThumbnailsAvailable = false;
+}
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const FILMSTRIP_HEIGHT = 56;
@@ -204,7 +216,16 @@ const VideoFrameSelector: React.FC<VideoFrameSelectorProps> = memo(({
   }, [duration]);
 
   const generateFrames = async () => {
+    // Skip on web platform
     if (Platform.OS === 'web') {
+      setIsLoadingFrames(false);
+      return;
+    }
+    
+    // Check if VideoThumbnails module is available
+    if (!videoThumbnailsAvailable || !VideoThumbnails) {
+      console.warn('VideoThumbnails not available - using fallback');
+      setError('Frame selection not available on this device. Please select a cover from your library instead.');
       setIsLoadingFrames(false);
       return;
     }
@@ -230,6 +251,7 @@ const VideoFrameSelector: React.FC<VideoFrameSelectorProps> = memo(({
             }, () => {});
           }
         } catch (e) {
+          console.warn('Frame generation error at index', i, e);
           if (frames.length > 0) {
             frames.push({ ...frames[frames.length - 1] });
           }
@@ -241,9 +263,12 @@ const VideoFrameSelector: React.FC<VideoFrameSelectorProps> = memo(({
         const mid = Math.floor(frames.length / 2);
         setCurrentFrameIndex(mid);
         scrubberX.value = (mid / (frames.length - 1)) * FILMSTRIP_WIDTH;
+      } else {
+        setError('Could not generate frames from video');
       }
     } catch (err) {
-      setError('Failed to generate frames');
+      console.error('Frame generation failed:', err);
+      setError('Failed to generate frames. Please select a cover from your library instead.');
     } finally {
       setIsLoadingFrames(false);
     }

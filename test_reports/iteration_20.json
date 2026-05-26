@@ -1,0 +1,41 @@
+{
+  "summary": "Iteration 20 — Onboarding iteration-4 fixes verified. Backend regression PASSES: 44/44 onboarding tests green (test_onboarding_tips.py + test_onboarding_backfill.py + test_onboarding_backfill_v2.py) against preview backend. Frontend source-level audit confirms ALL requested edits are present and structurally correct: (a) workout-session.tsx Tip-2 trigger uses onboardingRef + formTipTriggeredRef + 1.5s setTimeout with deps [isLoading, sessionWorkouts.length] (no `onboarding` in deps) — verified line-by-line. (b) create-post.tsx Tip-3 uses onboardingRef + completionTipTriggeredRef + targetRects state + 800ms setTimeout that calls measureInWindow on mediaRowRef / editableStatsRowRef / igButtonRef, deps `[]`. (c) attachmentCard wrapped with `ref={mediaRowRef} collapsable={false}` at line 1517, IG TouchableOpacity with `ref={igButtonRef} collapsable={false}` at 1794-1796, editableStatsRow with `ref={editableStatsRowRef} collapsable={false}` at 1852. (d) OnboardingOverlay.tsx exports `OverlayTarget` + `TargetRect`, accepts `targets: OverlayTarget[]` prop, renders one PointerCallout per target with measureInWindow-driven cardX/cardY/arrow geometry and auto above/below flip via `placeAbove = ty > SCREEN_H * 0.5`. (e) create-post invocation at 2262-2286 passes `targets=[{rect: targetRects.media,...},{rect: targetRects.stats,...},{rect: targetRects.ig,...}]` (NOT `pointers`). (f) handleShareToInstagram at 850-904 is fully hardened: top-level try {…} catch {…} finally {…}, single-flight `if (isExportingToInstagram) return` at line 854, finally block resets isExportingToInstagram + cleans up igPromptResolveRef + setIgPromptVisible(false), covers both web html2canvas (863-881) and native shareToInstagramStoriesDirect (883) paths. Frontend smoke test: Expo bundles cleanly via Metro (Web Bundled 1685ms, zero syntax/import errors), localhost:3000 loads to Terms & Privacy gate with no pageerrors (only the expected by-design 'Rejecting preview env URL' warning).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_onboarding_tips.py",
+    "/app/backend/tests/test_onboarding_backfill.py",
+    "/app/backend/tests/test_onboarding_backfill_v2.py",
+    "/app/test_reports/pytest/onboarding_iter20_results.xml"
+  ],
+  "action_items": [
+    "(carryover from iter-19, still UNRESOLVED) — Reconcile the Expo build's hardcoded production API_BASE_URL (bug-busters-13.emergent.host) with the preview backend where v2 backfill ran. Without this, the new Tip 3 overlay still cannot be E2E-asserted in the running web bundle (the prod backend may not have v2 backfill/register-init applied).",
+    "(carryover from iter-19) — Wrap expo-notifications subscription cleanup as `sub?.remove?.()` instead of `Notifications.removeNotificationSubscription(sub)` to fix the first-load TypeError on /create-post navigation. This was not addressed in iter-20.",
+    "(carryover from iter-19) — Optional: add data-testid='mood-section-touchable' to the 'Choose your MOOD' wrapper so its scale-pulse + tap-to-scroll affordance becomes testable."
+  ],
+  "critical_code_review_comments": [
+    "create-post.tsx is now 3176 lines (grew from 3140 in iter-17/18/19) — this file urgently needs splitting into ShareAchievementForm, MediaPicker, EditableStats, and InstagramShare modules; the OnboardingOverlay/measure logic adds ~50 more lines on top of an already over-budget file.",
+    "OnboardingOverlay PointerCallout uses a hardcoded CARD_H_EST=92 to compute card-above placement (line 133). For long body copy like 'Saves the overlay to your photo album. Then open Instagram → new Story → sticker icon → pick the saved overlay.' the actual rendered height likely exceeds 92, which on the 'IG' target (placed above on iPhone) will cause the arrow to start mid-card instead of at the card bottom. Consider onLayout-based dynamic height or text-length-aware estimate.",
+    "create-post.tsx targetRects measurement runs ONCE in the 800ms timer (line 162-180). If the screen scrolls or rotates after the overlay shows, the pointers will go stale. Acceptable for an onboarding tip (user dismisses on tap), but worth a comment for future maintainers.",
+    "handleShareToInstagram's catch block at 885-894 swallows the original error after logging — fine for not crashing the screen, but the user-facing message 'The overlay may have been saved to your photo album' is misleading if the capture failed BEFORE the save step. Consider branching the alert on which stage threw.",
+    "workout-session.tsx line 51-53: storing context in a ref via `useEffect(()=>{ ref.current = onboarding }, [onboarding])` works, but is a code-smell pattern. Long-term, splitting OnboardingProvider so its `requestRender`/`trackShown`/`markCompleted` callbacks are stable (useCallback w/ no deps that change) would eliminate the need for the ref-based workaround in TWO files."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (44/44 onboarding tests: test_onboarding_tips.py 24/24 + test_onboarding_backfill.py 8/8 + test_onboarding_backfill_v2.py 12/12)",
+    "frontend": "100% source-level audit (all 6 requested checks confirmed line-numbered); E2E walkthrough into create-post not executed (env-skew blocker carried over from iter-19, explicitly accepted by main agent in the review request)"
+  },
+  "test_credentials": "Backend tests register throwaway users on the fly: pattern `iter20_<ts>@example.com` / strong password. Admin: officialmoodapp (per /app/memory/test_credentials.md).",
+  "seed_data_creation": "Onboarding tests create 1-2 throwaway users per test class on the preview backend; no production data touched.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iter-20 deliverables (Tip 3 measureInWindow alignment, Tip 2 deps fix, IG-share hardening) are all VERIFIED at the source level — see specific line numbers in summary. Backend onboarding regression is fully green. The ONLY remaining gap is end-to-end browser-driven assertion that the overlay arrows visually align on a real device, which requires reaching /create-post WITH a populated workoutStats param AND fixing the env-skew issue (Expo bundle still hardcoded to bug-busters-13.emergent.host while v2 backfill code only ran on the preview backend — same blocker as iter-19). The NotificationInitializer crash flagged in iter-19 also remains open and may interfere with first-load overlay rendering. Recommend: once env-skew is resolved AND notification listener cleanup is fixed, re-run a Playwright probe to verify the three [data-testid='onboarding-overlay-pointer-0/1/2'] arrows land within ±10px of the rect-centers of mediaRowRef, editableStatsRowRef, and igButtonRef respectively.",
+  "rca of the issue": "No new issue in iter-20. Carryover root cause: the Expo bundle hardcodes API_BASE_URL=https://bug-busters-13.emergent.host (verified via console log: '🔗 API_BASE_URL = https://bug-busters-13.emergent.host' + 'Rejecting preview env URL — using production'). This is BY DESIGN per main agent's note, but it means UI cannot be E2E-tested against the preview backend where v2 backfill ran. Mitigation: source-level audit (this report) confirms all main-agent edits are present and structurally sound; no functional regressions detected."
+}

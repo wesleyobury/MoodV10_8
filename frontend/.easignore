@@ -1,0 +1,52 @@
+# EAS ignore — mirrors .gitignore + EAS-specific extras.
+# Per Expo: when .easignore exists, it REPLACES .gitignore for the EAS archive.
+# Therefore every .gitignore entry must be duplicated here, or it will leak in.
+
+# === Mirror of .gitignore ===
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+app-example
+
+# Generated native directories (managed Expo workflow)
+/ios/
+/android/
+package-lock.json
+
+# === EAS-specific extras ===
+npm-shrinkwrap.json
+*.log

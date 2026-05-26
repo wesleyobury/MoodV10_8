@@ -2,6 +2,171 @@ import { EquipmentWorkouts } from '../types/workout';
 
 export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
   {
+    equipment: 'Barbell',
+    icon: 'barbell',
+    workouts: {
+      beginner: [
+        {
+          name: 'Controlled Back Squat',
+          duration: '12–14 min',
+          description: 'Back squats building glute strength through controlled movement',
+          battlePlan: '3 rounds\n• 8–10 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
+          intensityReason: 'Controlled tempo teaches glute loading and squat positioning',
+          moodTips: [
+            { icon: 'arrow-back', title: 'Sit back before you descend', description: 'Hips should load before knees drive forward.' },
+            { icon: 'footsteps', title: 'Push evenly through your feet', description: 'Mid-foot pressure keeps glutes engaged throughout.' },
+            { icon: 'checkmark-circle', title: 'Leave reps in the tank', description: 'You should finish feeling confident, not drained.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'Box Back Squat',
+          duration: '12–14 min',
+          description: 'Box-guided squats reinforcing glute loading and depth control',
+          battlePlan: '3 rounds\n• 8 reps\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
+          intensityReason: 'Box reference reinforces depth and consistent glute loading',
+          moodTips: [
+            { icon: 'remove', title: 'Lightly touch the box only', description: 'Don’t fully sit and lose tension.' },
+            { icon: 'flash', title: 'Drive hips through at the top', description: 'Finish every rep with glute contraction.' },
+            { icon: 'shield', title: 'Control the entire rep', description: 'Smooth movement matters more than weight.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
+        },
+        {
+          name: 'Tempo Back Squat',
+          duration: '12–14 min',
+          description: 'Slow eccentric squats increasing glute tension and positioning',
+          battlePlan: '3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
+          intensityReason: 'Slow eccentric amplifies glute tension under controlled load',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Lower slower than you want to', description: 'The eccentric is where most tension builds.' },
+            { icon: 'shield', title: 'Stay braced the whole descent', description: 'Losing tension shifts stress away from glutes.' },
+            { icon: 'timer', title: 'Move with patience', description: 'Don’t rush to stand up.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 3,
+        }
+      ],
+      intermediate: [
+        {
+          name: 'Glute-Biased Back Squat',
+          duration: '14–16 min',
+          description: 'Wider stance squats emphasizing glute engagement and strength',
+          battlePlan: '4 rounds\n• 8–10 reps\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
+          intensityReason: 'Wider stance emphasizes hip drive and glute recruitment',
+          moodTips: [
+            { icon: 'expand', title: 'Push knees outward hard', description: 'Creates better glute recruitment and hip stability.' },
+            { icon: 'footsteps', title: 'Drive through your heels', description: 'You should feel glutes working before quads dominate.' },
+            { icon: 'flame', title: 'Tension should build each round', description: 'If reps still feel easy late, increase load.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Back Squat Pulses',
+          duration: '14–16 min',
+          description: 'Squats extended with bottom pulses increasing glute tension',
+          battlePlan: '4 rounds\n• 8 reps + 4 pulses\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
+          intensityReason: 'Bottom pulses sustain glute tension in the deepest range',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Stay close to the bottom', description: 'Pulses keep you in the hardest range longer.' },
+            { icon: 'pulse', title: 'Keep pulses controlled and short', description: 'Big bounces remove the benefit.' },
+            { icon: 'flame', title: 'Expect a deep glute burn early', description: 'That’s the purpose of this variation.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 4,
+        },
+        {
+          name: 'Back Squat Pause Reps',
+          duration: '14–16 min',
+          description: 'Paused squats building glute strength from the bottom position',
+          battlePlan: '4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
+          intensityReason: 'Paused bottom develops strength out of the hardest position',
+          moodTips: [
+            { icon: 'pause', title: 'Pause without relaxing', description: 'Stay tight at full depth.' },
+            { icon: 'flash', title: 'Drive explosively out of the hole', description: 'Power should come from hips and glutes.' },
+            { icon: 'flame', title: 'Last reps should slow slightly', description: 'That’s how you know intensity is right.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 4,
+        }
+      ],
+      advanced: [
+        {
+          name: 'Heavy Glute Back Squat',
+          duration: '16–18 min',
+          description: 'Heavy squats emphasizing maximal glute strength and output',
+          battlePlan: '5 rounds\n• 5–6 reps\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
+          intensityReason: 'Heavy load drives maximal glute strength adaptations',
+          moodTips: [
+            { icon: 'shield', title: 'Treat every rep like a single', description: 'Full brace and focus before unracking.' },
+            { icon: 'flash', title: 'Drive hips through aggressively', description: 'Finish every rep with intent, not survival.' },
+            { icon: 'flame', title: 'Final sets should challenge you hard', description: 'You should question the last 1–2 reps.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Back Squat 1.5 Reps',
+          duration: '16–18 min',
+          description: 'Extended-rep squats increasing glute tension and fatigue output',
+          battlePlan: '4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
+          intensityReason: '1.5 reps double time spent in the deepest glute-loading range',
+          moodTips: [
+            { icon: 'arrow-down', title: 'Own the bottom half of the squat', description: 'That’s where glutes work hardest.' },
+            { icon: 'shield', title: 'Stay controlled through transitions', description: 'Rushing removes tension immediately.' },
+            { icon: 'flame', title: 'Burn should become unavoidable', description: 'Especially by the final round.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'strength',
+          intensity_cost: 5,
+        },
+        {
+          name: 'Back Squat Burnout',
+          duration: '18–20 min',
+          description: 'High-rep squats driving deep glute fatigue and endurance',
+          battlePlan: '3 rounds\n• 15–20 reps\nRest 150s',
+          imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
+          intensityReason: 'High-rep volume drives deep glute fatigue and endurance',
+          moodTips: [
+            { icon: 'repeat', title: 'Stay in constant motion', description: 'Locking out fully gives your muscles a break.' },
+            { icon: 'pulse', title: 'Control breathing under fatigue', description: 'One breath per rep keeps rhythm steady.' },
+            { icon: 'flame', title: 'Final reps should feel brutal', description: 'The set should end near failure, not comfort.' }
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
+        }
+      ]
+    }
+  },
+  {
     equipment: 'Single Stack Cable Machine',
     icon: 'reorder-three',
     workouts: {
@@ -24,7 +189,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Kick leg smoothly back, no hip or torso twist',
               description: 'Controlled movement prevents compensation and maximizes glute activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Cable Pull‑Through',
@@ -44,7 +213,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive hips through, squeeze glutes at end',
               description: 'Hip drive ensures complete glute activation and power development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Cable Hip Extension',
@@ -69,7 +242,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth return',
               description: 'Control both directions.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Cable Assisted Squat Hold',
@@ -94,7 +271,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Steady breathing',
               description: 'Avoid bracing fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -116,7 +297,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Step back steady, push from heel upright',
               description: 'Controlled descent with heel drive maximizes glute loading.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Cable High Kickback',
@@ -136,7 +321,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Kick upward + back, pause two seconds top',
               description: 'Pause at peak contraction maximizes muscle activation and control.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Cable Step-Up Drive',
@@ -161,7 +350,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Cable close to body',
               description: 'Prevents forward pull.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Cable Reverse Lunge Pause',
@@ -186,7 +379,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Torso upright',
               description: 'Prevents hip shift.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'lunge',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -208,7 +405,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stay tight near stack, no resting mid‑set',
               description: 'Proper positioning ensures consistent resistance throughout range.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Cable Kickback Burnout',
@@ -228,7 +429,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Small but controlled, avoid swinging reps',
               description: 'Quality over quantity - maintain form even during high-rep burnout.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Cable Squat Burnout',
@@ -253,7 +458,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'One breath per rep',
               description: 'Controls pacing.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'squat',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Cable RDL Drop Series',
@@ -278,7 +487,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Glutes finish reps',
               description: 'Strong squeeze every lockout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hinge',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -306,7 +519,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive hips up, squeeze glutes firmly top',
               description: 'Complete hip extension with glute squeeze maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Light Bar Hip Thrust',
@@ -326,7 +543,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Thrust upward hard, pause at top',
               description: 'Balanced heel drive prevents compensations and maximizes power.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'pump',
+          intensity_cost: 2,
         },
         {
           name: 'Elevated Hip Thrust',
@@ -351,7 +572,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Controlled descent',
               description: 'Slow lowering keeps tension on glutes.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Hip Thrust Pulse Reps',
@@ -376,7 +601,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Continuous tension',
               description: 'Glutes never fully relax.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'pump',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -398,7 +627,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Brace abs, extend hips forcefully each rep',
               description: 'Complete hip extension against band resistance maximizes glute activation.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Single‑Leg Hip Thrust',
@@ -418,7 +651,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Drive heel firmly, feel isolated squeeze',
               description: 'Focused single-leg drive develops unilateral strength and power.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Tempo Hip Thrust',
@@ -443,7 +680,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Core braced',
               description: 'Prevents lower-back takeover.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Hip Thrust Drop Set',
@@ -468,7 +709,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase deep burn',
               description: 'Continuous tension is goal.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -491,7 +736,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Thrust up sharply, lock out glutes',
               description: 'Controlled movement pattern maintains safety and effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Hip Thrust + Iso Hold',
@@ -511,7 +760,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push knees out to hold band tension',
               description: 'Maintain position throughout hold for maximum effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Hip Thrust Pause',
@@ -536,7 +789,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Heavy pauses can stall suddenly.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Hip Thrust Burnout Ladder',
@@ -561,7 +818,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with squeeze',
               description: 'Last rep ends with long hold.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'hip_thrust',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -589,7 +850,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Contract glute without arching spine',
               description: 'Torso stability prevents compensations and maximizes glute isolation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Seated Kickback',
@@ -609,7 +874,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Press pad back steadily with glute drive',
               description: 'Pause at peak contraction enhances muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Single-Leg Kickback',
@@ -634,7 +903,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pause at extension',
               description: 'One-second squeeze.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Kickback Pulse Reps',
@@ -659,7 +932,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Constant tension',
               description: 'Glutes never relax.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'pump',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -681,7 +958,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Push controlled, bar no sudden drops',
               description: 'Controlled movement maintains form and prevents injury.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Pause Kickback',
@@ -701,7 +982,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow return; avoid pad snapping',
               description: 'Controlled eccentric enhances muscle development and joint safety.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Tempo Kickback',
@@ -726,7 +1011,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Torso locked',
               description: 'Upper body stays still.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Kickback Drop Set',
@@ -751,7 +1040,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Burn over load',
               description: 'Stop when extension weakens.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -773,7 +1066,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'One fluid motion across all drops',
               description: 'Maintain full range of motion even as fatigue increases.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Kickback Hold Burner',
@@ -793,7 +1090,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep body square, hips strong inline',
               description: 'Proper position prevents compensations during extended hold.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Heavy Kickback Pause',
@@ -818,7 +1119,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Unilateral fatigue expected',
               description: 'One side may fail first.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Kickback Burnout Ladder',
@@ -843,7 +1148,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with long hold',
               description: 'Final rep ends with 10s squeeze.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'kickback',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -871,7 +1180,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Don\'t slam pads together when resting',
               description: 'Controlled return prevents momentum and maintains muscle tension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Lean Forward Abduction',
@@ -891,7 +1204,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control knees in and out steady',
               description: 'Controlled movement ensures quality muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Seated Abduction',
@@ -916,7 +1233,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow return',
               description: 'Maintains constant tension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Abduction Hold Reps',
@@ -941,7 +1262,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Steady breathing',
               description: 'Keeps reps clean.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'pump',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -963,7 +1288,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep knees wide, resist on way in',
               description: 'Controlled return prevents band snap-back and maintains tension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Unilateral Abduction',
@@ -983,7 +1312,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep torso tall, avoid rocking body',
               description: 'Torso stability ensures isolated glute medius activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Tempo Abduction',
@@ -1008,7 +1341,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No torso rocking',
               description: 'Isolation stays clean.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Abduction Drop Set',
@@ -1033,7 +1370,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Burn should peak',
               description: 'Fatigue accumulation is goal.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1055,7 +1396,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep every rep smooth and steady',
               description: 'Maintain full range of motion throughout all drop sets.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Hold + Rep Abduction',
@@ -1075,7 +1420,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Don\'t lean, keep torso locked tall',
               description: 'Immediate transition maintains fatigue and training intensity.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Abduction Burnout Holds',
@@ -1100,7 +1449,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Expect deep burn',
               description: 'Glute med failure is goal.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Triple Drop Abduction',
@@ -1125,7 +1478,11 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End when range shortens',
               description: 'Quality over force.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hip_abduction',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }

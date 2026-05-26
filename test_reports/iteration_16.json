@@ -1,0 +1,41 @@
+{
+  "summary": "Backend-only testing of new GET /api/feed/live endpoint and regression on /api/posts*. Created /app/backend/tests/test_live_feed_api.py with 21 integration tests against the live preview URL and re-ran the existing 9 unit tests in test_live_feed.py. All 30/30 tests PASS. Auth is enforced (403 without token, 401-equivalent for bad token), response shape ({stats:{sessions_today:int, most_common_mood:str|null}, entries:[]}) is correct, every entry has all required fields (id/type/user/mood_bucket/mood_label/workout_name/duration_minutes/milestone_count/timestamp/ago_text), mood_bucket only contains the 6 valid buckets, type only contains live_now/completion/milestone, ago_text is always relative (no absolute dates), entries are sorted by timestamp DESC, limit param is respected, no raw mongo _id leaks, and neighbouring routes (/api/posts, /api/posts/public, /api/posts/following) still respond.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/feed/live", "issue": "Live preview DB has no recent (<20min) workout_started events and no users at milestone counts {5,10,25,50,100,...}, so live_now and milestone entry types could not be exercised against real data; only completion type was observed. Type-specific assertions still pass conditionally. Recommend seeding a recent workout_started event + a user with workouts_count=5 for full coverage in future runs."},
+      {"endpoint": "/api/feed/live", "issue": "On the preview environment all 30 returned entries had ago_text='earlier' because the lookback widened to 365 days to reach the 15-entry minimum. Functionally correct per spec ('stretch lookback invisibly'), but indicates the dataset is stale — frontend will show 30 'earlier' cards which may not feel 'live'."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_live_feed_api.py",
+    "/app/backend/tests/test_live_feed.py",
+    "/app/test_reports/pytest/live_feed_results.xml"
+  ],
+  "action_items": [
+    "(Optional) Seed a fresh workout_started event (<20min old) and a user with workouts_count in {5,10,25,50,100} so live_now and milestone entry types can be observed end-to-end in the preview env.",
+    "(Optional) Consider whether the 365-day lookback fallback should still apply when the result will only contain very stale 'earlier' entries — possibly cap fallback at e.g. 30 days and return whatever exists rather than padding to 15 with stale data."
+  ],
+  "critical_code_review_comments": [
+    "_LIVE_MOOD_RULES ordering: 'pull' keyword in calisthenics rule may incorrectly classify generic 'pull-day' weight workouts as calisthenics if they don't contain 'muscle gainer'/'back'/etc; acceptable but worth noting.",
+    "milestone branch reads user_doc['workouts_count'] but only emits an entry when wcount EXACTLY matches a threshold ({5,10,...}). Users sitting at e.g. 6 workouts (one past a milestone) will never produce a milestone card — by design but easy to overlook.",
+    "No pagination/skip param — limit only. Acceptable for a Live tab but worth documenting.",
+    "user_cache lookups skip uids whose len != 24 (non-ObjectId users). OAuth/custom-id users with `user_id` field instead of ObjectId _id will be silently filtered out of the feed.",
+    "server.py is 12,829 lines — well past the 700-line guideline. Recommend extracting feed/live logic into a dedicated module (feed_live.py) along with its helpers and bucket maps."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_live_feed_api.py (new)"
+  ],
+  "success_rate": {"backend": "100% (30/30 tests passed)", "frontend": "not tested (skipped per request — React Native/Expo app)"},
+  "test_credentials": "Used officialmoodapp (admin) — user_id=693f94d29a560edaab674fd5, JWT minted from /app/backend/.env JWT_SECRET inside tests.",
+  "seed_data_creation": "None — used existing 94+ workout events already in DB.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "test_live_feed_api.py is a self-contained regression suite against the live preview URL. It mints a JWT for officialmoodapp using JWT_SECRET in backend/.env and validates every requirement from the review request. test_live_feed.py covers helper-level mood classification + relative time formatting. Run: pytest /app/backend/tests/test_live_feed_api.py /app/backend/tests/test_live_feed.py -v",
+  "rca of the issue": "No issues to RCA — implementation matches spec and all assertions pass."
+}

@@ -24,7 +24,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Exhale as you reach contraction',
               description: 'Coordinated breathing enhances muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Forearm Plank Hold',
@@ -44,7 +48,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Brace abs like resisting a hit',
               description: 'Think about bracing for impact to engage deep core muscles.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'plank',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Knee Tuck Crunch Circuit',
@@ -64,7 +72,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep lower back lightly pressed into floor',
               description: 'Proper back position protects spine and maximizes ab work.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'High-Tempo Crunch Ladder',
@@ -84,7 +96,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Exhale sharply each rep',
               description: 'Sharp exhales enhance ab contraction.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -106,7 +122,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Balance at top momentarily',
               description: 'Brief pause at peak increases muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Bicycle Crunch',
@@ -126,7 +146,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep knees hovering off floor',
               description: 'Constant tension maintains ab engagement throughout.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rotation',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'V-Up & Oblique Crunch Circuit',
@@ -146,7 +170,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Rotate shoulders, not elbows',
               description: 'Proper rotation targets obliques effectively.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rotation',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Sit-Up Density Burner',
@@ -166,7 +194,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control the descent every rep',
               description: 'Eccentric control maximizes muscle development.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -188,7 +220,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Bring toes high toward bar',
               description: 'Full range of motion maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Hollow Body + Pike Jump',
@@ -208,7 +244,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Jump quick, land on soft toes',
               description: 'Explosive movement with controlled landing.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'plank',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Hanging Leg Raise Speed Sets',
@@ -228,7 +268,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Toes rise higher as fatigue builds',
               description: 'Push through fatigue for maximum results.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Dragon Flag + V-Up Finisher',
@@ -248,7 +292,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Snap fast into V-ups',
               description: 'Explosive V-ups after slow eccentrics torch abs.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         }
       ]
     }
@@ -276,7 +324,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Brace abs, squeeze pulling back',
               description: 'Focus on core strength to return to start position.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rollout',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Short Range Rollout',
@@ -296,7 +348,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pause, squeeze contraction top',
               description: 'Brief pause builds strength and control.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rollout',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Eccentric-Only Kneeling Rollouts',
@@ -316,7 +372,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Reset fully each rep',
               description: 'No rebound — clean reps only.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rollout',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -338,7 +398,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pull back squeezing abs tight',
               description: 'Active ab contraction powers the return movement.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rollout',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Rollout + Plank Hold',
@@ -358,7 +422,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stay rigid in plank position',
               description: 'Perfect plank form after rollouts challenges endurance.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rollout',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Offset-Hand Kneeling Rollouts',
@@ -378,7 +446,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hips stay square',
               description: 'Resist rotation throughout movement.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rollout',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -400,7 +472,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep ribs pulled down strict',
               description: 'Rib position is crucial for safety and effectiveness.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rollout',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Rollout with 3s Eccentric',
@@ -420,7 +496,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze abs returning smooth',
               description: 'Focus on smooth, controlled return movement.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rollout',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Paused Mid-Range Rollouts',
@@ -440,7 +520,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Resume smoothly',
               description: 'Control keeps tension throughout.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rollout',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -468,7 +552,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze abs at top hard',
               description: 'Peak contraction maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'pump',
+          intensity_cost: 2,
         },
         {
           name: 'Machine Crunch Pause',
@@ -488,7 +576,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Exhale and squeeze abs top',
               description: 'Breathing coordination enhances contraction.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Slow Eccentric Machine Crunch',
@@ -508,7 +600,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop just before full stretch',
               description: 'Keeps tension on abs throughout.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -530,7 +626,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze crunch peak contraction',
               description: 'Focus on quality contraction over speed.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Crunch + Leg Raise',
@@ -550,7 +650,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lift legs smooth, no swing',
               description: 'Controlled leg raises target lower abs effectively.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Top-Half Machine Crunch Pulses',
@@ -570,7 +674,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Small, controlled pulses',
               description: 'No momentum — pure ab work.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'pump',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -592,7 +700,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Crunch, pause, squeeze at top',
               description: 'Maintain quality throughout all drop sets.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Iso Crunch + Flutter Kicks',
@@ -612,7 +724,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep abs braced with flutter',
               description: 'Maintain core tension throughout flutter kicks.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Iso-Hold Machine Crunch Ladder',
@@ -632,7 +748,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Breathe shallow under load',
               description: 'Abs stay braced throughout hold.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -660,7 +780,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Back pressed against pad',
               description: 'Maintain back contact for stability and safety.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Straight Leg Hold',
@@ -680,7 +804,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Don\'t let hips shift around',
               description: 'Stable hip position maintains proper muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Alternating Knee Raises',
@@ -700,7 +828,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Brief pause at top',
               description: 'Better activation with each rep.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -722,7 +854,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Avoid swinging up quick',
               description: 'Smooth movement prevents momentum compensation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Knee Raise + Twist',
@@ -742,7 +878,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep torso steady upright',
               description: 'Stable torso isolates the twisting movement.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rotation',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Extended-Knee Raises (45°)',
@@ -762,7 +902,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower slow',
               description: 'Eccentric matters for strength.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -784,7 +928,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control lowering slowly',
               description: 'Resist gravity to maximize muscle engagement.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Leg Raise + Slow Eccentric',
@@ -804,7 +952,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep tension through descent',
               description: 'Maintain muscle engagement throughout lowering.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'L-Sit Hold (Captain\'s Chair)',
@@ -824,7 +976,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Shallow breathing',
               description: 'Brace maintained throughout.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         }
       ]
     }
@@ -852,7 +1008,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Focus on oblique squeeze top',
               description: 'Peak contraction builds mind-muscle connection.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'side_bend',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Supported Crunch',
@@ -872,7 +1032,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze abs hard top rep',
               description: 'Peak contraction maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Anti-Extension Neutral Hold',
@@ -892,7 +1056,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Neck neutral',
               description: 'Alignment matters for safety.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'plank',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -914,7 +1082,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Move only side to side',
               description: 'Pure lateral movement isolates obliques effectively.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'side_bend',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Oblique Twist Sit Up',
@@ -934,7 +1106,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze on each twist top',
               description: 'Peak contraction at each twist builds strength.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rotation',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Alternating Reach Extensions',
@@ -954,7 +1130,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Minimal torso shift',
               description: 'Stability wins over movement.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -976,7 +1156,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze abs at top pause',
               description: 'Brief pause maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Sit Up with 3s Hold Top',
@@ -996,7 +1180,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Abs squeeze hard at hold',
               description: 'Maximum contraction during isometric phase.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Weighted Anti-Rotation Hold',
@@ -1016,7 +1204,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No hip shift',
               description: 'Control the base throughout.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rotation',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1044,7 +1236,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze contraction top hard',
               description: 'Peak contraction maximizes muscle engagement.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Seated MB Twist',
@@ -1064,7 +1260,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Rotate shoulders, squeeze side',
               description: 'Focus on oblique contraction with each twist.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rotation',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'MB Dead Bug Press',
@@ -1084,7 +1284,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow limb movement',
               description: 'Stability first, speed later.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'plank',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1106,7 +1310,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze top contraction tight',
               description: 'Peak contraction overcomes longer lever arm.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'MB Slam + Plank Hold',
@@ -1126,7 +1334,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Keep hips level plank',
               description: 'Perfect plank form after dynamic movement.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'plank',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'MB Sit-Up to Press-Out',
@@ -1146,7 +1358,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control both phases',
               description: 'No momentum allowed.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1168,7 +1384,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Rotate slow, abs squeezed',
               description: 'Controlled rotation with constant core tension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rotation',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'MB Slam + Toe Touch Finisher',
@@ -1188,7 +1408,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Strive to touch toes top',
               description: 'Full range toe touch maximizes ab contraction.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'MB Overhead Hold Flutter Kicks',
@@ -1208,7 +1432,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Small fast kicks',
               description: 'Abs stay braced throughout.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1236,7 +1464,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hard squeeze at top rep',
               description: 'Peak contraction maximizes ab activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Decline Crunch',
@@ -1256,7 +1488,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Exhale squeeze contraction',
               description: 'Coordinate breathing for maximum muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Flat Bench Crunch',
@@ -1276,7 +1512,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Curl ribs toward pelvis',
               description: 'True ab flexion, not a sit-up.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'crunch',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1298,7 +1538,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pause squeeze contraction',
               description: 'Brief hold at peak maximizes muscle activation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Twisting Sit Up',
@@ -1318,7 +1562,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Core tight, control twist',
               description: 'Maintain core tension throughout rotation.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rotation',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Arms-Overhead Decline Sit-Ups',
@@ -1338,7 +1586,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control descent',
               description: 'Tension maintained throughout.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1360,7 +1612,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze hard both times',
               description: 'Dual contractions maximize muscle engagement.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Decline Sit Up + Flutter Kicks',
@@ -1380,7 +1636,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Kick legs steady below bench',
               description: 'Controlled flutter kicks maintain constant tension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Weighted Decline Sit Up',
@@ -1400,7 +1660,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze hard both times',
               description: 'Maximum contraction on way up and down.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Offset Load Decline Sit-Ups',
@@ -1420,7 +1684,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Alternate sides',
               description: 'Balanced development for both sides.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'sit_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1448,7 +1716,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Small lift counts',
               description: 'Knees don\'t need to come high to work abs.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Alternating Assisted Knee Lifts',
@@ -1468,7 +1740,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Torso stays quiet',
               description: 'No rocking or leaning backward.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Knee Raise Holds (Short)',
@@ -1488,7 +1764,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Exhale to lift',
               description: 'Breathing helps abs initiate the movement.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1510,7 +1790,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Range ends with control',
               description: 'Stop before any swing appears.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Leg Raise → Knee Tuck Combo',
@@ -1530,7 +1814,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Shoulders stay packed',
               description: 'Keeps abs working, not lats.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'mixed',
+          intensity_cost: 4,
         },
         {
           name: 'Slow Hanging Knee-to-Chest',
@@ -1550,7 +1838,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pelvic tilt first',
               description: 'Abs initiate before legs move.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'strength',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1572,7 +1864,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'No momentum allowed',
               description: 'Reduce weight if swing appears.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Toes-to-Bar (Slow Eccentric)',
@@ -1592,7 +1888,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Ribs stay down',
               description: 'Prevents cheating through arching.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Front Lever Reps',
@@ -1612,7 +1912,11 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hollow body first',
               description: 'Posterior pelvic tilt initiates every rep.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'leg_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         }
       ]
     }

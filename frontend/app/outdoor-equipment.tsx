@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
@@ -22,7 +22,7 @@ import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
 
-const API_URL = Constants.expoConfig?.extra?.EXPO_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
 
 interface EquipmentOption {
   id: string;
@@ -196,7 +196,7 @@ export default function OutdoorEquipmentScreen() {
   // Handle intensity selection and generate workout
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
     setShowIntensityModal(false);
-    const carts = generateOutdoorCarts(intensity, moodTitle, workoutType);
+    const carts = generateOutdoorCarts(intensity, moodTitle, workoutType, selectedEquipment.map(eq => eq.name));
     
     if (carts.length > 0) {
       if (!isGuest && token) {

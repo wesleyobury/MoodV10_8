@@ -10,18 +10,22 @@ import {
   Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import HomeButton from '../components/HomeButton';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import Toast from '../components/Toast';
 import { Analytics, GuestAnalytics } from '../utils/analytics';
 import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
 import { TextWithTermLinks } from '../components/TermDefinitionPopup';
+import { API_URL } from '../utils/apiConfig';
+import InSessionProgressBar from '../components/InSessionProgressBar';
+import { SessionSafetyBanner } from '../components/SessionSafetyBanner';
 
 interface MOODTip {
   icon: keyof typeof Ionicons.glyphMap;
@@ -272,7 +276,7 @@ export default function WorkoutGuidanceScreen() {
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
   
   const { token } = useAuth();
-  const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+  const { canStartWorkout, openPaywall, recordStartFreeWorkout } = useSubscription();
   
   // Timer that calculates elapsed time from start timestamp
   // This ensures timer continues even when app is in background
@@ -301,6 +305,21 @@ export default function WorkoutGuidanceScreen() {
   
   const handleStartPauseTimer = () => {
     if (!isRunning) {
+      // Phase B free-tier gate: a fresh "Start Workout" tap must check the
+      // subscription state. Founding members + active/in-trial users pass
+      // through; free users get exactly one session, then the paywall.
+      if (!canStartWorkout) {
+        Analytics.startWorkoutTapped(token, {
+          allowed: false,
+          trigger_source: 'start_workout_after_free_session',
+        });
+        openPaywall('start_workout_after_free_session');
+        return;
+      }
+      Analytics.startWorkoutTapped(token, { allowed: true });
+      // Mark the free session as consumed BEFORE state mutation so an
+      // accidental double-tap can't race past the gate.
+      recordStartFreeWorkout();
       // Starting fresh
       setStartTimestamp(Date.now());
       setPausedTime(0);
@@ -540,9 +559,13 @@ export default function WorkoutGuidanceScreen() {
             year: 'numeric' 
           });
 
-          // Create workout snapshot for persistent access (Try this workout feature)
-          let workoutSnapshotId: string | null = null;
-          if (token) {
+          // Create workout snapshot for persistent access (Try this workout feature).
+          // If cart.tsx already created a session-start snapshot and threaded
+          // the id through `workoutSnapshotId` param, reuse it (so the
+          // live_now and completion feed cards share the same snapshot
+          // and we don't pay for a duplicate). Otherwise create one now.
+          let workoutSnapshotId: string | null = (params.workoutSnapshotId as string) || null;
+          if (token && !workoutSnapshotId) {
             try {
               console.log('📸 Creating workout snapshot for Try this workout feature...');
               const snapshotResponse = await fetch(`${API_URL}/api/workout-snapshots`, {
@@ -568,6 +591,8 @@ export default function WorkoutGuidanceScreen() {
             } catch (error) {
               console.error('❌ Error creating workout snapshot:', error);
             }
+          } else if (workoutSnapshotId) {
+            console.log('♻️  Reusing session-start snapshot:', workoutSnapshotId);
           }
 
           const workoutStatsData = {
@@ -599,13 +624,16 @@ export default function WorkoutGuidanceScreen() {
               console.log('📊 Tracked featured workout completed:', featuredWorkoutId);
             }
             
-            // Track general workout completion
+            // Track general workout completion — include the snapshot ID
+            // so the Live Feed can deep-link from this user's completion
+            // card straight into the viewer's hydrated cart.
             Analytics.workoutCompleted(token, {
               mood_category: overallMoodCategory,
               difficulty: firstWorkout?.difficulty,
               equipment: firstWorkout?.equipment,
               duration_minutes: totalDuration,
               exercises_completed: sessionWorkouts.length,
+              workout_snapshot_id: workoutSnapshotId || undefined,
             });
             
             // Track workout session completed with elapsed time
@@ -651,20 +679,70 @@ export default function WorkoutGuidanceScreen() {
     } else {
       // Single workout - save to profile and navigate back
       console.log('🔙 Single workout completed, saving to profile...');
-      
-      // Track single workout completion
+
+      const totalDurationMins = parseInt(duration.split(' ')[0]) || 0;
+
+      // Create a workout snapshot so this single workout can be
+      // replicated from the Live Feed "Try this workout" deep link.
+      // Mirrors the multi-workout session path at line ~562 — without
+      // this, single-workout paths (e.g. "I'm feeling lazy" → body
+      // part → one workout) leave their Live Feed cards with no
+      // snapshot to hydrate, forcing the viewer back to mood selection.
+      let workoutSnapshotId: string | null = null;
       if (token) {
-        const totalDurationMins = parseInt(duration.split(' ')[0]) || 0;
+        const singleCompletedWorkout = {
+          workoutTitle: workoutName,
+          workoutName: workoutName,
+          equipment: equipment,
+          duration: duration,
+          difficulty: difficulty,
+          moodCategory: workoutType || moodCard || 'Workout',
+          imageUrl: imageUrl || '',
+          description: description || '',
+          battlePlan: battlePlan || '',
+          intensityReason: intensityReason || '',
+          moodTips: Array.isArray(moodTips) ? moodTips : [],
+        };
+        try {
+          console.log('📸 Creating workout snapshot (single-workout path)...');
+          const snapshotResponse = await fetch(`${API_URL}/api/workout-snapshots`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              workouts: [singleCompletedWorkout],
+              total_duration: totalDurationMins,
+              mood_category: workoutType || moodCard || 'Workout',
+            }),
+          });
+          if (snapshotResponse.ok) {
+            const snapshotData = await snapshotResponse.json();
+            workoutSnapshotId = snapshotData.id;
+            console.log('✅ Single-workout snapshot created:', workoutSnapshotId);
+          } else {
+            console.error('❌ Failed to create single-workout snapshot:', await snapshotResponse.text());
+          }
+        } catch (err) {
+          console.error('❌ Error creating single-workout snapshot:', err);
+        }
+      }
+
+      // Track single workout completion (now with snapshot_id so the
+      // Live Feed entry can deep-link into a hydrated cart).
+      if (token) {
         Analytics.workoutCompleted(token, {
           mood_category: workoutType || 'Unknown',
           difficulty: difficulty,
           equipment: equipment,
           duration_minutes: totalDurationMins,
           exercises_completed: 1,
+          workout_snapshot_id: workoutSnapshotId || undefined,
         });
-        console.log('📊 Tracked single workout completed');
+        console.log('📊 Tracked single workout completed', workoutSnapshotId ? `(snap ${workoutSnapshotId})` : '(no snap)');
       }
-      
+
       // Prepare workout data for saving
       const completedWorkout = {
         workoutTitle: workoutName,
@@ -673,8 +751,8 @@ export default function WorkoutGuidanceScreen() {
         duration: duration,
         difficulty: difficulty,
       };
-      
-      const totalDuration = parseInt(duration.split(' ')[0]) || 0;
+
+      const totalDuration = totalDurationMins;
       const completedAt = new Date().toLocaleDateString('en-US', { 
         month: 'short', 
         day: 'numeric', 
@@ -737,7 +815,14 @@ export default function WorkoutGuidanceScreen() {
         <HomeButton />
       </View>
 
-      {/* Extended Progress Bar - 4 Steps: Mood > Type > Equipment > Intensity */}
+      {/* Progress Bar — in-session uses exercise-tracking bar; preview keeps the original 4-step metadata bar. */}
+      {isSession && sessionWorkouts.length > 0 ? (
+        <InSessionProgressBar
+          exercises={sessionWorkouts}
+          currentIndex={currentSessionIndex}
+          workoutTitle={(params.featuredWorkoutTitle as string) || displayWorkoutType}
+        />
+      ) : (
       <View style={styles.extendedProgressContainer}>
         <View style={styles.extendedProgressContent}>
           {/* Step 1: Mood Card */}
@@ -793,6 +878,7 @@ export default function WorkoutGuidanceScreen() {
           </View>
         </View>
       </View>
+      )}
 
       {/* Timer Section - Compact */}
       <View style={styles.timerContainer}>

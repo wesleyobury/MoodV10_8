@@ -17,7 +17,7 @@ import Constants from 'expo-constants';
 import { BarChart, LineChart } from 'react-native-chart-kit';
 import BackButton from '../components/BackButton';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
 const screenWidth = Dimensions.get('window').width;
 
 interface TimeSeriesData {

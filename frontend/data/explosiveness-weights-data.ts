@@ -10,6 +10,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Snap-Grip Jump Deadlift',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 3,
           description: 'Fast stand to brief float; quiet land; precise reset each rep.',
           battlePlan: '3 rounds\n• 5 × 3 Jump Deadlifts (light; floor or low blocks)\nRest 60–75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241175/mood_app/workout_images/xefmav9j_Screenshot_2025-12-03_at_4_15_36_PM.jpg',
@@ -30,6 +33,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Clean Pull Pop',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 3,
           description: 'Sweep close to thighs; pop and shrug tall with arms long.',
           battlePlan: '3 rounds\n• 6 × 2 Clean Pulls (light–moderate)\nRest 60–75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241134/mood_app/workout_images/9kehs3fb_Screenshot_2025-12-03_at_4_15_03_PM.jpg',
@@ -50,6 +56,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Back Rack Jump Squat',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 3,
           description: 'Shallow dip to quick pop; soft stick; deliberate posture reset.',
           battlePlan: '3 rounds\n• 5 × 3 Jump Squats (empty bar to very light)\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241171/mood_app/workout_images/uvdvgv3p_download_8_.jpg',
@@ -70,6 +79,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Tall Push Press',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 3,
           description: 'Quick dip then punch; crisp stack overhead; smooth return.',
           battlePlan: '3 rounds\n• 5–6 Push Press (light–moderate)\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241152/mood_app/workout_images/hsftvvu7_download_9_.jpg',
@@ -92,6 +104,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Hang Clean Pull to Tall Shrug',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Hinge to hang, violent pop, high shrug; reset between reps.',
           battlePlan: '4 rounds\n• 4 × 2 Hang Clean Pulls (moderate)\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241134/mood_app/workout_images/9kehs3fb_Screenshot_2025-12-03_at_4_15_03_PM.jpg',
@@ -112,6 +127,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Jump Shrug Cluster',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 4,
           description: 'Two reps, brief rest, two reps; maintain equal jump height.',
           battlePlan: '4 rounds\n• Cluster: 2 + 2 Jump Shrugs (10–12s between)\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241142/mood_app/workout_images/f8plc9vh_jsc.jpg',
@@ -132,6 +150,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Push Press Launch',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Short dip, violent drive, crisp lockout, smooth rack return.',
           battlePlan: '4 rounds\n• 4–5 Push Press (light–moderate)\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241126/mood_app/workout_images/1n6uft3o_pp.jpg',
@@ -152,6 +173,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Clean High Pull from Blocks',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Start at knee; snap tall; elbows high; bar path stays close.',
           battlePlan: '4 rounds\n• 4 × 2 High Pulls from blocks (moderate)\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241144/mood_app/workout_images/g3m6pn8h_chp.jpg',
@@ -174,6 +198,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Clean Pull + Jump Squat Contrast',
           duration: '12–14 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: 'Drive force on pulls, then pop height with soft, crisp sticks.',
           battlePlan: '5 rounds\n• 3 Clean Pulls (moderate–heavy)\n• 3 × 2 Back Rack Jump Squats (light)\nRest 120s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241171/mood_app/workout_images/uvdvgv3p_download_8_.jpg',
@@ -194,6 +221,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Snatch High Pull from Blocks',
           duration: '12–14 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: 'From knee blocks; snap tall; elbows high outside; bar close.',
           battlePlan: '5 rounds\n• 3–4 Snatch High Pulls (from blocks)\nRest 120s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241123/mood_app/workout_images/064hao7f_snatch.jpg',
@@ -214,6 +244,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Push Jerk Wave Sets',
           duration: '12–16 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: 'Dip-drive, punch under, firm stick; build across wave sets.',
           battlePlan: '5 rounds\n• Wave: 2-2-1 Push Jerks (build slightly per wave)\nRest 120–150s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241126/mood_app/workout_images/1n6uft3o_pp.jpg',
@@ -234,6 +267,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Clean Pull Cluster',
           duration: '12–14 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: 'Two pulls, short rest, two pulls; crisp vertical extension.',
           battlePlan: '5 rounds\n• Cluster: 2 + 2 Clean Pulls (moderate–heavy)\nRest 120s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241134/mood_app/workout_images/9kehs3fb_Screenshot_2025-12-03_at_4_15_03_PM.jpg',
@@ -263,6 +299,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Landmine Split Jerk Pop',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 3,
           description: 'Small dip to forceful drive; soft balanced split; one-second hold.',
           battlePlan: '3 rounds\n• 4 per side Split Jerk Pops\nRest 60–75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241128/mood_app/workout_images/40bblhga_lmspj.jpg',
@@ -283,6 +322,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Landmine Squat Jump Press',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 3,
           description: 'Shallow squat pop; guide sleeve overhead along smooth arc.',
           battlePlan: '3 rounds\n• 6 × Squat Jump → Press\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241158/mood_app/workout_images/mqbps9jp_lmsjp.jpg',
@@ -303,6 +345,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Rotational Landmine Toss',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'dynamic',
+          intensity_cost: 3,
           description: 'Pivot feet, drive hips, release forward-up with tight control.',
           battlePlan: '3 rounds\n• 6 per side Rotational Tosses\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241150/mood_app/workout_images/hdnoipr9_lmrot.jpg',
@@ -325,6 +370,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Landmine Push Press',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Quick shallow dip, violent drive, clean angled lockout finish.',
           battlePlan: '4 rounds\n• 5–6 Push Press per side (alternate or sets)\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241128/mood_app/workout_images/40bblhga_lmspj.jpg',
@@ -345,6 +393,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Split Stance Rotation Punch',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'dynamic',
+          intensity_cost: 4,
           description: 'Load back hip; rotate through; punch sleeve up powerfully.',
           battlePlan: '4 rounds\n• 5 per side Rotation Punch\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241159/mood_app/workout_images/p9g3x5md_ssrp.jpg',
@@ -365,6 +416,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Hack Squat Jump (Landmine)',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 4,
           description: 'Hands low on sleeve; small pop; quiet stick; deliberate reset.',
           battlePlan: '4 rounds\n• 5 × 3 Hack Squat Jumps\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241139/mood_app/workout_images/d0nqgx63_Screenshot_2025-12-03_at_3_29_11_PM.jpg',
@@ -387,6 +441,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Triple Extension Heave',
           duration: '12–14 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: 'Dip-drive hard; guide sleeve high and far with full control.',
           battlePlan: '5 rounds\n• 4 Heaves (build load across rounds)\nRest 120s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241130/mood_app/workout_images/7dpyywwj_download_7_.jpg',
@@ -407,6 +464,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Landmine Split Jerk Ladder',
           duration: '12–16 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: 'Perform 3-2-1 per side; crisp catches and clean recoveries.',
           battlePlan: '4 rounds\n• Ladder per side: 3-2-1 Split Jerks\nRest 120s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241145/mood_app/workout_images/g4orfvp8_lmsjl.jpg',
@@ -427,6 +487,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Rotational Punch + Bound',
           duration: '12–16 min',
+          path: 'weights',
+          cart_flavor: 'dynamic',
+          intensity_cost: 5,
           description: 'Hard landmine punch; then long skater bound with firm hold.',
           battlePlan: '4 rounds\n• 5 per side Rotation Punch\n• 3 per side Skater Bounds (stick 1–2s)\nRest 150s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241172/mood_app/workout_images/wt0jrj94_lmrot.jpg',
@@ -456,6 +519,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'DB Jump Squat Stick',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 3,
           description: 'Small vertical pop; soft stick; reset tall posture each rep.',
           battlePlan: '3 rounds\n• 5 × 3 Jump Squats (light)\nRest 60–75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241133/mood_app/workout_images/8ykwaghn_djs.jpg',
@@ -476,6 +542,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'DB Push Press',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 3,
           description: 'Quick dip, violent punch, smooth stacked lockout overhead.',
           battlePlan: '3 rounds\n• 5–6 Push Press\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241170/mood_app/workout_images/uezm0ryg_dpp.jpg',
@@ -496,6 +565,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'DB Split Jump Switch',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 3,
           description: 'Low-amplitude switches; aligned, quiet landings every time.',
           battlePlan: '3 rounds\n• 6 per side Split Jumps\nRest 60–75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241155/mood_app/workout_images/kkyhp422_Screenshot_2025-12-03_at_2_52_59_PM.jpg',
@@ -518,6 +590,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'DB Snatch Alternating',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Zip bell close; punch through; alternate sides smoothly.',
           battlePlan: '4 rounds\n• 6 per side Alternating Snatch\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241147/mood_app/workout_images/gp7crm2s_dbsn.jpg',
@@ -538,6 +613,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'DB Clean to Push Press',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Fast clean to shoulders; short dip; explosive overhead finish.',
           battlePlan: '4 rounds\n• 5 Clean → Push Press\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241166/mood_app/workout_images/rpv6ft1z_dbcpp.jpg',
@@ -558,6 +636,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'DB Broad Jump Carry',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 4,
           description: 'Two broad jumps; grab DBs; fast upright ten-meter carry.',
           battlePlan: '4 rounds\n• 2 Broad Jumps (stick) → 10m Farmer Carry\nRest 90s',
           imageUrl: 'https://customer-assets.emergentagent.com/job_muscle-mapper-2/artifacts/yclz6917_dbbjc.avif',
@@ -580,6 +661,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'DB Jump Squat Clusters',
           duration: '12–14 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 5,
           description: 'Three reps, quick rest, three more; match jump heights.',
           battlePlan: '5 rounds\n• Cluster: 3 + 3 Jump Squats (10–12s between)\nRest 120s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241136/mood_app/workout_images/9v6bw2wp_djs.jpg',
@@ -600,6 +684,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'DB Snatch + Bound Contrast',
           duration: '12–16 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: 'Snatch sets then skater bounds with firm two-second stick.',
           battlePlan: '4 rounds\n• 6 per side DB Snatch\n• 3 per side Skater Bounds (stick 2s)\nRest 150s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241124/mood_app/workout_images/0tqc60nw_dbsn.jpg',
@@ -620,6 +707,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Clean + Push Press Ladder',
           duration: '12–16 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: 'Perform 3-2-1 per side; crisp clean then vertical push press.',
           battlePlan: '4 rounds\n• Ladder per side: 3-2-1 Clean + Push Press\nRest 150s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241135/mood_app/workout_images/9tjq4bcw_dbcpp.jpg',
@@ -649,6 +739,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Two-Hand Swing Pop',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'dynamic',
+          intensity_cost: 3,
           description: 'Snap hips; bell floats to chest; arms act as relaxed hooks.',
           battlePlan: '4 rounds\n• 12–15 Swings\nRest 60s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241131/mood_app/workout_images/8ao6zx26_download_4_.jpg',
@@ -669,6 +762,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Dead-Start Clean',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 3,
           description: 'Hike-pass; pop to rack; soft catch; alternate sides smoothly.',
           battlePlan: '3 rounds\n• 5 per side Dead-Start Cleans\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241143/mood_app/workout_images/fglieg8a_download_5_.jpg',
@@ -689,6 +785,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'KB Push Press',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 3,
           description: 'Short dip; vertical punch; stacked finish; smooth controlled down.',
           battlePlan: '3 rounds\n• 6–8 per side Push Press\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241168/mood_app/workout_images/rz71s1n8_download_6_.jpg',
@@ -711,6 +810,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Hardstyle Swing EMOM',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'dynamic',
+          intensity_cost: 4,
           description: 'Sharp hip snaps each minute; crisp float to consistent chest.',
           battlePlan: 'EMOM 10 min\n• 12 Swings each minute',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241138/mood_app/workout_images/bg7rgit4_download_4_.jpg',
@@ -731,6 +833,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Clean to Jerk',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Pop to rack; dip-drive; punch under; stable overhead stick.',
           battlePlan: '4 rounds\n• 4 per side Clean → Jerk\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241149/mood_app/workout_images/gxkmxo9y_download_6_.jpg',
@@ -751,6 +856,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Snatch Wave Sets',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Execute 5-4-3 ladders per side with crisp overhead timing.',
           battlePlan: '3 waves\n• Per side: 5-4-3 Snatches (build slightly)\nRest 90s between waves',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241154/mood_app/workout_images/k2feqqcx_download_5_.jpg',
@@ -773,6 +881,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Heavy Swing Density',
           duration: '12–14 min',
+          path: 'weights',
+          cart_flavor: 'dynamic',
+          intensity_cost: 5,
           description: 'Sets of 10–12; float to chest; ribs stacked; avoid overpull.',
           battlePlan: '5 rounds\n• 10–12 Heavy Swings\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241138/mood_app/workout_images/bg7rgit4_download_4_.jpg',
@@ -793,6 +904,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Clean + Jerk Ladder',
           duration: '12–16 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: '3-2-1 per side; crisp rack; decisive dip-drive to lockout.',
           battlePlan: '4 rounds\n• Ladder per side: 3-2-1 Clean + Jerk\nRest 150s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241149/mood_app/workout_images/gxkmxo9y_download_6_.jpg',
@@ -813,6 +927,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Snatch + Broad Jump Contrast',
           duration: '12–16 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: 'Snatch sets then broad jumps with firm two-second stick.',
           battlePlan: '4 rounds\n• 8 per side Snatches\n• 3 Broad Jumps (stick 2s)\nRest 150s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241154/mood_app/workout_images/k2feqqcx_download_5_.jpg',
@@ -842,6 +959,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Banded Jump Squat',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 3,
           description: 'Small vertical jumps versus band; quiet, balanced soft sticks.',
           battlePlan: '3 rounds\n• 5 × 3 Banded Jump Squats\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241141/mood_app/workout_images/e6go354m_download_2_.jpg',
@@ -862,6 +982,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Banded Push Press',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 3,
           description: 'Short dip, violent drive, band-accelerated overhead finish.',
           battlePlan: '3 rounds\n• 6–8 Push Press (light band)\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241169/mood_app/workout_images/t37zt3nq_download.jpg',
@@ -882,6 +1005,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Banded Broad Jump',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 3,
           description: 'Jump forward against band; stable stick; measured resets.',
           battlePlan: '3 rounds\n• 5–6 Banded Broad Jumps (stick 2s)\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241153/mood_app/workout_images/j83mxy4p_download_1_.jpg',
@@ -904,6 +1030,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Chain Box Squat Speed Sets',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Controlled sit to box; explode up; maintain crisp bar speed.',
           battlePlan: '6 rounds\n• 2 reps every 45s (speed focus)\nRest on timer',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241127/mood_app/workout_images/2ts1slh6_cbs.jpg',
@@ -924,6 +1053,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Banded Deadlift Pop',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Fast submax pulls; smooth knees; tall snap finish posture.',
           battlePlan: '4 rounds\n• 3–4 reps (submax, fast)\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241162/mood_app/workout_images/qgfmm7dj_Screenshot_2025-12-03_at_2_41_04_PM.jpg',
@@ -944,6 +1076,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Banded Split Jerk',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Quick punch under band; balanced split; one-second hold.',
           battlePlan: '4 rounds\n• 4–5 Split Jerks\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241167/mood_app/workout_images/rr22go80_download_3_.jpg',
@@ -966,6 +1101,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Banded Jump Squat Clusters',
           duration: '12–14 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 5,
           description: 'Three reps, brief rest, three more; match jump height.',
           battlePlan: '5 rounds\n• Cluster: 3 + 3 Banded Jump Squats\nRest 120s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241156/mood_app/workout_images/ltbmgctq_download_2_.jpg',
@@ -986,6 +1124,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Chain Deadlift Speed Waves',
           duration: '12–14 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 5,
           description: '5-4-3 fast pulls; submax loads; tight bar path each rep.',
           battlePlan: '3 waves\n• 5-4-3 Deadlifts (fast concentric)\nRest 150s between waves',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241132/mood_app/workout_images/8q3jz0r7_cdl.jpg',
@@ -1006,6 +1147,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Banded Broad + Sprint Contrast',
           duration: '12–16 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 5,
           description: 'Three banded broads, then immediate twenty-meter sprint.',
           battlePlan: '4 rounds\n• 3 Banded Broad Jumps (stick 2s)\n• 20m Free Sprint\nRest 150s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241164/mood_app/workout_images/raj5xpdf_download_1_.jpg',
@@ -1035,6 +1179,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Trap Bar Jump Shrug',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 3,
           description: 'Quick knee bend to pop and shrug; quiet mid-foot landing.',
           battlePlan: '3 rounds\n• 5 × 3 Jump Shrugs (light)\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241140/mood_app/workout_images/dpe352d2_tbj.jpg',
@@ -1055,6 +1202,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Trap Bar Deadlift Pop',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 3,
           description: 'Fast stand; smooth controlled return; reset each repetition.',
           battlePlan: '3 rounds\n• 5 × 2 Speed Deadlifts (light–moderate)\nRest 75s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241129/mood_app/workout_images/6q0q24is_tbss.jpg',
@@ -1075,6 +1225,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Trap Bar March to Sprint',
           duration: '8–10 min',
+          path: 'weights',
+          cart_flavor: 'dynamic',
+          intensity_cost: 3,
           description: 'Ten-meter loaded march; rack; immediate ten-meter sprint.',
           battlePlan: '3 rounds\n• 10m Trap Bar March (light)\n• 10m Free Sprint\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241161/mood_app/workout_images/pljikuu6_Screenshot_2025-12-03_at_4_35_36_PM.jpg',
@@ -1097,6 +1250,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Trap Bar Jump',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 4,
           description: 'Small jump with load; soft stick; deliberate stance reset.',
           battlePlan: '4 rounds\n• 5 × 3 Trap Bar Jumps\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241140/mood_app/workout_images/dpe352d2_tbj.jpg',
@@ -1117,6 +1273,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Trap Bar High Pull',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'loaded',
+          intensity_cost: 4,
           description: 'Pop tall; elbows drive up; keep handle path tight and close.',
           battlePlan: '4 rounds\n• 4 × 2 High Pulls (moderate)\nRest 90s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241148/mood_app/workout_images/gur5s8sa_tbhp.jpg',
@@ -1137,6 +1296,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Deadlift + Box Jump Contrast',
           duration: '10–12 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 4,
           description: 'Fast deadlift; quick step to box jump; two-second stick.',
           battlePlan: '4 rounds\n• 3 Speed Deadlifts (moderate)\n• 3 Box Jumps (stick 2s)\nRest 120s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241174/mood_app/workout_images/wwxk13a9_tbs.jpg',
@@ -1159,6 +1321,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Heavy Jump Shrug Waves',
           duration: '12–14 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 5,
           description: '3-2-1 across waves; crisp height; precise repeatable path.',
           battlePlan: '3 waves\n• 3-2-1 Jump Shrugs (build per wave)\nRest 150s between waves',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241367/mood_app/workout_images/z1pka0qd_tbhp.jpg',
@@ -1179,6 +1344,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Trap Bar Jump Cluster',
           duration: '12–14 min',
+          path: 'weights',
+          cart_flavor: 'plyo',
+          intensity_cost: 5,
           description: 'Two reps, ten seconds rest, two reps; maintain speed.',
           battlePlan: '5 rounds\n• Cluster: 2 + 2 Trap Bar Jumps\nRest 120s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241348/mood_app/workout_images/ix4wpy1u_tbj.jpg',
@@ -1199,6 +1367,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
         {
           name: 'Deadlift + Sprint Contrast',
           duration: '12–16 min',
+          path: 'weights',
+          cart_flavor: 'dynamic',
+          intensity_cost: 5,
           description: 'Single fast pull; immediate twenty-meter relaxed sprint.',
           battlePlan: '5 rounds\n• 1 Fast Deadlift (moderate–heavy)\n• 20m Free Sprint\nRest 150s',
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241320/mood_app/workout_images/23unnykj_tbss.jpg',

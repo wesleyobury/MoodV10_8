@@ -649,11 +649,11 @@ async def get_admin_analytics(
             "active_users": active_users,
             "daily_active_users": dau,
             "new_users": new_users,
-            "total_workouts_started": workouts_started,
-            "total_workouts_completed": total_workouts,
+            "total_workouts_started": total_workouts_started,
+            "total_workouts_completed": total_workouts_completed,
             "total_workouts_skipped": workouts_skipped,
             "total_workouts_abandoned": workouts_abandoned,
-            "workout_completion_rate": round((total_workouts / workouts_started * 100), 1) if workouts_started > 0 else 0,
+            "workout_completion_rate": round((total_workouts_completed / total_workouts_started * 100), 1) if total_workouts_started > 0 else 0,
             "total_exercises_completed": exercises_completed,
             "total_posts_created": total_posts,
             "total_likes": total_likes,
@@ -676,7 +676,7 @@ async def get_admin_analytics(
             "workouts_removed_from_cart": workouts_removed_from_cart,
             "cart_views": cart_views,
             "retention_rate": round((active_users / total_users * 100), 2) if total_users > 0 else 0,
-            "average_workouts_per_active_user": round(total_workouts / active_users, 2) if active_users > 0 else 0,
+            "average_workouts_per_active_user": round(total_workouts_completed / active_users, 2) if active_users > 0 else 0,
             "popular_mood_categories": [
                 {"mood": m["_id"], "count": m["count"]}
                 for m in popular_moods if m["_id"]

@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HomeButton from '../components/HomeButton';
@@ -40,7 +40,9 @@ const equipmentDatabase: MuscleGroupEquipment[] = [
     equipment: [
       { id: 'dumbbells-compound', name: 'Dumbbells', icon: 'fitness' },
       { id: 'hack-squat-compound', name: 'Hack Squat Machine', icon: 'triangle' },
+      { id: 'kettlebells-compound', name: 'Kettlebells', icon: 'fitness' },
       { id: 'leg-press-compound', name: 'Leg Press Machine', icon: 'hardware-chip' },
+      { id: 'pendulum-squat-compound', name: 'Pendulum Squat', icon: 'trending-up' },
       { id: 'pit-shark', name: 'Pit Shark', icon: 'triangle-outline' },
       { id: 'cable-machine-compound', name: 'Single Stack Cable Machine', icon: 'link' },
       { id: 'smith-machine', name: 'Smith Machine', icon: 'grid-outline' },
@@ -51,6 +53,7 @@ const equipmentDatabase: MuscleGroupEquipment[] = [
   {
     muscleGroup: 'Glutes',
     equipment: [
+      { id: 'barbell-glute', name: 'Barbell', icon: 'barbell' },
       { id: 'glute-kick-machine', name: 'Glute Kick Machine', icon: 'ellipse' },
       { id: 'hip-abductor', name: 'Hip Abductor Machine', icon: 'resize' },
       { id: 'hip-thruster', name: 'Hip Thruster Equipment', icon: 'fitness' },
@@ -275,10 +278,10 @@ export default function LegsEquipmentScreen() {
 
       // Map selected equipment to their respective muscle groups
       selectedEquipment.forEach(eq => {
-        if (['dumbbells-compound', 'squat-rack-compound', 'leg-press-compound', 'hack-squat-compound', 'cable-machine-compound', 'trap-bar', 'pit-shark', 'smith-machine'].includes(eq.id)) {
+        if (['dumbbells-compound', 'squat-rack-compound', 'leg-press-compound', 'hack-squat-compound', 'cable-machine-compound', 'trap-bar', 'pit-shark', 'smith-machine', 'kettlebells-compound', 'pendulum-squat-compound'].includes(eq.id)) {
           equipmentPerGroup.Compound.push(eq.name);
         }
-        if (['glute-kick-machine', 'hip-abductor', 'hip-thruster', 'cable-machine'].includes(eq.id)) {
+        if (['barbell-glute', 'glute-kick-machine', 'hip-abductor', 'hip-thruster', 'cable-machine'].includes(eq.id)) {
           equipmentPerGroup.Glutes.push(eq.name);
         }
         if (['barbell-ham', 'dumbbells', 'leg-curl', 'roman-chair'].includes(eq.id)) {
@@ -341,10 +344,10 @@ export default function LegsEquipmentScreen() {
   const isQuadsSelected = muscleGroupNames.includes('Quads');
   const isCalvesSelected = muscleGroupNames.includes('Calfs');
   const hasCompoundEquipment = selectedEquipment.some(eq => 
-    ['dumbbells-compound', 'squat-rack-compound', 'leg-press-compound', 'hack-squat-compound', 'cable-machine-compound', 'trap-bar', 'pit-shark', 'smith-machine'].includes(eq.id)
+    ['dumbbells-compound', 'squat-rack-compound', 'leg-press-compound', 'hack-squat-compound', 'cable-machine-compound', 'trap-bar', 'pit-shark', 'smith-machine', 'kettlebells-compound', 'pendulum-squat-compound'].includes(eq.id)
   );
   const hasGlutesEquipment = selectedEquipment.some(eq => 
-    ['glute-kick-machine', 'hip-abductor', 'hip-thruster', 'cable-machine'].includes(eq.id)
+    ['barbell-glute', 'glute-kick-machine', 'hip-abductor', 'hip-thruster', 'cable-machine'].includes(eq.id)
   );
   const hasHamstringsEquipment = selectedEquipment.some(eq => 
     ['barbell-ham', 'dumbbells', 'leg-curl', 'roman-chair'].includes(eq.id)

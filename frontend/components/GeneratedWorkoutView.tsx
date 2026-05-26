@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,17 +10,103 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WorkoutItem } from '../contexts/CartContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+// Dynamic workout title pools by intensity category
+const WORKOUT_TITLES = {
+  // Foundation (Beginner)
+  foundation: [
+    'Controlled Burn', 'Steady Pressure', 'Base Builder', 'Engine Warmup', 'Clean Effort',
+    'Foundational Fire', 'Pulse Builder', 'Momentum', 'Rhythm & Repeat', 'Break a Sweat',
+    'Light the Fuse', 'Aerobic Armor', 'Starter Surge', 'Move With Purpose', 'Core Temperature',
+    'Built to Begin', 'Fresh Legs', 'Cardio Craft', 'Daily Driver', 'Solid State'
+  ],
+  // Performance (Intermediate)
+  performance: [
+    'Afterburn', 'Blacktop Conditioning', 'Velocity Circuit', 'Grind Mode', 'Oxygen Debt',
+    'Relentless Tempo', 'Redline Ready', 'Shock the System', 'Burn Protocol', 'High Output',
+    'Power Pulse', 'Engine Room', 'Dark Cardio', 'Heat Index', 'Gas Tank Builder',
+    'Iron Tempo', 'Accelerate', 'The Climb', 'Threshold Work', 'Push Past'
+  ],
+  // Intensity (Advanced)
+  intensity: [
+    'Blackout Intervals', 'Engine Collapse', 'Zero Comfort', 'Blood & Breath', 'Conditioned to Break',
+    'Redline Ritual', 'No Oxygen Left', 'Brutal Efficiency', 'System Override', 'Total Output',
+    'Failure to Quit', 'Relentless Intervals', 'Dead Air', 'Heart Rate Hostile', 'Aftershock',
+    'Chaos Conditioning', 'Burn the Clock', 'Max Effort Only', 'The Last Round', 'Full Send'
+  ],
+  // Athletic / Fight Conditioning
+  athletic: [
+    'Fight Shape', '12th Round', 'Roadwork Ritual', 'Championship Rounds', 'Overtime Engine',
+    'Cut Weight Circuit', 'Ringside Ready', 'Combat Conditioning', 'Final Bell', 'Warrior Wind'
+  ],
+  // Hybrid Power (Cardio + Strength)
+  hybrid: [
+    'Iron & Intervals', 'Load & Go', 'Heavy Breath', 'Carry the Chaos', 'Strength Under Fire',
+    'Weighted Velocity', 'Power Endurance', 'Force x Speed', 'Barbell Burn', 'Grind & Go'
+  ],
+  // Dark / Cinematic
+  dark: [
+    'Midnight Conditioning', 'Smoke & Sweat', 'Shadow Sprints', 'Neon Burn', 'Darkroom Intervals',
+    'Ashes & Air', 'Night Shift', 'Silent Grind', 'The Long Night', 'Iron Pulse'
+  ],
+  // Minimal / Elite
+  elite: [
+    'Surge', 'Override', 'Threshold', 'Impact', 'Ignite',
+    'Unbroken', 'Endure', 'Elevate', 'Relentless', 'Ascend'
+  ]
+};
+
+// Get a random workout title based on intensity level
+function getRandomWorkoutTitle(intensity: string, moodTitle: string): string {
+  // Determine which pools to use based on intensity
+  let availablePools: string[][] = [];
+  
+  const intensityLower = intensity.toLowerCase();
+  const moodLower = moodTitle.toLowerCase();
+  
+  // Map intensity to title pools
+  if (intensityLower === 'beginner') {
+    availablePools = [WORKOUT_TITLES.foundation];
+  } else if (intensityLower === 'intermediate') {
+    availablePools = [WORKOUT_TITLES.performance, WORKOUT_TITLES.hybrid];
+  } else if (intensityLower === 'advanced') {
+    availablePools = [WORKOUT_TITLES.intensity, WORKOUT_TITLES.dark, WORKOUT_TITLES.elite];
+  } else {
+    // Default to performance pool
+    availablePools = [WORKOUT_TITLES.performance];
+  }
+  
+  // Add mood-specific pools
+  if (moodLower.includes('muscle') || moodLower.includes('gain') || moodLower.includes('strength')) {
+    availablePools.push(WORKOUT_TITLES.hybrid);
+  }
+  if (moodLower.includes('explosion') || moodLower.includes('explosive') || moodLower.includes('power')) {
+    availablePools.push(WORKOUT_TITLES.athletic);
+  }
+  if (moodLower.includes('sweat') || moodLower.includes('burn') || moodLower.includes('cardio')) {
+    if (intensityLower === 'advanced') {
+      availablePools.push(WORKOUT_TITLES.elite);
+    }
+  }
+  
+  // Flatten all available pools
+  const allTitles = availablePools.flat();
+  
+  // Return a random title
+  return allTitles[Math.floor(Math.random() * allTitles.length)];
+}
 
 export interface GeneratedCart {
   id: string;
   workouts: WorkoutItem[];
   totalDuration: number;
   intensity: string;
+  flavor?: string;
 }
 
 interface GeneratedWorkoutViewProps {
@@ -32,6 +118,24 @@ interface GeneratedWorkoutViewProps {
   onSkip?: () => Promise<boolean>; // Returns true if skip was successful (had generations left)
   onSave?: (cart: GeneratedCart) => Promise<void>;
   remainingGenerations?: number;
+}
+
+// Common-language label helpers for Sweat metadata badge chips
+const ROLE_LABEL: Record<string, string> = {
+  primer: 'Warm-Up',
+  main_block: 'Main Set',
+  finisher: 'Finisher',
+};
+const MODALITY_LABEL: Record<string, string> = {
+  cardio: 'Cardio',
+  resistance: 'Strength',
+};
+function costLabel(c?: number): string | null {
+  if (!c) return null;
+  if (c <= 2) return 'Easy';
+  if (c === 3) return 'Moderate';
+  if (c === 4) return 'Hard';
+  return 'All-Out';
 }
 
 // Exercise card component matching normal cart styling
@@ -52,6 +156,13 @@ const ExerciseCard = ({
 }) => {
   const placeholderImage = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=200&h=200&fit=crop';
   const imageSource = item.imageUrl && item.imageUrl.length > 0 ? item.imageUrl : placeholderImage;
+  // Show the role label whenever role is set (Sweat tags every workout; Outdoor tags only combo carts).
+  // Explosive carts use slot_label (Activation / Power / Bonus) — falls back to role when slot_label is unset.
+  const sweatRoleLabel = item.slot_label || (item.role ? ROLE_LABEL[item.role] : null);
+  // Muscle Gainer carts tag every workout as Compound or Isolation.
+  const typeLabel = item.exercise_type
+    ? item.exercise_type.charAt(0).toUpperCase() + item.exercise_type.slice(1)
+    : null;
 
   return (
     <View style={styles.exerciseCard}>
@@ -64,6 +175,14 @@ const ExerciseCard = ({
         <Text style={styles.exerciseEquipment}>{item.equipment}</Text>
         <Text style={styles.exerciseName} numberOfLines={1}>{item.name}</Text>
         <Text style={styles.exerciseDuration}>{item.duration}</Text>
+        {sweatRoleLabel && (
+          <Text style={styles.sweatRoleLabel}>{sweatRoleLabel}</Text>
+        )}
+        {typeLabel && (
+          <Text style={styles.sweatRoleLabel} testID="exercise-type-label">
+            {typeLabel}
+          </Text>
+        )}
       </View>
       <View style={styles.exerciseActions}>
         <View style={styles.reorderButtons}>
@@ -97,6 +216,32 @@ const ExerciseCard = ({
   );
 };
 
+// Extract the muscle group from a muscle gainer WorkoutItem.
+// Supports both auto-generated items (workoutType = "Muscle Building - <Muscle>")
+// and manually-added items (workoutType = "<Muscle>").
+const MUSCLE_GROUP_NAMES = new Set([
+  'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Abs',
+  'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Legs',
+]);
+function getMuscleGainerGroup(item: WorkoutItem): string | null {
+  if (!item?.workoutType) return null;
+  if (item.workoutType.startsWith('Muscle Building')) {
+    const parts = item.workoutType.split(' - ');
+    return parts.length > 1 ? parts[parts.length - 1].trim() : null;
+  }
+  if (MUSCLE_GROUP_NAMES.has(item.workoutType)) return item.workoutType;
+  return null;
+}
+
+// Subtle divider that calls out the muscle group at the start of each section.
+const MuscleGroupDivider: React.FC<{ muscle: string }> = ({ muscle }) => (
+  <View style={styles.muscleDivider} testID={`muscle-divider-${muscle.toLowerCase()}`}>
+    <View style={styles.muscleDividerLine} />
+    <Text style={styles.muscleDividerLabel}>{muscle.toUpperCase()}</Text>
+    <View style={styles.muscleDividerLine} />
+  </View>
+);
+
 export default function GeneratedWorkoutView({
   carts,
   moodTitle,
@@ -113,6 +258,11 @@ export default function GeneratedWorkoutView({
   const [isSaving, setIsSaving] = useState(false);
   const [localRemainingGenerations, setLocalRemainingGenerations] = useState(remainingGenerations);
   const insets = useSafeAreaInsets();
+
+  // Generate dynamic workout title based on intensity - memoized per cart
+  const dynamicWorkoutTitle = useMemo(() => {
+    return getRandomWorkoutTitle(currentCart?.intensity || 'intermediate', moodTitle);
+  }, [currentCartIndex, moodTitle]); // Regenerate when cart changes
 
   const isLastCart = currentCartIndex === carts.length - 1;
   const cartsRemaining = carts.length - currentCartIndex - 1;
@@ -222,6 +372,26 @@ export default function GeneratedWorkoutView({
           </Text>
         </View>
 
+        {/* Flavor Badge (bottom-right of hero) — only when set (Muscle Gainer carts) */}
+        {currentCart.flavor && (
+          <View style={styles.flavorBadge}>
+            <Ionicons
+              name={
+                currentCart.flavor === 'Strength'
+                  ? 'barbell'
+                  : currentCart.flavor === 'Hypertrophy'
+                  ? 'fitness'
+                  : 'flame'
+              }
+              size={14}
+              color="#FFD700"
+            />
+            <Text style={styles.flavorBadgeText} testID="cart-flavor-badge">
+              {currentCart.flavor}
+            </Text>
+          </View>
+        )}
+
         {/* Hero Content */}
         <View style={styles.heroContent}>
           <View style={styles.generatedBadge}>
@@ -229,7 +399,7 @@ export default function GeneratedWorkoutView({
             <Text style={styles.generatedBadgeText}>Generated for you</Text>
           </View>
           <Text style={styles.moodLabel}>{moodTitle}</Text>
-          <Text style={styles.workoutTitle}>{workoutType}</Text>
+          <Text style={styles.workoutTitle}>{dynamicWorkoutTitle}</Text>
           <View style={styles.durationBadge}>
             <Ionicons name="time-outline" size={14} color="#FFD700" />
             <Text style={styles.durationText}>~{currentCart.totalDuration} min</Text>
@@ -274,17 +444,24 @@ export default function GeneratedWorkoutView({
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 160 }}
         >
-          {currentCart.workouts.map((workout, index) => (
-            <ExerciseCard
-              key={workout.id}
-              item={workout}
-              index={index}
-              onMoveUp={handleMoveUp}
-              onMoveDown={handleMoveDown}
-              isFirst={index === 0}
-              isLast={index === currentCart.workouts.length - 1}
-            />
-          ))}
+          {currentCart.workouts.map((workout, index) => {
+            const muscle = getMuscleGainerGroup(workout);
+            const prevMuscle = index > 0 ? getMuscleGainerGroup(currentCart.workouts[index - 1]) : null;
+            const showDivider = muscle && muscle !== prevMuscle;
+            return (
+              <React.Fragment key={workout.id}>
+                {showDivider && <MuscleGroupDivider muscle={muscle!} />}
+                <ExerciseCard
+                  item={workout}
+                  index={index}
+                  onMoveUp={handleMoveUp}
+                  onMoveDown={handleMoveDown}
+                  isFirst={index === 0}
+                  isLast={index === currentCart.workouts.length - 1}
+                />
+              </React.Fragment>
+            );
+          })}
         </ScrollView>
       </View>
 
@@ -390,6 +567,27 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     color: '#fff',
+  },
+  flavorBadge: {
+    position: 'absolute',
+    right: 16,
+    bottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.18)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+    zIndex: 10,
+  },
+  flavorBadgeText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.3,
   },
   heroContent: {
     position: 'absolute',
@@ -534,6 +732,62 @@ const styles = StyleSheet.create({
   exerciseDuration: {
     fontSize: 12,
     color: 'rgba(255, 255, 255, 0.6)',
+  },
+  sweatRoleLabel: {
+    fontSize: 11,
+    color: 'rgba(255, 255, 255, 0.92)',
+    fontWeight: '600',
+    letterSpacing: 0.4,
+    marginTop: 4,
+  },
+  muscleDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 4,
+    marginTop: 14,
+    marginBottom: 8,
+  },
+  muscleDividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+  },
+  muscleDividerLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: 'rgba(255, 255, 255, 0.55)',
+    letterSpacing: 1.4,
+  },
+  chipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginTop: 6,
+  },
+  chip: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  chipRole: {
+    backgroundColor: 'rgba(74, 144, 226, 0.18)',
+    borderColor: 'rgba(74, 144, 226, 0.45)',
+  },
+  chipModality: {
+    backgroundColor: 'rgba(155, 89, 182, 0.18)',
+    borderColor: 'rgba(155, 89, 182, 0.45)',
+  },
+  chipCost: {
+    backgroundColor: 'rgba(231, 76, 60, 0.18)',
+    borderColor: 'rgba(231, 76, 60, 0.45)',
+  },
+  chipText: {
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.92)',
+    fontWeight: '600',
+    letterSpacing: 0.3,
   },
   exerciseActions: {
     flexDirection: 'row',

@@ -2,7 +2,7 @@
   "expo": {
     "name": "MOOD",
     "slug": "mood-fitness-app",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "moodapp",
@@ -11,9 +11,10 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.official.moodapp",
-      "buildNumber": "23",
+      "buildNumber": "64",
       "supportsTablet": true,
       "infoPlist": {
+        "CFBundleDisplayName": "MOOD",
         "UIViewControllerBasedStatusBarAppearance": false,
         "UIStatusBarStyle": "UIStatusBarStyleLightContent",
         "NSCameraUsageDescription": "The camera is used to record photos and videos when you create workout posts or share fitness content.",
@@ -29,12 +30,16 @@
     },
     "android": {
       "package": "com.official.moodapp",
-      "versionCode": 1,
+      "versionCode": 7,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#000"
+        "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
+      "notification": {
+        "icon": "./assets/images/notification-icon.png",
+        "color": "#FFD700"
+      },
       "permissions": [
         "CAMERA",
         "RECORD_AUDIO",
@@ -65,8 +70,17 @@
         }
       ],
       "./plugins/withCxx17Fix",
+      "./plugins/withMoodHealthKit",
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "16.0"
+          }
+        }
+      ]
     ],
     "splash": {
       "image": "./assets/images/splash-icon.png",
@@ -81,6 +95,15 @@
       "eas": {
         "projectId": "ef2c8520-832c-4806-beb0-80b9db1a6214"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ef2c8520-832c-4806-beb0-80b9db1a6214",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }

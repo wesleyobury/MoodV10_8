@@ -16,32 +16,35 @@ import {
 } from 'react-native';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
-import * as VideoThumbnails from 'expo-video-thumbnails';
+// REMOVED: expo-video-thumbnails - causes crashes on production iOS builds
+// Use the VideoThumbnail component instead which has safe fallbacks
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WorkoutStatsCard from '../../components/WorkoutStatsCard';
 import VideoThumbnail from '../../components/VideoThumbnail';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../contexts/CartContext';
 import { useBadges } from '../../contexts/BadgeContext';
+import { useDrafts } from '../../contexts/DraftsContext';
 import FollowListModal from '../../components/FollowListModal';
 import { useScreenTime } from '../../hooks/useScreenTime';
 import { GridItemSkeleton, ProfileHeaderSkeleton } from '../../components/Skeleton';
 import GuestPromptModal from '../../components/GuestPromptModal';
+import { FoundingMemberBadge } from '../../components/FoundingMemberBadge';
 
 // Prioritize process.env for development/preview environments
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../../utils/apiConfig';
 const { width } = Dimensions.get('window');
 
 
 // External URLs for legal pages
 const EXTERNAL_URLS = {
-  termsOfService: 'https://sites.google.com/d/1IPxI-2TCXeIgIKQKjxcRcoUJNHNBjXHD/p/17nmyUORjDmp4upUwI8cMvfIRkuX_0oCv/edit',
-  privacyPolicy: 'https://sites.google.com/d/1IPxI-2TCXeIgIKQKjxcRcoUJNHNBjXHD/p/11e7szlqI_qIfmgCEeE8yOhX5lJrAHwYb/edit',
-  support: 'https://sites.google.com/d/1IPxI-2TCXeIgIKQKjxcRcoUJNHNBjXHD/p/1XhjibxEnt0V15xx32MICmpK3BnO4cNFh/edit',
+  termsOfService: 'https://www.officialmood.app/terms-of-service',
+  privacyPolicy: 'https://www.officialmood.app/privacy-policy',
+  support: 'https://www.officialmood.app/support',
 };
 
 // Mapping of featured workout names to their IDs
@@ -73,6 +76,8 @@ interface Post {
   id: string;
   media_urls: string[];
   cover_urls?: { [key: string]: string }; // Map of media index to cover image URL
+  thumbnail_url?: string | null; // Canonical thumbnail for grid (server-derived for videos)
+  media_type?: string | null; // "video" | "image" | null
   caption: string;
   likes_count: number;
   comments_count: number;
@@ -174,12 +179,19 @@ export default function Profile() {
   const [savedModalVisible, setSavedModalVisible] = useState(false);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(false);
+  const [postsError, setPostsError] = useState(false);
   const [followListVisible, setFollowListVisible] = useState(false);
   const [followListType, setFollowListType] = useState<'followers' | 'following'>('followers');
   const [refreshing, setRefreshing] = useState(false);
   const { token, user: authUser, updateUser, isGuest, exitGuestMode } = useAuth();
   const { addToCart } = useCart();
   const { unreadMessages, refreshBadges } = useBadges();
+  const { activeCount: savedBuildsCount, refreshCount: refreshDraftsCount } = useDrafts();
+
+  // BUNDLE-VERIFY: Unique marker so we can verify you're running the profile-fix v2 bundle.
+  useEffect(() => {
+    console.log('🎯 PROFILE_DRAFTS_FIX_V2_ACTIVE', { savedBuildsCount });
+  }, [savedBuildsCount]);
 
   const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'cards'>('posts');
   const router = useRouter();
@@ -391,6 +403,7 @@ export default function Profile() {
     const startTime = Date.now();
     console.log('Fetching posts for user:', authUser.id);
     setLoadingPosts(true);
+    setPostsError(false);
     
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
@@ -412,12 +425,14 @@ export default function Profile() {
         const data = await response.json();
         console.log('Posts loaded:', data.length, 'posts');
         setUserPosts(data);
+        setPostsError(false);
         
         // Prefetch thumbnails for grid
         prefetchGridImages(data);
       } else {
         const errorText = await response.text();
         console.error('Failed to fetch posts:', response.status, errorText);
+        setPostsError(true);
         // Retry on server error
         if (response.status >= 500 && retryCount < 2) {
           console.log(`Retrying fetch (attempt ${retryCount + 1})...`);
@@ -427,6 +442,7 @@ export default function Profile() {
       }
     } catch (error: any) {
       clearTimeout(timeoutId);
+      setPostsError(true);
       if (error.name === 'AbortError') {
         console.error('Profile posts fetch timed out');
         if (retryCount < 2) {
@@ -836,6 +852,12 @@ export default function Profile() {
               )}
             </View>
             <Text style={styles.bio}>{user.bio}</Text>
+            {/* Phase D — Founding Member badge surfaces lifetime-Premium status. */}
+            {authUser?.founding_member ? (
+              <View style={{ marginTop: 10 }}>
+                <FoundingMemberBadge testID="profile-founding-member-badge" />
+              </View>
+            ) : null}
           </View>
 
           <View style={styles.buttonRow}>
@@ -903,7 +925,7 @@ export default function Profile() {
               styles.tabText, 
               activeTab === 'cards' && styles.activeTabText
             ]}>
-              Cards
+              Completed
             </Text>
           </TouchableOpacity>
 
@@ -934,6 +956,14 @@ export default function Profile() {
                   <ActivityIndicator size="large" color="#FFD700" />
                   <Text style={styles.loadingText}>Loading posts...</Text>
                 </View>
+              ) : postsError ? (
+                <View style={styles.emptyState} data-testid="profile-posts-error">
+                  <Ionicons name="cloud-offline-outline" size={48} color="#FF6B6B" />
+                  <Text style={styles.emptyTitle}>Couldn't load posts</Text>
+                  <Text style={styles.emptySubtitle}>
+                    Pull down to refresh and try again
+                  </Text>
+                </View>
               ) : userPosts.length === 0 ? (
                 <View style={styles.emptyState}>
                   <Ionicons name="images-outline" size={48} color="#666" />
@@ -949,22 +979,28 @@ export default function Profile() {
                       ? post.media_urls[0] 
                       : null;
                     
-                    // Check if the media is a video
-                    const isVideo = mediaUrl && (
+                    // Detect video using server-derived media_type (canonical) + URL extension fallback
+                    const isVideo = post.media_type === 'video' || (mediaUrl && (
                       mediaUrl.toLowerCase().endsWith('.mov') ||
                       mediaUrl.toLowerCase().endsWith('.mp4') ||
                       mediaUrl.toLowerCase().endsWith('.avi') ||
-                      mediaUrl.toLowerCase().endsWith('.webm')
-                    );
+                      mediaUrl.toLowerCase().endsWith('.webm') ||
+                      mediaUrl.toLowerCase().endsWith('.m3u8') ||
+                      mediaUrl.toLowerCase().includes('/video/')
+                    ));
                     
-                    // Get cover URL for video if available
-                    let coverUrl: string | null = null;
-                    if (isVideo && post.cover_urls && post.cover_urls['0']) {
-                      coverUrl = post.cover_urls['0'];
-                      if (!coverUrl.startsWith('http')) {
-                        coverUrl = coverUrl.startsWith('/') ? `${API_URL}${coverUrl}` : `${API_URL}/api/uploads/${coverUrl}`;
-                      }
+                    // Use canonical thumbnail_url from backend (user-selected cover or Cloudinary fallback)
+                    // Priority: post.thumbnail_url > cover_urls['0'] > null
+                    let coverUrl: string | null = post.thumbnail_url || null;
+                    if (!coverUrl && post.cover_urls) {
+                      coverUrl = post.cover_urls['0'] || post.cover_urls[0 as unknown as string] || null;
                     }
+                    if (coverUrl && !coverUrl.startsWith('http')) {
+                      coverUrl = coverUrl.startsWith('/') ? `${API_URL}${coverUrl}` : `${API_URL}/api/uploads/${coverUrl}`;
+                    }
+                    
+                    // For video grid tiles: ALWAYS use the thumbnail image, never load the video
+                    const gridImageUrl = isVideo ? (coverUrl || mediaUrl) : mediaUrl;
                     
                     // Fix media URL if it doesn't include the backend URL
                     if (mediaUrl && !mediaUrl.startsWith('http')) {
@@ -979,12 +1015,22 @@ export default function Profile() {
                           router.push(`/post-detail?postId=${post.id}`);
                         }}
                       >
-                        {mediaUrl ? (
-                          isVideo ? (
-                            // Video thumbnail - use VideoThumbnail component with cover URL
+                        {gridImageUrl ? (
+                          isVideo && coverUrl ? (
+                            // Video with known cover thumbnail — render as static Image (no video loading)
+                            <Image 
+                              source={{ uri: coverUrl }}
+                              style={styles.gridImage}
+                              contentFit="cover"
+                              transition={150}
+                              cachePolicy="memory-disk"
+                              placeholder={{ blurhash: 'L6PZfSi_.AyE_3t7t7R**0o#DgR4' }}
+                            />
+                          ) : isVideo ? (
+                            // Video without cover — use VideoThumbnail (Cloudinary auto-thumb)
                             <VideoThumbnail 
                               videoUrl={mediaUrl}
-                              coverUrl={coverUrl}
+                              coverUrl={null}
                               style={styles.gridImage}
                             />
                           ) : (
@@ -1029,9 +1075,9 @@ export default function Profile() {
               ) : workoutCards.length === 0 ? (
                 <View style={styles.emptyState}>
                   <Ionicons name="trophy-outline" size={48} color="#666" />
-                  <Text style={styles.emptyTitle}>No workout cards yet</Text>
+                  <Text style={styles.emptyTitle}>No completed workouts yet</Text>
                   <Text style={styles.emptySubtitle}>
-                    Complete workouts to save your achievement cards!
+                    Finish a workout to see it here.
                   </Text>
                 </View>
               ) : (
@@ -1047,6 +1093,32 @@ export default function Profile() {
             </View>
           ) : (
             <View style={styles.savedTab}>
+              {/* Saved Builds Entry — visible only if at least 1 active draft */}
+              {savedBuildsCount > 0 ? (
+                <TouchableOpacity
+                  style={styles.savedBuildsEntry}
+                  onPress={() => router.push('/saved-builds')}
+                  activeOpacity={0.85}
+                  testID="profile-saved-builds-entry"
+                >
+                  <View style={styles.savedBuildsLeft}>
+                    <View style={styles.savedBuildsIconWrap}>
+                      <Ionicons name="bookmark" size={18} color="#0A0A0A" />
+                    </View>
+                    <View>
+                      <Text style={styles.savedBuildsTitle}>Saved Builds</Text>
+                      <Text style={styles.savedBuildsSubtitle}>Resume where you left off</Text>
+                    </View>
+                  </View>
+                  <View style={styles.savedBuildsRight}>
+                    <View style={styles.savedBuildsBadge} testID="profile-saved-builds-count">
+                      <Text style={styles.savedBuildsBadgeText}>{savedBuildsCount}</Text>
+                    </View>
+                    <Ionicons name="chevron-forward" size={18} color="#6B6B6B" />
+                  </View>
+                </TouchableOpacity>
+              ) : null}
+
               {/* Saved Workouts Section */}
               <View style={styles.savedSection}>
                 <View style={styles.savedSectionHeader}>
@@ -1069,9 +1141,11 @@ export default function Profile() {
                         <TouchableOpacity
                           style={styles.savedWorkoutContent}
                           onPress={() => {
-                            // Check if this is a featured workout
-                            const featuredId = FEATURED_WORKOUT_IDS[savedWorkout.name];
-                            if (featuredId) {
+                            // Prefer the explicit featured_workout_id (MongoDB ObjectId)
+                            // saved at save-time. Fall back to legacy name → numeric map
+                            // for older saved records.
+                            const featuredId = savedWorkout.featured_workout_id || FEATURED_WORKOUT_IDS[savedWorkout.name];
+                            if (savedWorkout.source === 'featured' && featuredId) {
                               // Navigate to featured workout detail page
                               router.push({
                                 pathname: '/featured-workout-detail',
@@ -1662,6 +1736,43 @@ const styles = StyleSheet.create({
   savedTab: {
     flex: 1,
   },
+  // Saved Builds entry row (above saved workouts section)
+  savedBuildsEntry: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#141414',
+    borderColor: '#1F1F1F',
+    borderWidth: 1,
+    borderRadius: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    marginBottom: 18,
+  },
+  savedBuildsLeft: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+  savedBuildsIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#F5C518',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  savedBuildsTitle: { color: '#FFFFFF', fontSize: 15, fontWeight: '700' },
+  savedBuildsSubtitle: { color: '#B7B7B7', fontSize: 12, marginTop: 2 },
+  savedBuildsRight: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  savedBuildsBadge: {
+    minWidth: 22,
+    height: 22,
+    paddingHorizontal: 6,
+    borderRadius: 11,
+    backgroundColor: '#F5C518',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 6,
+  },
+  savedBuildsBadgeText: { color: '#0A0A0A', fontSize: 12, fontWeight: '700' },
   savedSection: {
     marginBottom: 24,
   },

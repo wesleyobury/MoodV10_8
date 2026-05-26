@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
@@ -22,7 +22,7 @@ import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
 
-const API_URL = Constants.expoConfig?.extra?.EXPO_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
 
 interface EquipmentOption {
   id: string;
@@ -43,6 +43,7 @@ const equipmentOptions: EquipmentOption[] = [
   { id: 'gymnast-rings', name: 'Gymnast rings', icon: 'radio-button-off' },
   { id: 'parallel-bars', name: 'Parallel bars / dip station', icon: 'remove' },
   { id: 'pull-up-bar', name: 'Pull up bar', icon: 'remove-outline' },
+  { id: 'pull-up-bar-abs', name: 'Pull-Up Bar (abs)', icon: 'body-outline' },
   { id: 'pure-bodyweight', name: 'Pure bodyweight', icon: 'body' },
   { id: 'pushup-bars', name: 'Pushup bars / parallettes', icon: 'reorder-three' },
 ];

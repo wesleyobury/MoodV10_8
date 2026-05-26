@@ -12,15 +12,15 @@ import {
   ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { Image } from 'expo-image';
 import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Constants from 'expo-constants';
+import { API_URL } from '../utils/apiConfig';
 import { 
   cloudinaryThumbnailUrlFromVideoUrl, 
-  cloudinaryOptimizedVideoUrl,
+  normalizeCloudinaryVideoUrl,
   prefetchThumbnails,
   PreloadableItem 
 } from '../utils/cloudinaryVideo';
@@ -69,7 +69,7 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
   const searchInputRef = useRef<TextInput>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+  // API_URL is imported from apiConfig
 
   // Load recent lookups from storage
   useEffect(() => {
@@ -177,7 +177,7 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
     if (!selectedExercise) return null;
     
     // Get optimized URLs from Cloudinary
-    const optimizedVideoUrl = cloudinaryOptimizedVideoUrl(selectedExercise.video_url);
+    const optimizedVideoUrl = normalizeCloudinaryVideoUrl(selectedExercise.video_url) || selectedExercise.video_url;
     const posterUrl = selectedExercise.thumbnail_url || cloudinaryThumbnailUrlFromVideoUrl(selectedExercise.video_url);
 
     return (
@@ -205,10 +205,10 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
             />
           )}
           
-          {/* Gradient Overlay for text readability */}
+          {/* Subtle gradient at bottom only for text readability - NO vignette */}
           <LinearGradient
-            colors={['rgba(0,0,0,0.5)', 'transparent', 'rgba(0,0,0,0.7)']}
-            locations={[0, 0.4, 1]}
+            colors={['transparent', 'transparent', 'rgba(0,0,0,0.6)']}
+            locations={[0, 0.5, 1]}
             style={styles.videoGradientOverlay}
             pointerEvents="none"
           />
@@ -290,36 +290,39 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
   };
 
   // Video player with seamless poster-to-video transition
-  // Keeps poster visible until video is actually playing to avoid aspect ratio jump
-  // Includes timeout and auto-retry for reliability
+  // Fixed: Only hide poster when video is actually playing AND has buffered enough
+  // This prevents the loop/restart issue caused by showing video before it's ready
   const VideoWithPoster = ({ videoUrl, posterUrl, style }: { videoUrl: string; posterUrl: string; style: any }) => {
     const videoRef = useRef<Video>(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isBuffering, setIsBuffering] = useState(true);
+    const [isVideoReady, setIsVideoReady] = useState(false); // True when video is loaded AND playing smoothly
     const [hasTimedOut, setHasTimedOut] = useState(false);
     const [retryCount, setRetryCount] = useState(0);
     const [videoKey, setVideoKey] = useState(0); // Force remount on retry
+    const [playbackPosition, setPlaybackPosition] = useState(0);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const loadStartRef = useRef<number>(Date.now());
+    const lastPositionRef = useRef(0);
+    const stuckCountRef = useRef(0);
     
-    const MAX_RETRIES = 3;
-    const LOAD_TIMEOUT_MS = 10000; // 10 seconds
+    const MAX_RETRIES = 2;
+    const LOAD_TIMEOUT_MS = 20000; // 20 seconds - more lenient for slow connections
+    const READY_THRESHOLD_MS = 500; // Wait 500ms of smooth playback before hiding poster
 
     // Start timeout when component mounts or retries
     useEffect(() => {
-      loadStartRef.current = Date.now();
       setHasTimedOut(false);
+      setIsVideoReady(false);
+      setPlaybackPosition(0);
+      lastPositionRef.current = 0;
+      stuckCountRef.current = 0;
       
       // Set timeout for video loading
       timeoutRef.current = setTimeout(() => {
-        if (!isPlaying) {
+        if (!isVideoReady) {
           console.log(`Video timeout after ${LOAD_TIMEOUT_MS}ms, retry ${retryCount + 1}/${MAX_RETRIES}`);
           
           if (retryCount < MAX_RETRIES) {
-            // Auto-retry
             handleRetry();
           } else {
-            // Max retries exceeded
             setHasTimedOut(true);
           }
         }
@@ -330,59 +333,82 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
           clearTimeout(timeoutRef.current);
         }
       };
-    }, [videoKey, retryCount]);
+    }, [videoKey]);
 
-    // Clear timeout when video starts playing
+    // Clear timeout when video is ready
     useEffect(() => {
-      if (isPlaying && timeoutRef.current) {
+      if (isVideoReady && timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
-    }, [isPlaying]);
+    }, [isVideoReady]);
 
     const handleRetry = useCallback(() => {
-      // Unload current video
       if (videoRef.current) {
         videoRef.current.unloadAsync().catch(() => {});
       }
       
       setRetryCount(prev => prev + 1);
-      setVideoKey(prev => prev + 1); // Force Video component remount
-      setIsPlaying(false);
-      setIsBuffering(true);
+      setVideoKey(prev => prev + 1);
+      setIsVideoReady(false);
     }, []);
 
     const handleManualRetry = useCallback(() => {
-      setRetryCount(0); // Reset retry count for manual retry
+      setRetryCount(0);
       setHasTimedOut(false);
       setVideoKey(prev => prev + 1);
-      setIsPlaying(false);
-      setIsBuffering(true);
+      setIsVideoReady(false);
     }, []);
 
     const handlePlaybackStatusUpdate = useCallback((status: AVPlaybackStatus) => {
       if (status.isLoaded) {
-        // Only hide poster when video is actually playing AND not buffering
-        const videoIsPlaying = status.isPlaying && !status.isBuffering;
-        setIsPlaying(videoIsPlaying);
-        setIsBuffering(status.isBuffering);
+        const currentPos = status.positionMillis || 0;
         
-        // Clear timeout as soon as video is loaded and playing
-        if (videoIsPlaying && timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-          timeoutRef.current = null;
+        // Check if video is actually making progress (not stuck buffering)
+        if (status.isPlaying && !status.isBuffering) {
+          // Only mark as ready if:
+          // 1. Video is playing
+          // 2. Video is NOT buffering  
+          // 3. Position has advanced past threshold
+          if (currentPos >= READY_THRESHOLD_MS && !isVideoReady) {
+            setIsVideoReady(true);
+          }
+          
+          // Reset stuck counter when playing smoothly
+          stuckCountRef.current = 0;
+        } else if (status.isBuffering && isVideoReady) {
+          // Video was playing but now buffering - check if stuck
+          if (currentPos === lastPositionRef.current) {
+            stuckCountRef.current += 1;
+            
+            // If stuck at same position for 5+ updates (2.5 seconds), retry
+            if (stuckCountRef.current >= 5 && retryCount < MAX_RETRIES) {
+              console.log('Video stuck buffering, retrying...');
+              handleRetry();
+            }
+          } else {
+            stuckCountRef.current = 0;
+          }
+        }
+        
+        lastPositionRef.current = currentPos;
+        setPlaybackPosition(currentPos);
+        
+        // Handle loop
+        if (status.didJustFinish) {
+          videoRef.current?.replayAsync().catch(() => {});
         }
       }
-    }, []);
+    }, [isVideoReady, retryCount, handleRetry]);
 
     const handleError = useCallback((error: any) => {
-      console.error('Video playback error:', error);
+      console.error('VIDEO LOAD ERROR:', videoUrl, error);
       if (retryCount < MAX_RETRIES) {
         handleRetry();
       } else {
         setHasTimedOut(true);
       }
-    }, [retryCount, handleRetry]);
+    }, [retryCount, handleRetry, videoUrl]);
 
     // Show timeout/error state with retry button
     if (hasTimedOut) {
@@ -428,45 +454,7 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
 
     return (
       <View style={[style, { backgroundColor: '#000' }]}>
-        {/* Poster image - stays visible until video is playing */}
-        {!isPlaying && (
-          <Image
-            source={{ uri: posterUrl }}
-            style={{ 
-              position: 'absolute', 
-              top: 0, 
-              left: 0, 
-              right: 0, 
-              bottom: 0,
-              zIndex: 2 
-            }}
-            contentFit="cover"
-            cachePolicy="memory-disk"
-          />
-        )}
-        
-        {/* Loading indicator while buffering */}
-        {isBuffering && (
-          <View style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            right: 0, 
-            bottom: 0, 
-            justifyContent: 'center', 
-            alignItems: 'center',
-            zIndex: 3 
-          }}>
-            <ActivityIndicator size="large" color="rgba(255,255,255,0.7)" />
-            {retryCount > 0 && (
-              <Text style={{ color: 'rgba(255,255,255,0.5)', marginTop: 8, fontSize: 12 }}>
-                Retry {retryCount}/{MAX_RETRIES}
-              </Text>
-            )}
-          </View>
-        )}
-        
-        {/* Video - plays underneath poster until ready */}
+        {/* Video plays underneath - always loaded but may be hidden by poster */}
         <Video
           key={videoKey}
           ref={videoRef}
@@ -476,9 +464,42 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
           isLooping
           isMuted
           shouldPlay
+          progressUpdateIntervalMillis={500}
           onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
           onError={handleError}
         />
+        
+        {/* Poster image - hides once video is actually playing smoothly */}
+        {!isVideoReady && (
+          <View style={{ 
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            right: 0, 
+            bottom: 0,
+            zIndex: 2,
+            backgroundColor: '#000',
+          }}>
+            <Image
+              source={{ uri: posterUrl }}
+              style={{ width: '100%', height: '100%' }}
+              contentFit="cover"
+              cachePolicy="memory-disk"
+            />
+            {/* Loading indicator on poster */}
+            <View style={{ 
+              position: 'absolute', 
+              top: 0, 
+              left: 0, 
+              right: 0, 
+              bottom: 0, 
+              justifyContent: 'center', 
+              alignItems: 'center',
+            }}>
+              <ActivityIndicator size="large" color="rgba(255,255,255,0.7)" />
+            </View>
+          </View>
+        )}
       </View>
     );
   };

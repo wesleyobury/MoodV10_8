@@ -1,0 +1,73 @@
+{
+  "summary": "Iteration 19 — Backend onboarding backfill v2 fully verified (36/36 pytest pass) against preview URL. Frontend UI verification is BLOCKED by an environment-skew issue: the deployed Expo bundle hardcodes API_BASE_URL to https://bug-busters-13.emergent.host (logged as 'API_BASE_URL = https://bug-busters-13.emergent.host'), which is a DIFFERENT backend than the preview URL where backfill v2 ran. A user registered directly against that production backend returns tips_state: None on /api/users/me — i.e. no v2 backfill / no register-time init applied there. As a result the new OnboardingOverlay testids never render in the UI and the legacy chip-style 'Share with the community' floating tip is what actually appears. Additionally the create-post screen crashes on first navigation with 'TypeError: Notifications.removeNotificationSubscription is not a function' (NotificationInitializer) before recovering on subsequent loads.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "create-post.tsx",
+        "issue": "OnboardingOverlay (Tip 3) not rendering. After login + navigation to /create-post (with and without workoutStats), none of the new testids appear: onboarding-overlay-pointer-0/1/2, onboarding-overlay-bottom-bar, onboarding-overlay-never-show. Instead, a legacy small floating chip 'Share with the community / Don't show again' shows in the top-right.",
+        "selector": "[data-testid='onboarding-overlay-pointer-0']",
+        "priority": "HIGH"
+      },
+      {
+        "component": "create-post.tsx (IG Story button)",
+        "issue": "ig-share-button testid not present on /create-post even when workoutStats query param is passed. The IG button is gated on `workoutStats` state (line 1745) which is set from JSON.parse of params.workoutStats — this may need a different param shape than what we passed, OR the render path is being suppressed by the onboarding-overlay race / NotificationInitializer crash.",
+        "selector": "[data-testid='ig-share-button']",
+        "priority": "HIGH"
+      },
+      {
+        "component": "Home tab",
+        "issue": "Could not visually assert the 'Choose your MOOD' touchable + scale-pulse — Terms & Privacy splash blocks home on every fresh-token reload (locks behind user gesture). Testid not exposed for the wrapper Touchable so we cannot confirm via Playwright.",
+        "selector": "n/a (no data-testid on TouchableOpacity wrapper)",
+        "priority": "MEDIUM"
+      },
+      {
+        "component": "NotificationInitializer (root)",
+        "issue": "First navigation to /create-post crashes with 'TypeError: Notifications.removeNotificationSubscription is not a function' — entry.bundle line ~117737. Recovers on retry/reload but causes one-time UX failure right when overlay/IG button should mount.",
+        "selector": "n/a",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Frontend ↔ Backend env mismatch",
+        "issue": "Expo bundle reads Constants.expoConfig?.extra.EXPO_PUBLIC_BACKEND_URL = https://bug-busters-13.emergent.host (production override) instead of the runtime preview URL. /api/auth/register against that production backend returns no tips_state in /users/me (tips_state: None). v2 backfill / register-time init code is NOT live on the backend that the frontend actually talks to. This makes Tip 2 / Tip 3 trigger conditions (form_videos == 'unseen', completion_share == 'unseen') unreachable for the user the UI is logged in as, even though the spec asserts backfill v2 'matched=91 users'.",
+        "affected_selectors": ["[data-testid='tip-form-videos-container']", "[data-testid='onboarding-overlay-pointer-0']", "[data-testid='ig-share-button']"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_onboarding_backfill_v2.py",
+    "/app/backend/tests/test_onboarding_tips.py",
+    "/app/test_reports/pytest/onboarding_v2_results.xml"
+  ],
+  "action_items": [
+    "PRIMARY: Reconcile the Expo build's hardcoded production URL (bug-busters-13.emergent.host) with the backend that actually runs the v2 backfill. Either (a) deploy server.py with backfill-v2 code to bug-busters-13.emergent.host and restart it, or (b) remove the production-URL override so the app uses EXPO_PUBLIC_BACKEND_URL at runtime. Until then NO frontend onboarding tip will render against a real logged-in user.",
+    "Investigate NotificationInitializer crash 'Notifications.removeNotificationSubscription is not a function' on first /create-post navigation — likely SDK API rename in expo-notifications. Wrap the unsubscribe call in feature-detect: `if (sub?.remove) sub.remove();` instead of calling Notifications.removeNotificationSubscription(sub).",
+    "Add data-testid to the 'Choose your MOOD' TouchableOpacity wrapper (e.g. mood-section-touchable) so the new pulse-animation + tap-to-scroll affordance is testable.",
+    "Verify OnboardingOverlay actually receives `visible={true}` after 800ms by adding a console.log in `requestRender('completion_share')` — once the env is fixed, re-run the same Playwright probe to assert the 5 new testids."
+  ],
+  "critical_code_review_comments": [
+    "create-post.tsx remains 3140 lines — long-standing technical-debt warning unchanged from iter-17/18.",
+    "OnboardingOverlay rendering is gated on `completionTipActive` which depends on `tips_state.completion_share === 'unseen'`. With prod backend not initializing tips_state, the overlay never activates — same root cause as Tip 2 not rendering on workout-session.",
+    "The IG button is gated on `workoutStats` truthy (line 1745). We passed `?workoutStats=<json>` and it still didn't render — likely the JSON.parse path needs `workouts` items with specific keys (workoutSnapshotId etc). Worth adding a developer-mode escape hatch testid for the IG button to make it Playwright-testable without a full workout completion.",
+    "The 'Rejecting preview env URL — using production' override is a footgun: backend tests pass on preview URL while frontend invisibly talks to a different host. Recommend removing this override or at minimum surfacing it in a banner during dev/test."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_onboarding_backfill_v2.py (NEW — 9 tests for v2 flag, all-users key shape, idempotency, regression)"
+  ],
+  "success_rate": {
+    "backend": "100% (36/36: 9 new v2 backfill + 27 existing tip-state tests; both via preview URL)",
+    "frontend": "0% UI assertion of the 5 new overlay testids + ig-share-button; create-post screen renders shell ('Share Your Achievement', Media, Caption, submit) but new overlay never mounts due to env-skew + 1st-load NotificationInitializer crash."
+  },
+  "test_credentials": "Tests register fresh users via /api/auth/register on every run. Preview-backend sample: backfill_user_<ts>@example.com / BackfillV2Pass123!. Production-backend sample (for UI): produi_<ts>@example.com / UiTestPass123!.",
+  "seed_data_creation": "1 throwaway user per test run on the preview backend; 1 throwaway user on the prod backend during UI probe.",
+  "retest_needed": true,
+  "main_agent_can_self_test": false,
+  "context_for_next_testing_agent": "Backend on preview URL is fully green for v2 — re-run with: pytest /app/backend/tests/test_onboarding_backfill_v2.py /app/backend/tests/test_onboarding_tips.py -v. The blocker for FRONTEND assertion is environment-skew: Expo build hardcodes API_BASE_URL = https://bug-busters-13.emergent.host (see expo log: '🔗 API_BASE_URL = https://bug-busters-13.emergent.host'). A user freshly registered via that prod URL returned tips_state: None (preview returns the 3-key 'unseen' shape). Until the prod backend is rebuilt with the v2 code, the new OnboardingOverlay (Tip 3) and Tip 2 form_videos will never trigger in the UI. Also: first /create-post load throws TypeError: Notifications.removeNotificationSubscription is not a function (NotificationInitializer) — survives a reload but crashes the very render where overlay is supposed to appear. Test IDs to look for once env is fixed: onboarding-overlay-pointer-0/1/2, onboarding-overlay-bottom-bar, onboarding-overlay-never-show, ig-share-button. tip-completion-share-a/b/c are gone (confirmed source-side).",
+  "rca of the issue": "Root cause for 'overlay does not render in UI': the deployed Expo bundle's API_BASE_URL points to https://bug-busters-13.emergent.host (production), but the v2 onboarding backfill (server.py:12727-12748) and register-time tips_state initialization were verified ONLY on https://free-tier-limit-2.preview.emergentagent.com. Direct probe: POST https://bug-busters-13.emergent.host/api/auth/register → 200, then GET /api/users/me → tips_state: None (no key set). Therefore the frontend's `onboarding.requestRender('completion_share')` short-circuits because tips_state is missing/non-'unseen'. Mitigation: rebuild/deploy server.py to bug-busters-13.emergent.host (or remove the EXPO_PUBLIC_BACKEND_URL production override in app.json/eas config so it uses the runtime preview URL). Independent secondary RCA — the NotificationInitializer crash is a SDK API mismatch: expo-notifications no longer exposes `removeNotificationSubscription` as a static; the recommended pattern is `subscription.remove()`."
+}

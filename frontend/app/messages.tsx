@@ -17,7 +17,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useBadges } from '../contexts/BadgeContext';
 import BackButton from '../components/BackButton';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
 
 interface Conversation {
   id: string;

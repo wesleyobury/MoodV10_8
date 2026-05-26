@@ -22,7 +22,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import Constants from 'expo-constants';
 import VideoThumbnail from '../components/VideoThumbnail';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
 const { width } = Dimensions.get('window');
 
 interface User {

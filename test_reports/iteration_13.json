@@ -1,0 +1,86 @@
+{
+  "summary": "Backend URL lock fix verification completed. All 7 backend API tests passed. Frontend code correctness verified - apiConfig.ts has hardcoded production URL with preview domain rejection, AppBootstrap.tsx correctly imports API_URL from apiConfig.ts (no local getApiUrl function), .env and app.json both have production URL.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_backend_url_lock.py",
+    "/app/test_reports/pytest/pytest_backend_url_lock.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "VERIFIED: frontend/.env Line 1: EXPO_PUBLIC_BACKEND_URL=https://bug-busters-13.emergent.host",
+    "VERIFIED: frontend/utils/apiConfig.ts Line 14: PRODUCTION_BACKEND_URL hardcoded to https://bug-busters-13.emergent.host",
+    "VERIFIED: frontend/utils/apiConfig.ts Line 17-18: isPreviewDomain() function rejects .preview.emergentagent.com URLs",
+    "VERIFIED: frontend/utils/apiConfig.ts Line 25-48: getApiUrl() with fallback to PRODUCTION_BACKEND_URL",
+    "VERIFIED: frontend/components/AppBootstrap.tsx Line 5: imports API_URL from ../utils/apiConfig",
+    "VERIFIED: frontend/components/AppBootstrap.tsx Line 201: uses API_URL directly (const apiUrl = API_URL)",
+    "VERIFIED: AppBootstrap.tsx does NOT have its own getApiUrl() function - properly uses apiConfig.ts",
+    "VERIFIED: frontend/app.json Line 89: EXPO_PUBLIC_BACKEND_URL in extra section is https://bug-busters-13.emergent.host",
+    "VERIFIED: frontend/contexts/AuthContext.tsx Line 7: imports API_URL and validateApiConfig from apiConfig.ts"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_backend_url_lock.py"
+  ],
+  "success_rate": {
+    "backend": "100% (7/7 tests passed)",
+    "frontend": "N/A - React Native Expo app, verified code correctness only"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend URL lock fix verified. The fix ensures preview deployment automation cannot overwrite the production backend URL. Key files: apiConfig.ts has hardcoded PRODUCTION_BACKEND_URL with isPreviewDomain() rejection logic. AppBootstrap.tsx and AuthContext.tsx import API_URL from apiConfig.ts. The .env and app.json files have the production URL https://bug-busters-13.emergent.host.",
+  "verified_features": [
+    {
+      "feature": "/api/health returns healthy status",
+      "status": "VERIFIED",
+      "evidence": "Backend test passed, returned {status: healthy, database: connected}"
+    },
+    {
+      "feature": "/api/posts/public returns posts without auth",
+      "status": "VERIFIED",
+      "evidence": "Backend test passed, returned array of posts"
+    },
+    {
+      "feature": "/api/featured/bundle returns featured workouts",
+      "status": "VERIFIED",
+      "evidence": "Backend test passed, returned config and workouts array"
+    },
+    {
+      "feature": "/api/auth/login returns proper error for invalid credentials",
+      "status": "VERIFIED",
+      "evidence": "Backend test passed, returned 401 status with detail field"
+    },
+    {
+      "feature": "apiConfig.ts rejects preview domains and falls back to production URL",
+      "status": "VERIFIED",
+      "evidence": "Code inspection: Line 17-18 has isPreviewDomain(), Line 30 and 40 check isPreviewDomain() before accepting URL, Line 47 returns PRODUCTION_BACKEND_URL as fallback"
+    },
+    {
+      "feature": "AppBootstrap.tsx imports API_URL from apiConfig.ts",
+      "status": "VERIFIED",
+      "evidence": "Line 5: import { API_URL } from '../utils/apiConfig'"
+    },
+    {
+      "feature": "AppBootstrap.tsx does NOT have its own getApiUrl() function",
+      "status": "VERIFIED",
+      "evidence": "grep found no getApiUrl definition in AppBootstrap.tsx"
+    },
+    {
+      "feature": "frontend/.env has production URL",
+      "status": "VERIFIED",
+      "evidence": "Line 1: EXPO_PUBLIC_BACKEND_URL=https://bug-busters-13.emergent.host"
+    },
+    {
+      "feature": "frontend/app.json has production URL in extra config",
+      "status": "VERIFIED",
+      "evidence": "Line 89: EXPO_PUBLIC_BACKEND_URL: https://bug-busters-13.emergent.host"
+    }
+  ]
+}

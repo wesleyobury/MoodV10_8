@@ -29,7 +29,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate load, full stretch',
               description: 'Let the handles come deep before driving up.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Control Press',
@@ -54,7 +58,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase depth, not numbers',
               description: 'Deeper stretch = better pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Neutral-Grip Pump Builder',
@@ -79,7 +87,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop short of lockout',
               description: 'Constant tension = pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Press w/ Early Drop Cluster',
@@ -104,7 +116,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Shorten ROM slightly as needed',
               description: 'Stay in the pump zone, not joint lockout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -131,7 +147,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow last 2 reps each set',
               description: 'Extend tension for pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Paused Depth Press',
@@ -156,7 +176,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Deeper pause = bigger pump',
               description: 'Stretch under tension matters.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Press Burn Builder',
@@ -181,7 +205,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Choose a load that never rests',
               description: 'Pump comes from nonstop work.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Press + Pushup Contrast',
@@ -206,7 +234,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow pushups down',
               description: 'Time under tension amplifies pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -233,7 +265,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower seat slightly',
               description: 'Deeper stretch = stronger pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Extended Drop Ladder Press',
@@ -258,7 +294,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Partial reps acceptable at end',
               description: 'Stay in the loaded range.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Partial-Range Burnout Press',
@@ -283,7 +323,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Never relax at the top',
               description: 'Continuous squeeze = pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Paused Strength Test',
@@ -308,7 +352,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use full depth',
               description: 'Stretch + pause maximizes pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -341,7 +389,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower deep, press smooth',
               description: 'Fixed path rewards ROM.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Smith Press',
@@ -366,7 +418,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Deep stretch every rep',
               description: 'Stretch drives the pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Smith Upright Row Builder',
@@ -391,7 +447,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stop just below chest height',
               description: 'Strong squeeze without trap takeover.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'upright_row',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Press + Iso Hold',
@@ -416,7 +476,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Longer hold > heavier load',
               description: 'Better pump tradeoff.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -443,7 +507,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Deeper pause = bigger pump',
               description: 'Stretch under tension wins.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Smith Upright Row Control',
@@ -468,7 +536,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate load only',
               description: 'Smooth reps pump better.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'upright_row',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Smith Press Burn Builder',
@@ -493,7 +565,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Choose weight that never rests',
               description: 'Pump over numbers.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Smith Press + Pushup Contrast',
@@ -518,7 +594,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow last 5 pushups',
               description: 'Stretch + squeeze effect.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -545,7 +625,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower deeper each set',
               description: 'Stretch amplifies pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Smith Press Triple Drop Cluster',
@@ -570,7 +654,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Final reps stay controlled',
               description: 'Pump beats grinding.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Smith Press Burnout Hold',
@@ -595,7 +683,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter bar weight',
               description: 'Longer hold = better pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Paused Strength Test',
@@ -620,7 +712,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Full depth every rep',
               description: 'Stretch + pause drives pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -653,7 +749,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pause briefly at full spread',
               description: 'Peak squeeze = pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Rear Delt Fly',
@@ -678,7 +778,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter load, bigger stretch',
               description: 'Stretch drives pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Paused Rear Delt Fly',
@@ -703,7 +807,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze harder than you think',
               description: 'Rear delts respond to contraction.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Burnout Rear Delt Fly',
@@ -728,7 +836,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Light weight, nonstop reps',
               description: 'Rear delts pump best here.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'pump',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -755,7 +867,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Start from full cross',
               description: 'Stretch enhances pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Rear Delt Pause + Burn',
@@ -780,7 +896,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze before lowering',
               description: 'Peak contraction drives pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Rear Delt Density Builder',
@@ -805,7 +925,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch fully every rep',
               description: 'Deeper stretch = pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Rear Delt Fly + Face Pull Contrast',
@@ -830,7 +954,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow last reps',
               description: 'Stretch + squeeze combo.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -857,7 +985,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow stretch on return',
               description: 'Eccentric fuels pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Rear Delt Triple Drop Cluster',
@@ -882,7 +1014,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Partial reps allowed late',
               description: 'Stay in pump range.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Rear Delt Burnout Hold',
@@ -907,7 +1043,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Light weight, long hold',
               description: 'Rear delts pump fast.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Paused Strength Test',
@@ -932,7 +1072,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch fully between reps',
               description: 'Range drives pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -965,7 +1109,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase the stretch + squeeze',
               description: 'Step slightly away from the stack for deeper bottom position.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Single-Arm Cable Lateral Control',
@@ -990,7 +1138,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Maximize range, not weight',
               description: 'Lean slightly away from the stack for full stretch.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Cable Rear Delt Fly Builder',
@@ -1015,7 +1167,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze, don\'t yank',
               description: 'Think "open the arms" and pause briefly at peak.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Cable Front Raise Pull-Through',
@@ -1040,7 +1196,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth arc = better pump',
               description: 'Let cable pull you back at bottom, then lift through long range.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'front_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1067,7 +1227,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish every rep strong',
               description: 'Use lighter weight and squeeze hard at the back.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Single-Arm Cable Press',
@@ -1092,7 +1256,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control the top and bottom',
               description: 'Don\'t lock out hard—keep tension continuous.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Cable Lateral Raise Fatigue Builder',
@@ -1117,7 +1285,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Chase burn, not numbers',
               description: 'Use a weight that never lets the delt relax.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Cable Raise + Face Pull Contrast',
@@ -1142,7 +1314,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch then squeeze every round',
               description: 'Step farther from the stack on laterals.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1169,7 +1345,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Long range wins here',
               description: 'Start each rep from a deep stretch.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Cable Lateral Raise Drop Assault',
@@ -1194,7 +1374,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Shorten range as you fatigue',
               description: 'Partial reps at the top keep the pump alive.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Rear-Delt Burnout Fly',
@@ -1219,7 +1403,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold the last rep',
               description: 'Pause and squeeze at peak contraction for 2–3 seconds.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Front-Raise Pull-Through Burn + Hold',
@@ -1244,7 +1432,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter weight, longer range',
               description: 'Let the cable pull you deep at the bottom.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'front_raise',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1277,7 +1469,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter not required',
               description: 'Choose a load you fully control.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Shoulder Press',
@@ -1302,7 +1498,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter not required',
               description: 'Tempo naturally limits overload.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Lateral Raise Control Builder',
@@ -1327,7 +1527,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter not required',
               description: 'Isolation stays low risk.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Standing Press + Iso Finish',
@@ -1352,7 +1556,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Keep overhead loads conservative.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1379,7 +1587,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Useful near failure.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Push Press Overload',
@@ -1404,7 +1616,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Fatigue raises overhead risk.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Lateral Raise Fatigue Builder',
@@ -1429,7 +1645,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter not required',
               description: 'Volume drives fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Press + Pushup Contrast',
@@ -1454,7 +1674,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Reduce press load if reps slow.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1481,7 +1705,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Heavy overhead work demands awareness.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Arnold Drop Set Assault',
@@ -1506,7 +1734,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter strongly recommended',
               description: 'Final drop approaches failure.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Lateral Raise Burnout',
@@ -1531,7 +1763,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter not required',
               description: 'Light load only.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Pause Press Strength Test',
@@ -1556,7 +1792,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Paused heavies escalate fast.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1589,7 +1829,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Use safeties if available.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Overhead Press',
@@ -1614,7 +1858,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Stay conservative with tempo.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Pause Press Control',
@@ -1639,7 +1887,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Difficulty ramps fast.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Press + Iso Finish',
@@ -1664,7 +1916,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Especially near fatigue.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1691,7 +1947,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Fatigue raises risk.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Upright Row Control Builder',
@@ -1716,7 +1976,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter not required',
               description: 'Keep load moderate.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'upright_row',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Overhead Density Press',
@@ -1741,7 +2005,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter optional',
               description: 'Helpful late.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Push Press + Pushup Contrast',
@@ -1766,7 +2034,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Especially later rounds.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1793,7 +2065,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Use safeties if possible.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Strict Press Drop Assault',
@@ -1818,7 +2094,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter strongly recommended',
               description: 'Final drop near failure.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Barbell Press Burnout',
@@ -1843,7 +2123,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Especially late in sets.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Pause Strength Test',
@@ -1868,7 +2152,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Spotter recommended',
               description: 'Paused heavies escalate fast.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1901,7 +2189,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish just before lockout',
               description: 'Hold the bar where delts are fully contracted, not where tension drops.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Two-Arm Landmine Press Builder',
@@ -1926,7 +2218,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze before lockout',
               description: 'Pause briefly where shoulders are loaded, not at elbow lockout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Landmine Press',
@@ -1951,7 +2247,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Reverse under tension',
               description: 'Pause briefly at the strongest contracted position before lowering.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Landmine Press + Iso Finish',
@@ -1976,7 +2276,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter load for the hold',
               description: 'Longer contraction = better pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -2003,7 +2307,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Contract hard at the top',
               description: 'Brief squeeze just before lockout reinforces the pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Landmine Pulse Press',
@@ -2028,7 +2336,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Never hit lockout',
               description: 'Continuous contraction = nonstop pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Landmine Push Press Builder',
@@ -2053,7 +2365,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Catch and squeeze early',
               description: 'Brief hold before lockout keeps delts loaded.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Press + Rotational Press Contrast',
@@ -2078,7 +2394,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish each press short of lockout',
               description: 'Hold the contracted position for a stronger pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2105,7 +2425,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze before the elbow straightens',
               description: 'Peak delt contraction beats lockout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Landmine Press Drop Ladder',
@@ -2130,7 +2454,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End every mini-set with a squeeze',
               description: 'Hold the strongest contracted point, not lockout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Landmine Press Burnout',
@@ -2155,7 +2483,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Live in the mid-to-top arc',
               description: "That's where delts stay pumped."
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Cluster Drop Set Press',
@@ -2180,7 +2512,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Final squeeze happens before lockout',
               description: 'Contracted delts, not resting joints.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -2213,7 +2549,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Press to contraction, not lockout',
               description: 'Stop just short of straight arms and squeeze the delts.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Incline Lateral Raise Builder',
@@ -2238,7 +2578,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Let arms hang deep',
               description: 'Longer stretch + clean raise = better pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Bench-Supported Front Raise',
@@ -2263,7 +2607,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter weight, longer range',
               description: 'Front delts pump fast with clean reps.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'front_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Seated Press + Iso Finish',
@@ -2288,7 +2636,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold where delts work hardest',
               description: 'Contracted position beats lockout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -2315,7 +2667,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish rotation before lockout',
               description: 'Squeeze when delts are shortened.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Low-Incline Delt Fly',
@@ -2340,7 +2696,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch deep at the bottom',
               description: 'Long range = better pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Paused Seated Lateral Raise',
@@ -2365,7 +2725,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze before lowering',
               description: 'Contraction drives the pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Press + Raise Contrast',
@@ -2390,7 +2754,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow the raises',
               description: 'Time under tension = pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2417,7 +2785,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze at each angle',
               description: 'Contracted delts finish every set.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 5,
         },
         {
           name: 'Arnold Press Drop Cluster',
@@ -2442,7 +2814,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End each drop with a squeeze',
               description: 'Contracted position, not lockout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Seated Lateral Raise Burnout',
@@ -2467,7 +2843,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Live in the mid-range',
               description: "That's where delts stay pumped."
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Incline Fly + Iso Burn',
@@ -2492,7 +2872,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold where arms are hardest to keep up',
               description: "That's the true contracted position."
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'rear_delt',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -2525,7 +2909,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower deep, finish short of lockout',
               description: 'Squeeze where delts are shortened, not resting.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'KB Front Raise Control',
@@ -2550,7 +2938,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Light bell, long arc',
               description: 'Front delts pump fast with tension.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'front_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'KB Lateral Raise Builder',
@@ -2575,7 +2967,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Start from full hang',
               description: 'Longer stretch = better pump.'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Press + Iso Finish',
@@ -2600,7 +2996,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter bell for the hold',
               description: 'Longer contraction = stronger pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -2627,7 +3027,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish rotation before lockout',
               description: 'Contracted delts > joint rest.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'KB Upright Row Control',
@@ -2652,7 +3056,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate bell, smooth reps',
               description: 'Upright rows pump best clean.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'upright_row',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Paused KB Press',
@@ -2677,7 +3085,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode into contraction',
               description: 'Smooth squeeze builds pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Press + Halo Contrast',
@@ -2702,7 +3114,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Smooth reps over heavy bells',
               description: 'Flow builds pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -2729,7 +3145,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower slow into stretch',
               description: 'Eccentric fuels pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'KB Upright Row Drop Cluster',
@@ -2754,7 +3174,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Shorten ROM late',
               description: 'Partial reps preserve pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'upright_row',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'KB Lateral Raise Burnout',
@@ -2779,7 +3203,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Live in mid-range',
               description: "That's the pump zone."
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'lateral_raise',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Offset Rack Hold + Press Burn',
@@ -2804,7 +3232,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold where delts shake most',
               description: 'True contraction point.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         }
       ]
     }
@@ -2837,7 +3269,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower deep, squeeze before lockout',
               description: 'Contracted delts > joint rest.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo OHP Control',
@@ -2862,7 +3298,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch fully every rep',
               description: 'Bottom tension drives pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Pause OHP Builder',
@@ -2887,7 +3327,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode to contraction',
               description: 'Smooth squeeze fuels pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'OHP + Iso Finish',
@@ -2912,7 +3356,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter bar weight',
               description: 'Longer hold = better pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -2939,7 +3387,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower slow into stretch',
               description: 'Eccentric builds pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'High Pull Control',
@@ -2964,7 +3416,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Pull to upper chest only',
               description: 'Clean reps = better pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'upright_row',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Density Push Press',
@@ -2989,7 +3445,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower slow into rack',
               description: 'Stretch fuels pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Push Press + Pushup Contrast',
@@ -3014,7 +3474,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow pushups down',
               description: 'Stretch + tension pump.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -3041,7 +3505,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower slow, squeeze early',
               description: 'Contracted delts beat lockout.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Split Jerk Builder',
@@ -3066,7 +3534,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Catch tall with locked arms',
               description: 'Overhead stability loads shoulders.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Push Jerk Drop Ladder',
@@ -3091,7 +3563,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Short dip, violent drive',
               description: 'Shoulder stimulus comes from speed.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Snatch-Grip Push Press',
@@ -3116,7 +3592,11 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with a punch',
               description: 'Contracted delts, not lockout rest.'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'vertical_press',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }

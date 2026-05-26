@@ -29,7 +29,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower fully, squeeze hard at the top',
               description: 'Full stretch + tight flex = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Seated DB Curl Control',
@@ -54,7 +58,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Let arms hang fully',
               description: 'Deeper stretch = better pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Hammer Curl Builder',
@@ -79,7 +87,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control the top squeeze',
               description: 'Brachialis pumps fast when shortened'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hammer_curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Curl + Iso Finish',
@@ -104,7 +116,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter weight for the hold',
               description: 'Longer squeeze = better pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -131,7 +147,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Curl through full arc',
               description: 'Long stretch → hard squeeze = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Paused DB Curl',
@@ -156,7 +176,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with a hard top squeeze',
               description: 'Shortened biceps pump best'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Alternating Curl Burn Builder',
@@ -181,7 +205,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Light weight, nonstop reps',
               description: 'Continuous tension = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Curl + Hammer Contrast',
@@ -206,7 +234,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control both tops',
               description: 'Two contractions = massive pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hammer_curl',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -233,7 +265,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze before elbow lockout',
               description: 'Peak flexion is the goal'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'DB Curl Drop Ladder',
@@ -258,7 +294,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End each mini-set with a squeeze',
               description: 'Contracted biceps, not momentum'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Incline Curl Burnout',
@@ -283,7 +323,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch deep, squeeze hard',
               description: 'Long-to-short tension = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: '21s + Iso Finish',
@@ -308,7 +352,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold the flex hard',
               description: 'Shortened position seals the pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'mixed',
+          intensity_cost: 5,
         }
       ]
     }
@@ -341,7 +389,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower fully, squeeze hard at top',
               description: 'Stretch + flex = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo EZ Curl',
@@ -366,7 +418,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch at bottom, flex fully',
               description: 'Controlled range drives pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Close-Grip EZ Curl',
@@ -391,7 +447,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Full ROM every rep',
               description: 'Better pump than heavier load'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Curl + Iso Finish',
@@ -416,7 +476,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter bar for the hold',
               description: 'Longer contraction = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -443,7 +507,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Squeeze hard at top',
               description: 'Short head pumps fast'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Paused EZ Curl',
@@ -468,7 +536,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish each rep with intent',
               description: 'Strong contraction = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'EZ Curl Burn Builder',
@@ -493,7 +565,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate weight, nonstop reps',
               description: 'Burnout = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Curl + Reverse Curl Contrast',
@@ -518,7 +594,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control both tops',
               description: 'Two squeezes = bigger pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -545,7 +625,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish reps with a squeeze',
               description: 'Contracted biceps matter'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'EZ Curl Drop Cluster',
@@ -570,7 +654,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End each set with a flex',
               description: 'Peak contraction seals pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'EZ Curl Burnout Hold',
@@ -595,7 +683,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lighter bar, longer hold',
               description: 'Pump > ego'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: '1.5-Rep EZ Curl',
@@ -620,7 +712,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Top-range tension dominates',
               description: 'Biceps stay pumped'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -653,7 +749,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Step back slightly for stretch',
               description: 'Longer starting position = better pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Rope Cable Curl',
@@ -678,7 +778,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Light load, full ROM',
               description: 'Continuous tension = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'hammer_curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Seated Low Cable Curl',
@@ -703,7 +807,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch deep, squeeze tight',
               description: 'Long-to-short tension fuels pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Curl + Iso Finish',
@@ -728,7 +836,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Reduce load for the hold',
               description: 'Longer squeeze = bigger pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -755,7 +867,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lean back slightly',
               description: 'Cable stretch amplifies pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Paused Cable Curl',
@@ -780,7 +896,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish with a hard squeeze',
               description: 'Shortened biceps pump best'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Single-Arm Cable Curl Burn',
@@ -805,7 +925,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Step further back as fatigue rises',
               description: 'Stretch keeps pump alive'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Curl + Face-Away Curl Contrast',
@@ -830,7 +954,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Long stretch, hard squeeze',
               description: 'Two angles = massive pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -857,7 +985,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish every rep with intent',
               description: 'Peak flexion matters'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Cable Curl Drop Ladder',
@@ -882,7 +1014,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End ladders with a squeeze',
               description: 'Contracted biceps seal the pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Cable Curl Burnout Hold',
@@ -907,7 +1043,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Step back slightly',
               description: 'Stretch + hold = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: '1.5-Rep Cable Curl',
@@ -932,7 +1072,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Top-range dominance',
               description: 'Cables keep delts out, biceps pumped'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -965,7 +1109,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch deep, squeeze hard',
               description: 'Preacher pumps brutally'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Preacher Curl',
@@ -990,7 +1138,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Bottom stretch fuels pump',
               description: 'Long range dominates'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Close-Grip Preacher Curl',
@@ -1015,7 +1167,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Full ROM every rep',
               description: 'Better pump than load'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Curl + Iso Finish',
@@ -1040,7 +1196,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter load for hold',
               description: 'Longer squeeze = better pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1067,7 +1227,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode into contraction',
               description: 'Smooth squeeze fuels pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Wide-Grip Preacher Curl',
@@ -1092,7 +1256,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Short-head pumps fast',
               description: 'Lean into the burn'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Preacher Burn Builder',
@@ -1117,7 +1285,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate load, nonstop reps',
               description: 'Burnout = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Full + Partial Contrast',
@@ -1142,7 +1314,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Short-range burn seals pump',
               description: 'Preacher excels here'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1169,7 +1345,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish reps with intent',
               description: 'Contracted biceps matter'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Preacher Drop Cluster',
@@ -1194,7 +1374,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End with a hard squeeze',
               description: 'Peak contraction seals pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Preacher Burnout Hold',
@@ -1219,7 +1403,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lighter load, longer hold',
               description: 'Pump > ego'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: '1.5-Rep Preacher Curl',
@@ -1244,7 +1432,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Preacher tension stays constant',
               description: 'Biceps stay pumped'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'preacher_curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1277,7 +1469,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lower fully, squeeze hard',
               description: 'Full ROM drives pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Tempo Machine Curl',
@@ -1302,7 +1498,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Stretch deep, squeeze tight',
               description: 'Machine pumps fast'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Close-Grip Machine Curl',
@@ -1327,7 +1527,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Full extension each rep',
               description: 'Better pump than heavier load'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Curl + Iso Finish',
@@ -1352,7 +1556,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Use lighter pin for hold',
               description: 'Longer squeeze = better pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'mixed',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1379,7 +1587,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish each rep strong',
               description: 'Contracted biceps dominate'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Wide-Grip Machine Curl',
@@ -1404,7 +1616,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Short-head squeeze hits fast',
               description: 'Pump builds quickly'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Machine Curl Burn Builder',
@@ -1429,7 +1645,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Moderate weight, nonstop reps',
               description: 'Burnout = pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Curl + Partial Contrast',
@@ -1454,7 +1674,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Short-range burn seals pump',
               description: 'Machine excels here'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1481,7 +1705,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish reps with intent',
               description: 'Contracted biceps matter'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Machine Curl Drop Cluster',
@@ -1506,7 +1734,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'End sets with a squeeze',
               description: 'Peak contraction seals pump'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         },
         {
           name: 'Machine Curl Burnout Hold',
@@ -1531,7 +1763,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Lighter pin, longer hold',
               description: 'Pump > ego'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: '1.5-Rep Machine Curl',
@@ -1556,7 +1792,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Machine tension stays high',
               description: 'Biceps stay pumped'
             }
-          ]
+          ],
+          exercise_type: 'isolation',
+          movement_pattern: 'curl',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }
@@ -1589,7 +1829,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control the bottom hang',
               description: 'Stretch loads the biceps'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Band-Assisted Chin-Ups',
@@ -1614,7 +1858,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hang fully each rep',
               description: 'Stretch builds pump'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         },
         {
           name: 'Negative Chin-Ups',
@@ -1639,7 +1887,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Full hang between reps',
               description: 'Stretch intensifies pump'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'strength',
+          intensity_cost: 3,
         },
         {
           name: 'Chin-Up Hold Finish',
@@ -1664,7 +1916,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold at hardest point',
               description: 'Shortened biceps pump hardest'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 3,
         }
       ],
       intermediate: [
@@ -1691,7 +1947,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Slow lowers build pump',
               description: 'Bodyweight tension adds up'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'strength',
+          intensity_cost: 4,
         },
         {
           name: 'Close-Grip Chin-Ups',
@@ -1716,7 +1976,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Control top and bottom',
               description: 'Stretch + squeeze = pump'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 4,
         },
         {
           name: 'Chin-Up Burn Builder',
@@ -1741,7 +2005,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Top-range focus',
               description: 'Biceps stay loaded'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'pump',
+          intensity_cost: 4,
         },
         {
           name: 'Chin-Up + Iso Hang Contrast',
@@ -1766,7 +2034,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold where shaking starts',
               description: 'That\'s the pump zone'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'mixed',
+          intensity_cost: 4,
         }
       ],
       advanced: [
@@ -1793,7 +2065,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Explode up, control down',
               description: 'Tension builds pump'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'hypertrophy',
+          intensity_cost: 5,
         },
         {
           name: 'Weighted Chin-Up Drop Ladder',
@@ -1818,7 +2094,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Finish each ladder with a flex',
               description: 'Contracted biceps seal pump'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: 'Chin-Up Burnout Hold',
@@ -1843,7 +2123,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Hold where elbows are tightest',
               description: 'True shortened position'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'pump',
+          intensity_cost: 5,
         },
         {
           name: '1.5-Rep Chin-Ups',
@@ -1868,7 +2152,11 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
               title: 'Top-range dominance',
               description: 'Biceps stay pumped'
             }
-          ]
+          ],
+          exercise_type: 'compound',
+          movement_pattern: 'chin_up',
+          training_style: 'strength',
+          intensity_cost: 5,
         }
       ]
     }

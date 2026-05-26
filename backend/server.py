@@ -1,6 +1,7 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form, Request, Response, Header
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form, Request, Response, Header, BackgroundTasks
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
+from html import escape as html_escape
 from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -21,6 +22,76 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import re
+import httpx
+import secrets
+import asyncio
+import resend
+
+# ────────────────────────────────────────────────────────
+# Shared helpers
+# ────────────────────────────────────────────────────────
+
+def resolve_post_author_id(post: dict) -> str:
+    """Resolve the canonical author of a post, checking multiple field names.
+    
+    Returns the author ID as a string, or "" if none found.
+    Priority: author_id > user_id > creator_id > owner_id
+    """
+    for key in ("author_id", "user_id", "creator_id", "owner_id"):
+        val = post.get(key)
+        if val:
+            return str(val)
+    return ""
+
+
+_VIDEO_EXTENSIONS = {".mp4", ".mov", ".avi", ".webm", ".mkv", ".m4v", ".m3u8"}
+
+def derive_post_media_fields(post: dict) -> dict:
+    """Derive thumbnail_url and media_type from a raw post document.
+    
+    Returns dict with 'thumbnail_url' and 'media_type' keys.
+    thumbnail_url: user-selected cover from cover_urls, or Cloudinary auto-thumb fallback.
+    media_type: 'video' | 'image' | None
+    """
+    media_urls = post.get("media_urls") or []
+    cover_urls = post.get("cover_urls")  # dict {"0": url} or list [url]
+    first_url = (media_urls[0] if media_urls else "").lower()
+    
+    # Detect media_type
+    is_video = any(first_url.endswith(ext) for ext in _VIDEO_EXTENSIONS) or "/video/" in first_url
+    media_type = "video" if is_video else ("image" if first_url else None)
+    
+    # Resolve thumbnail_url for videos
+    thumbnail_url = None
+    if is_video:
+        # 1st priority: user-selected cover from cover_urls
+        if isinstance(cover_urls, dict):
+            thumbnail_url = cover_urls.get("0") or cover_urls.get(0)
+        elif isinstance(cover_urls, list) and cover_urls:
+            thumbnail_url = cover_urls[0]
+        
+        # 2nd priority: Cloudinary auto-thumbnail fallback
+        if not thumbnail_url and media_urls:
+            raw_url = media_urls[0]
+            if "cloudinary.com" in raw_url and "/video/upload/" in raw_url:
+                # Generate frame thumbnail: /so_1/ grabs frame at 1 second
+                parts = raw_url.split("/upload/")
+                if len(parts) == 2:
+                    # Strip any existing transforms, add thumbnail transform
+                    public_path = parts[1]
+                    # Remove existing transform chains (e.g. sp_hd/)
+                    segments = public_path.split("/")
+                    # Keep only the last segment (public_id + extension)
+                    public_id_with_ext = segments[-1]
+                    # Replace video extension with .jpg
+                    for ext in _VIDEO_EXTENSIONS:
+                        if public_id_with_ext.lower().endswith(ext):
+                            public_id_with_ext = public_id_with_ext[:-(len(ext))] + ".jpg"
+                            break
+                    thumbnail_url = f"{parts[0]}/upload/so_1,w_400,h_400,c_fill/{public_id_with_ext}"
+    
+    return {"thumbnail_url": thumbnail_url, "media_type": media_type}
+
 from auth import (
     exchange_session_id_for_token,
     create_or_update_user,
@@ -89,17 +160,32 @@ from notification_worker import (
 )
 from seed_data import PREVIEW_FEATURED_WORKOUTS, FEATURED_WORKOUT_IDS
 from exercises_seed_data import PREVIEW_EXERCISES
+from workout_drafts import (
+    build_workout_drafts_router,
+    ensure_workout_drafts_indexes,
+)
+from sync_hero_images import sync_featured_hero_images
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
 mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
-client = AsyncIOMotorClient(mongo_url)
+client = AsyncIOMotorClient(
+    mongo_url,
+    connectTimeoutMS=30000,
+    serverSelectionTimeoutMS=30000,
+    socketTimeoutMS=45000,
+    maxPoolSize=20,
+    retryWrites=True,
+    retryReads=True,
+)
 db = client[os.environ.get('DB_NAME', 'mood_app')]
 
 # JWT Configuration
-JWT_SECRET = os.environ.get('JWT_SECRET', 'mood-app-secret-key-2025')
+JWT_SECRET = os.environ.get('JWT_SECRET')
+if not JWT_SECRET:
+    raise RuntimeError("JWT_SECRET environment variable is required")
 JWT_ALGORITHM = 'HS256'
 
 # Environment Detection for Staging/Preview
@@ -403,6 +489,14 @@ async def auto_seed_exercises():
 # Format: YYYY-MM-DD
 CURRENT_TERMS_VERSION = "2025-01-19"
 
+# Phase D — Paid Launch Founding Member cutoff (Part 9 of the v1.0 spec).
+# Updated 2026-05-14: cutoff moved forward to TODAY (2026-05-14 00:00 UTC)
+# per product decision. Every account whose `created_at < 2026-05-14 UTC` is
+# treated as a Founding Member with lifetime Premium access. Anyone signing
+# up today or later is on the paid tier. Migration runs on every startup and
+# is idempotent (only flips False→True, never demotes existing founders).
+FOUNDING_MEMBER_CUTOFF = datetime(2026, 5, 14, 0, 0, 0, tzinfo=timezone.utc)
+
 # Cloudinary Configuration
 cloudinary.config(
     cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
@@ -644,6 +738,14 @@ class UserResponse(BaseModel):
     workouts_count: int = 0
     current_streak: int = 0
     created_at: datetime
+    # Phase D — Paid Launch Founding Member system (Part 9 of v1.0 spec).
+    # `founding_member` is set true for any account created before the
+    # FOUNDING_MEMBER_CUTOFF (2026-05-14, updated). Founding members bypass the paywall
+    # entirely and have lifetime access. `founding_member_modal_seen` gates
+    # the one-time celebration modal on first login after the cutoff ships.
+    founding_member: bool = False
+    founding_member_at: Optional[datetime] = None
+    founding_member_modal_seen: bool = False
 
 class WorkoutCreate(BaseModel):
     title: str
@@ -729,7 +831,7 @@ class PostCreate(BaseModel):
     caption: str
     media_urls: List[str] = []  # URLs to uploaded media files
     hashtags: List[str] = []
-    cover_urls: Optional[dict] = None  # Map of media index to cover image URL
+    cover_urls: Optional[Any] = None  # Map of media index to cover image URL (dict or list)
     workout_data: Optional[WorkoutCardData] = None  # Legacy - kept for backwards compat
     # New canonical workout attachment
     workout_snapshot_id: Optional[str] = None  # Server will hydrate attached_workout from this
@@ -750,7 +852,9 @@ class PostResponse(BaseModel):
     caption: str
     media_urls: List[str] = []
     hashtags: List[str] = []
-    cover_urls: Optional[dict] = None  # Map of media index to cover image URL
+    cover_urls: Optional[Any] = None  # Map of media index to cover image URL (dict or list)
+    thumbnail_url: Optional[str] = None  # Canonical thumbnail for grid display (derived from cover_urls for videos)
+    media_type: Optional[str] = None  # "video" | "image" | None
     likes_count: int = 0
     comments_count: int = 0
     is_liked: bool = False
@@ -838,6 +942,18 @@ async def register(user_data: UserCreate):
         "terms_accepted_at": datetime.now(timezone.utc),  # Record when user accepted terms
         "terms_accepted_version": CURRENT_TERMS_VERSION,  # Record which version they accepted
         "privacy_accepted_at": datetime.now(timezone.utc),  # Record when user accepted privacy policy
+        # App Store compliance (Part 1 of the App Store Compliance ticket,
+        # 2026-05-14): single-checkbox acknowledgement at signup that the
+        # user (a) understands MOOD is fitness guidance not medical advice,
+        # (b) is physically able to exercise, (c) accepts Terms + Privacy.
+        # Stored alongside the existing `terms_accepted_at` for back-compat
+        # and to give compliance an explicit field to audit against.
+        "acknowledged_terms_at": datetime.now(timezone.utc),
+        "tips_state": {
+            "mood_scroll": "unseen",
+            "form_videos": "unseen",
+            "completion_share": "unseen",
+        },
     }
     
     result = await db.users.insert_one(user_doc)
@@ -969,6 +1085,444 @@ async def login(login_data: UserLogin, request: Request):
             )
         raise HTTPException(status_code=500, detail="Login failed")
 
+
+# ────────────────────────────────────────────────────────
+# Password Reset (Forgot Password) — Resend-powered
+# ────────────────────────────────────────────────────────
+
+# Configure Resend SDK from env (loaded via dotenv at module load time)
+resend.api_key = os.environ.get("RESEND_API_KEY", "")
+SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "noreply@officialmoodapp.com")
+PASSWORD_RESET_DEEP_LINK_BASE = os.environ.get(
+    "PASSWORD_RESET_DEEP_LINK_BASE", "moodapp://reset-password"
+)
+# Public HTTPS URL used in the reset email. Email clients (iOS Mail, Gmail)
+# strip / refuse to render custom `moodapp://` URL schemes — tapping such a
+# link silently fails, leaving the user with a "dead" button. To make the
+# button reliably reach the app we send an HTTPS link that loads a tiny
+# bounce page served by the backend (see `/api/auth/reset-redirect`), which
+# in turn opens the `moodapp://` deep link. Falls back to the raw scheme if
+# this env var is unset (older clients / dev). Configure with the publicly
+# reachable backend origin, e.g. https://api.officialmood.app — the redirect
+# path is appended automatically.
+PASSWORD_RESET_PUBLIC_BASE = os.environ.get("PASSWORD_RESET_PUBLIC_BASE", "").rstrip("/")
+
+# Token policy
+PASSWORD_RESET_TOKEN_TTL_HOURS = 1
+PASSWORD_RESET_TOKEN_BYTES = 32  # 256-bit raw entropy → 64-char URL-safe token
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
+
+
+def _hash_reset_token(raw_token: str) -> str:
+    """Hash a raw reset token with bcrypt before persisting."""
+    return bcrypt.hashpw(raw_token.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+def _verify_reset_token(raw_token: str, hashed_token: str) -> bool:
+    try:
+        return bcrypt.checkpw(raw_token.encode("utf-8"), hashed_token.encode("utf-8"))
+    except Exception:
+        return False
+
+
+def _build_reset_email_html(reset_link: str) -> str:
+    """Minimal, premium MOOD-styled reset email. Inline CSS only for deliverability."""
+    return f"""<!DOCTYPE html>
+<html><body style="margin:0;padding:0;background-color:#000000;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#000000;padding:40px 20px;">
+    <tr><td align="center">
+      <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px;background-color:#0a0a0a;border:1px solid #1a1a1a;border-radius:16px;padding:40px 32px;">
+        <tr><td align="center" style="padding-bottom:24px;">
+          <div style="font-size:32px;font-weight:700;color:#FFD700;letter-spacing:6px;">MOOD</div>
+          <div style="font-size:11px;color:#666666;letter-spacing:6px;margin-top:4px;">FITNESS</div>
+        </td></tr>
+        <tr><td style="padding-bottom:24px;">
+          <h1 style="margin:0 0 12px 0;color:#ffffff;font-size:22px;font-weight:600;">Reset your password</h1>
+          <p style="margin:0;color:#a0a0a0;font-size:15px;line-height:22px;">Tap the button below to set a new password. This link expires in 1 hour and can only be used once.</p>
+        </td></tr>
+        <tr><td align="center" style="padding-bottom:24px;">
+          <a href="{reset_link}" style="display:inline-block;background-color:#FFD700;color:#000000;text-decoration:none;font-weight:700;font-size:16px;padding:14px 32px;border-radius:999px;">Reset Password</a>
+        </td></tr>
+        <tr><td style="padding-bottom:8px;">
+          <p style="margin:0;color:#666666;font-size:12px;line-height:18px;">If the button doesn't work, copy and paste this link into your phone's browser:</p>
+          <p style="margin:8px 0 0 0;color:#888888;font-size:12px;word-break:break-all;">{reset_link}</p>
+        </td></tr>
+        <tr><td style="padding-top:24px;border-top:1px solid #1a1a1a;">
+          <p style="margin:0;color:#555555;font-size:11px;line-height:16px;">If you didn't request this, you can safely ignore this email — your password won't change.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>"""
+
+
+async def _send_reset_email(recipient: str, reset_link: str) -> None:
+    """Send the password reset email via Resend.
+    Failures are logged but never raised to the caller — we never want to
+    leak whether an email exists, and email transport is best-effort."""
+    if not resend.api_key:
+        logger.error("RESEND_API_KEY is not configured; skipping email send.")
+        return
+    params = {
+        "from": SENDER_EMAIL,
+        "to": [recipient],
+        "subject": "Reset your MOOD password",
+        "html": _build_reset_email_html(reset_link),
+    }
+    try:
+        result = await asyncio.to_thread(resend.Emails.send, params)
+        logger.info(f"📧 Password reset email sent to {recipient} (id={result.get('id') if isinstance(result, dict) else 'unknown'})")
+    except Exception as e:
+        logger.error(f"📧 Failed to send password reset email to {recipient}: {e}")
+
+
+@api_router.post("/auth/forgot-password")
+async def forgot_password(payload: ForgotPasswordRequest):
+    """Initiate a password reset.
+    Always returns success regardless of whether the email exists, to avoid
+    leaking account existence (security rule). The reset link is sent only
+    when the email actually maps to a user.
+    """
+    email = (payload.email or "").strip().lower()
+    if not email:
+        # Even on bad input, do not reveal anything — return success.
+        return {"success": True}
+
+    # Find user case-insensitively
+    user = await db.users.find_one(
+        {"email": {"$regex": f"^{re.escape(email)}$", "$options": "i"}}
+    )
+
+    if user:
+        user_id = str(user["_id"])
+        # Generate a cryptographically secure URL-safe token
+        raw_token = secrets.token_urlsafe(PASSWORD_RESET_TOKEN_BYTES)
+        token_hash = _hash_reset_token(raw_token)
+        now = datetime.now(timezone.utc)
+        expires_at = now + timedelta(hours=PASSWORD_RESET_TOKEN_TTL_HOURS)
+
+        # Invalidate any prior unused tokens for this user, then insert the new one.
+        await db.password_reset_tokens.update_many(
+            {"user_id": user_id, "used_at": None},
+            {"$set": {"used_at": now, "invalidated_reason": "superseded"}},
+        )
+        await db.password_reset_tokens.insert_one({
+            "user_id": user_id,
+            "token_hash": token_hash,
+            "created_at": now,
+            "expires_at": expires_at,
+            "used_at": None,
+        })
+
+        reset_link = f"{PASSWORD_RESET_DEEP_LINK_BASE}?token={raw_token}"
+        # What we actually put in the email button. Custom URL schemes
+        # (`moodapp://`) are stripped or refused by most email clients —
+        # tapping such a link silently fails. Wrap it in an HTTPS bounce URL
+        # that hits `/api/auth/reset-redirect` which then hands off to the
+        # `moodapp://` deep link via a meta-refresh page. Falls back to the
+        # raw scheme if the public base isn't configured (dev / pre-launch).
+        email_link = (
+            f"{PASSWORD_RESET_PUBLIC_BASE}/api/auth/reset-redirect?token={raw_token}"
+            if PASSWORD_RESET_PUBLIC_BASE
+            else reset_link
+        )
+        # Fire-and-forget email send so the response stays fast
+        asyncio.create_task(_send_reset_email(user.get("email", email), email_link))
+        logger.info(f"🔐 Password reset initiated for user_id={user_id}")
+    else:
+        # Constant-time-ish: do a small sleep to mask the timing difference
+        # between "user found + DB writes + email send" and "no user".
+        await asyncio.sleep(0.15)
+        logger.info(f"🔐 Password reset requested for unknown email (suppressed)")
+
+    return {"success": True}
+
+
+@api_router.post("/auth/reset-password")
+async def reset_password(payload: ResetPasswordRequest):
+    """Consume a reset token and set a new password.
+    - Token must match a stored hash, be unused, and not expired.
+    - Token is single-use (marked used_at on success).
+    - Other unused tokens for the user are invalidated.
+    """
+    raw_token = (payload.token or "").strip()
+    new_password = payload.new_password or ""
+
+    if not raw_token or not new_password:
+        raise HTTPException(status_code=400, detail="Invalid request")
+    if len(new_password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+
+    now = datetime.now(timezone.utc)
+
+    # Token hashes are not searchable by hash since bcrypt salts each one.
+    # Pull recent unused, unexpired tokens and verify in-memory. With per-user
+    # supersedure on /forgot-password, this set is small in practice.
+    candidates = await db.password_reset_tokens.find(
+        {"used_at": None, "expires_at": {"$gt": now}}
+    ).sort("created_at", -1).to_list(length=200)
+
+    matched = None
+    for record in candidates:
+        if _verify_reset_token(raw_token, record.get("token_hash", "")):
+            matched = record
+            break
+
+    if not matched:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
+
+    user_id = matched["user_id"]
+    try:
+        user_oid = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
+
+    # Atomically mark this token used; if another request beat us, refuse.
+    consume = await db.password_reset_tokens.update_one(
+        {"_id": matched["_id"], "used_at": None},
+        {"$set": {"used_at": now}},
+    )
+    if consume.modified_count != 1:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
+
+    # Hash the new password (bcrypt) and update the user.
+    new_hash = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+    update_result = await db.users.update_one(
+        {"_id": user_oid},
+        {
+            "$set": {
+                "password": new_hash,        # legacy field used by login
+                "password_hash": new_hash,   # canonical field
+                "password_updated_at": now,
+            }
+        },
+    )
+    if update_result.matched_count != 1:
+        # User vanished — invalidate token and refuse
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
+
+    # Invalidate all other outstanding reset tokens for this user
+    await db.password_reset_tokens.update_many(
+        {"user_id": user_id, "used_at": None},
+        {"$set": {"used_at": now, "invalidated_reason": "password_changed"}},
+    )
+
+    logger.info(f"🔐 Password successfully reset for user_id={user_id}")
+    return {"success": True}
+
+
+@api_router.get("/auth/reset-redirect", response_class=HTMLResponse)
+async def reset_redirect(token: str = ""):
+    """Public HTTPS bounce page for password-reset email links.
+
+    Custom URL schemes like `moodapp://` are stripped or refused by most
+    email clients (iOS Mail sanitizes, Gmail iOS renders as plain text),
+    leaving the email button "dead". This endpoint receives the HTTPS link
+    we put in the email and:
+      1. Tries to open the `moodapp://reset-password?token=...` deep link
+         automatically (meta-refresh + JS location swap).
+      2. Shows a manual "Open MOOD" button as a fallback for browsers that
+         block auto-redirects to custom schemes (mobile Safari sometimes
+         requires a user gesture).
+      3. Tells users without the app installed what to do.
+
+    The token is passed through untouched — it's still validated by
+    `/auth/reset-password` when the app's reset-password screen submits.
+    """
+    safe_token = (token or "").strip()
+    # Escape for safe HTML embedding (defense in depth even though the token
+    # is generated by `secrets.token_urlsafe` and contains only URL-safe chars).
+    safe_token_html = html_escape(safe_token, quote=True)
+    deep_link = f"{PASSWORD_RESET_DEEP_LINK_BASE}?token={safe_token_html}"
+    # `app_store_url` left blank by design — once the app is on the store,
+    # set `APP_STORE_URL` env var to surface a fallback for users who tap the
+    # link without the app installed.
+    app_store_url = os.environ.get("APP_STORE_URL", "")
+    store_block = (
+        f'<p style="margin:24px 0 0 0;color:#555;font-size:12px;">'
+        f"Don't have MOOD installed? "
+        f'<a href="{html_escape(app_store_url, quote=True)}" '
+        f'style="color:#FFD700;text-decoration:none;">Download it here</a>.'
+        f'</p>'
+        if app_store_url else ""
+    )
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Reset your MOOD password</title>
+<meta http-equiv="refresh" content="0; url={deep_link}" />
+<style>
+  html,body{{margin:0;padding:0;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}}
+  .wrap{{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}}
+  .card{{max-width:420px;width:100%;background:#0a0a0a;border:1px solid #1a1a1a;border-radius:16px;padding:32px 24px;text-align:center;}}
+  .brand{{font-size:24px;font-weight:700;color:#FFD700;letter-spacing:5px;}}
+  .sub{{font-size:10px;color:#666;letter-spacing:5px;margin-top:2px;}}
+  h1{{font-size:18px;margin:24px 0 8px 0;}}
+  p{{color:#a0a0a0;font-size:14px;line-height:20px;margin:0;}}
+  a.btn{{display:inline-block;margin-top:20px;background:#FFD700;color:#000;text-decoration:none;font-weight:700;padding:14px 24px;border-radius:999px;font-size:15px;}}
+  .small{{margin-top:12px;color:#666;font-size:11px;}}
+</style>
+<script>
+  // Try to open the deep link as soon as JS runs. Safari sometimes ignores
+  // meta-refresh for custom schemes but honors a synchronous assignment.
+  try {{ window.location.replace({deep_link!r}); }} catch (e) {{}}
+</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="brand">MOOD</div>
+      <div class="sub">FITNESS</div>
+      <h1>Opening the app…</h1>
+      <p>Hang tight — we're sending you to the reset screen inside MOOD.</p>
+      <a class="btn" href="{deep_link}">Open MOOD</a>
+      <p class="small">If nothing happens, tap the button above.</p>
+      {store_block}
+    </div>
+  </div>
+</body>
+</html>"""
+    return HTMLResponse(content=html, status_code=200)
+
+
+# Emergent Auth Endpoints
+
+# ────────────────────────────────────────────────────────
+# Admin: Custom Workouts (Mongo-backed catalog)
+# Lets admins create new workout entries that augment the static
+# data files. Public GET filters by mood/muscle/category/equipment/intensity
+# so the relevant carousel can fold them in alongside static workouts.
+# ────────────────────────────────────────────────────────
+
+
+class AdminWorkoutCreate(BaseModel):
+    mood: str               # e.g. "Muscle Gainer"
+    muscle: str             # e.g. "Legs"
+    category: str           # e.g. "Compound"
+    equipment: str          # e.g. "Dumbbells"
+    intensity: str          # "beginner" | "intermediate" | "advanced"
+    name: str
+    duration: str           # "10–12 min"
+    description: str
+    battlePlan: str         # newline-delimited ok
+    imageUrl: str
+    intensityReason: str = ""
+    moodTips: list = []     # list of {icon, title, description}
+
+
+@api_router.post("/admin/workouts")
+async def admin_create_workout(
+    payload: AdminWorkoutCreate,
+    current_user_id: str = Depends(get_current_user),
+):
+    """Admin-only: insert a new workout into the Mongo catalog."""
+    is_admin, _ = await is_admin_effective(current_user_id)
+    if not is_admin:
+        raise HTTPException(status_code=403, detail="Admin only")
+
+    intensity = (payload.intensity or "").strip().lower()
+    if intensity not in ("beginner", "intermediate", "advanced"):
+        raise HTTPException(
+            status_code=400,
+            detail="intensity must be one of: beginner, intermediate, advanced",
+        )
+
+    # Validate moodTips shape
+    cleaned_tips = []
+    for tip in (payload.moodTips or []):
+        if not isinstance(tip, dict):
+            continue
+        cleaned_tips.append({
+            "icon": str(tip.get("icon") or "flash"),
+            "title": str(tip.get("title") or ""),
+            "description": str(tip.get("description") or ""),
+        })
+
+    doc = {
+        "mood": payload.mood.strip(),
+        "muscle": payload.muscle.strip(),
+        "category": payload.category.strip(),
+        "equipment": payload.equipment.strip(),
+        "intensity": intensity,
+        "name": payload.name.strip(),
+        "duration": payload.duration.strip(),
+        "description": payload.description.strip(),
+        "battlePlan": payload.battlePlan,
+        "imageUrl": payload.imageUrl.strip(),
+        "intensityReason": (payload.intensityReason or "").strip(),
+        "moodTips": cleaned_tips,
+        "created_at": datetime.now(timezone.utc),
+        "created_by": current_user_id,
+        "active": True,
+    }
+    result = await db.admin_workouts.insert_one(doc)
+    logger.info(
+        f"🧱 Admin {current_user_id} created workout '{doc['name']}' "
+        f"({doc['mood']}/{doc['muscle']}/{doc['category']}/{doc['equipment']}/{doc['intensity']})"
+    )
+    return {"success": True, "id": str(result.inserted_id)}
+
+
+@api_router.get("/workouts")
+async def list_admin_workouts(
+    mood: str | None = None,
+    muscle: str | None = None,
+    category: str | None = None,
+    equipment: str | None = None,
+    intensity: str | None = None,
+):
+    """Public list of admin-created workouts. Filters are case-insensitive
+    exact matches. Returned shape mirrors the static data files so the
+    frontend can merge results directly into the existing carousel."""
+    q = {"active": True}
+    if mood: q["mood"] = {"$regex": f"^{re.escape(mood)}$", "$options": "i"}
+    if muscle: q["muscle"] = {"$regex": f"^{re.escape(muscle)}$", "$options": "i"}
+    if category: q["category"] = {"$regex": f"^{re.escape(category)}$", "$options": "i"}
+    if equipment: q["equipment"] = {"$regex": f"^{re.escape(equipment)}$", "$options": "i"}
+    if intensity: q["intensity"] = (intensity or "").strip().lower()
+
+    docs = await db.admin_workouts.find(q, {"_id": 0, "created_by": 0, "active": 0}).to_list(length=500)
+    # Convert datetime to iso string for JSON
+    for d in docs:
+        ca = d.get("created_at")
+        if ca and hasattr(ca, "isoformat"):
+            d["created_at"] = ca.isoformat()
+    return docs
+
+
+@api_router.delete("/admin/workouts/{workout_id}")
+async def admin_delete_workout(
+    workout_id: str,
+    current_user_id: str = Depends(get_current_user),
+):
+    """Admin-only: soft-delete a workout (sets active=False)."""
+    is_admin, _ = await is_admin_effective(current_user_id)
+    if not is_admin:
+        raise HTTPException(status_code=403, detail="Admin only")
+    try:
+        oid = ObjectId(workout_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid id")
+    result = await db.admin_workouts.update_one(
+        {"_id": oid}, {"$set": {"active": False}}
+    )
+    if result.matched_count != 1:
+        raise HTTPException(status_code=404, detail="Workout not found")
+    return {"success": True}
+
+
 # Emergent Auth Endpoints
 
 @api_router.post("/auth/oauth/callback")
@@ -999,7 +1553,7 @@ async def emergent_auth_callback(
             "username": username,
             "email": user_data.email,
             "auth_provider": "google",
-            "exp": datetime.now(timezone.utc).timestamp() + (30 * 24 * 60 * 60)  # 30 days
+            "exp": datetime.now(timezone.utc).timestamp() + (365 * 10 * 24 * 3600)  # 10 years - stay logged in until explicit logout
         },
         JWT_SECRET,
         algorithm=JWT_ALGORITHM
@@ -1136,7 +1690,7 @@ async def apple_sign_in(
                 "username": username,
                 "email": email,
                 "auth_provider": "apple",
-                "exp": datetime.now(timezone.utc).timestamp() + (30 * 24 * 60 * 60)  # 30 days
+                "exp": datetime.now(timezone.utc).timestamp() + (365 * 10 * 24 * 3600)  # 10 years - stay logged in until explicit logout
             },
             JWT_SECRET,
             algorithm=JWT_ALGORITHM
@@ -1168,7 +1722,7 @@ async def apple_sign_in(
             httponly=True,
             secure=True,
             samesite="lax",
-            max_age=30 * 24 * 60 * 60  # 30 days
+            max_age=10 * 365 * 24 * 60 * 60  # 10 years - stay logged in until explicit logout
         )
         
         logger.info(f"Apple Sign-In successful for: {username}")
@@ -1247,6 +1801,25 @@ async def get_auth_me(
     response.headers["X-Admin-Effective"] = str(is_admin).lower()
     response.headers["X-Admin-Matched-By"] = matched_by
     
+    # Phase C — StoreKit receipt status sync. We surface the persisted
+    # `subscription.status` (set by /subscription/validate and the Apple
+    # webhook) so the client `SubscriptionContext` can rehydrate the live
+    # entitlement on every app launch — handles the reinstall edge case
+    # where AsyncStorage is gone but the Apple receipt is still valid.
+    # If the stored expiration is in the past we self-correct to 'lapsed'
+    # so the client doesn't show stale 'active' for a few minutes while
+    # waiting on Apple's S2S webhook.
+    subscription_doc = user.get("subscription") or {}
+    raw_status = subscription_doc.get("status")
+    expiration_iso = subscription_doc.get("expiration_date")
+    if raw_status in ("active", "in_trial") and isinstance(expiration_iso, str):
+        try:
+            exp_dt = datetime.fromisoformat(expiration_iso.replace("Z", "+00:00"))
+            if exp_dt < datetime.now(timezone.utc):
+                raw_status = "lapsed"
+        except Exception:
+            pass
+
     return {
         "user_id": str(user["_id"]),
         "username": user.get("username", ""),
@@ -1255,7 +1828,242 @@ async def get_auth_me(
         "admin_matched_by": matched_by,
         "admin_allowlist": ADMIN_ALLOWLIST,  # Show what the allowlist contains for debugging
         "is_admin_flag": user.get("is_admin", False),  # Show the legacy flag value
+        # Phase D — Founding Member surface. The frontend uses this to
+        # short-circuit every paywall gate and to show the one-time
+        # celebration modal exactly once.
+        "founding_member": bool(user.get("founding_member", False)),
+        "founding_member_at": (
+            user["founding_member_at"].isoformat()
+            if isinstance(user.get("founding_member_at"), datetime)
+            else None
+        ),
+        "founding_member_modal_seen": bool(user.get("founding_member_modal_seen", False)),
+        # Phase C — StoreKit receipt sync (read-only mirror of the
+        # persisted subscription doc; client uses this to rehydrate
+        # entitlement state on app launch).
+        "subscription_status": raw_status,
+        "subscription_plan": subscription_doc.get("plan"),
+        "subscription_product_id": subscription_doc.get("product_id"),
+        "subscription_expiration_date": expiration_iso,
     }
+
+
+@api_router.post("/auth/founding-member/mark-seen")
+async def mark_founding_member_modal_seen(current_user_id: str = Depends(get_current_user)):
+    """
+    Phase D — Idempotent flag flip for the one-time Founding Member modal.
+    Called by the frontend after the user dismisses the celebration modal.
+    No-op for non-founding accounts.
+    """
+    result = await db.users.update_one(
+        {"_id": ObjectId(current_user_id), "founding_member": True},
+        {"$set": {"founding_member_modal_seen": True}},
+    )
+    return {
+        "ok": True,
+        "updated": result.modified_count == 1,
+    }
+
+
+class SubscriptionTriggerRecord(BaseModel):
+    """
+    Phase B paid-launch — paywall trigger attribution payload.
+    `trigger` is one of: start_workout_after_free_session, generate_after_cap,
+    recap_footer_cta, locked_premium_feature, settings_subscribe, unknown.
+    """
+    trigger: str
+    plan: Optional[str] = None  # 'annual' | 'monthly' | None at trigger time
+
+
+@api_router.post("/subscription/record-trigger")
+async def record_subscription_trigger(
+    payload: SubscriptionTriggerRecord,
+    current_user_id: str = Depends(get_current_user),
+):
+    """
+    Phase B + C — Persist the paywall trigger that opened the current
+    conversion attempt on the user record. When Apple's server-to-server
+    notification (`SUBSCRIBED` / `DID_CHANGE_RENEWAL_STATUS` / etc.) fires
+    on the day-7 trial-to-paid charge, the StoreKit webhook handler reads
+    `subscription.last_trigger_source` from this record and stamps the
+    `subscription_purchased` event with the matching attribution.
+
+    This closes the funnel-attribution loop end-to-end:
+      paywall_viewed → trial_started → subscription_purchased
+    all carry the SAME `trigger_source` even though the final purchase
+    event fires 7 days later from Apple's server (not the client).
+    """
+    await db.users.update_one(
+        {"_id": ObjectId(current_user_id)},
+        {
+            "$set": {
+                "subscription.last_trigger_source": payload.trigger,
+                "subscription.last_trigger_plan": payload.plan,
+                "subscription.last_trigger_at": datetime.now(timezone.utc),
+            }
+        },
+    )
+    return {"ok": True}
+
+
+class SubscriptionValidateRequest(BaseModel):
+    """
+    Phase C — Foreground purchase reconciliation. The native StoreKit2
+    layer hands us the signed JWS from `Product.purchase()` (or from a
+    `Transaction.updates` event for renewals). The backend records the
+    transaction + fires `subscription_purchased` analytics with the
+    persisted `last_trigger_source` attribution.
+
+    NOTE: `signed_payload` is the raw JWS. Full Apple-cert JWS verification
+    is a separate hardening pass (StoreKit2 already verifies on the device
+    via the `.verified` enum case before we ever receive the payload).
+    """
+    signed_payload: str
+    product_id: str
+    transaction_id: Optional[str] = None
+    original_transaction_id: Optional[str] = None
+    purchase_date: Optional[str] = None
+    expiration_date: Optional[str] = None
+
+
+def _plan_for_product(product_id: str) -> Optional[str]:
+    if product_id == "mood_premium_yearly":
+        return "annual"
+    if product_id == "mood_premium_monthly":
+        return "monthly"
+    return None
+
+
+def _subscription_status_for(expiration_iso: Optional[str]) -> str:
+    """
+    Returns 'in_trial' | 'active' | 'lapsed' based on the expiration date.
+    Trial vs paid distinction is approximated client-side via the
+    Transaction's intro-offer flag — backend just confirms it's not lapsed.
+    """
+    if not expiration_iso:
+        return "active"
+    try:
+        exp = datetime.fromisoformat(expiration_iso.replace("Z", "+00:00"))
+    except Exception:
+        return "active"
+    if exp < datetime.now(timezone.utc):
+        return "lapsed"
+    return "active"
+
+
+@api_router.post("/subscription/validate")
+async def validate_subscription_transaction(
+    payload: SubscriptionValidateRequest,
+    current_user_id: str = Depends(get_current_user),
+):
+    """
+    Phase C — Foreground purchase reconciliation endpoint. Called by the
+    client right after `StoreKit.purchase()` resolves with a verified
+    transaction. We:
+      1. Persist the subscription record on the user (status, plan,
+         transaction ids, expiration).
+      2. Look up the previously-stored `subscription.last_trigger_source`
+         (set by `/subscription/record-trigger` when the paywall opened).
+      3. Track `subscription_purchased` with the original attribution so
+         the conversion funnel (paywall_viewed → trial_started →
+         subscription_purchased) is end-to-end attributable.
+      4. Clear the trigger so a follow-up purchase fires fresh attribution.
+
+    Idempotent — re-validating the same `transaction_id` is a no-op except
+    for the timestamp refresh.
+    """
+    plan = _plan_for_product(payload.product_id)
+    if not plan:
+        raise HTTPException(status_code=400, detail=f"Unknown product {payload.product_id}")
+
+    user = await db.users.find_one({"_id": ObjectId(current_user_id)}, {"subscription": 1})
+    trigger_source = (user or {}).get("subscription", {}).get("last_trigger_source")
+
+    status_value = _subscription_status_for(payload.expiration_date)
+
+    update_doc: Dict[str, Any] = {
+        "subscription.status": status_value,
+        "subscription.plan": plan,
+        "subscription.product_id": payload.product_id,
+        "subscription.transaction_id": payload.transaction_id,
+        "subscription.original_transaction_id": payload.original_transaction_id,
+        "subscription.last_validated_at": datetime.now(timezone.utc),
+    }
+    if payload.purchase_date:
+        update_doc["subscription.purchase_date"] = payload.purchase_date
+    if payload.expiration_date:
+        update_doc["subscription.expiration_date"] = payload.expiration_date
+
+    # Clear the attribution token now that we've consumed it.
+    unset_doc: Dict[str, Any] = {"subscription.last_trigger_source": ""}
+
+    await db.users.update_one(
+        {"_id": ObjectId(current_user_id)},
+        {"$set": update_doc, "$unset": unset_doc},
+    )
+
+    # Best-effort analytics emission. The same event fires from the client
+    # for redundancy — this server-side emission ensures the day-7 trial
+    # charge webhook path (when added) carries identical attribution.
+    try:
+        await db.analytics_events.insert_one({
+            "user_id": current_user_id,
+            "event_type": "subscription_purchased",
+            "event_timestamp_utc": datetime.now(timezone.utc),
+            "metadata": {
+                "plan": plan,
+                "product_id": payload.product_id,
+                "trigger_source": trigger_source,
+                "source": "server_validate",
+            },
+        })
+    except Exception as e:
+        logger.error(f"subscription_purchased analytics insert failed: {e}")
+
+    return {
+        "ok": True,
+        "status": status_value,
+        "plan": plan,
+        "trigger_source": trigger_source,
+    }
+
+
+@api_router.post("/subscription/webhooks/apple")
+async def apple_subscription_webhook(request: Request):
+    """
+    Phase C+ — App Store Server Notifications V2 entry point.
+
+    Apple posts a JSON envelope `{ "signedPayload": "<JWS>" }` here on
+    every subscription state change: SUBSCRIBED, DID_CHANGE_RENEWAL_STATUS,
+    DID_RENEW, DID_FAIL_TO_RENEW, EXPIRED, REFUND, etc.
+
+    This handler is intentionally minimal in v1.0:
+      1. Accept the payload.
+      2. Log it for audit.
+      3. Return 200 fast so Apple doesn't retry.
+
+    Full JWS verification + state-machine handling is a follow-up ticket
+    that requires Apple's root cert chain + the `cryptography` package.
+    When that lands, the trial-to-paid (DID_RENEW with `isInIntroOfferPeriod
+    = false`) branch will lookup the user by `originalTransactionId`,
+    read `subscription.last_trigger_source`, and fire the
+    `subscription_purchased` event server-side with that attribution.
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    logger.info(
+        f"📩 Apple S2S notification received: keys={list(body.keys()) if isinstance(body, dict) else 'non-dict'}"
+    )
+    try:
+        await db.apple_webhook_events.insert_one({
+            "received_at": datetime.now(timezone.utc),
+            "payload": body,
+        })
+    except Exception as e:
+        logger.error(f"Apple webhook event persistence failed: {e}")
+    return {"ok": True}
 
 
 # Auth Tracking Endpoints
@@ -1563,141 +2371,114 @@ async def get_time_series_analytics(
     if excluded_user_ids:
         base_filter["user_id"] = {"$nin": list(excluded_user_ids)}
     
+    # Map Python strftime format to MongoDB $dateToString format
+    # %V (ISO week) in Python -> %V in Mongo; pair with %G (ISO year) for week period
+    if period == "month":
+        mongo_date_format = "%Y-%m"
+    elif period == "week":
+        mongo_date_format = "%G-W%V"  # Use ISO year for week grouping
+    else:
+        mongo_date_format = "%Y-%m-%d"
+    
+    # Hard cap to bound any pipeline output (period buckets cannot exceed days_back)
+    max_buckets = days_back + 32
+    
     try:
         data_by_period = defaultdict(lambda: {"count": 0, "value": 0})
         
+        async def _agg_count_by_period(coll, match, date_field):
+            """Run a $group-by-period pipeline and return list of {_id, count}."""
+            pipeline = [
+                {"$match": match},
+                {"$group": {
+                    "_id": {"$dateToString": {"format": mongo_date_format, "date": f"${date_field}"}},
+                    "count": {"$sum": 1},
+                }},
+                {"$limit": max_buckets},
+            ]
+            return await coll.aggregate(pipeline, allowDiskUse=True).to_list(max_buckets)
+        
         if metric_type == "active_users":
-            # Count unique users per period
-            events = await db.user_events.find(
-                base_filter,
-                {"user_id": 1, "timestamp": 1}
-            ).to_list(100000)
-            
-            users_by_period = defaultdict(set)
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    users_by_period[period_key].add(event.get("user_id"))
-            
-            for period_key, users in users_by_period.items():
-                data_by_period[period_key]["count"] = len(users)
+            # Count unique users per period using $addToSet at DB level
+            pipeline = [
+                {"$match": base_filter},
+                {"$group": {
+                    "_id": {"$dateToString": {"format": mongo_date_format, "date": "$timestamp"}},
+                    "users": {"$addToSet": "$user_id"},
+                }},
+                {"$project": {"count": {"$size": "$users"}}},
+                {"$limit": max_buckets},
+            ]
+            for row in await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(max_buckets):
+                data_by_period[row["_id"]]["count"] = row["count"]
                 
         elif metric_type == "app_sessions":
-            query = {**base_filter, "event_type": "app_session_start"}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1}
-            ).to_list(100000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "app_session_start"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "screen_views":
-            query = {**base_filter, "event_type": {"$in": ["screen_viewed", "screen_entered"]}}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1}
-            ).to_list(100000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events,
+                {**base_filter, "event_type": {"$in": ["screen_viewed", "screen_entered"]}},
+                "timestamp",
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "screen_time":
-            query = {**base_filter, "event_type": "screen_time_spent"}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1, "metadata": 1}
-            ).to_list(100000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    duration = event.get("metadata", {}).get("duration_seconds", 0)
-                    data_by_period[period_key]["count"] += 1
-                    data_by_period[period_key]["value"] += duration / 60  # Convert to minutes
-                    
+            pipeline = [
+                {"$match": {**base_filter, "event_type": "screen_time_spent"}},
+                {"$group": {
+                    "_id": {"$dateToString": {"format": mongo_date_format, "date": "$timestamp"}},
+                    "count": {"$sum": 1},
+                    "total_seconds": {"$sum": {"$ifNull": ["$metadata.duration_seconds", 0]}},
+                }},
+                {"$limit": max_buckets},
+            ]
+            for row in await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(max_buckets):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                data_by_period[row["_id"]]["value"] = row.get("total_seconds", 0) / 60  # to minutes
+                
         elif metric_type == "workouts_started":
-            query = {**base_filter, "event_type": "workout_started"}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1}
-            ).to_list(100000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "workout_started"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "workouts_completed":
-            query = {**base_filter, "event_type": "workout_completed"}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1}
-            ).to_list(100000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "workout_completed"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "mood_selections":
-            query = {**base_filter, "event_type": "mood_selected"}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1, "metadata": 1}
-            ).to_list(100000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "mood_selected"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "posts_created":
-            # For posts, we need to filter by author_id
             posts_filter = {"created_at": {"$gte": cutoff}}
             if excluded_user_ids:
                 posts_filter["author_id"] = {"$nin": [ObjectId(uid) for uid in excluded_user_ids if len(uid) == 24]}
-            posts = await db.posts.find(
-                posts_filter,
-                {"created_at": 1}
-            ).to_list(100000)
-            
-            for post in posts:
-                if post.get("created_at"):
-                    period_key = post["created_at"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(db.posts, posts_filter, "created_at"):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "social_interactions":
-            # Likes, comments, follows
-            query = {**base_filter, "event_type": {"$in": ["post_liked", "post_commented", "user_followed"]}}
-            events = await db.user_events.find(
-                query,
-                {"timestamp": 1, "event_type": 1}
-            ).to_list(100000)
-            
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
-                    
+            for row in await _agg_count_by_period(
+                db.user_events,
+                {**base_filter, "event_type": {"$in": ["post_liked", "post_commented", "user_followed"]}},
+                "timestamp",
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+                
         elif metric_type == "new_users":
-            # For users, filter by is_internal flag
             users_filter = {"created_at": {"$gte": cutoff}}
             if not include_internal:
                 users_filter["is_internal"] = {"$ne": True}
-            users = await db.users.find(
-                users_filter,
-                {"created_at": 1}
-            ).to_list(100000)
-            
-            for user in users:
-                if user.get("created_at"):
-                    period_key = user["created_at"].strftime(date_format)
-                    data_by_period[period_key]["count"] += 1
+            for row in await _agg_count_by_period(db.users, users_filter, "created_at"):
+                data_by_period[row["_id"]]["count"] = row["count"]
         
         # Format response
         sorted_data = sorted(data_by_period.items(), key=lambda x: x[0])[-limit:]
@@ -1777,25 +2558,17 @@ async def get_metric_breakdown(
     
     try:
         if metric_type == "screen_views":
-            events = await db.user_events.find(
-                {"timestamp": {"$gte": cutoff}, "event_type": {"$in": ["screen_viewed", "screen_entered"]}},
-                {"metadata": 1}
-            ).to_list(100000)
-            
-            breakdown = defaultdict(int)
-            for event in events:
-                screen = event.get("metadata", {}).get("screen_name", "Unknown")
-                breakdown[screen] += 1
-            
-            items = [{"name": k, "count": v} for k, v in sorted(breakdown.items(), key=lambda x: -x[1])[:20]]
-            return {"metric_type": metric_type, "items": items, "total": sum(breakdown.values())}
+            pipeline = [
+                {"$match": {"timestamp": {"$gte": cutoff}, "event_type": {"$in": ["screen_viewed", "screen_entered"]}}},
+                {"$group": {"_id": {"$ifNull": ["$metadata.screen_name", "Unknown"]}, "count": {"$sum": 1}}},
+                {"$sort": {"count": -1}},
+                {"$limit": 20},
+            ]
+            rows = await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(20)
+            items = [{"name": r["_id"], "count": r["count"]} for r in rows]
+            return {"metric_type": metric_type, "items": items, "total": sum(r["count"] for r in rows)}
             
         elif metric_type == "mood_selections":
-            events = await db.user_events.find(
-                {"timestamp": {"$gte": cutoff}, "event_type": "mood_selected"},
-                {"metadata": 1}
-            ).to_list(100000)
-            
             mood_names = {
                 "sweat": "I Want to Sweat",
                 "energize": "Energize Me",
@@ -1803,35 +2576,32 @@ async def get_metric_breakdown(
                 "strength": "Build Strength",
                 "lazy": "Lazy Day Workout",
             }
-            
-            breakdown = defaultdict(int)
-            for event in events:
-                mood = event.get("metadata", {}).get("mood", "Unknown")
-                breakdown[mood_names.get(mood, mood)] += 1
-            
-            items = [{"name": k, "count": v} for k, v in sorted(breakdown.items(), key=lambda x: -x[1])]
-            return {"metric_type": metric_type, "items": items, "total": sum(breakdown.values())}
+            pipeline = [
+                {"$match": {"timestamp": {"$gte": cutoff}, "event_type": "mood_selected"}},
+                {"$group": {"_id": {"$ifNull": ["$metadata.mood", "Unknown"]}, "count": {"$sum": 1}}},
+                {"$sort": {"count": -1}},
+                {"$limit": 50},
+            ]
+            rows = await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(50)
+            items = [{"name": mood_names.get(r["_id"], r["_id"]), "count": r["count"]} for r in rows]
+            return {"metric_type": metric_type, "items": items, "total": sum(r["count"] for r in rows)}
             
         elif metric_type == "social_interactions":
-            events = await db.user_events.find(
-                {"timestamp": {"$gte": cutoff}, "event_type": {"$in": ["post_liked", "post_commented", "user_followed", "user_unfollowed"]}},
-                {"event_type": 1}
-            ).to_list(100000)
-            
             type_names = {
                 "post_liked": "Likes",
                 "post_commented": "Comments",
                 "user_followed": "Follows",
                 "user_unfollowed": "Unfollows",
             }
-            
-            breakdown = defaultdict(int)
-            for event in events:
-                event_type = event.get("event_type", "Unknown")
-                breakdown[type_names.get(event_type, event_type)] += 1
-            
-            items = [{"name": k, "count": v} for k, v in sorted(breakdown.items(), key=lambda x: -x[1])]
-            return {"metric_type": metric_type, "items": items, "total": sum(breakdown.values())}
+            pipeline = [
+                {"$match": {"timestamp": {"$gte": cutoff}, "event_type": {"$in": list(type_names.keys())}}},
+                {"$group": {"_id": "$event_type", "count": {"$sum": 1}}},
+                {"$sort": {"count": -1}},
+                {"$limit": 10},
+            ]
+            rows = await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(10)
+            items = [{"name": type_names.get(r["_id"], r["_id"]), "count": r["count"]} for r in rows]
+            return {"metric_type": metric_type, "items": items, "total": sum(r["count"] for r in rows)}
             
         return {"metric_type": metric_type, "items": [], "total": 0}
         
@@ -1886,27 +2656,25 @@ async def get_signup_trend_endpoint(
         
         cutoff = datetime.now(timezone.utc) - timedelta(days=days_back)
         
-        # Get all users created after cutoff
-        users = await db.users.find(
-            {"created_at": {"$gte": cutoff}},
-            {"created_at": 1}
-        ).to_list(10000)
+        # Group at DB level using aggregation (avoid loading all users into memory)
+        mongo_date_format = "%G-W%V" if period == "week" else date_format
+        pipeline = [
+            {"$match": {"created_at": {"$gte": cutoff}}},
+            {"$group": {
+                "_id": {"$dateToString": {"format": mongo_date_format, "date": "$created_at"}},
+                "count": {"$sum": 1},
+            }},
+            {"$sort": {"_id": -1}},
+            {"$limit": max(limit, 1)},
+        ]
+        rows = await db.users.aggregate(pipeline, allowDiskUse=True).to_list(max(limit, 1))
         
         # Group by period
         from collections import defaultdict
         signup_counts = defaultdict(int)
-        
-        for user in users:
-            if user.get("created_at"):
-                created_at = user["created_at"]
-                if period == "week":
-                    # Format as year-week
-                    period_key = created_at.strftime("%Y-W%V")
-                elif period == "month":
-                    period_key = created_at.strftime("%Y-%m")
-                else:
-                    period_key = created_at.strftime("%Y-%m-%d")
-                signup_counts[period_key] += 1
+        for r in rows:
+            if r.get("_id"):
+                signup_counts[r["_id"]] = r["count"]
         
         # Sort by date and limit
         sorted_data = sorted(signup_counts.items(), key=lambda x: x[0], reverse=True)[:limit]
@@ -1971,33 +2739,43 @@ async def get_active_users_endpoint(
     
     logger.info(f"Found {len(active_user_ids)} unique active user IDs: {active_user_ids}")
     
-    # Get user details for these active users
-    users = []
-    for user_id in active_user_ids[:limit]:
+    # Get user details for these active users (batch query)
+    user_ids_to_lookup = active_user_ids[:limit]
+    valid_oids = []
+    for uid in user_ids_to_lookup:
         try:
-            logger.info(f"Looking up user: {user_id}")
-            user = await db.users.find_one({"_id": ObjectId(user_id)})
-            if user:
-                logger.info(f"Found user: {user.get('username')}")
-                # Get activity counts for this user
-                event_count = await db.user_events.count_documents({
-                    "user_id": user_id,
-                    "timestamp": {"$gte": cutoff}
-                })
-                
-                users.append({
-                    "user_id": str(user["_id"]),
-                    "username": user.get("username", "Unknown"),
-                    "email": user.get("email", ""),
-                    "avatar_url": user.get("avatar"),
-                    "app_sessions": event_count,
-                    "created_at": user.get("created_at").isoformat() if user.get("created_at") else None,
-                })
-            else:
-                logger.warning(f"User not found for ID: {user_id}")
-        except Exception as e:
-            logger.error(f"Error looking up user {user_id}: {e}")
+            valid_oids.append(ObjectId(uid))
+        except Exception:
             continue
+    
+    users_cursor = db.users.find(
+        {"_id": {"$in": valid_oids}},
+        {"_id": 1, "username": 1, "email": 1, "avatar": 1, "created_at": 1}
+    )
+    user_map = {}
+    async for u in users_cursor:
+        user_map[str(u["_id"])] = u
+    
+    # Batch count events per user
+    event_counts_pipeline = [
+        {"$match": {"user_id": {"$in": list(user_ids_to_lookup)}, "timestamp": {"$gte": cutoff}}},
+        {"$group": {"_id": "$user_id", "count": {"$sum": 1}}}
+    ]
+    event_counts = await db.user_events.aggregate(event_counts_pipeline).to_list(limit)
+    event_count_map = {item["_id"]: item["count"] for item in event_counts}
+    
+    users = []
+    for user_id in user_ids_to_lookup:
+        user = user_map.get(user_id)
+        if user:
+            users.append({
+                "user_id": str(user["_id"]),
+                "username": user.get("username", "Unknown"),
+                "email": user.get("email", ""),
+                "avatar_url": user.get("avatar"),
+                "app_sessions": event_count_map.get(user_id, 0),
+                "created_at": user.get("created_at").isoformat() if user.get("created_at") else None,
+            })
     
     logger.info(f"Returning {len(users)} users")
     
@@ -2029,33 +2807,45 @@ async def get_daily_active_users_endpoint(
     
     logger.info(f"Found {len(daily_active_user_ids)} daily active user IDs: {daily_active_user_ids}")
     
-    # Get user details
-    users = []
-    for user_id in daily_active_user_ids[:limit]:
+    # Get user details (batch query)
+    user_ids_to_lookup = daily_active_user_ids[:limit]
+    valid_oids = []
+    for uid in user_ids_to_lookup:
         try:
-            logger.info(f"Looking up user: {user_id}")
-            user = await db.users.find_one({"_id": ObjectId(user_id)})
-            if user:
-                logger.info(f"Found user: {user.get('username')}")
-                # Get latest activity
-                latest_event = await db.user_events.find_one(
-                    {"user_id": user_id},
-                    sort=[("timestamp", -1)]
-                )
-                
-                users.append({
-                    "user_id": str(user["_id"]),
-                    "username": user.get("username", "Unknown"),
-                    "email": user.get("email", ""),
-                    "avatar_url": user.get("avatar"),
-                    "last_active": latest_event["timestamp"].isoformat() if latest_event and latest_event.get("timestamp") else None,
-                    "created_at": user.get("created_at").isoformat() if user.get("created_at") else None,
-                })
-            else:
-                logger.warning(f"User not found for ID: {user_id}")
-        except Exception as e:
-            logger.error(f"Error looking up user {user_id}: {e}")
+            valid_oids.append(ObjectId(uid))
+        except Exception:
             continue
+    
+    users_cursor = db.users.find(
+        {"_id": {"$in": valid_oids}},
+        {"_id": 1, "username": 1, "email": 1, "avatar": 1, "created_at": 1}
+    )
+    user_map = {}
+    async for u in users_cursor:
+        user_map[str(u["_id"])] = u
+    
+    # Batch get latest events per user
+    latest_events_pipeline = [
+        {"$match": {"user_id": {"$in": list(user_ids_to_lookup)}}},
+        {"$sort": {"timestamp": -1}},
+        {"$group": {"_id": "$user_id", "latest_timestamp": {"$first": "$timestamp"}}}
+    ]
+    latest_events = await db.user_events.aggregate(latest_events_pipeline).to_list(limit)
+    latest_event_map = {item["_id"]: item["latest_timestamp"] for item in latest_events}
+    
+    users = []
+    for user_id in user_ids_to_lookup:
+        user = user_map.get(user_id)
+        if user:
+            last_ts = latest_event_map.get(user_id)
+            users.append({
+                "user_id": str(user["_id"]),
+                "username": user.get("username", "Unknown"),
+                "email": user.get("email", ""),
+                "avatar_url": user.get("avatar"),
+                "last_active": last_ts.isoformat() if last_ts else None,
+                "created_at": user.get("created_at").isoformat() if user.get("created_at") else None,
+            })
     
     logger.info(f"Returning {len(users)} daily active users")
     
@@ -3113,13 +3903,28 @@ async def get_drilldown_users(
             count_result = await db.user_events.aggregate(count_pipeline).to_list(1)
             total = count_result[0]["total"] if count_result else 0
             
-            # Enrich with user data
+            # Enrich with user data (batch query)
+            user_ids = [item["_id"] for item in aggregated]
+            valid_oids = []
+            for uid in user_ids:
+                try:
+                    valid_oids.append(ObjectId(uid))
+                except Exception:
+                    continue
+            
+            users_cursor = db.users.find(
+                {"$or": [{"_id": {"$in": valid_oids}}, {"user_id": {"$in": user_ids}}]},
+                {"_id": 1, "user_id": 1, "username": 1, "email": 1, "name": 1, "avatar": 1, "created_at": 1}
+            )
+            user_map = {}
+            async for u in users_cursor:
+                user_map[str(u["_id"])] = u
+                if u.get("user_id"):
+                    user_map[u["user_id"]] = u
+            
             for item in aggregated:
                 user_id = item["_id"]
-                try:
-                    user = await db.users.find_one({"_id": ObjectId(user_id)})
-                except:
-                    user = await db.users.find_one({"user_id": user_id})
+                user = user_map.get(user_id)
                 
                 if user:
                     users_data.append({
@@ -3227,23 +4032,27 @@ async def get_drilldown_events(
         events = await db.user_events.find(query).sort("timestamp", -1).skip(skip).limit(limit).to_list(limit)
         total = await db.user_events.count_documents(query)
         
-        # Format events
+        # Batch fetch usernames for all events (avoid N+1)
+        user_ids = set()
+        for event in events:
+            uid = event.get("user_id")
+            if uid:
+                try:
+                    user_ids.add(ObjectId(uid))
+                except:
+                    pass
+        user_map = {}
+        if user_ids:
+            users_list = await db.users.find({"_id": {"$in": list(user_ids)}}, {"_id": 1, "username": 1}).to_list(len(user_ids))
+            user_map = {str(u["_id"]): u.get("username", "Unknown") for u in users_list}
+        
         formatted_events = []
         for event in events:
-            # Get username for the event
-            username = "Unknown"
-            try:
-                user = await db.users.find_one({"_id": ObjectId(event.get("user_id"))})
-                if user:
-                    username = user.get("username", "Unknown")
-            except:
-                pass
-            
             formatted_events.append({
                 "event_id": str(event["_id"]),
                 "event_type": event.get("event_type"),
                 "user_id": event.get("user_id"),
-                "username": username,
+                "username": user_map.get(event.get("user_id", ""), "Unknown"),
                 "timestamp": event.get("timestamp").isoformat() if event.get("timestamp") else None,
                 "metadata": event.get("metadata", {}),
             })
@@ -5173,37 +5982,47 @@ async def get_user_detail_report(
 @api_router.get("/analytics/admin/export/users")
 async def export_users_csv(
     days: int = 30,
+    limit: int = 5000,
+    skip: int = 0,
     current_user_id: str = Depends(require_admin)
 ):
     """
-    Export all users data as CSV format (returns JSON for frontend to convert).
+    Export users data as CSV format (returns JSON for frontend to convert).
+    Paginated to bound memory; pass skip/limit to page through large user bases.
     """
     start_date = datetime.now(timezone.utc) - timedelta(days=days)
+    # Hard-cap to avoid OOM on huge installations
+    safe_limit = max(1, min(limit, 5000))
+    safe_skip = max(0, skip)
     
-    users = await db.users.find({}).to_list(10000)
+    users = await db.users.find({}).sort("created_at", -1).skip(safe_skip).limit(safe_limit).to_list(safe_limit)
+    
+    # Batch count events and workouts per user (avoid N+1)
+    user_ids = [str(u["_id"]) for u in users]
+    
+    events_agg = await db.user_events.aggregate([
+        {"$match": {"user_id": {"$in": user_ids}, "timestamp": {"$gte": start_date}}},
+        {"$group": {"_id": "$user_id", "count": {"$sum": 1}}}
+    ]).to_list(len(user_ids))
+    events_map = {item["_id"]: item["count"] for item in events_agg}
+    
+    workouts_agg = await db.user_events.aggregate([
+        {"$match": {"user_id": {"$in": user_ids}, "event_type": "workout_completed"}},
+        {"$group": {"_id": "$user_id", "count": {"$sum": 1}}}
+    ]).to_list(len(user_ids))
+    workouts_map = {item["_id"]: item["count"] for item in workouts_agg}
     
     export_data = []
     for user in users:
         user_id = str(user["_id"])
-        
-        events_count = await db.user_events.count_documents({
-            "user_id": user_id,
-            "timestamp": {"$gte": start_date}
-        })
-        
-        workouts_count = await db.user_events.count_documents({
-            "user_id": user_id,
-            "event_type": "workout_completed"
-        })
-        
         export_data.append({
             "username": user.get("username", ""),
             "email": user.get("email", ""),
             "created_at": user.get("created_at").isoformat() if user.get("created_at") else "",
             "followers": user.get("followers_count", 0),
             "following": user.get("following_count", 0),
-            "total_workouts": workouts_count,
-            "events_in_period": events_count,
+            "total_workouts": workouts_map.get(user_id, 0),
+            "events_in_period": events_map.get(user_id, 0),
         })
     
     return {
@@ -5489,18 +6308,14 @@ async def get_chart_data(
     
     try:
         if chart_type == "user_growth":
-            users = await db.users.find(
-                {"created_at": {"$gte": cutoff}},
-                {"created_at": 1}
-            ).to_list(100000)
-            
-            data_by_period = defaultdict(int)
-            for user in users:
-                if user.get("created_at"):
-                    period_key = user["created_at"].strftime(date_format)
-                    data_by_period[period_key] += 1
-            
-            sorted_data = sorted(data_by_period.items())
+            pipeline = [
+                {"$match": {"created_at": {"$gte": cutoff}}},
+                {"$group": {"_id": {"$dateToString": {"format": date_format, "date": "$created_at"}}, "count": {"$sum": 1}}},
+                {"$sort": {"_id": 1}},
+                {"$limit": 400},
+            ]
+            results = await db.users.aggregate(pipeline, allowDiskUse=True).to_list(400)
+            sorted_data = [(r["_id"], r["count"]) for r in results]
             
             # Calculate cumulative
             cumulative = []
@@ -5521,18 +6336,14 @@ async def get_chart_data(
             }
             
         elif chart_type == "session_trend":
-            events = await db.user_events.find(
-                {"event_type": {"$in": ["app_opened", "app_session_start"]}, "timestamp": {"$gte": cutoff}},
-                {"timestamp": 1}
-            ).to_list(100000)
-            
-            data_by_period = defaultdict(int)
-            for event in events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    data_by_period[period_key] += 1
-            
-            sorted_data = sorted(data_by_period.items())
+            pipeline = [
+                {"$match": {"event_type": {"$in": ["app_opened", "app_session_start"]}, "timestamp": {"$gte": cutoff}}},
+                {"$group": {"_id": {"$dateToString": {"format": date_format, "date": "$timestamp"}}, "count": {"$sum": 1}}},
+                {"$sort": {"_id": 1}},
+                {"$limit": 400},
+            ]
+            results = await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(400)
+            sorted_data = [(r["_id"], r["count"]) for r in results]
             labels = [format_label(date_key, period) for date_key, _ in sorted_data]
             
             return {
@@ -5620,39 +6431,31 @@ async def get_chart_data(
             }
             
         elif chart_type == "engagement_trend":
-            like_events = await db.user_events.find(
-                {"event_type": "post_liked", "timestamp": {"$gte": cutoff}},
-                {"timestamp": 1}
-            ).to_list(100000)
-            
-            comment_events = await db.user_events.find(
-                {"event_type": "post_commented", "timestamp": {"$gte": cutoff}},
-                {"timestamp": 1}
-            ).to_list(100000)
-            
-            follow_events = await db.user_events.find(
-                {"event_type": "user_followed", "timestamp": {"$gte": cutoff}},
-                {"timestamp": 1}
-            ).to_list(100000)
+            engagement_pipeline = [
+                {"$match": {"event_type": {"$in": ["post_liked", "post_commented", "user_followed"]}, "timestamp": {"$gte": cutoff}}},
+                {"$group": {
+                    "_id": {
+                        "period": {"$dateToString": {"format": date_format, "date": "$timestamp"}},
+                        "type": "$event_type",
+                    },
+                    "count": {"$sum": 1},
+                }},
+                {"$limit": 1200},
+            ]
+            rows = await db.user_events.aggregate(engagement_pipeline, allowDiskUse=True).to_list(1200)
             
             likes_by_period = defaultdict(int)
             comments_by_period = defaultdict(int)
             follows_by_period = defaultdict(int)
-            
-            for event in like_events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    likes_by_period[period_key] += 1
-                    
-            for event in comment_events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    comments_by_period[period_key] += 1
-                    
-            for event in follow_events:
-                if event.get("timestamp"):
-                    period_key = event["timestamp"].strftime(date_format)
-                    follows_by_period[period_key] += 1
+            for r in rows:
+                p = r["_id"]["period"]
+                t = r["_id"]["type"]
+                if t == "post_liked":
+                    likes_by_period[p] = r["count"]
+                elif t == "post_commented":
+                    comments_by_period[p] = r["count"]
+                elif t == "user_followed":
+                    follows_by_period[p] = r["count"]
             
             all_dates = sorted(set(list(likes_by_period.keys()) + list(comments_by_period.keys()) + list(follows_by_period.keys())))
             
@@ -5995,6 +6798,20 @@ async def get_current_user_info(
     response.headers["X-Admin-Effective"] = str(is_admin).lower()
     response.headers["X-Admin-Matched-By"] = matched_by
     
+    # Phase D — Founding Member surface (also needed for the profile badge
+    # and Settings status row). Mirrors the same logic from /api/auth/me so
+    # the client's AuthContext.user can use either endpoint interchangeably.
+    subscription_doc = user.get("subscription") or {}
+    raw_status = subscription_doc.get("status")
+    expiration_iso = subscription_doc.get("expiration_date")
+    if raw_status in ("active", "in_trial") and isinstance(expiration_iso, str):
+        try:
+            exp_dt = datetime.fromisoformat(expiration_iso.replace("Z", "+00:00"))
+            if exp_dt < datetime.now(timezone.utc):
+                raw_status = "lapsed"
+        except Exception:
+            pass
+
     # Return user data including terms acceptance status
     return {
         "id": str(user["_id"]),
@@ -6012,7 +6829,32 @@ async def get_current_user_info(
         "created_at": user.get("created_at", datetime.now(timezone.utc)).isoformat() if user.get("created_at") else datetime.now(timezone.utc).isoformat(),
         "terms_accepted_at": user.get("terms_accepted_at").isoformat() if user.get("terms_accepted_at") else None,
         "terms_accepted_version": user.get("terms_accepted_version"),
-        "current_terms_version": CURRENT_TERMS_VERSION
+        "current_terms_version": CURRENT_TERMS_VERSION,
+        "tips_state": user.get("tips_state") or {
+            "mood_scroll": "unseen",
+            "form_videos": "unseen",
+            "completion_share": "unseen",
+        },
+        # Phase D — Founding Member fields. Required by `<FoundingMemberBadge>`
+        # on the profile screen AND by `FoundingMemberGate` which flips the
+        # SubscriptionContext status to 'founding_member' on every load.
+        # Without these on this endpoint (which is what AuthContext actually
+        # calls), pre-cutoff accounts showed "Free trial active" in Settings
+        # and were missing the gold badge on their profile.
+        "founding_member": bool(user.get("founding_member", False)),
+        "founding_member_at": (
+            user["founding_member_at"].isoformat()
+            if isinstance(user.get("founding_member_at"), datetime)
+            else None
+        ),
+        "founding_member_modal_seen": bool(user.get("founding_member_modal_seen", False)),
+        # Phase C — StoreKit subscription mirror (used by `<SubscriptionContext>`
+        # to rehydrate live entitlement state on every app launch). Founding
+        # members short-circuit this in the gate, so it's a no-op for them.
+        "subscription_status": raw_status,
+        "subscription_plan": subscription_doc.get("plan"),
+        "subscription_product_id": subscription_doc.get("product_id"),
+        "subscription_expiration_date": expiration_iso,
     }
 
 
@@ -6212,9 +7054,63 @@ async def update_credentials(
         logger.error(f"Error updating credentials: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to update credentials")
 
+@api_router.get("/legal/active-version")
+async def legal_active_version():
+    """Public — returns the currently published ToS/Privacy version.
+
+    Used by the frontend on app launch (`LegalReacceptSheet`) to decide if
+    a re-consent sheet is needed for an authenticated user. Kept public/no-
+    auth so the value is also available to the marketing site if it ever
+    needs to render the same version label.
+    """
+    return {
+        "terms_version": CURRENT_TERMS_VERSION,
+        "privacy_version": CURRENT_TERMS_VERSION,  # bumped together for now
+    }
+
+
+@api_router.get("/legal/needs-reaccept")
+async def legal_needs_reaccept(current_user_id: str = Depends(get_current_user)):
+    """Authenticated — tells the client whether to surface the re-consent
+    sheet. The sheet must be shown when the user's stored
+    `terms_accepted_version` does NOT equal the live `CURRENT_TERMS_VERSION`
+    or has never been recorded. Audit fields are also returned for the
+    client's optimistic UI."""
+    user = await db.users.find_one(
+        {"_id": ObjectId(current_user_id)},
+        {
+            "terms_accepted_version": 1,
+            "terms_accepted_at": 1,
+            "acknowledged_terms_at": 1,
+        },
+    )
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user_version = user.get("terms_accepted_version")
+    needs = user_version != CURRENT_TERMS_VERSION
+
+    def _iso(v):
+        return v.isoformat() if isinstance(v, datetime) else None
+
+    return {
+        "needs_reaccept": bool(needs),
+        "current_version": CURRENT_TERMS_VERSION,
+        "user_version": user_version,
+        "terms_accepted_at": _iso(user.get("terms_accepted_at")),
+        "acknowledged_terms_at": _iso(user.get("acknowledged_terms_at")),
+    }
+
+
 @api_router.post("/users/me/accept-terms")
 async def accept_terms(current_user_id: str = Depends(get_current_user)):
-    """Record user's acceptance of Terms of Service and Privacy Policy"""
+    """Record user's acceptance of Terms of Service and Privacy Policy.
+
+    Used both at signup-flow re-entry AND for the in-app version-bump
+    re-consent sheet (`LegalReacceptSheet`). Stamps both the legacy
+    `terms_accepted_at` and the App-Store-compliance `acknowledged_terms_at`
+    so audit queries against either field always see the latest acceptance.
+    """
     try:
         now = datetime.now(timezone.utc)
         
@@ -6225,6 +7121,8 @@ async def accept_terms(current_user_id: str = Depends(get_current_user)):
                     "terms_accepted_at": now,
                     "terms_accepted_version": CURRENT_TERMS_VERSION,
                     "privacy_accepted_at": now,
+                    # App Store compliance audit field — keep in sync.
+                    "acknowledged_terms_at": now,
                 }
             }
         )
@@ -6450,6 +7348,57 @@ async def upload_profile_picture_base64(
         logger.error(f"Base64 avatar upload error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Profile picture upload failed: {str(e)}")
 
+
+# ----- Onboarding Tips -----
+
+ALLOWED_TIP_KEYS = {"mood_scroll", "form_videos", "completion_share"}
+ALLOWED_TIP_STATES = {"unseen", "completed", "dismissed", "never"}
+
+
+class TipStateUpdate(BaseModel):
+    key: str
+    state: str
+
+
+@api_router.patch("/users/me/tips-state")
+async def update_tip_state(
+    payload: TipStateUpdate,
+    current_user_id: str = Depends(get_current_user),
+):
+    """Update a single onboarding tip state for the current user."""
+    if payload.key not in ALLOWED_TIP_KEYS:
+        raise HTTPException(status_code=400, detail="Invalid tip key")
+    if payload.state not in ALLOWED_TIP_STATES:
+        raise HTTPException(status_code=400, detail="Invalid tip state")
+
+    # mood_scroll has no "never" option (self-resolves)
+    if payload.key == "mood_scroll" and payload.state == "never":
+        raise HTTPException(status_code=400, detail="mood_scroll does not support 'never'")
+
+    user = await find_user_by_id(current_user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    update_filter = (
+        {"user_id": user["user_id"]}
+        if "user_id" in user
+        else {"_id": user["_id"]}
+    )
+    await db.users.update_one(
+        update_filter,
+        {"$set": {f"tips_state.{payload.key}": payload.state}},
+    )
+    return {"key": payload.key, "state": payload.state}
+
+
+@api_router.get("/app/onboarding-config")
+async def get_onboarding_config():
+    """Public master kill switch for onboarding tips. Default: enabled."""
+    doc = await db.app_settings.find_one({"_id": "onboarding"}, {"_id": 0})
+    enabled = True if not doc else bool(doc.get("onboarding_tips_enabled", True))
+    return {"onboarding_tips_enabled": enabled}
+
+
 @api_router.get("/users/{user_id}/is-following")
 async def check_following_status(
     user_id: str,
@@ -6505,22 +7454,23 @@ async def get_user_followers(
         
         follows = await db.follows.aggregate(pipeline).to_list(length=limit)
         
+        # Batch follow-check: single query instead of N+1
+        follower_ids = [follow["follower"]["_id"] for follow in follows]
+        following_set = set()
+        if current_user_id and follower_ids:
+            batch = await db.follows.find({
+                "follower_id": ObjectId(current_user_id),
+                "following_id": {"$in": follower_ids}
+            }).to_list(100)
+            following_set = {str(f["following_id"]) for f in batch}
+        
         result = []
         for follow in follows:
             follower = follow["follower"]
             follower_id = str(follower["_id"])
             
-            # Check if current user is following this follower
-            is_following = False
-            is_self = False
-            if current_user_id:
-                is_self = follower_id == current_user_id
-                if not is_self:
-                    follow_check = await db.follows.find_one({
-                        "follower_id": ObjectId(current_user_id),
-                        "following_id": follower["_id"]
-                    })
-                    is_following = follow_check is not None
+            is_self = current_user_id and follower_id == current_user_id
+            is_following = follower_id in following_set if not is_self else False
             
             result.append({
                 "id": follower_id,
@@ -6531,7 +7481,7 @@ async def get_user_followers(
                 "followers_count": follower.get("followers_count", 0),
                 "following_count": follower.get("following_count", 0),
                 "is_following": is_following,
-                "is_self": is_self
+                "is_self": bool(is_self)
             })
         
         return {"users": result}
@@ -6568,22 +7518,23 @@ async def get_user_following(
         
         follows = await db.follows.aggregate(pipeline).to_list(length=limit)
         
+        # Batch follow-check: single query instead of N+1
+        following_ids = [follow["following"]["_id"] for follow in follows]
+        following_set = set()
+        if current_user_id and following_ids:
+            batch = await db.follows.find({
+                "follower_id": ObjectId(current_user_id),
+                "following_id": {"$in": following_ids}
+            }).to_list(100)
+            following_set = {str(f["following_id"]) for f in batch}
+        
         result = []
         for follow in follows:
             following = follow["following"]
             following_id = str(following["_id"])
             
-            # Check if current user is following this user
-            is_following = False
-            is_self = False
-            if current_user_id:
-                is_self = following_id == current_user_id
-                if not is_self:
-                    follow_check = await db.follows.find_one({
-                        "follower_id": ObjectId(current_user_id),
-                        "following_id": following["_id"]
-                    })
-                    is_following = follow_check is not None
+            is_self = current_user_id and following_id == current_user_id
+            is_following = following_id in following_set if not is_self else False
             
             result.append({
                 "id": following_id,
@@ -6594,7 +7545,7 @@ async def get_user_following(
                 "followers_count": following.get("followers_count", 0),
                 "following_count": following.get("following_count", 0),
                 "is_following": is_following,
-                "is_self": is_self
+                "is_self": bool(is_self)
             })
         
         return {"users": result}
@@ -6627,17 +7578,20 @@ async def search_users_general(
         result = []
         current_user_obj_id = ObjectId(current_user_id)
         
+        # Batch follow-check: single query instead of N+1
+        user_ids = [u["_id"] for u in users if u["_id"] != current_user_obj_id]
+        following_set = set()
+        if user_ids:
+            batch = await db.follows.find({
+                "follower_id": current_user_obj_id,
+                "following_id": {"$in": user_ids}
+            }).to_list(100)
+            following_set = {str(f["following_id"]) for f in batch}
+        
         for user in users:
             user_id = user["_id"]
-            
-            # Check if current user is following this user
-            is_following = False
-            if user_id != current_user_obj_id:
-                follow = await db.follows.find_one({
-                    "follower_id": current_user_obj_id,
-                    "following_id": user_id
-                })
-                is_following = follow is not None
+            is_self = user_id == current_user_obj_id
+            is_following = str(user_id) in following_set if not is_self else False
             
             result.append({
                 "id": str(user_id),
@@ -6648,7 +7602,7 @@ async def search_users_general(
                 "followers_count": user.get("followers_count", 0),
                 "following_count": user.get("following_count", 0),
                 "is_following": is_following,
-                "is_self": user_id == current_user_obj_id
+                "is_self": is_self
             })
         
         return result
@@ -6661,11 +7615,12 @@ async def search_users_general(
 @api_router.get("/users/{user_id}/posts")
 async def get_user_posts(
     user_id: str,
-    current_user_id: str = Depends(get_current_user),
+    request: Request,
     limit: int = 20,
-    skip: int = 0
+    skip: int = 0,
+    current_user_id: str = Depends(get_current_user)
 ):
-    """Get posts by a specific user"""
+    """Get posts by a specific user."""
     try:
         # Handle both MongoDB ObjectId and custom user_id formats
         user_object_id = None
@@ -6689,16 +7644,41 @@ async def get_user_posts(
                 # Return empty list if user not found
                 return []
         
+        user_id_str = str(user_object_id)
+        
+        # Match both ObjectId AND string author_id (legacy data may store as string)
+        author_match = {"$or": [
+            {"author_id": user_object_id},
+            {"author_id": user_id_str},
+        ]}
+        
+        # Debug logging for diagnosis
+        db_count = await db.posts.count_documents(author_match)
+        logger.info(
+            f"PROFILE-POSTS: userId={user_id_str} "
+            f"filter={author_match} "
+            f"skip={skip} limit={limit} sort=created_at:desc "
+            f"db_count={db_count}"
+        )
+        
         # Get posts with author and workout details
         pipeline = [
-            {"$match": {"author_id": user_object_id}},
+            {"$match": author_match},
             {"$sort": {"created_at": -1}},
             {"$skip": skip},
             {"$limit": limit},
+            # Normalize author_id to ObjectId for the user lookup (handles string author_id legacy data)
+            {"$addFields": {
+                "_author_oid": {"$cond": {
+                    "if": {"$eq": [{"$type": "$author_id"}, "string"]},
+                    "then": {"$toObjectId": "$author_id"},
+                    "else": "$author_id"
+                }}
+            }},
             {
                 "$lookup": {
                     "from": "users",
-                    "localField": "author_id",
+                    "localField": "_author_oid",
                     "foreignField": "_id",
                     "as": "author"
                 }
@@ -6715,7 +7695,7 @@ async def get_user_posts(
             {
                 "$lookup": {
                     "from": "post_likes",
-                    "let": {"post_id": "$_id", "user_id": ObjectId(current_user_id)},
+                    "let": {"post_id": "$_id", "user_id": ObjectId(current_user_id) if current_user_id else ObjectId("000000000000000000000000")},
                     "pipeline": [
                         {"$match": {"$expr": {"$and": [
                             {"$eq": ["$post_id", "$$post_id"]},
@@ -6776,14 +7756,18 @@ async def get_user_posts(
                 except Exception as e:
                     print(f"Error parsing workout_data: {e}")
             
+            media_fields = derive_post_media_fields(post)
             result.append(PostResponse(
                 id=str(post["_id"]),
                 author=author_data,
                 workout=workout_data,
                 workout_data=embedded_workout_data,
-                caption=post["caption"],
+                caption=post.get("caption", ""),
                 media_urls=post.get("media_urls", []),
                 hashtags=post.get("hashtags", []),
+                cover_urls=post.get("cover_urls"),
+                thumbnail_url=media_fields["thumbnail_url"],
+                media_type=media_fields["media_type"],
                 likes_count=post.get("likes_count", 0),
                 comments_count=post.get("comments_count", 0),
                 is_liked=len(post.get("user_like", [])) > 0,
@@ -6791,8 +7775,11 @@ async def get_user_posts(
             ))
         
         return result
-    except:
-        raise HTTPException(status_code=404, detail="User not found")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"PROFILE-POSTS-ERROR: userId={user_id} error={type(e).__name__}: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to load profile posts: {type(e).__name__}")
 
 # Workout Endpoints
 
@@ -6911,6 +7898,79 @@ def get_cloudinary_video_thumbnail(public_id: str, timestamp: float = 2.0) -> st
     """Generate a thumbnail URL for a video at a specific timestamp"""
     return f"https://res.cloudinary.com/{os.environ.get('CLOUDINARY_CLOUD_NAME')}/video/upload/so_{timestamp},w_400,h_400,c_fill/{public_id}.jpg"
 
+
+# =========================================================================
+# PHASE 1: Eager video transcodes (HLS + MP4 + tall poster)
+# =========================================================================
+#
+# Why: the explore feed transforms each Cloudinary video URL at render time
+# into HLS / MP4 / poster URLs via utils/cloudinaryVideo.ts. On a cold view,
+# Cloudinary derives those on-demand (1–3s for first-frame). Eager-baking
+# them at upload time turns every first view into a CDN cache hit.
+#
+# The eager transform STRINGS below must byte-match the client's runtime
+# transform strings; otherwise the eager output is unused.
+# Client strings live in /app/frontend/utils/cloudinaryVideo.ts:
+#   - hlsUrlFromPublicId:    f_m3u8,q_auto,vc_h264,w_1920,h_1080,c_limit
+#   - mp4UrlFromPublicId:    f_auto,q_auto,vc_h264,w_1280,h_720,c_limit
+#   - posterUrlFromPublicId: so_1,f_jpg,q_auto,w_720
+#
+# `f_auto` resolves per-Accept-header, so we eager BOTH f_mp4 and f_auto
+# until the client is updated in Phase 2 to use f_mp4 explicitly.
+# =========================================================================
+
+VIDEO_EAGER_TRANSFORMS = [
+    # HLS adaptive manifest (iOS primary)
+    {
+        "streaming_profile": None,  # raw transform string mode
+        "raw_transformation": "f_m3u8,q_auto,vc_h264,w_1920,h_1080,c_limit",
+    },
+    # 720p MP4 (Android/web fallback) — explicit f_mp4
+    {
+        "raw_transformation": "f_mp4,q_auto,vc_h264,w_1280,h_720,c_limit",
+    },
+    # 720p MP4 (matches today's client `f_auto` chain so cache hits without app change)
+    {
+        "raw_transformation": "f_auto,q_auto,vc_h264,w_1280,h_720,c_limit",
+    },
+    # Tall 720w poster used by SmartVideoPlayer thumbnail
+    {
+        "raw_transformation": "so_1,f_jpg,q_auto,w_720",
+    },
+]
+
+
+def _cloudinary_eager_kwargs() -> dict:
+    """Build the eager + webhook kwargs for cloudinary calls."""
+    webhook_url = os.environ.get("CLOUDINARY_EAGER_WEBHOOK_URL", "").strip()
+    kwargs = {
+        "eager": [{"raw_transformation": t["raw_transformation"]} for t in VIDEO_EAGER_TRANSFORMS],
+        "eager_async": True,
+    }
+    if webhook_url:
+        kwargs["eager_notification_url"] = webhook_url
+    return kwargs
+
+
+def trigger_video_eager_transcodes(public_id: str) -> None:
+    """
+    Fire-and-forget: request async eager HLS + MP4 + poster for a video.
+    Safe to call from BackgroundTasks. Errors are logged, not raised.
+    """
+    if not public_id:
+        return
+    try:
+        kwargs = _cloudinary_eager_kwargs()
+        cloudinary.uploader.explicit(
+            public_id,
+            type="upload",
+            resource_type="video",
+            **kwargs,
+        )
+        logger.info(f"🎬 EAGER_QUEUED public_id={public_id} transforms={len(kwargs['eager'])}")
+    except Exception as e:
+        logger.warning(f"⚠️ EAGER_QUEUE_FAILED public_id={public_id} err={e}")
+
 @api_router.get("/uploads/{filename}")
 async def get_uploaded_file(filename: str):
     """Serve uploaded media files - Legacy endpoint for old local files"""
@@ -6923,6 +7983,7 @@ async def get_uploaded_file(filename: str):
 
 @api_router.post("/upload")
 async def upload_file(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     current_user_id: str = Depends(get_current_user)
 ):
@@ -7002,6 +8063,10 @@ async def upload_file(
         
         logger.info(f"✅ Cloudinary upload successful: {secure_url}")
         
+        # PHASE 1: queue async HLS + MP4 + tall poster eager transcodes (only for videos)
+        if is_video and result.get("public_id"):
+            background_tasks.add_task(trigger_video_eager_transcodes, result["public_id"])
+        
         response_data = {
             "message": "File uploaded successfully to cloud storage",
             "url": secure_url,
@@ -7027,6 +8092,7 @@ async def upload_file(
 
 @api_router.post("/upload/multiple")
 async def upload_multiple_files(
+    background_tasks: BackgroundTasks,
     files: List[UploadFile] = File(...),
     current_user_id: str = Depends(get_current_user)
 ):
@@ -7100,6 +8166,9 @@ async def upload_multiple_files(
                     cover_urls.append(result["eager"][0].get("secure_url"))
                 else:
                     cover_urls.append(get_cloudinary_video_thumbnail(result["public_id"]))
+                # PHASE 1: queue async HLS + MP4 + tall poster eager transcodes
+                if result.get("public_id"):
+                    background_tasks.add_task(trigger_video_eager_transcodes, result["public_id"])
             else:
                 # For images, use the image itself as cover
                 cover_urls.append(secure_url)
@@ -7279,12 +8348,21 @@ async def create_post(post_data: PostCreate, current_user_id: str = Depends(get_
     else:
         logger.info("📝 No workout_snapshot_id or attached_workout provided - creating post without workout")
     
+    # Normalize cover_urls from dict {"0": url} to list [url]
+    normalized_cover_urls = None
+    if post_data.cover_urls:
+        if isinstance(post_data.cover_urls, dict):
+            sorted_keys = sorted(post_data.cover_urls.keys(), key=lambda k: int(k) if k.isdigit() else 0)
+            normalized_cover_urls = [post_data.cover_urls[k] for k in sorted_keys if post_data.cover_urls[k]]
+        elif isinstance(post_data.cover_urls, list):
+            normalized_cover_urls = post_data.cover_urls
+    
     # Build the post document
     post_doc = {
         "caption": post_data.caption,
         "media_urls": post_data.media_urls,
         "hashtags": post_data.hashtags,
-        "cover_urls": post_data.cover_urls,
+        "cover_urls": normalized_cover_urls,
         "author_id": ObjectId(current_user_id),
         "likes_count": 0,
         "comments_count": 0,
@@ -7296,8 +8374,365 @@ async def create_post(post_data: PostCreate, current_user_id: str = Depends(get_
     }
     
     result = await db.posts.insert_one(post_doc)
+    
+    # B2: Assertion — every post must have author_id
+    if not post_doc.get("author_id"):
+        logger.error(f"🚨 POST CREATED WITHOUT author_id! post_id={result.inserted_id}")
+    
     logger.info(f"✅ Post created: {result.inserted_id}, has_attached_workout: {attached_workout is not None}")
     return {"message": "Post created successfully", "id": str(result.inserted_id)}
+
+# ============================================================================
+# LIVE FEED — real-time activity feed of all users' workout activity
+# ============================================================================
+
+# Map raw mood_category strings (which are inconsistent across the app) to
+# one of 6 UI mood "buckets" used by the Live tab.
+#
+# Order matters — rules are evaluated top-to-bottom and the first match wins.
+# We deliberately check explicit mood-name keywords FIRST so that strings
+# like "Sweat - Light Weights" or "Build Explosion - Body Weight" are
+# classified by their parent mood (Sweat / Explosive) instead of getting
+# misrouted to the muscle bucket via a loose substring match on "weight".
+_LIVE_MOOD_RULES: List[tuple[tuple[str, ...], str, str]] = [
+    # (keywords, bucket_id, display_label)
+    # 1. SWEAT — first because Sweat sub-paths often include the words
+    #    "weights" / "cardio" / "hiit" that overlap with other rules.
+    (("sweat", "burn fat", "hiit", "cardio"), "sweat", "Sweat / burn fat"),
+    # 2. EXPLOSIVE — second because Explosive sub-paths include
+    #    "Body Weight" / "Light Weights" which would otherwise leak into
+    #    calisthenics or muscle.
+    (("explosion", "explosive", "plyometric", "power lifting", "explosivenes"),
+     "explosive", "Build explosion"),
+    # 3. OUTDOOR — explicit mood-name + hill/park identifiers.
+    (("outdoor", "outside", "hill", "park to peak"), "outdoor", "Outdoor"),
+    # 4. LAZY — both the "Lift Weights" and "Move Your Body" sub-paths.
+    #    `lift weights` is distinct from the generic `light weights`
+    #    muscle fallback (the latter stays in rule 7).
+    (("lazy", "gentle", "move your body", "just move", "lift weights"),
+     "lazy", "I'm feeling lazy"),
+    # 5. CALISTHENICS — "bodyweight" / "body weight" only land here after
+    #    explosive has had its chance (Explosive bodyweight workouts are
+    #    NOT calisthenics from a user-intent standpoint).
+    (("calisthenic", "bodyweight", "body weight", "pull bar", "dip bar"),
+     "calisthenics", "Calisthenics"),
+    # 6. MUSCLE — explicit "muscle" identifier first.
+    (("muscle gainer", "muscle building"), "muscle", "Muscle gainer"),
+    # 7. MUSCLE — muscle-group / lift identifiers. Only triggered when none
+    #    of the explicit mood names matched above, so it now safely covers
+    #    cart titles like "Legs", "Back & Bis Volume", "Compound Push".
+    (("back", "chest", "biceps", "triceps", "shoulder", "leg",
+      "abs", "compound", "weights", "strength"), "muscle", "Muscle gainer"),
+]
+
+_LIVE_BUCKET_LABELS = {
+    "sweat": "Sweat / burn fat",
+    "muscle": "Muscle gainer",
+    "explosive": "Build explosion",
+    "lazy": "I'm feeling lazy",
+    "calisthenics": "Calisthenics",
+    "outdoor": "Outdoor",
+}
+
+_MILESTONE_THRESHOLDS = [5, 10, 25, 50, 100, 250, 500, 1000]
+
+
+def _classify_live_mood(mood: Optional[str]) -> Optional[tuple[str, str]]:
+    """Classify a free-form mood_category string into one of 6 buckets.
+    Returns (bucket_id, display_label) or None if it doesn't match any bucket."""
+    if not mood:
+        return None
+    m = mood.lower()
+    for keywords, bucket, label in _LIVE_MOOD_RULES:
+        if any(k in m for k in keywords):
+            return bucket, label
+    return None
+
+
+def _format_relative_time(ts: datetime) -> str:
+    """Convert an ISO timestamp to a relative human-readable string."""
+    now = datetime.now(timezone.utc)
+    if ts.tzinfo is None:
+        ts = ts.replace(tzinfo=timezone.utc)
+    delta = now - ts
+    secs = int(delta.total_seconds())
+    if secs < 0:
+        return "just now"
+    if secs < 60:
+        return "just now"
+    if secs < 3600:
+        m = secs // 60
+        return f"{m} min ago" if m > 1 else "1 min ago"
+    if secs < 86400:
+        h = secs // 3600
+        return f"{h} hr ago" if h > 1 else "1 hr ago"
+    days = secs // 86400
+    if days == 1:
+        return "yesterday"
+    if days < 7:
+        return f"{days} days ago"
+    if days < 14:
+        return "last week"
+    return "earlier"
+
+
+@api_router.get("/feed/live")
+async def get_live_feed(
+    limit: int = 30,
+    authorization: Optional[str] = Header(None),
+):
+    """Live activity feed — recent workout starts, completions, and milestones
+    from ALL users (not friend-graph). Used by the Live tab.
+
+    Public read-only — guests (no Authorization header) can see the feed too
+    so the Live tab is never empty on first launch. We don't personalize the
+    response, so dropping the auth requirement is safe."""
+    # Best-effort auth so we can attribute analytics if a user is signed in,
+    # but we deliberately swallow auth failures and treat the request as
+    # anonymous. Guests should still see the global feed.
+    current_user_id: Optional[str] = None
+    if authorization and authorization.startswith("Bearer "):
+        try:
+            current_user_id = await get_current_user(authorization=authorization)
+        except Exception:
+            current_user_id = None
+
+    now = datetime.now(timezone.utc)
+    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    live_window_start = now - timedelta(minutes=20)  # "LIVE NOW" = started in last 20 min
+
+    # ---------- STAT HEADER ----------
+    sessions_today = await db.user_events.count_documents({
+        "event_type": {"$in": ["workout_completed", "workout_session_completed"]},
+        "timestamp": {"$gte": today_start},
+    })
+
+    # Most common mood today (by completion bucket)
+    mood_pipeline = [
+        {"$match": {
+            "event_type": {"$in": ["workout_completed", "workout_session_completed"]},
+            "timestamp": {"$gte": today_start},
+        }},
+        {"$group": {"_id": "$metadata.mood_category", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+        {"$limit": 30},
+    ]
+    bucket_counts: Dict[str, int] = {}
+    async for row in db.user_events.aggregate(mood_pipeline):
+        cls = _classify_live_mood(row.get("_id"))
+        if cls:
+            bucket_counts[cls[0]] = bucket_counts.get(cls[0], 0) + row["count"]
+    top_bucket = max(bucket_counts.items(), key=lambda x: x[1])[0] if bucket_counts else None
+    most_common_mood = _LIVE_BUCKET_LABELS.get(top_bucket) if top_bucket else None
+
+    # ---------- ENTRIES ----------
+    # Primary window: 48 hours (feed should feel "live").
+    # Soft fallback to 7 days only if we still don't have ~15 entries —
+    # those will naturally read as older ("yesterday", "3 days ago", "last week")
+    # via _format_relative_time.
+    lookback_options = [timedelta(hours=6), timedelta(hours=24),
+                        timedelta(hours=48), timedelta(days=7)]
+
+    raw_entries: List[dict] = []
+    user_cache: Dict[str, dict] = {}
+
+    async def _get_user(uid: str) -> Optional[dict]:
+        if uid in user_cache:
+            return user_cache[uid]
+        try:
+            u = await db.users.find_one({"_id": ObjectId(uid)}) if len(uid) == 24 else None
+        except Exception:
+            u = None
+        user_cache[uid] = u
+        return u
+
+    seen_user_action: set = set()  # dedupe live_now per user
+    for window in lookback_options:
+        cutoff = now - window
+        # Pull recent workout events
+        cursor = db.user_events.find({
+            "event_type": {"$in": ["workout_started", "workout_completed", "workout_session_completed"]},
+            "timestamp": {"$gte": cutoff},
+            "user_id": {"$ne": None},
+        }).sort("timestamp", -1).limit(limit * 4)
+
+        events = await cursor.to_list(length=limit * 4)
+        # Sort completion-pair sibling events so that `workout_completed`
+        # (which carries `workout_snapshot_id`) is iterated BEFORE
+        # `workout_session_completed` (which does not) when both fire
+        # within the same minute. Keeps the existing newest-first global
+        # ordering otherwise. Without this the session-completed event
+        # wins the dedupe and the feed entry loses its snapshot id.
+        def _sort_key(e):
+            ts = e["timestamp"]
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+            # newer first, then prefer workout_completed within the same minute
+            type_priority = 0 if e.get("event_type") == "workout_completed" else 1
+            return (-int(ts.timestamp() // 60), type_priority, -ts.timestamp())
+        events.sort(key=_sort_key)
+
+        raw_entries = []
+        seen_user_action = set()
+        for ev in events:
+            mood = (ev.get("metadata") or {}).get("mood_category")
+            classified = _classify_live_mood(mood)
+            if not classified:
+                continue
+            bucket_id, label = classified
+            uid = str(ev.get("user_id") or "")
+            if not uid:
+                continue
+            user_doc = await _get_user(uid)
+            if not user_doc:
+                continue
+
+            evtype = ev["event_type"]
+            ts = ev["timestamp"]
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+
+            if evtype == "workout_started":
+                # Only treat as LIVE NOW if recent AND not already recorded for that user
+                if ts < live_window_start:
+                    continue
+                key = (uid, "live", bucket_id)
+                if key in seen_user_action:
+                    continue
+                seen_user_action.add(key)
+                entry_type = "live_now"
+                workout_name = (ev.get("metadata") or {}).get("workout_name")
+                duration_minutes = None
+            else:
+                entry_type = "completion"
+                meta = ev.get("metadata") or {}
+                workout_name = meta.get("workout_name")
+                duration_minutes = meta.get("duration_minutes")
+                if duration_minutes is None and meta.get("duration_seconds"):
+                    try:
+                        duration_minutes = max(1, int(round(meta["duration_seconds"] / 60)))
+                    except Exception:
+                        duration_minutes = None
+                # Dedupe by (user, completion event id) — workout_completed and
+                # workout_session_completed often fire as a pair within seconds
+                key = (uid, "complete", round(ts.timestamp() / 60))
+                if key in seen_user_action:
+                    continue
+                seen_user_action.add(key)
+
+            # Pull the workout_snapshot_id (if any) so the client can hydrate
+            # a Try-this-workout cart from the Live tab. Live-now events
+            # generally don't carry it; completions do (set by the analytics
+            # call in workout-session.tsx on session end).
+            meta_for_snapshot = ev.get("metadata") or {}
+            workout_snapshot_id = (
+                meta_for_snapshot.get("workout_snapshot_id")
+                or meta_for_snapshot.get("snapshot_id")
+            )
+
+            # FALLBACK — for legacy completions that fired BEFORE the
+            # single-workout snapshot patch (commit on 2026-05-14 PM), the
+            # event has no workout_snapshot_id in its metadata. Look up the
+            # user's `workout_cards` collection for a card created within
+            # ±15 min of the event timestamp and reuse its snapshot id.
+            # This fills in lazy / single-workout paths historically.
+            if entry_type == "completion" and not workout_snapshot_id:
+                try:
+                    near_window = timedelta(minutes=15)
+                    card = await db.workout_cards.find_one(
+                        {
+                            "user_id": uid,
+                            "created_at": {
+                                "$gte": ts - near_window,
+                                "$lte": ts + near_window,
+                            },
+                            "workout_snapshot_id": {"$ne": None, "$exists": True},
+                        },
+                        sort=[("created_at", -1)],
+                    )
+                    if card and card.get("workout_snapshot_id"):
+                        workout_snapshot_id = card["workout_snapshot_id"]
+                except Exception:
+                    # Fail open — fallback is best-effort.
+                    pass
+
+            raw_entries.append({
+                "id": str(ev["_id"]),
+                "type": entry_type,
+                "user": {
+                    "id": uid,
+                    "username": user_doc.get("username") or "",
+                    "name": user_doc.get("name") or user_doc.get("username") or "Someone",
+                    "avatar": user_doc.get("avatar") or "",
+                },
+                "mood_bucket": bucket_id,
+                "mood_label": label,
+                "workout_name": workout_name,
+                "duration_minutes": duration_minutes,
+                "milestone_count": None,
+                "timestamp": ts.isoformat(),
+                "ago_text": _format_relative_time(ts),
+                "workout_snapshot_id": workout_snapshot_id,
+            })
+
+        # Sort by timestamp desc and break if we have enough
+        raw_entries.sort(key=lambda e: e["timestamp"], reverse=True)
+        if len(raw_entries) >= 15:
+            break
+
+    # Inject milestone entries (always, regardless of lookback iteration we landed on).
+    # Users who recently crossed a milestone threshold get a card pinned near the top
+    # of their most recent activity.
+    ms_pipeline = [
+        {"$match": {"event_type": "workout_completed",
+                    "timestamp": {"$gte": now - timedelta(days=14)}}},
+        {"$group": {"_id": "$user_id", "last_ts": {"$max": "$timestamp"}}},
+    ]
+    ms_rows = await db.user_events.aggregate(ms_pipeline).to_list(200)
+    for row in ms_rows:
+        uid = str(row["_id"]) if row["_id"] else ""
+        if not uid:
+            continue
+        user_doc = await _get_user(uid)
+        if not user_doc:
+            continue
+        wcount = user_doc.get("workouts_count", 0) or 0
+        if wcount in _MILESTONE_THRESHOLDS:
+            last_ts = row["last_ts"]
+            if last_ts.tzinfo is None:
+                last_ts = last_ts.replace(tzinfo=timezone.utc)
+            raw_entries.append({
+                "id": f"milestone-{uid}-{wcount}",
+                "type": "milestone",
+                "user": {
+                    "id": uid,
+                    "username": user_doc.get("username") or "",
+                    "name": user_doc.get("name") or user_doc.get("username") or "Someone",
+                    "avatar": user_doc.get("avatar") or "",
+                },
+                "mood_bucket": "muscle",
+                "mood_label": _LIVE_BUCKET_LABELS["muscle"],
+                "workout_name": None,
+                "duration_minutes": None,
+                "milestone_count": wcount,
+                "timestamp": last_ts.isoformat(),
+                "ago_text": _format_relative_time(last_ts),
+            })
+
+    raw_entries.sort(key=lambda e: e["timestamp"], reverse=True)
+
+    entries = raw_entries[:limit]
+
+    return {
+        "stats": {
+            "sessions_today": sessions_today,
+            "most_common_mood": most_common_mood,
+        },
+        "entries": entries,
+    }
+
+
+
 
 @api_router.get("/posts/following")
 async def get_following_posts(
@@ -7404,14 +8839,18 @@ async def get_following_posts(
                 except Exception as e:
                     print(f"Error parsing workout_data: {e}")
             
+            media_fields = derive_post_media_fields(post)
             result.append(PostResponse(
                 id=str(post["_id"]),
                 author=author_data,
                 workout=workout_data,
                 workout_data=embedded_workout_data,
-                caption=post["caption"],
+                caption=post.get("caption", ""),
                 media_urls=post.get("media_urls", []),
                 hashtags=post.get("hashtags", []),
+                cover_urls=post.get("cover_urls"),
+                thumbnail_url=media_fields["thumbnail_url"],
+                media_type=media_fields["media_type"],
                 likes_count=post.get("likes_count", 0),
                 comments_count=post.get("comments_count", 0),
                 is_liked=len(post.get("user_like", [])) > 0,
@@ -7476,15 +8915,18 @@ async def get_public_posts(limit: int = 20, skip: int = 0):
             except Exception as e:
                 print(f"Error parsing workout_data: {e}")
         
+        media_fields = derive_post_media_fields(post)
         result.append(PostResponse(
             id=str(post["_id"]),
             author=author_data,
             workout=None,  # Skip workout details for public feed
             workout_data=embedded_workout_data,
-            caption=post["caption"],
+            caption=post.get("caption", ""),
             media_urls=post.get("media_urls", []),
             hashtags=post.get("hashtags", []),
             cover_urls=post.get("cover_urls"),
+            thumbnail_url=media_fields["thumbnail_url"],
+            media_type=media_fields["media_type"],
             likes_count=post.get("likes_count", 0),
             comments_count=post.get("comments_count", 0),
             is_liked=False,  # Guests can't like
@@ -7779,19 +9221,36 @@ async def like_post(post_id: str, current_user_id: str = Depends(get_current_use
             updated_post = await db.posts.find_one({"_id": post_object_id})
             likes_count = updated_post.get("likes_count", 0) if updated_post else 0
             
-            # Trigger like notification (bundled only - no single-like spam)
+            # ── TRACE-LIKE (debug) ──
+            if updated_post:
+                _media = (updated_post.get("media_urls") or [""])[0].lower()
+                _mtype = "video" if any(x in _media for x in (".mp4", ".mov", ".m3u8", "/video")) else ("image" if _media else "none")
+                _akeys = [k for k in ("author_id", "user_id", "creator_id", "owner_id") if updated_post.get(k)]
+                _resolved = resolve_post_author_id(updated_post)
+                logger.debug(f"TRACE-LIKE: post_id={post_id} found=True media_type={_mtype} keys_present={_akeys} resolved_author={_resolved}")
+            else:
+                logger.error(f"TRACE-LIKE: POST_NOT_FOUND post_id={post_id}")
+            
+            # Trigger like notification
             if updated_post:
                 try:
-                    post_author_id = str(updated_post.get("author_id", ""))
-                    if post_author_id and post_author_id != current_user_id:
+                    post_author_id = resolve_post_author_id(updated_post)
+                    if not post_author_id:
+                        logger.warning(f"TRACE-LIKE: SKIP reason=missing_author post_id={post_id}")
+                    elif post_author_id == current_user_id:
+                        logger.info(f"TRACE-LIKE: SKIP reason=self_like post_id={post_id}")
+                    else:
                         notification_service = get_notification_service(db)
-                        await notification_service.trigger_like_notification(
+                        result = await notification_service.trigger_like_notification(
                             liker_id=current_user_id,
                             post_id=post_id,
                             post_author_id=post_author_id
                         )
+                        logger.info(f"TRACE-LIKE: notification_result={result} post_id={post_id}")
                 except Exception as e:
-                    logger.error(f"Failed to send like notification: {e}")
+                    logger.error(f"TRACE-LIKE: EXCEPTION post_id={post_id} error={e}")
+                    import traceback
+                    logger.error(traceback.format_exc())
             
             return {"message": "Post liked", "liked": True, "likes_count": likes_count}
     
@@ -7881,32 +9340,49 @@ async def create_comment(comment_data: CommentCreate, current_user_id: str = Dep
             {"$inc": {"comments_count": 1}}
         )
         
-        # Trigger comment notification to post author
+        # ── TRACE-COMMENT (debug) ──
+        logger.debug(f"TRACE-COMMENT: post_id={comment_data.post_id} actor={current_user_id}")
         try:
+            _cpost = await db.posts.find_one({"_id": ObjectId(comment_data.post_id)})
+            if _cpost:
+                _cmedia = (_cpost.get("media_urls") or [""])[0].lower()
+                _cmtype = "video" if any(x in _cmedia for x in (".mp4", ".mov", ".m3u8", "/video")) else ("image" if _cmedia else "none")
+                _cresolved = resolve_post_author_id(_cpost)
+                logger.info(f"TRACE-COMMENT: post_found=True media_type={_cmtype} resolved_author={_cresolved}")
+            else:
+                logger.error(f"TRACE-COMMENT: POST_NOT_FOUND post_id={comment_data.post_id}")
+            
             notification_service = get_notification_service(db)
-            await notification_service.trigger_comment_notification(
+            result = await notification_service.trigger_comment_notification(
                 commenter_id=current_user_id,
                 post_id=comment_data.post_id,
                 comment_text=comment_data.text
             )
+            logger.info(f"TRACE-COMMENT: notification_result={result} post_id={comment_data.post_id}")
         except Exception as e:
-            logger.error(f"Failed to send comment notification: {e}")
+            logger.error(f"TRACE-COMMENT: EXCEPTION post_id={comment_data.post_id} error={e}")
+            import traceback
+            logger.error(traceback.format_exc())
         
         # Trigger mention notifications to mentioned users
         if comment_data.mentioned_user_ids:
             try:
+                logger.info(f"🔔 DEBUG Mention notifications: mentioner={current_user_id[:8]}..., mentioned={comment_data.mentioned_user_ids}")
                 notification_service = get_notification_service(db)
                 for mentioned_user_id in comment_data.mentioned_user_ids:
                     # Don't notify yourself
                     if mentioned_user_id != current_user_id:
-                        await notification_service.trigger_mention_notification(
+                        result = await notification_service.trigger_mention_notification(
                             mentioner_id=current_user_id,
                             mentioned_user_id=mentioned_user_id,
                             post_id=comment_data.post_id,
                             comment_text=comment_data.text
                         )
+                        logger.info(f"🔔 DEBUG Mention notification result for {mentioned_user_id[:8]}...: {result}")
             except Exception as e:
                 logger.error(f"Failed to send mention notifications: {e}")
+                import traceback
+                logger.error(traceback.format_exc())
         
         # If this is a reply, notify the parent comment author
         if comment_data.parent_comment_id:
@@ -8859,13 +10335,17 @@ async def get_messages(
     
     result = []
     for msg in messages:
-        result.append({
+        item = {
             "id": str(msg["_id"]),
             "sender_id": msg["sender_id"],
-            "content": msg["content"],
+            "content": msg.get("content", ""),
             "created_at": msg["created_at"].isoformat(),
-            "read": msg.get("read", False)
-        })
+            "read": msg.get("read", False),
+        }
+        if msg.get("attachment_type"):
+            item["attachment_type"] = msg["attachment_type"]
+            item["attachment"] = msg.get("attachment") or {}
+        result.append(item)
     
     return result[::-1]  # Return in chronological order
 
@@ -8875,11 +10355,23 @@ async def send_message(
     data: dict,
     current_user_id: str = Depends(get_current_user)
 ):
-    """Send a message in a conversation"""
-    content = data.get("content", "").strip()
-    
-    if not content:
-        raise HTTPException(status_code=400, detail="Message content is required")
+    """Send a message in a conversation.
+    Supports plain text and structured attachments (e.g. workout_share).
+    Body shape:
+      {
+        "content": "optional preview text",
+        "attachment_type": "workout_share" | None,
+        "attachment": { ... }   # opaque payload, validated per type
+      }
+    """
+    content = (data.get("content") or "").strip()
+    attachment_type = data.get("attachment_type")
+    attachment = data.get("attachment")
+
+    if not content and not attachment_type:
+        raise HTTPException(status_code=400, detail="Message content or attachment is required")
+    if attachment_type and attachment_type not in {"workout_share"}:
+        raise HTTPException(status_code=400, detail="Unsupported attachment_type")
     
     # Verify user is participant
     conversation = await db.conversations.find_one({"_id": ObjectId(conversation_id)})
@@ -8892,17 +10384,26 @@ async def send_message(
         "sender_id": current_user_id,
         "content": content,
         "created_at": datetime.utcnow(),
-        "read": False
+        "read": False,
     }
-    
+    if attachment_type:
+        message["attachment_type"] = attachment_type
+        message["attachment"] = attachment or {}
+
     result = await db.messages.insert_one(message)
-    
+
+    # Build a short preview for conversation.last_message
+    preview = content[:100] if content else ""
+    if not preview and attachment_type == "workout_share":
+        wname = (attachment or {}).get("workout_name") or "a workout"
+        preview = f"📤 Sent a workout: {wname}"
+
     # Update conversation
     await db.conversations.update_one(
         {"_id": ObjectId(conversation_id)},
         {
             "$set": {
-                "last_message": content[:100],
+                "last_message": preview,
                 "updated_at": datetime.utcnow()
             }
         }
@@ -8918,18 +10419,131 @@ async def send_message(
                 sender_id=current_user_id,
                 recipient_id=recipient_id,
                 conversation_id=conversation_id,
-                message_text=content,
+                message_text=preview or content,
                 is_request=conversation.get("is_request", False)
             )
     except Exception as e:
         logger.error(f"Failed to send message notification: {e}")
     
-    return {
+    response = {
         "id": str(result.inserted_id),
         "sender_id": current_user_id,
         "content": content,
         "created_at": message["created_at"].isoformat(),
-        "read": False
+        "read": False,
+    }
+    if attachment_type:
+        response["attachment_type"] = attachment_type
+        response["attachment"] = attachment or {}
+    return response
+
+
+@api_router.post("/messages/send-workout")
+async def send_workout_message(
+    data: dict,
+    current_user_id: str = Depends(get_current_user)
+):
+    """Send a workout to another user as a chat share-card message.
+
+    Body:
+      {
+        "recipient_user_id": "<user id>",
+        "workout": { ... full workout payload ... },
+        "equipment": "Bodyweight",
+        "difficulty": "intermediate",
+        "mood_category": "Muscle Gainer",     // optional, derived client-side
+        "subtext": "Chest"                    // optional
+      }
+
+    Behavior:
+      - Refuse self-send
+      - Find or create the DM conversation
+      - Persist a 'workout_share' attachment message
+      - Return { thread_id, message_id }
+    """
+    recipient_user_id = (data.get("recipient_user_id") or "").strip()
+    workout = data.get("workout")
+    if not recipient_user_id:
+        raise HTTPException(status_code=400, detail="recipient_user_id is required")
+    if recipient_user_id == current_user_id:
+        raise HTTPException(status_code=400, detail="You can't send a workout to yourself")
+    if not workout or not isinstance(workout, dict):
+        raise HTTPException(status_code=400, detail="workout payload is required")
+
+    # Validate recipient exists
+    try:
+        recipient_oid = ObjectId(recipient_user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid recipient_user_id")
+    recipient = await db.users.find_one({"_id": recipient_oid}, {"username": 1, "_id": 1})
+    if not recipient:
+        raise HTTPException(status_code=404, detail="Recipient not found")
+
+    # Find or create DM conversation
+    existing = await db.conversations.find_one({
+        "participants": {"$all": [current_user_id, recipient_user_id]}
+    })
+    if existing:
+        conversation_id = str(existing["_id"])
+    else:
+        conv_doc = {
+            "participants": [current_user_id, recipient_user_id],
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow(),
+            "last_message": "",
+        }
+        ins = await db.conversations.insert_one(conv_doc)
+        conversation_id = str(ins.inserted_id)
+
+    # Build attachment — keep client payload + a couple of normalized fields
+    workout_name = (
+        (workout.get("name") if isinstance(workout, dict) else None)
+        or "Workout"
+    )
+    attachment = {
+        "workout": workout,
+        "equipment": (data.get("equipment") or "").strip(),
+        "difficulty": (data.get("difficulty") or "").strip(),
+        "mood_category": (data.get("mood_category") or "").strip(),
+        "subtext": (data.get("subtext") or "").strip(),
+        "workout_name": workout_name,
+    }
+
+    now = datetime.utcnow()
+    msg_doc = {
+        "conversation_id": conversation_id,
+        "sender_id": current_user_id,
+        "content": "",
+        "attachment_type": "workout_share",
+        "attachment": attachment,
+        "created_at": now,
+        "read": False,
+    }
+    ins = await db.messages.insert_one(msg_doc)
+
+    preview = f"📤 Sent a workout: {workout_name}"
+    await db.conversations.update_one(
+        {"_id": ObjectId(conversation_id)},
+        {"$set": {"last_message": preview, "updated_at": now}}
+    )
+
+    # Notify the recipient (best-effort)
+    try:
+        notification_service = get_notification_service(db)
+        await notification_service.trigger_message_notification(
+            sender_id=current_user_id,
+            recipient_id=recipient_user_id,
+            conversation_id=conversation_id,
+            message_text=preview,
+            is_request=False,
+        )
+    except Exception as e:
+        logger.error(f"Failed to send workout-share notification: {e}")
+
+    return {
+        "thread_id": conversation_id,
+        "message_id": str(ins.inserted_id),
+        "recipient_username": recipient.get("username", ""),
     }
 
 @api_router.get("/conversations/unread-count")
@@ -9766,6 +11380,7 @@ async def bootstrap_staging(
 
 @api_router.post("/admin/exercises/upload-video")
 async def upload_exercise_video(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     current_user_id: str = Depends(require_admin)
 ):
@@ -9778,24 +11393,40 @@ async def upload_exercise_video(
         
         # Generate a clean public_id from filename
         import re
+        import time
         filename = file.filename or "exercise_video"
         clean_name = re.sub(r'[^a-zA-Z0-9_-]', '_', filename.rsplit('.', 1)[0])
         clean_name = re.sub(r'_+', '_', clean_name)[:80]
         
         public_id = f"exercise_library/{clean_name}"
         
-        # Upload to Cloudinary
+        # Upload to Cloudinary with eager thumbnail generation (synchronous)
         result = cloudinary.uploader.upload(
             content,
             public_id=public_id,
             resource_type="video",
-            overwrite=True
+            overwrite=True,
+            eager=[
+                {"format": "jpg", "transformation": [{"start_offset": "1", "width": 400, "height": 400, "crop": "fill"}]}
+            ],
+            eager_async=False  # Wait for thumbnail to be generated before returning
         )
         
         video_url = result.get("secure_url")
         
-        # Generate thumbnail URL (frame at 2 seconds)
-        thumbnail_url = f"https://res.cloudinary.com/{os.environ.get('CLOUDINARY_CLOUD_NAME')}/video/upload/so_2.0,w_400,h_400,c_fill/{result['public_id']}.jpg"
+        # Use the eagerly generated thumbnail if available
+        thumbnail_url = None
+        if result.get("eager") and len(result["eager"]) > 0:
+            thumbnail_url = result["eager"][0].get("secure_url")
+        else:
+            # Fallback: Generate thumbnail URL manually (may not be immediately available)
+            # Add timestamp to bust cache on client
+            timestamp = int(time.time())
+            thumbnail_url = f"https://res.cloudinary.com/{os.environ.get('CLOUDINARY_CLOUD_NAME')}/video/upload/so_1.0,w_400,h_400,c_fill/{result['public_id']}.jpg?t={timestamp}"
+        
+        # PHASE 1: queue async HLS + MP4 + tall poster eager transcodes
+        if result.get("public_id"):
+            background_tasks.add_task(trigger_video_eager_transcodes, result["public_id"])
         
         return {
             "success": True,
@@ -9805,6 +11436,62 @@ async def upload_exercise_video(
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error uploading video: {str(e)}")
+
+
+# =========================================================================
+# PHASE 1: Cloudinary eager-transcode webhook
+# =========================================================================
+# Receives notifications when async HLS/MP4/poster derivations complete.
+# Idempotent — Cloudinary may retry. We just log + record completion.
+# To wire up: set CLOUDINARY_EAGER_WEBHOOK_URL in backend/.env to e.g.
+#   https://<your-public-host>/api/cloudinary/eager-webhook
+# =========================================================================
+@api_router.post("/cloudinary/eager-webhook")
+async def cloudinary_eager_webhook(request: Request):
+    try:
+        payload = await request.json()
+    except Exception:
+        payload = {}
+
+    notification_type = payload.get("notification_type", "")
+    public_id = payload.get("public_id", "")
+    batch_id = payload.get("batch_id", "")
+    eager_results = payload.get("eager", []) or []
+
+    logger.info(
+        f"🎬 EAGER_WEBHOOK type={notification_type} public_id={public_id} "
+        f"batch={batch_id} derivations={len(eager_results)}"
+    )
+
+    # Best-effort persistence for observability (collection auto-created).
+    try:
+        await db.video_eager_status.update_one(
+            {"public_id": public_id},
+            {
+                "$set": {
+                    "public_id": public_id,
+                    "last_notification_type": notification_type,
+                    "last_batch_id": batch_id,
+                    "derivations": [
+                        {
+                            "transformation": d.get("transformation"),
+                            "url": d.get("secure_url") or d.get("url"),
+                            "bytes": d.get("bytes"),
+                            "status": d.get("status", "complete"),
+                        }
+                        for d in eager_results
+                    ],
+                    "updated_at": datetime.now(timezone.utc),
+                }
+            },
+            upsert=True,
+        )
+    except Exception as e:
+        logger.warning(f"⚠️ EAGER_WEBHOOK persist failed: {e}")
+
+    # Cloudinary expects a 2xx within ~10s or it will retry.
+    return {"ok": True}
+
 
 @api_router.get("/exercises/search")
 async def search_exercises(
@@ -10117,6 +11804,49 @@ async def get_featured_config():
         "featuredWorkoutIds": config.get("featuredWorkoutIds", []),
         "ttlHours": config.get("ttlHours", 12),
         "updatedAt": config.get("updatedAt")
+    }
+
+
+@api_router.get("/featured/bundle")
+async def get_featured_bundle():
+    """Combined config + workouts in a single response (eliminates waterfall).
+    Used by guests and first-load to get everything in one round trip."""
+    config = await db.featured_config.find_one({"_id": "main"})
+    
+    config_data = {
+        "schemaVersion": config.get("schemaVersion", 1) if config else 1,
+        "featuredWorkoutIds": config.get("featuredWorkoutIds", []) if config else [],
+        "ttlHours": config.get("ttlHours", 12) if config else 12,
+        "updatedAt": config.get("updatedAt") if config else None,
+    }
+    
+    workout_ids = config_data["featuredWorkoutIds"]
+    ordered_workouts = []
+    
+    if workout_ids:
+        object_ids = []
+        for id_str in workout_ids:
+            try:
+                object_ids.append(ObjectId(id_str))
+            except Exception:
+                continue
+        
+        workouts = await db.featured_workouts.find(
+            {"_id": {"$in": object_ids}}
+        ).to_list(50)
+        
+        id_to_workout = {}
+        for w in workouts:
+            w["_id"] = str(w["_id"])
+            id_to_workout[w["_id"]] = w
+        
+        for id_str in workout_ids:
+            if id_str in id_to_workout:
+                ordered_workouts.append(id_to_workout[id_str])
+    
+    return {
+        "config": config_data,
+        "workouts": ordered_workouts,
     }
 
 # Public endpoint - fetch workouts by IDs
@@ -10946,6 +12676,7 @@ async def register_device_token(
     current_user_id: str = Depends(get_current_user)
 ):
     """Register a device push token"""
+    logger.info(f"📱 DEVICE-TOKEN register: user={current_user_id}, platform={data.platform}, token={data.token[:30]}...")
     notification_service = get_notification_service(db)
     result = await notification_service.register_device_token(
         user_id=current_user_id,
@@ -10953,6 +12684,7 @@ async def register_device_token(
         platform=data.platform,
         device_id=data.device_id
     )
+    logger.info(f"📱 DEVICE-TOKEN result: user={current_user_id}, status={result.get('status')}, id={result.get('id')}")
     return result
 
 @api_router.delete("/notifications/device-token")
@@ -11002,6 +12734,10 @@ async def get_notifications(
         skip=skip,
         unread_only=unread_only
     )
+    logger.info(f"🔔 GET /notifications: user={current_user_id}, count={len(notifications)}, skip={skip}, unread_only={unread_only}")
+    if notifications:
+        sample = notifications[0]
+        logger.info(f"🔔 GET /notifications sample[0]: id={sample.get('id')}, type={sample.get('type')}, body={str(sample.get('body',''))[:60]}")
     return {"notifications": notifications}
 
 @api_router.get("/notifications/unread-count")
@@ -11061,6 +12797,75 @@ async def get_suggestion_copy_library():
     """Get the copy library for featured suggestions (admin/debug)"""
     return {"copy": SUGGESTION_COPY_LIBRARY}
 
+@api_router.post("/admin/backfill-notification-thumbnails")
+async def admin_backfill_notification_thumbnails(
+    current_user_id: str = Depends(require_admin)
+):
+    """
+    One-time backfill: patch notifications missing metadata.post_thumbnail
+    by looking up the post's cover_urls/media_urls.
+    """
+    if not await is_admin_allowed(current_user_id):
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    notification_service = get_notification_service(db)
+
+    cursor = db.notifications.find({
+        "type": {"$in": ["like", "comment", "mention", "reply"]},
+        "entity_id": {"$ne": None},
+        "$or": [
+            {"metadata.post_thumbnail": None},
+            {"metadata.post_thumbnail": {"$exists": False}}
+        ]
+    })
+
+    notifs = await cursor.to_list(500)
+    patched = 0
+    skipped = 0
+
+    for n in notifs:
+        entity_id = n.get("entity_id")
+        if not entity_id:
+            skipped += 1
+            continue
+        try:
+            post = await db.posts.find_one({"_id": ObjectId(entity_id)})
+        except Exception:
+            skipped += 1
+            continue
+        if not post:
+            skipped += 1
+            continue
+
+        cover_urls = post.get("cover_urls") or []
+        media_urls = post.get("media_urls") or []
+        # cover_urls may be a dict ({"0": url}) from React Native
+        if isinstance(cover_urls, dict):
+            thumbnail = cover_urls.get("0") or cover_urls.get(0) or next(iter(cover_urls.values()), None)
+        elif isinstance(cover_urls, list) and cover_urls:
+            thumbnail = cover_urls[0]
+        elif isinstance(media_urls, list) and media_urls:
+            thumbnail = media_urls[0]
+        else:
+            thumbnail = None
+
+        if not thumbnail:
+            skipped += 1
+            continue
+
+        # If video, generate Cloudinary still frame
+        if "/video/" in thumbnail and "/video/upload/" in thumbnail:
+            thumbnail = thumbnail.replace("/video/upload/", "/video/upload/so_0,f_jpg,w_400/")
+
+        await db.notifications.update_one(
+            {"_id": n["_id"]},
+            {"$set": {"metadata.post_thumbnail": thumbnail}}
+        )
+        patched += 1
+
+    logger.info(f"🔔 Backfill thumbnails: patched={patched}, skipped={skipped}, total_found={len(notifs)}")
+    return {"patched": patched, "skipped": skipped, "total_found": len(notifs)}
+
 # ============================================
 # ADMIN NOTIFICATION ENDPOINTS
 # ============================================
@@ -11070,6 +12875,8 @@ class FeaturedWorkoutPush(BaseModel):
     workout_name: str
     workout_image: Optional[str] = None
     target_user_ids: Optional[List[str]] = None  # None = all users
+    custom_title: Optional[str] = None  # None = random from copy library
+    custom_body: Optional[str] = None   # None = random from copy library
 
 class FeaturedSuggestionPush(BaseModel):
     custom_copy: Optional[str] = None  # None = random from library
@@ -11078,6 +12885,147 @@ class FeaturedSuggestionPush(BaseModel):
 class WorkoutReminderPush(BaseModel):
     user_id: str
     custom_message: Optional[str] = None  # None = random from library
+
+class TestPushRequest(BaseModel):
+    user_id: str
+    title: Optional[str] = "MOOD Test Push"
+    body: Optional[str] = "If you see this, push notifications are working."
+
+@api_router.post("/admin/test-push")
+async def admin_test_push(
+    data: TestPushRequest,
+    current_user_id: str = Depends(require_admin)
+):
+    """
+    Admin: Send a test push to a specific user and return full diagnostics.
+    Logs Expo ticket + receipt errors for debugging.
+    """
+    if not await is_admin_allowed(current_user_id):
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    user_id = data.user_id
+
+    # 1. Look up user
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        return {"success": False, "error": "User not found", "user_id": user_id}
+
+    # 2. Look up stored device tokens
+    tokens_cursor = db.device_tokens.find({"user_id": user_id, "is_valid": True})
+    token_docs = await tokens_cursor.to_list(10)
+
+    if not token_docs:
+        all_tokens = await db.device_tokens.find({"user_id": user_id}).to_list(10)
+        return {
+            "success": False,
+            "error": "No valid device tokens for this user",
+            "user_id": user_id,
+            "username": user.get("username"),
+            "total_tokens_in_db": len(all_tokens),
+            "invalid_tokens": [
+                {"token": t["token"][:30] + "...", "is_valid": t.get("is_valid"), "platform": t.get("platform")}
+                for t in all_tokens
+            ],
+        }
+
+    push_tokens = [t["token"] for t in token_docs]
+    logger.info(f"🧪 TEST-PUSH: Found {len(push_tokens)} valid token(s) for user {user_id} ({user.get('username')})")
+
+    # 3. Send test push via Expo
+    messages = [
+        {
+            "to": token,
+            "title": data.title,
+            "body": data.body,
+            "data": {"type": "test_push", "notification_id": "test"},
+            "sound": "default",
+            "priority": "high",
+        }
+        for token in push_tokens
+    ]
+
+    expo_url = "https://exp.host/--/api/v2/push/send"
+    ticket_data = None
+    receipt_data = None
+
+    try:
+        async with httpx.AsyncClient() as client:
+            # Send push
+            resp = await client.post(expo_url, json=messages, headers={"Content-Type": "application/json"}, timeout=15.0)
+            ticket_data = resp.json()
+            logger.info(f"🧪 TEST-PUSH tickets: {ticket_data}")
+
+            # Check tickets for errors
+            ticket_ids = []
+            ticket_errors = []
+            for i, ticket in enumerate(ticket_data.get("data", [])):
+                if ticket.get("status") == "ok":
+                    ticket_ids.append(ticket.get("id"))
+                else:
+                    ticket_errors.append({
+                        "token_index": i,
+                        "token": push_tokens[i][:30] + "...",
+                        "status": ticket.get("status"),
+                        "message": ticket.get("message"),
+                        "details": ticket.get("details"),
+                    })
+                    logger.error(f"🧪 TEST-PUSH ticket error: {ticket}")
+
+            # 4. Fetch receipts (wait briefly for Expo to process)
+            if ticket_ids:
+                import asyncio
+                await asyncio.sleep(2)
+                receipt_resp = await client.post(
+                    "https://exp.host/--/api/v2/push/getReceipts",
+                    json={"ids": ticket_ids},
+                    headers={"Content-Type": "application/json"},
+                    timeout=15.0,
+                )
+                receipt_data = receipt_resp.json()
+                logger.info(f"🧪 TEST-PUSH receipts: {receipt_data}")
+
+                # Check receipts for errors
+                receipt_errors = []
+                for rid, receipt in receipt_data.get("data", {}).items():
+                    if receipt.get("status") == "error":
+                        receipt_errors.append({
+                            "receipt_id": rid,
+                            "status": receipt.get("status"),
+                            "message": receipt.get("message"),
+                            "details": receipt.get("details"),
+                        })
+                        logger.error(f"🧪 TEST-PUSH receipt error: {receipt}")
+            else:
+                receipt_errors = []
+
+    except Exception as e:
+        logger.error(f"🧪 TEST-PUSH exception: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "user_id": user_id,
+            "tokens_found": len(push_tokens),
+        }
+
+    # 5. Also check DB notification count for this user
+    notif_count = await db.notifications.count_documents({"user_id": user_id})
+    unread_count = await db.notifications.count_documents({"user_id": user_id, "read_at": None})
+
+    return {
+        "success": len(ticket_errors) == 0,
+        "user_id": user_id,
+        "username": user.get("username"),
+        "tokens_found": len(push_tokens),
+        "tokens": [{"token": t[:30] + "...", "platform": td.get("platform")} for t, td in zip(push_tokens, token_docs)],
+        "expo_tickets": ticket_data,
+        "ticket_errors": ticket_errors,
+        "expo_receipts": receipt_data,
+        "receipt_errors": receipt_errors if ticket_ids else [],
+        "db_diagnostics": {
+            "total_notifications": notif_count,
+            "unread_notifications": unread_count,
+        },
+    }
 
 @api_router.post("/admin/notifications/featured-workout")
 async def admin_send_featured_workout(
@@ -11089,18 +13037,41 @@ async def admin_send_featured_workout(
     if not await is_admin_allowed(current_user_id):
         raise HTTPException(status_code=403, detail="Admin access required - not in allowlist")
     
+    # Validate featured workout exists and has exercises
+    try:
+        workout_doc = await db.featured_workouts.find_one(
+            {"_id": ObjectId(data.workout_id)},
+            {"exercises": 1, "title": 1}
+        )
+    except Exception:
+        raise HTTPException(status_code=400, detail=f"Invalid workout_id: {data.workout_id}")
+    
+    if not workout_doc:
+        raise HTTPException(status_code=400, detail=f"Featured workout not found: {data.workout_id}")
+    
+    exercises = workout_doc.get("exercises", [])
+    if not exercises:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Featured workout '{workout_doc.get('title', data.workout_id)}' has no exercises. Cannot send push with empty cart."
+        )
+    
     notification_service = get_notification_service(db)
     count = await notification_service.send_featured_workout_to_all(
         workout_id=data.workout_id,
         workout_name=data.workout_name,
         workout_image=data.workout_image,
-        target_user_ids=data.target_user_ids
+        target_user_ids=data.target_user_ids,
+        custom_title=data.custom_title,
+        custom_body=data.custom_body,
+        sender_user_id=current_user_id
     )
     
     return {
         "success": True,
         "notifications_sent": count,
-        "message": f"Featured workout notification sent to {count} users"
+        "exercises_count": len(exercises),
+        "message": f"Featured workout notification sent to {count} users ({len(exercises)} exercises)"
     }
 
 @api_router.post("/admin/notifications/featured-suggestion")
@@ -11116,7 +13087,8 @@ async def admin_send_featured_suggestion(
     notification_service = get_notification_service(db)
     count = await notification_service.send_featured_suggestion_to_all(
         custom_copy=data.custom_copy,
-        target_user_ids=data.target_user_ids
+        target_user_ids=data.target_user_ids,
+        sender_user_id=current_user_id
     )
     
     return {
@@ -11138,7 +13110,8 @@ async def admin_send_workout_reminder(
     notification_service = get_notification_service(db)
     result = await notification_service.trigger_workout_reminder(
         user_id=data.user_id,
-        custom_message=data.custom_message
+        custom_message=data.custom_message,
+        actor_id=current_user_id
     )
     
     return {
@@ -11161,7 +13134,7 @@ async def admin_send_mass_workout_reminder(
         raise HTTPException(status_code=403, detail="Admin access required - not in allowlist")
     
     worker = get_notification_worker(db)
-    count = await worker.trigger_mass_workout_reminder(data.custom_message)
+    count = await worker.trigger_mass_workout_reminder(data.custom_message, sender_user_id=current_user_id)
     
     return {
         "success": True,
@@ -11204,6 +13177,161 @@ async def admin_trigger_digest(
         "message": "Digest sent" if result else "No activity to report or user has no following"
     }
 
+
+
+@api_router.get("/debug/user_posts")
+async def debug_user_posts(
+    userId: str,
+    current_user_id: str = Depends(get_current_user)
+):
+    """Admin-only debug endpoint: compare DB posts vs profile query for a user."""
+    if not await is_admin_allowed(current_user_id):
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    # Resolve userId to ObjectId
+    try:
+        user_oid = ObjectId(userId)
+    except:
+        user = await db.users.find_one({"user_id": userId})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        user_oid = user["_id"]
+    
+    user_id_str = str(user_oid)
+    
+    # Count posts by type
+    oid_count = await db.posts.count_documents({"author_id": user_oid})
+    str_count = await db.posts.count_documents({"author_id": user_id_str})
+    
+    # Profile query match (what the endpoint uses)
+    profile_match = {"$or": [{"author_id": user_oid}, {"author_id": user_id_str}]}
+    profile_count = await db.posts.count_documents(profile_match)
+    
+    # Newest 5 posts from DB
+    newest = await db.posts.find(
+        profile_match, {"_id": 1, "created_at": 1, "caption": 1, "author_id": 1, "media_urls": 1}
+    ).sort("created_at", -1).limit(5).to_list(5)
+    
+    newest_posts = []
+    for p in newest:
+        media = p.get("media_urls", [])
+        is_video = any(".mp4" in str(u) or ".mov" in str(u) for u in media)
+        newest_posts.append({
+            "id": str(p["_id"]),
+            "created_at": str(p.get("created_at")),
+            "caption": str(p.get("caption", ""))[:50],
+            "author_id_type": type(p.get("author_id")).__name__,
+            "is_video": is_video,
+        })
+    
+    return {
+        "userId": user_id_str,
+        "db_count_objectid": oid_count,
+        "db_count_string": str_count,
+        "profile_query_count": profile_count,
+        "mismatch": oid_count != profile_count,
+        "newest_5_posts": newest_posts,
+    }
+
+
+@api_router.get("/debug/profile_posts_check")
+async def debug_profile_posts_check(
+    userId: str,
+    current_user_id: str = Depends(get_current_user)
+):
+    """Admin-only: deep diagnosis of why profile grid may return 0 posts."""
+    if not await is_admin_allowed(current_user_id):
+        raise HTTPException(status_code=403, detail="Admin only")
+
+    user_id_str = userId
+
+    # 1. Raw counts
+    posts_by_author_id = await db.posts.count_documents({"author_id": user_id_str})
+    posts_by_user_id = await db.posts.count_documents({"user_id": user_id_str})
+
+    # 2. ObjectId counts (if valid)
+    posts_by_author_obj = None
+    user_exists = False
+    try:
+        oid = ObjectId(user_id_str)
+        posts_by_author_obj = await db.posts.count_documents({"author_id": oid})
+        user_doc = await db.users.find_one({"_id": oid})
+        user_exists = user_doc is not None
+    except Exception:
+        pass
+
+    # 3. Newest 3 posts from author_id query (either type)
+    or_match = {"$or": [{"author_id": user_id_str}]}
+    if posts_by_author_obj is not None:
+        or_match = {"$or": [{"author_id": user_id_str}, {"author_id": ObjectId(user_id_str)}]}
+
+    newest_cursor = db.posts.find(
+        or_match, {"_id": 1, "created_at": 1, "media_type": 1, "author_id": 1, "media_urls": 1, "cover_urls": 1}
+    ).sort("created_at", -1).limit(3)
+    newest_raw = await newest_cursor.to_list(3)
+
+    newest_author_posts = []
+    for p in newest_raw:
+        newest_author_posts.append({
+            "id": str(p["_id"]),
+            "created_at": str(p.get("created_at")),
+            "media_type": p.get("media_type"),
+            "author_id_type": type(p.get("author_id")).__name__,
+            "author_id_value": str(p.get("author_id")),
+            "cover_urls_type": type(p.get("cover_urls")).__name__,
+            "media_urls_count": len(p.get("media_urls", [])),
+        })
+
+    # 4. Try running the actual profile pipeline to detect errors
+    pipeline_error = None
+    pipeline_count = 0
+    try:
+        user_object_id = ObjectId(user_id_str) if user_exists else None
+        if user_object_id:
+            author_match = {"$or": [
+                {"author_id": user_object_id},
+                {"author_id": user_id_str},
+            ]}
+            pipeline = [
+                {"$match": author_match},
+                {"$sort": {"created_at": -1}},
+                {"$limit": 5},
+                {"$addFields": {
+                    "_author_oid": {"$cond": {
+                        "if": {"$eq": [{"$type": "$author_id"}, "string"]},
+                        "then": {"$toObjectId": "$author_id"},
+                        "else": "$author_id"
+                    }}
+                }},
+                {"$lookup": {
+                    "from": "users",
+                    "localField": "_author_oid",
+                    "foreignField": "_id",
+                    "as": "author"
+                }},
+                {"$unwind": "$author"},
+            ]
+            pipeline_results = await db.posts.aggregate(pipeline).to_list(5)
+            pipeline_count = len(pipeline_results)
+    except Exception as e:
+        pipeline_error = f"{type(e).__name__}: {e}"
+
+    return {
+        "userId_received": user_id_str,
+        "user_exists_in_db": user_exists,
+        "posts_by_author_id": posts_by_author_id,
+        "posts_by_user_id": posts_by_user_id,
+        "posts_by_author_obj": posts_by_author_obj,
+        "newest_author_posts": newest_author_posts,
+        "profile_pipeline_returned": pipeline_count,
+        "profile_pipeline_error": pipeline_error,
+    }
+
+# Workout Drafts (Saved Builds) — guests + authenticated, lifecycle-aware
+api_router.include_router(
+    build_workout_drafts_router(db, get_current_user, get_optional_current_user)
+)
+
 # Include router in main app
 app.include_router(api_router)
 
@@ -11223,6 +13351,72 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
+async def _cleanup_duplicate_device_tokens(database):
+    """One-time cleanup: deduplicate device_tokens keeping only the most recent per token"""
+    pipeline = [
+        {"$group": {
+            "_id": "$token",
+            "count": {"$sum": 1},
+            "docs": {"$push": {"id": "$_id", "last_active": "$last_active"}},
+        }},
+        {"$match": {"count": {"$gt": 1}}},
+    ]
+    dup_count = 0
+    async for group in database.device_tokens.aggregate(pipeline):
+        docs = sorted(group["docs"], key=lambda d: d.get("last_active") or datetime.min, reverse=True)
+        # Keep the most recently active doc, delete the rest
+        ids_to_delete = [d["id"] for d in docs[1:]]
+        await database.device_tokens.delete_many({"_id": {"$in": ids_to_delete}})
+        dup_count += len(ids_to_delete)
+    if dup_count:
+        logger.info(f"🧹 Cleaned up {dup_count} duplicate device tokens")
+    else:
+        logger.info("✅ No duplicate device tokens found")
+
+
+async def _migrate_posts_author_id(database):
+    """One-time migration: backfill author_id on posts that only have user_id/creator_id/owner_id."""
+    query = {"$or": [
+        {"author_id": {"$exists": False}},
+        {"author_id": None},
+        {"author_id": ""},
+    ]}
+    
+    posts_to_fix = await database.posts.find(query).to_list(10000)
+    
+    if not posts_to_fix:
+        logger.info("✅ Migration: All posts have author_id — nothing to do")
+        return {"fixed": 0, "orphaned": []}
+    
+    fixed = 0
+    orphaned = []
+    
+    for post in posts_to_fix:
+        post_id = post["_id"]
+        # Try fallback fields in priority order
+        resolved = None
+        for key in ("user_id", "creator_id", "owner_id"):
+            val = post.get(key)
+            if val:
+                resolved = val if isinstance(val, ObjectId) else ObjectId(str(val))
+                break
+        
+        if resolved:
+            await database.posts.update_one(
+                {"_id": post_id},
+                {"$set": {"author_id": resolved}}
+            )
+            fixed += 1
+            logger.info(f"🔧 Migration: Set author_id={resolved} on post {post_id} (from '{key}')")
+        else:
+            orphaned.append(str(post_id))
+            logger.warning(f"⚠️ Migration: Post {post_id} has NO author fields — manual review needed")
+    
+    logger.info(f"🔧 Migration complete: {fixed} posts fixed, {len(orphaned)} orphaned")
+    return {"fixed": fixed, "orphaned": orphaned}
+
+
 @app.on_event("startup")
 async def startup_db_client():
     """Start background services on app startup"""
@@ -11241,7 +13435,47 @@ async def startup_db_client():
         await db.users.create_index([("created_at", -1)])
         await db.users.create_index([("username", 1)])
         await db.users.create_index([("email", 1)])
+
+        # Onboarding tips backfill — reset tip states for ALL users to 'unseen'
+        # so the redesigned tips re-fire for everyone. v3 bump is paired with
+        # the Tip 2 redesign (bottom-floating popup) + Tip 3 forced-placement.
+        flag = await db.app_settings.find_one({"_id": "onboarding_backfill_v3"})
+        if not flag:
+            try:
+                res = await db.users.update_many(
+                    {},
+                    {"$set": {
+                        "tips_state.mood_scroll": "unseen",
+                        "tips_state.form_videos": "unseen",
+                        "tips_state.completion_share": "unseen",
+                    }},
+                )
+                await db.app_settings.update_one(
+                    {"_id": "onboarding_backfill_v3"},
+                    {"$set": {"applied_at": datetime.now(timezone.utc), "matched": res.matched_count}},
+                    upsert=True,
+                )
+                logger.info(f"✅ Onboarding tips backfill v3 applied to {res.matched_count} users")
+            except Exception as e:
+                logger.warning(f"Onboarding backfill v3 skipped: {e}")
         
+        # workout_drafts indexes (Saved Builds)
+        try:
+            await ensure_workout_drafts_indexes(db)
+            logger.info("✅ workout_drafts indexes ensured")
+        except Exception as e:
+            logger.warning(f"workout_drafts indexes skipped: {e}")
+
+        # Sync featured-workout hero images from seed_data.py into MongoDB.
+        # Auto-seed only fires on title mismatch — hero image changes alone
+        # never trigger it, so we explicitly push them on every startup.
+        # Idempotent: only PATCHes docs whose heroImageUrl differs.
+        try:
+            checked, updated = await sync_featured_hero_images(db)
+            logger.info(f"✅ hero-image sync: {updated}/{checked} updated")
+        except Exception as e:
+            logger.warning(f"hero-image sync skipped: {e}")
+
         # daily_activity indexes
         await db.daily_activity.create_index([("date", -1)])
         await db.daily_activity.create_index([("user_id", 1), ("date", -1)])
@@ -11255,9 +13489,76 @@ async def startup_db_client():
         await db.admin_audit_logs.create_index([("admin_user_id", 1), ("timestamp_utc", -1)])
         await db.admin_audit_logs.create_index([("action", 1), ("timestamp_utc", -1)])
         
+        # --- Notification system indexes ---
+        # Unique index on device_tokens.token to prevent duplicate push tokens
+        try:
+            await db.device_tokens.create_index(
+                [("token", 1)],
+                unique=True,
+                name="unique_device_token",
+            )
+            logger.info("✅ device_tokens unique index on 'token' ensured")
+        except Exception as idx_err:
+            # If duplicates exist, clean them up first, then retry
+            logger.warning(f"⚠️ device_tokens unique index failed (likely duplicates): {idx_err}")
+            await _cleanup_duplicate_device_tokens(db)
+            try:
+                await db.device_tokens.create_index(
+                    [("token", 1)],
+                    unique=True,
+                    name="unique_device_token",
+                )
+                logger.info("✅ device_tokens unique index created after cleanup")
+            except Exception as retry_err:
+                logger.error(f"❌ Could not create unique device_tokens index: {retry_err}")
+        
+        # PushSendLog: unique compound index for at-most-once push delivery
+        await db.push_send_log.create_index(
+            [("user_id", 1), ("type", 1), ("event_key", 1)],
+            unique=True,
+            name="unique_push_send",
+        )
+        # TTL index: auto-expire push send logs after 7 days
+        await db.push_send_log.create_index(
+            [("created_at", 1)],
+            expireAfterSeconds=7 * 24 * 3600,
+            name="push_send_log_ttl",
+        )
+        # Notification retrieval indexes
+        await db.notifications.create_index([("user_id", 1), ("created_at", -1)])
+        await db.device_tokens.create_index([("user_id", 1), ("is_valid", 1)])
+        
         logger.info("✅ MongoDB indexes verified/created for analytics")
     except Exception as e:
         logger.error(f"⚠️ Failed to create some indexes: {e}")
+    
+    # One-time migration: backfill author_id on legacy posts
+    try:
+        migration_result = await _migrate_posts_author_id(db)
+        logger.info(f"✅ Post author_id migration: {migration_result}")
+    except Exception as e:
+        logger.error(f"⚠️ Post author_id migration failed: {e}")
+    
+    # One-time migration: normalize dict cover_urls to list
+    try:
+        fixed = 0
+        async for post in db.posts.find({"cover_urls": {"$type": "object"}}):
+            cu = post["cover_urls"]
+            # Convert dict {"0": url, "1": url2, ...} to list [url, url2, ...]
+            if isinstance(cu, dict):
+                sorted_keys = sorted(cu.keys(), key=lambda k: int(k) if k.isdigit() else 0)
+                as_list = [cu[k] for k in sorted_keys if cu[k]]
+                await db.posts.update_one(
+                    {"_id": post["_id"]},
+                    {"$set": {"cover_urls": as_list}}
+                )
+                fixed += 1
+        if fixed:
+            logger.info(f"✅ cover_urls migration: normalized {fixed} posts from dict to list")
+        else:
+            logger.info("✅ cover_urls migration: nothing to do")
+    except Exception as e:
+        logger.error(f"⚠️ cover_urls migration failed: {e}")
     
     # Start notification background worker
     try:
@@ -11266,6 +13567,50 @@ async def startup_db_client():
     except Exception as e:
         logger.error(f"Failed to start notification worker: {e}")
     
+    # Migration: fix None values in notification_settings
+    # These cause silent push send failures (not None → True in Python)
+    try:
+        bool_defaults_true = [
+            "notifications_enabled", "likes_enabled", "comments_enabled",
+            "messages_enabled", "follows_enabled", "workout_reminders_enabled",
+            "featured_workouts_enabled", "following_digest_enabled",
+            "featured_suggestions_enabled",
+        ]
+        total_fixed = 0
+        for field in bool_defaults_true:
+            r = await db.notification_settings.update_many(
+                {field: None}, {"$set": {field: True}}
+            )
+            total_fixed += r.modified_count
+        if total_fixed > 0:
+            logger.info(f"✅ notification_settings migration: fixed {total_fixed} None→True fields")
+        else:
+            logger.info("✅ notification_settings migration: nothing to do")
+    except Exception as e:
+        logger.error(f"⚠️ notification_settings migration failed: {e}")
+    
+
+    # Migration: Normalize string author_id to ObjectId for consistent queries
+    try:
+        str_author_posts = await db.posts.count_documents({"author_id": {"$type": "string"}})
+        if str_author_posts > 0:
+            fixed = 0
+            async for post in db.posts.find({"author_id": {"$type": "string"}}, {"_id": 1, "author_id": 1}):
+                try:
+                    new_oid = ObjectId(post["author_id"])
+                    await db.posts.update_one(
+                        {"_id": post["_id"]},
+                        {"$set": {"author_id": new_oid}}
+                    )
+                    fixed += 1
+                except Exception:
+                    pass  # Skip malformed IDs
+            logger.info(f"✅ author_id migration: converted {fixed}/{str_author_posts} string→ObjectId")
+        else:
+            logger.info("✅ author_id migration: nothing to do (all ObjectId)")
+    except Exception as e:
+        logger.error(f"⚠️ author_id migration failed: {e}")
+
     # Auto-seed featured workouts in staging or if empty
     # This runs on EVERY deployment to ensure featured workouts exist
     try:
@@ -11286,6 +13631,37 @@ async def startup_db_client():
             logger.info(f"✅ Startup: Exercises OK ({exercises_result.get('count')} found)")
     except Exception as e:
         logger.error(f"❌ Startup: Failed to auto-seed exercises: {e}")
+
+    # Phase D — Founding Member migration (Part 9 of the v1.0 paid launch).
+    # Flips `founding_member = true` for every user account whose `created_at`
+    # precedes the FOUNDING_MEMBER_CUTOFF (now 2026-05-14 00:00 UTC; bumped
+    # forward 2026-05-14 per product decision so today's signups are paying).
+    # Idempotent — skipped on accounts that are already flagged.
+    try:
+        cutoff = FOUNDING_MEMBER_CUTOFF
+        result = await db.users.update_many(
+            {
+                "created_at": {"$lt": cutoff},
+                "founding_member": {"$ne": True},
+            },
+            {
+                "$set": {
+                    "founding_member": True,
+                    "founding_member_at": cutoff,
+                }
+            },
+        )
+        if result.modified_count:
+            logger.info(
+                f"🏆 Founding Member migration: flipped {result.modified_count} accounts "
+                f"(cutoff {cutoff.isoformat()})"
+            )
+        else:
+            logger.info(
+                f"✅ Founding Member migration: nothing to do (cutoff {cutoff.isoformat()})"
+            )
+    except Exception as e:
+        logger.error(f"❌ Founding Member migration failed: {e}")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():

@@ -10,15 +10,17 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart, WorkoutItem } from '../contexts/CartContext';
 import { Analytics, GuestAnalytics } from '../utils/analytics';
+import AddCustomExerciseModal from '../components/AddCustomExerciseModal';
+import { resolveFeaturedHeroImage } from '../utils/featuredHeroImage';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
 
 // Define workout exercise type matching the cart/guidance structure
 interface WorkoutExercise {
@@ -33,6 +35,74 @@ interface WorkoutExercise {
   workoutType: string;
   moodCard: string;
   moodTips: { icon: keyof typeof Ionicons.glyphMap; title: string; description: string }[];
+}
+
+// Sub-path divider — normalises each exercise's workoutType into the
+// canonical taxonomy used in cart.tsx:
+//   • Sweat          → CARDIO | WEIGHTS
+//   • Muscle Gainer  → <muscle group>
+//   • Build Explosion→ BODY WEIGHT | WEIGHT BASED
+//   • Lazy           → BODY WEIGHT | WEIGHT BASED
+//   • Outdoor        → OUTDOOR
+//   • Calisthenics   → CALISTHENICS
+const _MUSCLE_GROUP_NAMES = new Set([
+  'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Abs',
+  'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Legs',
+]);
+const _BODYWEIGHT_EQUIPMENT = new Set([
+  'Bodyweight', 'No Equipment', 'Pull-up Bar', 'Parallel Bars', 'Bar',
+]);
+function getExerciseSubPathLabel(ex: WorkoutExercise): string | null {
+  const wt = (ex?.workoutType || '').trim();
+  if (!wt) return null;
+  const wtLower = wt.toLowerCase();
+
+  if (wt.startsWith('Muscle Building')) {
+    const parts = wt.split(' - ');
+    const muscle = parts.length > 1 ? parts[parts.length - 1].trim() : '';
+    return muscle || null;
+  }
+  if (_MUSCLE_GROUP_NAMES.has(wt)) return wt;
+  if (wtLower.startsWith('muscle gainer')) {
+    const parts = wt.split(' - ');
+    return parts.length > 1 ? parts[parts.length - 1].trim() : 'Muscle Gainer';
+  }
+
+  if (wtLower.startsWith('sweat')) {
+    if (wtLower.includes('cardio')) return 'Cardio';
+    if (wtLower.includes('weight') || wtLower.includes('resistance')) return 'Weights';
+    return 'Cardio';
+  }
+
+  if (wtLower.startsWith('build explosion') || wtLower.startsWith('explosion')) {
+    if (wtLower.includes('body weight') || wtLower.includes('bodyweight') || wtLower.includes('plyo')) {
+      return 'Body Weight';
+    }
+    return 'Weight Based';
+  }
+
+  if (wtLower.startsWith('lazy')) {
+    const equip = (ex?.equipment || '').trim();
+    if (wtLower.includes('body weight') || wtLower.includes('bodyweight') || _BODYWEIGHT_EQUIPMENT.has(equip)) {
+      return 'Body Weight';
+    }
+    return 'Weight Based';
+  }
+
+  if (wtLower.startsWith('outdoor') || wtLower.startsWith('get outside')) {
+    return 'Outdoor';
+  }
+
+  if (wtLower.startsWith('calisthenics') || wtLower.startsWith('bodyweight only')) {
+    return 'Calisthenics';
+  }
+
+  if (wt === 'Custom' || wt === 'Workout' || wt === 'Unknown') return null;
+  if (wt.includes(' - ')) {
+    const parts = wt.split(' - ');
+    return parts[parts.length - 1].trim();
+  }
+  return wt;
 }
 
 // Define the workout data for each featured workout - using REAL workout data from the database
@@ -442,6 +512,25 @@ export default function FeaturedWorkoutDetail() {
   const [exercises, setExercises] = useState<WorkoutExercise[]>([]);
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [showAddExerciseModal, setShowAddExerciseModal] = useState(false);
+  
+  // Handle adding custom exercise to the featured workout
+  const handleAddCustomExercise = (workout: WorkoutItem) => {
+    const newExercise: WorkoutExercise = {
+      name: workout.name,
+      equipment: workout.equipment || 'Custom',
+      description: workout.description || '',
+      battlePlan: workout.battlePlan || '',
+      duration: workout.duration,
+      imageUrl: workout.imageUrl || '',
+      intensityReason: workout.intensityReason || '',
+      difficulty: workout.difficulty || 'Custom',
+      workoutType: workout.workoutType || 'Custom',
+      moodCard: workout.moodCard || 'Custom Exercise',
+      moodTips: [],
+    };
+    setExercises([...exercises, newExercise]);
+  };
   
   // Fetch workout data - first try API, fallback to hardcoded
   useEffect(() => {
@@ -724,6 +813,19 @@ export default function FeaturedWorkoutDetail() {
 
   // Add all exercises to cart
   const handleAddAllToCart = () => {
+    // === HERO PASS-THROUGH (FEATURED_CART_HERO_V3) ============================
+    // Capture the hero image from the in-memory carousel/detail-screen state
+    // BEFORE we begin pushing exercises. We do NOT re-fetch from MongoDB.
+    // Whatever value is rendering as the hero on this screen is exactly what
+    // the cart will render as its hero.
+    const heroImageUrl: string = (workout?.image as string) || '';
+    const featuredTitle: string = (workout?.title as string) || '';
+    setCartMeta({
+      source: 'featured-carousel',
+      heroImageUrl,
+      title: featuredTitle,
+    });
+
     let addedCount = 0;
     exercises.forEach((exercise, index) => {
       const cartItem: WorkoutItem = {
@@ -756,10 +858,12 @@ export default function FeaturedWorkoutDetail() {
 
   return (
     <View style={styles.container}>
-      {/* Hero Image - Uses first exercise's image */}
+      {/* Hero Image — uses workout.heroImageUrl (carousel-matching).
+          Falls back to first exercise's image only if hero is missing.
+          Resolver logic extracted to utils/featuredHeroImage.ts (unit-tested). */}
       <View style={styles.heroContainer}>
         <Image
-          source={{ uri: exercises[0]?.imageUrl || workout.image }}
+          source={{ uri: resolveFeaturedHeroImage(workout, exercises) }}
           style={styles.heroImage}
           resizeMode="cover"
         />
@@ -817,8 +921,23 @@ export default function FeaturedWorkoutDetail() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 120 }}
         >
-          {exercises.map((exercise, index) => (
-            <View key={index} style={styles.exerciseCard}>
+          {exercises.map((exercise, index) => {
+            const subPath = getExerciseSubPathLabel(exercise);
+            const prevSubPath = index > 0 ? getExerciseSubPathLabel(exercises[index - 1]) : null;
+            const showDivider = subPath && subPath !== prevSubPath;
+            return (
+              <React.Fragment key={index}>
+                {showDivider && (
+                  <View
+                    style={styles.subPathDivider}
+                    testID={`featured-subpath-divider-${subPath!.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                  >
+                    <View style={styles.subPathDividerLine} />
+                    <Text style={styles.subPathDividerLabel}>{subPath!.toUpperCase()}</Text>
+                    <View style={styles.subPathDividerLine} />
+                  </View>
+                )}
+                <View style={styles.exerciseCard}>
               <Image 
                 source={{ uri: exercise.imageUrl }}
                 style={styles.exerciseImage}
@@ -865,9 +984,30 @@ export default function FeaturedWorkoutDetail() {
                 </TouchableOpacity>
               </View>
             </View>
-          ))}
+              </React.Fragment>
+            );
+          })}
+          
+          {/* Add Custom Exercise Button */}
+          <TouchableOpacity 
+            style={styles.addExerciseButton}
+            onPress={() => setShowAddExerciseModal(true)}
+            activeOpacity={0.7}
+          >
+            <View style={styles.addExerciseIconContainer}>
+              <Ionicons name="add" size={24} color="#FFD700" />
+            </View>
+            <Text style={styles.addExerciseText}>Add Exercise</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
+
+      {/* Add Custom Exercise Modal */}
+      <AddCustomExerciseModal
+        visible={showAddExerciseModal}
+        onClose={() => setShowAddExerciseModal(false)}
+        onAdd={handleAddCustomExercise}
+      />
 
       {/* Bottom Action Bar */}
       <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 20) }]}>
@@ -1047,6 +1187,25 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
   },
+  subPathDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 4,
+    marginTop: 16,
+    marginBottom: 4,
+  },
+  subPathDividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+  },
+  subPathDividerLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: 'rgba(255, 255, 255, 0.55)',
+    letterSpacing: 1.4,
+  },
   exerciseInfo: {
     flex: 1,
     paddingHorizontal: 12,
@@ -1147,5 +1306,31 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#0c0c0c',
+  },
+  // Add Exercise Button Styles
+  addExerciseButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+    marginBottom: 8,
+    paddingVertical: 12,
+    gap: 8,
+  },
+  addExerciseIconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 215, 0, 0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.3)',
+    borderStyle: 'dashed',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addExerciseText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: 'rgba(255, 215, 0, 0.8)',
   },
 });

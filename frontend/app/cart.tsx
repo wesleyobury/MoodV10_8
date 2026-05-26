@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -14,18 +14,202 @@ import {
   Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
+import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import HomeButton from '../components/HomeButton';
 import BackButton from '../components/BackButton';
+import AddCustomExerciseModal from '../components/AddCustomExerciseModal';
+import SendWorkoutModal from '../components/SendWorkoutModal';
 import { useCart, WorkoutItem } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useDrafts } from '../contexts/DraftsContext';
 import { Analytics } from '../utils/analytics';
+import { resolveCartHeroImage, isFeaturedHeroBroken } from '../utils/cartHero';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || '';
+import { API_URL } from '../utils/apiConfig';
+
+// Dynamic workout title pools by intensity category
+const WORKOUT_TITLES = {
+  foundation: [
+    'Controlled Burn', 'Steady Pressure', 'Base Builder', 'Engine Warmup', 'Clean Effort',
+    'Foundational Fire', 'Pulse Builder', 'Momentum', 'Rhythm & Repeat', 'Break a Sweat',
+    'Light the Fuse', 'Aerobic Armor', 'Starter Surge', 'Move With Purpose', 'Core Temperature',
+    'Built to Begin', 'Fresh Legs', 'Cardio Craft', 'Daily Driver', 'Solid State'
+  ],
+  performance: [
+    'Afterburn', 'Blacktop Conditioning', 'Velocity Circuit', 'Grind Mode', 'Oxygen Debt',
+    'Relentless Tempo', 'Redline Ready', 'Shock the System', 'Burn Protocol', 'High Output',
+    'Power Pulse', 'Engine Room', 'Dark Cardio', 'Heat Index', 'Gas Tank Builder',
+    'Iron Tempo', 'Accelerate', 'The Climb', 'Threshold Work', 'Push Past'
+  ],
+  intensity: [
+    'Blackout Intervals', 'Engine Collapse', 'Zero Comfort', 'Blood & Breath', 'Conditioned to Break',
+    'Redline Ritual', 'No Oxygen Left', 'Brutal Efficiency', 'System Override', 'Total Output',
+    'Failure to Quit', 'Relentless Intervals', 'Dead Air', 'Heart Rate Hostile', 'Aftershock',
+    'Chaos Conditioning', 'Burn the Clock', 'Max Effort Only', 'The Last Round', 'Full Send'
+  ],
+  athletic: [
+    'Fight Shape', '12th Round', 'Roadwork Ritual', 'Championship Rounds', 'Overtime Engine',
+    'Cut Weight Circuit', 'Ringside Ready', 'Combat Conditioning', 'Final Bell', 'Warrior Wind'
+  ],
+  hybrid: [
+    'Iron & Intervals', 'Load & Go', 'Heavy Breath', 'Carry the Chaos', 'Strength Under Fire',
+    'Weighted Velocity', 'Power Endurance', 'Force x Speed', 'Barbell Burn', 'Grind & Go'
+  ],
+  dark: [
+    'Midnight Conditioning', 'Smoke & Sweat', 'Shadow Sprints', 'Neon Burn', 'Darkroom Intervals',
+    'Ashes & Air', 'Night Shift', 'Silent Grind', 'The Long Night', 'Iron Pulse'
+  ],
+  elite: [
+    'Surge', 'Override', 'Threshold', 'Impact', 'Ignite',
+    'Unbroken', 'Endure', 'Elevate', 'Relentless', 'Ascend'
+  ]
+};
+
+// Get a random workout title based on intensity level
+function getRandomWorkoutTitle(intensity: string, moodTitle: string): string {
+  let availablePools: string[][] = [];
+  
+  const intensityLower = (intensity || 'intermediate').toLowerCase();
+  const moodLower = (moodTitle || '').toLowerCase();
+  
+  if (intensityLower === 'beginner') {
+    availablePools = [WORKOUT_TITLES.foundation];
+  } else if (intensityLower === 'intermediate') {
+    availablePools = [WORKOUT_TITLES.performance, WORKOUT_TITLES.hybrid];
+  } else if (intensityLower === 'advanced') {
+    availablePools = [WORKOUT_TITLES.intensity, WORKOUT_TITLES.dark, WORKOUT_TITLES.elite];
+  } else {
+    availablePools = [WORKOUT_TITLES.performance];
+  }
+  
+  if (moodLower.includes('muscle') || moodLower.includes('gain') || moodLower.includes('strength')) {
+    availablePools.push(WORKOUT_TITLES.hybrid);
+  }
+  if (moodLower.includes('explosion') || moodLower.includes('explosive') || moodLower.includes('power')) {
+    availablePools.push(WORKOUT_TITLES.athletic);
+  }
+  if (moodLower.includes('sweat') || moodLower.includes('burn') || moodLower.includes('cardio')) {
+    if (intensityLower === 'advanced') {
+      availablePools.push(WORKOUT_TITLES.elite);
+    }
+  }
+  
+  const allTitles = availablePools.flat();
+  return allTitles[Math.floor(Math.random() * allTitles.length)];
+}
+
+// Common-language label helpers for Sweat metadata badge chips
+const ROLE_LABEL: Record<string, string> = {
+  primer: 'Warm-Up',
+  main_block: 'Main Set',
+  finisher: 'Finisher',
+};
+const MODALITY_LABEL: Record<string, string> = {
+  cardio: 'Cardio',
+  resistance: 'Strength',
+};
+function costLabel(c?: number): string | null {
+  if (!c) return null;
+  if (c <= 2) return 'Easy';
+  if (c === 3) return 'Moderate';
+  if (c === 4) return 'Hard';
+  return 'All-Out';
+}
+
+// Sub-path divider helper. Groups cart items by their "sub-path" within
+// each mood card using this canonical taxonomy:
+//   • Sweat          → CARDIO | WEIGHTS
+//   • Muscle Gainer  → <muscle group> (CHEST, SHOULDERS, TRICEPS, ABS, …)
+//   • Build Explosion→ BODY WEIGHT | WEIGHT BASED
+//   • Lazy           → BODY WEIGHT | WEIGHT BASED
+//   • Outdoor        → OUTDOOR
+//   • Calisthenics   → CALISTHENICS
+const MUSCLE_GROUP_NAMES = new Set([
+  'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Abs',
+  'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Legs',
+]);
+
+// Equipment names we treat as bodyweight (everything else loaded counts as
+// "weight based" for Build Explosion / Lazy carts).
+const BODYWEIGHT_EQUIPMENT = new Set([
+  'Bodyweight', 'No Equipment', 'Pull-up Bar', 'Parallel Bars', 'Bar',
+]);
+
+function getCartSubPathLabel(item: WorkoutItem): string | null {
+  const wt = (item?.workoutType || '').trim();
+  if (!wt) return null;
+
+  const wtLower = wt.toLowerCase();
+
+  // ── Muscle Gainer → muscle group ─────────────────────────────
+  if (wt.startsWith('Muscle Building')) {
+    const parts = wt.split(' - ');
+    const muscle = parts.length > 1 ? parts[parts.length - 1].trim() : '';
+    return muscle || null;
+  }
+  if (MUSCLE_GROUP_NAMES.has(wt)) return wt;
+  if (wtLower.startsWith('muscle gainer')) {
+    const parts = wt.split(' - ');
+    return parts.length > 1 ? parts[parts.length - 1].trim() : 'Muscle Gainer';
+  }
+
+  // ── Sweat → CARDIO / WEIGHTS ─────────────────────────────────
+  if (wtLower.startsWith('sweat')) {
+    if (wtLower.includes('cardio')) return 'Cardio';
+    if (wtLower.includes('weight') || wtLower.includes('resistance')) return 'Weights';
+    return 'Cardio';
+  }
+
+  // ── Build Explosion → BODY WEIGHT / WEIGHT BASED ─────────────
+  if (wtLower.startsWith('build explosion') || wtLower.startsWith('explosion')) {
+    if (wtLower.includes('body weight') || wtLower.includes('bodyweight') || wtLower.includes('plyo')) {
+      return 'Body Weight';
+    }
+    return 'Weight Based';
+  }
+
+  // ── Lazy → BODY WEIGHT / WEIGHT BASED ────────────────────────
+  if (wtLower.startsWith('lazy')) {
+    const equip = (item?.equipment || '').trim();
+    if (wtLower.includes('body weight') || wtLower.includes('bodyweight') || BODYWEIGHT_EQUIPMENT.has(equip)) {
+      return 'Body Weight';
+    }
+    return 'Weight Based';
+  }
+
+  // ── Outdoor → OUTDOOR ────────────────────────────────────────
+  if (wtLower.startsWith('outdoor') || wtLower.startsWith('get outside')) {
+    return 'Outdoor';
+  }
+
+  // ── Calisthenics → CALISTHENICS ──────────────────────────────
+  if (wtLower.startsWith('calisthenics') || wtLower.startsWith('bodyweight only')) {
+    return 'Calisthenics';
+  }
+
+  // Skip generic / placeholder values
+  if (wt === 'Custom' || wt === 'Workout' || wt === 'Unknown') return null;
+
+  // Last-resort fallback: return whatever was after the " - " separator,
+  // or the raw string. Keeps unknown moods working without a code change.
+  if (wt.includes(' - ')) {
+    const parts = wt.split(' - ');
+    return parts[parts.length - 1].trim();
+  }
+  return wt;
+}
+
+const MuscleGroupDivider: React.FC<{ label: string }> = ({ label }) => (
+  <View style={styles.muscleDivider} testID={`cart-subpath-divider-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
+    <View style={styles.muscleDividerLine} />
+    <Text style={styles.muscleDividerLabel}>{label.toUpperCase()}</Text>
+    <View style={styles.muscleDividerLine} />
+  </View>
+);
 
 const CartItemComponent: React.FC<{
   item: WorkoutItem;
@@ -42,6 +226,13 @@ const CartItemComponent: React.FC<{
   
   // Check if it's a custom workout
   const isCustomWorkout = item.workoutType === 'Custom' || item.id?.startsWith('custom-');
+  // Sweat path tags every workout with role; Outdoor path tags only combo carts (primer + main_block).
+  // Explosive carts use slot_label (Activation / Power / Bonus). Prefer slot_label, fall back to role.
+  const sweatRoleLabel = item.slot_label || (item.role ? ROLE_LABEL[item.role] : null);
+  // Muscle Gainer carts tag every workout as Compound or Isolation.
+  const typeLabel = item.exercise_type
+    ? item.exercise_type.charAt(0).toUpperCase() + item.exercise_type.slice(1)
+    : null;
   
   return (
     <View style={styles.exerciseCard}>
@@ -61,6 +252,14 @@ const CartItemComponent: React.FC<{
           )}
         </View>
         <Text style={styles.exerciseDuration}>{item.duration}</Text>
+        {sweatRoleLabel && (
+          <Text style={styles.sweatRoleLabel}>{sweatRoleLabel}</Text>
+        )}
+        {typeLabel && (
+          <Text style={styles.sweatRoleLabel} testID="exercise-type-label">
+            {typeLabel}
+          </Text>
+        )}
       </View>
       <View style={styles.exerciseActions}>
         <View style={styles.reorderButtons}>
@@ -105,18 +304,26 @@ export default function CartScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
-  const { cartItems, removeFromCart, clearCart, reorderCart, addToCart } = useCart();
+  const { cartItems, removeFromCart, clearCart, reorderCart, addToCart, replaceCart, cartMeta, setCartMeta } = useCart();
+  const { currentDraftId, beginDraft, markReady, markStarted } = useDrafts();
+  // Send-Workout-to-Friend modal state (cart-level)
+  const [sendModalVisible, setSendModalVisible] = useState(false);
   const { token } = useAuth();
   const [isStarting, setIsStarting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveModalVisible, setSaveModalVisible] = useState(false);
   const [workoutName, setWorkoutName] = useState('');
+  const [showAddExerciseModal, setShowAddExerciseModal] = useState(false);
   
   // Generated carts state for skip functionality
   const [generatedCarts, setGeneratedCarts] = useState<any[]>([]);
   const [currentCartIndex, setCurrentCartIndex] = useState(0);
   const [isGeneratedWorkout, setIsGeneratedWorkout] = useState(false);
   const [moodCard, setMoodCard] = useState('');
+  const [dynamicTitle, setDynamicTitle] = useState('');
+
+  // Track explicit cart clears to prevent re-hydration from stale route params
+  const userClearedRef = useRef(false);
 
   // Parse generated carts from params on mount
   useEffect(() => {
@@ -129,11 +336,112 @@ export default function CartScreen() {
         if (params.moodCard) {
           setMoodCard(params.moodCard as string);
         }
+        // Generate initial dynamic title based on first cart's intensity
+        const firstCart = carts[0];
+        const intensity = firstCart?.intensity || 'intermediate';
+        setDynamicTitle(getRandomWorkoutTitle(intensity, params.moodCard as string || ''));
       } catch (e) {
         console.error('Error parsing generated carts:', e);
       }
     }
   }, [params.generatedCarts]);
+
+  // Reset transient pressed states whenever the cart screen regains focus
+  // (e.g., user pressed Start, navigated to /workout-guidance, then came back).
+  useFocusEffect(
+    useCallback(() => {
+      setIsStarting(false);
+      setIsSaving(false);
+    }, [])
+  );
+
+  // ────────────────────────────────────────────────────────
+  // A2 — Hydrate cart from push notification params (cold start fix)
+  // If the cart is empty AND the route was opened from a featured workout push,
+  // populate the cart from: (1) inline pushCartItems param, or (2) fetch by featuredId.
+  // This guarantees the cart renders correctly on cold start, background resume,
+  // and when replaceCart state is lost during navigation.
+  // ────────────────────────────────────────────────────────
+  const [hydrating, setHydrating] = useState(false);
+
+  useEffect(() => {
+    if (cartItems.length > 0) return;  // already populated
+    if (userClearedRef.current) return; // user explicitly trashed — don't re-hydrate
+    if (!params.featuredId && !params.pushCartItems) return;  // not from push
+
+    let cancelled = false;
+
+    const hydrate = async () => {
+      setHydrating(true);
+
+      // Path 1: use serialized cart items from the push payload
+      if (params.pushCartItems) {
+        try {
+          const items = JSON.parse(params.pushCartItems as string);
+          if (Array.isArray(items) && items.length > 0 && !cancelled) {
+            console.log(`🛒 Cart hydrated from pushCartItems (${items.length} items)`);
+            replaceCart(items);
+            setHydrating(false);
+            return;
+          }
+        } catch (e) {
+          console.warn('🛒 Failed to parse pushCartItems:', e);
+        }
+      }
+
+      // Path 2: fetch by featuredId from backend
+      if (params.featuredId) {
+        try {
+          const resp = await fetch(`${API_URL}/api/featured/workouts/batch`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([params.featuredId]),
+          });
+          if (resp.ok && !cancelled) {
+            const result = await resp.json();
+            const workout = result.workouts?.[0];
+            if (workout?.exercises?.length) {
+              const heroUrl = workout.imageUrl || workout.image_url || workout.heroImageUrl || '';
+              const fullTitle = workout.mood && workout.title && !workout.title.toLowerCase().startsWith(workout.mood.toLowerCase())
+                ? `${workout.mood} - ${workout.title}`
+                : (workout.title || '');
+              // FEATURED_CART_HERO_V3: attach hero meta at the action site
+              // (here, the push/deep-link hydration path) — not per-item.
+              setCartMeta({
+                source: 'featured-carousel',
+                heroImageUrl: heroUrl || undefined,
+                title: fullTitle || undefined,
+              });
+              const items: WorkoutItem[] = workout.exercises.map((ex: any) => ({
+                id: ex.exerciseId || ex.id || ex.name || `hydrate-${Date.now()}`,
+                name: ex.name || '',
+                duration: ex.duration || '',
+                description: ex.description || '',
+                battlePlan: ex.battlePlan || '',
+                imageUrl: ex.imageUrl || ex.image_url || '',
+                intensityReason: ex.intensityReason || '',
+                equipment: ex.equipment || 'None',
+                difficulty: ex.difficulty || '',
+                workoutType: ex.workoutType || '',
+                moodCard: ex.moodCard || workout.title || (params.workoutTitle as string) || 'Featured Workout',
+                moodTips: ex.moodTips || [],
+                source: 'build_for_me' as const,
+              }));
+              console.log(`🛒 Cart hydrated from featuredId fetch (${items.length} exercises)`);
+              replaceCart(items);
+            }
+          }
+        } catch (e) {
+          console.warn('🛒 Failed to fetch featured workout for cart hydration:', e);
+        }
+      }
+
+      if (!cancelled) setHydrating(false);
+    };
+
+    hydrate();
+    return () => { cancelled = true; };
+  }, [params.featuredId, params.pushCartItems, cartItems.length]);
 
   // Handle skip to next generated cart
   const handleSkip = async () => {
@@ -155,6 +463,10 @@ export default function CartScreen() {
       const nextIndex = currentCartIndex + 1;
       const nextCart = generatedCarts[nextIndex];
       setCurrentCartIndex(nextIndex);
+      
+      // Generate new dynamic title for the new cart
+      const intensity = nextCart?.intensity || 'intermediate';
+      setDynamicTitle(getRandomWorkoutTitle(intensity, moodCard));
       
       // Update cart with next workout
       clearCart();
@@ -181,10 +493,15 @@ export default function CartScreen() {
         workout_name: workout.name,
       });
     }
+    // If removing the last item, mark as user-cleared to prevent re-hydration
+    if (cartItems.length <= 1) {
+      userClearedRef.current = true;
+    }
     removeFromCart(workoutId);
   };
 
   const handleClearCart = () => {
+    userClearedRef.current = true;
     clearCart();
     router.push('/(tabs)');
   };
@@ -270,21 +587,104 @@ export default function CartScreen() {
     }
   }, [token]);
 
-  const handleStartWorkoutSession = () => {
+  // === Saved Builds (drafts) lifecycle ===
+  // 1) On cart entry with items: create draft if needed (seeded with the live
+  //    cart contents so resume works immediately), then mark ready_to_start.
+  //    The seed avoids the 500ms autosave race that previously left freshly
+  //    created drafts with NULL generated_workout.
+  const draftBootRef = useRef(false);
+  useEffect(() => {
+    if (draftBootRef.current) return;
     if (cartItems.length === 0) return;
-    
+    draftBootRef.current = true;
+
+    const first = cartItems[0];
+    (async () => {
+      if (!currentDraftId) {
+        await beginDraft({
+          moodCategory: first.moodCard || first.workoutType || 'Sweat',
+          moodCard: first.workoutType || null,
+          resumeRoute: '/cart',
+          resumeParams: {},
+          generatedWorkout: cartItems,
+          thumbnailUrl:
+            (cartMeta?.source === 'featured-carousel' && cartMeta?.heroImageUrl) ||
+            first.imageUrl ||
+            undefined,
+        });
+      }
+      await markReady();
+    })();
+  }, [cartItems, currentDraftId, beginDraft, markReady]);
+
+  const handleStartWorkoutSession = async () => {
+    if (cartItems.length === 0) return;
+
     setIsStarting(true);
-    
+
+    // Mark the saved-build draft as started (fire-and-forget)
+    markStarted().catch(() => {});
+
+    const firstWorkout = cartItems[0];
+    const sessionMoodCategory =
+      firstWorkout.moodCard || firstWorkout.workoutType || 'Workout';
+
+    // Create a session-start workout snapshot so the Live tab's "Live
+    // now" card for this session can hydrate "Try this workout" via the
+    // same snapshot pipeline used for completion cards. The completion
+    // path in workout-guidance.tsx will reuse this same snapshot id (we
+    // thread it through `workoutSnapshotId` param) instead of creating
+    // a duplicate.
+    let sessionSnapshotId: string | null = null;
     if (token) {
-      const firstWorkout = cartItems[0];
+      try {
+        const totalDurationMins = cartItems.reduce(
+          (sum, w) => sum + (parseInt(String(w.duration).split(' ')[0]) || 0),
+          0,
+        );
+        const snapshotWorkouts = cartItems.map((w) => ({
+          workoutTitle: w.name,
+          workoutName: w.name,
+          equipment: w.equipment,
+          duration: w.duration,
+          difficulty: w.difficulty,
+          moodCategory: w.workoutType || w.moodCard || sessionMoodCategory,
+          imageUrl: w.imageUrl || '',
+          description: w.description || '',
+          battlePlan: w.battlePlan || '',
+          intensityReason: w.intensityReason || '',
+          moodTips: Array.isArray(w.moodTips) ? w.moodTips : [],
+        }));
+        const res = await fetch(`${API_URL}/api/workout-snapshots`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            workouts: snapshotWorkouts,
+            total_duration: totalDurationMins,
+            mood_category: sessionMoodCategory,
+          }),
+        });
+        if (res.ok) {
+          const snap = await res.json();
+          sessionSnapshotId = snap?.id || null;
+        }
+      } catch {
+        // Snapshot creation is best-effort. Live-now hydration will
+        // fall back to mood sub-selection if this fails.
+      }
+
       Analytics.workoutStarted(token, {
-        mood_category: firstWorkout.moodCard || firstWorkout.workoutType,
+        mood_category: sessionMoodCategory,
         difficulty: firstWorkout.difficulty,
         equipment: firstWorkout.equipment,
+        workout_name: firstWorkout.name,
+        workout_snapshot_id: sessionSnapshotId || undefined,
       });
     }
-    
-    const firstWorkout = cartItems[0];
+
     router.push({
       pathname: '/workout-guidance',
       params: {
@@ -311,7 +711,11 @@ export default function CartScreen() {
         }))),
         currentSessionIndex: '0',
         isSession: 'true',
-        moodTips: encodeURIComponent(JSON.stringify(firstWorkout.moodTips || []))
+        moodTips: encodeURIComponent(JSON.stringify(firstWorkout.moodTips || [])),
+        // Reuse this snapshot at completion time so we don't create a
+        // duplicate. workout-guidance.tsx falls back to creating its own
+        // if this param is missing (e.g. older nav paths).
+        workoutSnapshotId: sessionSnapshotId || '',
       }
     });
   };
@@ -452,8 +856,46 @@ export default function CartScreen() {
 
   const moodInfo = getMoodInfo();
 
-  // Empty state
-  if (cartItems.length === 0) {
+  // === HERO IMAGE PRIORITY — FEATURED_CART_HERO_V3 ===========================
+  // Resolution lives in /utils/cartHero.ts — pure function, unit-tested
+  // (see /utils/cartHero.test.ts: three-branch coverage).
+  // Do NOT inline this logic again — the test guards regressions.
+  const cartHeroImage = resolveCartHeroImage(cartMeta, cartItems[0]);
+
+  // Title split for the hero card: "Outdoor - Park to Peak" → mood "Outdoor",
+  // subtitle "Park to Peak". Only applies when meta provides a title.
+  const featuredTitle = cartMeta?.title;
+  const featuredSplit = featuredTitle && featuredTitle.includes(' - ')
+    ? {
+        mood: featuredTitle.split(' - ')[0].trim(),
+        subtitle: featuredTitle.split(' - ').slice(1).join(' - ').trim(),
+      }
+    : null;
+
+  // Observability:
+  //   - success log is DEV-only (would otherwise spam prod and drown real signal)
+  //   - broken-state assertion is ALWAYS on (loud silent regressions)
+  React.useEffect(() => {
+    if (cartItems.length === 0) return;
+    if (__DEV__) {
+      console.log('🎯 FEATURED_CART_HERO_V3_ACTIVE', {
+        source: cartMeta?.source || 'none',
+        heroImageUrl: cartMeta?.heroImageUrl || null,
+        resolved: cartHeroImage,
+        itemCount: cartItems.length,
+      });
+    }
+    if (isFeaturedHeroBroken(cartMeta)) {
+      console.error(
+        'FEATURED_CART_HERO_V3 BROKEN: featured cart missing heroImageUrl',
+        { cartMeta, firstItem: cartItems[0] }
+      );
+    }
+  }, [cartMeta?.source, cartMeta?.heroImageUrl, cartHeroImage, cartItems.length]);
+
+
+  // Empty state (but not if we're hydrating from a push notification)
+  if (cartItems.length === 0 && !hydrating) {
     return (
       <View style={styles.container}>
         <View style={[styles.emptyHeader, { paddingTop: insets.top + 10 }]}>
@@ -491,7 +933,7 @@ export default function CartScreen() {
       {/* Hero Image Section */}
       <View style={styles.heroContainer}>
         <Image
-          source={{ uri: cartItems[0]?.imageUrl }}
+          source={{ uri: cartHeroImage }}
           style={styles.heroImage}
           resizeMode="cover"
         />
@@ -512,13 +954,42 @@ export default function CartScreen() {
         
         {/* Hero Content */}
         <View style={styles.heroContent}>
-          <Text style={styles.moodLabel}>{moodInfo.mood}</Text>
-          <Text style={styles.workoutTitle}>{moodInfo.type}</Text>
+          <Text style={styles.moodLabel}>{featuredSplit?.mood || moodInfo.mood}</Text>
+          <Text style={styles.workoutTitle}>
+            {featuredSplit?.subtitle
+              ? featuredSplit.subtitle
+              : (isGeneratedWorkout && dynamicTitle ? dynamicTitle : moodInfo.type)}
+          </Text>
           <View style={styles.durationBadge}>
             <Ionicons name="time-outline" size={14} color="#FFD700" />
             <Text style={styles.durationText}>~{getTotalDuration()} min</Text>
           </View>
         </View>
+
+        {/* Muscle Gainer Flavor Badge (bottom-right of hero) */}
+        {(() => {
+          const styles_count: Record<string, number> = {};
+          for (const it of cartItems) {
+            if (it.training_style && it.training_style !== 'mixed') {
+              styles_count[it.training_style] = (styles_count[it.training_style] || 0) + 1;
+            }
+          }
+          const top = Object.entries(styles_count).sort((a, b) => b[1] - a[1])[0];
+          if (!top) return null;
+          const flavorMap: Record<string, { label: string; icon: 'barbell' | 'fitness' | 'flame' }> = {
+            strength: { label: 'Strength', icon: 'barbell' },
+            hypertrophy: { label: 'Hypertrophy', icon: 'fitness' },
+            pump: { label: 'Pump', icon: 'flame' },
+          };
+          const fl = flavorMap[top[0]];
+          if (!fl) return null;
+          return (
+            <View style={styles.cartFlavorBadge} testID="cart-flavor-badge">
+              <Ionicons name={fl.icon} size={14} color="#FFD700" />
+              <Text style={styles.cartFlavorBadgeText}>{fl.label}</Text>
+            </View>
+          );
+        })()}
       </View>
 
       {/* Exercise List */}
@@ -530,22 +1001,78 @@ export default function CartScreen() {
         <ScrollView 
           style={styles.exerciseList}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 120 }}
+          contentContainerStyle={{ paddingBottom: 24 }}
         >
-          {cartItems.map((item, index) => (
-            <CartItemComponent
-              key={item.id}
-              item={item}
-              index={index}
-              onRemove={handleRemoveItem}
-              onMoveUp={handleMoveUp}
-              onMoveDown={handleMoveDown}
-              isFirst={index === 0}
-              isLast={index === cartItems.length - 1}
-            />
-          ))}
+          {cartItems.map((item, index) => {
+            const subPath = getCartSubPathLabel(item);
+            const prevSubPath = index > 0 ? getCartSubPathLabel(cartItems[index - 1]) : null;
+            const showDivider = subPath && subPath !== prevSubPath;
+            return (
+              <React.Fragment key={item.id}>
+                {showDivider && <MuscleGroupDivider label={subPath!} />}
+                <CartItemComponent
+                  item={item}
+                  index={index}
+                  onRemove={handleRemoveItem}
+                  onMoveUp={handleMoveUp}
+                  onMoveDown={handleMoveDown}
+                  isFirst={index === 0}
+                  isLast={index === cartItems.length - 1}
+                />
+              </React.Fragment>
+            );
+          })}
+          
+          {/* Add Custom Exercise Button - appears below last exercise */}
+          <TouchableOpacity 
+            style={styles.addExerciseButton}
+            onPress={() => setShowAddExerciseModal(true)}
+            activeOpacity={0.7}
+          >
+            <View style={styles.addExerciseIconContainer}>
+              <Ionicons name="add" size={24} color="#FFD700" />
+            </View>
+            <Text style={styles.addExerciseText}>Add Exercise</Text>
+          </TouchableOpacity>
+
+          {/* Send Workout to Friend — cart-level share */}
+          {cartItems.length > 0 && (
+            <TouchableOpacity
+              style={styles.sendCartButton}
+              onPress={() => setSendModalVisible(true)}
+              activeOpacity={0.7}
+              testID="cart-send-workout-btn"
+            >
+              <Ionicons name="paper-plane-outline" size={16} color="#bfbfbf" />
+              <Text style={styles.sendCartButtonText}>Send Workout to Friend</Text>
+            </TouchableOpacity>
+          )}
         </ScrollView>
       </View>
+
+      {/* Add Custom Exercise Modal */}
+      <AddCustomExerciseModal
+        visible={showAddExerciseModal}
+        onClose={() => setShowAddExerciseModal(false)}
+      />
+
+      {/* Send Workout (cart-level) Modal */}
+      <SendWorkoutModal
+        visible={sendModalVisible}
+        onClose={() => setSendModalVisible(false)}
+        workout={cartItems.length > 0 ? {
+          name: (isGeneratedWorkout && dynamicTitle) ? dynamicTitle : (moodInfo.type || 'Workout'),
+          imageUrl: cartItems[0]?.imageUrl || '',
+          duration: `${getTotalDuration()} min`,
+          description: cartItems.map((c) => c.name).join(' · '),
+          // Carry the full cart so the recipient can preview/replicate it
+          workouts: cartItems,
+        } as any : null}
+        equipment={cartItems[0]?.equipment || ''}
+        difficulty={(generatedCarts[currentCartIndex]?.intensity) || (cartItems[0]?.difficulty) || ''}
+        moodCategory={moodInfo.mood || ''}
+        subtext={(isGeneratedWorkout && dynamicTitle) ? '' : (moodInfo.type || '')}
+      />
 
       {/* Bottom Action Bar */}
       <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 20) }]}>
@@ -736,6 +1263,27 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
+  cartFlavorBadge: {
+    position: 'absolute',
+    right: 16,
+    bottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.18)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+    zIndex: 10,
+  },
+  cartFlavorBadgeText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.3,
+  },
   // Content Section Styles
   contentContainer: {
     flex: 1,
@@ -812,6 +1360,32 @@ const styles = StyleSheet.create({
   exerciseDuration: {
     fontSize: 12,
     color: 'rgba(255, 255, 255, 0.6)',
+  },
+  sweatRoleLabel: {
+    fontSize: 11,
+    color: 'rgba(255, 255, 255, 0.92)',
+    fontWeight: '600',
+    letterSpacing: 0.4,
+    marginTop: 4,
+  },
+  muscleDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 4,
+    marginTop: 14,
+    marginBottom: 8,
+  },
+  muscleDividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+  },
+  muscleDividerLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: 'rgba(255, 255, 255, 0.55)',
+    letterSpacing: 1.4,
   },
   exerciseActions: {
     flexDirection: 'row',
@@ -1039,5 +1613,51 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#000',
+  },
+  // Add Exercise Button Styles
+  addExerciseButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+    marginBottom: 8,
+    paddingVertical: 12,
+    gap: 8,
+  },
+  addExerciseIconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 215, 0, 0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.3)',
+    borderStyle: 'dashed',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addExerciseText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: 'rgba(255, 215, 0, 0.8)',
+  },
+  // Send Workout to Friend (cart-level)
+  sendCartButton: {
+    height: 44,
+    marginTop: 14,
+    marginHorizontal: 4,
+    backgroundColor: 'transparent',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.32)',
+  },
+  sendCartButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#ffffff',
+    letterSpacing: 0.2,
   },
 });

@@ -37,3 +37,11 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+# Generated native directories (managed Expo workflow)
+# IMPORTANT: anchor to root so unanchored `ios/` / `android/` patterns do NOT
+# match `modules/mood-*/ios/` and strip our local Swift sources during
+# expo prebuild / EAS uploads.
+/ios/
+/android/
+package-lock.json
