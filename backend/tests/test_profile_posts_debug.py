@@ -22,7 +22,7 @@ import os
 import time
 
 # Use the public URL from frontend .env
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://free-tier-limit-2.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://mood-build.preview.emergentagent.com').rstrip('/')
 
 # Test credentials
 TEST_USER_USERNAME = "profile_test_user"

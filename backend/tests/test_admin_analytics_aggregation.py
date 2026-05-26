@@ -22,7 +22,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 # Use public ingress URL (frontend EXPO_PUBLIC_BACKEND_URL).
 BASE_URL = os.environ.get(
     "REACT_APP_BACKEND_URL",
-    os.environ.get("EXPO_PUBLIC_BACKEND_URL", "https://free-tier-limit-2.preview.emergentagent.com"),
+    os.environ.get("EXPO_PUBLIC_BACKEND_URL", "https://mood-build.preview.emergentagent.com"),
 ).rstrip("/")
 
 MONGO_URL = os.environ.get("MONGO_URL", "mongodb://localhost:27017")

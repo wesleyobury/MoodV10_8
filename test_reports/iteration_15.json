@@ -38,5 +38,5 @@
   "seed_data_creation": "Each test module run creates 2 throwaway TEST_-prefixed users (one admin, one non-admin). Admin user is removed in module teardown; non-admin user is left in DB (low impact).",
   "retest_needed": false,
   "should_main_agent_self_test": false,
-  "context_for_next_testing_agent": "Use the admin_token fixture pattern from test_admin_analytics_aggregation.py for any future admin-endpoint testing - it registers a fresh user and flips is_admin=True via direct Mongo write. BASE_URL resolves to https://free-tier-limit-2.preview.emergentagent.com from EXPO_PUBLIC_BACKEND_URL. Backend env APP_ENV=production - no staging shortcuts active."
+  "context_for_next_testing_agent": "Use the admin_token fixture pattern from test_admin_analytics_aggregation.py for any future admin-endpoint testing - it registers a fresh user and flips is_admin=True via direct Mongo write. BASE_URL resolves to https://mood-build.preview.emergentagent.com from EXPO_PUBLIC_BACKEND_URL. Backend env APP_ENV=production - no staging shortcuts active."
 }

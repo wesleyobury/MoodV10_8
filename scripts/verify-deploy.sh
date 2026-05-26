@@ -13,7 +13,7 @@
 #
 set -euo pipefail
 
-URL="${1:-https://free-tier-limit-2.preview.emergentagent.com}"
+URL="${1:-https://mood-build.preview.emergentagent.com}"
 PLATFORM="${2:-ios}"
 
 case "$PLATFORM" in
