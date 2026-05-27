@@ -23,6 +23,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
 import Constants from 'expo-constants';
 import { useAuth } from '../../contexts/AuthContext';
+import { useHealth } from '../../contexts/HealthContext';
 import { Analytics } from '../../utils/analytics';
 import { useScreenTime } from '../../hooks/useScreenTime';
 import GuestPromptModal from '../../components/GuestPromptModal';
@@ -304,11 +305,67 @@ interface MoodCard {
   gradient: string[];
 }
 
+// "This week" trending indicator — shows count + softly bobbing upward arrow.
+// Only rendered when count > 5 (per spec).
+const WeeklyTrendIndicator = ({ count }: { count: number }) => {
+  const bob = useRef(new Animated.Value(0)).current;
+  const fade = useRef(new Animated.Value(0.55)).current;
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.parallel([
+          Animated.timing(bob, {
+            toValue: -4,
+            duration: 800,
+            easing: Easing.out(Easing.quad),
+            useNativeDriver: true,
+          }),
+          Animated.timing(fade, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.parallel([
+          Animated.timing(bob, {
+            toValue: 0,
+            duration: 800,
+            easing: Easing.in(Easing.quad),
+            useNativeDriver: true,
+          }),
+          Animated.timing(fade, {
+            toValue: 0.55,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.delay(400),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [bob, fade]);
+
+  return (
+    <View style={styles.trendContainer}>
+      <Animated.View
+        style={{ transform: [{ translateY: bob }], opacity: fade }}
+      >
+        <Ionicons name="trending-up" size={18} color="#FFD700" />
+      </Animated.View>
+      <Text style={styles.trendCount}>{count}</Text>
+      <Text style={styles.trendLabel}>this week</Text>
+    </View>
+  );
+};
+
 // Animated Mood Card Component - MOBILE OPTIMIZED
-const AnimatedMoodCard = ({ mood, index, onPress }: { 
+const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: { 
   mood: MoodCard; 
   index: number; 
   onPress: (mood: MoodCard) => void;
+  weeklyCount?: number;
 }) => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
@@ -358,14 +415,29 @@ const AnimatedMoodCard = ({ mood, index, onPress }: {
     outputRange: ['0deg', '180deg', '360deg'],
   });
 
+  const showTrend = (weeklyCount ?? 0) > 5;
+
   return (
     <TouchableOpacity
       style={styles.moodCardContainer}
       onPress={() => onPress(mood)}
-      activeOpacity={0.8}
+      activeOpacity={0.85}
     >
-      {/* Highly Visible Card */}
-      <View style={styles.visibleMoodCard}>
+      {/* Premium on-brand gradient card */}
+      <LinearGradient
+        colors={['#262626', '#181818', '#0d0d0d']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        locations={[0, 0.55, 1]}
+        style={styles.visibleMoodCard}
+      >
+        {/* Subtle gold left edge accent for brand polish */}
+        <LinearGradient
+          colors={['rgba(255, 215, 0, 0.55)', 'rgba(255, 215, 0, 0)']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.moodCardEdgeAccent}
+        />
         <View style={styles.cardContent}>
           <Animated.View 
             style={[
@@ -389,16 +461,73 @@ const AnimatedMoodCard = ({ mood, index, onPress }: {
             <Text style={styles.cardTitle}>{mood.title}</Text>
             <Text style={styles.cardSubtitle}>{mood.subtitle}</Text>
           </View>
-          <View style={styles.arrowContainer}>
-            <Ionicons 
-              name="chevron-forward" 
-              size={20} 
-              color="rgba(255, 255, 255, 0.3)" 
-            />
-          </View>
+          {showTrend ? (
+            <WeeklyTrendIndicator count={weeklyCount!} />
+          ) : (
+            <View style={styles.arrowContainer}>
+              <Ionicons 
+                name="chevron-forward" 
+                size={20} 
+                color="rgba(255, 255, 255, 0.3)" 
+              />
+            </View>
+          )}
         </View>
-      </View>
+      </LinearGradient>
     </TouchableOpacity>
+  );
+};
+
+// Wearables stats row — "Latest Snapshot" pulled from HealthKit + last workout calories.
+const WearablesSnapshot = ({
+  restingHr,
+  sleepMinutes,
+  steps,
+  calories,
+}: {
+  restingHr: number | null;
+  sleepMinutes: number | null;
+  steps: number | null;
+  calories: number | null;
+}) => {
+  const fmtSleep = (m: number | null) => {
+    if (m == null || m <= 0) return '—';
+    const h = Math.floor(m / 60);
+    const min = Math.round(m % 60);
+    return `${h}h ${min}m`;
+  };
+  const fmtNum = (n: number | null, fallback = '—') => {
+    if (n == null) return fallback;
+    return n.toLocaleString();
+  };
+
+  return (
+    <View style={styles.wearablesRow}>
+      <View style={styles.wearableTile}>
+        <Ionicons name="flame-outline" size={18} color="#FFD700" />
+        <Text style={styles.wearableValue}>{fmtNum(calories)}</Text>
+        <Text style={styles.wearableLabel}>CALORIES</Text>
+        <Text style={styles.wearableSubLabel}>Last workout</Text>
+      </View>
+      <View style={styles.wearableTile}>
+        <Ionicons name="footsteps-outline" size={18} color="#FFD700" />
+        <Text style={styles.wearableValue}>{fmtNum(steps)}</Text>
+        <Text style={styles.wearableLabel}>STEPS</Text>
+        <Text style={styles.wearableSubLabel}>Yesterday</Text>
+      </View>
+      <View style={styles.wearableTile}>
+        <Ionicons name="heart-outline" size={18} color="#FFD700" />
+        <Text style={styles.wearableValue}>{fmtNum(restingHr)}</Text>
+        <Text style={styles.wearableLabel}>RESTING HR</Text>
+        <Text style={styles.wearableSubLabel}>BPM</Text>
+      </View>
+      <View style={styles.wearableTile}>
+        <Ionicons name="moon-outline" size={18} color="#8AB4FF" />
+        <Text style={styles.wearableValue}>{fmtSleep(sleepMinutes)}</Text>
+        <Text style={styles.wearableLabel}>SLEEP</Text>
+        <Text style={styles.wearableSubLabel}>Last night</Text>
+      </View>
+    </View>
   );
 };
 
@@ -505,6 +634,8 @@ export default function WorkoutsHome() {
   
   const [greeting, setGreeting] = useState('');
   const [userStats, setUserStats] = useState({ workouts: 0, minutes: 0, streak: 0 });
+  const [weeklyMoodCounts, setWeeklyMoodCounts] = useState<Record<string, number>>({});
+  const [lastWorkoutCalories, setLastWorkoutCalories] = useState<number | null>(null);
   const [activeCarouselIndex, setActiveCarouselIndex] = useState(0);
   const [savedWorkoutIds, setSavedWorkoutIds] = useState<Set<string>>(new Set());
   const [savingWorkoutIds, setSavingWorkoutIds] = useState<Set<string>>(new Set());
@@ -811,17 +942,49 @@ export default function WorkoutsHome() {
       console.log('Error fetching user stats:', error);
     }
   }, [token]);
+
+  // Fetch lightweight home summary (weekly mood selection counts + last workout calories)
+  const fetchHomeSummary = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await fetch(`${API_URL}/api/users/me/home-summary`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setWeeklyMoodCounts(data.weekly_mood_counts || {});
+        setLastWorkoutCalories(
+          typeof data.last_workout_calories === 'number'
+            ? data.last_workout_calories
+            : null
+        );
+      }
+    } catch (error) {
+      console.log('Error fetching home summary:', error);
+    }
+  }, [token]);
   
   // Fetch stats on initial mount
   useEffect(() => {
     fetchUserStats();
-  }, [fetchUserStats]);
+    fetchHomeSummary();
+  }, [fetchUserStats, fetchHomeSummary]);
   
   // Refetch stats when screen comes into focus (to keep streak in sync)
   useFocusEffect(
     useCallback(() => {
       fetchUserStats();
-    }, [fetchUserStats])
+      fetchHomeSummary();
+    }, [fetchUserStats, fetchHomeSummary])
+  );
+
+  // HealthKit snapshot — silently returns nulls when permissions not granted
+  // or on Android/Expo Go builds; the wearables section handles that gracefully.
+  const { snapshot: healthSnapshot, refresh: refreshHealth } = useHealth();
+  useFocusEffect(
+    useCallback(() => {
+      refreshHealth({ silent: true });
+    }, [refreshHealth])
   );
 
   const handleMoodSelect = (mood: MoodCard) => {
@@ -954,6 +1117,14 @@ export default function WorkoutsHome() {
           />
         </View>
 
+        {/* Wearables — Latest Snapshot (calories, steps, resting HR, sleep) */}
+        <WearablesSnapshot
+          restingHr={healthSnapshot?.restingHeartRate ?? null}
+          sleepMinutes={healthSnapshot?.asleepDurationMinutes ?? null}
+          steps={healthSnapshot?.stepCount ?? null}
+          calories={lastWorkoutCalories}
+        />
+
         {/* Featured Workouts Carousel - Condensed */}
         <View style={styles.carouselSection}>
           <Text style={styles.carouselTitle2}>Featured Workouts</Text>
@@ -1010,6 +1181,7 @@ export default function WorkoutsHome() {
                 mood={mood}
                 index={index}
                 onPress={handleMoodSelect}
+                weeklyCount={weeklyMoodCounts[mood.id] ?? 0}
               />
             ))}
           </View>
@@ -1325,7 +1497,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 32,
     paddingTop: 8,
-    paddingBottom: 12,
+    paddingBottom: 8, // tightened from 12 to make room for wearables row
   },
   // Pulse + flanking hairlines above MOOD wordmark
   pulseRow: {
@@ -1353,7 +1525,7 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#FFD700',
     borderRadius: 1,
-    marginTop: 14,
+    marginTop: 8,
     opacity: 0.85,
   },
   centeredBrandTitle: {
@@ -1364,7 +1536,7 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(255, 215, 0, 0.15)',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 6,
-    marginBottom: 4,
+    marginBottom: 2,
     textAlign: 'center',
   },
   centeredBrandSubtitle: {
@@ -1373,7 +1545,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     letterSpacing: 4,
     textTransform: 'uppercase',
-    marginBottom: 8,
+    marginBottom: 4,
     textAlign: 'center',
   },
   centeredSocialContainer: {
@@ -1469,9 +1641,9 @@ const styles = StyleSheet.create({
     padding: 0,
     minHeight: 80,
     justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: 'transparent',
-    backgroundColor: '#1a1a1a',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.10)',
+    overflow: 'hidden',
     shadowColor: 'transparent',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0,
@@ -1636,8 +1808,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 4,
-    marginBottom: 16,
+    marginTop: 2,
+    marginBottom: 6,
     paddingHorizontal: 8,
     overflow: 'visible', // Critical: don't clip
   },
@@ -1645,7 +1817,7 @@ const styles = StyleSheet.create({
     width: 110,
     alignItems: 'center',
     overflow: 'visible', // Critical: don't clip
-    paddingBottom: 20,
+    paddingBottom: 8,
   },
   // Outer bloom layer - larger, softer
   outerGlow: {
@@ -1696,6 +1868,77 @@ const styles = StyleSheet.create({
   },
   floatingStatLabelStreak: {
     color: 'rgba(255, 215, 0, 0.7)',
+  },
+  // === Wearables — Latest Snapshot row ===
+  wearablesRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginTop: 2,
+    marginBottom: 14,
+    paddingHorizontal: 16,
+    gap: 8,
+  },
+  wearableTile: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 4,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.025)',
+    borderWidth: 0.5,
+    borderColor: 'rgba(255, 215, 0, 0.08)',
+  },
+  wearableValue: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginTop: 4,
+    letterSpacing: -0.3,
+  },
+  wearableLabel: {
+    fontSize: 9,
+    color: 'rgba(255, 255, 255, 0.55)',
+    marginTop: 4,
+    textTransform: 'uppercase',
+    letterSpacing: 1.1,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  wearableSubLabel: {
+    fontSize: 9,
+    color: 'rgba(255, 255, 255, 0.35)',
+    marginTop: 2,
+    textAlign: 'center',
+  },
+  // === "This week" trend indicator on mood cards ===
+  trendContainer: {
+    minWidth: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 6,
+  },
+  trendCount: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginTop: 2,
+    letterSpacing: -0.4,
+  },
+  trendLabel: {
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.55)',
+    marginTop: 1,
+    letterSpacing: 0.3,
+  },
+  // Premium gold edge accent on left side of mood card
+  moodCardEdgeAccent: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 64,
+    opacity: 0.18,
   },
   // Exercise Search Section
 });

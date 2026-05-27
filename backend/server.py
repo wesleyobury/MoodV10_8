@@ -6895,6 +6895,64 @@ async def get_current_user_stats(current_user_id: str = Depends(get_current_user
     }
 
 
+@api_router.get("/users/me/home-summary")
+async def get_home_summary(current_user_id: str = Depends(get_current_user)):
+    """Aggregate small-payload data needed by the home screen:
+    - weekly_mood_counts: per-mood `mood_selected` event counts over the last 7 days
+    - last_workout_calories: calories_estimate from the user's most recently completed workout
+    """
+    now = datetime.now(timezone.utc)
+    week_start = now - timedelta(days=7)
+
+    # Per-mood selection counts in the last 7 days
+    weekly_mood_counts: Dict[str, int] = {}
+    try:
+        pipeline = [
+            {
+                "$match": {
+                    "user_id": current_user_id,
+                    "event_type": "mood_selected",
+                    "timestamp": {"$gte": week_start},
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$metadata.mood_category",
+                    "count": {"$sum": 1},
+                }
+            },
+        ]
+        async for row in db.user_events.aggregate(pipeline):
+            mood_id = row.get("_id")
+            if not mood_id:
+                continue
+            weekly_mood_counts[mood_id] = int(row.get("count", 0))
+    except Exception as e:
+        logger.warning(f"home-summary: weekly_mood_counts failed: {e}")
+
+    # Calories from the user's most recent completed workout
+    last_workout_calories: Optional[int] = None
+    try:
+        latest = await db.user_workouts.find_one(
+            {"user_id": current_user_id},
+            sort=[("completed_at", -1)],
+        )
+        if latest and latest.get("workout_id"):
+            try:
+                wo = await db.workouts.find_one({"_id": ObjectId(latest["workout_id"])})
+            except Exception:
+                wo = await db.workouts.find_one({"_id": latest["workout_id"]})
+            if wo and wo.get("calories_estimate") is not None:
+                last_workout_calories = int(wo.get("calories_estimate"))
+    except Exception as e:
+        logger.warning(f"home-summary: last_workout_calories failed: {e}")
+
+    return {
+        "weekly_mood_counts": weekly_mood_counts,
+        "last_workout_calories": last_workout_calories,
+    }
+
+
 @api_router.get("/users/{user_id}", response_model=UserResponse)
 async def get_user_by_id(user_id: str):
     try:

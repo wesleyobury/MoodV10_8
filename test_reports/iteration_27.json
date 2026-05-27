@@ -1,0 +1,49 @@
+{
+  "summary": "Validated NEW GET /api/users/me/home-summary endpoint (6 pytest cases, 100% pass) and homepage UI updates (MOOD header, animated stats row, NEW wearables row of 4 tiles, Featured Workouts carousel, 6 mood cards with NEW LinearGradient #262626->#181818->#0d0d0d background, trending-up trend indicator with count + 'this week' for mood with >5 selections). CRITICAL CONFIG FINDING: frontend bundle's API_URL points to https://mood-cutover.preview.emergentagent.com (stale backend WITHOUT the new home-summary endpoint, returns 404). The new endpoint exists only on https://mood-cutover-1.preview.emergentagent.com. UI was validated by intercepting requests in Playwright and re-routing them to -1; in the actual deployed preview without that workaround, the weekly_mood_counts call returns 404 so the trend indicator will never appear for real users. Deprecated packages detected: expo-av still imported (warning in expo logs).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Home -> fetchHomeSummary",
+        "issue": "frontend/.env EXPO_PUBLIC_API_URL=https://mood-cutover.preview.emergentagent.com but the new /api/users/me/home-summary is deployed ONLY on https://mood-cutover-1.preview.emergentagent.com (verified: mood-cutover returns 404 'Not Found' for this route while mood-cutover-1 returns 200). As a result, fetchHomeSummary() in app/(tabs)/index.tsx silently fails (response.ok is false, weeklyMoodCounts stays {}), and the new trend indicator on mood cards will never render for users hitting the deployed preview. Same issue affects any other endpoints added in this iteration.",
+        "affected_testIDs": []
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": [
+      {
+        "component": "expo-av",
+        "issue": "Deprecated: expo-av will be removed in SDK 54 — replace with expo-audio / expo-video. Warning logged on every page load in /var/log/supervisor/expo.err.log."
+      },
+      {
+        "component": "props.pointerEvents",
+        "issue": "Web-only warning: 'props.pointerEvents is deprecated. Use style.pointerEvents'. Likely on the <Animated.View pointerEvents=\"none\"> in app/index.tsx around the landing-bg-video layer."
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_home_summary.py",
+    "/app/test_reports/pytest/home_summary_results.xml"
+  ],
+  "action_items": [
+    "Align frontend EXPO_PUBLIC_API_URL with the active backend that has the new endpoint (either point it to mood-cutover-1.preview.emergentagent.com OR redeploy the new server.py to mood-cutover.preview.emergentagent.com). Right now /api/users/me/home-summary returns 404 from the URL the frontend actually calls.",
+    "Optional: migrate expo-av usages to expo-audio / expo-video to silence the deprecation warning before SDK 54."
+  ],
+  "critical_code_review_comments": [
+    "GET /users/me/home-summary uses HTTPBearer via get_current_user, so no-auth returns 403 and invalid token returns 401 — both verified.",
+    "Aggregation pipeline correctly groups by metadata.mood_category over last 7 days; rows without a mood_category are skipped (good).",
+    "fetchHomeSummary() at app/(tabs)/index.tsx:947 swallows non-2xx responses silently (only console.log on throw). Consider logging response.status when !response.ok so the env-mismatch above is loud in dev.",
+    "AnimatedMoodCard correctly renders LinearGradient (#262626, #181818, #0d0d0d) with gold-edge accent and uses showTrend = (weeklyCount ?? 0) > 5 — matches spec."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100% (when API calls reach the correct backend; 0% for the trend indicator in the live preview because of the env-URL mismatch)"},
+  "seed_data_creation": "Two ephemeral users created during testing: uihome_1779870369279 on mood-cutover-1 (with 7 sweat mood_selected events to exceed the >5 trend threshold) and uifrontend_1779870468746 on mood-cutover (used to verify the API_URL points to a backend missing the new endpoint).",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend tests live in /app/backend/tests/test_home_summary.py and run green against EXPO_BACKEND_URL=https://mood-cutover-1.preview.emergentagent.com. To exercise the homepage UI end-to-end you must either fix the API URL mismatch first OR re-apply the Playwright route trick (redirect mood-cutover.preview -> mood-cutover-1.preview). After token + auth_token_stored_at injection into localStorage and goto('/(tabs)'), the onboarding flow asks Medical Disclaimer -> Health Intro -> Health Connect — click 'I Understand', 'Continue', then 'Maybe later' to reach the home tab. Trend indicator is gated on weeklyCount > 5 (strictly greater).",
+  "rca_of_issue": "EXPO_PUBLIC_API_URL in /app/frontend/.env (=https://mood-cutover.preview.emergentagent.com) and EXPO_PUBLIC_BACKEND_URL (=https://mood-cutover-1.preview.emergentagent.com) point to two different backend deployments. The frontend uses API_URL (the first one) for all API calls including /api/users/me/home-summary, but the new endpoint is only present on the -1 backend. Repro: curl GET https://mood-cutover.preview.emergentagent.com/api/users/me/home-summary -> 404 Not Found; same path on mood-cutover-1 -> 403 (auth required) or 200 with token. Mitigation: update EXPO_PUBLIC_API_URL to match EXPO_PUBLIC_BACKEND_URL (or redeploy backend to the -cutover host)."
+}
