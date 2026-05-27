@@ -40,9 +40,9 @@ Everything in section 5 must be exercised against `mood_app_staging_clone` first
 All these are **🟢 SAFE-ON-PROD** — they're build-config checks, not data writes.
 
 - [ ] `frontend/app.json` → `ios.bundleIdentifier` literally equals the Bundle ID listed in App Store Connect → App Information.
-- [ ] `frontend/app.json` → `expo.version` is **strictly greater** than the version currently live in the App Store.
-- [ ] `frontend/app.json` → `ios.buildNumber` is **strictly greater** than the highest build number ever submitted under that version (check App Store Connect → TestFlight).
-- [ ] `frontend/app.json` → `android.versionCode` is **strictly greater** than the live Play Store versionCode. (Current value `7` looks suspiciously low — verify.)
+- [x] `frontend/app.json` → `expo.version` is **strictly greater** than the version currently live in the App Store. **(✅ bumped `1.2.0` → `1.2.1` on 2026-05-27)**
+- [x] `frontend/app.json` → `ios.buildNumber` is **strictly greater** than the highest build number ever submitted under that version (check App Store Connect → TestFlight). **(✅ bumped `64` → `65` on 2026-05-27, per owner-confirmed live build)**
+- [x] `frontend/app.json` → `android.versionCode` is **strictly greater** than the live Play Store versionCode. **(✅ bumped `7` → `8` on 2026-05-27, per owner direction)**
 - [ ] `frontend/app.json` → `extra.eas.projectId` matches the EAS project that holds your APNs key and current OTA update channel. If it doesn't, you have a credentials migration on the EAS side first.
 - [ ] Apple Developer Team that will sign this build is the same Team that signed the live app. (Apple Sign-In stable user IDs are scoped per-Team — different Team = every user looks brand new.)
 - [ ] If the live app uses Universal Links: add `ios.associatedDomains: ["applinks:<yourdomain>"]` to `app.json` and re-confirm the AASA file is published. If you only use the `moodapp://` scheme, skip.
@@ -260,9 +260,10 @@ Reality check: an App Store binary can't be "rolled back" — only the backend c
 | `MONGO_URL` pointed at the existing prod DB | ⚠️ still your responsibility — the entire premise of this runbook |
 | Legacy users missing `user_id` / `name` | ⚠️ run `scripts/backfill_user_id.py --dry-run` against staging clone first to learn the count |
 | Posts with orphan `author_id` | ⚠️ run `scripts/audit_post_authors.py` against staging clone for visibility |
-| iOS version/build bump above the live App Store record | ⚠️ set at build-submit time, not now |
-| `android.versionCode` above the live Play Store record (if shipping Android) | ⚠️ current value `7` looks low — verify before submitting |
+| iOS version/build bump above the live App Store record | ✅ `version` 1.2.0→1.2.1, `buildNumber` 64→65 (2026-05-27) |
+| `android.versionCode` above the live Play Store record (if shipping Android) | ✅ bumped 7→8 (2026-05-27, per owner) |
 | `ios.deploymentTarget: 16.0` cutting off iOS 15 users | ⚠️ decide whether that's acceptable |
-| `ios.associatedDomains` for Universal Links | ⚠️ if live app uses Universal Links, add them back; if only `moodapp://` scheme, skip |
+| `ios.associatedDomains` for Universal Links | ✅ not required — live app uses `moodapp://` custom scheme only (verified git history + source 2026-05-27) |
 
 The remaining items are all configuration/parity checks, not data-loss risks. The data-side of the cutover is now substantially de-risked.
+ items are all configuration/parity checks, not data-loss risks. The data-side of the cutover is now substantially de-risked.
