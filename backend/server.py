@@ -12351,14 +12351,17 @@ async def record_choose_for_me_usage(
             "remaining_uses": 999 if is_admin or is_muscle_gainer else max(0, 3 - usage_count),
         }
     
-    # Record the usage
-    usage_record = {
-        "user_id": current_user_id,
-        "mood_card": request.moodCard,
-        "intensity": request.intensity,
-        "created_at": now
-    }
-    await db.choose_for_me_usage.insert_one(usage_record)
+    # Record the usage — but skip for muscle-gainer mood, since MG is uncapped and
+    # we don't want MG calls to silently burn the 3/day cap for other moods that
+    # share the choose_for_me_usage counter.
+    if not is_muscle_gainer:
+        usage_record = {
+            "user_id": current_user_id,
+            "mood_card": request.moodCard,
+            "intensity": request.intensity,
+            "created_at": now
+        }
+        await db.choose_for_me_usage.insert_one(usage_record)
     
     # Save the generated workouts
     workout_record = {
