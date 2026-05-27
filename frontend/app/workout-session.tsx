@@ -18,6 +18,7 @@ import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useDrafts } from '../contexts/DraftsContext';
 import { useHealth } from '../contexts/HealthContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import { API_URL } from '../utils/apiConfig';
 import {
@@ -61,6 +62,7 @@ export default function WorkoutSessionScreen() {
   const { token } = useAuth();
   const { markCompleted } = useDrafts();
   const { status: healthStatus } = useHealth();
+  const { recordStartFreeWorkout } = useSubscription();
 
   // Live heart-rate streaming. Samples accumulate in a ref so the updateHandler
   // doesn't blow up re-renders during long sessions; the stream is started
@@ -395,6 +397,13 @@ export default function WorkoutSessionScreen() {
         workout_snapshot_id: workoutSnapshotId || undefined,
       });
     }
+
+    // Spec §3 Stage 3 — consume the free session on COMPLETION (not start).
+    // Idempotent setter: only flips `hasUsedFreeSession=true` for non-
+    // subscribers, and only writes once. On workout #2 attempt, the
+    // `canStartWorkout` check in workout-guidance.tsx will be false and
+    // trigger `start_workout_after_free_session` paywall.
+    recordStartFreeWorkout();
 
     // Clear cart
     clearCart();

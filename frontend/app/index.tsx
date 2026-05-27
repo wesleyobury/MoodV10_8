@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Video, ResizeMode } from 'expo-av';
 import { useSubscription, PaywallTrigger } from '../contexts/SubscriptionContext';
+import { readHasCompletedFunnel } from '../contexts/OnboardingFunnelContext';
 
 const { width, height } = Dimensions.get('window');
 const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
@@ -207,12 +208,21 @@ export default function Welcome() {
     // (FunnelEntryGate set `@mood_needs_funnel` and re-routed to `/` so the
     // user could watch the video first). Consume the flag and push into the
     // 8-step funnel exactly once.
+    //
+    // Spec §2d — also gate on the persisted `completedAt`. If a returning
+    // user somehow still has the stale flag set (e.g. crashed mid-register
+    // and re-launched after completing the funnel previously), we MUST NOT
+    // re-route them into the funnel. Self-heal by clearing the flag and
+    // falling through to login / home.
     try {
       const needsFunnel = await AsyncStorage.getItem('@mood_needs_funnel');
       if (needsFunnel === 'true') {
+        const alreadyCompleted = await readHasCompletedFunnel();
         await AsyncStorage.removeItem('@mood_needs_funnel');
-        router.replace('/onboarding-funnel/step-1-mood');
-        return;
+        if (!alreadyCompleted) {
+          router.replace('/onboarding-funnel/step-1-mood');
+          return;
+        }
       }
     } catch {
       /* fall through to login */

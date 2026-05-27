@@ -2609,13 +2609,8 @@ const styles = StyleSheet.create({
   instagramButtonWrapper: {
     borderRadius: 12,
     overflow: 'hidden',
-    borderWidth: 2,
-    borderColor: '#F5C518',
-    shadowColor: '#F5C518',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.45,
-    shadowRadius: 8,
-    elevation: 6,
+    // Border + glow intentionally removed per design spec — the IG button
+    // now relies solely on its IG-brand gradient fill for affordance.
   },
   instagramButtonGradient: {
     flexDirection: 'row',

@@ -1,0 +1,46 @@
+{
+  "summary": "Code-review-only validation of session-2 onboarding funnel bug fixes + Stage 3 hard-paywall wiring across 6 files. All 7 review items PASS. No new TypeScript regressions visible in the modified files (read-and-verified, did not run tsc per instructions to skip pytest/heavy testing — also note the user explicitly said only run tsc for pre-existing errors comparison). One minor spec deviation observed: markCompleted() stores completedAt as ISO string instead of Date.now() epoch, but the readHasCompletedFunnel() truthy check still works correctly. Two pre-existing concerns flagged for awareness (duplicate HR stream useEffect in workout-session.tsx, setHrSampleCount referenced in duplicate block).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "OnboardingFunnelContext.markCompleted() at line 164 sets completedAt to `new Date().toISOString()` (ISO string), not `Date.now()` epoch as the review request specifies. Functionally equivalent because readHasCompletedFunnel() at line 97 only does a truthy check (`Boolean(parsed?.completedAt)`), but the type union `completedAt?: string` should be confirmed consistent everywhere it is read. PASS-with-note.",
+    "workout-session.tsx contains a duplicated heart-rate streaming useEffect block (lines 138-175 and 200-243). The second block references `setHrSampleCount` which doesn't exist as state (pre-existing TS error the user is already aware of). Recommend deduplicating; one HR subscribe call is enough and the second creates two parallel subscriptions on mount.",
+    "workout-session.tsx line 327 reads `firstWorkout?.moodCard` but the SessionWorkout interface (lines 44-55) does not declare a `moodCard` field — silent undefined. Not new from this changeset but worth a follow-up.",
+    "FunnelEntryGate self-heal is correct, but the `dispatched.current` latch (line 44) is set to true in BOTH the completed-bail branch (line 61) and the route-replace branch (line 65). Good — prevents redundant re-checks within the session."
+  ],
+  "updated_files": [],
+  "verification_results": {
+    "1_typescript_lint": "PASS — visual inspection of all 6 modified files shows no new syntax errors. tsc not executed (user instructed to skip heavy testing).",
+    "2_authcontext_logout": "PASS — AuthContext.tsx lines 399-400: `await AsyncStorage.removeItem('@mood_needs_funnel');` and `await AsyncStorage.removeItem('@mood_funnel_answers_v1');` both present inside logout().",
+    "3_onboarding_funnel_context": "PASS — markCompleted() at line 163-170 sets `completedAt = new Date().toISOString()` and persists via writePersisted(next). readHasCompletedFunnel() at lines 92-101 returns `Boolean(parsed?.completedAt)`. hasCompletedFunnel derived at line 199. (Minor: ISO string vs epoch — see code review notes.)",
+    "4_funnel_entry_gate": "PASS — FunnelEntryGate.tsx lines 50-69: reads flag, then `await readHasCompletedFunnel()`. If completed → removeItem + dispatched.current=true + return (no router.replace). If NOT completed → dispatched.current=true + router.replace('/').",
+    "5_handle_get_started": "PASS — app/index.tsx lines 217-229: reads `@mood_needs_funnel`, calls `readHasCompletedFunnel()`, ALWAYS removes the flag (line 221), then if `!alreadyCompleted` → router.replace('/onboarding-funnel/step-1-mood'). Falls through to `/auth/login` otherwise (line 230).",
+    "6_stage3_paywall_wiring": "PASS — (a) workout-guidance.tsx handleStartPauseTimer (lines 306-340) has NO recordStartFreeWorkout() call; only canStartWorkout gate + Analytics + timer state mutations. Explanatory comment at lines 320-325. (b) workout-session.tsx imports useSubscription at line 21, hook destructure `recordStartFreeWorkout` at line 65, and calls it at line 406 immediately after `Analytics.workoutCompleted(...)` at lines 391-399 inside handleFinishSession.",
+    "7_ig_button_border_removed": "PASS — create-post.tsx lines 2609-2614: `instagramButtonWrapper: { borderRadius: 12, overflow: 'hidden' }` with comment confirming border+glow intentionally removed. No borderWidth, borderColor, shadowColor, shadowOffset, shadowOpacity, shadowRadius, or elevation present."
+  },
+  "evidence_summary": {
+    "AuthContext.logout": "/app/frontend/contexts/AuthContext.tsx:399-400",
+    "readHasCompletedFunnel": "/app/frontend/contexts/OnboardingFunnelContext.tsx:92-101",
+    "markCompleted": "/app/frontend/contexts/OnboardingFunnelContext.tsx:163-170",
+    "hasCompletedFunnel_selector": "/app/frontend/contexts/OnboardingFunnelContext.tsx:199",
+    "FunnelEntryGate_selfheal": "/app/frontend/components/FunnelEntryGate.tsx:57-63",
+    "handleGetStarted": "/app/frontend/app/index.tsx:217-230",
+    "workout_guidance_no_record_call": "/app/frontend/app/workout-guidance.tsx:306-340 (no recordStartFreeWorkout)",
+    "workout_session_record_on_complete": "/app/frontend/app/workout-session.tsx:406 (after Analytics.workoutCompleted at 391-399)",
+    "useSubscription_import": "/app/frontend/app/workout-session.tsx:21 and :65",
+    "ig_button_border_clean": "/app/frontend/app/create-post.tsx:2609-2614"
+  },
+  "success_rate": { "backend": "N/A — skipped per request", "frontend": "100% (7/7 code-review items PASS)" },
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Session-2 onboarding funnel state-machine fix + Stage 3 paywall completion-time consumption verified by static review. Behavior cannot be reproduced in Expo web (requires real app kills+relaunches with persisted AsyncStorage). If runtime test needed, simulate via `window.localStorage` manipulation in web preview: set `@mood_needs_funnel='true'` and `@mood_funnel_answers_v1='{\"completedAt\":\"2026-01-15T00:00:00.000Z\"}'`, then verify FunnelEntryGate purges the flag without routing back into the funnel.",
+  "rca_of_issue": "Original bug: after a returning user logged out and someone else registered (or after a crash mid-register), `@mood_needs_funnel='true'` could survive while `@mood_funnel_answers_v1.completedAt` was already set from a prior session, causing the already-onboarded user to be re-routed into the 8-step funnel on next launch. Fix layers: (1) logout() now nukes both keys defensively; (2) FunnelEntryGate self-heals if completedAt exists; (3) handleGetStarted double-checks completedAt before pushing into funnel and always clears the flag. Stage 3 paywall fix: `recordStartFreeWorkout()` moved from start-tap to completion path so users who bail mid-workout don't lose their free session — paywall still fires on workout #2 because the flag flips on completion before the next start tap."
+}

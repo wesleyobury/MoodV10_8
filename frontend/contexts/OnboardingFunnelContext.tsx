@@ -76,7 +76,28 @@ interface OnboardingFunnelContextValue {
   markStepEntered: (step: number) => void;
   consumeStepDuration: (step: number) => number;
   markCompleted: () => Promise<void>;
+  /**
+   * Spec §2c — true once the user has reached `reveal-payoff` at least
+   * once. Persisted via `answers.completedAt`. Read by FunnelEntryGate
+   * and the landing `handleGetStarted` so a returning user can never
+   * be rerouted back into the 8-step funnel.
+   */
+  hasCompletedFunnel: boolean;
   reset: () => Promise<void>;
+}
+
+/** Spec §2c — async one-shot read used by gates that fire before the
+ *  provider has rehydrated (e.g. cold-start route guards). Reads the same
+ *  underlying key directly so callers don't need to mount the provider. */
+export async function readHasCompletedFunnel(): Promise<boolean> {
+  try {
+    const raw = await AsyncStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw) as FunnelAnswers;
+    return Boolean(parsed?.completedAt);
+  } catch {
+    return false;
+  }
 }
 
 /* --------------------------- Storage layer --------------------------- */
@@ -171,6 +192,11 @@ export function OnboardingFunnelProvider({ children }: { children: React.ReactNo
       markStepEntered,
       consumeStepDuration,
       markCompleted,
+      // Spec §2c — derive from the same persisted field `markCompleted`
+      // writes. True the moment `reveal-payoff` is reached for the first
+      // time; survives app kills + reinstalls (until `logout()` clears
+      // the underlying storage key per §2a).
+      hasCompletedFunnel: Boolean(answers.completedAt),
       reset,
     }),
     [answers, patch, markStepEntered, consumeStepDuration, markCompleted, reset]

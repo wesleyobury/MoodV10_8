@@ -391,6 +391,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await secureStorage.delete(AUTH_TOKEN_STORED_AT_KEY);
       await secureStorage.delete(AUTH_TOKEN_LAST_VALIDATED_KEY);
       await AsyncStorage.removeItem('is_guest');
+      // Spec §2a — purge the funnel re-entry flag and the persisted funnel
+      // answers so a returning user on session N+1 cannot accidentally
+      // get rerouted into the 8-step funnel. The `completedAt` selector
+      // would already block this once written, but defense-in-depth: a
+      // user who registered + bailed mid-funnel must also start clean.
+      await AsyncStorage.removeItem('@mood_needs_funnel');
+      await AsyncStorage.removeItem('@mood_funnel_answers_v1');
       setToken(null);
       setUser(null);
       setIsGuest(false);

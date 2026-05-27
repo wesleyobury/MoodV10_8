@@ -276,7 +276,7 @@ export default function WorkoutGuidanceScreen() {
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
   
   const { token } = useAuth();
-  const { canStartWorkout, openPaywall, recordStartFreeWorkout } = useSubscription();
+  const { canStartWorkout, openPaywall } = useSubscription();
   
   // Timer that calculates elapsed time from start timestamp
   // This ensures timer continues even when app is in background
@@ -317,9 +317,11 @@ export default function WorkoutGuidanceScreen() {
         return;
       }
       Analytics.startWorkoutTapped(token, { allowed: true });
-      // Mark the free session as consumed BEFORE state mutation so an
-      // accidental double-tap can't race past the gate.
-      recordStartFreeWorkout();
+      // Spec §3 Stage 3 — free-session consumption now fires on workout
+      // COMPLETION (see workout-session.tsx `handleFinishSession`), not
+      // on start tap. This way a user who bails mid-workout doesn't lose
+      // their free session. The paywall still fires on workout #2 because
+      // `hasUsedFreeSession` flips on completion, before the next start.
       // Starting fresh
       setStartTimestamp(Date.now());
       setPausedTime(0);
