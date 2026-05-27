@@ -17,7 +17,15 @@ Take a fresh MongoDB snapshot of the production cluster.
 ```bash
 # Atlas: Backup → On-Demand Snapshot → wait for green tick.
 # Self-hosted: mongodump --uri "$PROD_MONGO_URL" --out ./prod-snapshot-$(date +%Y%m%d-%H%M%S)
-mongodump --uri "$PROD_MONGO_URL" --out "./prod-snapshot-$(date +%Y%m%d-%H%M%S)"
+#
+# Owner-confirmed values (2026-05-27):
+#   - Prod cluster:  Atlas mongodb+srv (URI held in agent session only; not committed)
+#   - Prod DB name:  bug-busters-13-test_database
+#   - Atlas Network Access requires the runner's egress IP to be allowlisted.
+#     If running from an Emergent preview pod, add the pod's egress IPv4
+#     (capture via `curl -s https://api.ipify.org`) to Atlas → Network Access
+#     with a short expiration. Pod IPs can rotate on restart.
+mongodump --uri "$PROD_MONGO_URL" --db bug-busters-13-test_database --out "./prod-snapshot-$(date +%Y%m%d-%H%M%S)"
 ```
 
 Then clone it into a `staging-clone` DB you can blow up freely:
@@ -26,7 +34,7 @@ Then clone it into a `staging-clone` DB you can blow up freely:
 # Restore the dump into a NEW database name so prod stays untouched.
 mongorestore \
   --uri "$STAGING_MONGO_URL" \
-  --nsFrom='mood_app.*' \
+  --nsFrom='bug-busters-13-test_database.*' \
   --nsTo='mood_app_staging_clone.*' \
   "./prod-snapshot-YYYYMMDD-HHMMSS"
 ```
@@ -63,7 +71,7 @@ All these are **🟢 SAFE-ON-PROD** — they're build-config checks, not data wr
 | Env var | Why it must be the live value |
 |---|---|
 | `MONGO_URL` | Connects to the existing prod data. **The most important one.** |
-| `DB_NAME` | If the live backend uses a name other than `mood_app`, set it here (default in code is `mood_app`). |
+| `DB_NAME` | If the live backend uses a name other than `mood_app`, set it here (default in code is `mood_app`). **(Confirmed 2026-05-27 by owner: live value is `bug-busters-13-test_database`. Apply this when copying over the deployed env vars.)** |
 | `JWT_SECRET` | If this changes, every existing JWT becomes invalid → every user gets logged out on first launch. Apple-Sign-In users re-auth silently via keychain; email/pw users get bounced to the login screen. |
 | `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` | All existing post images & videos live in that cloud account. Different cloud = 404 wall of broken media. |
 | `ADMIN_ALLOWLIST` | Comma-separated. Default in code is `officialmoodapp`. Keep your live value or you lose admin access. |
