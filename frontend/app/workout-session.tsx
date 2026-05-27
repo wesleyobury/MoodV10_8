@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,22 @@ import BackButton from '../components/BackButton';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useDrafts } from '../contexts/DraftsContext';
+import { useHealth } from '../contexts/HealthContext';
 import { Analytics } from '../utils/analytics';
+import { API_URL } from '../utils/apiConfig';
+import {
+  subscribeHeartRateStream,
+  fetchSessionMetrics,
+  type LiveHeartRateSample,
+} from '../modules/mood-healthkit/src';
+import {
+  computeHeartRateStats,
+} from '../utils/heartRateZones';
+import {
+  appendSession,
+  loadUserAge,
+  type WorkoutSession as PersistedSession,
+} from '../utils/workoutSessionStorage';
 import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
 import OnboardingOverlay, { type TargetRect } from '../components/OnboardingOverlay';
@@ -414,12 +429,67 @@ export default function WorkoutSessionScreen() {
         recapBpmSeries = samples.map((s) => s.bpm).filter((b) => Number.isFinite(b) && b > 0);
       }
     }
+
+    // ─────────── Capture session-window HealthKit aggregates ───────────
+    // Pulls activeEnergy / steps / HRV recorded between session start & end.
+    // Fails silently on Android / no-permission / no-data; we just won't
+    // populate the wearable fields on the user_workouts log in that case.
+    let sessionMetrics: Awaited<ReturnType<typeof fetchSessionMetrics>> = null;
+    try {
+      sessionMetrics = await fetchSessionMetrics(sessionStartRef.current, endedAt);
+    } catch {
+      sessionMetrics = null;
+    }
+    const sessionCaloriesBurned: number | null =
+      sessionMetrics?.activeEnergyKcal != null
+        ? Math.round(sessionMetrics.activeEnergyKcal)
+        : null;
+    const sessionSteps: number | null =
+      sessionMetrics?.stepCount != null ? Math.round(sessionMetrics.stepCount) : null;
+    const sessionHrvSdnn: number | null =
+      sessionMetrics?.heartRateVariabilitySDNN != null
+        ? sessionMetrics.heartRateVariabilitySDNN
+        : null;
+
     if (token) {
       Analytics.workoutSessionEnded(token, {
         ended_at: endedAt,
         samples_captured: samples.length,
       });
       Analytics.hrSamplesCapturedCount(token, { count: samples.length });
+
+      // ─── Persist session-actual metrics to user_workouts ───
+      // Writes a single row per completed session. The home-summary endpoint
+      // reads `calories_burned` from here for the "Last workout" calories tile.
+      // workout_id uses the snapshot id when present (best long-term link),
+      // otherwise a synthesized session id.
+      const workoutIdForLog =
+        workoutSnapshotId || `session-${sessionStartRef.current}`;
+      try {
+        await fetch(`${API_URL}/api/user-workouts`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            workout_id: workoutIdForLog,
+            completed_at: endedAt,
+            duration_actual: totalDuration,
+            mood_before: moodCategory,
+            mood_after: moodCategory,
+            calories_burned: sessionCaloriesBurned,
+            avg_heart_rate: recapStats?.avg ?? null,
+            max_heart_rate: recapStats?.peak ?? null,
+            hr_samples_count: samples.length || null,
+            session_steps: sessionSteps,
+            session_hrv_sdnn: sessionHrvSdnn,
+          }),
+        });
+        console.log('✅ user-workouts logged with session-actual metrics');
+      } catch (e) {
+        console.log('⚠️ Failed to log user-workouts:', e);
+      }
     }
 
     // Navigate to create-post with workout stats + (optional) HR data
@@ -431,6 +501,9 @@ export default function WorkoutSessionScreen() {
         heartRateSeries: recapBpmSeries ? JSON.stringify(recapBpmSeries) : '',
         heartRateAvg: recapStats ? String(recapStats.avg) : '',
         heartRatePeak: recapStats ? String(recapStats.peak) : '',
+        sessionCalories: sessionCaloriesBurned != null ? String(sessionCaloriesBurned) : '',
+        sessionSteps: sessionSteps != null ? String(sessionSteps) : '',
+        sessionHrv: sessionHrvSdnn != null ? String(Math.round(sessionHrvSdnn)) : '',
       }
     });
     console.log('Navigation command sent');

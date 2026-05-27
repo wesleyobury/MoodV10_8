@@ -122,6 +122,18 @@ interface WorkoutStatsCardProps {
   heartRateSamples?: number[];
   /** Real avg/peak from the captured samples; falls back to synth if absent. */
   heartRateRealStats?: { avg: number; peak: number };
+  /** Session-window step count from HealthKit. Surfaced as a small stat when
+   *  the user has Apple Health connected. */
+  sessionSteps?: number;
+  /** Most-recent HRV (ms) within the session window from HealthKit. */
+  sessionHrvSdnn?: number;
+  /** True when at least one wearable metric (HR samples, session calories,
+   *  steps, or HRV) is from real HealthKit data. Drives the "LIVE" badge
+   *  and hides the "Connect Apple Health" CTA. */
+  hasWearableData?: boolean;
+  /** Called when the user taps "Connect Apple Health". Owner navigates to
+   *  the health-onboarding screen. */
+  onConnectHealthPress?: () => void;
 }
 
 // Calculate intensity percentage based on workout characteristics
@@ -249,6 +261,10 @@ export default function WorkoutStatsCard({
   variant = 'rings',
   heartRateSamples,
   heartRateRealStats,
+  sessionSteps,
+  sessionHrvSdnn,
+  hasWearableData = false,
+  onConnectHealthPress,
 }: WorkoutStatsCardProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -689,6 +705,13 @@ export default function WorkoutStatsCard({
     const avg = usingReal ? (heartRateRealStats?.avg ?? Math.round(points.reduce((a, b) => a + b, 0) / points.length)) : heartRate.avg;
     const peak = usingReal ? (heartRateRealStats?.peak ?? Math.max(...points)) : heartRate.peak;
     const { line, area } = buildHeartRatePath(points, chartW, chartH);
+
+    // Show the wearables strip only when at least one HealthKit-derived
+    // metric is present (HR samples / session steps / HRV). For the IG
+    // share export we don't want fake/empty rows.
+    const showWearablesStrip =
+      hasWearableData || usingReal || sessionSteps != null || sessionHrvSdnn != null;
+
     return wrapInFrame(
       <View style={styles.altCardInner}>
         {renderMoodHeader()}
@@ -698,6 +721,12 @@ export default function WorkoutStatsCard({
             <View style={styles.hrHeaderLeft}>
               <Ionicons name="heart" size={11} color="#FFD700" />
               <Text style={[styles.hrLabel, transparent && styles.altTextShadow]}>HEART RATE</Text>
+              {usingReal && (
+                <View style={styles.liveBadge}>
+                  <View style={styles.liveBadgeDot} />
+                  <Text style={styles.liveBadgeText}>LIVE</Text>
+                </View>
+              )}
             </View>
             <Text style={[styles.hrStat, transparent && styles.altTextShadow]}>
               avg <Text style={styles.hrStatValue}>{avg}</Text>  ·  peak <Text style={styles.hrStatValue}>{peak}</Text>  bpm
@@ -715,6 +744,39 @@ export default function WorkoutStatsCard({
               <Path d={line} stroke="#FFD700" strokeWidth={1.8} fill="none" strokeLinecap="round" strokeLinejoin="round" />
             </Svg>
           </View>
+          {showWearablesStrip && (
+            <View style={styles.wearablesStrip}>
+              {sessionSteps != null && (
+                <View style={styles.wearablesStripCell}>
+                  <Ionicons name="footsteps" size={11} color="rgba(255,255,255,0.7)" />
+                  <Text style={[styles.wearablesStripValue, transparent && styles.altTextShadow]}>
+                    {sessionSteps.toLocaleString()}
+                  </Text>
+                  <Text style={[styles.wearablesStripLabel, transparent && styles.altTextShadow]}>STEPS</Text>
+                </View>
+              )}
+              {sessionHrvSdnn != null && (
+                <View style={styles.wearablesStripCell}>
+                  <Ionicons name="pulse" size={11} color="rgba(255,255,255,0.7)" />
+                  <Text style={[styles.wearablesStripValue, transparent && styles.altTextShadow]}>
+                    {Math.round(sessionHrvSdnn)}
+                    <Text style={styles.wearablesStripUnit}> ms</Text>
+                  </Text>
+                  <Text style={[styles.wearablesStripLabel, transparent && styles.altTextShadow]}>HRV</Text>
+                </View>
+              )}
+              {usingReal && (
+                <View style={styles.wearablesStripCell}>
+                  <Ionicons name="heart-outline" size={11} color="rgba(255,255,255,0.7)" />
+                  <Text style={[styles.wearablesStripValue, transparent && styles.altTextShadow]}>
+                    {avg}
+                    <Text style={styles.wearablesStripUnit}> bpm</Text>
+                  </Text>
+                  <Text style={[styles.wearablesStripLabel, transparent && styles.altTextShadow]}>AVG HR</Text>
+                </View>
+              )}
+            </View>
+          )}
         </View>
       </View>
     );
@@ -1433,5 +1495,63 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingVertical: 6,
     paddingHorizontal: 4,
+  },
+  // === LIVE pill — shown next to "HEART RATE" when real HK samples present ===
+  liveBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255, 215, 0, 0.18)',
+    gap: 4,
+  },
+  liveBadgeDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: '#FFD700',
+  },
+  liveBadgeText: {
+    fontSize: 8,
+    fontWeight: '800',
+    color: '#FFD700',
+    letterSpacing: 1,
+  },
+  // === Wearables strip — Steps · HRV · Avg HR shown below the HR chart ===
+  wearablesStrip: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 8,
+    paddingTop: 8,
+    borderTopWidth: 0.5,
+    borderTopColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  wearablesStripCell: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 2,
+  },
+  wearablesStripValue: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginTop: 1,
+    letterSpacing: -0.2,
+  },
+  wearablesStripUnit: {
+    fontSize: 9,
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.55)',
+    letterSpacing: 0,
+  },
+  wearablesStripLabel: {
+    fontSize: 8,
+    color: 'rgba(255, 255, 255, 0.5)',
+    letterSpacing: 1,
+    fontWeight: '600',
+    marginTop: 1,
   },
 });

@@ -145,6 +145,47 @@ public class MoodHealthKitModule: Module {
         promise.resolve(true)
       }
     }
+
+    /// Returns session-window aggregates from HealthKit for the supplied
+    /// [startISO, endISO] range. Used by the workout-session flow to capture
+    /// session-actual calories + step count at completion time.
+    ///
+    /// Resolves with:
+    ///   { activeEnergyKcal: Double?, stepCount: Double?, heartRateVariabilitySDNN: Double? }
+    /// Each field may be null if HealthKit has no samples in that window or
+    /// the user denied access. Never rejects.
+    AsyncFunction("fetchSessionMetrics") { (startISO: String, endISO: String, promise: Promise) in
+      guard HKHealthStore.isHealthDataAvailable() else {
+        promise.resolve(NSNull())
+        return
+      }
+      let iso = ISO8601DateFormatter()
+      iso.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+      var start = iso.date(from: startISO)
+      var end = iso.date(from: endISO)
+      // Try without fractional seconds as a fallback.
+      if start == nil || end == nil {
+        let iso2 = ISO8601DateFormatter()
+        start = start ?? iso2.date(from: startISO)
+        end = end ?? iso2.date(from: endISO)
+      }
+      guard let s = start, let e = end, e > s else {
+        promise.resolve(NSNull())
+        return
+      }
+      let storeRef = self.store
+      Task {
+        async let kcal  = Self.sumQuantityInRange(store: storeRef, identifier: .activeEnergyBurned, unit: .kilocalorie(), start: s, end: e)
+        async let steps = Self.sumQuantityInRange(store: storeRef, identifier: .stepCount, unit: .count(), start: s, end: e)
+        async let hrv   = Self.mostRecentQuantityInRange(store: storeRef, identifier: .heartRateVariabilitySDNN, unit: HKUnit.secondUnit(with: .milli), start: s, end: e)
+        let (kcalVal, stepsVal, hrvVal) = await (kcal, steps, hrv)
+        promise.resolve([
+          "activeEnergyKcal":         kcalVal as Any,
+          "stepCount":                stepsVal as Any,
+          "heartRateVariabilitySDNN": hrvVal as Any,
+        ])
+      }
+    }
   }
 
   // MARK: - Snapshot builder
@@ -176,6 +217,46 @@ public class MoodHealthKitModule: Module {
     guard let type = HKObjectType.quantityType(forIdentifier: identifier) else { return nil }
     let start = Calendar.current.date(byAdding: .day, value: -7, to: Date())
     let predicate = HKQuery.predicateForSamples(withStart: start, end: Date(), options: .strictEndDate)
+    return await withCheckedContinuation { (cont: CheckedContinuation<Double?, Never>) in
+      let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+      let q = HKSampleQuery(sampleType: type, predicate: predicate, limit: 1, sortDescriptors: [sort]) { _, samples, _ in
+        guard let sample = samples?.first as? HKQuantitySample else { cont.resume(returning: nil); return }
+        cont.resume(returning: sample.quantity.doubleValue(for: unit))
+      }
+      store.execute(q)
+    }
+  }
+
+  /// Sum a cumulative quantity (e.g. activeEnergyBurned, stepCount) over an arbitrary window.
+  /// Used by `fetchSessionMetrics` for session-actual aggregates.
+  private static func sumQuantityInRange(
+    store: HKHealthStore,
+    identifier: HKQuantityTypeIdentifier,
+    unit: HKUnit,
+    start: Date,
+    end: Date
+  ) async -> Double? {
+    guard let type = HKObjectType.quantityType(forIdentifier: identifier) else { return nil }
+    let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+    return await withCheckedContinuation { (cont: CheckedContinuation<Double?, Never>) in
+      let q = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, stats, _ in
+        guard let sum = stats?.sumQuantity() else { cont.resume(returning: nil); return }
+        cont.resume(returning: sum.doubleValue(for: unit))
+      }
+      store.execute(q)
+    }
+  }
+
+  /// Most-recent sample of a discrete quantity (e.g. heartRateVariabilitySDNN) within a window.
+  private static func mostRecentQuantityInRange(
+    store: HKHealthStore,
+    identifier: HKQuantityTypeIdentifier,
+    unit: HKUnit,
+    start: Date,
+    end: Date
+  ) async -> Double? {
+    guard let type = HKObjectType.quantityType(forIdentifier: identifier) else { return nil }
+    let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictEndDate)
     return await withCheckedContinuation { (cont: CheckedContinuation<Double?, Never>) in
       let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
       let q = HKSampleQuery(sampleType: type, predicate: predicate, limit: 1, sortDescriptors: [sort]) { _, samples, _ in

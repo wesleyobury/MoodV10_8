@@ -777,6 +777,13 @@ class UserWorkoutCreate(BaseModel):
     notes: Optional[str] = None
     mood_before: Optional[str] = None
     mood_after: Optional[str] = None
+    # === Session-actual wearable metrics (all optional; populated when HealthKit is connected) ===
+    calories_burned: Optional[int] = None  # actual kcal from HealthKit active-energy during session
+    avg_heart_rate: Optional[int] = None  # BPM, computed from live HR stream samples
+    max_heart_rate: Optional[int] = None  # BPM, peak from live HR stream samples
+    hr_samples_count: Optional[int] = None  # how many live HR samples were captured
+    session_steps: Optional[int] = None  # steps recorded during the session window
+    session_hrv_sdnn: Optional[float] = None  # most-recent HRV (ms) at session end
 
 class WorkoutExerciseData(BaseModel):
     workoutTitle: str
@@ -6930,20 +6937,27 @@ async def get_home_summary(current_user_id: str = Depends(get_current_user)):
     except Exception as e:
         logger.warning(f"home-summary: weekly_mood_counts failed: {e}")
 
-    # Calories from the user's most recent completed workout
+    # Calories from the user's most recent completed workout — prefer
+    # session-actual `calories_burned` (HealthKit-derived) when present,
+    # fall back to the workout template's `calories_estimate` otherwise.
     last_workout_calories: Optional[int] = None
     try:
         latest = await db.user_workouts.find_one(
             {"user_id": current_user_id},
             sort=[("completed_at", -1)],
         )
-        if latest and latest.get("workout_id"):
-            try:
-                wo = await db.workouts.find_one({"_id": ObjectId(latest["workout_id"])})
-            except Exception:
-                wo = await db.workouts.find_one({"_id": latest["workout_id"]})
-            if wo and wo.get("calories_estimate") is not None:
-                last_workout_calories = int(wo.get("calories_estimate"))
+        if latest:
+            # 1) Session-actual takes precedence
+            if latest.get("calories_burned") is not None:
+                last_workout_calories = int(latest["calories_burned"])
+            # 2) Fallback to template estimate via workout_id lookup
+            elif latest.get("workout_id"):
+                try:
+                    wo = await db.workouts.find_one({"_id": ObjectId(latest["workout_id"])})
+                except Exception:
+                    wo = await db.workouts.find_one({"_id": latest["workout_id"]})
+                if wo and wo.get("calories_estimate") is not None:
+                    last_workout_calories = int(wo.get("calories_estimate"))
     except Exception as e:
         logger.warning(f"home-summary: last_workout_calories failed: {e}")
 

@@ -118,6 +118,26 @@ export default function CreatePost() {
     if (Number.isFinite(avg) && Number.isFinite(peak)) return { avg, peak };
     return undefined;
   }, [params.heartRateAvg, params.heartRatePeak]);
+
+  // Session-actual wearable metrics forwarded from workout-session.tsx.
+  // When present these come from HealthKit aggregated over the session window
+  // (start → end). Used to:
+  //   • pre-fill the editable calories field with the real value, and
+  //   • surface session steps + HRV on the achievement card.
+  const sessionCaloriesFromWearable = useMemo<number | undefined>(() => {
+    const n = parseInt((params.sessionCalories as string) || '', 10);
+    return Number.isFinite(n) && n > 0 ? n : undefined;
+  }, [params.sessionCalories]);
+
+  const sessionStepsFromWearable = useMemo<number | undefined>(() => {
+    const n = parseInt((params.sessionSteps as string) || '', 10);
+    return Number.isFinite(n) && n >= 0 ? n : undefined;
+  }, [params.sessionSteps]);
+
+  const sessionHrvFromWearable = useMemo<number | undefined>(() => {
+    const n = parseInt((params.sessionHrv as string) || '', 10);
+    return Number.isFinite(n) && n > 0 ? n : undefined;
+  }, [params.sessionHrv]);
   const [hasStatsCard, setHasStatsCard] = useState(false);
   const [saveButtonPressed, setSaveButtonPressed] = useState(false);
   const statsCardRef = useRef(null);
@@ -127,6 +147,18 @@ export default function CreatePost() {
   // Editable stats
   const [editedDuration, setEditedDuration] = useState<number | undefined>(undefined);
   const [editedCalories, setEditedCalories] = useState<number | undefined>(undefined);
+
+  // Auto-prefill calories from the wearable session value (one-shot). The
+  // user can still edit afterward — sessionCaloriesFromWearable seeds the
+  // state; subsequent manual edits are respected.
+  const caloriesPrefilledRef = useRef(false);
+  useEffect(() => {
+    if (caloriesPrefilledRef.current) return;
+    if (sessionCaloriesFromWearable != null && editedCalories === undefined) {
+      setEditedCalories(sessionCaloriesFromWearable);
+      caloriesPrefilledRef.current = true;
+    }
+  }, [sessionCaloriesFromWearable, editedCalories]);
   
   // Editable targets for donut rings
   const [calorieTarget, setCalorieTarget] = useState(500);
@@ -2061,8 +2093,43 @@ export default function CreatePost() {
                   variant={cardVariant}
                   heartRateSamples={heartRateSeries}
                   heartRateRealStats={heartRateRealStats}
+                  sessionSteps={sessionStepsFromWearable}
+                  sessionHrvSdnn={sessionHrvFromWearable}
+                  hasWearableData={
+                    !!(heartRateRealStats ||
+                       sessionCaloriesFromWearable != null ||
+                       sessionStepsFromWearable != null ||
+                       sessionHrvFromWearable != null)
+                  }
+                  onConnectHealthPress={() => router.push('/wearable-data')}
                 />
               </View>
+
+              {/* "Connect Apple Health" CTA — shown when no wearable data
+                  was captured for this session (no permissions / Android /
+                  Apple Watch not paired). Per design the rest of the card
+                  still renders the generic synthesized stats. */}
+              {!(heartRateRealStats ||
+                 sessionCaloriesFromWearable != null ||
+                 sessionStepsFromWearable != null ||
+                 sessionHrvFromWearable != null) && (
+                <TouchableOpacity
+                  style={styles.connectHealthBanner}
+                  activeOpacity={0.85}
+                  onPress={() => router.push('/wearable-data')}
+                >
+                  <View style={styles.connectHealthIcon}>
+                    <Ionicons name="heart-circle" size={24} color="#FFD700" />
+                  </View>
+                  <View style={styles.connectHealthBody}>
+                    <Text style={styles.connectHealthTitle}>Connect Apple Health</Text>
+                    <Text style={styles.connectHealthSubtitle}>
+                      See your real calories, heart rate, steps & HRV on workout cards
+                    </Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={18} color="rgba(255, 215, 0, 0.6)" />
+                </TouchableOpacity>
+              )}
 
               {/* Hidden transparent card for Instagram export */}
               <View style={styles.hiddenCardContainer} ref={transparentCardRef} collapsable={false}>
@@ -2077,6 +2144,14 @@ export default function CreatePost() {
                   variant={cardVariant}
                   heartRateSamples={heartRateSeries}
                   heartRateRealStats={heartRateRealStats}
+                  sessionSteps={sessionStepsFromWearable}
+                  sessionHrvSdnn={sessionHrvFromWearable}
+                  hasWearableData={
+                    !!(heartRateRealStats ||
+                       sessionCaloriesFromWearable != null ||
+                       sessionStepsFromWearable != null ||
+                       sessionHrvFromWearable != null)
+                  }
                 />
               </View>
               
@@ -3396,5 +3471,43 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     letterSpacing: 0.3,
+  },
+  // === Connect Apple Health CTA (post-workout achievement screen) ===
+  // Shown immediately under the achievement card when this session
+  // captured zero wearable metrics. Tapping opens /wearable-data which
+  // owns the permission grant flow.
+  connectHealthBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 12,
+    marginBottom: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    backgroundColor: 'rgba(255, 215, 0, 0.06)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.18)',
+    borderRadius: 14,
+    gap: 12,
+  },
+  connectHealthIcon: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  connectHealthBody: {
+    flex: 1,
+  },
+  connectHealthTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#FFD700',
+    letterSpacing: 0.2,
+  },
+  connectHealthSubtitle: {
+    fontSize: 11,
+    color: 'rgba(255, 255, 255, 0.65)',
+    marginTop: 2,
+    lineHeight: 14,
   },
 });

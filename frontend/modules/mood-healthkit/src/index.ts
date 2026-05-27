@@ -38,12 +38,23 @@ interface NativeModuleShape {
   fetchSnapshot(): Promise<BiometricSnapshot | null>;
   startHeartRateStream(): Promise<boolean>;
   stopHeartRateStream(): Promise<boolean>;
+  fetchSessionMetrics(startISO: string, endISO: string): Promise<SessionMetrics | null>;
   addListener(eventName: string, listener: (...args: any[]) => void): { remove: () => void };
 }
 
 export interface LiveHeartRateSample {
   bpm: number;
   timestamp: string;
+}
+
+/** Session-window aggregates returned by `fetchSessionMetrics`. */
+export interface SessionMetrics {
+  /** Active energy burned during the session window, in kcal. */
+  activeEnergyKcal: number | null;
+  /** Step count recorded during the session window. */
+  stepCount: number | null;
+  /** Most-recent HRV SDNN sample (ms) within the session window. */
+  heartRateVariabilitySDNN: number | null;
 }
 
 const native = requireOptionalNativeModule<NativeModuleShape>('MoodHealthKit');
@@ -85,6 +96,21 @@ export const fetchSnapshot = async (): Promise<BiometricSnapshot | null> => {
   if (!native) return null;
   try {
     return await native.fetchSnapshot();
+  } catch {
+    return null;
+  }
+};
+
+/** Query HealthKit for session-window aggregates between two ISO timestamps.
+ *  Returns calories (active energy), step count, and HRV most-recent sample.
+ *  Returns null on non-iOS / no-permission / no-data conditions. */
+export const fetchSessionMetrics = async (
+  startISO: string,
+  endISO: string,
+): Promise<SessionMetrics | null> => {
+  if (!native) return null;
+  try {
+    return await native.fetchSessionMetrics(startISO, endISO);
   } catch {
     return null;
   }

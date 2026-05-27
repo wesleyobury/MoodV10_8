@@ -1,0 +1,33 @@
+{
+  "summary": "Backend-only verification of extended UserWorkoutCreate model + home-summary.last_workout_calories precedence. Created /app/backend/tests/test_user_workouts_session_metrics.py with 6 pytest cases covering: (a) legacy-only POST, (b) all-new-fields POST, (c) mixed POST, plus home-summary returning null for zero-workout users, returning session calories_burned=315, and picking the most recent workout when multiple exist. All 6 tests PASS against the public EXPO_PUBLIC_BACKEND_URL. Backend logs confirm 200 OK on every /api/user-workouts POST and /api/users/me/home-summary GET driven by the suite. The pre-existing GET /api/user-workouts ObjectId-serialization 500 was confirmed (matches review_request exclusion) but is NOT in scope.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_user_workouts_session_metrics.py",
+    "/app/test_reports/pytest/iteration_28_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "POST /api/user-workouts uses workout_data.dict() and inserts directly — no sanitization, fine for current scope but means any extra keys a client sends would also persist (Pydantic strips extras by default so OK).",
+    "home-summary precedence logic correctly checks `if latest.get('calories_burned') is not None` so 0 would also be honored (verified behaviour matches intent).",
+    "Pre-existing: GET /api/user-workouts returns 500 due to ObjectId in `_id` not being JSON-serializable — confirmed in backend.err.log; explicitly out of scope per review_request, but worth main-agent's awareness for a future fix (exclude `_id` projection or convert to str)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_user_workouts_session_metrics.py (new)",
+    "/app/test_reports/iteration_28.json (new)"
+  ],
+  "success_rate": {"backend": "100% (6/6)", "frontend": "N/A — backend-only request"},
+  "seed_data_creation": "Each test registers an ephemeral fresh user (username/email prefixed `uw_<tag>_<unix-ms>`) and posts 1–2 user_workouts records. No shared/static seed; all data is per-test ephemeral and does not collide with prior runs.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Reusable suite at /app/backend/tests/test_user_workouts_session_metrics.py exercises POST /api/user-workouts (legacy / new-fields / mixed) and GET /api/users/me/home-summary calories precedence. Uses EXPO_BACKEND_URL or EXPO_PUBLIC_BACKEND_URL. Note: GET /api/user-workouts is BROKEN (ObjectId serialization 500) and is intentionally not asserted here; if a future iteration fixes that endpoint, this suite can be extended to read the stored doc back and assert each new field round-trips.",
+  "rca_of_issue": "N/A — feature verification, no bugs surfaced in the in-scope changes."
+}
