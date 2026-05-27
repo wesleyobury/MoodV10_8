@@ -1,11 +1,17 @@
 /**
- * Reveal Payoff — the conversion moment.
+ * Reveal Payoff — the conversion moment + Soft Paywall #1 entry point.
  *
  * Top half: cinematic full-bleed athlete photo with overlay text.
  * Bottom half: dark background, three small preview cards in a row.
  *
- * Primary CTA "Start your first workout →" routes to /onboarding/medical-disclaimer,
- * keeping the existing HealthKit flow intact (medical → health-intro → health-connect → /(tabs)).
+ * Primary CTA   "Start free trial"           → fires `openPaywall('post_onboarding_soft')`
+ *                                              then routes to `/onboarding/health-connect`.
+ * Secondary CTA "Try first workout for free" → skips the paywall, routes
+ *                                              directly to `/onboarding/health-connect`.
+ *
+ * Spec §6 — the medical disclaimer screen is no longer inserted between
+ * reveal and health-connect; the disclaimer is acknowledged at signup
+ * (`/auth/register` ack checkbox).
  *
  * Hero photo: stock placeholder via Unsplash CDN. Replace with the final
  * brand asset shipped by Wes before TestFlight cut.
