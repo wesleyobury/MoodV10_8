@@ -1,0 +1,64 @@
+{
+  "summary": "Static code review for Spec §4 (mood routing post-wearables) + §6 (medical disclaimer collapsed into signup). All 7 verification items PASS. Backend supervisor RUNNING. No new TypeScript errors introduced in changed files; the only tsc errors hit are the two pre-existing ones the request flagged as acceptable (reveal-payoff.tsx:107 RegisteredStyle, reveal-payoff.tsx:142 readonly tuple). One minor stale-comment finding: reveal-payoff.tsx still mentions '/onboarding/medical-disclaimer' in the header doc comment (line 7); active code paths do NOT route there. No frontend Playwright run was performed — request was explicitly 'frontend code review only'.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [],
+    "verification_results": [
+      {
+        "item": "1. moodRoute.ts mapping + readFunnelMoodId()",
+        "status": "PASS",
+        "evidence": "moodRoute.ts:53-66 switch covers sweat→/workout-type, muscle→/body-parts, explosive→/explosiveness-type, lazy→/lazy-training-type, calisthenics→/calisthenics-equipment, outdoor→/outdoor-equipment, ringer→/ringer-challenge; default returns null (line 67-68). readFunnelMoodId at lines 75-84: AsyncStorage.getItem('@mood_funnel_answers_v1') (77), JSON.parse (79), returns `typeof parsed?.mood === 'string' ? parsed.mood : null` (80), try/catch returns null (81-83)."
+      },
+      {
+        "item": "2. health-connect.tsx finish() flow",
+        "status": "PASS",
+        "evidence": "Import at line 22: `import { routeForMood, readFunnelMoodId } from '../../utils/moodRoute';`. finish() (lines 37-51): setHealthOnboardingComplete() first (38), await readFunnelMoodId() (44), routeForMood(moodId) (45), if route → router.replace({ pathname: route.pathname as any, params: route.params }) (46-47), else router.replace('/(tabs)') (49). handleConnect calls `await finish()` in finally (60). 'Maybe later' button onPress={finish} (113). Both paths share routing."
+      },
+      {
+        "item": "3. register.tsx ack copy + disclaimer persist",
+        "status": "PASS",
+        "evidence": "Ack text (438-462): 'I agree to the Terms of Service' (444) ', Privacy Policy' (452) ', and Medical Disclaimer' (460). Medical Disclaimer link onPress={() => router.push('/onboarding/medical-disclaimer')} (457) testID='register-ack-medical-link' (458). After `await register(...)` (141-146), dynamic import block at 153-160: `const { setMedicalDisclaimerAcknowledged } = await import('../../utils/healthStorage'); await setMedicalDisclaimerAcknowledged();` wrapped in try/catch with `console.warn('Failed to persist medical disclaimer ack on register', e)` (159)."
+      },
+      {
+        "item": "4. HealthOnboardingGate.tsx routing",
+        "status": "PASS",
+        "evidence": "isHealthOnboardingComplete() resolved in Promise.all (34-37); `if (done) return;` early return (38). When `!disclaimerAck`: dynamic import + await setMedicalDisclaimerAcknowledged() (45-50). Always router.replace('/onboarding/health-connect') (51). No path to /onboarding/medical-disclaimer remains."
+      },
+      {
+        "item": "5. reveal-payoff.tsx both CTAs",
+        "status": "PASS (minor: stale comment)",
+        "evidence": "handleStartTrial: openPaywall(...) at line 79, router.replace('/onboarding/health-connect') at 80. handleTryFreeWorkout: router.replace('/onboarding/health-connect') at 96. Grep shows only ONE remaining occurrence of '/onboarding/medical-disclaimer' in the file — at line 7 inside the header JSDoc (stale doc string). No active code path references it. Minor cleanup recommended."
+      },
+      {
+        "item": "6. No new TypeScript errors",
+        "status": "PASS",
+        "evidence": "`npx tsc --noEmit` filtered to changed files reports only: reveal-payoff.tsx(107,13) TS2322 RegisteredStyle and reveal-payoff.tsx(142,15) TS4104 readonly tuple — both pre-existing and explicitly whitelisted in the request. Zero errors in moodRoute.ts, health-connect.tsx, register.tsx, HealthOnboardingGate.tsx."
+      },
+      {
+        "item": "7. Backend supervisor status",
+        "status": "PASS",
+        "evidence": "`sudo supervisorctl status backend` → `backend RUNNING pid 1857, uptime 0:52:43`."
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "(Optional / nit) Update stale header doc comment in /app/frontend/app/onboarding-funnel/reveal-payoff.tsx line 7 — still says 'Primary CTA \"Start your first workout →\" routes to /onboarding/medical-disclaimer'; should be updated to reflect new /onboarding/health-connect target per Spec §6.",
+    "(Optional / nit) /app/frontend/utils/moodRoute.ts lines 19-20 doc comment says 'we default to the home tab so the user is never stranded' but the function returns null and the home fallback is now done at the caller (health-connect.tsx finish()). Spec is followed correctly; just the inline doc is slightly misleading."
+  ],
+  "critical_code_review_comments": [
+    "moodRoute.ts uses `pathname: string` and the caller casts `route.pathname as any` for expo-router's typed routes. Acceptable given the dynamic map, but a typed `Href` union would be safer.",
+    "register.tsx dynamic import of setMedicalDisclaimerAcknowledged after register() is sound and matches HealthOnboardingGate's auto-migration path — both write the same flag, so legacy + new-user flows converge.",
+    "HealthOnboardingGate now unconditionally writes the disclaimer ack flag for any signed-in user who lacks it. Legal sign-off by Wes is captured in the source comment (line 43-44). No code concerns."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "100%", "frontend": "100% (7/7 items PASS)" },
+  "seed_data_creation": "None — static code review only.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Spec §4 (post-wearables mood routing) and §6 (medical disclaimer fold into signup) are wired correctly. Functional/Playwright testing of the funnel→register→health-connect→mood-route path would be a good next layer once main agent is ready, but is out of scope for this static review.",
+  "rca_of_issue": "N/A — no defects found."
+}

@@ -37,15 +37,18 @@ export default function HealthOnboardingGate() {
       ]);
       if (done) return;
       redirectedRef.current = true;
-      // Spec §1 kill-list — `/onboarding/health-intro` was deleted (its
-      // value prop is now covered by Soft Paywall #1 on reveal-payoff).
-      // Resume directly at the connect screen if the user already
-      // acknowledged the disclaimer.
-      if (disclaimerAck) {
-        router.replace('/onboarding/health-connect');
-      } else {
-        router.replace('/onboarding/medical-disclaimer');
+      // Spec §6 — the medical disclaimer is now folded into the signup
+      // acknowledgement on `/auth/register`. New users have the flag set
+      // there; for any legacy accounts that registered before this change,
+      // auto-acknowledge here (Wes owns the legal review and signed off on
+      // this migration 2026-05-27). Then always route directly to connect.
+      if (!disclaimerAck) {
+        const { setMedicalDisclaimerAcknowledged } = await import(
+          '../utils/healthStorage'
+        );
+        await setMedicalDisclaimerAcknowledged();
       }
+      router.replace('/onboarding/health-connect');
     })();
   }, [token, isGuest, isLoading, segments, router]);
 

@@ -19,6 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { useHealth } from '../../contexts/HealthContext';
 import { setHealthOnboardingComplete } from '../../utils/healthStorage';
+import { routeForMood, readFunnelMoodId } from '../../utils/moodRoute';
 
 const BULLETS = [
   'Resting heart rate',
@@ -35,7 +36,18 @@ export default function HealthConnectScreen() {
 
   const finish = async () => {
     await setHealthOnboardingComplete();
-    router.replace('/(tabs)');
+    // Spec §4 — first-session users came here straight from the funnel.
+    // Don't dump them on home; route to the first-decision screen of the
+    // mood they picked in funnel step 1 so the journey lands on a workout.
+    // Returning users (whose `@mood_funnel_answers_v1` has been cleared by
+    // logout, or who never went through the funnel) fall back to home.
+    const moodId = await readFunnelMoodId();
+    const route = routeForMood(moodId);
+    if (route) {
+      router.replace({ pathname: route.pathname as any, params: route.params });
+    } else {
+      router.replace('/(tabs)');
+    }
   };
 
   const handleConnect = async () => {

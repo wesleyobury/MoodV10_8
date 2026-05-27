@@ -145,6 +145,20 @@ export default function Register() {
         name.trim() || undefined,
       );
 
+      // Spec §6 — the medical disclaimer is now folded into the signup
+      // acknowledgement above (ToS + Privacy + Medical Disclaimer all
+      // hang off the single `acknowledged` checkbox). Persist the disclaimer
+      // flag here so HealthOnboardingGate and any other downstream readers
+      // can skip the dedicated disclaimer screen.
+      try {
+        const { setMedicalDisclaimerAcknowledged } = await import(
+          '../../utils/healthStorage'
+        );
+        await setMedicalDisclaimerAcknowledged();
+      } catch (e) {
+        console.warn('Failed to persist medical disclaimer ack on register', e);
+      }
+
       // Upload avatar after registration if user picked one
       if (avatarBase64) {
         try {
@@ -428,14 +442,22 @@ export default function Register() {
                     testID="register-ack-terms-link"
                   >
                     Terms of Service
-                  </Text>{' '}
-                  and{' '}
+                  </Text>
+                  ,{' '}
                   <Text
                     style={styles.ackLink}
                     onPress={() => router.push('/privacy-policy')}
                     testID="register-ack-privacy-link"
                   >
                     Privacy Policy
+                  </Text>
+                  , and{' '}
+                  <Text
+                    style={styles.ackLink}
+                    onPress={() => router.push('/onboarding/medical-disclaimer')}
+                    testID="register-ack-medical-link"
+                  >
+                    Medical Disclaimer
                   </Text>
                   .
                 </Text>

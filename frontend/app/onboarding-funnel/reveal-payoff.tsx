@@ -73,11 +73,11 @@ export default function RevealPayoff() {
       workout_length: answers.workoutLength,
       equipment: answers.equipment,
     });
-    // Always fire the live trigger in production. The dev `post_onboarding_dev`
-    // hatch is retained below for QA who want to bypass the soft paywall on
-    // sandbox builds (FORCE_SIGNUP_PAYWALL).
+    // Spec §6 — medical disclaimer is now folded into /auth/register's
+    // acknowledgement checkbox. Skip the standalone disclaimer screen and
+    // route the funnel directly to the health-connect step.
     openPaywall(FORCE_SIGNUP_PAYWALL ? 'post_onboarding_dev' : 'post_onboarding_soft');
-    router.replace('/onboarding/medical-disclaimer');
+    router.replace('/onboarding/health-connect');
   };
 
   // Secondary CTA — replaces the old "Your first session is on us" caption.
@@ -93,7 +93,7 @@ export default function RevealPayoff() {
       workout_length: answers.workoutLength,
       equipment: answers.equipment,
     });
-    router.replace('/onboarding/medical-disclaimer');
+    router.replace('/onboarding/health-connect');
   };
 
   return (
