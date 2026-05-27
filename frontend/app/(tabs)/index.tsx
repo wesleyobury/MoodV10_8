@@ -958,6 +958,12 @@ export default function WorkoutsHome() {
             ? data.last_workout_calories
             : null
         );
+      } else {
+        // Endpoint may not yet be deployed on the cutover backend; degrade silently
+        // so UI still renders (trend indicator simply won't show until backend ships).
+        console.log(
+          `home-summary endpoint returned ${response.status} — falling back to defaults`
+        );
       }
     } catch (error) {
       console.log('Error fetching home summary:', error);
