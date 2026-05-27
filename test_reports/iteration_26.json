@@ -1,0 +1,51 @@
+{
+  "summary": "Iteration 26 — verifying iter_25 skip-ping backend fix end-to-end + re-running blocked tests 3/4/5/6. Skip-ping backend fix (server.py:12331-12352) is VERIFIED working: 10 skip-pings do not decrement remaining_uses; sweat cap remains untouched (3x200 + 429). Muscle Gainer is uncapped — 4 consecutive MG gens return HTTP 200. However a NEW regression was uncovered against the iter_26 spec: 'mixed: 3 MG gens then 1 Sweat gen (should pass — MG calls don't count for the cap)' FAILS — the Sweat call returns HTTP 429 immediately because MG generations still insert into choose_for_me_usage and burn the user's 3/day Sweat budget. Frontend playwright re-runs for Tests 1/3/4/6 were BLOCKED by repeated re-appearance of onboarding modals ('A quick note' / 'I Understand' / '5 metrics — Connect / Maybe later') on every navigation to '/', preventing automated navigation to the Muscle gainer mood card. The iter_25 v3 cart-flavor-badge / cart-subtitle fix was already verified live in iter_25 itself and the cart.tsx code (lines 956-1022) is unchanged in this iteration, so no regression risk there. Deprecated packages detected: expo-av. Deprecated style props detected: shadow*, textShadow*, props.pointerEvents (carry-over from iter_24+25).",
+  "backend_issues": {
+    "critical": [
+      {"endpoint": "/api/choose-for-me/generate", "issue": "Muscle Gainer generations still INSERT into choose_for_me_usage (server.py:12361), so after 3 MG gens the user's 3/day cap is exhausted and the NEXT non-MG call (Sweat/Lazy/Outdoor/Explosive/Calisthenics) returns HTTP 429. Per iter_26 brief, MG calls should NOT count toward the cap — the cap is for OTHER moods only. Fix: gate the usage insert + counter increment behind 'not is_muscle_gainer' (mirror the is_skip_ping early-return pattern).", "priority": "HIGH"}
+    ],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Onboarding gates on home navigation", "issue": "Terms & Privacy ('Accept & Continue'), 'A quick note' ('I Understand'), and '5 metrics' ('Connect / Maybe later') modals re-appear on every page.goto('/') even within the same logged-in session, breaking automated playwright flows that need to navigate home multiple times (Tests 3/4/5/6 all require returning to home). Suggest persisting the onboarding-dismissed flag in AsyncStorage so it survives intra-session re-navigations.", "affected_testIDs": []}
+    ],
+    "design_issues": [],
+    "react_native_issues": [
+      {"component": "expo-av", "issue": "Deprecated. Console: 'Expo AV has been deprecated and will be removed in SDK 54. Use the expo-audio and expo-video packages.' Reference: any module importing expo-av."},
+      {"component": "shadow* style props", "issue": "Deprecated. Console: '\"shadow*\" style props are deprecated. Use \"boxShadow\".'"},
+      {"component": "textShadow* style props", "issue": "Deprecated. Console: '\"textShadow*\" style props are deprecated. Use \"textShadow\".'"},
+      {"component": "props.pointerEvents", "issue": "Deprecated. Console: 'props.pointerEvents is deprecated. Use style.pointerEvents'."}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_choose_for_me_cap_skip_v2.py",
+    "/app/test_reports/pytest/pytest_choose_for_me_cap_skip_v2.xml"
+  ],
+  "action_items": [
+    "CRITICAL: In server.py /choose-for-me/generate, skip the usage_count insert+increment for Muscle Gainer too — currently MG gens consume the 3/day cap and cause Sweat/Lazy/Outdoor 429 after 3 MG calls. Simplest fix: wrap the `await db.choose_for_me_usage.insert_one(usage_record)` call (line ~12361) in `if not is_muscle_gainer:` so MG generations only persist into generated_workouts (workout_record) but never decrement the shared 3/day quota.",
+    "Frontend: persist onboarding-acknowledged flag (Terms gate, 'A quick note' disclaimer, '5 metrics' connect prompt) to AsyncStorage so they don't re-show on every cold navigation after login.",
+    "Migrate expo-av → expo-audio / expo-video (carry-over from iter_24/25).",
+    "Replace shadow* / textShadow* / props.pointerEvents deprecated props (carry-over).",
+    "Add testID='skip-cart-button' on the Skip TouchableOpacity and testIDs on body-parts cards / 'Build for me' button to make Playwright more robust (carry-over)."
+  ],
+  "critical_code_review_comments": [
+    "server.py:12326-12352 — skip-ping fix is correctly implemented: skip-pings early-return before insert + before save. Tested end-to-end with 10 consecutive skips and the sweat cap is untouched.",
+    "server.py:12354-12371 — Muscle Gainer DOES bypass the 429 check (line 12340) BUT still inserts the usage_record (line 12361) so usage_count keeps incrementing. This causes the mixed-mood regression where 3 MG gens immediately 429 a subsequent Sweat call. Recommend `if not is_muscle_gainer: await db.choose_for_me_usage.insert_one(usage_record)`.",
+    "cart.tsx handleSkip (line 447-460) — correctly POSTs intensity='skip' which the backend now recognizes as telemetry-only. Verified.",
+    "cart.tsx v3 cart-flavor-badge branch (956-1022) — unchanged since iter_25, verified live in iter_25, no regression risk this iteration."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_choose_for_me_cap_skip_v2.py (new pytest module — 3 pass / 1 fail-by-design surfacing the MG-cap-burn regression)"
+  ],
+  "success_rate": {
+    "backend": "75% (3/4 pytest cases pass — skip telemetry, sweat cap after skips, MG uncapped all pass; mixed-mood MG-doesn't-burn-cap fails)",
+    "frontend": "Not exercised this iteration due to repeating onboarding gates blocking playwright nav. Code review of cart.tsx unchanged from iter_25 where v3 metadata was verified live."
+  },
+  "seed_data_creation": "Ephemeral test users registered via /api/auth/register: capskip_<ts>, mgcap_<ts>, skiptest_<ts>, mgtest_1779867138099 (password TestPass1234567). Not cleaned up — matches existing iter_25 pattern.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend skip-ping fix VERIFIED working. New regression found: MG generations burn the Sweat 3/day cap because the usage_record insert isn't gated on is_muscle_gainer. After main agent applies the one-line fix (`if not is_muscle_gainer:` around the choose_for_me_usage.insert_one), re-run /app/backend/tests/test_choose_for_me_cap_skip_v2.py — all 4 cases should pass. Frontend Tests 1/3/4/6 are still pending playwright re-verification but cart.tsx is unchanged from iter_25 (which already verified them live for Tests 1+2). Onboarding-gate persistence issue blocks repeated nav('/') in playwright — workaround: dismiss 'Accept & Continue', 'I Understand', 'Maybe later' / 'Connect' in a loop on every navigation, OR fix onboarding to honor AsyncStorage acknowledgement flag.",
+  "rca_of_issue": "Root cause of mixed-mood 429: server.py /choose-for-me/generate has two early-bail paths (admin, skip-ping) AND one cap-bypass path (muscle gainer), but the muscle-gainer path only bypasses the 429 RAISE — it still falls through to db.choose_for_me_usage.insert_one(usage_record) (line 12361) which increments the count for all moods sharing this collection. The 3/day cap counter is therefore poisoned by MG calls and triggers 429 for the next non-MG call. Mitigation: gate the insert. Pseudo-diff: `if not is_muscle_gainer:\\n    await db.choose_for_me_usage.insert_one(usage_record)` placed around line 12361. The workout_record save into db.generated_workouts can remain unconditional (history is still recorded)."
+}

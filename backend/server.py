@@ -12325,18 +12325,31 @@ async def record_choose_for_me_usage(
     # Other moods (Sweat, Lazy, Outdoor, Explosive, Calisthenics) keep the 3/day cap.
     is_muscle_gainer = (request.moodCard or "").strip().lower() == "i want to gain muscle"
 
+    # Skip-pings (cart skip telemetry from cart.tsx handleSkip) are NOT billable
+    # generations — they fire when the user advances to the next pre-generated cart
+    # in an existing batch. Record them as telemetry only, no usage_count impact.
+    is_skip_ping = (request.intensity or "").strip().lower() == "skip"
+
     # Get current usage count
     usage_count = await db.choose_for_me_usage.count_documents({
         "user_id": current_user_id,
         "created_at": {"$gte": today_start}
     })
-    
-    # Check usage limit (skip for admin and for muscle-gainer mood)
-    if not is_admin and not is_muscle_gainer and usage_count >= 3:
+
+    # Check usage limit (skip for admin, for muscle-gainer mood, and for skip-pings)
+    if not is_admin and not is_muscle_gainer and not is_skip_ping and usage_count >= 3:
         raise HTTPException(
             status_code=429,
             detail="Daily limit reached. You can only use Build for Me 3 times per day."
         )
+
+    # Skip-pings bail early without polluting the daily counter or saving carts.
+    if is_skip_ping:
+        return {
+            "success": True,
+            "skipped": True,
+            "remaining_uses": 999 if is_admin or is_muscle_gainer else max(0, 3 - usage_count),
+        }
     
     # Record the usage
     usage_record = {
