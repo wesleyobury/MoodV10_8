@@ -154,6 +154,19 @@ function NavigationStack() {
       <Stack.Screen name="saved-builds" options={{ headerShown: false }} />
       <Stack.Screen name="onboarding/medical-disclaimer" options={{ headerShown: false, gestureEnabled: false }} />
       <Stack.Screen name="onboarding/health-connect" options={{ headerShown: false, gestureEnabled: false }} />
+      <Stack.Screen
+        name="pulse-sync"
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+          // Full-screen take-over so the achievement screen + tab bar are
+          // hidden during the magic moment. Fades in via Reanimated, so we
+          // suppress the native push transition to avoid a double-animation.
+          animation: 'fade',
+          animationDuration: 0,
+          presentation: 'fullScreenModal',
+        }}
+      />
       <Stack.Screen name="onboarding-funnel" options={{ headerShown: false, gestureEnabled: false }} />
     </Stack>
   );

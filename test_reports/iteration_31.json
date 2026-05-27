@@ -1,0 +1,90 @@
+{
+  "summary": "Static code-review validation for Pulse Sync (Spec §11) + Stage 2 paywall copy variants. All 7 review items PASS with line-evidence. No new TypeScript errors introduced; only pre-existing errors in the allowlist remain. Backend supervisor RUNNING.",
+  "review_results": {
+    "item_1_pulse_sync_screen": {
+      "verdict": "PASS",
+      "file": "/app/frontend/app/pulse-sync.tsx",
+      "evidence": {
+        "default_export_PulseSyncScreen": "line 102: `export default function PulseSyncScreen() {`",
+        "reanimated_v3_imports": "lines 40-50: imports useSharedValue, useAnimatedStyle, useAnimatedProps, withTiming, withDelay, withSequence, withSpring, Easing, runOnJS from 'react-native-reanimated'",
+        "haptics_gated_on_platform": "lines 198-202: `if (Platform.OS !== 'web') { setTimeout(() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {}); }, 600); }`",
+        "reduce_motion_check": "line 169: `const reduce = await AccessibilityInfo.isReduceMotionEnabled().catch(() => false);` — skip path at lines 173-180",
+        "async_storage_flag": "line 58: `const FLAG_KEY = '@mood_pulse_sync_played_v1';` + line 167: `AsyncStorage.setItem(FLAG_KEY, 'true').catch(() => {});` on mount",
+        "analytics_pulseSyncPlayed": "lines 153-158: `if (token) { Analytics.pulseSyncPlayed(token, { had_wearable_data: hasWearableData, duration_ms: durationMs }); }` BEFORE router.replace",
+        "router_replace_to_create_post": "line 159: `router.replace({ pathname: '/create-post', params: passThroughParams });`",
+        "wearable_branch": "lines 305-318: `hasWearableData && hrAvg ?` renders BPM, recovery HRV row (line 312-316), and 'Body responding.' tagline (line 317)",
+        "fallback_branch": "line 320: `<Text style={styles.fallbackLine}>First session complete ⚡️</Text>`",
+        "hasWearableData_parse": "line 121: `const hasWearableData = String(params.hasWearableData ?? '') === 'true';`",
+        "hrAvg_positive_int_parse": "lines 122-125: `parseInt(...)` returning null when not finite or <= 0"
+      }
+    },
+    "item_2_layout_registration": {
+      "verdict": "PASS",
+      "file": "/app/frontend/app/_layout.tsx",
+      "evidence": "lines 157-169: `<Stack.Screen name=\"pulse-sync\" options={{ headerShown: false, gestureEnabled: false, animation: 'fade', animationDuration: 0, presentation: 'fullScreenModal' }} />`"
+    },
+    "item_3_workout_session_hop_logic": {
+      "verdict": "PASS",
+      "file": "/app/frontend/app/workout-session.tsx",
+      "evidence": {
+        "hasUsedFreeSession_destructure": "line 65: `const { recordStartFreeWorkout, hasUsedFreeSession } = useSubscription();`",
+        "isFirstWorkout_before_record": "line 407: `const isFirstWorkout = !hasUsedFreeSession;` precedes line 423 `recordStartFreeWorkout();`",
+        "asyncstorage_check": "lines 409-416: reads `@mood_pulse_sync_played_v1`; `pulseSyncEligible = pulseAlreadyPlayed !== 'true';` only inside `if (isFirstWorkout)` block, default false",
+        "router_push_pulse_sync_early_return": "lines 538-557: `if (pulseSyncEligible) { ... router.push({ pathname: '/pulse-sync' as any, params: { ...navParams, hasWearableData, hrAvg, hrv } }); ... return; }` — early-returns, does NOT also push /create-post",
+        "fallback_to_create_post": "lines 561-564: `router.push({ pathname: '/create-post', params: navParams });` after the eligible-branch early return"
+      }
+    },
+    "item_4_analytics_helper": {
+      "verdict": "PASS",
+      "file": "/app/frontend/utils/analytics.ts",
+      "evidence": "lines 403-412: `pulseSyncPlayed: (token: string | null, metadata: { had_wearable_data: boolean; duration_ms: number; }) => { if (!token) return; return trackEvent(token, 'pulse_sync_played', metadata); }` — exposed on authenticated `Analytics` export and silently no-ops when token is null"
+    },
+    "item_5_paywall_copy_variants": {
+      "verdict": "PASS",
+      "file": "/app/frontend/components/PaywallModal.tsx",
+      "evidence": {
+        "post_onboarding_soft_headline": "lines 101-103: `case 'post_onboarding_dev': case 'post_onboarding_soft': return 'Unlock your full plan.';`",
+        "post_achievement_close_soft_headline": "lines 106-107: `case 'post_achievement_close_soft': return 'You just trained. Lock it in.';`",
+        "post_share_soft_headline": "lines 108-109: `case 'post_share_soft': return 'You told the world. Now lock it in.';`",
+        "subheadline_memo": "lines 118-127: `const subheadline = useMemo(() => { switch (pendingTrigger) { case 'post_achievement_close_soft': return 'Imagine doing this every day, dialed in to how you feel.'; case 'post_share_soft': return 'Premium turns one workout into a streak. No skipped days, no plateaus.'; default: return null; } }, [pendingTrigger]);`",
+        "subhead_jsx_fallback": "lines 254-256: `<Text style={styles.subhead}>{subheadline ?? 'Workouts tuned to your real state, not just your goals.'}</Text>`"
+      }
+    },
+    "item_6_no_new_typescript_errors": {
+      "verdict": "PASS",
+      "evidence": {
+        "pulse-sync.tsx": "0 errors",
+        "PaywallModal.tsx": "0 errors",
+        "analytics.ts": "1 error at line 50 (`Localization.timezone`) — pre-existing in allowlist (timezone)",
+        "workout-session.tsx": "3 errors — line 218 `setHrSampleCount` (pre-existing/allowlisted), line 327 `moodCard` (allowlisted), line 816 `Toast` (allowlisted). All NEW pulse-sync logic (lines 407-557) is error-free."
+      }
+    },
+    "item_7_backend_smoke": {
+      "verdict": "PASS",
+      "evidence": "`sudo supervisorctl status backend` → `backend RUNNING pid 1857, uptime 0:35:03`"
+    }
+  },
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_31.json"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "pulse-sync.tsx correctly strips hasWearableData/hrAvg/hrv from passThroughParams (lines 114-118) so create-post receives only achievement/session payload.",
+    "Analytics.pulseSyncPlayed is gated by `if (token)` in both call site (pulse-sync.tsx:153) AND helper (analytics.ts:410) — double-safe.",
+    "advancedRef guard (pulse-sync.tsx:150) prevents double-fire of navigation from the animation completion callback racing the timer.",
+    "Reduce-motion path advances at 900ms (line 178) vs full path ~3s — matches spec.",
+    "Stage 2 subheadline correctly falls through to default generic line for all non-Stage-2 triggers (PaywallModal.tsx:255 uses ?? null fallback)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "seed_data_creation": "None — static code review only.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "All 7 spec items for Pulse Sync (§11) + Stage 2 paywall copy verified by static review with line-evidence. No runtime testing was performed — main agent should consider Playwright/device smoke if behavioural validation is needed (e.g., real reduce-motion path, real haptic on iOS, AsyncStorage flag persistence across sessions, first-workout completion → pulse-sync hop → create-post navigation chain).",
+  "rca_of_issue": "N/A — review request only."
+}

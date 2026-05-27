@@ -394,6 +394,24 @@ export const Analytics = {
     source?: string;
   }) => trackEvent(token, 'workout_session_completed', metadata),
 
+  /**
+   * Spec §11 — fired by /pulse-sync after the first-workout magic moment.
+   * `had_wearable_data` answers "what % of first-workout completions have
+   * wearables connected" → signal for how aggressively to prompt wearable
+   * connection earlier in onboarding.
+   */
+  pulseSyncPlayed: (token: string | null, metadata: {
+    had_wearable_data: boolean;
+    duration_ms: number;
+  }) => {
+    // Pulse Sync fires on the user's first completed workout; for guest /
+    // logged-out edge cases we silently drop the event since the
+    // authenticated `trackEvent` requires a token.
+    if (!token) return;
+    return trackEvent(token, 'pulse_sync_played', metadata);
+  },
+
+
   // Workout Funnel Events
   workoutFunnelStep: (token: string, metadata: {
     step: string;

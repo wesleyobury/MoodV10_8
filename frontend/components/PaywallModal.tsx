@@ -99,9 +99,30 @@ export function PaywallModal() {
       case 'recap_footer_cta':
         return 'Next workout, on Premium.';
       case 'post_onboarding_dev':
+      case 'post_onboarding_soft':
         return 'Unlock your full plan.';
+      // Spec §3 Stage 2 — leverage post-workout dopamine + (for the share
+      // path) public commitment as social proof to themselves.
+      case 'post_achievement_close_soft':
+        return 'You just trained. Lock it in.';
+      case 'post_share_soft':
+        return 'You told the world. Now lock it in.';
       default:
         return 'Train how you feel.';
+    }
+  }, [pendingTrigger]);
+
+  /** Sub-headline beneath the main copy. For Stage 2 we double down on
+   *  the emotional payoff; for everything else we keep the existing
+   *  generic "every mood, every day" promise. */
+  const subheadline = useMemo(() => {
+    switch (pendingTrigger) {
+      case 'post_achievement_close_soft':
+        return 'Imagine doing this every day, dialed in to how you feel.';
+      case 'post_share_soft':
+        return 'Premium turns one workout into a streak. No skipped days, no plateaus.';
+      default:
+        return null;
     }
   }, [pendingTrigger]);
 
@@ -231,7 +252,7 @@ export function PaywallModal() {
               <Text style={styles.eyebrow}>UNLOCK MOOD</Text>
               <Text style={styles.headline}>{headline}</Text>
               <Text style={styles.subhead}>
-                Workouts tuned to your real state, not just your goals.
+                {subheadline ?? 'Workouts tuned to your real state, not just your goals.'}
               </Text>
             </View>
 
