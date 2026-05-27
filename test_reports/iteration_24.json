@@ -1,0 +1,63 @@
+{
+  "summary": "Frontend E2E on mood-cutover.preview.emergentagent.com. Smoke + happy-path verified: app loads cleanly, browser console shows 'API_BASE_URL = https://mood-cutover.preview.emergentagent.com' (no mood-build reference), no infinite spinner, no console red errors, no PAGEERROR. Registered a fresh user (mgrun_<ts>) through the UI sign-up flow, completed the post-register onboarding gates (medical-disclaimer -> health-intro -> health-connect 'Maybe later'), navigated home -> 'Muscle gainer' mood card -> /body-parts -> Chest -> Build for me -> Moderate -> Generate Workouts. Cart screen rendered with the 'Shock the System' generated title, '~28 min', and 2 exercises (Dip Clusters + Machine Clusters) — matches the '2 per muscle for single-muscle selection' expectation. Carousel Skip control advanced through 3 carts with 3 DIFFERENT badge values. CRITICAL FINDING: the rendered cart-flavor-badge text is the *legacy display.title* ('Strength' / 'Hypertrophy' / 'Pump'), not the v3 cartBadge copy ('Lift Heavy' / 'Build Muscle' / 'Feel the Burn'). The expected cold-start triplet per the spec is Strength + Builder Day + Athletic Day -> 'Lift Heavy' + 'Bodybuilder Style' + 'Athletic Style', but cold start actually returned the legacy intensity-axis triplet strength / hypertrophy / pump and rendered each cart's `flavor` (= display.title) as the badge. The new italic cart-subtitle element (testID=cart-subtitle) was NOT rendered on any of the 3 carts on the cold-start run — i.e. `currentCart.cartSubtitle` is falsy at render time. Conclusion: the v3 'Build for Me — Muscle Gainer' cart-flavor variety + subtitle work is wired in code (workoutGenerator.ts CART_FLAVORS map is correct, GeneratedWorkoutView reads `cartBadge || flavor` and conditionally renders `cartSubtitle`) but is NOT producing the new equipment/specialty carts and is NOT setting cartBadge/cartSubtitle on the generated carts that actually reach the cart screen. This affects requirements 2, 3, 4 of the review request.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "GeneratedWorkoutView / cart-flavor-badge",
+        "issue": "Badge text falls through to `currentCart.flavor` (which equals display.title — 'Strength'/'Hypertrophy'/'Pump') instead of showing the v3 `cartBadge` ('Lift Heavy'/'Build Muscle'/'Feel the Burn'/'Bodybuilder Style'/'Athletic Style'). cartBadge is undefined/empty on the carts that arrive at /cart. Expected per CART_FLAVORS map in workoutGenerator.ts:1404-1411.",
+        "testID": "cart-flavor-badge",
+        "priority": "HIGH"
+      },
+      {
+        "component": "GeneratedWorkoutView / cart-subtitle",
+        "issue": "Italic one-line subtitle (testID=cart-subtitle) NEVER rendered on cold-start Muscle Gainer carts. The `currentCart.cartSubtitle ? ... : null` guard fails because cartSubtitle is empty. Spec requires a subtitle like 'Low reps, big compound work' for Strength / 'Machines + cables, classical hypertrophy' for Builder Day, etc.",
+        "testID": "cart-subtitle",
+        "priority": "HIGH"
+      },
+      {
+        "component": "Muscle Gainer cold-start cart variety",
+        "issue": "Cold-start (empty mg_recent_cart_types_v1) returned the LEGACY intensity-axis triplet: strength + hypertrophy + pump. Spec / iteration_23 review and code at workoutGenerator.ts:1620 require wantedDefaults = ['strength', 'builder_day', 'athletic_day'] for cold-start. Either selectCartTypes is not on the runtime path, OR builder_day/athletic_day are being filtered out by isCartFeasible() for Chest+Intermediate (which would also be a feasibility bug, since they should be feasible)."
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "body-parts.tsx -> generateMuscleGainerCarts -> JSON.stringify(carts) -> /cart route params -> GeneratedWorkoutView",
+        "issue": "cartBadge and cartSubtitle fields populated by generateMuscleGainerCarts (workoutGenerator.ts:1977-1978) do not survive to the cart screen. Likely root causes to investigate, in priority order: (a) the cart screen / GeneratedWorkoutView is being fed carts from a *different* code path (e.g. a legacy `generateChooseForMeCarts` or backend hydration) rather than the v3 generateMuscleGainerCarts; (b) the /cart screen strips fields when reconstructing carts from route params; (c) body-parts.tsx is calling an older/duplicate generator. Recommend adding a console.log of the first cart object on /cart mount to verify which path is live.",
+        "affected_testIDs": ["cart-flavor-badge", "cart-subtitle"]
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Investigate why v3 cold-start triplet (strength + builder_day + athletic_day) is not being produced — confirm body-parts.tsx is calling the v3 generateMuscleGainerCarts and not a legacy generator, and confirm isCartFeasible() does not reject builder_day / athletic_day for Chest + Intermediate.",
+    "Investigate why cartBadge and cartSubtitle are not visible in the rendered cart-flavor-badge / cart-subtitle elements — log the cart object at GeneratedWorkoutView mount to see the actual currentCart fields.",
+    "Once badge + subtitle are confirmed visible on cold start, re-run the rotation test (run Build for Me twice with same selection, verify gen2 badges differ from gen1) and the 3+ muscle trim test (Chest + Back + Biceps = 6 exercises per cart).",
+    "Optional but useful for tests: add testID='skip-cart-button' on the Skip TouchableOpacity in GeneratedWorkoutView.tsx so Playwright can drive the carousel by testID rather than the brittle get_by_text('Skip').",
+    "Optional: add testID on body-parts cards (e.g. testID='body-part-chest') and on the 'Build for me' button so the funnel is selector-stable.",
+    "(Carry-over from iteration_23) Migrate expo-av -> expo-audio / expo-video; replace shadow* / textShadow* style props; replace props.pointerEvents with style.pointerEvents.",
+    "(Carry-over from iteration_23) Modularise backend/server.py (>13k lines)."
+  ],
+  "critical_code_review_comments": [
+    "workoutGenerator.ts:1404-1411 CART_FLAVORS map looks correct (cold-start carts have well-defined badge + subtitle strings).",
+    "workoutGenerator.ts:1620 cold-start wantedDefaults = ['strength', 'builder_day', 'athletic_day'] is correct in source — but the live build produced ['strength', 'hypertrophy', 'pump'] for a true cold start (brand new user, no mg_recent_cart_types_v1). This means either an older build is being served, or selectCartTypes is being bypassed.",
+    "GeneratedWorkoutView.tsx:405-407 renders `cartBadge || flavor` — fallback is fine, but the production data is missing cartBadge entirely. Suggest adding a dev-only console.warn when cartBadge is empty on a muscle-gainer cart, so this drift is caught early.",
+    "body-parts.tsx:222 passes JSON.stringify(carts) — full object should be preserved; verify cart.tsx:332 parse path keeps cartBadge/cartSubtitle (no field-stripping mapper).",
+    "body-parts.tsx body parts cards still have no testID — selector tests must rely on get_by_text('Chest'/'Back'/'Biceps'), which is brittle to copy changes."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend-only iteration)",
+    "frontend": "Partial — landing/login/signup/onboarding/mood-select/body-part-select/intensity-modal/generation/skip-carousel all work; v3 cart-flavor-badge text + cart-subtitle render + cold-start cart variety FAIL vs spec (3 of 7 requested checks)."
+  },
+  "seed_data_creation": "Created ephemeral test users mgflow_<ts> and mgrun_<ts> via the UI sign-up flow (TestPass1234567). Not cleaned up — same pattern as prior iterations.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Reproducer (no auth state needed — sign up fresh each time): (1) goto https://mood-cutover.preview.emergentagent.com (2) Accept & Continue (3) Sign up — register a fresh user via [data-testid='register-*-input'] (4) walk onboarding: 'I Understand' -> 'Continue' -> 'Maybe later' (5) on Home tab scroll until 'Muscle gainer' is visible, tap it (6) on /body-parts tap 'Chest' (text) (7) tap 'Build for me' (text contains) (8) tap 'Moderate' (9) tap 'Generate Workouts' (10) inspect [data-testid='cart-flavor-badge'] — expected 'Lift Heavy' on cold start, actual 'Strength'; [data-testid='cart-subtitle'] is expected visible, actual NOT in DOM. The skip carousel works — tap text='Skip' to advance to next cart. Reset device storage between rotation runs by registering a new user (avoids mg_recent_cart_types_v1 contamination). 4x consecutive MG generations + 3-muscle 6-exercise trim test were NOT completed because the underlying badge/subtitle bug blocks the primary acceptance criterion — fix that first, then re-run.",
+  "rca_of_issue": "Symptom: cart-flavor-badge renders display.title ('Strength'/'Hypertrophy'/'Pump') instead of the v3 cartBadge ('Lift Heavy'/'Build Muscle'/'Feel the Burn'); cart-subtitle element is absent from DOM. Cold-start triplet is the legacy intensity-axis (strength/hypertrophy/pump) rather than the v3 mixed-axis (strength/builder_day/athletic_day). Likely root cause is one of: (a) a legacy code path (older choose-for-me generator) is still in the runtime call chain and is overriding / replacing the v3 carts before they reach /cart -> GeneratedWorkoutView; (b) body-parts.tsx imports generateMuscleGainerCarts but a stale Metro bundle is being served (try `sudo supervisorctl restart expo` after confirming the source on disk is correct); (c) cart.tsx route-param parse drops unknown fields. Mitigation steps for main agent: (1) console.log(carts[0]) right after generateMuscleGainerCarts() in body-parts.tsx and again after JSON.parse in cart.tsx — compare; (2) verify Metro bundle includes the post-fix workoutGenerator.ts by grepping the served JS for 'Bodybuilder Style'; (3) if missing, restart expo and rebuild. Until cartBadge/cartSubtitle show on screen, the v3 acceptance criteria cannot pass."
+}
