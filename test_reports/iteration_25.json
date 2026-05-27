@@ -1,0 +1,52 @@
+{
+  "summary": "Re-tested Muscle Gainer v3 cart fix on mood-cutover.preview.emergentagent.com. PRIMARY REGRESSION FROM ITERATION_24 IS FIXED. Logged in as a freshly registered user (mgtest2_1779866619 / TestPass1234567), tapped Muscle gainer mood card → /body-parts → Chest only → Build for me → Moderate → Generate Workouts. Cart screen now correctly renders v3 metadata: (a) cart-flavor-badge shows the v3 cartBadge text ('Lift Heavy' on cart 1, 'Bodybuilder Style' on cart 2, 'Athletic Style' on cart 3), with cart-type-specific icons (barbell / construct / body). (b) cart-subtitle testID is in the DOM with the matching italic subtitle ('Low reps, big compound work', 'Machines + cables, classical hypertrophy', 'Bodyweight + free weights, functional feel'). Cold-start variety (Test 2) PASSES — the 3 carts on a brand new user produce exactly the expected v3 triplet {Lift Heavy, Bodybuilder Style, Athletic Style}. The URL itself also confirms cartBadge / cartSubtitle / cartType fields survive into route params. Happy path (Test 1) PASSES — first cart badge='Lift Heavy', subtitle='Low reps, big compound work'. Tests 3 (rotation), 4 (3-muscle trim count), 5 (no 429 on 4 consecutive gens), 6 (non-MG mood regression) were NOT fully exercised in this run — see action_items. Concern: console captured a 429 from /api/choose-for-me/generate on the *second* attempt at generation in the same session, which means Test 5 (no 429 on 4 consecutive MG gens) is likely failing. Cart 1 (Lift Heavy) showed 2 exercises but Carts 2 & 3 showed 3 exercises each for a single-muscle (Chest only) Moderate selection — the spec says '2 per muscle' so the trim/count logic for Builder Day + Athletic Day with single-muscle selection should be re-verified against expected (workoutGenerator PRIMARY_COUNTS_V3). Deprecated packages detected: expo-av; deprecated style props detected: shadow*, textShadow*, props.pointerEvents (carry-over from earlier iterations).",
+  "backend_issues": {
+    "critical": [
+      {"endpoint": "/api/choose-for-me/generate", "issue": "Returned HTTP 429 (Daily Limit Reached) on the SECOND consecutive muscle-gainer generation in the same session, blocking Test 3 (rotation) and likely failing Test 5 (no 429 on 4 consecutive MG gens for logged-in user). Confirmed via browser console: 'Failed to load resource: the server responded with a status of 429'.", "priority": "HIGH"}
+    ],
+    "minor": [
+      {"endpoint": "Unknown 404", "issue": "Console also showed a 404 resource load failure during the flow — origin not identified (possibly a missing image or analytics endpoint)."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Muscle Gainer rotation (Build for Me twice in same session)", "issue": "Could not exercise rotation because the second Build for Me attempt was blocked by /api/choose-for-me/generate 429. Backend daily-cap appears to be too tight for logged-in users on the muscle-gainer path, or skip-pings are counting against the cap.", "affected_testIDs": ["cart-flavor-badge"]}
+    ],
+    "design_issues": [
+      {"screen": "/cart (Muscle Gainer)", "issues": ["Exercise count for single-muscle Chest-only Moderate is inconsistent across carts: Lift Heavy=2, Bodybuilder Style=3, Athletic Style=3. Spec says 2 per muscle for single-muscle selection. Builder Day + Athletic Day target counts (PRIMARY_COUNTS_V3) need to be re-confirmed for 1-muscle case."]}
+    ],
+    "react_native_issues": [
+      {"component": "expo-av", "issue": "Deprecated console warning: 'Expo AV has been deprecated and will be removed in SDK 54. Use the expo-audio and expo-video packages to replace the required functionality.' Reference: any module importing expo-av."},
+      {"component": "shadow* style props", "issue": "Deprecated console warning: '\"shadow*\" style props are deprecated. Use \"boxShadow\".' Reference: multiple StyleSheet declarations across the app."},
+      {"component": "textShadow* style props", "issue": "Deprecated console warning: '\"textShadow*\" style props are deprecated. Use \"textShadow\".'"},
+      {"component": "props.pointerEvents", "issue": "Deprecated console warning: 'props.pointerEvents is deprecated. Use style.pointerEvents'."}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix /api/choose-for-me/generate 429 on second generation for logged-in muscle-gainer flow — Test 5 requires 4 consecutive MG generations with NO 429 for a logged-in user. Verify the daily-cap counter is not incrementing per skip (cart.tsx handleSkip POSTs to the same endpoint with carts:[] which may be counted as a generation).",
+    "Re-test Test 3 (rotation): after fixing the 429, re-run Build for Me a second time with same Chest selection and verify the rotation/last-2-deprioritization picks at least one non-{Lift Heavy, Bodybuilder Style} cart type (Hypertrophy / Pump / Heavy Day / Express / Eccentric Focus).",
+    "Verify exercise counts for single-muscle Moderate selection: spec says 2 per muscle but live shows Lift Heavy=2 / Bodybuilder Style=3 / Athletic Style=3 for Chest-only. Either the spec is per-cart-type variant (accepted) or PRIMARY_COUNTS_V3 needs to be tightened.",
+    "Re-test Test 4 (3+ muscle trim): Chest + Back + Biceps + Moderate → each of 3 carts should have exactly 6 exercises (2 per muscle).",
+    "Re-test Test 6 (non-MG regression): open 'I want to sweat' or another non-muscle-gainer mood and confirm the legacy training_style heuristic still derives 'Strength' / 'Hypertrophy' / 'Pump' badges in cart-flavor-badge.",
+    "Carry-over from iteration_24: migrate expo-av → expo-audio / expo-video; replace shadow* / textShadow* style props; replace props.pointerEvents with style.pointerEvents.",
+    "Carry-over: add testID='skip-cart-button' on the Skip TouchableOpacity and testIDs on body-parts cards / 'Build for me' button — current Playwright tests must rely on get_by_text which is brittle."
+  ],
+  "critical_code_review_comments": [
+    "cart.tsx:976-998 v3 branch is correct — reads v3Cart.cartType + v3Cart.cartBadge from generatedCarts[currentCartIndex] before falling back to legacy training_style heuristic. Icon map covers all 8 cart types. Verified live.",
+    "cart.tsx:963-968 cart-subtitle conditional render is correct — only renders when generatedCarts[currentCartIndex].cartSubtitle is truthy. Verified live on all 3 cold-start carts.",
+    "cart.tsx:1102 SendWorkoutModal difficulty prop now reads generatedCarts[currentCartIndex]?.intensity first — correct.",
+    "cart.tsx handleSkip (line 447): posts to /api/choose-for-me/generate with body {carts:[], intensity:'skip'} — this MAY be incrementing the daily generation counter on every skip, which would explain the 429 on the second real generation attempt. Recommend backend-side: treat intensity='skip' as a non-billable event."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "Concerning — 1 critical 429 on /api/choose-for-me/generate observed during rotation attempt",
+    "frontend": "v3 cart-flavor-badge + cart-subtitle FIX VERIFIED LIVE (Tests 1 + 2 pass). Tests 3/4/5/6 blocked by backend 429 + not exercised."
+  },
+  "seed_data_creation": "Registered fresh users via /api/auth/register: mgtest_1779866614@example.com, mgtest2_1779866619@example.com (TestPass1234567). Not cleaned up — same ephemeral pattern as prior iterations.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Reproducer for re-test: (1) curl -X POST {EXPO_BACKEND_URL}/api/auth/register with a fresh mgtest_<ts> user; (2) goto {EXPO_BACKEND_URL}/auth/login; (3) fill placeholder='Username or Email' + placeholder='Password' (do NOT use input selector — RN-web TextInput needs placeholder/data-testid); (4) click text='Login'; (5) On home tab scroll past Featured Workouts to 'CHOOSE YOUR MOOD' section; (6) use page.locator(\"text=/^Muscle gainer$/i\").last to skip the featured carousel match and tap the actual mood card; (7) /body-parts → tap text='Chest' → text='Build for me' → text='Moderate' → text='Generate Workouts'; (8) inspect [data-testid='cart-flavor-badge'] (icon char is prefix — strip it before comparing) and [data-testid='cart-subtitle']; (9) text='Skip' advances to next cart. The v3 metadata is now end-to-end correct — primary regression from iteration_24 IS FIXED. To unblock Tests 3/4/5/6, the /api/choose-for-me/generate 429 needs investigation first (likely caused by handleSkip POSTing to the same endpoint with carts:[]).",
+  "rca_of_issue": "Iteration_24 root cause (cart.tsx ignoring v3 cartType/cartBadge/cartSubtitle metadata) is confirmed fixed in cart.tsx lines 956-1022 — v3 branch is reached on every muscle-gainer generation and renders 'Lift Heavy' / 'Bodybuilder Style' / 'Athletic Style' badges plus italic subtitles. Remaining blocker for full re-test acceptance is a backend 429 on /api/choose-for-me/generate after the first generation in a session — likely caused by cart.tsx:447 handleSkip POSTing 'intensity:skip' events that the rate-limiter counts as full generations against the daily cap. Mitigation for the main agent: in the choose-for-me/generate handler, only increment the daily counter when the request payload contains an actual generated carts array (carts.length > 0 AND intensity != 'skip'); skip-ping events should be telemetry-only."
+}

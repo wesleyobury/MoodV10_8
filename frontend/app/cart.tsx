@@ -960,6 +960,12 @@ export default function CartScreen() {
               ? featuredSplit.subtitle
               : (isGeneratedWorkout && dynamicTitle ? dynamicTitle : moodInfo.type)}
           </Text>
+          {/* v3 Muscle Gainer cart subtitle (e.g. "Barbell-led strength training") */}
+          {(generatedCarts[currentCartIndex]?.cartSubtitle) ? (
+            <Text style={styles.cartSubtitle} numberOfLines={1} testID="cart-subtitle">
+              {generatedCarts[currentCartIndex].cartSubtitle}
+            </Text>
+          ) : null}
           <View style={styles.durationBadge}>
             <Ionicons name="time-outline" size={14} color="#FFD700" />
             <Text style={styles.durationText}>~{getTotalDuration()} min</Text>
@@ -968,6 +974,30 @@ export default function CartScreen() {
 
         {/* Muscle Gainer Flavor Badge (bottom-right of hero) */}
         {(() => {
+          // PREFER v3 metadata from generated cart when present
+          const v3Cart = generatedCarts[currentCartIndex];
+          const v3CartType = v3Cart?.cartType as string | undefined;
+          const v3CartBadge = v3Cart?.cartBadge as string | undefined;
+          if (v3CartType && v3CartBadge) {
+            const v3IconMap: Record<string, 'barbell' | 'fitness' | 'flame' | 'construct' | 'body' | 'flash' | 'hourglass'> = {
+              strength: 'barbell',
+              hypertrophy: 'fitness',
+              pump: 'flame',
+              heavy_day: 'barbell',
+              builder_day: 'construct',
+              athletic_day: 'body',
+              express: 'flash',
+              eccentric_focus: 'hourglass',
+            };
+            return (
+              <View style={styles.cartFlavorBadge} testID="cart-flavor-badge">
+                <Ionicons name={v3IconMap[v3CartType] || 'fitness'} size={14} color="#FFD700" />
+                <Text style={styles.cartFlavorBadgeText}>{v3CartBadge}</Text>
+              </View>
+            );
+          }
+
+          // LEGACY fallback for non-muscle-gainer carts (sweat, lazy, outdoor, etc.)
           const styles_count: Record<string, number> = {};
           for (const it of cartItems) {
             if (it.training_style && it.training_style !== 'mixed') {
@@ -1246,6 +1276,14 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '800',
     color: '#fff',
+    marginBottom: 10,
+  },
+  cartSubtitle: {
+    fontSize: 13,
+    color: 'rgba(255, 255, 255, 0.85)',
+    fontWeight: '500',
+    fontStyle: 'italic',
+    marginTop: -6,
     marginBottom: 10,
   },
   durationBadge: {
