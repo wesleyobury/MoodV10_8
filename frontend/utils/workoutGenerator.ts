@@ -1352,15 +1352,130 @@ const muscleGroupDatabases: Record<string, EquipmentWorkouts[]> = {
 };
 
 // =============================================================================
-// MUSCLE GAINER — generator (per spec: training_style flavors, volume rules,
-// compound-first slotting, ancillary trim, abs-last, equipment + pattern uniq).
+// MUSCLE GAINER — generator v3 (full spec is the canonical doc the user
+// provided in conversation; condensed here in inline comments + types):
+//   - 8-cart library (Strength / Hypertrophy / Pump / Heavy Day / Builder Day /
+//     Athletic Day / Express / Eccentric Focus) drawing 3 per generation
+//   - Axis diversity (intensity / equipment / specialty) + last-2 rotation
+//   - Volume floor of 2 per muscle, no total cap, 3+ trim drops to floor
+//   - Ancillary cap of 2; Abs exempt and rendered last; ancillary-only / abs-only
+//     edge cases promote first selection to primary treatment
+//   - No cross-muscle equipment restriction
+//   - Within-muscle pattern uniqueness is HARD when pool supports it
 // =============================================================================
 
 const PRIMARY_MUSCLE_GROUPS = [
   'Legs', 'Chest', 'Back', 'Shoulders', 'Quads', 'Hamstrings', 'Glutes', 'Calves'
 ];
-const ANCILLARY_MUSCLE_GROUPS = ['Biceps', 'Triceps', 'Abs'];
+const ANCILLARY_MUSCLE_GROUPS_NON_ABS = ['Biceps', 'Triceps'];
 const LEG_SUB_GROUPS = ['Quads', 'Hamstrings', 'Glutes', 'Calves'];
+
+// --- v3 cart library ---------------------------------------------------------
+export type CartTypeId =
+  | 'strength' | 'hypertrophy' | 'pump'
+  | 'heavy_day' | 'builder_day' | 'athletic_day'
+  | 'express' | 'eccentric_focus';
+
+type CartAxis = 'intensity' | 'equipment' | 'specialty';
+
+interface CartLibraryEntry {
+  id: CartTypeId;
+  axis: CartAxis;
+  label: string;
+}
+
+export const MUSCLE_GAINER_CART_LIBRARY: CartLibraryEntry[] = [
+  { id: 'strength',        axis: 'intensity',  label: 'Strength' },
+  { id: 'hypertrophy',     axis: 'intensity',  label: 'Hypertrophy' },
+  { id: 'pump',            axis: 'intensity',  label: 'Pump' },
+  { id: 'heavy_day',       axis: 'equipment',  label: 'Heavy Day' },
+  { id: 'builder_day',     axis: 'equipment',  label: 'Builder Day' },
+  { id: 'athletic_day',    axis: 'equipment',  label: 'Athletic Day' },
+  { id: 'express',         axis: 'specialty',  label: 'Express' },
+  { id: 'eccentric_focus', axis: 'specialty',  label: 'Eccentric Focus' },
+];
+
+// User-facing display strings per cart type.
+export const MUSCLE_GAINER_CART_DISPLAY: Record<CartTypeId, {
+  title: string;
+  badge: string;
+  subtitle: string;
+}> = {
+  strength:        { title: 'Strength',        badge: 'Lift Heavy',         subtitle: 'Low reps, big compound work' },
+  hypertrophy:     { title: 'Hypertrophy',     badge: 'Build Muscle',       subtitle: 'Classic muscle-building volume' },
+  pump:            { title: 'Pump',            badge: 'Feel the Burn',      subtitle: 'High reps, drop sets, the squeeze' },
+  heavy_day:       { title: 'Heavy Day',       badge: 'Powerlifting Style', subtitle: 'Barbell-led strength training' },
+  builder_day:     { title: 'Builder Day',     badge: 'Bodybuilder Style',  subtitle: 'Machines + cables, classical hypertrophy' },
+  athletic_day:    { title: 'Athletic Day',    badge: 'Athletic Style',     subtitle: 'Bodyweight + free weights, functional feel' },
+  express:         { title: 'Express',         badge: 'Quick Hit',          subtitle: 'Max impact in minimum time' },
+  eccentric_focus: { title: 'Eccentric Focus', badge: 'Slow & Strict',      subtitle: 'Tempo work, technique-focused' },
+};
+
+// Style preference (soft filter) per cart type.
+const CART_STYLE_PREFERENCE: Record<CartTypeId, TrainingStyle[]> = {
+  strength: ['strength'],
+  hypertrophy: ['hypertrophy'],
+  pump: ['pump'],
+  heavy_day: ['strength'],
+  builder_day: ['hypertrophy'],
+  athletic_day: ['pump', 'mixed'],
+  express: ['hypertrophy', 'strength'],
+  eccentric_focus: ['strength'],
+};
+
+// Equipment bias (only for the 3 equipment-themed carts).
+const CART_EQUIPMENT_BIAS: Partial<Record<CartTypeId, { primary: string[]; fallback: string[] }>> = {
+  heavy_day: {
+    primary: [
+      'Powerlifting Platform', 'Barbell', 'Squat Rack', 'Trap Bar',
+      'EZ Curl Bar', 'EZ bar', 'Hip Thruster Equipment',
+      'Flat bench', 'Incline bench', 'Decline bench',
+    ],
+    fallback: [
+      'Smith Machine', 'Smith machine', 'Hack Squat Machine',
+      'Pit Shark', 'Pendulum Squat', 'Dumbbells', 'Dumbbell',
+      'Kettlebells', 'Kettle bells', 'Kettle bell',
+    ],
+  },
+  builder_day: {
+    primary: [
+      'Chest press machine', 'Pec dec machine', 'Cable crossover',
+      'Lat pull down machine', 'T bar row machine', 'Seated cable machine',
+      'Seated Chest Supported Row Machine', 'Cable Crossover Machine',
+      'Cable Machine', 'Single Stack Cable Machine',
+      'Single extension cable', 'Cable crossover machine',
+      'Shoulder Press Machine', 'Smith Machine', 'Smith machine',
+      'Rear Delt Fly Machine', 'Tricep pushdown machine',
+      'Biceps Curl Machine', 'Preacher Curl Machine',
+      'Leg Extension Machine', 'Leg Curl Machine',
+      'Leg Press Machine', 'Hack Squat Machine', 'Pendulum Squat',
+      'Pit Shark', 'Calf Raise Machine', 'Glute Kick Machine',
+      'Hip Abductor Machine', 'Ab Crunch Machine',
+    ],
+    fallback: [
+      'Adjustable Bench', 'Dumbbells', 'Dumbbell', 'Barbell',
+      'Kettlebells', 'Kettle bells', 'Kettle bell',
+    ],
+  },
+  athletic_day: {
+    primary: [
+      'Dumbbells', 'Dumbbell', 'Kettlebells', 'Kettle bells', 'Kettle bell',
+      'Pull-Up Bar', 'Straight pull up bar', 'Grip variation pull up bar',
+      'Dip station', 'Dip station / machine', 'Body Weight', "Captain's Chair",
+      'Ab Roller', 'Medicine Ball', 'TRX bands', 'Roman Chair', 'Roman chair',
+      'Roman Hyperextension', 'Hip Thruster Equipment', 'Landmine Attachment',
+    ],
+    fallback: [
+      'Cable Machine', 'Cable crossover', 'Cable Crossover Machine',
+      'Single Stack Cable Machine', 'Barbell', 'Single extension cable',
+    ],
+  },
+};
+
+const ECCENTRIC_KEYWORDS = [
+  'Tempo', 'Pause', 'Paused', 'Slow', 'Eccentric',
+  '1.5 Rep', '1½ Rep', 'Iso', 'Negative',
+];
 
 type FlavorWorkout = {
   workout: Workout;
@@ -1397,199 +1512,280 @@ function getMuscleGainerPool(muscle: string, tier: IntensityLevel): FlavorWorkou
 
 // Sort selected muscles into session order: primaries (user order) → ancillaries → Abs last.
 function sortMusclesForSession(selected: string[]): string[] {
-  const primaries = selected.filter(
-    m => PRIMARY_MUSCLE_GROUPS.includes(m) && m !== 'Abs'
-  );
-  const ancillaries = selected.filter(
-    m => ANCILLARY_MUSCLE_GROUPS.includes(m) && m !== 'Abs'
-  );
+  const primaries = selected.filter(m => PRIMARY_MUSCLE_GROUPS.includes(m));
+  const ancillaries = selected.filter(m => ANCILLARY_MUSCLE_GROUPS_NON_ABS.includes(m));
   const abs = selected.includes('Abs') ? ['Abs'] : [];
   return [...primaries, ...ancillaries, ...abs];
 }
 
-// Compute per-muscle target counts based on volume table + total cap with ancillary trim.
-function computePerMuscleTargets(
-  orderedMuscles: string[],
-  perMuscleMin: number,
-  perMuscleMax: number,
-  totalCap: number
-): Record<string, number> {
-  const targets: Record<string, number> = {};
+// --- v3 role + count computation --------------------------------------------
+type MuscleRole = 'primary' | 'ancillary' | 'abs';
+
+function computeMuscleRoles(orderedMuscles: string[]): Record<string, MuscleRole> {
+  const roles: Record<string, MuscleRole> = {};
+  const hasPrimary = orderedMuscles.some(m => PRIMARY_MUSCLE_GROUPS.includes(m));
+  const firstAncillary = orderedMuscles.find(m => ANCILLARY_MUSCLE_GROUPS_NON_ABS.includes(m));
+
   for (const m of orderedMuscles) {
-    targets[m] = perMuscleMax;
-  }
-
-  // Special: Legs target = 4 (2 compound + 2 isolation) when intermediate/advanced
-  // and only Legs selected, or when Legs selected and per-muscle max ≥ 4.
-  if (orderedMuscles.includes('Legs') && perMuscleMax >= 4) {
-    targets['Legs'] = 4;
-  }
-
-  let total = orderedMuscles.reduce((s, m) => s + targets[m], 0);
-  if (total <= totalCap) return targets;
-
-  // Trim ancillaries first, down to perMuscleMin
-  const ancillariesInOrder = orderedMuscles.filter(m =>
-    ANCILLARY_MUSCLE_GROUPS.includes(m)
-  );
-  for (const m of ancillariesInOrder) {
-    while (total > totalCap && targets[m] > 1) {
-      targets[m] -= 1;
-      total -= 1;
-    }
-    if (total <= totalCap) return targets;
-  }
-
-  // If still over, trim primaries down to perMuscleMin
-  const primariesInOrder = orderedMuscles.filter(
-    m => !ANCILLARY_MUSCLE_GROUPS.includes(m)
-  );
-  for (const m of primariesInOrder) {
-    while (total > totalCap && targets[m] > perMuscleMin) {
-      targets[m] -= 1;
-      total -= 1;
-    }
-    if (total <= totalCap) return targets;
-  }
-
-  // If still over the cap (too many muscles selected to fit even at min=1),
-  // drop ancillaries (excluding Abs) to 0 first; Abs is preserved as long as
-  // possible because the spec says "Abs always rendered last".
-  const nonAbsAncillaries = ancillariesInOrder.filter(m => m !== 'Abs');
-  for (const m of nonAbsAncillaries) {
-    while (total > totalCap && targets[m] > 0) {
-      targets[m] -= 1;
-      total -= 1;
-    }
-    if (total <= totalCap) return targets;
-  }
-  // Then drop primaries from the end of the user's order to 0
-  for (let i = primariesInOrder.length - 1; i >= 0 && total > totalCap; i--) {
-    const m = primariesInOrder[i];
-    while (total > totalCap && targets[m] > 0) {
-      targets[m] -= 1;
-      total -= 1;
+    if (m === 'Abs') {
+      // Abs-only edge case: promote to primary
+      roles[m] = orderedMuscles.length === 1 ? 'primary' : 'abs';
+    } else if (ANCILLARY_MUSCLE_GROUPS_NON_ABS.includes(m)) {
+      // Ancillary-only edge case: first ancillary becomes primary
+      roles[m] = (!hasPrimary && m === firstAncillary) ? 'primary' : 'ancillary';
+    } else {
+      roles[m] = 'primary';
     }
   }
-  // Last resort: drop Abs to 0 only if everything else is already 0
-  if (total > totalCap && targets['Abs'] !== undefined) {
-    while (total > totalCap && targets['Abs'] > 0) {
-      targets['Abs'] -= 1;
-      total -= 1;
-    }
-  }
-
-  return targets;
+  return roles;
 }
 
-// Pick a workout from pool with flavor preference + equipment/pattern variety.
-function pickWithFlavor(
+// Per-cart, per-tier primary count templates (v3 spec, "Per-muscle exercise count by cart type" table).
+const PRIMARY_COUNTS_V3: Record<CartTypeId, Record<IntensityLevel, number>> = {
+  strength:        { beginner: 2, intermediate: 2, advanced: 2 },
+  hypertrophy:     { beginner: 2, intermediate: 3, advanced: 3 },
+  pump:            { beginner: 3, intermediate: 3, advanced: 4 },
+  heavy_day:       { beginner: 2, intermediate: 2, advanced: 2 },
+  builder_day:     { beginner: 2, intermediate: 3, advanced: 3 },
+  athletic_day:    { beginner: 3, intermediate: 3, advanced: 4 },
+  express:         { beginner: 2, intermediate: 2, advanced: 2 },
+  eccentric_focus: { beginner: 2, intermediate: 2, advanced: 2 },
+};
+const ANCILLARY_COUNT_V3 = 2;
+const ABS_COUNT_V3: Record<IntensityLevel, number> = { beginner: 2, intermediate: 3, advanced: 3 };
+const FLOOR_V3 = 2;
+
+function computeTargetCountsV3(
+  orderedMuscles: string[],
+  roles: Record<string, MuscleRole>,
+  tier: IntensityLevel,
+  cartType: CartTypeId
+): Record<string, number> {
+  const nonAbsCount = orderedMuscles.filter(m => roles[m] !== 'abs').length;
+  const apply3PlusTrim = nonAbsCount >= 3;
+
+  const counts: Record<string, number> = {};
+  for (const m of orderedMuscles) {
+    const role = roles[m];
+    if (role === 'abs') {
+      counts[m] = ABS_COUNT_V3[tier]; // exempt from 3+ trim
+      continue;
+    }
+    const base = role === 'ancillary' ? ANCILLARY_COUNT_V3 : PRIMARY_COUNTS_V3[cartType][tier];
+    counts[m] = apply3PlusTrim ? FLOOR_V3 : base;
+  }
+  return counts;
+}
+
+// --- v3 cart-type selection (axis diversity + recently-seen rotation) -------
+function isCartFeasible(
+  cartType: CartTypeId,
+  selectedMuscles: string[],
+  tier: IntensityLevel
+): boolean {
+  // Lightweight feasibility: each non-abs selected muscle must have ≥2 workouts at tier
+  // matching the cart's bias OR fallback OR pool. We only fail equipment carts when the
+  // primary+fallback bias yields <2 workouts at tier for any selected muscle.
+  const bias = CART_EQUIPMENT_BIAS[cartType];
+  for (const muscle of selectedMuscles) {
+    const pool = getMuscleGainerPool(muscle, tier);
+    if (pool.length < FLOOR_V3) return false; // can't even hit floor
+    if (bias) {
+      const allowed = new Set([...bias.primary, ...bias.fallback]);
+      const matches = pool.filter(p => allowed.has(p.equipment)).length;
+      if (matches < 1) return false; // equipment cart needs at least 1 match per muscle
+    }
+    if (cartType === 'eccentric_focus') {
+      const eccMatches = pool.filter(p =>
+        ECCENTRIC_KEYWORDS.some(k => p.workout.name.includes(k)) ||
+        p.workout.training_style === 'strength'
+      ).length;
+      if (eccMatches < 1) return false;
+    }
+  }
+  return true;
+}
+
+export function selectCartTypes(
+  selectedMuscles: string[],
+  tier: IntensityLevel,
+  recentlySeen: CartTypeId[]
+): CartTypeId[] {
+  const feasible = MUSCLE_GAINER_CART_LIBRARY.filter(c =>
+    isCartFeasible(c.id, selectedMuscles, tier)
+  );
+
+  // Default opening generation (no recent history): Strength / Builder Day / Athletic Day.
+  if (recentlySeen.length === 0) {
+    const wantedDefaults: CartTypeId[] = ['strength', 'builder_day', 'athletic_day'];
+    const defaults = wantedDefaults.filter(id => feasible.some(c => c.id === id));
+    if (defaults.length === 3) return defaults;
+  }
+
+  // Prefer carts not seen in last 2 generations
+  let pool = feasible.filter(c => !recentlySeen.includes(c.id));
+  if (pool.length < 3) pool = feasible;
+
+  const picks: CartLibraryEntry[] = [];
+  for (let slot = 0; slot < 3; slot++) {
+    const remaining = pool.filter(c => !picks.includes(c));
+    if (remaining.length === 0) break;
+
+    let candidates = remaining;
+    if (slot < 2) {
+      // Find the least-represented axis among picks; prefer that axis
+      const axisCount: Record<CartAxis, number> = { intensity: 0, equipment: 0, specialty: 0 };
+      for (const p of picks) axisCount[p.axis]++;
+      const minCount = Math.min(...Object.values(axisCount));
+      const underweighted = (Object.keys(axisCount) as CartAxis[]).filter(a => axisCount[a] === minCount);
+      const axisCandidates = remaining.filter(c => underweighted.includes(c.axis));
+      if (axisCandidates.length > 0) candidates = axisCandidates;
+    }
+    const idx = Math.floor(Math.random() * candidates.length);
+    picks.push(candidates[idx]);
+  }
+
+  return picks.map(p => p.id);
+}
+
+// --- v3 slot plans + pool filtering ----------------------------------------
+// SLOT_PLANS[cartType][target] = ordered list of slot specs.
+// Slot specs: 'compound' | 'compound_diff' | 'isolation' | 'isolation_diff' | 'finisher'
+type SlotSpec = 'compound' | 'compound_diff' | 'isolation' | 'isolation_diff' | 'finisher';
+
+const SLOT_PLANS_V3: Record<CartTypeId, Record<number, SlotSpec[]>> = {
+  strength: {
+    2: ['compound', 'compound_diff'],
+    3: ['compound', 'compound_diff', 'isolation'],
+    4: ['compound', 'compound_diff', 'isolation', 'isolation_diff'],
+  },
+  heavy_day: {
+    2: ['compound', 'compound_diff'],
+    3: ['compound', 'compound_diff', 'isolation'],
+    4: ['compound', 'compound_diff', 'isolation', 'isolation_diff'],
+  },
+  hypertrophy: {
+    2: ['compound', 'isolation'],
+    3: ['compound', 'isolation', 'isolation_diff'],
+    4: ['compound', 'isolation', 'isolation_diff', 'finisher'],
+  },
+  builder_day: {
+    2: ['compound', 'isolation'],
+    3: ['compound', 'isolation', 'isolation_diff'],
+    4: ['compound', 'isolation', 'isolation_diff', 'finisher'],
+  },
+  pump: {
+    2: ['compound', 'isolation'],
+    3: ['compound', 'isolation', 'finisher'],
+    4: ['compound', 'isolation', 'isolation_diff', 'finisher'],
+  },
+  athletic_day: {
+    2: ['compound', 'isolation'],
+    3: ['compound', 'isolation', 'finisher'],
+    4: ['compound', 'isolation', 'isolation_diff', 'finisher'],
+  },
+  express: {
+    2: ['compound', 'compound_diff'],
+    3: ['compound', 'compound_diff', 'isolation'],
+    4: ['compound', 'compound_diff', 'isolation', 'isolation_diff'],
+  },
+  eccentric_focus: {
+    2: ['compound', 'compound_diff'],
+    3: ['compound', 'compound_diff', 'isolation'],
+    4: ['compound', 'compound_diff', 'isolation', 'isolation_diff'],
+  },
+};
+
+function applyEquipmentBias(
   pool: FlavorWorkout[],
-  flavor: TrainingStyle,
+  cartType: CartTypeId
+): FlavorWorkout[] {
+  const bias = CART_EQUIPMENT_BIAS[cartType];
+  if (!bias) return pool;
+  const primarySet = new Set(bias.primary);
+  const fallbackSet = new Set(bias.fallback);
+  const inPrimary = pool.filter(p => primarySet.has(p.equipment));
+  if (inPrimary.length > 0) return inPrimary;
+  const inFallback = pool.filter(p => fallbackSet.has(p.equipment));
+  if (inFallback.length > 0) return inFallback;
+  return pool; // graceful degradation
+}
+
+function applyEccentricKeywordFilter(pool: FlavorWorkout[]): FlavorWorkout[] {
+  const filtered = pool.filter(p =>
+    ECCENTRIC_KEYWORDS.some(k => p.workout.name.includes(k))
+  );
+  return filtered.length > 0 ? filtered : pool;
+}
+
+function pickFromCandidates(
+  pool: FlavorWorkout[],
+  cartType: CartTypeId,
+  slot: SlotSpec,
   excludeIds: Set<string>,
   usedEquipment: Set<string>,
   usedPatterns: Set<MovementPattern>
 ): FlavorWorkout | null {
+  // Filter by exercise_type per slot
   let candidates = pool.filter(c => !excludeIds.has(c.workout.name));
   if (candidates.length === 0) return null;
 
-  // Prefer the requested flavor
-  let flavorMatched = candidates.filter(c => c.workout.training_style === flavor);
-  if (flavorMatched.length > 0) {
-    candidates = flavorMatched;
-  } else {
-    const mixedFallback = candidates.filter(c => c.workout.training_style === 'mixed');
-    if (mixedFallback.length > 0) candidates = mixedFallback;
+  if (slot === 'compound' || slot === 'compound_diff') {
+    const compoundOnly = candidates.filter(c => c.workout.exercise_type === 'compound');
+    if (compoundOnly.length > 0) candidates = compoundOnly;
+    // else fall through to whole pool (graceful)
+  } else if (slot === 'isolation' || slot === 'isolation_diff') {
+    const isoOnly = candidates.filter(c => c.workout.exercise_type === 'isolation');
+    if (isoOnly.length > 0) candidates = isoOnly;
+  } else if (slot === 'finisher') {
+    const fin = candidates.filter(c => c.workout.training_style === 'pump');
+    if (fin.length > 0) candidates = fin;
   }
 
-  // Prefer different equipment + pattern when possible
-  const fullPreferred = candidates.filter(
-    c => !usedEquipment.has(c.equipment) &&
-         !usedPatterns.has((c.workout.movement_pattern as MovementPattern))
+  // Apply equipment bias for equipment-themed carts
+  candidates = applyEquipmentBias(candidates, cartType);
+
+  // Eccentric keyword filter (only for that cart)
+  if (cartType === 'eccentric_focus') {
+    candidates = applyEccentricKeywordFilter(candidates);
+  }
+
+  // Soft style preference
+  const stylePrefs = CART_STYLE_PREFERENCE[cartType];
+  const styleMatched = candidates.filter(c =>
+    c.workout.training_style && stylePrefs.includes(c.workout.training_style)
   );
-  if (fullPreferred.length > 0) {
-    return fullPreferred[Math.floor(Math.random() * fullPreferred.length)];
+  if (styleMatched.length > 0) candidates = styleMatched;
+  // mixed is acceptable as a soft fallback when style pool is empty
+  // (already handled by upstream pool size).
+
+  // HARD: pattern uniqueness within the muscle section, when supported.
+  // For "diff" slots (compound_diff, isolation_diff) and isolation slots,
+  // pattern uniqueness is REQUIRED — return null when the pool can't supply
+  // a fresh pattern, so the upstream fallback (compound-with-different-pattern)
+  // can kick in instead of silently picking a same-pattern duplicate.
+  const patternFresh = candidates.filter(c => {
+    const mp = c.workout.movement_pattern as MovementPattern | undefined;
+    return mp ? !usedPatterns.has(mp) : true;
+  });
+  const requiresFreshPattern =
+    slot === 'compound_diff' || slot === 'isolation' || slot === 'isolation_diff';
+  if (patternFresh.length > 0) {
+    candidates = patternFresh;
+  } else if (requiresFreshPattern) {
+    return null; // signal upstream to try a different slot type
   }
-  // Fall back: prefer different equipment alone
-  const eqPreferred = candidates.filter(c => !usedEquipment.has(c.equipment));
-  if (eqPreferred.length > 0) {
-    return eqPreferred[Math.floor(Math.random() * eqPreferred.length)];
-  }
+  // (For 'compound' / 'finisher' first-pick slots, fall through allowing same
+  //  pattern as last-resort. usedPatterns is empty on first-pick anyway.)
+
+  // SOFT: equipment uniqueness within muscle section
+  const equipFresh = candidates.filter(c => !usedEquipment.has(c.equipment));
+  if (equipFresh.length > 0) candidates = equipFresh;
+
   return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
-// Pick a Legs section: 2 compound + 2 isolation (or fewer if target < 4).
-function pickLegSection(
-  tier: IntensityLevel,
-  target: number,
-  flavor: TrainingStyle,
-  excludeIds: Set<string>
-): FlavorWorkout[] {
-  const compoundPool: FlavorWorkout[] = [];
-  // Compounds come from compound-legs DB
-  for (const eqData of compoundLegsWorkoutDatabase) {
-    const tierWs = eqData.workouts[tier] || [];
-    for (const w of tierWs) {
-      compoundPool.push({ workout: w, equipment: eqData.equipment, muscleGroup: 'Legs' });
-    }
-  }
-  // Isolations come from individual leg sub-files (filtered by exercise_type === 'isolation')
-  const isoPool: FlavorWorkout[] = [];
-  for (const sub of LEG_SUB_GROUPS) {
-    const subDb = muscleGroupDatabases[sub] || [];
-    for (const eqData of subDb) {
-      const tierWs = eqData.workouts[tier] || [];
-      for (const w of tierWs) {
-        if (w.exercise_type === 'isolation') {
-          isoPool.push({ workout: w, equipment: eqData.equipment, muscleGroup: 'Legs' });
-        } else if (w.exercise_type === 'compound') {
-          // Sub-file compounds (e.g., barbell squats from quads) join compound pool
-          compoundPool.push({ workout: w, equipment: eqData.equipment, muscleGroup: 'Legs' });
-        }
-      }
-    }
-  }
-
-  const compoundCount = target >= 4 ? 2 : (target >= 2 ? 1 : 1);
-  const isolationCount = target - compoundCount;
-
-  const section: FlavorWorkout[] = [];
-  const usedEq = new Set<string>();
-  const usedPat = new Set<MovementPattern>();
-  const usedSubs = new Set<string>();
-
-  // Pick compounds
-  let pool = [...compoundPool];
-  for (let i = 0; i < compoundCount; i++) {
-    const pick = pickWithFlavor(pool, flavor, excludeIds, usedEq, usedPat);
-    if (!pick) break;
-    section.push(pick);
-    excludeIds.add(pick.workout.name);
-    usedEq.add(pick.equipment);
-    if (pick.workout.movement_pattern)
-      usedPat.add(pick.workout.movement_pattern as MovementPattern);
-  }
-
-  // Pick isolations from different sub-groups
-  pool = [...isoPool];
-  for (let i = 0; i < isolationCount; i++) {
-    // Prefer different sub-group from already used
-    let sub_pool = pool.filter(c => !usedSubs.has(getLegSubGroup(c)));
-    if (sub_pool.length === 0) sub_pool = pool;
-    const pick = pickWithFlavor(sub_pool, flavor, excludeIds, usedEq, usedPat);
-    if (!pick) break;
-    section.push(pick);
-    excludeIds.add(pick.workout.name);
-    usedEq.add(pick.equipment);
-    if (pick.workout.movement_pattern)
-      usedPat.add(pick.workout.movement_pattern as MovementPattern);
-    usedSubs.add(getLegSubGroup(pick));
-  }
-
-  return section;
-}
-
-// Map an isolated leg workout back to its sub-group based on equipment.
+// --- v3 leg-section picker (cart-type aware) -------------------------------
 function getLegSubGroup(item: FlavorWorkout): string {
   const eq = item.equipment.toLowerCase();
   if (eq.includes('calf')) return 'Calves';
@@ -1597,7 +1793,6 @@ function getLegSubGroup(item: FlavorWorkout): string {
       eq.includes('hip abductor')) return 'Glutes';
   if (eq.includes('leg curl') || eq.includes('leg-curl')) return 'Hamstrings';
   if (eq.includes('leg extension')) return 'Quads';
-  // Fall back to inspecting movement_pattern
   const mp = item.workout.movement_pattern;
   if (mp === 'calf_raise') return 'Calves';
   if (mp === 'leg_curl' || mp === 'hyperextension') return 'Hamstrings';
@@ -1606,135 +1801,158 @@ function getLegSubGroup(item: FlavorWorkout): string {
   return 'Other';
 }
 
-// Pick a single muscle's section: compound → secondary → isolation (with overrides).
-function pickMuscleSection(
-  muscle: string,
+function pickLegSection(
   tier: IntensityLevel,
   target: number,
-  flavor: TrainingStyle,
+  cartType: CartTypeId,
   excludeIds: Set<string>
 ): FlavorWorkout[] {
-  if (muscle === 'Legs') {
-    return pickLegSection(tier, target, flavor, excludeIds);
+  // Compounds come from compound-legs DB (+ sub-file compounds like barbell squats from quads)
+  const compoundPool: FlavorWorkout[] = [];
+  for (const eqData of compoundLegsWorkoutDatabase) {
+    for (const w of (eqData.workouts[tier] || [])) {
+      compoundPool.push({ workout: w, equipment: eqData.equipment, muscleGroup: 'Legs' });
+    }
+  }
+  const isoPool: FlavorWorkout[] = [];
+  for (const sub of LEG_SUB_GROUPS) {
+    const subDb = muscleGroupDatabases[sub] || [];
+    for (const eqData of subDb) {
+      for (const w of (eqData.workouts[tier] || [])) {
+        if (w.exercise_type === 'isolation') {
+          isoPool.push({ workout: w, equipment: eqData.equipment, muscleGroup: 'Legs' });
+        } else if (w.exercise_type === 'compound') {
+          compoundPool.push({ workout: w, equipment: eqData.equipment, muscleGroup: 'Legs' });
+        }
+      }
+    }
   }
 
-  const pool = getMuscleGainerPool(muscle, tier);
-  const compounds = pool.filter(c => c.workout.exercise_type === 'compound');
-  const isolations = pool.filter(c => c.workout.exercise_type === 'isolation');
-
+  const slotPlan = SLOT_PLANS_V3[cartType][target] ||
+                   SLOT_PLANS_V3[cartType][2];
   const section: FlavorWorkout[] = [];
   const usedEq = new Set<string>();
   const usedPat = new Set<MovementPattern>();
+  const usedSubs = new Set<string>();
 
-  if (target <= 0) return section;
-
-  // Slot 1: compound (fall back to isolation if no compounds exist for this muscle)
-  const slot1Pool = compounds.length > 0 ? compounds : isolations;
-  const slot1 = pickWithFlavor(slot1Pool, flavor, excludeIds, usedEq, usedPat);
-  if (slot1) {
-    section.push(slot1);
-    excludeIds.add(slot1.workout.name);
-    usedEq.add(slot1.equipment);
-    if (slot1.workout.movement_pattern)
-      usedPat.add(slot1.workout.movement_pattern as MovementPattern);
-  }
-
-  // Slots 2..target — ROTATE between compound and isolation rather than forcing
-  // isolation. For muscles with shallow isolation pools (e.g. back has 1-2 isolations),
-  // this prevents the section from being padded with low-quality picks just to satisfy
-  // a "must include isolation" rule.
-  //
-  // Rotation: alternate types starting from the OPPOSITE of slot 1's type.
-  // At each slot, pick from the alternating pool ONLY if it has fresh options
-  // not already used (id/equipment/pattern). Otherwise, fall back to the other pool.
-  // This keeps a healthy mix when both pools are deep and gracefully degrades when
-  // one is shallow.
-  let lastPickedType: 'compound' | 'isolation' = (slot1?.workout.exercise_type === 'isolation') ? 'isolation' : 'compound';
-  for (let i = 1; i < target; i++) {
-    // Preferred type for this slot is the opposite of the last one we picked
-    const wantIsolation = lastPickedType === 'compound';
-    const primaryPool = wantIsolation ? isolations : compounds;
-    const secondaryPool = wantIsolation ? compounds : isolations;
-
-    let pick = pickWithFlavor(primaryPool, flavor, excludeIds, usedEq, usedPat);
-    if (!pick) {
-      // Primary pool exhausted (no fresh option) — fall back to secondary pool
-      pick = pickWithFlavor(secondaryPool, flavor, excludeIds, usedEq, usedPat);
+  for (const slot of slotPlan) {
+    const isCompoundSlot = slot === 'compound' || slot === 'compound_diff';
+    let pool = isCompoundSlot ? compoundPool : isoPool;
+    // Prefer different sub-group when picking isolations
+    if (!isCompoundSlot && pool.length > 0) {
+      const fresh = pool.filter(p => !usedSubs.has(getLegSubGroup(p)));
+      if (fresh.length > 0) pool = fresh;
     }
-    if (!pick) {
-      // Last resort: pick anything not already in section
-      pick = pickWithFlavor(pool, flavor, excludeIds, usedEq, usedPat);
-      if (!pick) break;
+    let pick = pickFromCandidates(pool, cartType, slot, excludeIds, usedEq, usedPat);
+    // If isolation slot empty, fall back to compound-diff
+    if (!pick && !isCompoundSlot) {
+      pick = pickFromCandidates(compoundPool, cartType, 'compound_diff', excludeIds, usedEq, usedPat);
     }
+    if (!pick) continue;
     section.push(pick);
     excludeIds.add(pick.workout.name);
     usedEq.add(pick.equipment);
     if (pick.workout.movement_pattern)
       usedPat.add(pick.workout.movement_pattern as MovementPattern);
-    lastPickedType = pick.workout.exercise_type === 'isolation' ? 'isolation' : 'compound';
+    usedSubs.add(getLegSubGroup(pick));
   }
-
-  // Reorder section: compounds first, isolations last (preserve relative order otherwise)
-  const compoundsInSection = section.filter(s => s.workout.exercise_type === 'compound');
-  const isolationsInSection = section.filter(s => s.workout.exercise_type !== 'compound');
-  return [...compoundsInSection, ...isolationsInSection];
+  return section;
 }
 
-// Mapping of muscle group → labels for cart UI.
-const FLAVOR_LABELS: Record<TrainingStyle, string> = {
-  strength: 'Strength',
-  hypertrophy: 'Hypertrophy',
-  pump: 'Pump',
-  mixed: 'Mixed',
-};
+// --- v3 single-muscle picker (cart-type aware, slot-plan-driven) -----------
+function pickMuscleSection(
+  muscle: string,
+  tier: IntensityLevel,
+  target: number,
+  cartType: CartTypeId,
+  excludeIds: Set<string>
+): FlavorWorkout[] {
+  if (muscle === 'Legs' && target >= 2) {
+    return pickLegSection(tier, target, cartType, excludeIds);
+  }
 
-// Public entry — generate three flavored carts (Strength / Hypertrophy / Pump).
+  const pool = getMuscleGainerPool(muscle, tier);
+  if (target <= 0 || pool.length === 0) return [];
+
+  const slotPlan = SLOT_PLANS_V3[cartType][target] ||
+                   SLOT_PLANS_V3[cartType][2] ||
+                   ['compound', 'compound_diff'];
+
+  const section: FlavorWorkout[] = [];
+  const usedEq = new Set<string>();
+  const usedPat = new Set<MovementPattern>();
+
+  for (const slot of slotPlan) {
+    let pick = pickFromCandidates(pool, cartType, slot, excludeIds, usedEq, usedPat);
+
+    // Thin-isolation fallback: if isolation slot can't be filled, substitute with
+    // compound-with-different-pattern (per spec).
+    if (!pick && (slot === 'isolation' || slot === 'isolation_diff')) {
+      pick = pickFromCandidates(pool, cartType, 'compound_diff', excludeIds, usedEq, usedPat);
+    }
+    if (!pick && slot === 'compound_diff') {
+      // Last-resort: any pick that's pattern-fresh
+      pick = pickFromCandidates(pool, cartType, 'compound', excludeIds, usedEq, usedPat);
+    }
+    if (!pick) {
+      // Final degradation: relax pattern uniqueness by clearing usedPat for one pick
+      const relaxedPatterns = new Set<MovementPattern>();
+      pick = pickFromCandidates(pool, cartType, slot, excludeIds, usedEq, relaxedPatterns);
+    }
+    if (!pick) continue;
+
+    section.push(pick);
+    excludeIds.add(pick.workout.name);
+    usedEq.add(pick.equipment);
+    if (pick.workout.movement_pattern)
+      usedPat.add(pick.workout.movement_pattern as MovementPattern);
+  }
+
+  // Reorder: compounds first, isolations last (preserve relative order otherwise).
+  const compounds = section.filter(s => s.workout.exercise_type === 'compound');
+  const isolations = section.filter(s => s.workout.exercise_type !== 'compound');
+  return [...compounds, ...isolations];
+}
+
+// --- v3 public entry --------------------------------------------------------
+export interface MuscleGainerCart {
+  id: string;
+  cartType: CartTypeId;
+  workouts: WorkoutItem[];
+  totalDuration: number;
+  intensity: IntensityLevel;
+  /** Display title (cart identity name). Mirrors the title in MUSCLE_GAINER_CART_DISPLAY. */
+  flavor: string;
+  /** 1-3 word descriptor for badge. */
+  cartBadge: string;
+  /** One-line subtitle below the title. */
+  cartSubtitle: string;
+}
+
 export function generateMuscleGainerCarts(
   intensity: IntensityLevel,
   selectedMuscleGroups: string[] = [],
   moodCard: string = 'I want to gain muscle',
-  workoutType: string = 'Muscle Building'
-): GeneratedCart[] {
+  workoutType: string = 'Muscle Building',
+  recentlySeenCartTypes: CartTypeId[] = []
+): MuscleGainerCart[] {
   if (selectedMuscleGroups.length === 0) return [];
 
   const orderedMuscles = sortMusclesForSession(selectedMuscleGroups);
-  const muscleCount = orderedMuscles.length;
-  const isBeginner = intensity === 'beginner';
+  const roles = computeMuscleRoles(orderedMuscles);
+  const cartTypes = selectCartTypes(orderedMuscles, intensity, recentlySeenCartTypes);
 
-  // Volume rules
-  let perMuscleMin: number;
-  let perMuscleMax: number;
-  let totalCap: number;
+  const carts: MuscleGainerCart[] = [];
 
-  if (muscleCount === 1) {
-    perMuscleMin = isBeginner ? 2 : 3;
-    perMuscleMax = isBeginner ? 3 : 4;
-    totalCap = Number.POSITIVE_INFINITY;
-  } else if (muscleCount === 2) {
-    perMuscleMin = 2;
-    perMuscleMax = 3;
-    totalCap = isBeginner ? 5 : 6;
-  } else {
-    perMuscleMin = 1;
-    perMuscleMax = 2;
-    totalCap = isBeginner ? 5 : 6;
-  }
-
-  const targetCounts = computePerMuscleTargets(
-    orderedMuscles, perMuscleMin, perMuscleMax, totalCap
-  );
-
-  const flavors: TrainingStyle[] = ['strength', 'hypertrophy', 'pump'];
-  const carts: GeneratedCart[] = [];
-
-  flavors.forEach((flavor, cartIdx) => {
+  cartTypes.forEach((cartType, cartIdx) => {
+    const targetCounts = computeTargetCountsV3(orderedMuscles, roles, intensity, cartType);
     const sections: FlavorWorkout[] = [];
     const excludeIds = new Set<string>();
 
     for (const muscle of orderedMuscles) {
       const tgt = targetCounts[muscle];
       if (tgt <= 0) continue;
-      const section = pickMuscleSection(muscle, intensity, tgt, flavor, excludeIds);
+      const section = pickMuscleSection(muscle, intensity, tgt, cartType, excludeIds);
       sections.push(...section);
     }
 
@@ -1747,15 +1965,20 @@ export function generateMuscleGainerCarts(
     const totalDuration = items.reduce(
       (sum, it) => sum + parseDuration(it.duration), 0
     );
+    const display = MUSCLE_GAINER_CART_DISPLAY[cartType];
 
     carts.push({
       id: `cart-mg-${cartIdx + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+      cartType,
       workouts: items,
       totalDuration,
       intensity,
-      flavor: FLAVOR_LABELS[flavor],
-    } as GeneratedCart);
+      flavor: display.title,
+      cartBadge: display.badge,
+      cartSubtitle: display.subtitle,
+    });
   });
 
   return carts;
 }
+

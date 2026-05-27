@@ -20,9 +20,10 @@ import BackButton from '../components/BackButton';
 import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
-import { generateMuscleGainerCarts } from '../utils/workoutGenerator';
+import { generateMuscleGainerCarts, type CartTypeId } from '../utils/workoutGenerator';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { API_URL } from '../utils/apiConfig';
 
@@ -158,10 +159,31 @@ export default function BodyPartsScreen() {
   // Handle intensity selection and generate workout
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
     setShowIntensityModal(false);
-    
+
     // Get selected muscle group names
     const selectedMuscleNames = getSelectedMuscleGroupNames();
-    const carts = generateMuscleGainerCarts(intensity, selectedMuscleNames, moodTitle, workoutType);
+
+    // Read recently-seen cart types (last 2 generations) for rotation
+    let recentlySeen: CartTypeId[] = [];
+    try {
+      const raw = await AsyncStorage.getItem('mg_recent_cart_types_v1');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) recentlySeen = parsed.slice(0, 2);
+      }
+    } catch (_) { /* ignore — fall back to empty */ }
+
+    const carts = generateMuscleGainerCarts(
+      intensity, selectedMuscleNames, moodTitle, workoutType, recentlySeen
+    );
+
+    // Persist this generation's cart types as the new "last seen" history
+    if (carts.length > 0) {
+      try {
+        const newRecent = carts.map(c => c.cartType).filter(Boolean) as string[];
+        await AsyncStorage.setItem('mg_recent_cart_types_v1', JSON.stringify(newRecent));
+      } catch (_) { /* ignore */ }
+    }
     
     if (carts.length > 0) {
       if (!isGuest && token) {
@@ -182,6 +204,9 @@ export default function BodyPartsScreen() {
             const data = await response.json();
             setRemainingUses(data.remaining_uses);
           } else if (response.status === 429) {
+            // Muscle gainer is unlimited per v3 spec; this branch should not fire for
+            // muscle gainer, but kept defensively in case the backend still caps for
+            // other moods that share this endpoint.
             Alert.alert('Daily Limit Reached', 'You can only use Build for Me 3 times per day.', [{ text: 'OK' }]);
             return;
           }

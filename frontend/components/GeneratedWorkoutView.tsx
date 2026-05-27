@@ -107,6 +107,12 @@ export interface GeneratedCart {
   totalDuration: number;
   intensity: string;
   flavor?: string;
+  /** v3 muscle-gainer: 1-3 word descriptor for the badge pill (e.g., "Lift Heavy"). */
+  cartBadge?: string;
+  /** v3 muscle-gainer: one-line subtitle below the title. */
+  cartSubtitle?: string;
+  /** v3 muscle-gainer: stable id for the cart type (e.g., "heavy_day"). */
+  cartType?: string;
 }
 
 interface GeneratedWorkoutViewProps {
@@ -377,17 +383,27 @@ export default function GeneratedWorkoutView({
           <View style={styles.flavorBadge}>
             <Ionicons
               name={
-                currentCart.flavor === 'Strength'
-                  ? 'barbell'
-                  : currentCart.flavor === 'Hypertrophy'
-                  ? 'fitness'
-                  : 'flame'
+                // Intensity carts: warm icons
+                currentCart.cartType === 'strength' ? 'barbell'
+                : currentCart.cartType === 'hypertrophy' ? 'fitness'
+                : currentCart.cartType === 'pump' ? 'flame'
+                // Equipment carts: identity icons
+                : currentCart.cartType === 'heavy_day' ? 'barbell'
+                : currentCart.cartType === 'builder_day' ? 'construct'
+                : currentCart.cartType === 'athletic_day' ? 'body'
+                // Specialty carts: cool icons
+                : currentCart.cartType === 'express' ? 'flash'
+                : currentCart.cartType === 'eccentric_focus' ? 'hourglass'
+                // Legacy fallback (non-muscle-gainer carts)
+                : currentCart.flavor === 'Strength' ? 'barbell'
+                : currentCart.flavor === 'Hypertrophy' ? 'fitness'
+                : 'flame'
               }
               size={14}
               color="#FFD700"
             />
             <Text style={styles.flavorBadgeText} testID="cart-flavor-badge">
-              {currentCart.flavor}
+              {currentCart.cartBadge || currentCart.flavor}
             </Text>
           </View>
         )}
@@ -400,6 +416,11 @@ export default function GeneratedWorkoutView({
           </View>
           <Text style={styles.moodLabel}>{moodTitle}</Text>
           <Text style={styles.workoutTitle}>{dynamicWorkoutTitle}</Text>
+          {currentCart.cartSubtitle ? (
+            <Text style={styles.cartSubtitle} numberOfLines={1} testID="cart-subtitle">
+              {currentCart.cartSubtitle}
+            </Text>
+          ) : null}
           <View style={styles.durationBadge}>
             <Ionicons name="time-outline" size={14} color="#FFD700" />
             <Text style={styles.durationText}>~{currentCart.totalDuration} min</Text>
@@ -622,6 +643,14 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#fff',
     marginBottom: 10,
+  },
+  cartSubtitle: {
+    fontSize: 13,
+    color: 'rgba(255, 255, 255, 0.85)',
+    fontWeight: '500',
+    marginTop: -6,
+    marginBottom: 10,
+    fontStyle: 'italic',
   },
   durationBadge: {
     flexDirection: 'row',

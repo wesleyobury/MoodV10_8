@@ -1,0 +1,54 @@
+{
+  "summary": "Muscle Gainer v3 backend cap-skip behaviour fully verified: 10/10 pytest tests passed against the live preview backend. Confirmed (a) 'I want to gain muscle' bypasses the 3/day cap (5 consecutive calls -> 5x 200), (b) 'I want to sweat' still enforces the cap (4th call -> 429), (c) the MG bypass is per-user-per-mood (after Sweat hits 429, MG still returns 200), (d) regression check on Lazy/Outdoor/Calisthenics/Explosive moods passes, (e) auth is still required (403 without token), (f) /choose-for-me/usage endpoint shape intact. Frontend code review confirms v3 algorithm wiring in /app/frontend/utils/workoutGenerator.ts (CART_FLAVORS map with badge+subtitle for all 8 cart types) and GeneratedWorkoutView.tsx renders the badge via testID='cart-flavor-badge' + the new subtitle. Added testID='cart-subtitle' for future automated verification. CRITICAL FINDING (out of scope but blocking real-user testing of this feature in the preview): frontend EXPO_PUBLIC_API_URL points at https://mood-build.preview.emergentagent.com which currently returns 404 on /api/* — the working backend is at https://mood-cutover.preview.emergentagent.com (matches EXPO_PUBLIC_BACKEND_URL). End-to-end UI Build-for-Me flow cannot be exercised in this preview until that is reconciled. Deprecated packages detected: expo-av (warned in expo logs).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/choose-for-me/generate", "issue": "Unauthenticated call returns 403 (FastAPI HTTPBearer default) rather than 401. Test accepts both — minor cosmetic only."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "All API calls from Expo web preview",
+        "issue": "frontend/.env EXPO_PUBLIC_API_URL = https://mood-build.preview.emergentagent.com is unreachable (404 on /api/health and every other /api/* route, confirmed via curl). Console logs show AppBootstrap retrying health check 3x and failing. The working backend is mood-cutover.preview.emergentagent.com (EXPO_PUBLIC_BACKEND_URL). Any real-user Build-for-Me, login, or signup flow against the preview will fail at the network layer. Either point EXPO_PUBLIC_API_URL at mood-cutover, or republish the mood-build ingress.",
+        "affected_testIDs": ["all"]
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": [
+      {"component": "expo-av", "issue": "Deprecated. Library logs '[expo-av]: Expo AV has been deprecated and will be removed in SDK 54. Use the `expo-audio` and `expo-video` packages.' Migrate Video/Audio usage to expo-video / expo-audio. Reference: /var/log/supervisor/expo.err.log"},
+      {"component": "Animated useNativeDriver", "issue": "Console warning on web: 'Animated: useNativeDriver is not supported because the native animated module is missing. Falling back to JS-based animation.' Acceptable for web preview, but consider gating useNativeDriver:true with Platform.OS !== 'web' where it matters for perf."},
+      {"component": "pointerEvents prop", "issue": "Console warning: 'props.pointerEvents is deprecated. Use style.pointerEvents'. Search/replace across the codebase."},
+      {"component": "textShadow*/shadow* style props", "issue": "Console warning: 'textShadow*' / 'shadow*' style props are deprecated. Use 'textShadow' / 'boxShadow'. Update affected StyleSheet entries."}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_muscle_gainer_cap_skip.py",
+    "/app/test_reports/pytest/pytest_muscle_gainer_cap_skip.xml"
+  ],
+  "action_items": [
+    "Reconcile frontend/.env EXPO_PUBLIC_API_URL (currently mood-build, returning 404) — either update to mood-cutover or restore the mood-build ingress so end-to-end UI testing of v3 muscle-gainer Build-for-Me works in the preview.",
+    "Migrate Video/Audio usage off expo-av to expo-video / expo-audio before SDK 54.",
+    "Replace deprecated style props: shadow* -> boxShadow, textShadow* -> textShadow; replace props.pointerEvents with style.pointerEvents.",
+    "(Optional) Return 401 instead of 403 from /api/choose-for-me/generate when unauthenticated, for HTTP semantics consistency.",
+    "(Optional) Add testID='cart-flavor-badge-icon' on the Ionicons inside the badge so the icon variant per cart_type can also be asserted in UI tests.",
+    "Consider modularising backend/server.py (13,687 lines) into routers per domain — flagged in prior iterations too."
+  ],
+  "critical_code_review_comments": [
+    "/app/backend/server.py is 13,687 lines — exceeds the 700-line guideline. Recurring item across iterations; recommend domain-based router split.",
+    "v3 cap-skip uses case-insensitive exact-match on the moodCard string ('i want to gain muscle'). Brittle if copy ever changes — consider a constant / enum imported from a shared spec, or matching by a stable mood_id.",
+    "Frontend CART_FLAVORS map in workoutGenerator.ts (lines 1401-1410) is the single source of truth for badge + subtitle copy. Good. Suggest co-locating cart_type icon mapping (currently inlined in GeneratedWorkoutView.tsx ~lines 386-401) into the same map to avoid drift when adding/renaming carts.",
+    "GeneratedWorkoutView.tsx renders cartSubtitle only when truthy — correct fallback. Now has testID='cart-subtitle' added by this run."
+  ],
+  "updated_files": [
+    "/app/frontend/components/GeneratedWorkoutView.tsx",
+    "/app/backend/tests/test_muscle_gainer_cap_skip.py"
+  ],
+  "success_rate": {"backend": "100% (10/10)", "frontend": "Smoke-only — app bundle loads cleanly, no red screen; deeper UI flow blocked by EXPO_PUBLIC_API_URL pointing at a 404 host."},
+  "seed_data_creation": "Each test creates ephemeral users (mgcap_<uuid8>) and a few generated_workouts + choose_for_me_usage rows. Not cleaned up — same pattern as existing subscription_status_sync tests. Low volume.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend cap-skip suite at /app/backend/tests/test_muscle_gainer_cap_skip.py is reusable as a regression guard. The frontend simulator path (agent_to_agent_context_note already validated cold-start defaults / rotation / 3+ trim / abs-only / thin-isolation in code). The blocker for true E2E UI testing is the EXPO_PUBLIC_API_URL/mood-build hostname returning 404 — fix that first, then a Playwright happy-path from signup -> mood='I want to gain muscle' -> Chest+Intermediate -> assert testID='cart-flavor-badge' and testID='cart-subtitle' are visible will close the loop. AsyncStorage key to inspect for rotation assertion: 'mg_recent_cart_types_v1'.",
+  "rca_of_issue": "Frontend EXPO_PUBLIC_API_URL=https://mood-build.preview.emergentagent.com hits a Cloudflare edge that responds 404 on every /api/* path (verified by curl + browser console). Backend is healthy at https://mood-cutover.preview.emergentagent.com (curl /api/ -> 200, /api/health -> 200). Most likely cause: the App Store cutover renamed the preview deployment hostname from mood-build to mood-cutover but the frontend env was only partially updated (EXPO_PUBLIC_BACKEND_URL points at mood-cutover, but EXPO_PUBLIC_API_URL which is what api/config.ts actually reads still references mood-build). Mitigation: set EXPO_PUBLIC_API_URL=https://mood-cutover.preview.emergentagent.com in /app/frontend/.env and `sudo supervisorctl restart expo`. Note: backend functionality itself is unaffected and the v3 cap-skip logic is correct as designed."
+}

@@ -12320,15 +12320,19 @@ async def record_choose_for_me_usage(
     # Check if user is admin (officialmoodapp) - unlimited generations
     user = await db.users.find_one({"_id": ObjectId(current_user_id)})
     is_admin = user and user.get("username") == "officialmoodapp"
-    
+
+    # v3: Muscle Gainer mood is unlimited (cap was removed per v3 spec).
+    # Other moods (Sweat, Lazy, Outdoor, Explosive, Calisthenics) keep the 3/day cap.
+    is_muscle_gainer = (request.moodCard or "").strip().lower() == "i want to gain muscle"
+
     # Get current usage count
     usage_count = await db.choose_for_me_usage.count_documents({
         "user_id": current_user_id,
         "created_at": {"$gte": today_start}
     })
     
-    # Check usage limit (skip for admin)
-    if not is_admin and usage_count >= 3:
+    # Check usage limit (skip for admin and for muscle-gainer mood)
+    if not is_admin and not is_muscle_gainer and usage_count >= 3:
         raise HTTPException(
             status_code=429,
             detail="Daily limit reached. You can only use Build for Me 3 times per day."
