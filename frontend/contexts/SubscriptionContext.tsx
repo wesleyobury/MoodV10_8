@@ -33,6 +33,13 @@ export type SubscriptionStatus =
 /**
  * Why the paywall was opened. Drives analytics and copy variants once we
  * start A/B testing trigger sources.
+ *
+ * Stage taxonomy (per Spec §3):
+ *   Stage 1 — Soft     : `post_onboarding_soft` (replaces dev-only `post_onboarding_dev`)
+ *   Stage 2 — Soft     : `post_achievement_close_soft` | `post_share_soft`
+ *   Stage 3 — Hard     : `start_workout_after_free_session`
+ *   In-app feature gates: `generate_after_cap`, `recap_footer_cta`,
+ *                          `locked_premium_feature`, `settings_subscribe`
  */
 export type PaywallTrigger =
   | 'start_workout_after_free_session'
@@ -40,7 +47,10 @@ export type PaywallTrigger =
   | 'recap_footer_cta'
   | 'locked_premium_feature'
   | 'settings_subscribe'
-  | 'post_onboarding_dev'
+  | 'post_onboarding_dev'   // dev/sandbox only — kept for the FORCE_SIGNUP_PAYWALL hatch
+  | 'post_onboarding_soft'  // Stage 1 — fires on reveal-payoff for new users
+  | 'post_achievement_close_soft'  // Stage 2a — fires on achievement-screen close
+  | 'post_share_soft'              // Stage 2b — fires on post-publish success
   | 'unknown';
 
 interface SubscriptionState {
@@ -70,6 +80,15 @@ interface SubscriptionContextValue extends SubscriptionState {
   recordStartFreeWorkout: () => void;
   /** Open the paywall modal with an optional trigger tag. */
   openPaywall: (trigger?: PaywallTrigger) => void;
+  /**
+   * Spec §3 Stage 2 — fire Soft Paywall #2 once across both trigger
+   * sources (achievement-close + post-share). Returns true if shown,
+   * false if suppressed (already-shown / active subscriber / no
+   * completed workout yet).
+   */
+  tryFirePostFirstWorkoutPaywall: (
+    source: 'post_achievement_close_soft' | 'post_share_soft'
+  ) => Promise<boolean>;
   /** Currently-visible paywall trigger (consumed by <PaywallModal />). */
   pendingTrigger: PaywallTrigger | null;
   /** Dismiss the paywall (used by <PaywallModal /> close/back). */
@@ -101,6 +120,10 @@ interface SubscriptionContextValue extends SubscriptionState {
  */
 export const FREE_GENERATION_CAP = Number.POSITIVE_INFINITY;
 const STORAGE_KEY = '@mood_subscription_state_v1';
+/** Spec §3 Stage 2 — one-shot flag so Soft Paywall #2 fires at most once
+ *  across BOTH trigger sources (achievement-close + post-share). Written
+ *  the moment either trigger fires; checked before each subsequent fire. */
+const POST_FIRST_WORKOUT_FLAG = '@mood_post_first_workout_paywall_shown_v1';
 
 const DEFAULT_STATE: SubscriptionState = {
   status: 'none',
@@ -217,6 +240,39 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     setPendingTrigger(null);
   }, []);
 
+  /**
+   * Stage 2 (Spec §3) — fire the soft post-first-workout paywall, but at
+   * most ONCE per user across both trigger sources (achievement-close +
+   * post-share). Subscribers and users who haven't completed a workout
+   * yet are no-ops. The flag is persisted so it survives app kills.
+   *
+   * Returns `true` if the paywall was opened, `false` if suppressed
+   * (already-shown / active subscriber / no completed workout yet).
+   */
+  const tryFirePostFirstWorkoutPaywall = useCallback(
+    async (
+      source: 'post_achievement_close_soft' | 'post_share_soft',
+    ): Promise<boolean> => {
+      // Active subscribers + in-trial + founding members skip the soft paywall.
+      if (ACTIVE_STATUSES.includes(state.status)) return false;
+      // Must have completed at least one free session — otherwise this isn't
+      // the "first workout" moment and Stage 3 hard paywall will handle later.
+      if (!state.hasUsedFreeSession) return false;
+      try {
+        const alreadyShown = await AsyncStorage.getItem(POST_FIRST_WORKOUT_FLAG);
+        if (alreadyShown === 'true') return false;
+        await AsyncStorage.setItem(POST_FIRST_WORKOUT_FLAG, 'true');
+      } catch {
+        // If storage read/write fails, fall through and show — better to
+        // double-show once on a corrupted device than to silently lose the
+        // entire conversion moment.
+      }
+      openPaywall(source);
+      return true;
+    },
+    [state.status, state.hasUsedFreeSession, openPaywall]
+  );
+
   const setStatus = useCallback(
     (status: SubscriptionStatus) => {
       patch({ status });
@@ -233,6 +289,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       recordGeneration,
       recordStartFreeWorkout,
       openPaywall,
+      tryFirePostFirstWorkoutPaywall,
       pendingTrigger,
       dismissPaywall,
       setStatus,
@@ -246,6 +303,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       recordGeneration,
       recordStartFreeWorkout,
       openPaywall,
+      tryFirePostFirstWorkoutPaywall,
       pendingTrigger,
       dismissPaywall,
       setStatus,

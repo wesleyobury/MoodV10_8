@@ -90,7 +90,7 @@ export default function CreatePost() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { user, token, isLoading, isGuest, exitGuestMode } = useAuth();
-  const { hasActiveAccess, hasUsedFreeSession, openPaywall } = useSubscription();
+  const { hasActiveAccess, hasUsedFreeSession, openPaywall, tryFirePostFirstWorkoutPaywall } = useSubscription();
   const [caption, setCaption] = useState('');
   const [selectedMedia, setSelectedMedia] = useState<MediaItem[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -1055,8 +1055,19 @@ export default function CreatePost() {
     }
   };
 
-  const navigateToHome = () => {
+  const navigateToHome = async () => {
     console.log('navigateToHome called - starting navigation...');
+    // Spec §3 Stage 2a — fire Soft Paywall #2 on achievement-screen close.
+    // Helper is idempotent (one-shot via @mood_post_first_workout_paywall_shown_v1)
+    // and silently no-ops for active subscribers / users without a completed
+    // free workout. Awaiting it ensures the paywall is enqueued before we
+    // route home; PaywallModal renders on top of `/(tabs)` so the modal will
+    // appear over the home screen rather than over a torn-down route.
+    try {
+      await tryFirePostFirstWorkoutPaywall('post_achievement_close_soft');
+    } catch {
+      /* never block navigation on paywall fire */
+    }
     try {
       if (Platform.OS === 'web' && typeof window !== 'undefined') {
         console.log('Platform is web, using window.location');
@@ -1526,7 +1537,18 @@ export default function CreatePost() {
         
         // Keep loading screen visible while showing 100%
         await new Promise(resolve => setTimeout(resolve, 800));
-        
+
+        // Spec §3 Stage 2b — fire Soft Paywall #2 on post-publish success.
+        // Same one-shot helper as the achievement-close path; whichever
+        // exit happens first consumes the flag. Fired BEFORE we route to
+        // explore so the paywall lands on top of the explore feed (not
+        // on top of a transitioning route).
+        try {
+          await tryFirePostFirstWorkoutPaywall('post_share_soft');
+        } catch {
+          /* never block navigation on paywall fire */
+        }
+
         // Navigate to explore page first (while loading screen is still visible)
         router.replace('/(tabs)/explore');
         

@@ -1,0 +1,83 @@
+{
+  "summary": "Static code-review validation for §1, §3 Stage 1, §3 Stage 2, §5 MOOD flow-spec fixes. All 6 items PASS. Backend RUNNING. No new TypeScript errors introduced.",
+  "results": {
+    "item_1_health_intro_killed": {
+      "status": "PASS",
+      "evidence": [
+        "/app/frontend/app/onboarding/health-intro.tsx does NOT exist (ls /app/frontend/app/onboarding/ shows only health-connect.tsx + medical-disclaimer.tsx).",
+        "/app/frontend/app/_layout.tsx lines 155-157: only registers `onboarding/medical-disclaimer`, `onboarding/health-connect`, `onboarding-funnel` — no `onboarding/health-intro` Stack.Screen.",
+        "/app/frontend/components/HealthOnboardingGate.tsx line 44-48: `if (disclaimerAck) { router.replace('/onboarding/health-connect'); } else { router.replace('/onboarding/medical-disclaimer'); }` — routes to health-connect when disclaimer acknowledged.",
+        "/app/frontend/app/onboarding/medical-disclaimer.tsx line 27-31: `handleAccept` calls `router.replace('/onboarding/health-connect');` directly. Comment on line 29: `// Spec §1 — '/onboarding/health-intro' was killed; skip directly to connect.`"
+      ]
+    },
+    "item_2_soft_paywall_1_reveal_payoff": {
+      "status": "PASS",
+      "evidence": [
+        "SubscriptionContext.tsx lines 44-53: `PaywallTrigger` union includes `'post_onboarding_dev'` (line 50, comment: 'dev/sandbox only — kept for the FORCE_SIGNUP_PAYWALL hatch'), `'post_onboarding_soft'` (51), `'post_achievement_close_soft'` (52), `'post_share_soft'` (53).",
+        "reveal-payoff.tsx line 66-81: `handleStartTrial` calls `openPaywall(FORCE_SIGNUP_PAYWALL ? 'post_onboarding_dev' : 'post_onboarding_soft');` (line 79) then `router.replace('/onboarding/medical-disclaimer')` underneath so dismissing paywall continues to happy path.",
+        "reveal-payoff.tsx line 86-97: `handleTryFreeWorkout` skips paywall, calls only `router.replace('/onboarding/medical-disclaimer')` (line 96).",
+        "reveal-payoff.tsx line 135-150: primary CTA renders `Start free trial` (line 147) via TouchableOpacity onPress={handleStartTrial}.",
+        "reveal-payoff.tsx line 151-159: secondary CTA renders `Try first workout for free` (line 158) via TouchableOpacity onPress={handleTryFreeWorkout}.",
+        "Old single-CTA 'Start your first workout' + 'Your first session is on us' caption is REMOVED (grep returned 0 matches in reveal-payoff.tsx)."
+      ]
+    },
+    "item_3_soft_paywall_2_helper_and_triggers": {
+      "status": "PASS",
+      "evidence": [
+        "SubscriptionContext.tsx line 126: `const POST_FIRST_WORKOUT_FLAG = '@mood_post_first_workout_paywall_shown_v1';`",
+        "SubscriptionContext.tsx line 135: `const ACTIVE_STATUSES: SubscriptionStatus[] = ['active', 'in_trial', 'founding_member'];`",
+        "SubscriptionContext.tsx lines 252-274: `const tryFirePostFirstWorkoutPaywall = useCallback(async (source: 'post_achievement_close_soft' | 'post_share_soft'): Promise<boolean> => { if (ACTIVE_STATUSES.includes(state.status)) return false; if (!state.hasUsedFreeSession) return false; ... AsyncStorage.getItem(POST_FIRST_WORKOUT_FLAG); ... AsyncStorage.setItem(...); openPaywall(source); return true; }, [...]);` — async, returns boolean, checks ACTIVE_STATUSES AND hasUsedFreeSession, writes flag, calls openPaywall.",
+        "SubscriptionContext.tsx lines 89-91 (context type) + 292/306 (value): exposes `tryFirePostFirstWorkoutPaywall` in context value and type.",
+        "create-post.tsx line 93: `const { hasActiveAccess, hasUsedFreeSession, openPaywall, tryFirePostFirstWorkoutPaywall } = useSubscription();` — destructured.",
+        "create-post.tsx line 1058-1090: `navigateToHome = async () => { ... await tryFirePostFirstWorkoutPaywall('post_achievement_close_soft'); ... router.replace('/(tabs)'); }` — async, fires BEFORE routing.",
+        "create-post.tsx line 1546-1553: post-publish success branch (inside response 200/201) calls `await tryFirePostFirstWorkoutPaywall('post_share_soft');` (line 1547) BEFORE `router.replace('/(tabs)/explore');` (line 1553)."
+      ]
+    },
+    "item_4_profile_pic_prompt_gate_allowlist": {
+      "status": "PASS",
+      "evidence": [
+        "ProfilePicPromptGate.tsx line 45-54: `function isOnHomeTab(pathname: string | null | undefined): boolean { if (!pathname) return false; ... return pathname === '/' || pathname === '/explore' || pathname === '/profile'; }`",
+        "Comment on line 42: `Spec §5 — switched from deny-list to explicit allow-list`. The old regex `/onboarding|funnel|auth|reset-password|shared-workout/i` is REMOVED (grep confirms no match)."
+      ]
+    },
+    "item_5_no_new_typescript_errors": {
+      "status": "PASS",
+      "evidence": [
+        "Ran `npx tsc --noEmit` in /app/frontend. Filtered errors scoped to touched files (reveal-payoff.tsx, SubscriptionContext.tsx, FunnelEntryGate.tsx, ProfilePicPromptGate.tsx, HealthOnboardingGate.tsx, medical-disclaimer.tsx, create-post.tsx, _layout.tsx):",
+        "create-post.tsx 234/235/236: RefObject<View|null> — pre-existing (allowed).",
+        "create-post.tsx 848/892/1457/1458/1460/1474/1499: workoutSnapshotId on WorkoutStats — pre-existing (allowed).",
+        "create-post.tsx 1903: RefObject<View|null> on TouchableOpacity — same RefObject family as pre-existing.",
+        "reveal-payoff.tsx 107: RegisteredStyle<AbsoluteFillStyle> — pre-existing (allowed).",
+        "reveal-payoff.tsx 142: readonly [string, string] tuple — pre-existing (allowed).",
+        "SubscriptionContext.tsx, FunnelEntryGate.tsx, ProfilePicPromptGate.tsx, HealthOnboardingGate.tsx, medical-disclaimer.tsx, _layout.tsx: 0 errors.",
+        "Conclusion: NO new TypeScript errors introduced by this batch."
+      ]
+    },
+    "item_6_backend_smoke": {
+      "status": "PASS",
+      "evidence": [
+        "`sudo supervisorctl status backend` → `backend RUNNING pid 1857, uptime 0:00:39`."
+      ]
+    }
+  },
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "reveal-payoff.tsx handleStartTrial routes to /onboarding/medical-disclaimer BEHIND the paywall modal (line 80 fires after openPaywall on line 79). Behavior is intentional per inline comment so dismissal lands on the happy path; flag for product confirmation since user dismissing the soft paywall is then routed straight into medical-disclaimer → health-connect flow with no return-to-funnel exit.",
+    "tryFirePostFirstWorkoutPaywall write-flag-on-failure semantics (lines 262-269): if AsyncStorage.getItem succeeds but setItem fails, the catch falls through and the paywall still fires — comment acknowledges double-show risk on corrupted devices, which is the intended trade-off. OK as documented."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100% (static review only)"},
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Static code review only — behavioral validation (paywall modal actually fires on reveal-payoff CTA tap, navigateToHome paywall-before-route ordering, AsyncStorage flag persistence) requires native iOS build per main agent's note. All spec line-evidence checks PASS; backend RUNNING.",
+  "rca_of_issue": "N/A — verification task, no bug to RCA."
+}

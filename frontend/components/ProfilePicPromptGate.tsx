@@ -38,17 +38,20 @@ const PROMPT_TRIGGER_THRESHOLD = 2; // 2nd open
 const BUMPED_THIS_SESSION = new Set<string>();
 
 /** True only when the current route is an authenticated home tab. We don't
- *  want the modal to land on splash / onboarding / funnel / auth screens. */
+ *  want the modal to land on splash / onboarding / funnel / auth / workout
+ *  flow screens. Spec §5 — switched from deny-list to explicit allow-list
+ *  so the modal can only appear ON the home tab (`/`), explore (`/explore`),
+ *  or profile (`/profile`). Workout flow / cart / settings etc. don't qualify. */
 function isOnHomeTab(pathname: string | null | undefined): boolean {
   if (!pathname) return false;
   // Expo Router collapses `app/(tabs)/index.tsx` into `/` and other tab files
-  // into `/<name>`. We treat the root and the explicit tab routes as home.
-  // We explicitly exclude any path containing 'onboarding', 'funnel', 'auth',
-  // or 'reset-password' so the modal stays gated to post-auth navigation.
-  if (/(onboarding|funnel|auth|reset-password|shared-workout)/i.test(pathname)) {
-    return false;
-  }
-  return true;
+  // into `/<name>`. Whitelist exactly the three tab routes — anything else
+  // (workout-session, create-post, cart, settings, …) waits its turn.
+  return (
+    pathname === '/' ||
+    pathname === '/explore' ||
+    pathname === '/profile'
+  );
 }
 
 async function bumpOpenCountOnce(userId: string): Promise<number> {

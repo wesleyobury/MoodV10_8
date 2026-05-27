@@ -58,8 +58,13 @@ export default function RevealPayoff() {
     Analytics.revealScreenViewed(token, { stage: 'payoff' });
   }, [token]);
 
-  const handleStart = () => {
-    Analytics.revealCtaTapped(token, { cta: 'start_first_workout' });
+  // Spec §3 Stage 1 — Soft Paywall #1.
+  // Primary CTA fires the post-onboarding soft paywall. The medical
+  // disclaimer route is pushed underneath so when the user dismisses the
+  // paywall they land on the existing happy path (medical → health-connect
+  // → /(tabs)). Tapping the primary CTA = "I want to start a trial."
+  const handleStartTrial = () => {
+    Analytics.revealCtaTapped(token, { cta: 'start_free_trial' });
     Analytics.onboardingCompleted(token, {
       mood: answers.mood,
       primary_goal: answers.primaryGoal,
@@ -68,17 +73,26 @@ export default function RevealPayoff() {
       workout_length: answers.workoutLength,
       equipment: answers.equipment,
     });
+    // Always fire the live trigger in production. The dev `post_onboarding_dev`
+    // hatch is retained below for QA who want to bypass the soft paywall on
+    // sandbox builds (FORCE_SIGNUP_PAYWALL).
+    openPaywall(FORCE_SIGNUP_PAYWALL ? 'post_onboarding_dev' : 'post_onboarding_soft');
+    router.replace('/onboarding/medical-disclaimer');
+  };
 
-    // Dev/sandbox: force the paywall to appear as the final onboarding
-    // step so QA can rehearse the end-to-end signup → payment flow on
-    // TestFlight without having to complete a free workout first.
-    // Inert in production builds (env var not compiled in).
-    // The medical-disclaimer route is still pushed underneath so when
-    // the user dismisses the paywall they land on the existing happy
-    // path (medical → health-intro → health-connect → /(tabs)).
-    if (FORCE_SIGNUP_PAYWALL) {
-      openPaywall('post_onboarding_dev');
-    }
+  // Secondary CTA — replaces the old "Your first session is on us" caption.
+  // User taps "Try first workout for free" → skip paywall, proceed straight
+  // to the first free workout via the existing medical → health-connect flow.
+  const handleTryFreeWorkout = () => {
+    Analytics.revealCtaTapped(token, { cta: 'try_first_workout_for_free' });
+    Analytics.onboardingCompleted(token, {
+      mood: answers.mood,
+      primary_goal: answers.primaryGoal,
+      fitness_level: answers.fitnessLevel,
+      biggest_barrier: answers.biggestBarrier,
+      workout_length: answers.workoutLength,
+      equipment: answers.equipment,
+    });
     router.replace('/onboarding/medical-disclaimer');
   };
 
@@ -120,7 +134,7 @@ export default function RevealPayoff() {
 
           <TouchableOpacity
             style={styles.cta}
-            onPress={handleStart}
+            onPress={handleStartTrial}
             data-testid="reveal-start-cta"
             testID="reveal-start-cta"
           >
@@ -130,11 +144,19 @@ export default function RevealPayoff() {
               end={{ x: 1, y: 0 }}
               style={styles.ctaGradient}
             >
-              <Text style={styles.ctaLabel}>Start your first workout</Text>
+              <Text style={styles.ctaLabel}>Start free trial</Text>
               <Ionicons name="arrow-forward" size={18} color={COLORS.accentInk} style={styles.ctaIcon} />
             </LinearGradient>
           </TouchableOpacity>
-          <Text style={styles.ctaCaption}>Your first session is on us.</Text>
+          <TouchableOpacity
+            style={styles.secondaryCta}
+            onPress={handleTryFreeWorkout}
+            data-testid="reveal-try-free-cta"
+            testID="reveal-try-free-cta"
+            activeOpacity={0.7}
+          >
+            <Text style={styles.secondaryCtaLabel}>Try first workout for free</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -237,6 +259,22 @@ const styles = StyleSheet.create({
   },
   ctaIcon: {
     marginLeft: 8,
+  },
+  // Spec §3 Stage 1 — secondary "Try first workout for free" CTA.
+  // Intentionally text-only / no fill so the primary trial CTA stays
+  // visually dominant. Small enough to read as a graceful out, not a
+  // competing primary action.
+  secondaryCta: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+  },
+  secondaryCtaLabel: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: COLORS.textTertiary,
+    textDecorationLine: 'underline',
+    textDecorationColor: 'rgba(255,255,255,0.25)',
   },
   ctaCaption: {
     textAlign: 'center',

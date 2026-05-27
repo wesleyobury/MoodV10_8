@@ -153,7 +153,6 @@ function NavigationStack() {
       <Stack.Screen name="admin-add-workout" options={{ headerShown: false }} />
       <Stack.Screen name="saved-builds" options={{ headerShown: false }} />
       <Stack.Screen name="onboarding/medical-disclaimer" options={{ headerShown: false, gestureEnabled: false }} />
-      <Stack.Screen name="onboarding/health-intro" options={{ headerShown: false, gestureEnabled: false }} />
       <Stack.Screen name="onboarding/health-connect" options={{ headerShown: false, gestureEnabled: false }} />
       <Stack.Screen name="onboarding-funnel" options={{ headerShown: false, gestureEnabled: false }} />
     </Stack>

@@ -37,10 +37,12 @@ export default function HealthOnboardingGate() {
       ]);
       if (done) return;
       redirectedRef.current = true;
-      // Medical disclaimer is the first screen. If the user has already
-      // acknowledged it but bailed before connecting, resume at the intro.
+      // Spec §1 kill-list — `/onboarding/health-intro` was deleted (its
+      // value prop is now covered by Soft Paywall #1 on reveal-payoff).
+      // Resume directly at the connect screen if the user already
+      // acknowledged the disclaimer.
       if (disclaimerAck) {
-        router.replace('/onboarding/health-intro');
+        router.replace('/onboarding/health-connect');
       } else {
         router.replace('/onboarding/medical-disclaimer');
       }

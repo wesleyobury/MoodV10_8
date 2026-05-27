@@ -26,7 +26,8 @@ export default function MedicalDisclaimerScreen() {
 
   const handleAccept = async () => {
     await setMedicalDisclaimerAcknowledged();
-    router.replace('/onboarding/health-intro');
+    // Spec §1 — `/onboarding/health-intro` was killed; skip directly to connect.
+    router.replace('/onboarding/health-connect');
   };
 
   return (
