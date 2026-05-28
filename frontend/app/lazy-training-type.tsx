@@ -275,7 +275,7 @@ export default function LazyTrainingTypeScreen() {
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
             >
-              <Text style={styles.continueButtonText}>Continue</Text>
+              <Text style={styles.continueButtonText}>Build my own</Text>
               <Ionicons name="arrow-forward" size={20} color='#0c0c0c' style={styles.buttonIcon} />
             </LinearGradient>
           </TouchableOpacity>

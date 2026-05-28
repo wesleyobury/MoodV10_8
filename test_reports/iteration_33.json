@@ -1,0 +1,49 @@
+{
+  "summary": "Backend regression for MOOD's unlimited Build-for-Me + user-workouts serialization run via pytest against the live preview backend. 8/8 backend tests PASS: GET /api/user-workouts returns 200 with serialized id + ISO completed_at + metric fields preserved; /api/choose-for-me/usage returns remaining_uses=999, can_generate=true; 6 consecutive /generate calls all 200; skip (intensity='skip') returns 200 with skipped:true; both /usage and /generate return 403 for guests; auth register+login still working; /api/posts list reachable. Frontend code grep confirms: 'Build my own' label is present on explosiveness-type, muscle-type, lazy-training-type, workout-type, and body-parts; no 'X of 3 generations remaining' / 'Skipping a workout uses 1 generation' / 'No More Workouts' / 'No Generations Left' / 'Workout X of Y' copy remains in IntensitySelectionModal, GeneratedWorkoutView, cart.tsx, or (tabs)/index.tsx. CRITICAL frontend integration blocker: frontend/.env EXPO_PUBLIC_API_URL points at https://mood-cutover.preview.emergentagent.com which returns 404 — the live preview backend is at https://wearable-stats-hub.preview.emergentagent.com. Web preview health-check + every API call 404s, so no end-to-end FE flow can be exercised through the preview until this is fixed. Deprecated packages detected: expo-av is still in use (warning in expo logs).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "All API calls from Expo web preview",
+        "issue": "frontend/.env EXPO_PUBLIC_API_URL=https://mood-cutover.preview.emergentagent.com returns 404 for /api/health and every other endpoint. The active preview backend is https://wearable-stats-hub.preview.emergentagent.com (200 on /api/health). apiConfig.ts prefers EXPO_PUBLIC_API_URL over EXPO_PUBLIC_BACKEND_URL, so the stale value wins and the entire app is offline in the web preview (AppBootstrap health check fails, login/register/Build my own/cart all unusable through the web view).",
+        "affected_testIDs": ["AppBootstrap", "all"]
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": [
+      {
+        "component": "expo-av",
+        "issue": "expo-av is deprecated and slated for removal in SDK 54 — migrate to expo-audio (audio) and expo-video (video). Visible as a repeated warning in /var/log/supervisor/expo.err.log on every app load."
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration_33_unlimited_gens.py",
+    "/app/test_reports/pytest/iteration_33.xml",
+    "/app/backend/tests/test_get_user_workouts.py"
+  ],
+  "action_items": [
+    "Fix frontend/.env so EXPO_PUBLIC_API_URL points at the live preview backend (https://wearable-stats-hub.preview.emergentagent.com) or remove the stale EXPO_PUBLIC_API_URL line and let apiConfig.ts fall back to EXPO_PUBLIC_BACKEND_URL. After the change, restart expo (sudo supervisorctl restart expo) and confirm the AppBootstrap health check logs ✅.",
+    "Migrate off expo-av to expo-audio / expo-video before SDK 54.",
+    "(Code review) /app/frontend/app/cart.tsx is 1693 lines — over the 700-line guideline; consider splitting cart UI, skip logic, and save/share helpers into smaller modules.",
+    "(Cleanup) /app/frontend/components/GeneratedWorkoutView.tsx still renders 'Workout X of Y' (line 361). The component is only referenced by utils/workoutGenerator.ts and no longer mounted from cart.tsx, but if it is reintroduced the cap copy will resurface. Either delete the dead component or strip the counter."
+  ],
+  "critical_code_review_comments": [
+    "Stale EXPO_PUBLIC_API_URL in frontend/.env breaks every API call through the web preview — the most user-visible bug in this iteration.",
+    "cart.tsx exceeds the 700-line file-size guideline (1693 lines).",
+    "GeneratedWorkoutView.tsx retains the 'Workout {n} of {total}' counter that the product brief explicitly removed; safe today only because it is unused."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration_33_unlimited_gens.py (new)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "n/a (blocked by stale EXPO_PUBLIC_API_URL — UI loads but every API call 404s)"},
+  "seed_data_creation": "Each backend test registers throw-away iter33_* users on the live preview backend; no manual seed required.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend pytest suite at /app/backend/tests/test_iteration_33_unlimited_gens.py is green against https://wearable-stats-hub.preview.emergentagent.com. Login uses {username, password} (NOT email). Register response key is 'token' not 'access_token'. UserWorkoutCreate accepts workout_id (required), duration_actual, calories_burned, avg_heart_rate, max_heart_rate, hr_samples_count, session_steps, session_hrv_sdnn (mood_category is ignored). Frontend web preview integration is currently blocked by the wrong EXPO_PUBLIC_API_URL in frontend/.env — fix that first, then re-run E2E flows for explosiveness-type/workout-type/muscle-type/lazy-training-type → IntensitySelectionModal → cart skip loop.",
+  "rca_of_issue": "Root cause of the FE integration blocker: frontend/.env keeps EXPO_PUBLIC_API_URL=https://mood-cutover.preview.emergentagent.com from a prior preview slot. apiConfig.ts:54 reads EXPO_PUBLIC_API_URL first, so the stale host wins over the correct EXPO_PUBLIC_BACKEND_URL=https://wearable-stats-hub.preview.emergentagent.com. Curl confirms /api/health → 404 on the stale host vs 200 on the correct host. Mitigation: update EXPO_PUBLIC_API_URL (or drop it) and restart expo."
+}

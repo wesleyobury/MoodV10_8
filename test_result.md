@@ -278,10 +278,24 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Create-Post Screen Backend Support (Auth & Save Button)"
+    - "GET /api/user-workouts ObjectId serialization fix"
+    - "Unlimited Build-for-Me generations & skips (cap removed, guests still blocked)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+
+## Fork Session (2026-05-28) — user-workouts fix + unlimited generations/skips + home UI polish
+### Backend changes (server.py)
+- FIXED: `GET /api/user-workouts` 500 (ObjectId/datetime serialization). Now returns JSON-safe list (`_id`→`id`, datetimes→ISO). Added regression test `/app/backend/tests/test_get_user_workouts.py` (PASSES locally).
+- `GET /api/choose-for-me/usage` now returns `remaining_uses: 999, can_generate: true` for all signed-in users (cap removed).
+- `POST /api/choose-for-me/generate` no longer raises 429; records telemetry only; returns `remaining_uses: 999`. Verified: 6 consecutive generations all 200.
+- Guests remain blocked (endpoints still require auth; frontend ChooseForMeButton/handleBuildForMe gate on isGuest).
+### Frontend changes
+- Home `index.tsx`: premium per-mood mood-card gradients (dark base + subtle on-brand color wash + sheen for depth/texture); shrank wearables snapshot row; removed yellow `brandDivider` line above stats; featured section pulled up.
+- `IntensitySelectionModal.tsx`: removed "X of 3 generations remaining" + "Skipping uses 1 generation".
+- `GeneratedWorkoutView.tsx`: removed generations-left indicator; skips unlimited; "X more • Skip uses 1 generation" → "X more".
+- `cart.tsx`: removed "Workout X of Y" bottom-bar text; Skip now wraps around (endless, no quota).
+- Training-type screens (`workout-type`, `body-parts`, `explosiveness-type`, `lazy-training-type`): "Continue" button relabeled "Build my own".
 
   - task: "Time-Series Analytics Feature"
     implemented: true

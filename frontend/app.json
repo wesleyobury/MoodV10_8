@@ -80,7 +80,8 @@
             "deploymentTarget": "16.0"
           }
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "splash": {
       "image": "./assets/images/splash-icon.png",

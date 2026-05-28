@@ -7960,8 +7960,22 @@ async def get_user_workouts(current_user_id: str = Depends(get_current_user), li
     """Get user's workout history"""
     user_workouts_cursor = db.user_workouts.find({"user_id": current_user_id}).sort("completed_at", -1).limit(limit)
     user_workouts = await user_workouts_cursor.to_list(length=limit)
-    
-    return user_workouts
+
+    # Serialize MongoDB documents (ObjectId/datetime) into JSON-safe values
+    def _serialize_workout(doc):
+        serialized = {}
+        for key, value in doc.items():
+            if key == "_id":
+                serialized["id"] = str(value)
+            elif isinstance(value, ObjectId):
+                serialized[key] = str(value)
+            elif isinstance(value, datetime):
+                serialized[key] = value.isoformat()
+            else:
+                serialized[key] = value
+        return serialized
+
+    return [_serialize_workout(w) for w in user_workouts]
 
 # File Upload Endpoints - Using Cloudinary for persistent cloud storage
 
@@ -12372,10 +12386,12 @@ async def get_choose_for_me_usage(
             "reset_time": (today_start + timedelta(days=1)).isoformat()
         }
     
+    # Generations are unlimited for all signed-in users (guests are blocked
+    # upstream since this endpoint requires auth). Cap fully removed per spec.
     return {
         "usage_count": usage_count,
-        "remaining_uses": max(0, 3 - usage_count),
-        "can_generate": usage_count < 3,
+        "remaining_uses": 999,
+        "can_generate": True,
         "generated_workouts": generated_workouts,
         "reset_time": (today_start + timedelta(days=1)).isoformat()
     }
@@ -12388,13 +12404,8 @@ async def record_choose_for_me_usage(
     """Record a Choose for Me usage and save the generated workouts"""
     now = datetime.now(timezone.utc)
     today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    
-    # Check if user is admin (officialmoodapp) - unlimited generations
-    user = await db.users.find_one({"_id": ObjectId(current_user_id)})
-    is_admin = user and user.get("username") == "officialmoodapp"
 
-    # v3: Muscle Gainer mood is unlimited (cap was removed per v3 spec).
-    # Other moods (Sweat, Lazy, Outdoor, Explosive, Calisthenics) keep the 3/day cap.
+    # Muscle Gainer mood records telemetry differently (kept for analytics parity).
     is_muscle_gainer = (request.moodCard or "").strip().lower() == "i want to gain muscle"
 
     # Skip-pings (cart skip telemetry from cart.tsx handleSkip) are NOT billable
@@ -12402,25 +12413,21 @@ async def record_choose_for_me_usage(
     # in an existing batch. Record them as telemetry only, no usage_count impact.
     is_skip_ping = (request.intensity or "").strip().lower() == "skip"
 
-    # Get current usage count
+    # Get current usage count (telemetry only — cap removed, generations unlimited)
     usage_count = await db.choose_for_me_usage.count_documents({
         "user_id": current_user_id,
         "created_at": {"$gte": today_start}
     })
 
-    # Check usage limit (skip for admin, for muscle-gainer mood, and for skip-pings)
-    if not is_admin and not is_muscle_gainer and not is_skip_ping and usage_count >= 3:
-        raise HTTPException(
-            status_code=429,
-            detail="Daily limit reached. You can only use Build for Me 3 times per day."
-        )
+    # Generations are unlimited for all signed-in users. Cap fully removed per spec;
+    # we still record usage below purely as telemetry.
 
     # Skip-pings bail early without polluting the daily counter or saving carts.
     if is_skip_ping:
         return {
             "success": True,
             "skipped": True,
-            "remaining_uses": 999 if is_admin or is_muscle_gainer else max(0, 3 - usage_count),
+            "remaining_uses": 999,
         }
     
     # Record the usage — but skip for muscle-gainer mood, since MG is uncapped and
@@ -12445,10 +12452,10 @@ async def record_choose_for_me_usage(
     }
     result = await db.generated_workouts.insert_one(workout_record)
     
-    # Return appropriate remaining uses based on admin status
+    # Generations are unlimited — always report plenty remaining.
     new_usage_count = usage_count + 1
-    remaining = 999 if is_admin else max(0, 3 - new_usage_count)
-    
+    remaining = 999
+
     return {
         "success": True,
         "usage_count": new_usage_count,

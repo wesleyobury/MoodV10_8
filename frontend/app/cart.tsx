@@ -443,43 +443,43 @@ export default function CartScreen() {
     return () => { cancelled = true; };
   }, [params.featuredId, params.pushCartItems, cartItems.length]);
 
-  // Handle skip to next generated cart
+  // Handle skip to next generated cart. Skips are unlimited — when we reach the
+  // end of the batch we wrap back to the start so the user can keep cycling
+  // through options endlessly (no quota, no dead-end).
   const handleSkip = async () => {
-    if (currentCartIndex < generatedCarts.length - 1) {
-      // Record skip usage
-      if (token) {
-        try {
-          await fetch(`${API_URL}/api/choose-for-me/generate`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ carts: [], moodCard: moodCard, intensity: 'skip' }),
-          });
-        } catch (error) {
-          console.error('Error recording skip:', error);
-        }
+    if (!isGeneratedWorkout || generatedCarts.length <= 1) return;
+
+    // Record skip usage (telemetry only — never blocks)
+    if (token) {
+      try {
+        await fetch(`${API_URL}/api/choose-for-me/generate`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ carts: [], moodCard: moodCard, intensity: 'skip' }),
+        });
+      } catch (error) {
+        console.error('Error recording skip:', error);
       }
-      
-      // Load next cart
-      const nextIndex = currentCartIndex + 1;
-      const nextCart = generatedCarts[nextIndex];
-      setCurrentCartIndex(nextIndex);
-      
-      // Generate new dynamic title for the new cart
-      const intensity = nextCart?.intensity || 'intermediate';
-      setDynamicTitle(getRandomWorkoutTitle(intensity, moodCard));
-      
-      // Update cart with next workout
-      clearCart();
-      nextCart.workouts.forEach((workout: WorkoutItem) => {
-        addToCart(workout);
-      });
-    } else {
-      Alert.alert('No More Workouts', 'You have seen all generated workouts.');
     }
+
+    // Load next cart, wrapping around to the first when past the last
+    const nextIndex = (currentCartIndex + 1) % generatedCarts.length;
+    const nextCart = generatedCarts[nextIndex];
+    setCurrentCartIndex(nextIndex);
+
+    // Generate new dynamic title for the new cart
+    const intensity = nextCart?.intensity || 'intermediate';
+    setDynamicTitle(getRandomWorkoutTitle(intensity, moodCard));
+
+    // Update cart with next workout
+    clearCart();
+    nextCart.workouts.forEach((workout: WorkoutItem) => {
+      addToCart(workout);
+    });
   };
 
-  // Check if skip is available
-  const canSkip = isGeneratedWorkout && currentCartIndex < generatedCarts.length - 1;
+  // Check if skip is available — unlimited as long as there's more than one option
+  const canSkip = isGeneratedWorkout && generatedCarts.length > 1;
 
   const handleGoBack = () => {
     router.back();
@@ -1106,14 +1106,6 @@ export default function CartScreen() {
 
       {/* Bottom Action Bar */}
       <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 20) }]}>
-        {/* Workout indicator for generated workouts */}
-        {isGeneratedWorkout && (
-          <View style={styles.workoutIndicator}>
-            <Text style={styles.workoutIndicatorText}>
-              Workout {currentCartIndex + 1} of {generatedCarts.length}
-            </Text>
-          </View>
-        )}
         <View style={styles.bottomActions}>
           <TouchableOpacity 
             style={styles.saveButton}

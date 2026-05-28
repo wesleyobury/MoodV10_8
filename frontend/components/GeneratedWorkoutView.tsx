@@ -262,7 +262,6 @@ export default function GeneratedWorkoutView({
   const [currentCart, setCurrentCart] = useState(carts[0]);
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [localRemainingGenerations, setLocalRemainingGenerations] = useState(remainingGenerations);
   const insets = useSafeAreaInsets();
 
   // Generate dynamic workout title based on intensity - memoized per cart
@@ -275,28 +274,13 @@ export default function GeneratedWorkoutView({
 
   const handleSkip = async () => {
     if (!isLastCart) {
-      // Check if we have generations left
-      if (localRemainingGenerations <= 0) {
-        Alert.alert(
-          'No Generations Left',
-          'You have used all your daily generations. Each skip uses 1 generation.',
-          [{ text: 'OK' }]
-        );
-        return;
-      }
-
-      // Call onSkip callback to record the generation usage
+      // Skips are unlimited — fire the optional callback for telemetry but never block.
       if (onSkip) {
-        const success = await onSkip();
-        if (!success) {
-          Alert.alert(
-            'No Generations Left',
-            'You have used all your daily generations.',
-            [{ text: 'OK' }]
-          );
-          return;
+        try {
+          await onSkip();
+        } catch {
+          // Non-blocking: a failed telemetry ping should never stop the user.
         }
-        setLocalRemainingGenerations(prev => Math.max(0, prev - 1));
       }
 
       const newIndex = currentCartIndex + 1;
@@ -437,7 +421,7 @@ export default function GeneratedWorkoutView({
             <Text style={styles.sectionTitle}>Your Workout</Text>
             {!isLastCart && (
               <Text style={styles.skipHint}>
-                {cartsRemaining} more • Skip uses 1 generation
+                {cartsRemaining} more
               </Text>
             )}
           </View>
@@ -488,32 +472,18 @@ export default function GeneratedWorkoutView({
 
       {/* Bottom Action Bar */}
       <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 20) }]}>
-        {/* Remaining generations indicator */}
-        <View style={styles.generationsIndicator}>
-          <Ionicons name="sparkles" size={12} color="#888" />
-          <Text style={styles.generationsText}>
-            {localRemainingGenerations} generation{localRemainingGenerations !== 1 ? 's' : ''} left today
-          </Text>
-        </View>
         <View style={styles.bottomActions}>
           {!isLastCart ? (
             <TouchableOpacity
-              style={[
-                styles.skipButton,
-                localRemainingGenerations <= 0 && styles.skipButtonDisabled
-              ]}
+              style={styles.skipButton}
               onPress={handleSkip}
-              disabled={localRemainingGenerations <= 0}
             >
               <Ionicons 
                 name="shuffle" 
                 size={18} 
-                color={localRemainingGenerations <= 0 ? "#666" : "#FFD700"} 
+                color="#FFD700" 
               />
-              <Text style={[
-                styles.skipButtonText,
-                localRemainingGenerations <= 0 && styles.skipButtonTextDisabled
-              ]}>
+              <Text style={styles.skipButtonText}>
                 Skip
               </Text>
             </TouchableOpacity>

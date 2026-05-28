@@ -303,7 +303,17 @@ interface MoodCard {
   subtitle: string;
   icon: keyof typeof Ionicons.glyphMap;
   gradient: string[];
+  accent: string; // per-mood brand-leaning accent used for the subtle color wash
 }
+
+// Convert a hex color into an rgba() string with the supplied alpha.
+const hexToRgba = (hex: string, alpha: number) => {
+  const clean = hex.replace('#', '');
+  const r = parseInt(clean.substring(0, 2), 16);
+  const g = parseInt(clean.substring(2, 4), 16);
+  const b = parseInt(clean.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
 
 // "This week" trending indicator — shows count + softly bobbing upward arrow.
 // Only rendered when count > 5 (per spec).
@@ -416,6 +426,7 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
   });
 
   const showTrend = (weeklyCount ?? 0) > 5;
+  const accent = mood.accent;
 
   return (
     <TouchableOpacity
@@ -423,30 +434,48 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
       onPress={() => onPress(mood)}
       activeOpacity={0.85}
     >
-      {/* Premium on-brand gradient card */}
+      {/* Premium layered card — dark base for depth, subtle on-brand color wash for texture */}
       <LinearGradient
-        colors={['#262626', '#181818', '#0d0d0d']}
+        colors={['#242424', '#161616', '#0b0b0b']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        locations={[0, 0.55, 1]}
+        locations={[0, 0.5, 1]}
         style={styles.visibleMoodCard}
       >
-        {/* Subtle gold left edge accent for brand polish */}
+        {/* Mood color wash — fades in from the right edge for depth (per reference) */}
         <LinearGradient
-          colors={['rgba(255, 215, 0, 0.55)', 'rgba(255, 215, 0, 0)']}
+          colors={[hexToRgba(accent, 0), hexToRgba(accent, 0.10), hexToRgba(accent, 0.26)]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          locations={[0, 0.55, 1]}
+          style={StyleSheet.absoluteFillObject}
+        />
+        {/* Soft diagonal glow anchored bottom-right — adds dimensional depth */}
+        <LinearGradient
+          colors={[hexToRgba(accent, 0), hexToRgba(accent, 0.16)]}
+          start={{ x: 0.35, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFillObject}
+        />
+        {/* Top sheen highlight — fine texture / glassy finish */}
+        <LinearGradient
+          colors={['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.015)', 'rgba(255,255,255,0)']}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.moodCardEdgeAccent}
+          end={{ x: 0, y: 1 }}
+          locations={[0, 0.35, 1]}
+          style={StyleSheet.absoluteFillObject}
         />
         <View style={styles.cardContent}>
-          <Animated.View 
+          <Animated.View
             style={[
               styles.iconContainer,
-              { 
+              {
+                backgroundColor: hexToRgba(accent, 0.16),
+                borderColor: hexToRgba(accent, 0.32),
                 transform: [
                   { scale: scaleAnim },
                   { rotate: rotateZ }
-                ] 
+                ]
               }
             ]}
           >
@@ -468,7 +497,7 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
               <Ionicons 
                 name="chevron-forward" 
                 size={20} 
-                color="rgba(255, 255, 255, 0.3)" 
+                color="rgba(255, 255, 255, 0.45)" 
               />
             </View>
           )}
@@ -538,6 +567,7 @@ const moodCards: MoodCard[] = [
     subtitle: 'High intensity cardio',
     icon: 'flame',
     gradient: ['#FF6B6B', '#FF8E53'],
+    accent: '#FF8A3D',
   },
   {
     id: 'muscle',
@@ -545,6 +575,7 @@ const moodCards: MoodCard[] = [
     subtitle: 'Strength training focus',
     icon: 'barbell',
     gradient: ['#4ECDC4', '#44A08D'],
+    accent: '#FFC23D',
   },
   {
     id: 'explosive',
@@ -552,6 +583,7 @@ const moodCards: MoodCard[] = [
     subtitle: 'Power & plyometric moves',
     icon: 'flash',
     gradient: ['#FFD93D', '#FF6B6B'],
+    accent: '#FF5E3A',
   },
   {
     id: 'lazy',
@@ -559,6 +591,7 @@ const moodCards: MoodCard[] = [
     subtitle: 'Gentle movement',
     icon: 'bed',
     gradient: ['#D299C2', '#FEF9D7'],
+    accent: '#C77DFF',
   },
   {
     id: 'calisthenics',
@@ -566,6 +599,7 @@ const moodCards: MoodCard[] = [
     subtitle: 'Bodyweight exercises',
     icon: 'body',
     gradient: ['#667eea', '#764ba2'],
+    accent: '#6C8CFF',
   },
   {
     id: 'outdoor',
@@ -573,6 +607,7 @@ const moodCards: MoodCard[] = [
     subtitle: 'Fresh air workouts',
     icon: 'bicycle',
     gradient: ['#56ab2f', '#a8e6cf'],
+    accent: '#5BD16A',
   },
   // Hidden for now - will be enabled later
   // {
@@ -1091,9 +1126,6 @@ export default function WorkoutsHome() {
 
           <Text style={styles.centeredBrandTitle}>MOOD</Text>
           <Text style={styles.centeredBrandSubtitle}>TRAIN HOW YOU FEEL DAILY</Text>
-
-          {/* Yellow divider beneath the tagline */}
-          <View style={styles.brandDivider} />
 
           {/* Quiet "Synced 2m ago" indicator — hidden if no HealthKit permission */}
           <HealthSyncIndicator />
@@ -1670,7 +1702,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
-    borderWidth: 0,
+    borderWidth: 1,
     borderColor: 'transparent',
     shadowColor: 'transparent',
     shadowOffset: { width: 0, height: 0 },
@@ -1875,46 +1907,46 @@ const styles = StyleSheet.create({
   floatingStatLabelStreak: {
     color: 'rgba(255, 215, 0, 0.7)',
   },
-  // === Wearables — Latest Snapshot row ===
+  // === Wearables — Latest Snapshot row (compact) ===
   wearablesRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
     marginTop: 2,
-    marginBottom: 14,
+    marginBottom: 6,
     paddingHorizontal: 16,
     gap: 8,
   },
   wearableTile: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 6,
     paddingHorizontal: 4,
-    borderRadius: 12,
+    borderRadius: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.025)',
     borderWidth: 0.5,
     borderColor: 'rgba(255, 215, 0, 0.08)',
   },
   wearableValue: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
     color: '#FFFFFF',
-    marginTop: 4,
+    marginTop: 2,
     letterSpacing: -0.3,
   },
   wearableLabel: {
-    fontSize: 9,
+    fontSize: 8.5,
     color: 'rgba(255, 255, 255, 0.55)',
-    marginTop: 4,
+    marginTop: 2,
     textTransform: 'uppercase',
-    letterSpacing: 1.1,
+    letterSpacing: 0.8,
     fontWeight: '600',
     textAlign: 'center',
   },
   wearableSubLabel: {
-    fontSize: 9,
-    color: 'rgba(255, 255, 255, 0.35)',
-    marginTop: 2,
+    fontSize: 8,
+    color: 'rgba(255, 255, 255, 0.32)',
+    marginTop: 1,
     textAlign: 'center',
   },
   // === "This week" trend indicator on mood cards ===
