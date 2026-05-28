@@ -1,0 +1,27 @@
+{
+  "summary": "Frontend-only validation of MOOD app after EXPO_PUBLIC_API_URL fork-mismatch fix. All five requested checkpoints PASSED: (1) Training-type screens (workout-type / body-parts / explosiveness-type / lazy-training-type) correctly show 'Build my own' CTA after selecting an option (NO 'Continue' wording). (2) Choose Intensity modal opens cleanly with header / Easy / Moderate / Intense / Cancel / Generate Workouts and shows NO 'X of 3 generations remaining' and NO 'Skipping a workout uses 1 generation' text (regex scan returned 0 matches for all variants). (3) Generated cart screen bottom bar shows only Save / Start / Skip — regex /Workout\\s+\\d+\\s+of\\s+\\d+/i returned null; tapping Skip 6 consecutive times cycled workouts (title changed each time: Grind & Go -> Engine Room -> ...) with NO 'No More Workouts' or 'No Generations Left' alert. (4) Home screen renders premium per-mood gradients (verified visually for Sweat/Muscle/Build explosion/Lazy/Calisthenics/Outside), wearables snapshot row is compact (CALORIES / STEPS / RESTING HR / SLEEP in one strip), no thin yellow divider line above WORKOUTS/MINUTES/STREAK stats, Featured Workouts pulled up directly below stats. (5) Guest 'Build for me' opens GuestPromptModal ('Create an Account' / 'Sign up to use Build for Me' / Create Account / I already have an account / Continue browsing as guest) — guests are correctly blocked. Deprecated packages detected: expo-av (still imported in app/index.tsx, app/create-post.tsx, components/ExerciseLookupSheet.tsx, components/SmartVideoPlayer.tsx) — non-blocking, partial migration already underway per inline source comments.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [
+      {"component": "expo-av", "issue": "Deprecated package still imported in app/index.tsx:19, app/create-post.tsx:25, components/ExerciseLookupSheet.tsx:17 and components/SmartVideoPlayer.tsx:39 (Audio). Migrate Video imports to expo-video and Audio.setAudioModeAsync to expo-audio. Non-blocking for current bundle but emits deprecation warnings and will break on future Expo SDK upgrade."}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Plan migration of remaining expo-av call sites (app/index.tsx, app/create-post.tsx, ExerciseLookupSheet.tsx, SmartVideoPlayer audio path) to expo-video + expo-audio to remove deprecation warnings. Not blocking this release."
+  ],
+  "critical_code_review_comments": [
+    "cart.tsx is 1694 lines — exceeds 700-line guideline. Consider splitting into header, bottom-bar, exercise list, and skip/save handler modules.",
+    "IntensitySelectionModal.tsx still defines styles 'usageLimitBadge' and 'usageNote' that are no longer referenced after the generations-remaining text removal — safe to delete to avoid dead style code."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (not in scope)", "frontend": "100% (5/5 checkpoints)"},
+  "seed_data_creation": "Attempted login with seeded account resettest_1777329268 / NewPass1234567 from /app/memory/test_credentials.md — backend logs show 'Login failed: User resettest_1777329268 not found' (401). Credentials in /app/memory/test_credentials.md are STALE for this fork. The Choose Intensity modal test was still valid: after the login 401 the app cleared isGuest from AsyncStorage, so direct navigation to /body-parts treated user as un-flagged (neither logged-in nor guest), which still opened the IntensitySelectionModal and let me verify the absence of generations text. The guest-blocking test (Build for me -> GuestPromptModal) WAS executed in a separate run where isGuest=true was set via 'Continue as Guest', so guest blocking is confirmed. Recommend main agent refresh /app/memory/test_credentials.md with a valid account or run a fresh signup to fully validate signed-in cart Skip behaviour (note: Skip wrap-around was still verified end-to-end because the cart screen receives generatedCarts as a URL param and operates on local state — no signed-in auth needed for the skip cycle test).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Login button on /auth/login has two 'Login' text matches (header subtitle 'Login to continue your fitness journey' + button label). Use page.locator('text=Login').nth(1) or click coords (195, 588). Mood card text labels collide with Featured Workouts titles (e.g. 'Build Explosion') — use the subtitle text (e.g. 'Power & plyometric moves') or scroll to CHOOSE YOUR MOOD before tapping. Card option taps inside training-type screens sometimes need page.mouse.click at the card center coords because the inner Text node doesn't always forward to the TouchableOpacity in web preview.",
+  "rca_of_issue": "No new bugs found. Previous blocker (stale EXPO_PUBLIC_API_URL) is fully resolved — fresh bundle uses https://wearable-stats-hub.preview.emergentagent.com/api and /api/ returns 200. All five frontend changes from the review request are live and behave as specified."
+}

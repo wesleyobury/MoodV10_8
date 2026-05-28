@@ -355,12 +355,7 @@ export default function GeneratedWorkoutView({
           <Ionicons name="close" size={24} color="#fff" />
         </TouchableOpacity>
 
-        {/* Cart Counter */}
-        <View style={[styles.cartCounter, { top: insets.top + 10 }]}>
-          <Text style={styles.cartCounterText}>
-            Workout {currentCartIndex + 1} of {carts.length}
-          </Text>
-        </View>
+        {/* Cart Counter — intentionally hidden (unlimited generations, no cap copy) */}
 
         {/* Flavor Badge (bottom-right of hero) — only when set (Muscle Gainer carts) */}
         {currentCart.flavor && (
