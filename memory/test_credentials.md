@@ -1,5 +1,10 @@
 # MOOD Test Credentials
 
+## Primary test user (created 2026-05-29, persistent — USE THIS for login/auth flows)
+- Username: `moodtester`
+- Email: `moodtester@example.com`
+- Password: `MoodTest1234567`
+
 ## Reset password test user (created during forgot-password QA, 2026-04-27)
 - Username: `resettest_1777329268`
 - Email: `resettest_1777329268@example.com`

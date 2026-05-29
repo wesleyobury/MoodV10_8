@@ -278,11 +278,19 @@ metadata:
 
 test_plan:
   current_focus:
-    - "GET /api/user-workouts ObjectId serialization fix"
-    - "Unlimited Build-for-Me generations & skips (cap removed, guests still blocked)"
+    - "Login Create Account button (charcoal/white/gold emblem)"
+    - "Build-for-me/Build-my-own layout parity across sweat/explosion/lazy paths"
+    - "Wearables home redesign + premium gold mood-card gradients"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+
+## Fork Session (2026-05-29 batch 2) — login CTA + build-section parity + wearables/mood-card polish
+- Login (`auth/login.tsx`): replaced "Don't have an account? Sign up" text link with an equal-weight "Create Account" button (charcoal #1f1f1f, white bold text, gold person-add emblem) directly under the gold Login button. VERIFIED via screenshot.
+- Training-type screens `workout-type.tsx`, `explosiveness-type.tsx`, `lazy-training-type.tsx`: restructured Build-for-me / Build-my-own to match Muscle Gainer (`body-parts.tsx`): textless full-width divider above "Build for me" (ChooseForMeButton hideOrText), then an "or" divider, then the gold "Build my own" button — all inline in the scroll flow (removed fixed bottom Continue bar).
+- Home `index.tsx` wearables: added header note "WEARABLES" (+ " — SYNC TO VIEW" only when no metric synced), moved icons to the LEFT of each value, merged the 4 separate tiles into one long rounded container (no per-tile borders). Kept existing labels; no green trend arrows.
+- Home `index.tsx` mood cards: switched accents to gold tones over varied charcoal/black bases with a warm vivid gold glow (right bloom + diagonal + left halo); removed off-brand colored washes.
+- test_credentials.md: added persistent `moodtester / MoodTest1234567`.
 
 ## Fork Session (2026-05-28) — user-workouts fix + unlimited generations/skips + home UI polish
 ### Backend changes (server.py)

@@ -457,13 +457,16 @@ export default function Login() {
                 <Text style={styles.loginButtonText}>Login</Text>
               </LinearGradient>
             </TouchableOpacity>
-          </View>
 
-          {/* Footer */}
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => router.push('/auth/register')}>
-              <Text style={styles.footerLink}>Sign up</Text>
+            {/* Create Account — equal weight to Login (charcoal, white text, gold emblem) */}
+            <TouchableOpacity
+              style={styles.createAccountButton}
+              onPress={() => router.push('/auth/register')}
+            >
+              <View style={styles.createAccountEmblem}>
+                <Ionicons name="person-add" size={16} color="#FFD700" />
+              </View>
+              <Text style={styles.createAccountText}>Create Account</Text>
             </TouchableOpacity>
           </View>
 
@@ -634,19 +637,30 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#0c0c0c',
   },
-  footer: {
+  createAccountButton: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1f1f1f',
+    borderRadius: 12,
+    height: 50,
+    marginTop: 12,
+    gap: 10,
+    borderWidth: 1,
+    borderColor: '#333',
+  },
+  createAccountEmblem: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: 'rgba(255, 215, 0, 0.12)',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  footerText: {
-    color: '#888',
-    fontSize: 14,
-  },
-  footerLink: {
-    color: '#FFD700',
-    fontSize: 14,
-    fontWeight: '600',
+  createAccountText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
   },
   guestButton: {
     flexDirection: 'row',

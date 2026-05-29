@@ -291,44 +291,48 @@ export default function WorkoutTypeScreen() {
           </View>
 
           <View style={styles.optionsContainer}>
-            {workoutTypeOptions.map((option, index) => (
+            {workoutTypeOptions.map((option) => (
               <View key={option.id}>
                 <WorkoutTypeOption
                   option={option}
                   onPress={handleWorkoutTypeSelect}
                   isSelected={selectedOption?.id === option.id}
                 />
-                {/* Place Choose for Me button after the second option (Light Weights) */}
-                {index === 1 && (
-                  <View style={styles.chooseForMeContainer}>
-                    <ChooseForMeButton onPress={handleChooseForMe} />
-                  </View>
-                )}
               </View>
             ))}
           </View>
+
+          {/* Build for me — textless divider above (matches Muscle Gainer path) */}
+          <ChooseForMeButton onPress={handleChooseForMe} hideOrText={true} />
+
+          {/* Build my own — inline, shown after a type is selected */}
+          {selectedOption && (
+            <View style={styles.inlineBottomContainer}>
+              <View style={styles.orDividerContainer}>
+                <View style={styles.orDividerLine} />
+                <Text style={styles.orDividerText}>or</Text>
+                <View style={styles.orDividerLine} />
+              </View>
+              <TouchableOpacity
+                style={styles.continueButton}
+                onPress={handleContinue}
+              >
+                <LinearGradient
+                  colors={['#FFD700', '#FFA500']}
+                  style={styles.continueButtonGradient}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                >
+                  <Text style={styles.continueButtonText}>Build my own</Text>
+                  <Ionicons name="arrow-forward" size={20} color='#0c0c0c' style={styles.buttonIcon} />
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          <View style={{ height: 40 }} />
         </View>
       </ScrollView>
-
-      {/* Continue Button */}
-      {selectedOption && (
-        <View style={styles.bottomContainer}>
-          <TouchableOpacity 
-            style={styles.continueButton}
-            onPress={handleContinue}
-          >
-            <LinearGradient
-              colors={['#FFD700', '#FFA500']}
-              style={styles.continueButtonGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-            >
-              <Text style={styles.continueButtonText}>Build my own</Text>
-              <Ionicons name="arrow-forward" size={20} color='#0c0c0c' style={styles.buttonIcon} />
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      )}
 
       {/* Intensity Selection Modal */}
       <IntensitySelectionModal
@@ -515,10 +519,29 @@ const styles = StyleSheet.create({
   selectedOptionDescription: {
     color: 'rgba(255, 255, 255, 0.8)',
   },
-  bottomContainer: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    paddingTop: 10,
+  inlineBottomContainer: {
+    paddingHorizontal: 0,
+    paddingTop: 0,
+    marginTop: 0,
+  },
+  orDividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+    marginTop: 4,
+  },
+  orDividerLine: {
+    width: 40,
+    height: 1,
+    backgroundColor: 'rgba(100, 100, 100, 0.4)',
+  },
+  orDividerText: {
+    color: 'rgba(150, 150, 150, 0.8)',
+    fontSize: 13,
+    fontWeight: '400',
+    paddingHorizontal: 16,
+    textTransform: 'lowercase',
   },
   continueButton: {
     borderRadius: 12,

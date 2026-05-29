@@ -303,7 +303,8 @@ interface MoodCard {
   subtitle: string;
   icon: keyof typeof Ionicons.glyphMap;
   gradient: string[];
-  accent: string; // per-mood brand-leaning accent used for the subtle color wash
+  accent: string; // warm gold tone used for the vivid glow
+  base: string[]; // charcoal/gray/black base gradient (varied per card)
 }
 
 // Convert a hex color into an rgba() string with the supplied alpha.
@@ -434,32 +435,40 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
       onPress={() => onPress(mood)}
       activeOpacity={0.85}
     >
-      {/* Premium layered card — dark base for depth, subtle on-brand color wash for texture */}
+      {/* Premium layered card — charcoal/black base with a warm vivid gold glow */}
       <LinearGradient
-        colors={['#242424', '#161616', '#0b0b0b']}
+        colors={mood.base}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         locations={[0, 0.5, 1]}
         style={styles.visibleMoodCard}
       >
-        {/* Mood color wash — fades in from the right edge for depth (per reference) */}
+        {/* Warm gold glow blooming from the right — vivid yet on-brand */}
         <LinearGradient
-          colors={[hexToRgba(accent, 0), hexToRgba(accent, 0.10), hexToRgba(accent, 0.26)]}
+          colors={[hexToRgba(accent, 0), hexToRgba(accent, 0.16), hexToRgba(accent, 0.42)]}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
+          locations={[0, 0.5, 1]}
+          style={StyleSheet.absoluteFillObject}
+        />
+        {/* Diagonal gold bloom anchored bottom-right for dimensional depth */}
+        <LinearGradient
+          colors={[hexToRgba(accent, 0), hexToRgba(accent, 0.10), hexToRgba(accent, 0.34)]}
+          start={{ x: 0.3, y: 0 }}
+          end={{ x: 1, y: 1 }}
           locations={[0, 0.55, 1]}
           style={StyleSheet.absoluteFillObject}
         />
-        {/* Soft diagonal glow anchored bottom-right — adds dimensional depth */}
+        {/* Warm halo behind the icon (left) so the glow reads across the whole card */}
         <LinearGradient
-          colors={[hexToRgba(accent, 0), hexToRgba(accent, 0.16)]}
-          start={{ x: 0.35, y: 0 }}
-          end={{ x: 1, y: 1 }}
+          colors={[hexToRgba(accent, 0.22), hexToRgba(accent, 0.04), hexToRgba(accent, 0)]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 0.5, y: 0.5 }}
           style={StyleSheet.absoluteFillObject}
         />
         {/* Top sheen highlight — fine texture / glassy finish */}
         <LinearGradient
-          colors={['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.015)', 'rgba(255,255,255,0)']}
+          colors={['rgba(255,255,255,0.08)', 'rgba(255,255,255,0.02)', 'rgba(255,255,255,0)']}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
           locations={[0, 0.35, 1]}
@@ -470,8 +479,8 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
             style={[
               styles.iconContainer,
               {
-                backgroundColor: hexToRgba(accent, 0.16),
-                borderColor: hexToRgba(accent, 0.32),
+                backgroundColor: hexToRgba(accent, 0.20),
+                borderColor: hexToRgba(accent, 0.42),
                 transform: [
                   { scale: scaleAnim },
                   { rotate: rotateZ }
@@ -530,31 +539,48 @@ const WearablesSnapshot = ({
     return n.toLocaleString();
   };
 
+  // Synced when at least one metric has a real value; otherwise prompt to sync.
+  const isSynced =
+    restingHr != null || sleepMinutes != null || steps != null || calories != null;
+
   return (
-    <View style={styles.wearablesRow}>
-      <View style={styles.wearableTile}>
-        <Ionicons name="flame-outline" size={18} color="#FFD700" />
-        <Text style={styles.wearableValue}>{fmtNum(calories)}</Text>
-        <Text style={styles.wearableLabel}>CALORIES</Text>
-        <Text style={styles.wearableSubLabel}>Last workout</Text>
-      </View>
-      <View style={styles.wearableTile}>
-        <Ionicons name="footsteps-outline" size={18} color="#FFD700" />
-        <Text style={styles.wearableValue}>{fmtNum(steps)}</Text>
-        <Text style={styles.wearableLabel}>STEPS</Text>
-        <Text style={styles.wearableSubLabel}>Yesterday</Text>
-      </View>
-      <View style={styles.wearableTile}>
-        <Ionicons name="heart-outline" size={18} color="#FFD700" />
-        <Text style={styles.wearableValue}>{fmtNum(restingHr)}</Text>
-        <Text style={styles.wearableLabel}>RESTING HR</Text>
-        <Text style={styles.wearableSubLabel}>BPM</Text>
-      </View>
-      <View style={styles.wearableTile}>
-        <Ionicons name="moon-outline" size={18} color="#8AB4FF" />
-        <Text style={styles.wearableValue}>{fmtSleep(sleepMinutes)}</Text>
-        <Text style={styles.wearableLabel}>SLEEP</Text>
-        <Text style={styles.wearableSubLabel}>Last night</Text>
+    <View style={styles.wearablesSection}>
+      <Text style={styles.wearablesHeader}>
+        WEARABLES{!isSynced ? '  —  SYNC TO VIEW' : ''}
+      </Text>
+      <View style={styles.wearablesRow}>
+        <View style={styles.wearableTile}>
+          <View style={styles.wearableValueRow}>
+            <Ionicons name="flame-outline" size={15} color="#FFD700" style={styles.wearableIcon} />
+            <Text style={styles.wearableValue}>{fmtNum(calories)}</Text>
+          </View>
+          <Text style={styles.wearableLabel}>CALORIES</Text>
+          <Text style={styles.wearableSubLabel}>Last workout</Text>
+        </View>
+        <View style={styles.wearableTile}>
+          <View style={styles.wearableValueRow}>
+            <Ionicons name="footsteps-outline" size={15} color="#FFD700" style={styles.wearableIcon} />
+            <Text style={styles.wearableValue}>{fmtNum(steps)}</Text>
+          </View>
+          <Text style={styles.wearableLabel}>STEPS</Text>
+          <Text style={styles.wearableSubLabel}>Yesterday</Text>
+        </View>
+        <View style={styles.wearableTile}>
+          <View style={styles.wearableValueRow}>
+            <Ionicons name="heart-outline" size={15} color="#FFD700" style={styles.wearableIcon} />
+            <Text style={styles.wearableValue}>{fmtNum(restingHr)}</Text>
+          </View>
+          <Text style={styles.wearableLabel}>RESTING HR</Text>
+          <Text style={styles.wearableSubLabel}>BPM</Text>
+        </View>
+        <View style={styles.wearableTile}>
+          <View style={styles.wearableValueRow}>
+            <Ionicons name="moon-outline" size={15} color="#8AB4FF" style={styles.wearableIcon} />
+            <Text style={styles.wearableValue}>{fmtSleep(sleepMinutes)}</Text>
+          </View>
+          <Text style={styles.wearableLabel}>SLEEP</Text>
+          <Text style={styles.wearableSubLabel}>Last night</Text>
+        </View>
       </View>
     </View>
   );
@@ -567,7 +593,8 @@ const moodCards: MoodCard[] = [
     subtitle: 'High intensity cardio',
     icon: 'flame',
     gradient: ['#FF6B6B', '#FF8E53'],
-    accent: '#FF8A3D',
+    accent: '#FFC93C',
+    base: ['#2E2A20', '#1A1711', '#0C0A06'],
   },
   {
     id: 'muscle',
@@ -575,7 +602,8 @@ const moodCards: MoodCard[] = [
     subtitle: 'Strength training focus',
     icon: 'barbell',
     gradient: ['#4ECDC4', '#44A08D'],
-    accent: '#FFC23D',
+    accent: '#E6B94C',
+    base: ['#2B2B2B', '#181818', '#0A0A0A'],
   },
   {
     id: 'explosive',
@@ -583,7 +611,8 @@ const moodCards: MoodCard[] = [
     subtitle: 'Power & plyometric moves',
     icon: 'flash',
     gradient: ['#FFD93D', '#FF6B6B'],
-    accent: '#FF5E3A',
+    accent: '#FFB300',
+    base: ['#302B1C', '#1B1810', '#0D0B06'],
   },
   {
     id: 'lazy',
@@ -591,7 +620,8 @@ const moodCards: MoodCard[] = [
     subtitle: 'Gentle movement',
     icon: 'bed',
     gradient: ['#D299C2', '#FEF9D7'],
-    accent: '#C77DFF',
+    accent: '#D9BA6B',
+    base: ['#2A2A28', '#171614', '#0A0A09'],
   },
   {
     id: 'calisthenics',
@@ -599,7 +629,8 @@ const moodCards: MoodCard[] = [
     subtitle: 'Bodyweight exercises',
     icon: 'body',
     gradient: ['#667eea', '#764ba2'],
-    accent: '#6C8CFF',
+    accent: '#EBC76A',
+    base: ['#2C2C2C', '#191919', '#0B0B0B'],
   },
   {
     id: 'outdoor',
@@ -607,7 +638,8 @@ const moodCards: MoodCard[] = [
     subtitle: 'Fresh air workouts',
     icon: 'bicycle',
     gradient: ['#56ab2f', '#a8e6cf'],
-    accent: '#5BD16A',
+    accent: '#C9A44C',
+    base: ['#2A2B27', '#171813', '#0A0B08'],
   },
   // Hidden for now - will be enabled later
   // {
@@ -1907,37 +1939,54 @@ const styles = StyleSheet.create({
   floatingStatLabelStreak: {
     color: 'rgba(255, 215, 0, 0.7)',
   },
-  // === Wearables — Latest Snapshot row (compact) ===
+  // === Wearables — Latest Snapshot (compact, single container) ===
+  wearablesSection: {
+    marginTop: 2,
+    marginBottom: 8,
+    paddingHorizontal: 16,
+  },
+  wearablesHeader: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#FFD700',
+    letterSpacing: 1.4,
+    marginBottom: 6,
+    marginLeft: 2,
+  },
   wearablesRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'stretch',
-    marginTop: 2,
-    marginBottom: 6,
-    paddingHorizontal: 16,
-    gap: 8,
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 6,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    borderWidth: 0.5,
+    borderColor: 'rgba(255, 215, 0, 0.08)',
   },
   wearableTile: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 4,
-    borderRadius: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.025)',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 215, 0, 0.08)',
+    paddingHorizontal: 2,
+  },
+  wearableValueRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  wearableIcon: {
+    marginRight: 5,
   },
   wearableValue: {
     fontSize: 15,
     fontWeight: '700',
     color: '#FFFFFF',
-    marginTop: 2,
     letterSpacing: -0.3,
   },
   wearableLabel: {
     fontSize: 8.5,
     color: 'rgba(255, 255, 255, 0.55)',
-    marginTop: 2,
+    marginTop: 3,
     textTransform: 'uppercase',
     letterSpacing: 0.8,
     fontWeight: '600',
