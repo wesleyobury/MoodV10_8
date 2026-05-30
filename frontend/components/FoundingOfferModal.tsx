@@ -15,6 +15,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { usePathname } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { BRAND_GRADIENT, COLORS } from '../constants/brand';
@@ -29,9 +30,15 @@ let shownThisSession = false;
 export function FoundingOfferModal() {
   const { token, entitlement } = useAuth();
   const { claimFounding } = useFoundingPurchase();
+  const pathname = usePathname();
   const [visible, setVisible] = useState(false);
   const [busy, setBusy] = useState(false);
   const firedRef = useRef(false);
+
+  // Don't surface the launch modal during the onboarding funnel / onboarding
+  // stack — the reveal-payoff screen renders its own founding offer there.
+  const inOnboarding =
+    !!pathname && (pathname.startsWith('/onboarding') || pathname.startsWith('/auth'));
 
   const eligible =
     !!entitlement?.is_founding_member &&
@@ -41,14 +48,14 @@ export function FoundingOfferModal() {
   const daysLeft = foundingDaysRemaining(entitlement?.founding_window_expires_at);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || inOnboarding) return;
     if (eligible && !shownThisSession && !firedRef.current) {
       firedRef.current = true;
       shownThisSession = true;
       setVisible(true);
       Analytics.foundingModalShown(token, { days_remaining: daysLeft });
     }
-  }, [token, eligible, daysLeft]);
+  }, [token, eligible, daysLeft, inOnboarding]);
 
   const handleRemindLater = () => {
     setVisible(false);

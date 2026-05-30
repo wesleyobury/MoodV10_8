@@ -26,8 +26,12 @@ export default function HealthOnboardingGate() {
     if (!token || isGuest) return;
     if (redirectedRef.current) return;
 
-    // Don't redirect if user is already inside the onboarding stack.
-    const inOnboarding = segments?.[0] === 'onboarding';
+    // Don't redirect if user is already inside the onboarding stack OR the
+    // onboarding funnel. (Phase 3.1: new signups route into /onboarding-funnel;
+    // without whitelisting it here, this gate would immediately bounce them to
+    // health-connect and break the funnel.)
+    const seg = segments?.[0];
+    const inOnboarding = seg === 'onboarding' || seg === 'onboarding-funnel';
     if (inOnboarding) return;
 
     (async () => {
