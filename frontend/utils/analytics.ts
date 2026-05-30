@@ -619,6 +619,11 @@ export const Analytics = {
       ? trackEvent(token, 'founding_modal_shown', metadata)
       : trackGuestEvent('founding_modal_shown', metadata),
 
+  pulseSyncPlayed: (token: string | null, metadata: { had_wearable_data?: boolean; duration_ms?: number; reduce_motion_active?: boolean } & Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'pulse_sync_played', metadata)
+      : trackGuestEvent('pulse_sync_played', metadata),
+
   foundingModalClaimed: (token: string | null, metadata: Record<string, any> = {}) =>
     token
       ? trackEvent(token, 'founding_modal_claimed', metadata)

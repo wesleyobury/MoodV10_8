@@ -59,7 +59,7 @@ export default function WorkoutSessionScreen() {
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { clearCart } = useCart();
-  const { token } = useAuth();
+  const { token, refreshEntitlement } = useAuth();
   const { markCompleted } = useDrafts();
   const { status: healthStatus } = useHealth();
   const { recordStartFreeWorkout, hasUsedFreeSession } = useSubscription();
@@ -513,6 +513,10 @@ export default function WorkoutSessionScreen() {
           }),
         });
         console.log('✅ user-workouts logged with session-actual metrics');
+        // Phase 4.3 — the server increments free_workouts_used on this POST
+        // for non-entitled users. Refresh entitlement so the client mirror
+        // (free_workouts_remaining → Hard Paywall #3) is accurate immediately.
+        refreshEntitlement().catch(() => {});
       } catch (e) {
         console.log('⚠️ Failed to log user-workouts:', e);
       }

@@ -539,3 +539,27 @@ full access, config round-trip + reset, admin auth guards. All passing.
   backend, /api/health 200). Fresh Metro bundle confirms API_BASE_URL=app-refine-1.
   App launches, login works, entitlement loads. Phase 1 COMPLETE."
 
+## MOOD V2 — Phases 2-6 status (2026-05-30)
+- PHASE 2 (Founding system): COMPLETE. Backend self-test 18/18 + browser test 7/7.
+  New: claim-founding endpoint, founding SKU, migration script
+  (scripts/migrate_founding_window.py), FoundingOfferModal, FoundingBanner,
+  lightning-bolt FoundingMemberBadge, FoundingMemberGate refactor (founding no
+  longer grants free access — V2 semantic), useFoundingPurchase hook.
+- PHASE 3 (Flow fixes): COMPLETE. 3.1 register→funnel FIXED (was the critical
+  bug). 3.2a/b/c/d + 3.3 already existed. 3.4 (logged-out-on-refresh) is
+  investigation-only — documented, needs TestFlight build to repro.
+- PHASE 4 (Paywall): COMPLETE.
+  4.1 reveal-payoff rewritten — founding variant (single Claim CTA) + standard
+  3-CTA (Start Trial→DIRECT StoreKit, Subscribe Now→PaywallModal, skip) + Apple
+  disclosure. useTrialPurchase hook (direct StoreKit, no modal). 4.2 Soft Paywall
+  #2 already wired in create-post (achievement-close + post-share). 4.3 hard
+  paywall flag wiring existed; added refreshEntitlement on completion. 4.4
+  PaywallModal plan picker already existed. 4.5 unlimited generation confirmed.
+- PHASE 5 (Onboarding polish): PARTIAL. 5.4 kill-list ('train how body feels')
+  already removed. 5.5 medical consent already folded into register. 5.6 landing
+  enforcement in place. REMAINING (net-new): 5.1 mood interstitials + moodConfig,
+  5.2 wearables success state, 5.3 wearables→mood-intro routing.
+- PHASE 6 (Pulse Sync): COMPLETE (app/pulse-sync.tsx, 409 lines, full anim +
+  reduce-motion + wearable branch). Added pulse_sync_played analytics.
+
+

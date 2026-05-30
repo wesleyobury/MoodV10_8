@@ -1,0 +1,51 @@
+{
+  "summary": "Phase 4.1 reveal-payoff V2 verified end-to-end on web preview for BOTH variants. STANDARD (moodtester): 3-CTA stack renders in correct order (reveal-start-cta → reveal-subscribe-cta → reveal-try-free-cta), Apple disclosure with '7 days free, then $79.00/year' + Manage subscription/Terms/Privacy is present, Start-Trial does NOT open PaywallModal (routes to /onboarding/health-connect), Subscribe-Now DOES open the in-app PaywallModal (paywall-plan-annual / paywall-plan-monthly / paywall-start-trial / paywall-restore all present), tertiary 'Build and save it for later' routes to wearables with no paywall. FOUNDING (founding_tester): renders founding banner ('Founding pricing', '$39/yr locked forever', 'Available for N more days'), single gold 'Claim Founding Price — $39/year' CTA, Apple disclosure with '$39.00/year, auto-renews' (NO trial copy), and 'Build and save it for later' tertiary; does NOT show 'Start 7-Day Free Trial' or 'Subscribe Now'. Tapping Claim posts /api/me/claim-founding (200 OK, sku_id returned) and optimistically routes to /onboarding/health-connect. No crashes or white-screens on either variant. NOTE: Expo Metro was serving a stale V1 bundle initially; a `sudo supervisorctl restart expo` was required before V2 rendered. Also: HealthOnboardingGate (segments[0]==='onboarding' check) redirects /onboarding-funnel/* to /onboarding/health-connect; QA worked around by seeding @mood_health_onboarding_done_v1=true in localStorage before navigating. Founding-eligible users see the global FoundingOfferModal auto-pop over the reveal-payoff screen on every load — it must be dismissed before reveal-founding-cta is clickable.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "FOUNDING — reveal-payoff",
+        "issue": "Global FoundingOfferModal auto-pops over /onboarding-funnel/reveal-payoff every time the route loads (even after a prior 'Remind me later' on login), visually covering the reveal-payoff founding-variant CTAs. Functionality still works once the modal is dismissed; consider suppressing the global modal when the user is already on the reveal-payoff route since that screen already surfaces the same Claim CTA.",
+        "affected_testIDs": ["reveal-founding-cta", "reveal-try-free-cta"]
+      },
+      {
+        "flow": "STANDARD — Subscribe Now",
+        "issue": "handleSubscribeNow calls openPaywall(...) AND immediately router.replace('/onboarding/health-connect') (reveal-payoff.tsx:110-111). The global PaywallModal does stay visible because it's mounted at app-root, but the URL changes to /onboarding/health-connect while the plan picker is still open. If the user closes the modal they land on wearables (probably intended) but this dual side-effect on a single tap is slightly surprising — please confirm it's the desired UX.",
+        "affected_testIDs": ["reveal-subscribe-cta", "paywall-plan-annual", "paywall-plan-monthly"]
+      },
+      {
+        "flow": "Direct deep-link to /onboarding-funnel/reveal-payoff",
+        "issue": "HealthOnboardingGate (components/HealthOnboardingGate.tsx:~20-50) only whitelists segments[0]==='onboarding' before allowing the user to stay; segments[0]==='onboarding-funnel' is NOT whitelisted, so an authenticated user who hasn't seeded @mood_health_onboarding_done_v1 is immediately redirected to /onboarding/health-connect. Whitelist 'onboarding-funnel' too (or any onboarding-* prefix) so QA + real users can land on the route the agent-to-agent note says is supported.",
+        "affected_testIDs": ["reveal-payoff"]
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": [
+      {
+        "component": "expo-av (deprecated)",
+        "issue": "Console warns: '[expo-av]: Expo AV has been deprecated and will be removed in SDK 54. Use the `expo-audio` and `expo-video` packages to replace the required functionality.' Pre-existing in the project; not introduced by Phase 4.1 but should be migrated."
+      }
+    ]
+  },
+  "test_report_links": ["/app/test_reports/iteration_38.json"],
+  "action_items": [
+    "(P2) Suppress the global FoundingOfferModal auto-pop while the active route is /onboarding-funnel/reveal-payoff so it doesn't cover the founding variant's own CTAs.",
+    "(P2) Whitelist segments[0]==='onboarding-funnel' (or any onboarding-* prefix) in HealthOnboardingGate so authenticated users can actually reach /onboarding-funnel/reveal-payoff via direct nav/deep-link without manually flipping @mood_health_onboarding_done_v1 in storage.",
+    "(P3) Confirm desired UX for Subscribe Now: currently it openPaywall(...) AND router.replace(WEARABLES_ROUTE) on the same tap (reveal-payoff.tsx:110-111). If the intent is 'show plan picker first, then wearables on close', wire the navigation to PaywallModal onClose instead of firing it synchronously.",
+    "(P3) Migrate expo-av → expo-audio / expo-video before SDK 54.",
+    "(Process) Metro served a stale V1 bundle in the first run; the next time QA tests a fresh rewrite, restart Expo (sudo supervisorctl restart expo) before validating."
+  ],
+  "critical_code_review_comments": [
+    "reveal-payoff.tsx correctly gates the variant on entitlement.is_founding_member && !founding_pricing_claimed && founding_window_active — matches the spec.",
+    "Founding optimistic path in useFoundingPurchase.ts (lines 46-50) calls setStatus('active') + refreshEntitlement on web, but does NOT call /api/subscription/validate, so the backend's founding_pricing_claimed flag remains false until a real iOS receipt is validated. That's expected for web preview but worth documenting — it means a web-tested founding_tester is reusable for repeated QA runs.",
+    "Subscribe Now navigates to wearables synchronously with openPaywall — see action item above."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (skipped per request)", "frontend": "100% (7/7 acceptance checks passed)" },
+  "seed_data_creation": "None — used existing moodtester and founding_tester accounts. The founding_tester window is open until 2026-06-13 and founding_pricing_claimed remained false after web-optimistic claim (web path doesn't validate receipt server-side), so the account is reusable.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "To test /onboarding-funnel/reveal-payoff directly after login on web preview, you MUST seed localStorage with @mood_health_onboarding_done_v1='true' before page.goto(...), otherwise HealthOnboardingGate redirects you to /onboarding/health-connect. For the founding_tester, the global FoundingOfferModal auto-pops on every load of reveal-payoff — click 'Remind me later' on the modal each time before interacting with reveal-founding-cta. Web's founding-claim optimistic path does NOT update backend founding_pricing_claimed, so the founding_tester remains eligible for repeated testing.",
+  "rca_of_issue": "No P0/P1 blockers. The reveal-payoff Phase 4.1 implementation is functionally correct for both variants; the three issues filed are P2/P3 polish items (modal overlap, gate whitelist, dual-side-effect on Subscribe Now)."
+}
