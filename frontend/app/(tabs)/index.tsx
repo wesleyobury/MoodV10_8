@@ -426,7 +426,9 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
     outputRange: ['0deg', '180deg', '360deg'],
   });
 
-  const showTrend = (weeklyCount ?? 0) > 5;
+  // Show the "this week" trend badge once a mood has been picked at least
+  // twice in the last 7 days (was >5, which almost never triggered).
+  const showTrend = (weeklyCount ?? 0) >= 2;
   const accent = mood.accent;
 
   return (
@@ -1948,7 +1950,7 @@ const styles = StyleSheet.create({
   wearablesHeader: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#FFD700',
+    color: '#AAAAAA',
     letterSpacing: 1.4,
     marginBottom: 6,
     marginLeft: 2,

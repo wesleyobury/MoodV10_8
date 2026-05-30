@@ -401,7 +401,7 @@ export default function Welcome() {
               </MaskedView>
             </View>
             <Text style={styles.subtitle}>
-              Curated workouts.{'\n'}Matched to your <Text style={styles.moodInlineText}>mood.</Text>
+              Pick your <Text style={styles.moodInlineText}>mood.</Text>{'\n'}We'll build the workout.
             </Text>
           </View>
 
@@ -409,26 +409,26 @@ export default function Welcome() {
           <View style={styles.featuresSection}>
             <AnimatedFeatureItem
               icon="heart"
-              title="Mood-Based Workouts"
-              description="Six carefully curated mood profiles"
+              title="Tell us how you feel"
+              description="We build the workout that matches your energy"
               delay={0}
+            />
+            <AnimatedFeatureItem
+              icon="trending-up"
+              title="Streaks that survive your off days"
+              description="Progress that adapts instead of guilt-tripping"
+              delay={1500}
             />
             <AnimatedFeatureItem
               icon="people"
               title="Social Community"
               description="Engage and share with other athletes"
-              delay={1500}
+              delay={3000}
             />
             <AnimatedFeatureItem
               icon="videocam"
               title="200+ Exercise Videos"
               description="Visual guides with coaching cues"
-              delay={3000}
-            />
-            <AnimatedFeatureItem
-              icon="trending-up"
-              title="Track Progress"
-              description='Monitor streaks and achievements'
               delay={4500}
             />
           </View>
@@ -448,6 +448,10 @@ export default function Welcome() {
                 <Text style={styles.primaryButtonText}>Get Started</Text>
               </LinearGradient>
             </TouchableOpacity>
+
+            <Text style={styles.getStartedSubtext}>
+              Free. Your first workout in 30 seconds.
+            </Text>
 
             {/*
               Dev-only shortcut so we can demo the paid-launch funnel without
@@ -596,6 +600,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#0c0c0c',
+  },
+  getStartedSubtext: {
+    fontSize: 13,
+    color: '#888',
+    textAlign: 'center',
+    marginTop: 8,
   },
   devSkipButton: {
     paddingVertical: 10,
