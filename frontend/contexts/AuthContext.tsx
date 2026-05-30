@@ -495,7 +495,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setEntitlement(null);
         return;
       }
-      const res = await apiFetch<Entitlement>('/api/me/entitlement');
+      const res = await apiFetch<Entitlement>('/api/me/entitlement', {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      });
       if (res.ok && res.data) {
         setEntitlement(res.data);
       }

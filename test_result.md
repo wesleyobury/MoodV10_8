@@ -529,7 +529,13 @@ full access, config round-trip + reset, admin auth guards. All passing.
 
 ## agent_communication (Phase 1)
 - agent: "main"
-  message: "Phase 1 backend fully implemented + self-tested (22/22). Need frontend
-  regression: app launch (ForceUpdateGate), login, entitlement fetch, no paywall
-  crash/regression. Backend already validated — do NOT re-run backend suite."
+  message: "Phase 1 backend fully implemented + self-tested (22/22). Frontend
+  regression run found 2 HIGH issues, both FIXED + verified:
+  (1) apiFetch did not attach the auth token → entitlement fetch now passes an
+  explicit Authorization header in AuthContext.refreshEntitlement (localhost
+  returns 200 with correct payload).
+  (2) Fork URL rot: frontend/.env EXPO_PUBLIC_API_URL pointed at the dead
+  wearable-stats-hub host (/api 404). Repointed to app-refine-1 (the live
+  backend, /api/health 200). Fresh Metro bundle confirms API_BASE_URL=app-refine-1.
+  App launches, login works, entitlement loads. Phase 1 COMPLETE."
 
