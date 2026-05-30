@@ -485,3 +485,51 @@ agent_communication:
 - mood-admin build: ✅ Success (no errors)
 - All routes compiled successfully
 
+
+---
+## MOOD V2 — Phase 1: Backend Foundation (2026-05-30)
+
+### Scope implemented
+1. **Server-side entitlement** (`backend/entitlement.py`): single source of truth
+   `has_full_access(user, is_admin) -> (bool, reason)`, plus `can_generate_workout`
+   / `can_start_workout` / `free_workouts_remaining`. Founding membership does
+   NOT grant access (V2 semantic).
+2. **New endpoints** (server.py): `GET /api/me/entitlement`, `POST /api/workouts/start`
+   (402 when free workout used), `POST|DELETE /api/admin/users/{id}/comp`,
+   `GET /api/admin/comp-users`, `GET /api/config` (public), `PUT /api/admin/config`.
+   `app_config` collection ensured on startup (checks disabled by default).
+3. **Free-workout cap**: `free_workouts_used` increments on completion
+   (`POST /api/user-workouts`) for non-entitled users; START gate enforces 1-free.
+4. **Analytics hygiene**: `/api/analytics/track` + server `subscription_purchased`
+   emission stamp `is_comp` / `is_internal` / `is_founding_member`.
+5. **Frontend**: `utils/version.ts`, `components/ForceUpdateGate.tsx` (outer gate,
+   fails open, disabled by default), AuthContext `entitlement` + `refreshEntitlement`
+   (fetched on token change), SubscriptionContext `hasActiveAccess` now
+   server-authoritative (local cache = offline fallback).
+6. **Admin dashboard** (mood-admin): `/access` page (Comp Accounts + Forced Update)
+   + sidebar entry + api.ts methods.
+
+### IMPORTANT product decision (spec conflict resolved)
+Phase 1.1 pseudocode gates *generation* at 1 free, but Phase 4.5 (dated, "intentional,
+don't change") says generation is UNLIMITED and the cap is on STARTING workouts.
+Implemented per Phase 4.5: generation endpoints are NOT gated; the free cap is enforced
+at `POST /api/workouts/start` and increments on completion. `can_generate_workout`
+exists but is intentionally not wired to the generation endpoint. → Flagged for Wes.
+
+### Backend testing — DONE by main agent (22/22 passed)
+`backend/tests/test_v2_phase1.py` (mints JWTs directly to hit admin endpoints):
+entitlement structure, free→402 START gate, comp grant/revoke/list, comp grants
+full access, config round-trip + reset, admin auth guards. All passing.
+
+### Frontend testing protocol
+- Verify app launches with no crash (ForceUpdateGate + new context wiring).
+- Login as moodtester → `/api/me/entitlement` is fetched; no paywall regression
+  for normal flow. NOTE: founding-without-subscription users are now gated in
+  preview by design (V2 semantic; takes real effect only after App Store release).
+
+## agent_communication (Phase 1)
+- agent: "main"
+  message: "Phase 1 backend fully implemented + self-tested (22/22). Need frontend
+  regression: app launch (ForceUpdateGate), login, entitlement fetch, no paywall
+  crash/regression. Backend already validated — do NOT re-run backend suite."
+

@@ -20,6 +20,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { useAuth } from './AuthContext';
 
 /* ----------------------------- Types ----------------------------- */
 
@@ -170,6 +171,13 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const [state, setState] = useState<SubscriptionState>(DEFAULT_STATE);
   const [pendingTrigger, setPendingTrigger] = useState<PaywallTrigger | null>(null);
 
+  // MOOD V2 Phase 1 — server-authoritative entitlement. The local
+  // `@mood_subscription_state_v1` is now only an OFFLINE CACHE; the server's
+  // /api/me/entitlement is the source of truth. When entitlement is loaded we
+  // trust it; while it's null (not yet fetched / offline) we fall back to the
+  // local status so we don't lock out a real subscriber on a cold start.
+  const { entitlement } = useAuth();
+
   // Rehydrate.
   useEffect(() => {
     let cancelled = false;
@@ -190,10 +198,21 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     });
   }, []);
 
-  const hasActiveAccess = ACTIVE_STATUSES.includes(state.status);
+  // Server entitlement wins when present; local status is the offline fallback.
+  const hasActiveAccess = entitlement
+    ? entitlement.has_full_access
+    : ACTIVE_STATUSES.includes(state.status);
+
+  // Free-workout START gate. With server entitlement we trust
+  // `free_workouts_remaining`; otherwise fall back to the local flag.
+  const serverFreeRemaining = entitlement?.free_workouts_remaining;
+  const freeWorkoutUsedServer =
+    entitlement != null && !entitlement.has_full_access
+      ? (serverFreeRemaining ?? 0) <= 0
+      : false;
 
   const canGenerate = hasActiveAccess || state.freeGenerationsUsed < FREE_GENERATION_CAP;
-  const canStartWorkout = hasActiveAccess || !state.hasUsedFreeSession;
+  const canStartWorkout = hasActiveAccess || !(freeWorkoutUsedServer || state.hasUsedFreeSession);
 
   const recordGeneration = useCallback(() => {
     setState((prev) => {
@@ -253,11 +272,11 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     async (
       source: 'post_achievement_close_soft' | 'post_share_soft',
     ): Promise<boolean> => {
-      // Active subscribers + in-trial + founding members skip the soft paywall.
-      if (ACTIVE_STATUSES.includes(state.status)) return false;
+      // Active subscribers + in-trial + comp/founding-claimed skip the soft paywall.
+      if (hasActiveAccess) return false;
       // Must have completed at least one free session — otherwise this isn't
       // the "first workout" moment and Stage 3 hard paywall will handle later.
-      if (!state.hasUsedFreeSession) return false;
+      if (!(freeWorkoutUsedServer || state.hasUsedFreeSession)) return false;
       try {
         const alreadyShown = await AsyncStorage.getItem(POST_FIRST_WORKOUT_FLAG);
         if (alreadyShown === 'true') return false;
@@ -270,7 +289,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       openPaywall(source);
       return true;
     },
-    [state.status, state.hasUsedFreeSession, openPaywall]
+    [hasActiveAccess, freeWorkoutUsedServer, state.hasUsedFreeSession, openPaywall]
   );
 
   const setStatus = useCallback(

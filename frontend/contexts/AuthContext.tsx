@@ -60,10 +60,23 @@ interface AuthContextType {
   logout: () => Promise<void>;
   updateUser: (userData: Partial<User>) => void;
   refreshAuth: () => Promise<void>;
+  entitlement: Entitlement | null;
+  refreshEntitlement: () => Promise<void>;
   continueAsGuest: () => void;
   exitGuestMode: () => void;
   acceptTerms: () => Promise<void>;
   promptTermsAcceptance: () => void;
+}
+
+// MOOD V2 Phase 1 — server-authoritative entitlement. The client READS this;
+// the backend ENFORCES it. SubscriptionContext derives hasActiveAccess from it.
+export interface Entitlement {
+  has_full_access: boolean;
+  reason: string;
+  free_workouts_remaining: number | null;
+  is_founding_member: boolean;
+  founding_pricing_claimed: boolean;
+  founding_window_active: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -80,6 +93,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isGuest, setIsGuest] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
+  const [entitlement, setEntitlement] = useState<Entitlement | null>(null);
 
   // Derived state: Check if user has accepted the CURRENT version of terms
   // User must have accepted terms AND their version must match current version
@@ -470,6 +484,35 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
   }, [token]);
 
+  // MOOD V2 Phase 1 — fetch server-authoritative entitlement. Fails soft:
+  // on error we leave the last-known value (or null), and the backend still
+  // enforces on every paywalled action. Re-run whenever the token changes
+  // (login/restore/refresh) so SubscriptionContext stays in sync.
+  const refreshEntitlement = async () => {
+    try {
+      const storedToken = token || (await secureStorage.get(AUTH_TOKEN_KEY));
+      if (!storedToken) {
+        setEntitlement(null);
+        return;
+      }
+      const res = await apiFetch<Entitlement>('/api/me/entitlement');
+      if (res.ok && res.data) {
+        setEntitlement(res.data);
+      }
+    } catch (e) {
+      console.log('entitlement fetch failed (failing soft):', e);
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      refreshEntitlement();
+    } else {
+      setEntitlement(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
+
   // Refresh auth from stored token - used after OAuth/Apple login
   const refreshAuth = async () => {
     try {
@@ -546,6 +589,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     logout,
     updateUser,
     refreshAuth,
+    entitlement,
+    refreshEntitlement,
     continueAsGuest,
     exitGuestMode,
     acceptTerms,

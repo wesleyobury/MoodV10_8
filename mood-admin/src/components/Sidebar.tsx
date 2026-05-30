@@ -13,6 +13,7 @@ import {
   Settings,
   LogOut,
   Lightbulb,
+  KeyRound,
 } from "lucide-react";
 
 const navItems = [
@@ -23,6 +24,7 @@ const navItems = [
   { href: "/features", label: "Features", icon: BarChart3 },
   { href: "/social", label: "Social", icon: Heart },
   { href: "/users", label: "Users", icon: Search },
+  { href: "/access", label: "Access", icon: KeyRound },
   { href: "/ops", label: "Ops", icon: Settings },
 ];
 

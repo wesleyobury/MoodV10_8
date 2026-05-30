@@ -25,6 +25,7 @@ import { initNotifications, notificationService } from '../utils/notifications';
 import FloatingCart from '../components/FloatingCart';
 import ErrorBoundary from '../components/ErrorBoundary';
 import AppBootstrap from '../components/AppBootstrap';
+import { ForceUpdateGate } from '../components/ForceUpdateGate';
 
 // Keep splash screen visible while we load
 SplashScreen.preventAutoHideAsync().catch(() => {
@@ -175,7 +176,7 @@ function NavigationStack() {
 // Main App Content
 function AppContent() {
   return (
-    <>
+    <ForceUpdateGate>
       <AppStateTracker />
       <NotificationInitializer />
       <HealthOnboardingGate />
@@ -186,7 +187,7 @@ function AppContent() {
       <LegalReacceptGate />
       <FunnelEntryGate />
       <ProfilePicPromptGate />
-    </>
+    </ForceUpdateGate>
   );
 }
 

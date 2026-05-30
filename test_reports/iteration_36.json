@@ -1,0 +1,50 @@
+{
+  "summary": "MOOD V2 Phase 1 frontend-only regression for ForceUpdateGate + AuthContext entitlement wiring. App launches with NO crash/white screen, ForceUpdateGate correctly FAILS OPEN (GET /api/config returns update_check_enabled=false, no 'Update Required' shown), landing page renders normally, Terms & Privacy modal works, login with moodtester/MoodTest1234567 succeeds (POST /api/auth/login → 200), home tabs render after login, GET /api/me/entitlement IS called on token change. HOWEVER two issues were uncovered: (1) BLOCKER for normal preview access — frontend EXPO_PUBLIC_API_URL=https://wearable-stats-hub.preview.emergentagent.com but that host returns 404 for ALL /api/* paths in this forked env; the live backend is on https://app-refine-1.preview.emergentagent.com. Test was completed by route-rewriting wearable-stats-hub→app-refine-1 in playwright. (2) NEW BUG in V2 Phase 1 wiring — AuthContext.refreshEntitlement() calls apiFetch('/api/me/entitlement') but utils/api.ts apiFetch does NOT attach the Authorization Bearer header, so the call returns 403 'Not authenticated' on every login. /api/users/me works because it uses raw fetch with explicit Authorization header. Verified via curl with the same fresh token that /api/me/entitlement returns 200 with full payload. Net effect: server entitlement is never loaded; SubscriptionContext silently falls back to local cache. App still renders (fails soft as designed) but server-authoritative entitlement is effectively dead. Deprecated packages detected: expo-av (Video + Audio) still imported in index.tsx, create-post.tsx, ExerciseLookupSheet.tsx, SmartVideoPlayer.tsx — migration to expo-video is partial.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "AuthContext entitlement fetch after login (V2 Phase 1)",
+        "issue": "GET /api/me/entitlement returns 403 'Not authenticated' because contexts/AuthContext.tsx:498 uses apiFetch() which (utils/api.ts:31) does NOT attach the Authorization: Bearer <token> header. Direct curl with the same token returns 200 with the full entitlement payload, proving the endpoint and token are valid. Fix: pass headers explicitly, e.g. apiFetch<Entitlement>('/api/me/entitlement', { headers: { Authorization: `Bearer ${storedToken}` } }), OR upgrade utils/api.ts to auto-attach the stored auth token. Impact: server entitlement is never set; SubscriptionContext silently falls back to local cache for hasActiveAccess.",
+        "affected_testIDs": []
+      },
+      {
+        "flow": "Frontend API base URL config / preview routing",
+        "issue": "frontend/.env EXPO_PUBLIC_API_URL=https://wearable-stats-hub.preview.emergentagent.com but that hostname returns 404 for every /api/* path in this forked preview env (verified 5x). The actual working backend is at https://app-refine-1.preview.emergentagent.com (also matches EXPO_PUBLIC_BACKEND_URL and EXPO_PACKAGER_PROXY_URL). All client API calls from the running web build go to the broken hostname. ForceUpdateGate failing open is the ONLY reason the landing page still renders. Login, entitlement, home — everything else is broken end-to-end through the wearable-stats-hub URL until either (a) EXPO_PUBLIC_API_URL is updated to app-refine-1, or (b) the platform ingress for wearable-stats-hub is fixed to route /api/* to backend.",
+        "affected_testIDs": []
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": [
+      {
+        "component": "expo-av (deprecated)",
+        "issue": "expo-av is deprecated by Expo (use expo-video / expo-audio). Still imported in: frontend/app/index.tsx:19, frontend/app/create-post.tsx:25, frontend/components/ExerciseLookupSheet.tsx:17, frontend/components/SmartVideoPlayer.tsx:39 (Audio). Console warning observed: '[expo-av]: Video component from `expo-av` is deprecated in favor of `expo-video`'. Reference: frontend/package.json:36 (\"expo-av\": \"^16.0.8\")."
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "FIX (HIGH): contexts/AuthContext.tsx refreshEntitlement() must attach Authorization Bearer header when calling /api/me/entitlement. Simplest patch: const res = await apiFetch<Entitlement>('/api/me/entitlement', { headers: { Authorization: `Bearer ${storedToken}` } }); — or change utils/api.ts apiFetch to auto-attach the token from secureStorage. Re-verify: after login, /api/me/entitlement should return 200, and SubscriptionContext.hasActiveAccess should reflect the server value (not local cache).",
+    "FIX (HIGH / environment): Update frontend/.env EXPO_PUBLIC_API_URL to https://app-refine-1.preview.emergentagent.com (matches EXPO_PUBLIC_BACKEND_URL), then `sudo supervisorctl restart expo`. Without this the app served on the documented preview URL (wearable-stats-hub) can never hit the backend.",
+    "FIX (MEDIUM): Complete expo-av → expo-video migration in index.tsx, create-post.tsx, ExerciseLookupSheet.tsx, and move Audio session setup off expo-av (expo-audio)."
+  ],
+  "critical_code_review_comments": [
+    "utils/api.ts apiFetch is the documented helper but silently omits auth — any caller that doesn't manually pass headers gets unauthenticated requests. This is a footgun; the new V2 Phase 1 entitlement code is the first victim. Recommend centralizing auth-header injection in apiFetch.",
+    "contexts/AuthContext.tsx:491-505 refreshEntitlement reads storedToken purely to early-return; it never sends the token with the request. The intent of the code clearly assumes apiFetch attaches it.",
+    "ForceUpdateGate correctly fails open on /api/config error — verified behavior matches spec."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "skipped (per request — main agent already validated 22/22)",
+    "frontend": "60% (3/5 review items fully pass: launch-no-crash, ForceUpdateGate fail-open, landing renders. Login flow: passes only via route-rewrite workaround due to .env mismatch. Entitlement fetch: called but returns 403 due to missing auth header — fails soft so home still renders, but server entitlement is never loaded.)"
+  },
+  "seed_data_creation": "None. Used pre-existing user moodtester / MoodTest1234567.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Two issues block clean end-to-end verification on the documented preview URL (wearable-stats-hub): (1) EXPO_PUBLIC_API_URL points to a host that 404s /api/* in this fork — either repoint to app-refine-1 or have the platform fix wearable-stats-hub ingress. To run the test anyway, in playwright use page.route() to rewrite '*wearable-stats-hub*.preview.emergentagent.com/api/' to '*app-refine-1*.preview.emergentagent.com/api/'. (2) /api/me/entitlement returns 403 from the web app because utils/api.ts apiFetch never attaches Authorization. Curl with a fresh token returns 200, so backend is fine. Useful selectors: input[placeholder=\"Username or Email\"], input[placeholder=\"Password\"], text=\"Login\". To skip the Terms & Privacy landing modal directly to login, navigate to /auth/login and pre-seed localStorage.setItem('privacy_policy_accepted','true'). Bottom tabs after login render with labels Explore / Workouts / Profile and home shows MOOD logo, WORKOUTS/MINUTES/STREAK counters, Featured Workouts carousel, CHOOSE YOUR MOOD list.",
+  "rca_of_issue": "Entitlement 403 RCA: contexts/AuthContext.tsx line 498 calls `apiFetch<Entitlement>('/api/me/entitlement')`. The utils/api.ts implementation (lines 31-46) builds fetch headers as `{ 'Content-Type': 'application/json', ...options.headers }` — no Authorization is added and the caller passes no headers. Backend dependency requires Bearer token → returns 403 Not authenticated. Reproduction: log in via UI → observe network panel showing GET /api/me/entitlement 403 while GET /api/users/me (separate raw fetch on line 265 that explicitly sets Authorization) returns 200 with the same just-issued token. Curl with the issued token returns 200 from /api/me/entitlement. Mitigation options: (a) pass headers in the call site: apiFetch('/api/me/entitlement', { headers: { Authorization: `Bearer ${storedToken}` } }); (b) preferable long-term — make utils/api.ts apiFetch auto-attach the auth token from secureStorage so all current and future callers are safe by default."
+}

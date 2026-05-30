@@ -165,6 +165,13 @@ from workout_drafts import (
     ensure_workout_drafts_indexes,
 )
 from sync_hero_images import sync_featured_hero_images
+from entitlement import (
+    has_full_access,
+    can_generate_workout,
+    can_start_workout,
+    free_workouts_remaining,
+    EntitlementReason,
+)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -2016,6 +2023,10 @@ async def validate_subscription_transaction(
     # for redundancy — this server-side emission ensures the day-7 trial
     # charge webhook path (when added) carries identical attribution.
     try:
+        flags_user = await db.users.find_one(
+            {"_id": ObjectId(current_user_id)},
+            {"is_comp": 1, "is_internal": 1, "founding_member": 1},
+        ) or {}
         await db.analytics_events.insert_one({
             "user_id": current_user_id,
             "event_type": "subscription_purchased",
@@ -2025,6 +2036,9 @@ async def validate_subscription_transaction(
                 "product_id": payload.product_id,
                 "trigger_source": trigger_source,
                 "source": "server_validate",
+                "is_comp": bool(flags_user.get("is_comp", False)),
+                "is_internal": bool(flags_user.get("is_internal", False)),
+                "is_founding_member": bool(flags_user.get("founding_member", False)),
             },
         })
     except Exception as e:
@@ -2073,6 +2087,211 @@ async def apple_subscription_webhook(request: Request):
         })
     except Exception as e:
         logger.error(f"Apple webhook event persistence failed: {e}")
+    return {"ok": True}
+
+
+# ════════════════════════════════════════════════════════════════════════
+# MOOD V2 — PHASE 1: Backend Foundation
+# Server-side entitlement, comp accounts, forced-update config.
+# `backend/entitlement.py` is the single source of truth for access.
+# ════════════════════════════════════════════════════════════════════════
+
+# ── App config (forced-update + launch metadata) ──────────────────────────
+DEFAULT_APP_CONFIG = {
+    "min_supported_build_ios": 0,
+    "min_supported_build_android": 0,
+    "latest_build_ios": 0,
+    "latest_build_android": 0,
+    "force_update_message": "",
+    "ios_store_url": "",
+    "android_store_url": "",
+    "update_check_enabled": False,
+}
+
+
+async def ensure_app_config() -> None:
+    """Create the singleton app_config doc with safe defaults if missing.
+    Uses $setOnInsert so an existing config is never overwritten."""
+    try:
+        await db.app_config.update_one(
+            {"_id": "app_config"},
+            {"$setOnInsert": {**DEFAULT_APP_CONFIG, "created_at": datetime.now(timezone.utc)}},
+            upsert=True,
+        )
+    except Exception as e:
+        logger.error(f"ensure_app_config failed: {e}")
+
+
+async def is_founding_window_open() -> bool:
+    """Returns True if V2 launch is set and the 14-day founding window is open.
+    The `v2_launch_date` is stamped on app_config by the Phase 2 migration."""
+    try:
+        config = await db.app_config.find_one({"_id": "app_config"})
+        if not config:
+            return False
+        launch = config.get("v2_launch_date")
+        if not launch:
+            return False
+        if isinstance(launch, str):
+            try:
+                launch = datetime.fromisoformat(launch.replace("Z", "+00:00"))
+            except Exception:
+                return False
+        if launch.tzinfo is None:
+            launch = launch.replace(tzinfo=timezone.utc)
+        return datetime.now(timezone.utc) < (launch + timedelta(days=14))
+    except Exception as e:
+        logger.error(f"is_founding_window_open failed: {e}")
+        return False
+
+
+# ── Entitlement (client-facing) ───────────────────────────────────────────
+@api_router.get("/me/entitlement")
+async def get_entitlement(current_user_id: str = Depends(get_current_user)):
+    """Phase 1.1 — the client reads entitlement here; the backend enforces it.
+    `has_full_access` is the single source of truth (backend/entitlement.py)."""
+    user = await db.users.find_one({"_id": ObjectId(current_user_id)})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    is_admin, _ = is_admin_effective_sync(user)
+    access, reason = has_full_access(user, is_admin)
+    is_founding = bool(user.get("founding_member", False))
+    claimed = bool(user.get("founding_pricing_claimed", False))
+    window_open = await is_founding_window_open()
+
+    return {
+        "has_full_access": access,
+        "reason": reason.value,
+        "free_workouts_remaining": (None if access else free_workouts_remaining(user)),
+        "is_founding_member": is_founding,
+        "founding_pricing_claimed": claimed,
+        "founding_window_active": bool(window_open and is_founding and not claimed),
+    }
+
+
+# ── Workout start gate (Hard Paywall #3 server enforcement) ───────────────
+@api_router.post("/workouts/start")
+async def start_workout_gate(current_user_id: str = Depends(get_current_user)):
+    """Phase 1.1 / 4.3 — server-side gate the client calls before starting a
+    guided session. Returns 402 when a non-entitled user has used their free
+    workout. Generation stays unlimited (Phase 4.5); only START is capped."""
+    user = await db.users.find_one({"_id": ObjectId(current_user_id)})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    is_admin, _ = is_admin_effective_sync(user)
+    if not can_start_workout(user, is_admin):
+        raise HTTPException(
+            status_code=402,
+            detail={"error": "payment_required", "trigger": "start_workout_after_free_session"},
+        )
+    return {"ok": True, "can_start": True, "free_workouts_remaining": free_workouts_remaining(user)}
+
+
+# ── Comp accounts (admin-grantable lifetime access) ───────────────────────
+async def _resolve_user_filter(identifier: str) -> dict:
+    """Build a Mongo filter that matches by ObjectId, user_id, email, or username."""
+    or_clauses: list = [
+        {"user_id": identifier},
+        {"email": {"$regex": f"^{re.escape(identifier)}$", "$options": "i"}},
+        {"username": {"$regex": f"^{re.escape(identifier)}$", "$options": "i"}},
+    ]
+    try:
+        or_clauses.insert(0, {"_id": ObjectId(identifier)})
+    except Exception:
+        pass
+    return {"$or": or_clauses}
+
+
+@api_router.post("/admin/users/{user_id}/comp")
+async def grant_comp(user_id: str, admin_id: str = Depends(require_admin)):
+    """Grant comp (lifetime full) access. Idempotent. Accepts ObjectId, user_id,
+    email, or username as the path identifier."""
+    now = datetime.now(timezone.utc)
+    result = await db.users.update_one(
+        await _resolve_user_filter(user_id),
+        {"$set": {"is_comp": True, "comp_granted_at": now, "comp_granted_by": admin_id},
+         "$unset": {"comp_revoked_at": "", "comp_revoked_by": ""}},
+    )
+    ok = result.matched_count > 0
+    await log_admin_action(admin_id, "grant_comp", f"/admin/users/{user_id}/comp",
+                           {"identifier": user_id}, 200 if ok else 404,
+                           "granted" if ok else "user_not_found")
+    return {"ok": ok}
+
+
+@api_router.delete("/admin/users/{user_id}/comp")
+async def revoke_comp(user_id: str, admin_id: str = Depends(require_admin)):
+    """Revoke comp access. Takes effect on the next entitlement check."""
+    now = datetime.now(timezone.utc)
+    result = await db.users.update_one(
+        await _resolve_user_filter(user_id),
+        {"$set": {"is_comp": False, "comp_revoked_at": now, "comp_revoked_by": admin_id}},
+    )
+    ok = result.matched_count > 0
+    await log_admin_action(admin_id, "revoke_comp", f"/admin/users/{user_id}/comp",
+                           {"identifier": user_id}, 200 if ok else 404,
+                           "revoked" if ok else "user_not_found")
+    return {"ok": ok}
+
+
+@api_router.get("/admin/comp-users")
+async def list_comp_users(admin_id: str = Depends(require_admin)):
+    """List all comp users for the admin dashboard."""
+    docs = await db.users.find({"is_comp": True}).to_list(1000)
+    users = []
+    for u in docs:
+        granted = u.get("comp_granted_at")
+        users.append({
+            "user_id": str(u["_id"]),
+            "username": u.get("username", ""),
+            "email": u.get("email", ""),
+            "name": u.get("name", ""),
+            "avatar": u.get("avatar", ""),
+            "comp_granted_at": granted.isoformat() if isinstance(granted, datetime) else None,
+            "comp_granted_by": u.get("comp_granted_by"),
+        })
+    return {"users": users, "total": len(users)}
+
+
+# ── Forced-update config (public read + admin write) ──────────────────────
+class AppConfigUpdate(BaseModel):
+    min_supported_build_ios: Optional[int] = None
+    min_supported_build_android: Optional[int] = None
+    latest_build_ios: Optional[int] = None
+    latest_build_android: Optional[int] = None
+    force_update_message: Optional[str] = None
+    ios_store_url: Optional[str] = None
+    android_store_url: Optional[str] = None
+    update_check_enabled: Optional[bool] = None
+
+
+@api_router.get("/config")
+async def get_app_config():
+    """Public app config used by the client's ForceUpdateGate (no auth)."""
+    config = await db.app_config.find_one({"_id": "app_config"})
+    if not config:
+        return DEFAULT_APP_CONFIG
+    config.pop("_id", None)
+    for k, v in list(config.items()):
+        if isinstance(v, datetime):
+            config[k] = v.isoformat()
+    # Guarantee all default keys are present for older/newer clients.
+    for k, v in DEFAULT_APP_CONFIG.items():
+        config.setdefault(k, v)
+    return config
+
+
+@api_router.put("/admin/config")
+async def update_app_config(update: AppConfigUpdate, admin_id: str = Depends(require_admin)):
+    """Admin-only: update forced-update build numbers / messaging."""
+    update_dict = {k: v for k, v in update.dict(exclude_unset=True).items()}
+    update_dict["updated_at"] = datetime.now(timezone.utc)
+    admin = await db.users.find_one({"_id": ObjectId(admin_id)})
+    update_dict["updated_by"] = (admin.get("email") or admin.get("username")) if admin else None
+    await db.app_config.update_one({"_id": "app_config"}, {"$set": update_dict}, upsert=True)
+    await log_admin_action(admin_id, "update_app_config", "/admin/config",
+                           {k: v for k, v in update_dict.items() if k != "updated_at"}, 200, "updated")
     return {"ok": True}
 
 
@@ -2164,9 +2383,24 @@ async def track_event(
     current_user_id: str = Depends(get_current_user)
 ):
     """
-    Track a user event (authenticated users)
+    Track a user event (authenticated users).
+    MOOD V2 Phase 1 — every event is stamped with is_comp / is_internal /
+    is_founding_member so revenue dashboards can exclude comp+internal users
+    while engagement dashboards keep them.
     """
-    await track_user_event(db, current_user_id, request.event_type, request.metadata)
+    md = dict(request.metadata or {})
+    try:
+        u = await db.users.find_one(
+            {"_id": ObjectId(current_user_id)},
+            {"is_comp": 1, "is_internal": 1, "founding_member": 1},
+        )
+        if u:
+            md.setdefault("is_comp", bool(u.get("is_comp", False)))
+            md.setdefault("is_internal", bool(u.get("is_internal", False)))
+            md.setdefault("is_founding_member", bool(u.get("founding_member", False)))
+    except Exception:
+        pass
+    await track_user_event(db, current_user_id, request.event_type, md)
     return {"message": "Event tracked successfully"}
 
 @api_router.post("/analytics/track/guest")
@@ -7952,7 +8186,22 @@ async def log_workout_completion(workout_data: UserWorkoutCreate, current_user_i
         {"_id": ObjectId(current_user_id)},
         {"$inc": {"workouts_count": 1}}
     )
-    
+
+    # MOOD V2 Phase 1 — server-side free-workout counter. For non-entitled
+    # users, completing a workout consumes their free allowance so the next
+    # START (workout #2) hits the Hard Paywall. Entitled users are untouched.
+    try:
+        u = await db.users.find_one({"_id": ObjectId(current_user_id)})
+        is_admin_u, _ = is_admin_effective_sync(u)
+        access, _r = has_full_access(u, is_admin_u)
+        if not access:
+            await db.users.update_one(
+                {"_id": ObjectId(current_user_id)},
+                {"$inc": {"free_workouts_used": 1}},
+            )
+    except Exception as e:
+        logger.error(f"free_workouts_used increment failed: {e}")
+
     return {"message": "Workout logged successfully", "id": str(result.inserted_id)}
 
 @api_router.get("/user-workouts")
@@ -13733,6 +13982,15 @@ async def startup_db_client():
             logger.info(f"✅ Startup: Exercises OK ({exercises_result.get('count')} found)")
     except Exception as e:
         logger.error(f"❌ Startup: Failed to auto-seed exercises: {e}")
+
+    # MOOD V2 Phase 1 — ensure the singleton app_config doc exists with safe
+    # defaults (update_check_enabled=False so nothing blocks until an admin
+    # explicitly raises the min build via the dashboard). Never overwrites.
+    try:
+        await ensure_app_config()
+        logger.info("✅ app_config ensured")
+    except Exception as e:
+        logger.error(f"❌ app_config ensure failed: {e}")
 
     # Phase D — Founding Member migration (Part 9 of the v1.0 paid launch).
     # Flips `founding_member = true` for every user account whose `created_at`
