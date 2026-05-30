@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  Dimensions,
+  useWindowDimensions,
   Animated,
   Alert,
 } from 'react-native';
@@ -26,8 +26,6 @@ import { useAuth } from '../contexts/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { API_URL } from '../utils/apiConfig';
-
-const { width } = Dimensions.get('window');
 
 interface BodyPart {
   name: string;
@@ -96,6 +94,7 @@ interface Selection {
 export default function BodyPartsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
   const params = useLocalSearchParams();
   const [selectedBodyParts, setSelectedBodyParts] = useState<Selection[]>([]);
   // Ref to the main content ScrollView so we can scroll Continue / Build For Me into view
@@ -444,6 +443,7 @@ export default function BodyPartsScreen() {
                 key={bodyPart.name}
                 style={[
                   styles.bodyPartCard,
+                  { width: Math.max((width - 60) / 2, 140) },
                   isSelected && styles.selectedBodyPartCard,
                   isExpanded && styles.expandedBodyPartCard,
                   { transform: [{ scale: scaleAnim }] }
@@ -716,7 +716,6 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   bodyPartCard: {
-    width: (width - 60) / 2,
     height: 150,
     backgroundColor: '#1a1a1a',
     borderRadius: 16,
