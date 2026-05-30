@@ -133,7 +133,9 @@ const DEFAULT_STATE: SubscriptionState = {
   lastConversionTrigger: null,
 };
 
-const ACTIVE_STATUSES: SubscriptionStatus[] = ['active', 'in_trial', 'founding_member'];
+// V2: founding_member is NO LONGER an access state — it's a discount-eligibility
+// flag. Local fallback access = paid/trial only; server entitlement is the SoT.
+const ACTIVE_STATUSES: SubscriptionStatus[] = ['active', 'in_trial'];
 
 /* ---------------------------- Storage ---------------------------- */
 

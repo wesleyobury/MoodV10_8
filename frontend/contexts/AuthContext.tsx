@@ -77,6 +77,7 @@ export interface Entitlement {
   is_founding_member: boolean;
   founding_pricing_claimed: boolean;
   founding_window_active: boolean;
+  founding_window_expires_at?: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

@@ -21,7 +21,8 @@ import { Platform } from 'react-native';
  */
 export const MONTHLY_PRODUCT_ID = 'mood_premium_monthly';
 export const YEARLY_PRODUCT_ID = 'mood_premium_yearly';
-export const ALL_PRODUCT_IDS = [MONTHLY_PRODUCT_ID, YEARLY_PRODUCT_ID] as const;
+export const FOUNDING_PRODUCT_ID = 'mood_premium_founding_annual';
+export const ALL_PRODUCT_IDS = [MONTHLY_PRODUCT_ID, YEARLY_PRODUCT_ID, FOUNDING_PRODUCT_ID] as const;
 
 export type ProductPlan = 'monthly' | 'yearly';
 

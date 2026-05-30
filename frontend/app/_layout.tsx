@@ -26,6 +26,7 @@ import FloatingCart from '../components/FloatingCart';
 import ErrorBoundary from '../components/ErrorBoundary';
 import AppBootstrap from '../components/AppBootstrap';
 import { ForceUpdateGate } from '../components/ForceUpdateGate';
+import { FoundingOfferModal } from '../components/FoundingOfferModal';
 
 // Keep splash screen visible while we load
 SplashScreen.preventAutoHideAsync().catch(() => {
@@ -184,6 +185,7 @@ function AppContent() {
       <FloatingCart />
       <PaywallModal />
       <FoundingMemberGate />
+      <FoundingOfferModal />
       <LegalReacceptGate />
       <FunnelEntryGate />
       <ProfilePicPromptGate />

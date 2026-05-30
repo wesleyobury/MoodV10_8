@@ -613,6 +613,22 @@ export const Analytics = {
       ? trackEvent(token, 'founding_member_modal_dismissed', metadata)
       : trackGuestEvent('founding_member_modal_dismissed', metadata),
 
+  // Founding Member — V2 offer flow.
+  foundingModalShown: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'founding_modal_shown', metadata)
+      : trackGuestEvent('founding_modal_shown', metadata),
+
+  foundingModalClaimed: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'founding_modal_claimed', metadata)
+      : trackGuestEvent('founding_modal_claimed', metadata),
+
+  foundingModalDismissed: (token: string | null, metadata: { dismissed_at_day_of_window?: number } & Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'founding_modal_dismissed', metadata)
+      : trackGuestEvent('founding_modal_dismissed', metadata),
+
   settingsRestorePurchasesTapped: (token: string | null, metadata: Record<string, any> = {}) =>
     token
       ? trackEvent(token, 'settings_restore_purchases_tapped', metadata)

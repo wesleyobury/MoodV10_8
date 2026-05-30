@@ -13,6 +13,14 @@
 ## Admin
 - Username: `officialmoodapp` (admin allowlist match)
 
+## MOOD V2 founding tester (Phase 2 — local test_database)
+- Username: `founding_tester`
+- Email: `founding_tester@example.com`
+- Password: `FoundTest1234567`
+- `founding_member=true`, window OPEN (`app_config.v2_launch_date` set, ~14d).
+- On login should see the FoundingOfferModal ($39/yr). NOT a free-access account.
+- V2 semantic: founding_member does NOT grant free access; only unlocks the claim.
+
 ## Profile / general test user (legacy, from previous fork)
 - Username: `profile_test_user`
 - User ID: `69a9f998d81c5ed227b55ce9`

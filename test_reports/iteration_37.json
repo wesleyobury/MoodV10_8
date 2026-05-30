@@ -1,0 +1,37 @@
+{
+  "summary": "Frontend-only validation of MOOD V2 Phases 1-3 against preview URL. All 7 requested flows PASS after restarting expo to invalidate a stale Metro bundle. Verified: (1) ForceUpdateGate non-blocking, (2) FoundingOfferModal renders correctly for founding_tester with FOUNDING MEMBER eyebrow, 'You helped build MOOD.' headline, '$39/year, locked forever.' price, 'Claim within 14 days' countdown, 'Claim Founding Price — $39/year' CTA, 'Remind me later' link, (3) Remind me later dismisses modal and reaches home, (4) Claim flow on web calls POST /api/me/claim-founding (200) and closes modal without error, (5) moodtester (non-founding) sees NO founding modal and entitlement endpoint is called, (6) NEW signup via Register screen lands DIRECTLY on /onboarding-funnel/step-1-mood (mood selection 1/8) as required by Phase 3.1, (7) No white-screen/crash, login works, navigation works. Important encountered tooling issue: Metro/Expo dev server was serving a STALE bundle that still contained the V1 'WELCOME BACK / You're a Founding Member / no charge, no expiration / Continue' modal even though FoundingMemberGate.tsx source no longer contains that code. A `sudo supervisorctl restart expo` recompiled the bundle and V2 content now renders. Main agent should be aware that when modifying source files served by Expo CI-mode Metro, a service restart may be needed. Deprecated packages still detected in expo logs: expo-av (warned: deprecated; migrate to expo-audio / expo-video).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [
+      {"component": "expo-av", "issue": "Expo AV is deprecated and will be removed in SDK 54. Migrate to expo-audio (audio) and expo-video (video). Seen in expo startup log: '[expo-av]: Expo AV has been deprecated and will be removed in SDK 54.'"}
+    ]
+  },
+  "test_report_links": [
+    "/tmp/founding_v2.png",
+    "/tmp/after_remind.png",
+    "/tmp/before_claim.png",
+    "/tmp/after_claim.png",
+    "/tmp/moodtester.png",
+    "/tmp/reg_filled.png",
+    "/tmp/post_register.png"
+  ],
+  "action_items": [
+    "Migrate expo-av usages to expo-audio and expo-video (deprecated package warning surfaces on every Expo start).",
+    "Optional: document a 'restart expo to flush Metro cache' note for testers — Metro in CI mode (reloads disabled) can serve a stale bundle when source files change; this caused the V1 founding modal to appear before the restart in this iteration."
+  ],
+  "critical_code_review_comments": [
+    "FoundingOfferModal, FoundingMemberGate, register.tsx all match the V2 spec. Wiring through SubscriptionContext + AuthContext (refreshEntitlement now correctly passes Authorization header) is functioning end-to-end.",
+    "Register flow correctly calls router.replace('/onboarding-funnel/step-1-mood') and gates submission behind the medical/ToS acknowledgement checkbox.",
+    "Claim flow hits POST /api/me/claim-founding optimistically on web (no native StoreKit) and closes modal cleanly."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "skipped (not in scope)", "frontend": "100% (7/7 scenarios)"},
+  "seed_data_creation": "Registered 1 new user during Phase 3.1 routing test: username=v2t<timestamp>, email=v2test+<timestamp>@example.com. Founding tester's founding_pricing_claimed flag is now TRUE in DB after the successful Claim test — to retest the claim flow it must be reset via backend.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "All Phase 1-3 flows verified on web. If retesting the founding claim modal, reset founding_pricing_claimed for founding_tester in MongoDB first (it was set to true during this iteration). Metro CI-mode may require `sudo supervisorctl restart expo` if source changes don't appear in the served bundle.",
+  "rca_of_issue": "RCA (encountered + auto-mitigated): On first run, the FoundingOfferModal appeared as the V1 legacy modal ('WELCOME BACK / You're a Founding Member / Premium access for as long as the app exists / Continue'). Inspecting the served Expo dev bundle confirmed it still contained that V1 string (mapped to /app/frontend/components/FoundingMemberGate.tsx via _jsxFileName) even though the current source file no longer contains it. Root cause: Metro is running in CI mode ('Metro is running in CI mode, reloads are disabled' — per expo.out.log) so file changes during the iteration weren't re-bundled. Mitigation: `sudo supervisorctl restart expo` recompiled the bundle; subsequent fetch confirmed V1 text count=0 and V2 strings ('You helped build MOOD', 'Claim Founding Price', 'locked forever') count=1 each. After restart, all 7 test scenarios passed."
+}

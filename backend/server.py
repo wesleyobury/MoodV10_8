@@ -747,15 +747,24 @@ class UserResponse(BaseModel):
     workouts_count: int = 0
     current_streak: int = 0
     created_at: datetime
-    # Phase D — Paid Launch Founding Member system (Part 9 of v1.0 spec).
-    # `founding_member` is set true for any account created before the
-    # FOUNDING_MEMBER_CUTOFF (2026-05-26, bumped from 2026-05-14). Founding
-    # members bypass the paywall entirely and have lifetime access.
-    # `founding_member_modal_seen` gates the one-time celebration modal on
-    # first login after the cutoff ships.
+    # ── Founding Member system ──────────────────────────────────────────
+    # `founding_member` was set true for accounts created before the
+    # FOUNDING_MEMBER_CUTOFF. SEMANTIC SHIFT IN V2: this flag NO LONGER grants
+    # free access — it is an *eligibility flag* to claim the locked $39/yr
+    # founding deal during the 14-day window. The permanent badge persists.
     founding_member: bool = False
     founding_member_at: Optional[datetime] = None
     founding_member_modal_seen: bool = False
+    # V2 founding-offer flow.
+    founding_pricing_claimed: bool = False
+    founding_pricing_claimed_at: Optional[datetime] = None
+    founding_window_expires_at: Optional[datetime] = None  # set by V2 migration
+    founding_locked_price_id: Optional[str] = None
+    founding_claim_initiated_at: Optional[datetime] = None
+    # Entitlement (Phase 1).
+    is_comp: bool = False
+    is_internal: bool = False
+    free_workouts_used: int = 0
 
 class WorkoutCreate(BaseModel):
     title: str
@@ -1943,11 +1952,19 @@ class SubscriptionValidateRequest(BaseModel):
     expiration_date: Optional[str] = None
 
 
+# MOOD V2 — App Store Connect product identifiers.
+PRODUCT_ANNUAL = "mood_premium_yearly"
+PRODUCT_MONTHLY = "mood_premium_monthly"
+PRODUCT_FOUNDING_ANNUAL = "mood_premium_founding_annual"
+
+
 def _plan_for_product(product_id: str) -> Optional[str]:
-    if product_id == "mood_premium_yearly":
+    if product_id == PRODUCT_ANNUAL:
         return "annual"
-    if product_id == "mood_premium_monthly":
+    if product_id == PRODUCT_MONTHLY:
         return "monthly"
+    if product_id == PRODUCT_FOUNDING_ANNUAL:
+        return "founding_annual"
     return None
 
 
@@ -2018,6 +2035,17 @@ async def validate_subscription_transaction(
         {"_id": ObjectId(current_user_id)},
         {"$set": update_doc, "$unset": unset_doc},
     )
+
+    # MOOD V2 — if the purchased SKU is the founding annual, lock the founding
+    # claim permanently so the offer never re-surfaces for this user.
+    if payload.product_id == PRODUCT_FOUNDING_ANNUAL:
+        await db.users.update_one(
+            {"_id": ObjectId(current_user_id)},
+            {"$set": {
+                "founding_pricing_claimed": True,
+                "founding_pricing_claimed_at": datetime.now(timezone.utc),
+            }},
+        )
 
     # Best-effort analytics emission. The same event fires from the client
     # for redundancy — this server-side emission ensures the day-7 trial
@@ -2159,6 +2187,8 @@ async def get_entitlement(current_user_id: str = Depends(get_current_user)):
     is_founding = bool(user.get("founding_member", False))
     claimed = bool(user.get("founding_pricing_claimed", False))
     window_open = await is_founding_window_open()
+    expires = user.get("founding_window_expires_at")
+    expires_iso = expires.isoformat() if isinstance(expires, datetime) else expires
 
     return {
         "has_full_access": access,
@@ -2167,6 +2197,48 @@ async def get_entitlement(current_user_id: str = Depends(get_current_user)):
         "is_founding_member": is_founding,
         "founding_pricing_claimed": claimed,
         "founding_window_active": bool(window_open and is_founding and not claimed),
+        "founding_window_expires_at": expires_iso,
+    }
+
+
+# ── Founding member claim (V2) ────────────────────────────────────────────
+def user_can_claim_founding(user: dict, window_open: bool) -> bool:
+    """Per-user eligibility to claim the locked founding deal."""
+    if not user or not user.get("founding_member"):
+        return False
+    if user.get("founding_pricing_claimed"):
+        return False
+    return bool(window_open)
+
+
+@api_router.post("/me/claim-founding")
+async def claim_founding_pricing(current_user_id: str = Depends(get_current_user)):
+    """
+    V2 — called when the user taps 'Claim Founding Price'. Does NOT initiate
+    the StoreKit purchase (that's client-side); it validates eligibility,
+    locks the founding SKU for this user, and returns the SKU for StoreKit.
+    """
+    user = await db.users.find_one({"_id": ObjectId(current_user_id)})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    window_open = await is_founding_window_open()
+    if not user_can_claim_founding(user, window_open):
+        raise HTTPException(status_code=403, detail="founding_window_closed_or_already_claimed")
+
+    await db.users.update_one(
+        {"_id": ObjectId(current_user_id)},
+        {"$set": {
+            "founding_locked_price_id": PRODUCT_FOUNDING_ANNUAL,
+            "founding_claim_initiated_at": datetime.now(timezone.utc),
+        }},
+    )
+
+    expires = user.get("founding_window_expires_at")
+    return {
+        "sku_id": PRODUCT_FOUNDING_ANNUAL,
+        "price_display": "$39/year",
+        "founding_window_expires_at": expires.isoformat() if isinstance(expires, datetime) else expires,
     }
 
 

@@ -1,73 +1,52 @@
 /**
- * FoundingMemberBadge — small gold pill displayed next to the username on
- * the profile screen for accounts created before the Phase D cutoff.
+ * FoundingMemberBadge — MOOD V2 founding identity marker.
  *
- * Visually quiet by design: gold ring, transparent fill, tiny star icon.
+ * LOCKED visual (spec 2.3): lightning bolt on a gold→orange gradient circle.
+ * Permanent identity — renders for any user with `founding_member = true`,
+ * regardless of whether they claimed the founding pricing.
+ *
+ * Backwards-compatible props (`size`, `testID`); added 'lg' for profile header.
  */
-
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../constants/brand';
+import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
+import { BRAND_GRADIENT, COLORS } from '../constants/brand';
 
 interface Props {
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
   testID?: string;
 }
 
+const DIMS = { sm: 14, md: 20, lg: 32 } as const;
+const ICON = { sm: 8, md: 12, lg: 19 } as const;
+
 export function FoundingMemberBadge({ size = 'md', testID }: Props) {
-  const compact = size === 'sm';
+  const dim = DIMS[size];
+  const icon = ICON[size];
   return (
     <View style={styles.wrap} testID={testID} data-testid={testID}>
-      <View style={[styles.pill, compact && styles.pillSm]}>
-        <Ionicons
-          name="star"
-          size={compact ? 9 : 10}
-          color={COLORS.accent}
-          style={styles.icon}
-        />
-        <Text style={[styles.label, compact && styles.labelSm]}>FOUNDING MEMBER</Text>
-      </View>
+      <LinearGradient
+        colors={[...BRAND_GRADIENT]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.circle, { width: dim, height: dim, borderRadius: dim / 2 }]}
+      >
+        <Ionicons name="flash" size={icon} color={COLORS.accentInk} />
+      </LinearGradient>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    alignItems: 'flex-start',
-  },
-  pill: {
-    flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 2,
-    paddingHorizontal: 7,
-    borderRadius: 999,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(255,215,0,0.35)',
-    backgroundColor: 'transparent',
+    justifyContent: 'center',
   },
-  pillSm: {
-    paddingVertical: 1,
-    paddingHorizontal: 6,
-  },
-  icon: {
-    marginRight: 4,
-    opacity: 0.85,
-  },
-  label: {
-    fontSize: 8.5,
-    letterSpacing: 1.0,
-    color: 'rgba(255,215,0,0.85)',
-    fontWeight: '600',
-  },
-  labelSm: {
-    fontSize: 7.5,
-    letterSpacing: 0.9,
-  },
-  caption: {
-    marginTop: 3,
-    fontSize: 10,
-    color: 'rgba(255,255,255,0.38)',
-    fontStyle: 'italic',
+  circle: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
+
+export default FoundingMemberBadge;

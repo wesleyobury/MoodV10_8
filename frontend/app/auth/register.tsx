@@ -186,7 +186,11 @@ export default function Register() {
         }
       }
 
-      router.replace('/(tabs)');
+      // Phase 3.1 (CRITICAL) — route new signups DIRECTLY into the onboarding
+      // funnel, NOT to home. Previously this went to /(tabs), which meant the
+      // funnel only fired accidentally on session 2 via FunnelEntryGate.
+      // @mood_needs_funnel stays set as a safety net if the user backs out.
+      router.replace('/onboarding-funnel/step-1-mood');
     } catch (error: any) {
       Alert.alert('Registration Failed', error.message || 'Please try again');
     } finally {
