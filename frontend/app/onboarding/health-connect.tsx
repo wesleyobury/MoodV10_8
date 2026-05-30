@@ -19,7 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { useHealth } from '../../contexts/HealthContext';
 import { setHealthOnboardingComplete } from '../../utils/healthStorage';
-import { routeForMood, readFunnelMoodId } from '../../utils/moodRoute';
+import { WearablesSuccessState } from '../../components/WearablesSuccessState';
 
 const BULLETS = [
   'Resting heart rate',
@@ -33,33 +33,36 @@ export default function HealthConnectScreen() {
   const router = useRouter();
   const { requestPermissions } = useHealth();
   const [busy, setBusy] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const finish = async () => {
+  // Phase 5.3 — after wearables, route to the mood interstitial (not home).
+  // mood-intro then forwards to the first decision screen of the funnel mood.
+  const goToMoodIntro = async () => {
     await setHealthOnboardingComplete();
-    // Spec §4 — first-session users came here straight from the funnel.
-    // Don't dump them on home; route to the first-decision screen of the
-    // mood they picked in funnel step 1 so the journey lands on a workout.
-    // Returning users (whose `@mood_funnel_answers_v1` has been cleared by
-    // logout, or who never went through the funnel) fall back to home.
-    const moodId = await readFunnelMoodId();
-    const route = routeForMood(moodId);
-    if (route) {
-      router.replace({ pathname: route.pathname as any, params: route.params });
-    } else {
-      router.replace('/(tabs)');
-    }
+    router.replace('/mood-intro');
   };
 
   const handleConnect = async () => {
     if (busy) return;
     setBusy(true);
+    let granted = false;
     try {
-      await requestPermissions();
+      granted = await requestPermissions();
     } finally {
       setBusy(false);
-      await finish();
+    }
+    // Phase 5.2 — show the brief success state ONLY on an actual grant.
+    // Denied/skipped → straight to mood-intro, no success state.
+    if (granted) {
+      setShowSuccess(true);
+    } else {
+      await goToMoodIntro();
     }
   };
+
+  if (showSuccess) {
+    return <WearablesSuccessState onDone={goToMoodIntro} />;
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
@@ -92,7 +95,7 @@ export default function HealthConnectScreen() {
           style={styles.primaryButton}
           onPress={handleConnect}
           disabled={busy}
-          data-testid="health-connect-connect"
+          testID="health-connect-connect"
         >
           <LinearGradient
             colors={['#FFD700', '#FFA500']}
@@ -110,9 +113,9 @@ export default function HealthConnectScreen() {
 
         <TouchableOpacity
           style={styles.secondaryButton}
-          onPress={finish}
+          onPress={goToMoodIntro}
           disabled={busy}
-          data-testid="health-connect-skip"
+          testID="health-connect-skip"
         >
           <Text style={styles.secondaryButtonText}>Maybe later</Text>
         </TouchableOpacity>

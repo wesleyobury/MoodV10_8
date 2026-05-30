@@ -555,10 +555,13 @@ full access, config round-trip + reset, admin auth guards. All passing.
   #2 already wired in create-post (achievement-close + post-share). 4.3 hard
   paywall flag wiring existed; added refreshEntitlement on completion. 4.4
   PaywallModal plan picker already existed. 4.5 unlimited generation confirmed.
-- PHASE 5 (Onboarding polish): PARTIAL. 5.4 kill-list ('train how body feels')
-  already removed. 5.5 medical consent already folded into register. 5.6 landing
-  enforcement in place. REMAINING (net-new): 5.1 mood interstitials + moodConfig,
-  5.2 wearables success state, 5.3 wearables→mood-intro routing.
+- PHASE 5 (Onboarding polish): COMPLETE.
+  5.1 mood-intro screen (app/mood-intro.tsx) + utils/moodConfig.ts copy map.
+  5.2 WearablesSuccessState (shown only on actual grant, ~2s, best-effort data).
+  5.3 health-connect routes to /mood-intro on grant (after success state) and
+  on skip (direct). 5.4 kill-list already removed. 5.5 medical consent folded
+  into register (disclaimer now a read-only link, not a funnel step). 5.6 landing
+  enforcement in place. ALL PHASES 1-6 COMPLETE. Phase 7 = manual QA/launch ops.
 - PHASE 6 (Pulse Sync): COMPLETE (app/pulse-sync.tsx, 409 lines, full anim +
   reduce-motion + wearable branch). Added pulse_sync_played analytics.
 
