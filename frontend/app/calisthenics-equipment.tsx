@@ -18,6 +18,7 @@ import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import { generateCalisthenicsCarts } from '../utils/workoutGenerator';
+import { runTrackedGeneration } from '../utils/generationTracking';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
@@ -196,7 +197,11 @@ export default function CalisthenicsEquipmentScreen() {
   // Handle intensity selection and generate workout
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
     setShowIntensityModal(false);
-    const carts = generateCalisthenicsCarts(intensity, moodTitle, workoutType);
+    const { carts } = runTrackedGeneration(
+      token,
+      { mood: moodTitle, energy_level: intensity, equipment: workoutType },
+      () => generateCalisthenicsCarts(intensity, moodTitle, workoutType)
+    );
     
     if (carts.length > 0) {
       if (!isGuest && token) {

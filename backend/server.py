@@ -986,17 +986,20 @@ async def register(user_data: UserCreate):
     # Use MongoDB ObjectId for token and response
     mongodb_id = str(result.inserted_id)
     
-    # Track user signup event
-    await db.user_events.insert_one({
-        "user_id": mongodb_id,
-        "event_type": "user_registered",
-        "timestamp": datetime.now(timezone.utc),
-        "metadata": {
+    # Track user signup event (1e — routed through track_user_event so it
+    # gets the same event_category="auth" stamp as every other event and
+    # lands in user_events, which the admin dashboard reads).
+    await track_user_event(
+        db,
+        mongodb_id,
+        "user_registered",
+        {
             "username": user_data.username,
             "email": user_data.email,
-            "registration_method": "email_password"
-        }
-    })
+            "registration_method": "email_password",
+            "signup_method": "email",
+        },
+    )
     logger.info(f"New user registered: {user_data.username} ({user_data.email})")
     
     # Send welcome message from officialmoodapp
@@ -1063,6 +1066,11 @@ async def login(login_data: UserLogin, request: Request):
                     ip_address, user_agent, failure_reason="Invalid password"
                 )
                 await update_auth_metadata(db, user_id, "email_password", False)
+                # 1e — analytics event (user_events) for the funnel dashboard.
+                await track_user_event(
+                    db, user_id, "login_failure",
+                    {"method": "email_password", "failure_reason": "invalid_password"},
+                )
                 raise HTTPException(status_code=401, detail="Invalid credentials")
         except HTTPException:
             raise
@@ -1092,7 +1100,12 @@ async def login(login_data: UserLogin, request: Request):
         # Auto-grant admin in staging for designated users
         username = user.get("username", "")
         await auto_grant_admin_for_staging(user_id, username)
-        
+
+        # 1e — analytics event (user_events) for the funnel dashboard.
+        await track_user_event(
+            db, user_id, "login_success", {"method": "email_password"}
+        )
+
         logger.info(f"Login successful for: {login_data.username}")
         return {
             "message": "Login successful",
@@ -1799,6 +1812,14 @@ async def logout(request: Request, response: Response):
     session_token = await get_session_token_from_request(request)
     
     if session_token:
+        # 1e — resolve the owning user before deleting so we can attribute
+        # the logout analytics event (user_events).
+        try:
+            sess = await db.user_sessions.find_one({"session_token": session_token})
+            if sess and sess.get("user_id"):
+                await track_user_event(db, str(sess["user_id"]), "logout", {})
+        except Exception as e:
+            logger.error(f"logout analytics failed: {e}")
         await delete_session(db, session_token)
     
     clear_session_cookie(response)
@@ -1957,6 +1978,16 @@ PRODUCT_ANNUAL = "mood_premium_yearly"
 PRODUCT_MONTHLY = "mood_premium_monthly"
 PRODUCT_FOUNDING_ANNUAL = "mood_premium_founding_annual"
 
+# Display prices (USD) per SKU — used to stamp `revenue_usd` on monetization
+# analytics events. These mirror the StoreKit/App Store Connect pricing.
+# Note: real settled revenue (net of Apple's cut, proration, refunds) comes
+# from the Apple S2S webhook; this is the gross list price for funnel math.
+PRODUCT_PRICE_USD = {
+    PRODUCT_ANNUAL: 79.0,
+    PRODUCT_MONTHLY: 9.99,
+    PRODUCT_FOUNDING_ANNUAL: 39.0,
+}
+
 
 def _plan_for_product(product_id: str) -> Optional[str]:
     if product_id == PRODUCT_ANNUAL:
@@ -2047,30 +2078,35 @@ async def validate_subscription_transaction(
             }},
         )
 
-    # Best-effort analytics emission. The same event fires from the client
-    # for redundancy — this server-side emission ensures the day-7 trial
-    # charge webhook path (when added) carries identical attribution.
+    # 1b — Subscription lifecycle: `subscription_started` (first successful
+    # charge / trial start) fires here from the foreground purchase
+    # reconciliation path. Routed through track_user_event → user_events so
+    # the admin dashboard sees it. We intentionally STOPPED writing to the
+    # legacy `analytics_events` collection (dark data — the dashboard never
+    # read it). The client still fires `subscription_purchased` for redundancy.
     try:
         flags_user = await db.users.find_one(
             {"_id": ObjectId(current_user_id)},
             {"is_comp": 1, "is_internal": 1, "founding_member": 1},
         ) or {}
-        await db.analytics_events.insert_one({
-            "user_id": current_user_id,
-            "event_type": "subscription_purchased",
-            "event_timestamp_utc": datetime.now(timezone.utc),
-            "metadata": {
+        await track_user_event(
+            db,
+            current_user_id,
+            "subscription_started",
+            {
+                "plan_id": payload.product_id,
                 "plan": plan,
-                "product_id": payload.product_id,
+                "revenue_usd": PRODUCT_PRICE_USD.get(payload.product_id),
+                "source": "apple",
                 "trigger_source": trigger_source,
-                "source": "server_validate",
+                "origin": "server_validate",
                 "is_comp": bool(flags_user.get("is_comp", False)),
                 "is_internal": bool(flags_user.get("is_internal", False)),
                 "is_founding_member": bool(flags_user.get("founding_member", False)),
             },
-        })
+        )
     except Exception as e:
-        logger.error(f"subscription_purchased analytics insert failed: {e}")
+        logger.error(f"subscription_started analytics insert failed: {e}")
 
     return {
         "ok": True,
@@ -2083,39 +2119,155 @@ async def validate_subscription_transaction(
 @api_router.post("/subscription/webhooks/apple")
 async def apple_subscription_webhook(request: Request):
     """
-    Phase C+ — App Store Server Notifications V2 entry point.
+    MOOD V2 Phase 1 (1b) — App Store Server Notifications V2 entry point.
 
-    Apple posts a JSON envelope `{ "signedPayload": "<JWS>" }` here on
-    every subscription state change: SUBSCRIBED, DID_CHANGE_RENEWAL_STATUS,
-    DID_RENEW, DID_FAIL_TO_RENEW, EXPIRED, REFUND, etc.
+    Apple posts `{ "signedPayload": "<JWS>" }` on every subscription state
+    change: SUBSCRIBED, DID_RENEW, DID_CHANGE_RENEWAL_STATUS, EXPIRED, REFUND…
 
-    This handler is intentionally minimal in v1.0:
-      1. Accept the payload.
-      2. Log it for audit.
-      3. Return 200 fast so Apple doesn't retry.
+    SECURITY GATE (non-negotiable): the JWS signature is verified against
+    Apple's certificate chain (apple_webhook_verifier.verify_and_parse). A
+    payload that FAILS verification — including any spoofed/unsigned request
+    hitting this public endpoint — is DROPPED: it is recorded only in the raw
+    audit log with `verified: False` and produces NO analytics event. Only
+    cryptographically authentic notifications drive subscription_* events.
 
-    Full JWS verification + state-machine handling is a follow-up ticket
-    that requires Apple's root cert chain + the `cryptography` package.
-    When that lands, the trial-to-paid (DID_RENEW with `isInIntroOfferPeriod
-    = false`) branch will lookup the user by `originalTransactionId`,
-    read `subscription.last_trigger_source`, and fire the
-    `subscription_purchased` event server-side with that attribution.
+    We always return 200 so Apple's retry queue isn't hammered by replays of
+    rejected/spoofed payloads (verification failures are permanent, not
+    transient). Lifecycle events are emitted via track_user_event → user_events.
     """
+    from apple_webhook_verifier import (
+        verify_and_parse, event_for, VerificationException, WebhookVerificationError,
+    )
+
     try:
         body = await request.json()
     except Exception:
         body = {}
-    logger.info(
-        f"📩 Apple S2S notification received: keys={list(body.keys()) if isinstance(body, dict) else 'non-dict'}"
-    )
+
+    signed_payload = body.get("signedPayload") if isinstance(body, dict) else None
+    now = datetime.now(timezone.utc)
+
+    # ── GATE: verify the JWS. Any failure → drop (no event). ──────────────
     try:
-        await db.apple_webhook_events.insert_one({
-            "received_at": datetime.now(timezone.utc),
-            "payload": body,
-        })
+        if not signed_payload or not isinstance(signed_payload, str):
+            raise WebhookVerificationError("missing signedPayload")
+        parsed = verify_and_parse(signed_payload)
+    except (VerificationException, WebhookVerificationError) as e:
+        logger.warning(f"🚫 Apple webhook DROPPED (verification failed): {e}")
+        try:
+            await db.apple_webhook_events.insert_one({
+                "received_at": now,
+                "verified": False,
+                "drop_reason": str(e),
+                # store raw body for audit only — NOT an analytics event.
+                "payload_keys": list(body.keys()) if isinstance(body, dict) else None,
+            })
+        except Exception as persist_err:
+            logger.error(f"Apple webhook audit persistence failed: {persist_err}")
+        return {"ok": True, "verified": False}
+
+    notification_type = parsed.get("notification_type")
+    subtype = parsed.get("subtype")
+    notification_uuid = parsed.get("notification_uuid")
+    original_transaction_id = parsed.get("original_transaction_id")
+    product_id = parsed.get("product_id")
+    logger.info(
+        f"📩 Apple S2S VERIFIED: type={notification_type} subtype={subtype} "
+        f"uuid={notification_uuid}"
+    )
+
+    # Idempotency — Apple retries deliver the same notificationUUID; never
+    # double-emit an event for one already processed.
+    already = None
+    if notification_uuid:
+        already = await db.apple_webhook_events.find_one(
+            {"notification_uuid": notification_uuid, "verified": True}
+        )
+
+    # Persist the verified audit record.
+    try:
+        await db.apple_webhook_events.update_one(
+            {"notification_uuid": notification_uuid} if notification_uuid else {"_temp_id": str(now)},
+            {"$set": {
+                "received_at": now,
+                "verified": True,
+                "notification_type": notification_type,
+                "subtype": subtype,
+                "original_transaction_id": original_transaction_id,
+                "product_id": product_id,
+            }},
+            upsert=True,
+        )
     except Exception as e:
-        logger.error(f"Apple webhook event persistence failed: {e}")
-    return {"ok": True}
+        logger.error(f"Apple webhook verified-audit persistence failed: {e}")
+
+    if already:
+        return {"ok": True, "verified": True, "duplicate": True}
+
+    event_type = event_for(notification_type, subtype)
+    if not event_type:
+        # Verified but not part of the funnel (e.g. DID_CHANGE_RENEWAL_PREF).
+        return {"ok": True, "verified": True, "event": None}
+
+    # Attribute to a MOOD user via the originalTransactionId we stored on
+    # the user doc during /subscription/validate. If we can't map it, we can't
+    # attribute the event to a user — skip (no orphan analytics rows).
+    user = None
+    if original_transaction_id:
+        user = await db.users.find_one(
+            {"subscription.original_transaction_id": original_transaction_id},
+            {"subscription": 1, "is_comp": 1, "is_internal": 1, "founding_member": 1},
+        )
+    if not user:
+        logger.warning(
+            f"Apple webhook: verified {event_type} but no user for "
+            f"originalTransactionId={original_transaction_id}; event skipped."
+        )
+        return {"ok": True, "verified": True, "event": event_type, "user_matched": False}
+
+    user_id = str(user["_id"])
+    sub = user.get("subscription") or {}
+
+    # Build event metadata per the 1b spec.
+    metadata: Dict[str, Any] = {
+        "plan_id": product_id,
+        "plan": _plan_for_product(product_id) if product_id else None,
+        "source": "apple",
+        "notification_type": notification_type,
+        "subtype": subtype,
+        "is_comp": bool(user.get("is_comp", False)),
+        "is_internal": bool(user.get("is_internal", False)),
+        "is_founding_member": bool(user.get("founding_member", False)),
+    }
+
+    if event_type in ("subscription_started", "subscription_renewed"):
+        metadata["revenue_usd"] = PRODUCT_PRICE_USD.get(product_id)
+    if event_type == "subscription_renewed":
+        prior = await db.user_events.count_documents(
+            {"user_id": user_id, "event_type": "subscription_renewed"}
+        )
+        metadata["renewal_count"] = prior + 1
+    if event_type == "subscription_cancelled":
+        purchase_ms = parsed.get("purchase_date_ms") or sub.get("purchase_date_ms")
+        if isinstance(purchase_ms, (int, float)):
+            metadata["days_active"] = max(
+                0, int((now.timestamp() * 1000 - purchase_ms) / 86_400_000)
+            )
+        else:
+            metadata["days_active"] = None
+    if event_type == "subscription_expired":
+        # Map Apple subtypes → coarse reason.
+        if subtype in ("BILLING_RETRY", "PRICE_INCREASE"):
+            metadata["reason"] = "payment_failed"
+        else:
+            metadata["reason"] = "user_cancelled"
+    if event_type == "subscription_refunded":
+        price = PRODUCT_PRICE_USD.get(product_id)
+        metadata["revenue_usd"] = (-price) if price is not None else None
+
+    await track_user_event(db, user_id, event_type, metadata)
+    logger.info(f"✅ Apple webhook emitted {event_type} for user {user_id}")
+    return {"ok": True, "verified": True, "event": event_type, "user_matched": True}
 
 
 # ════════════════════════════════════════════════════════════════════════

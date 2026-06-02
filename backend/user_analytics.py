@@ -68,7 +68,70 @@ EVENT_TYPES = {
     "equipment_selected": "feature",
     "difficulty_selected": "feature",
     "mood_selected": "feature",
-    "filter_applied": "feature"
+    "filter_applied": "feature",
+
+    # ── MOOD V2 PHASE 1 — Event tracking expansion ──────────────────────
+    # 1e. Auth catalog cleanup (these were written to user_events without a
+    # category; registering them here gives them event_category="auth").
+    "user_registered": "auth",
+    "login_success": "auth",
+    "login_failure": "auth",
+    "logout": "auth",
+
+    # 1a. Paywall events (category: monetization)
+    "paywall_viewed": "monetization",
+    "paywall_dismissed": "monetization",
+    "plan_selected": "monetization",
+    "purchase_initiated": "monetization",
+    "purchase_completed": "monetization",
+    "purchase_failed": "monetization",
+    "restore_purchases_clicked": "monetization",
+    "restore_purchases_completed": "monetization",
+
+    # 1b. Subscription lifecycle (server-side; from Apple S2S webhook +
+    # /subscription/validate). All routed via track_user_event → user_events.
+    "subscription_started": "monetization",
+    "subscription_renewed": "monetization",
+    "subscription_cancelled": "monetization",
+    "subscription_expired": "monetization",
+    "subscription_refunded": "monetization",
+
+    # 1c. Founding member events (category: monetization)
+    "founding_member_offer_shown": "monetization",
+    "founding_member_claimed": "monetization",
+    "founding_member_window_ended": "monetization",
+
+    # 1d. Workout generation funnel (category: workout)
+    "workout_generation_started": "workout",
+    "workout_generation_completed": "workout",
+    "workout_generation_failed": "workout",
+    "workout_regenerated": "workout",
+    "workout_previewed": "workout",
+
+    # ── Pre-existing client events that were uncategorized ("other") ─────
+    # Additive: registering them here so the dashboard categorizes them
+    # correctly. Event NAMES are unchanged (no breaking changes).
+    "trial_started": "monetization",
+    "trial_cancelled": "monetization",
+    "subscription_purchased": "monetization",
+    "subscription_restored": "monetization",
+    "subscription_lapsed": "monetization",
+    "start_workout_tapped": "monetization",
+    "founding_member_modal_shown": "monetization",
+    "founding_member_modal_dismissed": "monetization",
+    "founding_modal_shown": "monetization",
+    "founding_modal_claimed": "monetization",
+    "founding_modal_dismissed": "monetization",
+    "settings_restore_purchases_tapped": "monetization",
+    "workout_generated": "workout",
+    "onboarding_step_viewed": "auth",
+    "onboarding_step_completed": "auth",
+    "onboarding_completed": "auth",
+    "onboarding_abandoned": "auth",
+    "reveal_screen_viewed": "auth",
+    "reveal_cta_tapped": "auth",
+    "medical_disclaimer_accepted": "auth",
+    "pulse_sync_played": "engagement",
 }
 
 # Excluded user IDs for analytics (admin/test accounts)

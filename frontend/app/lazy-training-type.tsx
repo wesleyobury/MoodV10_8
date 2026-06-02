@@ -19,6 +19,7 @@ import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import { generateLazyCartsWithType } from '../utils/workoutGenerator';
+import { runTrackedGeneration } from '../utils/generationTracking';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -164,7 +165,11 @@ export default function LazyTrainingTypeScreen() {
     // Use the new function with training type
     const trainingType = selectedOption.id as 'bodyweight' | 'weights';
     const workoutType = trainingType === 'bodyweight' ? 'Move Your Body' : 'Lift Weights';
-    const carts = generateLazyCartsWithType(intensity, trainingType, moodTitle);
+    const { carts } = runTrackedGeneration(
+      token,
+      { mood: moodTitle, energy_level: intensity, equipment: trainingType },
+      () => generateLazyCartsWithType(intensity, trainingType, moodTitle)
+    );
     
     if (carts.length > 0) {
       if (!isGuest && token) {

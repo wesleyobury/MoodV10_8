@@ -562,7 +562,18 @@ export const Analytics = {
       : trackGuestEvent('medical_disclaimer_accepted', metadata),
 
   // Monetization funnel — Phase B paid launch.
-  paywallViewed: (token: string | null, metadata: { trigger_source: string }) =>
+  // 1a (MOOD V2): metadata extended additively with stage/trigger/
+  // is_founding_window. Existing callers passing only `trigger_source` still
+  // compile — every new field is optional. Event name unchanged.
+  paywallViewed: (
+    token: string | null,
+    metadata: {
+      trigger_source?: string;
+      stage?: 1 | 2 | 3;
+      trigger?: string;
+      is_founding_window?: boolean;
+    }
+  ) =>
     token
       ? trackEvent(token, 'paywall_viewed', metadata)
       : trackGuestEvent('paywall_viewed', metadata),
@@ -638,6 +649,138 @@ export const Analytics = {
     token
       ? trackEvent(token, 'settings_restore_purchases_tapped', metadata)
       : trackGuestEvent('settings_restore_purchases_tapped', metadata),
+
+  // ── MOOD V2 PHASE 1 — Paywall + monetization + generation funnel ──────
+  // All event NAMES are new and additive; nothing above is renamed.
+
+  // 1a. Paywall events (category: monetization)
+  paywallDismissed: (
+    token: string | null,
+    metadata: {
+      stage?: 1 | 2 | 3;
+      dismiss_method?: 'x_button' | 'back_swipe' | 'tap_outside';
+      seconds_on_screen?: number;
+    }
+  ) =>
+    token
+      ? trackEvent(token, 'paywall_dismissed', metadata)
+      : trackGuestEvent('paywall_dismissed', metadata),
+
+  planSelected: (
+    token: string | null,
+    metadata: { plan_id: string; stage?: 1 | 2 | 3 }
+  ) =>
+    token
+      ? trackEvent(token, 'plan_selected', metadata)
+      : trackGuestEvent('plan_selected', metadata),
+
+  purchaseInitiated: (
+    token: string | null,
+    metadata: { plan_id: string; stage?: 1 | 2 | 3 }
+  ) =>
+    token
+      ? trackEvent(token, 'purchase_initiated', metadata)
+      : trackGuestEvent('purchase_initiated', metadata),
+
+  purchaseCompleted: (
+    token: string | null,
+    metadata: { plan_id: string; revenue_usd?: number; is_trial?: boolean }
+  ) =>
+    token
+      ? trackEvent(token, 'purchase_completed', metadata)
+      : trackGuestEvent('purchase_completed', metadata),
+
+  purchaseFailed: (
+    token: string | null,
+    metadata: {
+      plan_id?: string;
+      failure_reason: 'user_cancelled' | 'payment_declined' | 'network' | 'unknown';
+    }
+  ) =>
+    token
+      ? trackEvent(token, 'purchase_failed', metadata)
+      : trackGuestEvent('purchase_failed', metadata),
+
+  restorePurchasesClicked: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'restore_purchases_clicked', metadata)
+      : trackGuestEvent('restore_purchases_clicked', metadata),
+
+  restorePurchasesCompleted: (
+    token: string | null,
+    metadata: { restored_plan_id?: string }
+  ) =>
+    token
+      ? trackEvent(token, 'restore_purchases_completed', metadata)
+      : trackGuestEvent('restore_purchases_completed', metadata),
+
+  // 1c. Founding member events (category: monetization).
+  // NOTE: `founding_member_window_ended` is server-side only.
+  foundingMemberOfferShown: (
+    token: string | null,
+    metadata: { days_remaining_in_window?: number }
+  ) =>
+    token
+      ? trackEvent(token, 'founding_member_offer_shown', metadata)
+      : trackGuestEvent('founding_member_offer_shown', metadata),
+
+  foundingMemberClaimed: (
+    token: string | null,
+    metadata: { revenue_usd?: number }
+  ) =>
+    token
+      ? trackEvent(token, 'founding_member_claimed', metadata)
+      : trackGuestEvent('founding_member_claimed', metadata),
+
+  // 1d. Workout generation funnel (category: workout)
+  workoutGenerationStarted: (
+    token: string | null,
+    metadata: {
+      mood?: string;
+      energy_level?: string;
+      duration_min?: number;
+      equipment?: string;
+    }
+  ) =>
+    token
+      ? trackEvent(token, 'workout_generation_started', metadata)
+      : trackGuestEvent('workout_generation_started', metadata),
+
+  workoutGenerationCompleted: (
+    token: string | null,
+    metadata: { mood?: string; latency_ms?: number; workout_id?: string }
+  ) =>
+    token
+      ? trackEvent(token, 'workout_generation_completed', metadata)
+      : trackGuestEvent('workout_generation_completed', metadata),
+
+  workoutGenerationFailed: (
+    token: string | null,
+    metadata: { mood?: string; failure_reason?: string; latency_ms?: number }
+  ) =>
+    token
+      ? trackEvent(token, 'workout_generation_failed', metadata)
+      : trackGuestEvent('workout_generation_failed', metadata),
+
+  workoutRegenerated: (
+    token: string | null,
+    metadata: {
+      mood?: string;
+      previous_workout_id?: string;
+      regeneration_count?: number;
+    }
+  ) =>
+    token
+      ? trackEvent(token, 'workout_regenerated', metadata)
+      : trackGuestEvent('workout_regenerated', metadata),
+
+  workoutPreviewed: (
+    token: string | null,
+    metadata: { workout_id?: string; mood?: string }
+  ) =>
+    token
+      ? trackEvent(token, 'workout_previewed', metadata)
+      : trackGuestEvent('workout_previewed', metadata),
 };
 
 // Guest Analytics - for tracking guest user activity

@@ -59,13 +59,41 @@ const VALUE_BULLETS = [
 const APPLE_DISCLOSURE =
   'Payment will be charged to your Apple ID account at the confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period.';
 
+/**
+ * MOOD V2 1a — map a paywall trigger to its funnel STAGE (1 Soft-onboarding,
+ * 2 Soft-ritual, 3 Hard). Mirrors the documented mapping in
+ * SubscriptionContext. Defaults to undefined for in-app feature gates.
+ */
+function stageForTrigger(trigger?: string | null): 1 | 2 | 3 | undefined {
+  switch (trigger) {
+    case 'post_onboarding_soft':
+    case 'post_onboarding_dev':
+      return 1;
+    case 'post_achievement_close_soft':
+    case 'post_share_soft':
+    case 'recap_footer_cta':
+      return 2;
+    case 'start_workout_after_free_session':
+    case 'generate_after_cap':
+      return 3;
+    default:
+      return undefined;
+  }
+}
+
 export function PaywallModal() {
   const insets = useSafeAreaInsets();
   const { pendingTrigger, dismissPaywall, setStatus, lastConversionTrigger, clearConversionTrigger } =
     useSubscription();
-  const { token } = useAuth();
+  const { token, entitlement } = useAuth();
   const [plan, setPlan] = useState<Plan>('annual');
   const visible = pendingTrigger !== null;
+
+  // 1a — seconds_on_screen for paywall_dismissed.
+  const openedAtRef = React.useRef<number | null>(null);
+  const stage = stageForTrigger(pendingTrigger);
+  const isFoundingWindow = !!entitlement?.founding_window_active;
+  const planProductId = plan === 'annual' ? YEARLY_PRODUCT_ID : MONTHLY_PRODUCT_ID;
 
   // Fire view event whenever the modal mounts with a fresh trigger.
   // Also persist the trigger to the user record so Apple's eventual
@@ -73,7 +101,13 @@ export function PaywallModal() {
   // `subscription_purchased` analytics event with the original attribution.
   useEffect(() => {
     if (visible && pendingTrigger) {
-      Analytics.paywallViewed(token, { trigger_source: pendingTrigger });
+      openedAtRef.current = Date.now();
+      Analytics.paywallViewed(token, {
+        trigger_source: pendingTrigger,
+        stage,
+        trigger: pendingTrigger,
+        is_founding_window: isFoundingWindow,
+      });
       if (token) {
         apiFetch('/api/subscription/record-trigger', {
           method: 'POST',
@@ -134,10 +168,14 @@ export function PaywallModal() {
 
     const productID = plan === 'annual' ? YEARLY_PRODUCT_ID : MONTHLY_PRODUCT_ID;
 
+    // 1a — StoreKit/Play purchase sheet about to open.
+    Analytics.purchaseInitiated(token, { plan_id: productID, stage });
+
     // Web preview / Expo Go / Android — no native StoreKit. Optimistically
     // flip the local state so QA on these surfaces still proceeds. The
     // real iOS build hits the native StoreKit sheet below.
     if (!isStoreKitAvailable()) {
+      Analytics.purchaseCompleted(token, { plan_id: productID, is_trial: true });
       setStatus('in_trial');
       dismissPaywall();
       return;
@@ -174,6 +212,8 @@ export function PaywallModal() {
           plan,
           trigger_source: lastConversionTrigger ?? pendingTrigger ?? 'unknown',
         });
+        // 1a — purchase confirmed by the store.
+        Analytics.purchaseCompleted(token, { plan_id: result.productID, is_trial: true });
         clearConversionTrigger();
         // The intro-offer flag is determined by Apple — we mark `in_trial`
         // here because every product has a 7-day intro. If Apple denies
@@ -184,27 +224,48 @@ export function PaywallModal() {
       } else if (result.status === 'cancelled') {
         // User dismissed Apple's sheet — leave the paywall up so they can
         // retry or close manually.
+        Analytics.purchaseFailed(token, { plan_id: productID, failure_reason: 'user_cancelled' });
+      } else {
+        Analytics.purchaseFailed(token, { plan_id: productID, failure_reason: 'unknown' });
       }
     } catch (err) {
       console.error('StoreKit purchase failed', err);
+      Analytics.purchaseFailed(token, { plan_id: productID, failure_reason: 'unknown' });
     }
   };
 
   const handleRestore = async () => {
     Analytics.subscriptionRestored(token, { source: 'paywall' });
+    Analytics.restorePurchasesClicked(token, { source: 'paywall' });
     if (!isStoreKitAvailable()) return;
     try {
       const entitlements = await storeKitRestore();
       if (entitlements.length > 0) {
-        // Found at least one active entitlement — promote local state and
-        // close the paywall. The first transaction's expiration tells us
-        // whether it's still active.
+        Analytics.restorePurchasesCompleted(token, {
+          restored_plan_id: entitlements[0]?.productID,
+        });
         setStatus('active');
         dismissPaywall();
       }
     } catch (err) {
       console.error('StoreKit restore failed', err);
     }
+  };
+
+  /** 1a — fire paywall_dismissed with method + dwell time, then dismiss. */
+  const handleDismiss = (method: 'x_button' | 'back_swipe' | 'tap_outside') => {
+    const seconds = openedAtRef.current
+      ? Math.round((Date.now() - openedAtRef.current) / 1000)
+      : undefined;
+    Analytics.paywallDismissed(token, { stage, dismiss_method: method, seconds_on_screen: seconds });
+    dismissPaywall();
+  };
+
+  /** 1a — plan card tapped. */
+  const handlePlanSelect = (next: Plan) => {
+    setPlan(next);
+    const pid = next === 'annual' ? YEARLY_PRODUCT_ID : MONTHLY_PRODUCT_ID;
+    Analytics.planSelected(token, { plan_id: pid, stage });
   };
 
   const handleOpenLink = (kind: 'privacy' | 'terms') => {
@@ -221,13 +282,13 @@ export function PaywallModal() {
       visible={visible}
       transparent
       animationType="slide"
-      onRequestClose={dismissPaywall}
+      onRequestClose={() => handleDismiss('back_swipe')}
     >
       <View style={styles.overlay}>
         <View style={[styles.sheet, { paddingBottom: insets.bottom + 16 }]}>
           <TouchableOpacity
             style={styles.closeButton}
-            onPress={dismissPaywall}
+            onPress={() => handleDismiss('x_button')}
             testID="paywall-close"
             data-testid="paywall-close"
           >
@@ -268,7 +329,7 @@ export function PaywallModal() {
             <View style={styles.plans}>
               <PlanCard
                 selected={plan === 'annual'}
-                onPress={() => setPlan('annual')}
+                onPress={() => handlePlanSelect('annual')}
                 label="Annual"
                 price={ANNUAL_PRICE_LABEL}
                 trailing={ANNUAL_MONTHLY_BREAKDOWN}
@@ -277,7 +338,7 @@ export function PaywallModal() {
               />
               <PlanCard
                 selected={plan === 'monthly'}
-                onPress={() => setPlan('monthly')}
+                onPress={() => handlePlanSelect('monthly')}
                 label="Monthly"
                 price={MONTHLY_PRICE_LABEL}
                 testID="paywall-plan-monthly"

@@ -18,6 +18,7 @@ import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import { generateOutdoorCarts } from '../utils/workoutGenerator';
+import { runTrackedGeneration } from '../utils/generationTracking';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
@@ -196,7 +197,11 @@ export default function OutdoorEquipmentScreen() {
   // Handle intensity selection and generate workout
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
     setShowIntensityModal(false);
-    const carts = generateOutdoorCarts(intensity, moodTitle, workoutType, selectedEquipment.map(eq => eq.name));
+    const { carts } = runTrackedGeneration(
+      token,
+      { mood: moodTitle, energy_level: intensity, equipment: selectedEquipment.map(eq => eq.name).join(', ') },
+      () => generateOutdoorCarts(intensity, moodTitle, workoutType, selectedEquipment.map(eq => eq.name))
+    );
     
     if (carts.length > 0) {
       if (!isGuest && token) {

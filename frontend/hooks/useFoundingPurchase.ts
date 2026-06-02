@@ -42,8 +42,13 @@ export function useFoundingPurchase() {
       }
       const sku = claim.data.sku_id || FOUNDING_PRODUCT_ID;
 
+      // 1a — purchase sheet about to open (founding annual).
+      Analytics.purchaseInitiated(token, { plan_id: sku });
+
       // 2) Purchase. Web/Expo Go: optimistic.
       if (!isStoreKitAvailable()) {
+        Analytics.foundingMemberClaimed(token, { revenue_usd: 39 });
+        Analytics.purchaseCompleted(token, { plan_id: sku, revenue_usd: 39, is_trial: false });
         setStatus('active');
         await refreshEntitlement();
         return 'success';
@@ -70,14 +75,27 @@ export function useFoundingPurchase() {
             plan: 'annual',
             trigger_source: triggerSource,
           });
+          // 1c — founding annual successfully purchased.
+          Analytics.foundingMemberClaimed(token, { revenue_usd: 39 });
+          // 1a — store-confirmed purchase.
+          Analytics.purchaseCompleted(token, {
+            plan_id: result.productID,
+            revenue_usd: 39,
+            is_trial: false,
+          });
           setStatus('active');
           await refreshEntitlement();
           return 'success';
         }
-        if (result.status === 'cancelled') return 'cancelled';
+        if (result.status === 'cancelled') {
+          Analytics.purchaseFailed(token, { plan_id: sku, failure_reason: 'user_cancelled' });
+          return 'cancelled';
+        }
+        Analytics.purchaseFailed(token, { plan_id: sku, failure_reason: 'unknown' });
         return 'error';
       } catch (e) {
         console.error('Founding purchase failed', e);
+        Analytics.purchaseFailed(token, { plan_id: sku, failure_reason: 'unknown' });
         return 'error';
       }
     },

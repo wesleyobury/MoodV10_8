@@ -20,6 +20,7 @@ import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import { generateSweatBurnFatCarts } from '../utils/workoutGenerator';
+import { runTrackedGeneration } from '../utils/generationTracking';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -180,7 +181,11 @@ export default function WorkoutTypeScreen() {
     setShowIntensityModal(false);
     
     // Generate combined workout carts from cardio + light weights
-    const carts = generateSweatBurnFatCarts(intensity, moodTitle, 'Mixed Workout');
+    const { carts } = runTrackedGeneration(
+      token,
+      { mood: moodTitle, energy_level: intensity },
+      () => generateSweatBurnFatCarts(intensity, moodTitle, 'Mixed Workout')
+    );
     
     if (carts.length > 0) {
       // Save to backend

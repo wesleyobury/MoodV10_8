@@ -21,6 +21,7 @@ import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import { generateMuscleGainerCarts, type CartTypeId } from '../utils/workoutGenerator';
+import { runTrackedGeneration } from '../utils/generationTracking';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -172,8 +173,12 @@ export default function BodyPartsScreen() {
       }
     } catch (_) { /* ignore — fall back to empty */ }
 
-    const carts = generateMuscleGainerCarts(
-      intensity, selectedMuscleNames, moodTitle, workoutType, recentlySeen
+    const { carts } = runTrackedGeneration(
+      token,
+      { mood: moodTitle, energy_level: intensity, equipment: workoutType },
+      () => generateMuscleGainerCarts(
+        intensity, selectedMuscleNames, moodTitle, workoutType, recentlySeen
+      )
     );
 
     // Persist this generation's cart types as the new "last seen" history

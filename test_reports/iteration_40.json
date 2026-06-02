@@ -1,0 +1,56 @@
+{
+  "summary": "MOOD V2 Phase 1 — Event Tracking Expansion independently re-verified. Backend (14/14 pytest cases pass): /auth/register → user_registered (auth), /auth/login wrong→ login_failure (auth), correct → login_success (auth), /auth/logout → logout (auth) — all land in user_events with correct event_category. /subscription/validate (product_id=mood_premium_yearly, dummy signed_payload) emits subscription_started (monetization) with metadata.plan_id='mood_premium_yearly', metadata.source='apple', metadata.revenue_usd=79.0; legacy `analytics_events` collection count is unchanged for that user (confirms server-side standardization on user_events only). Apple webhook GATE is fail-closed: POST /api/subscription/webhooks/apple with {'signedPayload':'not.a.jws'} AND with {} both return 200 {ok:true, verified:false}, an apple_webhook_events audit doc with verified:false is written, and ZERO subscription_* events with metadata.notification_type are added to user_events (no spoofing). Catalog spot-check via /api/analytics/track confirms paywall_dismissed, plan_selected, purchase_initiated, restore_purchases_clicked, founding_member_offer_shown all map to category='monetization' and workout_generation_started/_completed/_previewed/_regenerated all map to category='workout'. Frontend funnel E2E (workout generation → cart) could NOT be exercised in the web preview because (a) the web preview frontend at https://pulse-sync-build.preview.emergentagent.com routes all API calls through EXPO_PUBLIC_API_URL=https://app-refine-1.preview.emergentagent.com which returns 404 for /api/* (boot health check & /api/me/entitlement both 404), and (b) HealthOnboardingGate hard-redirects authenticated users with planted token from /body-parts to /onboarding/health-connect — same blocker reported in iteration_39. Frontend plumbing source-code is confirmed correct (runTrackedGeneration wraps generation with workout_generation_started/_completed, cart.tsx calls Analytics.workoutPreviewed, regen path calls Analytics.workoutRegenerated). Deprecated packages detected: expo-av (warning in console; should migrate to expo-audio + expo-video).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Web preview → backend API calls",
+        "issue": "Frontend EXPO_PUBLIC_API_URL points to https://app-refine-1.preview.emergentagent.com which returns 404 for /api/* (verified via curl: /api/health → 404). The working backend is at https://pulse-sync-build.preview.emergentagent.com (same as EXPO_PUBLIC_BACKEND_URL). This breaks ALL frontend→backend calls in the web preview: AppBootstrap health check, /api/me/entitlement, /api/config all 404. Token-planted session validation also fails. This blocks any web-based UI E2E (including the generation funnel). Note: backend pytest hits localhost:8001 directly so plumbing is still verified; native/Expo Go build may bind to a different URL.",
+        "affected_testIDs": []
+      },
+      {
+        "flow": "Workout generation funnel via web preview",
+        "issue": "HealthOnboardingGate (frontend/components/HealthOnboardingGate.tsx) router.replace('/onboarding/health-connect') intercepts every freshly-registered user, so direct navigation to /body-parts?mood=Muscle%20Gainer is redirected before any workout_generation_* event can fire from the UI. Same blocker as iteration_39. NOT a Phase 1 regression — pre-existing gating logic. UI funnel cannot be E2E exercised in web; verified code path only."
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": [
+      {
+        "component": "expo-av",
+        "issue": "Deprecation warning logged at boot ('Expo AV has been deprecated and will be removed in SDK 54. Use the expo-audio and expo-video packages...'). Reference: any module importing 'expo-av' in /app/frontend/."
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_phase1_tracking_v2.py",
+    "/app/test_reports/pytest/phase1_v2.xml"
+  ],
+  "action_items": [
+    "Phase 1 backend work is COMPLETE and correctly wired — no action needed for user_registered/login_success/login_failure/logout/subscription_started/Apple-webhook-GATE/catalog.",
+    "(Outside Phase 1, but blocking web QA) Reconcile frontend/.env: EXPO_PUBLIC_API_URL currently points to https://app-refine-1.preview.emergentagent.com (returns 404 on /api/*). Either re-point it to the same domain as EXPO_PUBLIC_BACKEND_URL (https://pulse-sync-build.preview.emergentagent.com) or restore the dead preview. Without this, no web E2E of the generation funnel is possible.",
+    "(Outside Phase 1) HealthOnboardingGate blocks any fresh user from reaching /body-parts in web — testing the workout funnel via web preview is currently impossible. Suggest a dev flag to bypass for E2E, or seed completed onboarding for test users.",
+    "Migrate expo-av usages to expo-audio + expo-video (Expo SDK 54 deprecation)."
+  ],
+  "critical_code_review_comments": [
+    "backend/user_analytics.py + backend/server.py: /subscription/validate correctly emits subscription_started to user_events via track_user_event and NO writes go to legacy analytics_events for the same user (count unchanged before/after). Standardization PASS.",
+    "backend/apple_webhook_verifier.py: verifier is fail-closed when APPLE_APP_APPLE_ID is unset (expected/dormant in this env). Unsigned and empty payloads both result in verified:false audit doc + ZERO subscription_* events tagged with metadata.notification_type. Gate PASS.",
+    "frontend/utils/generationTracking.ts: runTrackedGeneration fires workout_generation_started before runner and workout_generation_completed/_failed in a try/finally — looks correct, propagates errors after emitting the failed event.",
+    "frontend/app/cart.tsx: invokes Analytics.workoutPreviewed on preview and Analytics.workoutRegenerated on regen — wiring matches the EVENT_TYPES catalog."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_phase1_tracking_v2.py (NEW — 14 pytest cases covering auth events, logout, subscription_started + no-legacy-write assertion, Apple webhook gate, and catalog spot-checks)"
+  ],
+  "success_rate": {
+    "backend": "100% (14/14)",
+    "frontend": "N/A — UI funnel not reachable in web preview (API URL misconfig + onboarding gate); source-code review PASS"
+  },
+  "seed_data_creation": "Three test users registered via /api/auth/register with prefix p1v2_/p1v2c_/p1v2s_/p1ui_ + timestamp — used only for event emission, no destructive ops. user_events docs created for: user_registered, login_failure, login_success, logout, subscription_started, paywall_dismissed, plan_selected, purchase_initiated, restore_purchases_clicked, founding_member_offer_shown, workout_generation_started, workout_generation_completed, workout_previewed, workout_regenerated. apple_webhook_events audit docs created with verified:false.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend Phase 1 (auth + monetization + workout funnel catalog + Apple webhook gate) is fully green via /app/backend/tests/test_phase1_tracking_v2.py — reuse it as a regression suite. The web preview frontend cannot reach the backend because EXPO_PUBLIC_API_URL points to a 404 domain; until that is fixed OR a native build is used, do not attempt UI E2E of the generation funnel. HealthOnboardingGate additionally blocks /body-parts for any fresh user. The Apple webhook is intentionally dormant (APPLE_APP_APPLE_ID unset) — verified=false on unsigned payload is the CORRECT behavior, not a bug.",
+  "rca_of_issue": "N/A — Phase 1 work passes. Two pre-existing environment/architecture issues (EXPO_PUBLIC_API_URL domain returns 404; HealthOnboardingGate redirects unfunneled users) prevent web-based E2E but are out of Phase 1 scope."
+}

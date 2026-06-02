@@ -278,12 +278,24 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Login Create Account button (charcoal/white/gold emblem)"
-    - "Build-for-me/Build-my-own layout parity across sweat/explosion/lazy paths"
-    - "Wearables home redesign + premium gold mood-card gradients"
+    - "MOOD V2 Phase 1 — Event tracking expansion (paywall/monetization/generation funnel + auth cleanup + Apple webhook gate)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+
+## Fork Session (2026-06-02) — MOOD V2 Phase 1: Event Tracking Expansion
+### Backend (user_analytics.py + server.py + apple_webhook_verifier.py)
+- EVENT_TYPES catalog: added `monetization` category + all Phase 1 events (paywall x8, subscription lifecycle x5, founding x3), `workout` generation funnel x5, and auth cleanup (`user_registered`/`login_success`/`login_failure`/`logout`). Also registered previously-uncategorized client events as monetization/auth additively.
+- 1e: registration now routed through `track_user_event()` (gets event_category=auth, lands in user_events). Added `login_success`/`login_failure` in /auth/login and `logout` in /auth/logout (resolves user from session).
+- /subscription/validate: STOPPED writing to legacy `analytics_events`; now fires `subscription_started` via track_user_event → user_events (plan_id, revenue_usd from PRODUCT_PRICE_USD, source=apple).
+- Apple S2S webhook (/subscription/webhooks/apple): real JWS verification GATE via Apple's `app-store-server-library` SignedDataVerifier (root certs in backend/certs/apple). Unverified/unsigned payloads are DROPPED (audit-logged verified:False, NO analytics event). Verified notifications map notificationType→subscription_renewed/_cancelled/_expired/_refunded/_started with idempotency by notificationUUID. Fail-closed when APPLE_APP_APPLE_ID unset (dormant until configured).
+- Smoke test: backend/tests/test_phase1_tracking.py PASSES (auth+monetization categories correct; gate drops unsigned payloads; 0 spoofed events).
+### Frontend (analytics.ts + components/hooks/screens)
+- analytics.ts: extended `paywallViewed` additively (stage/trigger/is_founding_window); added typed helpers for paywall_dismissed, plan_selected, purchase_initiated/completed/failed, restore_purchases_clicked/completed, founding_member_offer_shown/claimed, workout_generation_started/completed/failed, workout_regenerated, workout_previewed.
+- PaywallModal.tsx: wired paywall_viewed (stage/trigger/is_founding_window), paywall_dismissed (x_button/back_swipe + seconds_on_screen), plan_selected, purchase_initiated/completed/failed, restore clicked/completed.
+- useFoundingPurchase.ts: founding_member_claimed + purchase_* on the founding flow. FoundingOfferModal.tsx: founding_member_offer_shown.
+- Generation funnel: utils/generationTracking.ts wraps the 6 mood-screen generators (body-parts, workout-type, calisthenics-equipment, explosiveness-type, outdoor-equipment, lazy-training-type) → started/completed/failed. cart.tsx fires workout_previewed (on generated-cart mount) + workout_regenerated (on "try another").
+- NOTE: purchase/StoreKit + Apple webhook lifecycle events are native/production-only (can't fully E2E in Expo Go/web); verified event plumbing lands in user_events here.
 
 ## Fork Session (2026-05-29 batch 2) — login CTA + build-section parity + wearables/mood-card polish
 - Login (`auth/login.tsx`): replaced "Don't have an account? Sign up" text link with an equal-weight "Create Account" button (charcoal #1f1f1f, white bold text, gold person-add emblem) directly under the gold Login button. VERIFIED via screenshot.

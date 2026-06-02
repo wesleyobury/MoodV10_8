@@ -54,6 +54,8 @@ export function FoundingOfferModal() {
       shownThisSession = true;
       setVisible(true);
       Analytics.foundingModalShown(token, { days_remaining: daysLeft });
+      // 1c — canonical founding-offer-shown event for the funnel.
+      Analytics.foundingMemberOfferShown(token, { days_remaining_in_window: daysLeft });
     }
   }, [token, eligible, daysLeft, inOnboarding]);
 

@@ -324,6 +324,8 @@ export default function CartScreen() {
 
   // Track explicit cart clears to prevent re-hydration from stale route params
   const userClearedRef = useRef(false);
+  // 1d — counts how many times the user shuffles to another generated option.
+  const regenCountRef = useRef(0);
 
   // Parse generated carts from params on mount
   useEffect(() => {
@@ -340,6 +342,11 @@ export default function CartScreen() {
         const firstCart = carts[0];
         const intensity = firstCart?.intensity || 'intermediate';
         setDynamicTitle(getRandomWorkoutTitle(intensity, params.moodCard as string || ''));
+        // 1d — generated workout shown but not yet started.
+        Analytics.workoutPreviewed(token, {
+          workout_id: firstCart?.id || firstCart?.cartType,
+          mood: (params.moodCard as string) || undefined,
+        });
       } catch (e) {
         console.error('Error parsing generated carts:', e);
       }
@@ -466,6 +473,15 @@ export default function CartScreen() {
     const nextIndex = (currentCartIndex + 1) % generatedCarts.length;
     const nextCart = generatedCarts[nextIndex];
     setCurrentCartIndex(nextIndex);
+
+    // 1d — user requested a different generated workout ("try again").
+    regenCountRef.current += 1;
+    Analytics.workoutRegenerated(token, {
+      mood: moodCard,
+      previous_workout_id:
+        generatedCarts[currentCartIndex]?.id || generatedCarts[currentCartIndex]?.cartType,
+      regeneration_count: regenCountRef.current,
+    });
 
     // Generate new dynamic title for the new cart
     const intensity = nextCart?.intensity || 'intermediate';

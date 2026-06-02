@@ -19,6 +19,7 @@ import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import { generateExplosivenessCarts } from '../utils/workoutGenerator';
+import { runTrackedGeneration } from '../utils/generationTracking';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -162,7 +163,11 @@ export default function ExplosivenessTypeScreen() {
 
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
     setShowIntensityModal(false);
-    const carts = generateExplosivenessCarts(intensity, moodTitle, 'Mixed Explosive');
+    const { carts } = runTrackedGeneration(
+      token,
+      { mood: moodTitle, energy_level: intensity },
+      () => generateExplosivenessCarts(intensity, moodTitle, 'Mixed Explosive')
+    );
     
     if (carts.length > 0) {
       if (!isGuest && token) {
