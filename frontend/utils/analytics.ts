@@ -660,6 +660,9 @@ export const Analytics = {
       stage?: 1 | 2 | 3;
       dismiss_method?: 'x_button' | 'back_swipe' | 'tap_outside';
       seconds_on_screen?: number;
+      // MOOD V2 launch-critical additions (additive — old callers still compile)
+      trigger_source?: string;
+      method?: 'tertiary_link' | 'background_tap' | 'system_back';
     }
   ) =>
     token
@@ -781,6 +784,81 @@ export const Analytics = {
     token
       ? trackEvent(token, 'workout_previewed', metadata)
       : trackGuestEvent('workout_previewed', metadata),
+
+  // ── MOOD V2 — Launch-critical CTA-level events ──────────────────────
+  // The single biggest conversion-analysis gap: which paywall CTA the user
+  // actually tapped (vs just viewing the paywall).
+  paywallCtaTapped: (
+    token: string | null,
+    metadata: {
+      cta: 'start_free_trial' | 'subscribe_now' | 'claim_founding' | 'save_for_later' | 'maybe_later';
+      trigger_source?: string;
+      variant?: 'standard' | 'founding';
+    }
+  ) =>
+    token
+      ? trackEvent(token, 'paywall_cta_tapped', metadata)
+      : trackGuestEvent('paywall_cta_tapped', metadata),
+
+  // Mood interstitial (drop-off measurement before workout build).
+  moodIntroViewed: (token: string | null, metadata: { mood: string }) =>
+    token
+      ? trackEvent(token, 'mood_intro_viewed', metadata)
+      : trackGuestEvent('mood_intro_viewed', metadata),
+
+  moodIntroCtaTapped: (token: string | null, metadata: { mood: string }) =>
+    token
+      ? trackEvent(token, 'mood_intro_cta_tapped', metadata)
+      : trackGuestEvent('mood_intro_cta_tapped', metadata),
+
+  // Founding banner — distinct conversion path from the founding MODAL.
+  foundingBannerShown: (token: string | null, metadata: { days_remaining?: number }) =>
+    token
+      ? trackEvent(token, 'founding_banner_shown', metadata)
+      : trackGuestEvent('founding_banner_shown', metadata),
+
+  foundingBannerClaimTapped: (token: string | null, metadata: { days_remaining?: number }) =>
+    token
+      ? trackEvent(token, 'founding_banner_claim_tapped', metadata)
+      : trackGuestEvent('founding_banner_claim_tapped', metadata),
+
+  foundingBannerDismissed: (token: string | null, metadata: { days_remaining?: number }) =>
+    token
+      ? trackEvent(token, 'founding_banner_dismissed', metadata)
+      : trackGuestEvent('founding_banner_dismissed', metadata),
+
+  foundingBannerChipTapped: (token: string | null, metadata: { days_remaining?: number }) =>
+    token
+      ? trackEvent(token, 'founding_banner_chip_tapped', metadata)
+      : trackGuestEvent('founding_banner_chip_tapped', metadata),
+
+  // ── MOOD V2 PHASE 3 — Notifications + sharing ───────────────────────
+  notificationReceived: (token: string, metadata: { notification_type?: string } & Record<string, any> = {}) =>
+    trackEvent(token, 'notification_received', metadata),
+
+  notificationOpened: (token: string, metadata: { notification_type?: string; source?: string } & Record<string, any> = {}) =>
+    trackEvent(token, 'notification_opened', metadata),
+
+  notificationPermissionPrompted: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'notification_permission_prompted', metadata)
+      : trackGuestEvent('notification_permission_prompted', metadata),
+
+  notificationPermissionGranted: (token: string | null, metadata: Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'notification_permission_granted', metadata)
+      : trackGuestEvent('notification_permission_granted', metadata),
+
+  notificationPermissionDenied: (token: string | null, metadata: { can_ask_again?: boolean } & Record<string, any> = {}) =>
+    token
+      ? trackEvent(token, 'notification_permission_denied', metadata)
+      : trackGuestEvent('notification_permission_denied', metadata),
+
+  notificationSettingsChanged: (token: string, metadata: { setting: string; value: any }) =>
+    trackEvent(token, 'notification_settings_changed', metadata),
+
+  shareSheetOpened: (token: string, metadata: Record<string, any> = {}) =>
+    trackEvent(token, 'share_sheet_opened', metadata),
 };
 
 // Guest Analytics - for tracking guest user activity

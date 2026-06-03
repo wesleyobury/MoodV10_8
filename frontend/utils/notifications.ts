@@ -10,6 +10,7 @@ import { Platform, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from './apiConfig';
+import { Analytics } from './analytics';
 
 // Configure notification handler (foreground display)
 Notifications.setNotificationHandler({
@@ -128,6 +129,7 @@ export async function initNotifications(authToken: string): Promise<NotifStatus>
           result.permission = 'denied';
           return result;
         }
+        Analytics.notificationPermissionPrompted(authToken, { platform: Platform.OS });
         const { status } = await Notifications.requestPermissionsAsync();
         await AsyncStorage.setItem(PERMISSION_REQUESTED_KEY, 'true');
         finalStatus = status;
@@ -143,6 +145,7 @@ export async function initNotifications(authToken: string): Promise<NotifStatus>
       }
     } else {
       // undetermined — request for first time
+      Analytics.notificationPermissionPrompted(authToken, { platform: Platform.OS });
       const { status } = await Notifications.requestPermissionsAsync();
       await AsyncStorage.setItem(PERMISSION_REQUESTED_KEY, 'true');
       finalStatus = status;
@@ -152,11 +155,13 @@ export async function initNotifications(authToken: string): Promise<NotifStatus>
     // Persist the decision
     if (finalStatus !== 'granted') {
       await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'denied');
+      Analytics.notificationPermissionDenied(authToken, { platform: Platform.OS });
       result.permission = 'denied';
       return result;
     }
 
     await AsyncStorage.setItem(NOTIFICATION_PERMISSION_KEY, 'granted');
+    Analytics.notificationPermissionGranted(authToken, { platform: Platform.OS });
     result.permission = 'granted';
 
     // 2. Configure Android notification channel (must happen before getExpoPushTokenAsync)
@@ -293,6 +298,13 @@ class NotificationService {
     this.notificationListener = Notifications.addNotificationReceivedListener(
       (notification) => {
         console.log('🔔 Notification received:', notification.request.content.title);
+        if (this.authToken) {
+          const data = notification.request.content.data as any;
+          Analytics.notificationReceived(this.authToken, {
+            notification_type: data?.type || 'unknown',
+            foreground: true,
+          });
+        }
       }
     );
 
@@ -336,6 +348,14 @@ class NotificationService {
   private _handleNotificationResponse(response: Notifications.NotificationResponse): void {
     const data = response.notification.request.content.data as any;
     console.log('📲 Notification tapped:', JSON.stringify(data));
+
+    if (this.authToken) {
+      Analytics.notificationOpened(this.authToken, {
+        notification_type: data?.type || 'unknown',
+        source: 'push',
+        has_deep_link: !!data?.deep_link,
+      });
+    }
 
     if (data?.type === 'featured_workout') {
       this._handleFeaturedWorkoutTap(data);

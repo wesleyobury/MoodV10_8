@@ -161,6 +161,12 @@ export function PaywallModal() {
   }, [pendingTrigger]);
 
   const handleStartTrial = async () => {
+    // Launch-critical: which CTA was tapped (the single biggest funnel gap).
+    Analytics.paywallCtaTapped(token, {
+      cta: 'start_free_trial',
+      trigger_source: pendingTrigger ?? 'unknown',
+      variant: isFoundingWindow ? 'founding' : 'standard',
+    });
     // Tag the trial start with the originating paywall trigger. The same
     // attribution sticks through `subscription_purchased` via
     // `lastConversionTrigger` + server-side `subscription.last_trigger_source`.
@@ -257,7 +263,19 @@ export function PaywallModal() {
     const seconds = openedAtRef.current
       ? Math.round((Date.now() - openedAtRef.current) / 1000)
       : undefined;
-    Analytics.paywallDismissed(token, { stage, dismiss_method: method, seconds_on_screen: seconds });
+    // Map legacy dismiss_method → launch-critical method enum.
+    const methodMap: Record<string, 'tertiary_link' | 'background_tap' | 'system_back'> = {
+      x_button: 'system_back',
+      back_swipe: 'system_back',
+      tap_outside: 'background_tap',
+    };
+    Analytics.paywallDismissed(token, {
+      stage,
+      dismiss_method: method,
+      seconds_on_screen: seconds,
+      method: methodMap[method],
+      trigger_source: pendingTrigger ?? 'unknown',
+    });
     dismissPaywall();
   };
 

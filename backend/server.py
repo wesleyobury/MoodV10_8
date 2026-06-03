@@ -131,6 +131,7 @@ from user_analytics import (
     get_workout_funnel_detail,
     EVENT_TYPES,
 )
+import retention as retention_engine
 from admin_analytics import (
     get_funnel_analysis,
     get_retention_cohorts,
@@ -2625,6 +2626,19 @@ async def track_event(
     except Exception:
         pass
     await track_user_event(db, current_user_id, request.event_type, md)
+
+    # MOOD V2 Phase 2 — server-side retention engine. Streaks + comeback signals
+    # are computed here (never trusting the client) and emitted as their own
+    # retention events. Wrapped so a retention error never fails the track call.
+    try:
+        async def _emit(event_type: str, meta: dict):
+            await track_user_event(db, current_user_id, event_type, meta)
+        await retention_engine.process_retention_for_event(
+            db, current_user_id, request.event_type, _emit
+        )
+    except Exception as _re:
+        logger.error(f"retention hook error: {_re}")
+
     return {"message": "Event tracked successfully"}
 
 @api_router.post("/analytics/track/guest")

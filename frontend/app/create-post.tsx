@@ -1020,6 +1020,12 @@ export default function CreatePost() {
     }
     await MediaLibrary.saveToLibraryAsync(uri);
     if (token) {
+      // Phase 3 — the overlay is being written to the camera roll. Previously
+      // exported-but-unfired; now wired at the actual save point.
+      Analytics.shareToCameraRollTapped(token, {
+        destination: 'camera_roll',
+        has_heart_rate: !!heartRateSeries,
+      });
       Analytics.shareCompleted(token, {
         destination: 'instagram_stories',
         has_heart_rate: !!heartRateSeries,
@@ -1043,6 +1049,9 @@ export default function CreatePost() {
         const Sharing = await import('expo-sharing');
         const canShare = await Sharing.isAvailableAsync();
         if (canShare) {
+          if (token) {
+            Analytics.shareSheetOpened(token, { destination: 'system_share_sheet' });
+          }
           await Sharing.shareAsync(uri, {
             mimeType: 'image/png',
             dialogTitle: 'Share your workout overlay',

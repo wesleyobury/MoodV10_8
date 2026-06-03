@@ -16,6 +16,7 @@ import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/AuthContext';
 import notificationService, { NotificationSettings } from '../utils/notifications';
+import { Analytics } from '../utils/analytics';
 
 // Convert 24h to 12h format
 const formatTime12h = (time24: string): string => {
@@ -70,6 +71,8 @@ export default function NotificationSettingsScreen() {
       if (!updated) {
         setSettings(settings);
         Alert.alert('Error', 'Failed to save setting');
+      } else if (token) {
+        Analytics.notificationSettingsChanged(token, { setting: String(key), value });
       }
     } catch (error) {
       setSettings(settings);

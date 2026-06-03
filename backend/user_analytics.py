@@ -124,14 +124,80 @@ EVENT_TYPES = {
     "founding_modal_dismissed": "monetization",
     "settings_restore_purchases_tapped": "monetization",
     "workout_generated": "workout",
-    "onboarding_step_viewed": "auth",
-    "onboarding_step_completed": "auth",
-    "onboarding_completed": "auth",
-    "onboarding_abandoned": "auth",
-    "reveal_screen_viewed": "auth",
-    "reveal_cta_tapped": "auth",
-    "medical_disclaimer_accepted": "auth",
     "pulse_sync_played": "engagement",
+
+    # ── MOOD V2 PHASE 2 — Retention + onboarding ────────────────────────
+    # 2a. Onboarding funnel + reveal (recategorized auth → onboarding so the
+    # onboarding funnel can be analyzed as its own category).
+    "onboarding_step_viewed": "onboarding",
+    "onboarding_step_completed": "onboarding",
+    "onboarding_completed": "onboarding",
+    "onboarding_abandoned": "onboarding",
+    "reveal_screen_viewed": "onboarding",
+    "reveal_cta_tapped": "onboarding",
+    "medical_disclaimer_accepted": "onboarding",
+
+    # 2b. Contextual onboarding tips.
+    "tip_shown": "onboarding",
+    "tip_tapped": "onboarding",
+    "tip_dismissed": "onboarding",
+    "tip_never_show": "onboarding",
+
+    # 2c. Health onboarding / permissions (part of first-run experience).
+    "health_permission_prompted": "onboarding",
+    "health_permission_granted": "onboarding",
+    "health_permission_denied": "onboarding",
+    "health_snapshot_refreshed": "onboarding",
+    "settings_health_row_tapped": "onboarding",
+
+    # 2d. Retention engine (server-side; see retention.py).
+    "streak_extended": "retention",
+    "streak_milestone_reached": "retention",
+    "streak_broken": "retention",
+    "comeback_after_lapse": "retention",
+
+    # ── MOOD V2 — Launch-critical CTA-level events (category: monetization) ─
+    "paywall_cta_tapped": "monetization",
+    "mood_intro_viewed": "workout",
+    "mood_intro_cta_tapped": "workout",
+    "founding_banner_shown": "monetization",
+    "founding_banner_claim_tapped": "monetization",
+    "founding_banner_dismissed": "monetization",
+    "founding_banner_chip_tapped": "monetization",
+
+    # ── MOOD V2 PHASE 3 — Notifications + sharing + small ops ────────────
+    # 3a. Notifications.
+    "notification_received": "notification",
+    "notification_opened": "notification",
+    "notification_permission_prompted": "notification",
+    "notification_permission_granted": "notification",
+    "notification_permission_denied": "notification",
+    "notification_settings_changed": "notification",
+
+    # 3b. Sharing.
+    "share_to_instagram_tapped": "sharing",
+    "share_to_camera_roll_tapped": "sharing",
+    "share_completed": "sharing",
+    "share_sheet_opened": "sharing",
+
+    # 3c. Small ops — catalog previously-"other" client events.
+    "workout_added_to_cart": "workout",
+    "workout_removed_from_cart": "workout",
+    "cart_viewed": "workout",
+    "choose_for_me_used": "workout",
+    "build_for_me_mood_used": "workout",
+    "featured_workout_clicked": "workout",
+    "featured_workout_started": "workout",
+    "featured_workout_completed": "workout",
+    "workout_funnel_step": "workout",
+    "workout_replicated": "social",
+    "workout_session_started": "workout",
+    "workout_session_ended": "workout",
+    "hr_samples_captured_count": "workout",
+    "workout_recap_viewed": "workout",
+    "screen_time_spent": "navigation",
+    "screen_entered": "navigation",
+    "screen_exited": "navigation",
 }
 
 # Excluded user IDs for analytics (admin/test accounts)

@@ -30,10 +30,13 @@ export default function MoodIntro() {
   useEffect(() => {
     if (moodId !== undefined) {
       Analytics.revealScreenViewed(token, { stage: 'mood_intro', mood: moodId ?? 'unknown' });
+      // Dedicated interstitial drop-off measurement.
+      Analytics.moodIntroViewed(token, { mood: moodId ?? 'unknown' });
     }
   }, [moodId, token]);
 
   const handleContinue = () => {
+    Analytics.moodIntroCtaTapped(token, { mood: moodId ?? 'unknown' });
     const route = routeForMood(moodId);
     if (route) {
       router.replace({ pathname: route.pathname as any, params: route.params });

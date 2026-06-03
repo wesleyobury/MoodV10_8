@@ -278,10 +278,22 @@ metadata:
 
 test_plan:
   current_focus:
-    - "MOOD V2 Phase 1 — Event tracking expansion (paywall/monetization/generation funnel + auth cleanup + Apple webhook gate)"
+    - "MOOD V2 Event-Tracking Phase 2 (retention+onboarding) + Phase 3 (notifications+sharing) + launch-critical CTA-level events"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+
+## Fork Session (2026-06-03) — MOOD V2 Event-Tracking Phase 2 + Phase 3 + CTA-level events
+### Backend (retention engine + catalog)
+- NEW backend/retention.py — server-side retention engine. Hooked into POST /api/analytics/track. On `workout_completed`/`workout_session_completed`/`featured_workout_completed` it recomputes a workout-completion streak (stored in dedicated user fields `rt_streak_current`/`rt_streak_longest`/`rt_streak_last_day`/`rt_last_active_day` — does NOT touch the activity-based `current_streak` shown in UI) and emits `streak_extended` (with `new_streak`/`is_new_streak`), `streak_milestone_reached` (3/7/14/30), `streak_broken` (on gap). On `app_session_start` it emits `comeback_after_lapse` (>=7d inactive) + breaks stale streak. All retention events category=`retention`. Idempotent within a UTC day; fully wrapped so a retention error never fails the track call.
+- user_analytics.py EVENT_TYPES: added categories `retention`/`onboarding`/`notification`/`sharing`; recategorized onboarding funnel/reveal/medical from `auth`→`onboarding`; cataloged tips, health-permission, CTA-level (paywall_cta_tapped, founding_banner_*, mood_intro_*), notification_*, share_*, and previously-"other" small-ops (cart_viewed, choose_for_me_used, build_for_me_mood_used, featured_workout_*, screen_time_*, workout_session_*, etc.).
+- NEW backend/scripts/backfill_retention_streaks.py — computes rt_* streak state for existing users from user_events history (idempotent, no event emission). Dry-run verified (0 users in local test DB; run against prod for the ~280 users).
+- Tests: backend/tests/test_phase2_retention.py — 22/22 PASS (streak extend/milestone/break, same-day idempotency, comeback + no-false-comeback, 7 catalog categorization checks). Phase 1 suite (test_phase1_tracking_v2.py) still valid.
+### Frontend (analytics.ts + call-sites)
+- analytics.ts: added paywallCtaTapped, moodIntroViewed/CtaTapped, foundingBannerShown/ClaimTapped/Dismissed/ChipTapped, notificationReceived/Opened/PermissionPrompted/Granted/Denied/SettingsChanged, shareSheetOpened; widened paywallDismissed metadata (trigger_source + method enum).
+- Wired call-sites: PaywallModal.tsx (paywall_cta_tapped on Start-trial CTA + enriched paywall_dismissed), FoundingBanner.tsx (shown/claim/dismiss/chip), mood-intro.tsx (viewed/cta), utils/notifications.ts (permission prompted/granted/denied + notification_received/opened in listeners), notification-settings.tsx (notification_settings_changed), create-post.tsx (share_to_camera_roll_tapped at Photos save + share_sheet_opened at system share).
+- NOTE: notification/share events are native/production-only for full E2E (Expo Go/web can't fully exercise push + native share). Event plumbing + catalog verified server-side.
+
 
 ## Fork Session (2026-06-02) — MOOD V2 Phase 1: Event Tracking Expansion
 ### Backend (user_analytics.py + server.py + apple_webhook_verifier.py)

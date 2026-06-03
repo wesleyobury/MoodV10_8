@@ -4,7 +4,7 @@
  * Shows for founding-eligible users during the window at the bottom of the
  * home screen. Dismiss collapses it to a small chip that stays present.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,12 +12,14 @@ import { COLORS } from '../constants/brand';
 import { useAuth } from '../contexts/AuthContext';
 import { useFoundingPurchase } from '../hooks/useFoundingPurchase';
 import { foundingDaysRemaining, FOUNDING_BANNER_COLLAPSED_KEY } from '../utils/founding';
+import { Analytics } from '../utils/analytics';
 
 export function FoundingBanner() {
-  const { entitlement } = useAuth();
+  const { entitlement, token } = useAuth();
   const { claimFounding } = useFoundingPurchase();
   const [collapsed, setCollapsed] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false);
+  const shownRef = useRef(false);
 
   const eligible =
     !!entitlement?.is_founding_member &&
@@ -32,23 +34,38 @@ export function FoundingBanner() {
       .catch(() => setCollapsed(false));
   }, []);
 
+  // Fire founding_banner_shown once when the expanded banner first appears.
+  useEffect(() => {
+    if (eligible && collapsed === false && !shownRef.current) {
+      shownRef.current = true;
+      Analytics.foundingBannerShown(token, { days_remaining: daysLeft });
+    }
+  }, [eligible, collapsed, token, daysLeft]);
+
   if (!eligible || collapsed === null) return null;
 
   const handleCollapse = () => {
+    Analytics.foundingBannerDismissed(token, { days_remaining: daysLeft });
     setCollapsed(true);
     AsyncStorage.setItem(FOUNDING_BANNER_COLLAPSED_KEY, 'true').catch(() => {});
   };
 
   const handleClaim = async () => {
     if (busy) return;
+    Analytics.foundingBannerClaimTapped(token, { days_remaining: daysLeft });
     setBusy(true);
     await claimFounding('founding_banner');
     setBusy(false);
   };
 
+  const handleExpandChip = () => {
+    Analytics.foundingBannerChipTapped(token, { days_remaining: daysLeft });
+    setCollapsed(false);
+  };
+
   if (collapsed) {
     return (
-      <TouchableOpacity style={styles.chip} onPress={() => setCollapsed(false)} testID="founding-chip">
+      <TouchableOpacity style={styles.chip} onPress={handleExpandChip} testID="founding-chip">
         <Ionicons name="flash" size={12} color={COLORS.accent} />
         <Text style={styles.chipText}>Founding deal · {daysLeft}d</Text>
       </TouchableOpacity>
