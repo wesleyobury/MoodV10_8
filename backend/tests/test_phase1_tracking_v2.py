@@ -185,7 +185,7 @@ class TestSubscriptionValidate:
                       headers={"Authorization": f"Bearer {token}"},
                       json={
                           "signed_payload": "dummy.unverified.jws",
-                          "product_id": "mood_premium_yearly",
+                          "product_id": "com.mood.subscription.annual",
                           "transaction_id": f"TX_{session_id}",
                           "original_transaction_id": f"OTX_{session_id}",
                           "purchase_date": "2026-01-01T00:00:00Z",
@@ -202,7 +202,7 @@ class TestSubscriptionValidate:
         assert doc is not None, "subscription_started missing from user_events"
         assert doc.get("event_category") == "monetization"
         md = doc.get("metadata") or {}
-        assert md.get("plan_id") == "mood_premium_yearly"
+        assert md.get("plan_id") == "com.mood.subscription.annual"
         assert md.get("source") == "apple"
         assert md.get("revenue_usd") == 79.0
 

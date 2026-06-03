@@ -1974,9 +1974,9 @@ class SubscriptionValidateRequest(BaseModel):
 
 
 # MOOD V2 — App Store Connect product identifiers.
-PRODUCT_ANNUAL = "mood_premium_yearly"
-PRODUCT_MONTHLY = "mood_premium_monthly"
-PRODUCT_FOUNDING_ANNUAL = "mood_premium_founding_annual"
+PRODUCT_ANNUAL = "com.mood.subscription.annual"
+PRODUCT_MONTHLY = "com.mood.subscription.monthly"
+PRODUCT_FOUNDING_ANNUAL = "com.mood.subscription.founding_annual"
 
 # Display prices (USD) per SKU — used to stamp `revenue_usd` on monetization
 # analytics events. These mirror the StoreKit/App Store Connect pricing.

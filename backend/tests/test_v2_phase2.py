@@ -93,11 +93,11 @@ def main():
         # Claim → returns founding SKU
         s, b = call("POST", "/me/claim-founding", ft)
         ok("claim-founding 200", s == 200, str(s))
-        ok("claim returns founding SKU", b.get("sku_id") == "mood_premium_founding_annual", json.dumps(b))
+        ok("claim returns founding SKU", b.get("sku_id") == "com.mood.subscription.founding_annual", json.dumps(b))
 
         # Simulate StoreKit purchase validate of the founding SKU
         s, b = call("POST", "/subscription/validate", ft, {
-            "signed_payload": "test", "product_id": "mood_premium_founding_annual",
+            "signed_payload": "test", "product_id": "com.mood.subscription.founding_annual",
             "transaction_id": "t1", "expiration_date": (launch + timedelta(days=365)).isoformat(),
         })
         ok("founding purchase validate 200", s == 200, json.dumps(b))

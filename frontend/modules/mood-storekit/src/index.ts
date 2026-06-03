@@ -16,12 +16,12 @@ import { Platform } from 'react-native';
 /**
  * Pinned product IDs — must match the App Store Connect entries. Phase C
  * v1.0 launch:
- *   • mood_premium_monthly  — $9.99/mo, auto-renewing, 7-day intro trial
- *   • mood_premium_yearly   — $79.99/yr, auto-renewing, 7-day intro trial
+ *   • com.mood.subscription.monthly  — $9.99/mo, auto-renewing, 7-day intro trial
+ *   • com.mood.subscription.annual   — $79.99/yr, auto-renewing, 7-day intro trial
  */
-export const MONTHLY_PRODUCT_ID = 'mood_premium_monthly';
-export const YEARLY_PRODUCT_ID = 'mood_premium_yearly';
-export const FOUNDING_PRODUCT_ID = 'mood_premium_founding_annual';
+export const MONTHLY_PRODUCT_ID = 'com.mood.subscription.monthly';
+export const YEARLY_PRODUCT_ID = 'com.mood.subscription.annual';
+export const FOUNDING_PRODUCT_ID = 'com.mood.subscription.founding_annual';
 export const ALL_PRODUCT_IDS = [MONTHLY_PRODUCT_ID, YEARLY_PRODUCT_ID, FOUNDING_PRODUCT_ID] as const;
 
 export type ProductPlan = 'monthly' | 'yearly';

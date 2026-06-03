@@ -97,7 +97,7 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - [2026-05-14] **Paid Launch — Phase C: StoreKit 2 native module + backend reconciliation (Part 8) — end-to-end paid flow live.**
   - **`modules/mood-storekit/`** — full Expo native module, mirroring the `mood-healthkit` template:
     - `MoodStoreKitModule.swift` exposes `getProducts(ids)`, `purchase(productID)`, `restorePurchases()`, `currentEntitlements()`, plus a long-running `Transaction.updates` listener that fires `onTransactionUpdate` events to JS for renewals, family-share, ask-to-buy approvals, and most importantly the **day-7 trial-to-paid conversion** that happens server-side on Apple's side.
-    - `src/index.ts` typed JS bridge — `getProducts`, `purchase`, `restorePurchases`, `currentEntitlements`, `onTransactionUpdate`, plus pinned product IDs (`MONTHLY_PRODUCT_ID = 'mood_premium_monthly'`, `YEARLY_PRODUCT_ID = 'mood_premium_yearly'` per your provisioning).
+    - `src/index.ts` typed JS bridge — `getProducts`, `purchase`, `restorePurchases`, `currentEntitlements`, `onTransactionUpdate`, plus pinned product IDs (`MONTHLY_PRODUCT_ID = 'com.mood.subscription.monthly'`, `YEARLY_PRODUCT_ID = 'com.mood.subscription.annual'` per your provisioning).
     - `MoodStoreKit.podspec` links `StoreKit` framework, targets iOS 16+, Swift 5.9.
     - `requireOptionalNativeModule` pattern means web preview / Expo Go / Android get a clean no-op fallback — `PaywallModal` checks `isStoreKitAvailable()` and falls through to the optimistic local flip for non-iOS QA surfaces.
   - **Backend reconciliation** (`server.py`):

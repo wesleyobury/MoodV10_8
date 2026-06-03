@@ -54,7 +54,7 @@ All these are **🟢 SAFE-ON-PROD** — they're build-config checks, not data wr
 - [ ] `frontend/app.json` → `extra.eas.projectId` matches the EAS project that holds your APNs key and current OTA update channel. If it doesn't, you have a credentials migration on the EAS side first.
 - [ ] Apple Developer Team that will sign this build is the same Team that signed the live app. (Apple Sign-In stable user IDs are scoped per-Team — different Team = every user looks brand new.)
 - [ ] If the live app uses Universal Links: add `ios.associatedDomains: ["applinks:<yourdomain>"]` to `app.json` and re-confirm the AASA file is published. If you only use the `moodapp://` scheme, skip.
-- [ ] StoreKit product identifiers `mood_premium_monthly` and `mood_premium_yearly` (hard-coded in `frontend/modules/mood-storekit/src/index.ts`) are **active in App Store Connect → Subscriptions** for this same app record.
+- [ ] StoreKit product identifiers `com.mood.subscription.monthly` and `com.mood.subscription.annual` (hard-coded in `frontend/modules/mood-storekit/src/index.ts`) are **active in App Store Connect → Subscriptions** for this same app record.
 - [ ] **Critical:** confirm whether the *currently live* app validates subscriptions via RevenueCat **or** via direct StoreKit 2 + Apple Server Notifications.
     - If RevenueCat → existing subscribers will **not** auto-carry into this backend's `apple_webhook_events` flow. You either keep RevenueCat (recommended) or write a one-time importer.
     - If direct StoreKit 2 already → fine, no action.

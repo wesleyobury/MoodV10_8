@@ -106,7 +106,7 @@ def test_active_subscription_is_mirrored(http, fresh_user):
     asyncio.run(_set_subscription(fresh_user["user_id"], {
         "status": "active",
         "plan": "annual",
-        "product_id": "mood_premium_yearly",
+        "product_id": "com.mood.subscription.annual",
         "expiration_date": future_exp,
     }))
     r = http.get(f"{API}/auth/me", headers=_auth_headers(fresh_user["token"]), timeout=15)
@@ -114,7 +114,7 @@ def test_active_subscription_is_mirrored(http, fresh_user):
     body = r.json()
     assert body["subscription_status"] == "active"
     assert body["subscription_plan"] == "annual"
-    assert body["subscription_product_id"] == "mood_premium_yearly"
+    assert body["subscription_product_id"] == "com.mood.subscription.annual"
     assert body["subscription_expiration_date"] == future_exp
 
 
@@ -123,7 +123,7 @@ def test_in_trial_status_is_mirrored(http, fresh_user):
     asyncio.run(_set_subscription(fresh_user["user_id"], {
         "status": "in_trial",
         "plan": "monthly",
-        "product_id": "mood_premium_monthly",
+        "product_id": "com.mood.subscription.monthly",
         "expiration_date": future_exp,
     }))
     r = http.get(f"{API}/auth/me", headers=_auth_headers(fresh_user["token"]), timeout=15)
@@ -140,7 +140,7 @@ def test_lapsed_receipt_self_corrects_from_active(http, fresh_user):
     asyncio.run(_set_subscription(fresh_user["user_id"], {
         "status": "active",  # stale value persisted earlier
         "plan": "annual",
-        "product_id": "mood_premium_yearly",
+        "product_id": "com.mood.subscription.annual",
         "expiration_date": past_exp,
     }))
     r = http.get(f"{API}/auth/me", headers=_auth_headers(fresh_user["token"]), timeout=15)
