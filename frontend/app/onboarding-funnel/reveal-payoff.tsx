@@ -56,9 +56,8 @@ const GOAL_BLURB_WORD: Record<PrimaryGoal, string> = {
   consistency: 'consistency',
 };
 
-// All 7 value props shown as compact feature cards.
+// Value props shown as compact feature cards.
 const FEATURES: { icon: keyof typeof Ionicons.glyphMap; title: string; subtext: string }[] = [
-  { icon: 'sparkles', title: 'Mood-based workouts', subtext: 'A fresh session for how you feel.' },
   { icon: 'locate', title: 'Personalized to your goals', subtext: 'Built around your goal, level & time.' },
   { icon: 'sync', title: 'Adapts to energy & recovery', subtext: 'Adjusts to how recovered you are.' },
   { icon: 'watch', title: 'Live heart rate & wearables', subtext: 'Real-time metrics, smarter training.' },
@@ -273,8 +272,6 @@ function StandardVariant({
         </LinearGradient>
       </TouchableOpacity>
 
-      <Disclosure trial />
-
       <View style={styles.orDivider}>
         <View style={styles.orLine} />
         <Text style={styles.orText}>or</Text>
@@ -282,15 +279,17 @@ function StandardVariant({
       </View>
 
       <TouchableOpacity
-        style={styles.outlineCta}
+        style={styles.trialBtn}
         onPress={onPrimary}
         disabled={busyTrial}
         activeOpacity={0.8}
         testID="reveal-start-cta"
         data-testid="reveal-start-cta"
       >
-        <Text style={styles.outlineCtaLabel}>Start my 7-day free trial</Text>
+        <Text style={styles.trialBtnLabel}>Start my 7-day free trial</Text>
       </TouchableOpacity>
+
+      <Disclosure trial />
 
       <View style={styles.trustRow}>
         <Ionicons name="lock-closed" size={12} color={COLORS.textTertiary} />
@@ -403,7 +402,7 @@ function FeatureCard({
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.bg },
   scroll: { flexGrow: 1 },
-  hero: { height: Math.max(height * 0.5, 380), justifyContent: 'flex-end' },
+  hero: { height: Math.max(height * 0.34, 280), justifyContent: 'flex-end' },
   heroHeader: {
     position: 'absolute',
     left: 20,
@@ -421,11 +420,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.35)',
   },
-  heroContent: { padding: 24, paddingBottom: 28 },
-  heroHeadline: { fontSize: 34, lineHeight: 40, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 10 },
-  heroSubhead: { fontSize: 15, lineHeight: 21, color: COLORS.textSecondary },
-  bottom: { padding: 24, paddingTop: 20, backgroundColor: COLORS.bg },
-  features: { gap: 6, marginBottom: 22 },
+  heroContent: { paddingHorizontal: 24, paddingTop: 16, paddingBottom: 12 },
+  heroHeadline: { fontSize: 30, lineHeight: 35, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 6 },
+  heroSubhead: { fontSize: 14, lineHeight: 19, color: COLORS.textSecondary },
+  bottom: { paddingHorizontal: 24, paddingTop: 12, paddingBottom: 20, backgroundColor: COLORS.bg },
+  features: { gap: 6, marginBottom: 16 },
   featureCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -450,20 +449,20 @@ const styles = StyleSheet.create({
   featureBody: { flex: 1 },
   featureTitle: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary, marginBottom: 1 },
   featureSubtext: { fontSize: 12, lineHeight: 16, color: COLORS.textSecondary },
-  socialStat: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 18 },
+  socialStat: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 14 },
   avatars: { flexDirection: 'row' },
   avatar: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: COLORS.bg },
   avatarOverlap: { marginLeft: -10 },
   socialStatText: { flex: 1, fontSize: 12, lineHeight: 17, color: COLORS.textSecondary },
-  cta: { borderRadius: 14, overflow: 'hidden', marginBottom: 12 },
+  cta: { borderRadius: 14, overflow: 'hidden', marginBottom: 10 },
   ctaGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 16, minHeight: 54 },
   ctaLabel: { fontSize: 16, fontWeight: '700', color: COLORS.accentInk, letterSpacing: 0.3 },
-  orDivider: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 },
+  orDivider: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 10 },
   orLine: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: 'rgba(255,255,255,0.18)' },
   orText: { fontSize: 12, color: COLORS.textTertiary, fontWeight: '600' },
-  outlineCta: { borderRadius: 14, borderWidth: 1.5, borderColor: COLORS.accent, paddingVertical: 15, alignItems: 'center', justifyContent: 'center', minHeight: 52, marginBottom: 14 },
-  outlineCtaLabel: { fontSize: 15, fontWeight: '700', color: COLORS.accent, letterSpacing: 0.2 },
-  trustRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 16 },
+  trialBtn: { paddingVertical: 14, alignItems: 'center', justifyContent: 'center', minHeight: 50, marginBottom: 8 },
+  trialBtnLabel: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary, letterSpacing: 0.2 },
+  trustRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 12 },
   trustText: { fontSize: 11, color: COLORS.textTertiary },
   legalRow: { fontSize: 11, color: COLORS.textTertiary, textAlign: 'center', marginTop: 4 },
   foundingBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, backgroundColor: COLORS.surfaceElevated, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,215,0,0.3)', padding: 12, marginBottom: 16 },
