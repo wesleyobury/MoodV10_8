@@ -11,10 +11,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Analytics } from '../../utils/analytics';
 
 const LENGTHS: { id: WorkoutLength; label: string; description: string }[] = [
-  { id: 10, label: '10 minutes', description: 'Quick hit.' },
   { id: 20, label: '20 minutes', description: 'Focused session.' },
   { id: 30, label: '30 minutes', description: 'Standard.' },
   { id: 45, label: '45 minutes', description: 'Full session.' },
+  { id: 60, label: '60 minutes', description: 'Go long.' },
+  { id: 90, label: '90 minutes', description: "Everything you've got." },
 ];
 
 export default function Step6Length() {
@@ -24,27 +25,28 @@ export default function Step6Length() {
   const [pending, setPending] = useState<WorkoutLength | undefined>(answers.workoutLength);
 
   useEffect(() => {
-    markStepEntered(6);
-    Analytics.onboardingStepViewed(token, { step: 6, question: 'workout_length' });
+    markStepEntered(5);
+    Analytics.onboardingStepViewed(token, { step: 5, question: 'workout_length' });
   }, [markStepEntered, token]);
 
   const handleContinue = () => {
     if (!pending) return;
     setWorkoutLength(pending);
     Analytics.onboardingStepCompleted(token, {
-      step: 6,
+      step: 5,
       question: 'workout_length',
       answer: pending,
-      time_spent_ms: consumeStepDuration(6),
+      time_spent_ms: consumeStepDuration(5),
     });
-    router.push('/onboarding-funnel/step-7-equipment');
+    router.push('/onboarding-funnel/step-8-social-proof');
   };
 
   return (
     <FunnelLayout
-      step={6}
-      eyebrow="HOW MUCH TIME"
-      title="Preferred workout length?"
+      step={5}
+      eyebrow="How much time"
+      title="How long feels right?"
+      subtitle="We'll never hand you more than you've got."
       ctaLabel="Continue"
       ctaDisabled={!pending}
       onCtaPress={handleContinue}

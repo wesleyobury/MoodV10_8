@@ -22,4 +22,4 @@ export const COLORS = {
 // Tuple typed for SafeLinearGradient `colors` prop.
 export const BRAND_GRADIENT: readonly [string, string] = [COLORS.accent, COLORS.accentTrail];
 
-export const FUNNEL_TOTAL_STEPS = 8;
+export const FUNNEL_TOTAL_STEPS = 6;

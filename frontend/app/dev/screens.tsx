@@ -181,13 +181,11 @@ export default function DevScreens() {
 
         <SectionHeader title="Onboarding Funnel" />
         <Row label="Step 1 — Mood" route="/onboarding-funnel/step-1-mood" onPress={() => go('/onboarding-funnel/step-1-mood')} />
-        <Row label="Step 2 — Build For Me" route="/onboarding-funnel/step-2-build-for-me" onPress={() => go('/onboarding-funnel/step-2-build-for-me')} />
-        <Row label="Step 3 — Goal" route="/onboarding-funnel/step-3-goal" onPress={() => go('/onboarding-funnel/step-3-goal')} />
-        <Row label="Step 4 — Level" route="/onboarding-funnel/step-4-level" onPress={() => go('/onboarding-funnel/step-4-level')} />
-        <Row label="Step 5 — Barrier" route="/onboarding-funnel/step-5-barrier" onPress={() => go('/onboarding-funnel/step-5-barrier')} />
-        <Row label="Step 6 — Length" route="/onboarding-funnel/step-6-length" onPress={() => go('/onboarding-funnel/step-6-length')} />
-        <Row label="Step 7 — Equipment" route="/onboarding-funnel/step-7-equipment" onPress={() => go('/onboarding-funnel/step-7-equipment')} />
-        <Row label="Step 8 — Social Proof" route="/onboarding-funnel/step-8-social-proof" onPress={() => go('/onboarding-funnel/step-8-social-proof')} />
+        <Row label="Step 2 — Goal" route="/onboarding-funnel/step-3-goal" onPress={() => go('/onboarding-funnel/step-3-goal')} />
+        <Row label="Step 3 — Level" route="/onboarding-funnel/step-4-level" onPress={() => go('/onboarding-funnel/step-4-level')} />
+        <Row label="Step 4 — Barrier" route="/onboarding-funnel/step-5-barrier" onPress={() => go('/onboarding-funnel/step-5-barrier')} />
+        <Row label="Step 5 — Length" route="/onboarding-funnel/step-6-length" onPress={() => go('/onboarding-funnel/step-6-length')} />
+        <Row label="Step 6 — Social Proof" route="/onboarding-funnel/step-8-social-proof" onPress={() => go('/onboarding-funnel/step-8-social-proof')} />
         <Row label="Reveal — Loading" route="/onboarding-funnel/reveal-loading" onPress={() => go('/onboarding-funnel/reveal-loading')} />
         <Row
           label="Reveal — Payoff (Soft Paywall #1)"

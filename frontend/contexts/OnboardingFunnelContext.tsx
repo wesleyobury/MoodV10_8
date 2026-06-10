@@ -28,6 +28,7 @@ export type MoodId = 'sweat' | 'muscle' | 'explosive' | 'lazy' | 'calisthenics' 
 export type PrimaryGoal =
   | 'feel_better'
   | 'build_strength'
+  | 'improve_physique'
   | 'lose_weight'
   | 'stress_relief'
   | 'consistency';
@@ -36,7 +37,7 @@ export type FitnessLevel = 'sedentary' | 'casual' | 'active' | 'athletic';
 
 export type BiggestBarrier = 'time' | 'energy' | 'motivation' | 'unsure';
 
-export type WorkoutLength = 10 | 20 | 30 | 45;
+export type WorkoutLength = 20 | 30 | 45 | 60 | 90;
 
 export type EquipmentAccess = 'bodyweight' | 'dumbbells' | 'bands' | 'full_gym';
 
@@ -225,11 +226,12 @@ export const MOOD_DISPLAY: Record<MoodId, { title: string; subtitle: string; gra
 };
 
 export const GOAL_LABELS: Record<PrimaryGoal, string> = {
-  feel_better: 'Feel better',
-  build_strength: 'Build strength',
+  feel_better: 'Feel better day to day',
+  build_strength: 'Build strength / muscle',
+  improve_physique: 'Improve physique',
   lose_weight: 'Lose weight',
-  stress_relief: 'Stress relief',
-  consistency: 'Consistency',
+  stress_relief: 'Relieve stress',
+  consistency: 'Just stay consistent',
 };
 
 export const LEVEL_LABELS: Record<FitnessLevel, string> = {

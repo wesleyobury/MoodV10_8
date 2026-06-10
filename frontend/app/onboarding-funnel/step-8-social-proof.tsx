@@ -18,8 +18,8 @@ import { useOnboardingFunnel } from '../../contexts/OnboardingFunnelContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { Analytics } from '../../utils/analytics';
 
-const APP_STORE_RATING = '4.8';
-const APP_STORE_REVIEW_COUNT = '1,200+';
+const WORKOUTS_COMPLETED = '1,100+';
+const ATHLETES_TRAINING = '300+';
 
 export default function Step8SocialProof() {
   const router = useRouter();
@@ -27,50 +27,47 @@ export default function Step8SocialProof() {
   const { token } = useAuth();
 
   useEffect(() => {
-    markStepEntered(8);
-    Analytics.onboardingStepViewed(token, { step: 8, question: 'social_proof' });
+    markStepEntered(6);
+    Analytics.onboardingStepViewed(token, { step: 6, question: 'social_proof' });
   }, [markStepEntered, token]);
 
   const handleContinue = () => {
     Analytics.onboardingStepCompleted(token, {
-      step: 8,
+      step: 6,
       question: 'social_proof',
-      time_spent_ms: consumeStepDuration(8),
+      time_spent_ms: consumeStepDuration(6),
     });
     router.push('/onboarding-funnel/reveal-loading');
   };
 
   return (
     <FunnelLayout
-      step={8}
-      eyebrow="WHY MOOD"
-      title="Built for people who actually train."
+      step={6}
+      eyebrow="Don't take our word for it"
+      title="Trusted by those who coach elite athletes."
       ctaLabel="Build my profile"
       onCtaPress={handleContinue}
       testID="funnel-step-8"
     >
       <View style={styles.quoteCard}>
-        <Ionicons name="leaf" size={20} color={COLORS.accent} style={styles.quoteIcon} />
+        <Text style={styles.quoteMark}>“</Text>
         <Text style={styles.quote}>
-          “The first fitness app that meets me where I&apos;m at, not where some algorithm thinks I
-          should be.”
+          I&apos;ve seen countless fitness apps, but MOOD is different. It&apos;s intuitive,
+          adaptable, and what modern fitness should look like. Anyone can get started with this.
         </Text>
-        <Text style={styles.quoteAttribution}>— Editorial review</Text>
+        <Text style={styles.quoteName}>James Frazier</Text>
+        <Text style={styles.quoteRole}>Head S&amp;C Coach, Harvard University</Text>
       </View>
 
       <View style={styles.statsRow}>
         <View style={styles.statCard}>
-          <View style={styles.stars}>
-            {[0, 1, 2, 3, 4].map((i) => (
-              <Ionicons key={i} name="star" size={14} color={COLORS.accent} />
-            ))}
-          </View>
-          <Text style={styles.statValue}>{APP_STORE_RATING}</Text>
-          <Text style={styles.statLabel}>App Store rating</Text>
+          <Ionicons name="barbell" size={20} color={COLORS.accent} style={styles.statIcon} />
+          <Text style={styles.statValue}>{WORKOUTS_COMPLETED}</Text>
+          <Text style={styles.statLabel}>Workouts completed</Text>
         </View>
         <View style={styles.statCard}>
           <Ionicons name="people" size={20} color={COLORS.accent} style={styles.statIcon} />
-          <Text style={styles.statValue}>{APP_STORE_REVIEW_COUNT}</Text>
+          <Text style={styles.statValue}>{ATHLETES_TRAINING}</Text>
           <Text style={styles.statLabel}>Athletes training</Text>
         </View>
       </View>
@@ -87,8 +84,12 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.06)',
     marginBottom: 16,
   },
-  quoteIcon: {
-    marginBottom: 12,
+  quoteMark: {
+    fontSize: 44,
+    lineHeight: 44,
+    fontWeight: '800',
+    color: COLORS.accent,
+    marginBottom: 4,
   },
   quote: {
     fontSize: 18,
@@ -96,12 +97,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: COLORS.textPrimary,
     letterSpacing: -0.3,
-    marginBottom: 12,
+    marginBottom: 16,
   },
-  quoteAttribution: {
+  quoteName: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: COLORS.textPrimary,
+  },
+  quoteRole: {
+    marginTop: 2,
     fontSize: 12,
     color: COLORS.textTertiary,
-    letterSpacing: 1,
   },
   statsRow: {
     flexDirection: 'row',
@@ -114,11 +120,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.surface,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.06)',
-  },
-  stars: {
-    flexDirection: 'row',
-    marginBottom: 10,
-    gap: 2,
   },
   statIcon: {
     marginBottom: 10,

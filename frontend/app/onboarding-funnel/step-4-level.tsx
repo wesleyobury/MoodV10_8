@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { FunnelLayout } from '../../components/onboarding/FunnelLayout';
 import { OptionPill } from '../../components/onboarding/OptionPill';
+import { ReactionLine } from '../../components/onboarding/ReactionLine';
 import {
   FitnessLevel,
   LEVEL_LABELS,
@@ -21,6 +22,13 @@ const LEVELS: { id: FitnessLevel; description: string }[] = [
   { id: 'athletic', description: 'Training 5+ times a week.' },
 ];
 
+const LEVEL_REACTIONS: Record<FitnessLevel, string> = {
+  sedentary: "Perfect starting point — we'll ease you in and build momentum.",
+  casual: "We'll meet you here and ramp at your pace.",
+  active: "Great base — we'll push you without burning you out.",
+  athletic: "We'll keep the intensity high enough to matter.",
+};
+
 export default function Step4Level() {
   const router = useRouter();
   const { answers, setFitnessLevel, markStepEntered, consumeStepDuration } = useOnboardingFunnel();
@@ -28,27 +36,28 @@ export default function Step4Level() {
   const [pending, setPending] = useState<FitnessLevel | undefined>(answers.fitnessLevel);
 
   useEffect(() => {
-    markStepEntered(4);
-    Analytics.onboardingStepViewed(token, { step: 4, question: 'fitness_level' });
+    markStepEntered(3);
+    Analytics.onboardingStepViewed(token, { step: 3, question: 'fitness_level' });
   }, [markStepEntered, token]);
 
   const handleContinue = () => {
     if (!pending) return;
     setFitnessLevel(pending);
     Analytics.onboardingStepCompleted(token, {
-      step: 4,
+      step: 3,
       question: 'fitness_level',
       answer: pending,
-      time_spent_ms: consumeStepDuration(4),
+      time_spent_ms: consumeStepDuration(3),
     });
     router.push('/onboarding-funnel/step-5-barrier');
   };
 
   return (
     <FunnelLayout
-      step={4}
-      eyebrow="WHERE YOU'RE AT"
-      title="How would you describe your fitness?"
+      step={3}
+      eyebrow="Where you're at"
+      title="Be honest — where are you right now?"
+      subtitle="No judgement. It just sets your starting load."
       ctaLabel="Continue"
       ctaDisabled={!pending}
       onCtaPress={handleContinue}
@@ -64,6 +73,7 @@ export default function Step4Level() {
           testID={`level-${l.id}`}
         />
       ))}
+      {pending ? <ReactionLine text={LEVEL_REACTIONS[pending]} testID="level-reaction" /> : null}
     </FunnelLayout>
   );
 }

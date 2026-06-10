@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { FunnelLayout } from '../../components/onboarding/FunnelLayout';
 import { OptionPill } from '../../components/onboarding/OptionPill';
+import { ReactionLine } from '../../components/onboarding/ReactionLine';
 import { BiggestBarrier, useOnboardingFunnel } from '../../contexts/OnboardingFunnelContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { Analytics } from '../../utils/analytics';
@@ -17,6 +18,13 @@ const BARRIERS: { id: BiggestBarrier; label: string; description: string }[] = [
   { id: 'unsure', label: "Don't know what to do", description: "I freeze on the plan." },
 ];
 
+const BARRIER_REACTIONS: Record<BiggestBarrier, string> = {
+  time: "Then we'll keep sessions short and decision-free.",
+  energy: "We'll read your recovery and ease off when you're spent.",
+  motivation: 'One tap to a workout — no staring at a blank plan.',
+  unsure: "You'll never wonder what to do — we pick, you press play.",
+};
+
 export default function Step5Barrier() {
   const router = useRouter();
   const { answers, setBiggestBarrier, markStepEntered, consumeStepDuration } = useOnboardingFunnel();
@@ -24,27 +32,28 @@ export default function Step5Barrier() {
   const [pending, setPending] = useState<BiggestBarrier | undefined>(answers.biggestBarrier);
 
   useEffect(() => {
-    markStepEntered(5);
-    Analytics.onboardingStepViewed(token, { step: 5, question: 'biggest_barrier' });
+    markStepEntered(4);
+    Analytics.onboardingStepViewed(token, { step: 4, question: 'biggest_barrier' });
   }, [markStepEntered, token]);
 
   const handleContinue = () => {
     if (!pending) return;
     setBiggestBarrier(pending);
     Analytics.onboardingStepCompleted(token, {
-      step: 5,
+      step: 4,
       question: 'biggest_barrier',
       answer: pending,
-      time_spent_ms: consumeStepDuration(5),
+      time_spent_ms: consumeStepDuration(4),
     });
     router.push('/onboarding-funnel/step-6-length');
   };
 
   return (
     <FunnelLayout
-      step={5}
-      eyebrow="WHAT GETS IN THE WAY"
-      title="What's your biggest barrier?"
+      step={4}
+      eyebrow="What gets in the way"
+      title="What usually stops you?"
+      subtitle="This is the thing MOOD is built to beat."
       ctaLabel="Continue"
       ctaDisabled={!pending}
       onCtaPress={handleContinue}
@@ -60,6 +69,7 @@ export default function Step5Barrier() {
           testID={`barrier-${b.id}`}
         />
       ))}
+      {pending ? <ReactionLine text={BARRIER_REACTIONS[pending]} testID="barrier-reaction" /> : null}
     </FunnelLayout>
   );
 }

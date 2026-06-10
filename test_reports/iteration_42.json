@@ -1,0 +1,27 @@
+{
+  "summary": "MOOD onboarding-funnel redesign — frontend QA on mobile web preview (390x844). Logged in as moodtester and walked the full 6-step funnel end-to-end plus deep-linked the reveal-payoff. Progress bar reads STEP 1/6 → 6/6 in the expected order; step-2-build-for-me and step-7-equipment are gone from both the flow and /dev/screens. Goal step shows all 6 options including 'Improve physique' and 'Build strength / muscle' and renders the italic reaction line ('Strength-first programming, locked in.'). Level and Barrier steps also render their answer-specific reaction lines. Length step shows 20/30/45/60/90 only (no 10-min option). Social proof (6/6) shows the new 'Trusted by those who coach elite athletes.' headline, James Frazier / Harvard quote, '1,100+ Workouts completed' + '300+ Athletes training' stat cards, no App Store rating, CTA 'Build my profile'. Reveal-loading title personalizes correctly ('Building Mood's MOOD profile…'). Reveal-payoff STANDARD variant contains every required element (eyebrow, gold headline with first name, gold pillar STRENGTH · MUSCLE · POWER, 3 feature cards, 92% stat row with avatars, gold 'Subscribe Now' primary, '7 days free, then $9.99/mo' disclosure, demoted 'Start my 7-day free trial' link, 'Billed securely by Apple' trust row, 'Build now & save it for later' safety net, 'Restore Purchase · Terms · Privacy' row, ✕ close top-right, MOOD wordmark top-left). Tapping ✕, 'Build now & save it for later', AND 'Subscribe Now' (StoreKit unavailable on web) all route to /onboarding/health-connect as expected. /dev/screens lists exactly the 6 funnel steps and the reveal-payoff deep link. All testIDs (mood-card-*, goal-*, level-*, barrier-*, length-*, funnel-step-{N}-continue, reveal-close, reveal-subscribe-cta, reveal-start-cta, reveal-try-free-cta) work. Deprecated package detected: expo-av deprecation warning logged at runtime (will be removed in SDK 54).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [
+      {"component": "expo-av", "issue": "Runtime warning '[expo-av]: Expo AV has been deprecated and will be removed in SDK 54. Use the `expo-audio` and `expo-video` packages to replace the required functionality.' Not specific to this funnel work but flagged per Expo Related Pointers. Reference: search /app/frontend for expo-av imports."}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "(Optional polish) The reveal-loading personalization currently splits on user.name. For the seeded moodtester, user.name is 'Mood' so the line reads 'Building Mood's MOOD profile…' which scans oddly because the brand name is also MOOD. Not a bug — it is exactly what the spec requested — but a future ticket could special-case identical name/brand or fall back to username when the first name equals the brand.",
+    "Migrate away from expo-av to expo-audio / expo-video before SDK 54 (separate from this funnel ticket)."
+  ],
+  "critical_code_review_comments": [
+    "Filenames (step-3-goal, step-5-barrier, step-8-social-proof) and testIDs (funnel-step-3, funnel-step-8) still use the legacy numbering even though the visible step indicator is 1–6. This is intentional per the agent-to-agent context note, but it is a minor footgun for the next dev — leave a TODO or rename in a follow-up."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "100%"},
+  "seed_data_creation": "None. Used existing moodtester credentials from /app/memory/test_credentials.md.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Funnel is 6 visible steps but filenames/testIDs still carry the old 3/5/6/8 numbers. Continue button testID pattern is `funnel-step-{file-number}-continue` (not the visible step number). Login route is /auth/login (not /login). On web, Subscribe Now and the trial link are optimistic pass-throughs to /onboarding/health-connect because StoreKit is not available — this is correct, not a bug.",
+  "rca_of_issue": ""
+}

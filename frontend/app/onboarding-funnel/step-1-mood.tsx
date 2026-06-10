@@ -30,6 +30,18 @@ const MOOD_ICONS: Record<MoodId, keyof typeof Ionicons.glyphMap> = {
   explosive: 'flash',
 };
 
+// Step-1-only icon palette — mirrors the live-tab notification colors,
+// slightly transparent for an on-brand feel. Intentionally NOT the global
+// MOOD_DISPLAY.gradient (which is used app-wide).
+const MOOD_ICON_GRADIENT: Record<MoodId, readonly [string, string]> = {
+  muscle: ['rgba(255,159,67,0.92)', 'rgba(255,122,0,0.92)'], // orange
+  sweat: ['rgba(255,107,107,0.92)', 'rgba(255,68,68,0.92)'], // coral
+  lazy: ['rgba(69,183,209,0.90)', 'rgba(74,144,217,0.90)'], // blue
+  outdoor: ['rgba(78,205,196,0.92)', 'rgba(16,172,132,0.92)'], // teal/green
+  calisthenics: ['rgba(155,89,182,0.90)', 'rgba(126,87,194,0.90)'], // purple
+  explosive: ['rgba(255,215,0,0.95)', 'rgba(255,159,67,0.95)'], // gold anchor
+};
+
 export default function Step1Mood() {
   const router = useRouter();
   const { answers, setMood, markStepEntered, consumeStepDuration } = useOnboardingFunnel();
@@ -54,15 +66,15 @@ export default function Step1Mood() {
       answer: pending,
       time_spent_ms: consumeStepDuration(1),
     });
-    router.push('/onboarding-funnel/step-2-build-for-me');
+    router.push('/onboarding-funnel/step-3-goal');
   };
 
   return (
     <FunnelLayout
       step={1}
-      eyebrow="YOUR MOOD"
-      title="What's your mood right now?"
-      subtitle="Or what mood are you usually in. Pick one."
+      eyebrow="Let's start with today"
+      title="How do you want to move today?"
+      subtitle="There's no wrong answer. MOOD builds around it."
       ctaLabel="Continue"
       ctaDisabled={!pending}
       onCtaPress={handleContinue}
@@ -81,7 +93,7 @@ export default function Step1Mood() {
               data-testid={`mood-card-${id}`}
             >
               <LinearGradient
-                colors={meta.gradient}
+                colors={MOOD_ICON_GRADIENT[id]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.iconRing}

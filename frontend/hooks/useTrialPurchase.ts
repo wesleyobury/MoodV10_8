@@ -3,7 +3,7 @@
  *
  * The 'Start 7-Day Free Trial' CTA must go STRAIGHT to StoreKit (Apple's
  * native sheet) — it must NOT open MOOD's PaywallModal. This hook performs
- * that purchase against the annual SKU (7-day trial, then $79/yr).
+ * that purchase against the monthly SKU (7-day trial, then $9.99/mo).
  *
  * Web/Expo Go (no native StoreKit): optimistic local flip so QA can proceed.
  */
@@ -13,7 +13,7 @@ import { useSubscription } from '../contexts/SubscriptionContext';
 import { apiFetch } from '../utils/api';
 import { Analytics } from '../utils/analytics';
 import {
-  YEARLY_PRODUCT_ID,
+  MONTHLY_PRODUCT_ID,
   isStoreKitAvailable,
   purchase as storeKitPurchase,
 } from '../modules/mood-storekit/src';
@@ -26,7 +26,7 @@ export function useTrialPurchase() {
 
   const startTrial = useCallback(
     async (triggerSource: string): Promise<TrialResult> => {
-      Analytics.trialStarted(token, { plan: 'annual', trigger_source: triggerSource });
+      Analytics.trialStarted(token, { plan: 'monthly', trigger_source: triggerSource });
 
       if (!isStoreKitAvailable()) {
         // Web/Expo Go QA path — optimistic trial.
@@ -36,7 +36,7 @@ export function useTrialPurchase() {
       }
 
       try {
-        const result = await storeKitPurchase(YEARLY_PRODUCT_ID);
+        const result = await storeKitPurchase(MONTHLY_PRODUCT_ID);
         if (result.status === 'success') {
           if (token) {
             await apiFetch('/api/subscription/validate', {
@@ -53,7 +53,7 @@ export function useTrialPurchase() {
               }),
             }).catch(() => {});
           }
-          Analytics.subscriptionPurchased(token, { plan: 'annual', trigger_source: triggerSource });
+          Analytics.subscriptionPurchased(token, { plan: 'monthly', trigger_source: triggerSource });
           setStatus('active');
           await refreshEntitlement();
           return 'success';

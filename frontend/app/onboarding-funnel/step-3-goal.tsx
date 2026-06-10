@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { FunnelLayout } from '../../components/onboarding/FunnelLayout';
 import { OptionPill } from '../../components/onboarding/OptionPill';
+import { ReactionLine } from '../../components/onboarding/ReactionLine';
 import {
   GOAL_LABELS,
   PrimaryGoal,
@@ -17,10 +18,20 @@ import { Analytics } from '../../utils/analytics';
 const GOALS: PrimaryGoal[] = [
   'feel_better',
   'build_strength',
+  'improve_physique',
   'lose_weight',
   'stress_relief',
   'consistency',
 ];
+
+const GOAL_REACTIONS: Record<PrimaryGoal, string> = {
+  feel_better: "Got it — we'll prioritize how you feel, not just the numbers.",
+  build_strength: 'Strength-first programming, locked in.',
+  improve_physique: 'Aesthetic-focused training — sculpt & definition prioritized.',
+  lose_weight: "We'll bias toward fat-burn and conditioning.",
+  stress_relief: 'Sessions that leave you calmer than you started.',
+  consistency: "Consistency over intensity — we'll make it easy to show up.",
+};
 
 export default function Step3Goal() {
   const router = useRouter();
@@ -29,27 +40,28 @@ export default function Step3Goal() {
   const [pending, setPending] = useState<PrimaryGoal | undefined>(answers.primaryGoal);
 
   useEffect(() => {
-    markStepEntered(3);
-    Analytics.onboardingStepViewed(token, { step: 3, question: 'primary_goal' });
+    markStepEntered(2);
+    Analytics.onboardingStepViewed(token, { step: 2, question: 'primary_goal' });
   }, [markStepEntered, token]);
 
   const handleContinue = () => {
     if (!pending) return;
     setPrimaryGoal(pending);
     Analytics.onboardingStepCompleted(token, {
-      step: 3,
+      step: 2,
       question: 'primary_goal',
       answer: pending,
-      time_spent_ms: consumeStepDuration(3),
+      time_spent_ms: consumeStepDuration(2),
     });
     router.push('/onboarding-funnel/step-4-level');
   };
 
   return (
     <FunnelLayout
-      step={3}
-      eyebrow="WHY YOU'RE HERE"
-      title="What's your primary goal?"
+      step={2}
+      eyebrow="Why you're here"
+      title="What are you really chasing?"
+      subtitle="We'll bias every session toward it."
       ctaLabel="Continue"
       ctaDisabled={!pending}
       onCtaPress={handleContinue}
@@ -64,6 +76,7 @@ export default function Step3Goal() {
           testID={`goal-${id}`}
         />
       ))}
+      {pending ? <ReactionLine text={GOAL_REACTIONS[pending]} testID="goal-reaction" /> : null}
     </FunnelLayout>
   );
 }

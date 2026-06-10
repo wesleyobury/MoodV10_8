@@ -28,7 +28,10 @@ const LINE_DURATION_MS = 2500;
 export default function RevealLoading() {
   const router = useRouter();
   const { answers, markCompleted } = useOnboardingFunnel();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
+
+  const firstName =
+    (user?.name && user.name.split(' ')[0]) || user?.username || 'Athlete';
 
   const lines = useMemo(() => {
     const goal = answers.primaryGoal ? GOAL_LABELS[answers.primaryGoal].toLowerCase() : 'your goal';
@@ -129,7 +132,7 @@ export default function RevealLoading() {
       </Animated.View>
 
       <View style={styles.center}>
-        <Text style={styles.title}>Building your MOOD profile…</Text>
+        <Text style={styles.title}>Building {firstName}&apos;s MOOD profile…</Text>
         <Animated.Text style={[styles.line, { opacity: fade }]}>{lines[idx]}</Animated.Text>
       </View>
     </SafeAreaView>
