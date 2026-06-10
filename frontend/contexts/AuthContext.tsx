@@ -7,6 +7,7 @@ import { resetNotificationSession } from '../utils/notificationUtils';
 import { API_URL, validateApiConfig } from '../utils/apiConfig';
 import { apiFetch } from '../utils/api';
 import { secureStorage, AUTH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY, AUTH_TOKEN_LAST_VALIDATED_KEY } from '../utils/secureStorage';
+import { DEV_MOCKS_ENABLED, getDevMockEntitlement } from '../utils/devMocks';
 
 // Terms version must match backend CURRENT_TERMS_VERSION
 // Update this when terms change to force re-acceptance for all users
@@ -491,6 +492,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // (login/restore/refresh) so SubscriptionContext stays in sync.
   const refreshEntitlement = async () => {
     try {
+      // DEV-only override (auditable: utils/devMocks.ts). Inert in production
+      // (DEV_MOCKS_ENABLED === false) and only returns a value when the
+      // /dev/screens menu has explicitly armed the founding-eligible mock.
+      if (DEV_MOCKS_ENABLED) {
+        const mock = await getDevMockEntitlement();
+        if (mock) {
+          setEntitlement(mock as Entitlement);
+          return;
+        }
+      }
       const storedToken = token || (await secureStorage.get(AUTH_TOKEN_KEY));
       if (!storedToken) {
         setEntitlement(null);

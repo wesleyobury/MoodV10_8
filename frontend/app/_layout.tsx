@@ -23,6 +23,7 @@ import ProfilePicPromptGate from '../components/ProfilePicPromptGate';
 import { Analytics } from '../utils/analytics';
 import { initNotifications, notificationService } from '../utils/notifications';
 import FloatingCart from '../components/FloatingCart';
+import DevPill from '../components/DevPill';
 import ErrorBoundary from '../components/ErrorBoundary';
 import AppBootstrap from '../components/AppBootstrap';
 import { ForceUpdateGate } from '../components/ForceUpdateGate';
@@ -170,6 +171,7 @@ function NavigationStack() {
         }}
       />
       <Stack.Screen name="onboarding-funnel" options={{ headerShown: false, gestureEnabled: false }} />
+      <Stack.Screen name="dev/screens" options={{ headerShown: false }} />
     </Stack>
   );
 }
@@ -183,6 +185,7 @@ function AppContent() {
       <HealthOnboardingGate />
       <NavigationStack />
       <FloatingCart />
+      <DevPill />
       <PaywallModal />
       <FoundingMemberGate />
       <FoundingOfferModal />
