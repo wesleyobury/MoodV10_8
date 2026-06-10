@@ -681,3 +681,11 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - P2: Admin panel caching for expensive aggregations
 - P2: Unbounded query refactoring at server.py (replace .to_list(10000) with proper pagination)
 - P3: Some posts have media_type=None (legacy data quality)
+
+## [2026-06-10] Onboarding Redesign (V2 line) — COMPLETE (test iteration 42, 100%)
+- Funnel shrunk 8→6 steps: DELETED step-2-build-for-me & step-7-equipment; rerouted step-1→step-3-goal, step-6→step-8-social-proof; renumbered step props + analytics to 1–6; FUNNEL_TOTAL_STEPS=6. (Files kept legacy names/testIDs.)
+- Goal: added 'improve_physique', renamed build_strength label → 'Build strength / muscle'. Goal/Level/Barrier now render answer-specific ReactionLine (new components/onboarding/ReactionLine.tsx).
+- Length options → 20/30/45/60/90. Step-1 mood icons use local MOOD_ICON_GRADIENT (multi-color palette). Social proof → Frazier/Harvard quote + 1,100+/300+ stats (no star rating).
+- reveal-loading personalized with firstName. reveal-payoff standard variant fully redesigned (Subscribe Now primary → monthly trial, demoted 'Start my 7-day free trial' link, 'Join 92%' stat, feature cards, ✕ close, Restore/Terms/Privacy). Founding variant untouched.
+- Paywall SKU: useTrialPurchase.ts now uses MONTHLY_PRODUCT_ID ($9.99/mo, 7-day trial), analytics plan:'monthly'. Disclosure copy → '7 days free, then $9.99/mo'.
+- Also (this session): /dev/screens Tier-2 dev menu + DEV pill + utils/devMocks.ts; fixed stale fork URL (EXPO_PUBLIC_API_URL → paywall-cta-launch ingress).
