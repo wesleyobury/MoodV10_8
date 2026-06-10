@@ -50,13 +50,14 @@ export default function Step8SocialProof() {
       testID="funnel-step-6"
     >
       <View style={styles.quoteCard}>
-        <Text style={styles.quoteMark}>“</Text>
+        <Text style={styles.quoteMarkOpen}>“</Text>
         <Text style={styles.quote}>
           I&apos;ve seen countless fitness apps, but MOOD is different. It&apos;s intuitive,
           adaptable, and what modern fitness should look like. Anyone can get started with this.
         </Text>
         <Text style={styles.quoteName}>James Frazier</Text>
         <Text style={styles.quoteRole}>Head S&amp;C Coach, Harvard University</Text>
+        <Text style={styles.quoteMarkClose}>”</Text>
       </View>
 
       <View style={styles.statsRow}>
@@ -78,18 +79,30 @@ export default function Step8SocialProof() {
 const styles = StyleSheet.create({
   quoteCard: {
     padding: 22,
+    paddingBottom: 30,
     borderRadius: 16,
     backgroundColor: COLORS.surface,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.06)',
     marginBottom: 16,
+    position: 'relative',
   },
-  quoteMark: {
+  quoteMarkOpen: {
     fontSize: 44,
     lineHeight: 44,
     fontWeight: '800',
     color: COLORS.accent,
     marginBottom: 4,
+  },
+  quoteMarkClose: {
+    position: 'absolute',
+    right: 18,
+    bottom: 2,
+    fontSize: 44,
+    lineHeight: 44,
+    fontWeight: '800',
+    color: COLORS.accent,
+    opacity: 0.85,
   },
   quote: {
     fontSize: 18,

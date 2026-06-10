@@ -46,7 +46,7 @@ export default function Step6Length() {
       step={5}
       eyebrow="How much time"
       title="How long feels right?"
-      subtitle="We'll never hand you more than you've got."
+      subtitle="We'll calibrate workouts to your tune."
       ctaLabel="Continue"
       ctaDisabled={!pending}
       onCtaPress={handleContinue}

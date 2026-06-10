@@ -696,3 +696,9 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
   step-6-length→step-5-length, step-8-social-proof→step-6-social-proof. (step-1-mood unchanged.)
 - Updated all router.push chains, FunnelLayout testIDs (funnel-step-1..6), _layout comment, and /dev/screens rows.
 - Verified: all 6 routes serve 200, lint clean, smoke screenshot shows /onboarding-funnel/step-2-goal as "STEP 2/6". testIDs now align with visible step numbers.
+
+## [2026-06-10] Onboarding Round-2 fixes — COMPLETE
+- Analyzing screen (reveal-loading): added drifting upward background column of the user's answer tokens (gold) interleaved with analysis phrases (faint white), Animated.loop linear, top/bottom gradient fades. Kept pulse + rotating lines + title.
+- Payoff (reveal-payoff): hero now uses local asset assets/images/payoff-hero.png (user-provided). Removed eyebrow + pillar; headline + new blurb only ("Based on your {mood} mood, {goal} goal, and {level} level, we've built a training system designed specifically for you."). 7 compact feature cards (exact copy). Button stack: Subscribe Now → disclosure → "or" divider → outline "Start my 7-day free trial" (same monthly trial) → trust row → more-visible safety-net "Build now & save it for later" (textSecondary 13.5/600 underline) → Restore/Terms/Privacy. Founding branch untouched.
+- Social proof: matching gold quote-mark pair (open top-left, close bottom-right).
+- Verified via screenshots (all 3 screens render correctly) + lint clean. Real-device/native trial still needs TestFlight build.

@@ -30,7 +30,6 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons';
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
 import {
-  GOAL_LABELS,
   LEVEL_LABELS,
   PrimaryGoal,
   useOnboardingFunnel,
@@ -44,19 +43,29 @@ import { isStoreKitAvailable, restorePurchases } from '../../modules/mood-storek
 
 const { height } = Dimensions.get('window');
 const MANAGE_SUBS_URL = 'https://apps.apple.com/account/subscriptions';
-const HERO_URI =
-  'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=80';
+const HERO_IMAGE = require('../../assets/images/payoff-hero.png');
 const WEARABLES_ROUTE = '/onboarding/health-connect';
 
-// Gold pillar line keyed to the user's primary goal.
-const GOAL_PILLARS: Record<PrimaryGoal, string> = {
-  feel_better: 'ENERGY · MOBILITY · MOOD',
-  build_strength: 'STRENGTH · MUSCLE · POWER',
-  improve_physique: 'SCULPT · DEFINITION · TONE',
-  lose_weight: 'FAT-BURN · CONDITIONING · ENERGY',
-  stress_relief: 'CALM · RECOVERY · BALANCE',
-  consistency: 'HABIT · MOMENTUM · CONSISTENCY',
+// Short goal word used in the personalized hero blurb.
+const GOAL_BLURB_WORD: Record<PrimaryGoal, string> = {
+  feel_better: 'feel-better',
+  build_strength: 'strength',
+  improve_physique: 'physique',
+  lose_weight: 'weight-loss',
+  stress_relief: 'stress-relief',
+  consistency: 'consistency',
 };
+
+// All 7 value props shown as compact feature cards.
+const FEATURES: { icon: keyof typeof Ionicons.glyphMap; title: string; subtext: string }[] = [
+  { icon: 'sparkles', title: 'Mood-based workouts', subtext: 'A fresh session for how you feel.' },
+  { icon: 'locate', title: 'Personalized to your goals', subtext: 'Built around your goal, level & time.' },
+  { icon: 'sync', title: 'Adapts to energy & recovery', subtext: 'Adjusts to how recovered you are.' },
+  { icon: 'watch', title: 'Live heart rate & wearables', subtext: 'Real-time metrics, smarter training.' },
+  { icon: 'stats-chart', title: 'Progress that matters', subtext: 'Track your trends and wins.' },
+  { icon: 'people', title: 'Social accountability', subtext: 'Share, compete, stay on track.' },
+  { icon: 'infinite', title: 'Unlimited access', subtext: 'Every workout & program, always.' },
+];
 
 const SOCIAL_AVATARS = [
   'https://i.pravatar.cc/80?img=12',
@@ -77,13 +86,12 @@ export default function RevealPayoff() {
 
   const firstName =
     (user?.name && user.name.split(' ')[0]) || user?.username || 'Athlete';
-  const goal = answers.primaryGoal ? GOAL_LABELS[answers.primaryGoal] : 'your goal';
-  const level = answers.fitnessLevel ? LEVEL_LABELS[answers.fitnessLevel] : 'your level';
-  const length = answers.workoutLength ?? 30;
-  const pillar = answers.primaryGoal
-    ? GOAL_PILLARS[answers.primaryGoal]
-    : 'STRENGTH · RECOVERY · PERFORMANCE';
-  const blurb = `A ${level.toLowerCase()} starting point, ${length}-minute sessions, every workout tuned toward ${goal.toLowerCase()}.`;
+  const moodWord = answers.mood ?? 'chosen';
+  const goalWord = answers.primaryGoal ? GOAL_BLURB_WORD[answers.primaryGoal] : 'your';
+  const levelWord = answers.fitnessLevel
+    ? LEVEL_LABELS[answers.fitnessLevel].toLowerCase()
+    : 'current';
+  const blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} level, we've built a training system designed specifically for you.`;
 
   const isFoundingEligible =
     !!entitlement?.is_founding_member &&
@@ -161,7 +169,7 @@ export default function RevealPayoff() {
   return (
     <SafeAreaView style={styles.root} edges={['bottom']} testID="reveal-payoff" data-testid="reveal-payoff">
       <ScrollView contentContainerStyle={styles.scroll} bounces={false}>
-        <ImageBackground source={{ uri: HERO_URI }} style={styles.hero} resizeMode="cover">
+        <ImageBackground source={HERO_IMAGE} style={styles.hero} resizeMode="cover">
           <LinearGradient
             colors={['transparent', 'rgba(10,10,10,0.4)', COLORS.bg]}
             locations={[0, 0.55, 1]}
@@ -180,31 +188,22 @@ export default function RevealPayoff() {
             </TouchableOpacity>
           </View>
           <View style={styles.heroContent}>
-            <Text style={styles.eyebrow}>YOUR MOOD PROFILE IS READY</Text>
             <Text style={styles.heroHeadline}>{firstName}, your plan is ready.</Text>
-            <Text style={styles.pillar}>{pillar}</Text>
             <Text style={styles.heroSubhead}>{blurb}</Text>
           </View>
         </ImageBackground>
 
         <View style={styles.bottom}>
           <View style={styles.features}>
-            <FeatureCard
-              icon="sparkles"
-              title="Mood-based engine"
-              subtext="Workouts tuned to how you feel — every single day."
-              highlight
-            />
-            <FeatureCard
-              icon="trending-up"
-              title="Adaptive difficulty"
-              subtext="Reads your recovery and adjusts load automatically."
-            />
-            <FeatureCard
-              icon="pulse"
-              title="Live tracking & charts"
-              subtext="Real-time heart rate and shareable progress."
-            />
+            {FEATURES.map((f, i) => (
+              <FeatureCard
+                key={f.title}
+                icon={f.icon}
+                title={f.title}
+                subtext={f.subtext}
+                highlight={i === 0}
+              />
+            ))}
           </View>
 
           {isFoundingEligible ? (
@@ -276,15 +275,21 @@ function StandardVariant({
 
       <Disclosure trial />
 
+      <View style={styles.orDivider}>
+        <View style={styles.orLine} />
+        <Text style={styles.orText}>or</Text>
+        <View style={styles.orLine} />
+      </View>
+
       <TouchableOpacity
-        style={styles.trialLink}
+        style={styles.outlineCta}
         onPress={onPrimary}
         disabled={busyTrial}
-        activeOpacity={0.7}
+        activeOpacity={0.8}
         testID="reveal-start-cta"
         data-testid="reveal-start-cta"
       >
-        <Text style={styles.trialLinkLabel}>Start my 7-day free trial</Text>
+        <Text style={styles.outlineCtaLabel}>Start my 7-day free trial</Text>
       </TouchableOpacity>
 
       <View style={styles.trustRow}>
@@ -417,35 +422,34 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.35)',
   },
   heroContent: { padding: 24, paddingBottom: 28 },
-  eyebrow: { fontSize: 11, letterSpacing: 1.8, fontWeight: '600', color: COLORS.accent, marginBottom: 12, textTransform: 'uppercase' },
-  heroHeadline: { fontSize: 34, lineHeight: 40, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 8 },
-  pillar: { fontSize: 13, fontWeight: '800', letterSpacing: 1.5, color: COLORS.accent, marginBottom: 10 },
+  heroHeadline: { fontSize: 34, lineHeight: 40, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 10 },
   heroSubhead: { fontSize: 15, lineHeight: 21, color: COLORS.textSecondary },
   bottom: { padding: 24, paddingTop: 20, backgroundColor: COLORS.bg },
-  features: { gap: 10, marginBottom: 22 },
+  features: { gap: 6, marginBottom: 22 },
   featureCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
-    padding: 14,
-    borderRadius: 14,
+    gap: 12,
+    paddingVertical: 9,
+    paddingHorizontal: 12,
+    borderRadius: 12,
     backgroundColor: COLORS.surface,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.06)',
   },
   featureCardHighlight: { borderColor: 'rgba(255,215,0,0.4)', backgroundColor: COLORS.surfaceElevated },
   featureIcon: {
-    width: 38,
-    height: 38,
-    borderRadius: 10,
+    width: 32,
+    height: 32,
+    borderRadius: 9,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(255,215,0,0.12)',
   },
   featureIconHighlight: { backgroundColor: COLORS.accent },
   featureBody: { flex: 1 },
-  featureTitle: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary, marginBottom: 2 },
-  featureSubtext: { fontSize: 12, lineHeight: 17, color: COLORS.textSecondary },
+  featureTitle: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary, marginBottom: 1 },
+  featureSubtext: { fontSize: 12, lineHeight: 16, color: COLORS.textSecondary },
   socialStat: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 18 },
   avatars: { flexDirection: 'row' },
   avatar: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: COLORS.bg },
@@ -454,9 +458,12 @@ const styles = StyleSheet.create({
   cta: { borderRadius: 14, overflow: 'hidden', marginBottom: 12 },
   ctaGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 16, minHeight: 54 },
   ctaLabel: { fontSize: 16, fontWeight: '700', color: COLORS.accentInk, letterSpacing: 0.3 },
-  trialLink: { paddingVertical: 8, alignItems: 'center', marginBottom: 12 },
-  trialLinkLabel: { fontSize: 14, fontWeight: '600', color: COLORS.accent, letterSpacing: 0.2 },
-  trustRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 14 },
+  orDivider: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 },
+  orLine: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: 'rgba(255,255,255,0.18)' },
+  orText: { fontSize: 12, color: COLORS.textTertiary, fontWeight: '600' },
+  outlineCta: { borderRadius: 14, borderWidth: 1.5, borderColor: COLORS.accent, paddingVertical: 15, alignItems: 'center', justifyContent: 'center', minHeight: 52, marginBottom: 14 },
+  outlineCtaLabel: { fontSize: 15, fontWeight: '700', color: COLORS.accent, letterSpacing: 0.2 },
+  trustRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 16 },
   trustText: { fontSize: 11, color: COLORS.textTertiary },
   legalRow: { fontSize: 11, color: COLORS.textTertiary, textAlign: 'center', marginTop: 4 },
   foundingBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, backgroundColor: COLORS.surfaceElevated, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,215,0,0.3)', padding: 12, marginBottom: 16 },
@@ -464,6 +471,6 @@ const styles = StyleSheet.create({
   bold: { color: COLORS.accent, fontWeight: '700' },
   disclosure: { fontSize: 10, lineHeight: 15, color: COLORS.textTertiary, textAlign: 'center', marginBottom: 10 },
   link: { color: COLORS.textSecondary, textDecorationLine: 'underline' },
-  tertiaryCta: { paddingVertical: 10, paddingHorizontal: 16, alignItems: 'center' },
-  tertiaryCtaLabel: { fontSize: 13, fontWeight: '500', color: COLORS.textTertiary, textDecorationLine: 'underline', textDecorationColor: 'rgba(255,255,255,0.25)' },
+  tertiaryCta: { paddingVertical: 8, paddingHorizontal: 16, alignItems: 'center', marginBottom: 4 },
+  tertiaryCtaLabel: { fontSize: 13.5, fontWeight: '600', color: COLORS.textSecondary, textDecorationLine: 'underline', textDecorationColor: 'rgba(255,255,255,0.3)' },
 });

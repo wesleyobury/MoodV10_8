@@ -25,6 +25,26 @@ import { Analytics } from '../../utils/analytics';
 
 const LINE_DURATION_MS = 2500;
 
+// Drifting background column — the user's own answers interleaved with
+// analysis phrases, scrolling slowly upward behind the title.
+const BG_ITEM_H = 44;
+const BG_DRIFT_MS = 22000;
+
+const ANALYSIS_PHRASES = [
+  'Analyzing energy patterns…',
+  'Matching 1,100+ workouts…',
+  'Calibrating intensity curve…',
+  'Mapping recovery windows…',
+  'Weighting your preferences…',
+];
+
+const BARRIER_LABELS: Record<string, string> = {
+  time: 'Time',
+  energy: 'Energy',
+  motivation: 'Motivation',
+  unsure: 'Not sure what to do',
+};
+
 export default function RevealLoading() {
   const router = useRouter();
   const { answers, markCompleted } = useOnboardingFunnel();
@@ -48,6 +68,50 @@ export default function RevealLoading() {
   const [idx, setIdx] = useState(0);
   const fade = useRef(new Animated.Value(0)).current;
   const pulse = useRef(new Animated.Value(0)).current;
+  const drift = useRef(new Animated.Value(0)).current;
+
+  // Background column tokens — answers interleaved with analysis phrases.
+  const bgTokens = useMemo(() => {
+    const goal = answers.primaryGoal ? GOAL_LABELS[answers.primaryGoal] : 'Your goal';
+    const level = answers.fitnessLevel ? LEVEL_LABELS[answers.fitnessLevel] : 'Your level';
+    const length = answers.workoutLength ?? 30;
+    const mood = answers.mood ? MOOD_DISPLAY[answers.mood].title : 'Your mood';
+    const barrier = answers.biggestBarrier
+      ? BARRIER_LABELS[answers.biggestBarrier] ?? 'Your barrier'
+      : 'Your barrier';
+    const answerTokens = [
+      `Mood · ${mood}`,
+      `Goal · ${goal}`,
+      `Level · ${level}`,
+      `Barrier · ${barrier}`,
+      `Session · ${length} min`,
+    ].map((text) => ({ text, kind: 'answer' as const }));
+    const analysisTokens = ANALYSIS_PHRASES.map((text) => ({ text, kind: 'analysis' as const }));
+    const out: { text: string; kind: 'answer' | 'analysis' }[] = [];
+    const max = Math.max(answerTokens.length, analysisTokens.length);
+    for (let i = 0; i < max; i++) {
+      if (answerTokens[i]) out.push(answerTokens[i]);
+      if (analysisTokens[i]) out.push(analysisTokens[i]);
+    }
+    return out;
+  }, [answers]);
+
+  const columnHeight = bgTokens.length * BG_ITEM_H;
+  const driftY = drift.interpolate({ inputRange: [0, 1], outputRange: [0, -columnHeight] });
+
+  // Slow seamless upward drift of the background column.
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.timing(drift, {
+        toValue: 1,
+        duration: BG_DRIFT_MS,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [drift]);
 
   // Background gradient pulse — slow, never bouncy.
   useEffect(() => {
@@ -119,6 +183,30 @@ export default function RevealLoading() {
 
   return (
     <SafeAreaView style={styles.root} edges={['top', 'bottom']} testID="reveal-loading" data-testid="reveal-loading">
+      <View style={styles.bgColumn} pointerEvents="none">
+        <Animated.View style={{ transform: [{ translateY: driftY }] }}>
+          {[...bgTokens, ...bgTokens].map((t, i) => (
+            <Text
+              key={`${t.text}-${i}`}
+              style={[styles.bgToken, t.kind === 'answer' ? styles.bgAnswer : styles.bgAnalysis]}
+              numberOfLines={1}
+            >
+              {t.text}
+            </Text>
+          ))}
+        </Animated.View>
+      </View>
+      <LinearGradient
+        pointerEvents="none"
+        colors={[COLORS.bg, 'transparent']}
+        style={styles.fadeTop}
+      />
+      <LinearGradient
+        pointerEvents="none"
+        colors={['transparent', COLORS.bg]}
+        style={styles.fadeBottom}
+      />
+
       <Animated.View
         pointerEvents="none"
         style={[styles.pulse, { opacity: pulseOpacity, transform: [{ scale: pulseScale }] }]}
@@ -146,6 +234,43 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 28,
+  },
+  bgColumn: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    overflow: 'hidden',
+  },
+  bgToken: {
+    height: BG_ITEM_H,
+    lineHeight: BG_ITEM_H,
+    textAlign: 'center',
+    fontSize: 15,
+    letterSpacing: 0.3,
+  },
+  bgAnswer: {
+    color: COLORS.accent,
+    opacity: 0.32,
+    fontWeight: '700',
+  },
+  bgAnalysis: {
+    color: '#FFFFFF',
+    opacity: 0.14,
+    fontWeight: '500',
+  },
+  fadeTop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 160,
+  },
+  fadeBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 160,
   },
   pulse: {
     position: 'absolute',
