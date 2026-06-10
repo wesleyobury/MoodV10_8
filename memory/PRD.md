@@ -689,3 +689,10 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - reveal-loading personalized with firstName. reveal-payoff standard variant fully redesigned (Subscribe Now primary → monthly trial, demoted 'Start my 7-day free trial' link, 'Join 92%' stat, feature cards, ✕ close, Restore/Terms/Privacy). Founding variant untouched.
 - Paywall SKU: useTrialPurchase.ts now uses MONTHLY_PRODUCT_ID ($9.99/mo, 7-day trial), analytics plan:'monthly'. Disclosure copy → '7 days free, then $9.99/mo'.
 - Also (this session): /dev/screens Tier-2 dev menu + DEV pill + utils/devMocks.ts; fixed stale fork URL (EXPO_PUBLIC_API_URL → paywall-cta-launch ingress).
+
+## [2026-06-10] Funnel file rename (refactor) — COMPLETE
+- Renamed funnel files to match visible 1–6 numbering (git mv):
+  step-3-goal→step-2-goal, step-4-level→step-3-level, step-5-barrier→step-4-barrier,
+  step-6-length→step-5-length, step-8-social-proof→step-6-social-proof. (step-1-mood unchanged.)
+- Updated all router.push chains, FunnelLayout testIDs (funnel-step-1..6), _layout comment, and /dev/screens rows.
+- Verified: all 6 routes serve 200, lint clean, smoke screenshot shows /onboarding-funnel/step-2-goal as "STEP 2/6". testIDs now align with visible step numbers.

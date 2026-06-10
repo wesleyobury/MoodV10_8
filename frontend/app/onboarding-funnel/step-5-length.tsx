@@ -38,7 +38,7 @@ export default function Step6Length() {
       answer: pending,
       time_spent_ms: consumeStepDuration(5),
     });
-    router.push('/onboarding-funnel/step-8-social-proof');
+    router.push('/onboarding-funnel/step-6-social-proof');
   };
 
   return (
@@ -50,7 +50,7 @@ export default function Step6Length() {
       ctaLabel="Continue"
       ctaDisabled={!pending}
       onCtaPress={handleContinue}
-      testID="funnel-step-6"
+      testID="funnel-step-5"
     >
       {LENGTHS.map((l) => (
         <OptionPill

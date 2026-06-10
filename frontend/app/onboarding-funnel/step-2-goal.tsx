@@ -53,7 +53,7 @@ export default function Step3Goal() {
       answer: pending,
       time_spent_ms: consumeStepDuration(2),
     });
-    router.push('/onboarding-funnel/step-4-level');
+    router.push('/onboarding-funnel/step-3-level');
   };
 
   return (
@@ -65,7 +65,7 @@ export default function Step3Goal() {
       ctaLabel="Continue"
       ctaDisabled={!pending}
       onCtaPress={handleContinue}
-      testID="funnel-step-3"
+      testID="funnel-step-2"
     >
       {GOALS.map((id) => (
         <OptionPill

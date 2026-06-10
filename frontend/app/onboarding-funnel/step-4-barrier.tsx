@@ -45,7 +45,7 @@ export default function Step5Barrier() {
       answer: pending,
       time_spent_ms: consumeStepDuration(4),
     });
-    router.push('/onboarding-funnel/step-6-length');
+    router.push('/onboarding-funnel/step-5-length');
   };
 
   return (
@@ -57,7 +57,7 @@ export default function Step5Barrier() {
       ctaLabel="Continue"
       ctaDisabled={!pending}
       onCtaPress={handleContinue}
-      testID="funnel-step-5"
+      testID="funnel-step-4"
     >
       {BARRIERS.map((b) => (
         <OptionPill

@@ -47,7 +47,7 @@ export default function Step8SocialProof() {
       title="Trusted by those who coach elite athletes."
       ctaLabel="Build my profile"
       onCtaPress={handleContinue}
-      testID="funnel-step-8"
+      testID="funnel-step-6"
     >
       <View style={styles.quoteCard}>
         <Text style={styles.quoteMark}>“</Text>

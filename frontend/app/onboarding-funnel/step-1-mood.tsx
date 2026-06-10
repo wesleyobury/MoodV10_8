@@ -66,7 +66,7 @@ export default function Step1Mood() {
       answer: pending,
       time_spent_ms: consumeStepDuration(1),
     });
-    router.push('/onboarding-funnel/step-3-goal');
+    router.push('/onboarding-funnel/step-2-goal');
   };
 
   return (

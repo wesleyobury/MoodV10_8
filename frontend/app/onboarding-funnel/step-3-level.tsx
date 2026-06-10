@@ -49,7 +49,7 @@ export default function Step4Level() {
       answer: pending,
       time_spent_ms: consumeStepDuration(3),
     });
-    router.push('/onboarding-funnel/step-5-barrier');
+    router.push('/onboarding-funnel/step-4-barrier');
   };
 
   return (
@@ -61,7 +61,7 @@ export default function Step4Level() {
       ctaLabel="Continue"
       ctaDisabled={!pending}
       onCtaPress={handleContinue}
-      testID="funnel-step-4"
+      testID="funnel-step-3"
     >
       {LEVELS.map((l) => (
         <OptionPill
