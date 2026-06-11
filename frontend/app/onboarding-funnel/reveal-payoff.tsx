@@ -28,6 +28,7 @@ import {
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import MaskedView from '@react-native-masked-view/masked-view';
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
 import {
   LEVEL_LABELS,
@@ -59,7 +60,6 @@ const GOAL_BLURB_WORD: Record<PrimaryGoal, string> = {
 // Value props shown as compact feature cards.
 const FEATURES: { icon: keyof typeof Ionicons.glyphMap; title: string; subtext: string }[] = [
   { icon: 'locate', title: 'Personalized to your goals', subtext: 'Built around your goal, level & time.' },
-  { icon: 'sync', title: 'Adapts to energy & recovery', subtext: 'Adjusts to how recovered you are.' },
   { icon: 'watch', title: 'Live heart rate & wearables', subtext: 'Real-time metrics, smarter training.' },
   { icon: 'stats-chart', title: 'Progress that matters', subtext: 'Track your trends and wins.' },
   { icon: 'people', title: 'Social accountability', subtext: 'Share, compete, stay on track.' },
@@ -175,16 +175,15 @@ export default function RevealPayoff() {
             style={StyleSheet.absoluteFill}
           />
           <View style={[styles.heroHeader, { top: insets.top + 8 }]}>
-            <Text style={styles.wordmark}>MOOD</Text>
-            <TouchableOpacity
-              onPress={handleSkip}
-              hitSlop={12}
-              style={styles.closeBtn}
-              testID="reveal-close"
-              data-testid="reveal-close"
-            >
-              <Ionicons name="close" size={22} color={COLORS.textPrimary} />
-            </TouchableOpacity>
+            <MaskedView maskElement={<Text style={styles.wordmark}>MOOD</Text>}>
+              <LinearGradient
+                colors={['#FFD700', '#FFA500']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
+                <Text style={[styles.wordmark, { opacity: 0 }]}>MOOD</Text>
+              </LinearGradient>
+            </MaskedView>
           </View>
           <View style={styles.heroContent}>
             <Text style={styles.heroHeadline}>{firstName}, your plan is ready.</Text>
@@ -194,14 +193,8 @@ export default function RevealPayoff() {
 
         <View style={styles.bottom}>
           <View style={styles.features}>
-            {FEATURES.map((f, i) => (
-              <FeatureCard
-                key={f.title}
-                icon={f.icon}
-                title={f.title}
-                subtext={f.subtext}
-                highlight={i === 0}
-              />
+            {FEATURES.map((f) => (
+              <FeatureCard key={f.title} icon={f.icon} title={f.title} subtext={f.subtext} />
             ))}
           </View>
 
@@ -273,9 +266,7 @@ function StandardVariant({
       </TouchableOpacity>
 
       <View style={styles.orDivider}>
-        <View style={styles.orLine} />
         <Text style={styles.orText}>or</Text>
-        <View style={styles.orLine} />
       </View>
 
       <TouchableOpacity
@@ -296,16 +287,6 @@ function StandardVariant({
         <Text style={styles.trustText}>Billed securely by Apple · Cancel in 2 taps</Text>
       </View>
 
-      <TouchableOpacity
-        style={styles.tertiaryCta}
-        onPress={onSkip}
-        activeOpacity={0.7}
-        testID="reveal-try-free-cta"
-        data-testid="reveal-try-free-cta"
-      >
-        <Text style={styles.tertiaryCtaLabel}>Build now &amp; save it for later</Text>
-      </TouchableOpacity>
-
       <Text style={styles.legalRow}>
         <Text style={styles.link} onPress={onRestore}>Restore Purchase</Text>
         <Text> · </Text>
@@ -313,6 +294,19 @@ function StandardVariant({
         <Text> · </Text>
         <Text style={styles.link} onPress={() => router.push('/privacy-policy')}>Privacy</Text>
       </Text>
+
+      <View style={styles.safetyNet}>
+        <Text style={styles.safetyPrompt}>Don&apos;t wanna commit? 👇</Text>
+        <TouchableOpacity
+          style={styles.tertiaryCta}
+          onPress={onSkip}
+          activeOpacity={0.7}
+          testID="reveal-try-free-cta"
+          data-testid="reveal-try-free-cta"
+        >
+          <Text style={styles.tertiaryCtaLabel}>Build now &amp; save it for later</Text>
+        </TouchableOpacity>
+      </View>
     </>
   );
 }
@@ -379,17 +373,15 @@ function FeatureCard({
   icon,
   title,
   subtext,
-  highlight,
 }: {
   icon: keyof typeof Ionicons.glyphMap;
   title: string;
   subtext: string;
-  highlight?: boolean;
 }) {
   return (
-    <View style={[styles.featureCard, highlight && styles.featureCardHighlight]}>
-      <View style={[styles.featureIcon, highlight && styles.featureIconHighlight]}>
-        <Ionicons name={icon} size={18} color={highlight ? COLORS.accentInk : COLORS.accent} />
+    <View style={styles.featureCard}>
+      <View style={styles.featureIcon}>
+        <Ionicons name={icon} size={18} color={COLORS.accent} />
       </View>
       <View style={styles.featureBody}>
         <Text style={styles.featureTitle}>{title}</Text>
@@ -423,20 +415,19 @@ const styles = StyleSheet.create({
   heroContent: { paddingHorizontal: 24, paddingTop: 16, paddingBottom: 12 },
   heroHeadline: { fontSize: 30, lineHeight: 35, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 6 },
   heroSubhead: { fontSize: 14, lineHeight: 19, color: COLORS.textSecondary },
-  bottom: { paddingHorizontal: 24, paddingTop: 12, paddingBottom: 20, backgroundColor: COLORS.bg },
+  bottom: { flex: 1, paddingHorizontal: 24, paddingTop: 12, paddingBottom: 20, backgroundColor: COLORS.bg },
   features: { gap: 6, marginBottom: 16 },
   featureCard: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    paddingVertical: 9,
+    paddingVertical: 12,
     paddingHorizontal: 12,
-    borderRadius: 12,
+    borderRadius: 9,
     backgroundColor: COLORS.surface,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.06)',
   },
-  featureCardHighlight: { borderColor: 'rgba(255,215,0,0.4)', backgroundColor: COLORS.surfaceElevated },
   featureIcon: {
     width: 32,
     height: 32,
@@ -445,7 +436,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(255,215,0,0.12)',
   },
-  featureIconHighlight: { backgroundColor: COLORS.accent },
   featureBody: { flex: 1 },
   featureTitle: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary, marginBottom: 1 },
   featureSubtext: { fontSize: 12, lineHeight: 16, color: COLORS.textSecondary },
@@ -454,22 +444,23 @@ const styles = StyleSheet.create({
   avatar: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: COLORS.bg },
   avatarOverlap: { marginLeft: -10 },
   socialStatText: { flex: 1, fontSize: 12, lineHeight: 17, color: COLORS.textSecondary },
-  cta: { borderRadius: 14, overflow: 'hidden', marginBottom: 10 },
+  cta: { borderRadius: 14, overflow: 'hidden' },
   ctaGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 16, minHeight: 54 },
   ctaLabel: { fontSize: 16, fontWeight: '700', color: COLORS.accentInk, letterSpacing: 0.3 },
-  orDivider: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 10 },
-  orLine: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: 'rgba(255,255,255,0.18)' },
+  orDivider: { alignItems: 'center', justifyContent: 'center', paddingVertical: 8 },
   orText: { fontSize: 12, color: COLORS.textTertiary, fontWeight: '600' },
-  trialBtn: { paddingVertical: 14, alignItems: 'center', justifyContent: 'center', minHeight: 50, marginBottom: 8 },
+  trialBtn: { paddingVertical: 13, alignItems: 'center', justifyContent: 'center', minHeight: 48 },
   trialBtnLabel: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary, letterSpacing: 0.2 },
-  trustRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 12 },
+  trustRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 8, marginBottom: 12 },
   trustText: { fontSize: 11, color: COLORS.textTertiary },
   legalRow: { fontSize: 11, color: COLORS.textTertiary, textAlign: 'center', marginTop: 4 },
+  safetyNet: { marginTop: 'auto', paddingTop: 18, alignItems: 'center' },
+  safetyPrompt: { fontSize: 13, fontWeight: '600', color: COLORS.textSecondary, marginBottom: 6 },
   foundingBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, backgroundColor: COLORS.surfaceElevated, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,215,0,0.3)', padding: 12, marginBottom: 16 },
   foundingBannerText: { flex: 1, fontSize: 13, lineHeight: 19, color: COLORS.textSecondary },
   bold: { color: COLORS.accent, fontWeight: '700' },
-  disclosure: { fontSize: 10, lineHeight: 15, color: COLORS.textTertiary, textAlign: 'center', marginBottom: 10 },
+  disclosure: { fontSize: 10, lineHeight: 15, color: COLORS.textTertiary, textAlign: 'center', marginTop: 8 },
   link: { color: COLORS.textSecondary, textDecorationLine: 'underline' },
-  tertiaryCta: { paddingVertical: 8, paddingHorizontal: 16, alignItems: 'center', marginBottom: 4 },
+  tertiaryCta: { paddingVertical: 8, paddingHorizontal: 16, alignItems: 'center' },
   tertiaryCtaLabel: { fontSize: 13.5, fontWeight: '600', color: COLORS.textSecondary, textDecorationLine: 'underline', textDecorationColor: 'rgba(255,255,255,0.3)' },
 });

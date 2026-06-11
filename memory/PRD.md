@@ -702,3 +702,9 @@ Full-stack fitness application with React Native (Expo) frontend and FastAPI bac
 - Payoff (reveal-payoff): hero now uses local asset assets/images/payoff-hero.png (user-provided). Removed eyebrow + pillar; headline + new blurb only ("Based on your {mood} mood, {goal} goal, and {level} level, we've built a training system designed specifically for you."). 7 compact feature cards (exact copy). Button stack: Subscribe Now → disclosure → "or" divider → outline "Start my 7-day free trial" (same monthly trial) → trust row → more-visible safety-net "Build now & save it for later" (textSecondary 13.5/600 underline) → Restore/Terms/Privacy. Founding branch untouched.
 - Social proof: matching gold quote-mark pair (open top-left, close bottom-right).
 - Verified via screenshots (all 3 screens render correctly) + lint clean. Real-device/native trial still needs TestFlight build.
+
+## [2026-06-11] Payoff layout polish
+- Removed first-card highlight + "Adapts to energy & recovery" card (5 cards, taller pv12 / sharper radius 9).
+- Gradient MOOD wordmark (MaskedView gold->orange; native-only, flat on web).
+- Removed hero X close. "or" divider line-less + equidistant. Trial btn borderless white text; disclosure moved below it.
+- Safety net pinned to bottom (marginTop:auto) with "Don't wanna commit? 👇" prompt. Both CTAs visible without scroll.
