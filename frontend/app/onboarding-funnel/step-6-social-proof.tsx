@@ -36,10 +36,10 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      'MOOD removes the guesswork. It gives athletes structured training that matches how they\u2019re feeling while still driving results.',
-    name: 'Jermaine W. Stafford',
-    role: 'Head T&F Coach | Director of Sports & Performance, Upswing Foundation',
-    avatar: require('../../assets/images/testimonials/stafford.png'),
+      'I\u2019ve lead multiple D1 sports programs and have seen too many fitness programs fail. MOOD is the solution that meets athletes where they\u2019re at.',
+    name: 'Johnathan Poppe',
+    role: 'Head Football Coach, Columbia University',
+    avatar: require('../../assets/images/testimonials/poppe.png'),
   },
   {
     quote: 'It\u2019s so simple, yet so thorough.',
@@ -92,14 +92,18 @@ export default function Step6SocialProof() {
 
       <View style={styles.statsRow}>
         <View style={styles.statCell}>
-          <Ionicons name="barbell" size={16} color={COLORS.accent} />
-          <Text style={styles.statValue}>{WORKOUTS_COMPLETED}</Text>
+          <View style={styles.statTop}>
+            <Ionicons name="barbell" size={16} color={COLORS.accent} />
+            <Text style={styles.statValue}>{WORKOUTS_COMPLETED}</Text>
+          </View>
           <Text style={styles.statLabel}>workouts completed</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statCell}>
-          <Ionicons name="people" size={16} color={COLORS.accent} />
-          <Text style={styles.statValue}>{ATHLETES_TRAINING}</Text>
+          <View style={styles.statTop}>
+            <Ionicons name="people" size={16} color={COLORS.accent} />
+            <Text style={styles.statValue}>{ATHLETES_TRAINING}</Text>
+          </View>
           <Text style={styles.statLabel}>athletes training</Text>
         </View>
       </View>
@@ -161,7 +165,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 14,
-    paddingVertical: 12,
+    paddingVertical: 16,
     borderRadius: 14,
     backgroundColor: COLORS.surface,
     borderWidth: 1,
@@ -169,18 +173,22 @@ const styles = StyleSheet.create({
   },
   statCell: {
     flex: 1,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
   },
+  statTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+  },
   statDivider: {
     width: 1,
-    height: 24,
+    height: 40,
     backgroundColor: 'rgba(255,255,255,0.08)',
   },
   statValue: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '800',
     color: COLORS.textPrimary,
     letterSpacing: -0.3,

@@ -1,5 +1,9 @@
 # MOOD Fitness App - PRD
 
+## [2026-06-11] Social-proof: Poppe swap + stacked stats
+- Swapped quote #2 from Jermaine W. Stafford → **Johnathan Poppe** (new quote, "Head Football Coach, Columbia University", `poppe.png`). Removed unused `stafford.png`.
+- Stats strip redesigned: labels ("workouts completed" / "athletes training") now stack **below** the icon+number, taller divider, more padding for better spacing.
+
 ## [2026-06-11] Social-proof avatars + stats strip + role tag updates
 - **step-6-social-proof.tsx**: added headshots (frazier/stafford/houston) absolutely positioned in each card's **bottom-right** (no card-size increase; name/role text gets `paddingRight` to clear the avatar). Re-added a **compact stats strip** below the quotes (1,100+ workouts · 300+ athletes). Updated role tags: Stafford → "Head T&F Coach | Director of Sports & Performance, Upswing Foundation"; Houston → "CEO, Denver Tennis Park | VP Programs, Big Brothers of CO". Verified no-scroll on 375×667 + 414×896. Avatars in `assets/images/testimonials/`.
 
