@@ -86,6 +86,8 @@ export default function RevealPayoff() {
   const { claimFounding } = useFoundingPurchase();
   const [busy, setBusy] = useState<null | 'trial' | 'founding'>(null);
   const completedRef = useRef(false);
+  const { height: windowHeight } = useWindowDimensions();
+  const screenH = windowHeight - insets.bottom;
 
   const firstName =
     (user?.name && user.name.split(' ')[0]) || user?.username || 'Athlete';
@@ -94,7 +96,7 @@ export default function RevealPayoff() {
   const levelWord = answers.fitnessLevel
     ? LEVEL_LABELS[answers.fitnessLevel].toLowerCase()
     : 'current';
-  const blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} lifestyle, we've curated a library of exercises and workouts designed specifically for your preferences, though you'll have access to our entire library.`;
+  const blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} lifestyle, we've curated a library of workouts designed specifically for your preferences.`;
 
   const isFoundingEligible =
     !!entitlement?.is_founding_member &&
@@ -172,65 +174,58 @@ export default function RevealPayoff() {
   return (
     <SafeAreaView style={styles.root} edges={['bottom']} testID="reveal-payoff" data-testid="reveal-payoff">
       <ScrollView contentContainerStyle={styles.scroll} bounces={false}>
-        <ImageBackground source={HERO_IMAGE} style={styles.hero} resizeMode="cover">
-          <LinearGradient
-            colors={['transparent', 'rgba(10,10,10,0.4)', COLORS.bg]}
-            locations={[0, 0.55, 1]}
-            style={StyleSheet.absoluteFill}
-          />
-          <View style={[styles.heroHeader, { top: insets.top + 8 }]}>
-            <MaskedView maskElement={<Text style={styles.wordmark}>MOOD</Text>}>
-              <LinearGradient
-                colors={['#FFD700', '#FFA500']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              >
-                <Text style={[styles.wordmark, { opacity: 0 }]}>MOOD</Text>
-              </LinearGradient>
-            </MaskedView>
-          </View>
-          <View style={styles.heroContent}>
-            <Text style={styles.heroHeadline}>{firstName}, your plan is ready.</Text>
-            <Text style={styles.heroSubhead}>{blurb}</Text>
-          </View>
-        </ImageBackground>
-
-        <View style={styles.bottom}>
-          <FeatureCarousel />
-
-          {isFoundingEligible ? (
-            <FoundingVariant
-              daysLeft={daysLeft}
-              busy={busy === 'founding'}
-              onClaim={handleClaimFounding}
-              onSkip={handleSkip}
+        <View style={[styles.firstScreen, { minHeight: screenH }]}>
+          <ImageBackground source={HERO_IMAGE} style={styles.hero} resizeMode="cover">
+            <LinearGradient
+              colors={['transparent', 'rgba(10,10,10,0.4)', COLORS.bg]}
+              locations={[0, 0.55, 1]}
+              style={StyleSheet.absoluteFill}
             />
-          ) : (
-            <StandardVariant
-              busyTrial={busy === 'trial'}
-              onPrimary={handleStartTrial}
-              onSkip={handleSkip}
-              onRestore={handleRestore}
-            />
-          )}
+            <View style={[styles.heroHeader, { top: insets.top + 8 }]}>
+              <MaskedView maskElement={<Text style={styles.wordmark}>MOOD</Text>}>
+                <LinearGradient
+                  colors={['#FFD700', '#FFA500']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                >
+                  <Text style={[styles.wordmark, { opacity: 0 }]}>MOOD</Text>
+                </LinearGradient>
+              </MaskedView>
+            </View>
+            <View style={styles.heroContent}>
+              <Text style={styles.heroHeadline}>{firstName}, your plan is ready.</Text>
+              <Text style={styles.heroSubhead}>{blurb}</Text>
+            </View>
+          </ImageBackground>
+
+          <View style={styles.flexSpacer} />
+
+          <View style={styles.aboveFold}>
+            <FeatureCarousel />
+            {isFoundingEligible ? (
+              <FoundingVariant
+                daysLeft={daysLeft}
+                busy={busy === 'founding'}
+                onClaim={handleClaimFounding}
+                onSkip={handleSkip}
+              />
+            ) : (
+              <StandardTop busyTrial={busy === 'trial'} onPrimary={handleStartTrial} />
+            )}
+          </View>
         </View>
+
+        {!isFoundingEligible && (
+          <View style={styles.belowFold}>
+            <StandardBottom onSkip={handleSkip} onRestore={handleRestore} />
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-function StandardVariant({
-  busyTrial,
-  onPrimary,
-  onSkip,
-  onRestore,
-}: {
-  busyTrial: boolean;
-  onPrimary: () => void;
-  onSkip: () => void;
-  onRestore: () => void;
-}) {
-  const router = useRouter();
+function StandardTop({ busyTrial, onPrimary }: { busyTrial: boolean; onPrimary: () => void }) {
   return (
     <>
       <View style={styles.socialStat}>
@@ -279,7 +274,14 @@ function StandardVariant({
       >
         <Text style={styles.trialBtnLabel}>Start my 7-day free trial</Text>
       </TouchableOpacity>
+    </>
+  );
+}
 
+function StandardBottom({ onSkip, onRestore }: { onSkip: () => void; onRestore: () => void }) {
+  const router = useRouter();
+  return (
+    <>
       <Disclosure trial />
 
       <View style={styles.trustRow}>
@@ -384,7 +386,7 @@ function FeatureCarousel() {
       indexRef.current = next;
       setActive(next);
       listRef.current?.scrollToOffset({ offset: next * cardWidth, animated: true });
-    }, 2600);
+    }, 3000);
     return () => clearInterval(id);
   }, [cardWidth]);
 
@@ -475,6 +477,10 @@ const styles = StyleSheet.create({
   heroHeadline: { fontSize: 30, lineHeight: 35, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 8 },
   heroSubhead: { fontSize: 14, lineHeight: 19, color: COLORS.textSecondary },
   bottom: { flex: 1, paddingHorizontal: 24, paddingTop: 16, paddingBottom: 20, backgroundColor: COLORS.bg },
+  firstScreen: { backgroundColor: COLORS.bg },
+  flexSpacer: { flex: 1, minHeight: 12, backgroundColor: COLORS.bg },
+  aboveFold: { paddingHorizontal: 24, paddingBottom: 14, backgroundColor: COLORS.bg },
+  belowFold: { paddingHorizontal: 24, paddingTop: 14, paddingBottom: 24, backgroundColor: COLORS.bg },
   carouselWrap: { marginHorizontal: -24, marginBottom: 16 },
   cCard: {
     height: 132,
@@ -509,7 +515,7 @@ const styles = StyleSheet.create({
   trustRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 8, marginBottom: 12 },
   trustText: { fontSize: 11, color: COLORS.textTertiary },
   legalRow: { fontSize: 11, color: COLORS.textTertiary, textAlign: 'center', marginTop: 4 },
-  safetyNet: { marginTop: 'auto', paddingTop: 18, alignItems: 'center' },
+  safetyNet: { paddingTop: 22, alignItems: 'center' },
   safetyPrompt: { fontSize: 13, fontWeight: '600', color: COLORS.textSecondary, marginBottom: 6 },
   foundingBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, backgroundColor: COLORS.surfaceElevated, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,215,0,0.3)', padding: 12, marginBottom: 16 },
   foundingBannerText: { flex: 1, fontSize: 13, lineHeight: 19, color: COLORS.textSecondary },
