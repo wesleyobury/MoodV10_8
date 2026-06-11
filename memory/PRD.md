@@ -1,5 +1,10 @@
 # MOOD Fitness App - PRD
 
+## [2026-06-11] Mood-based payoff hero + social-proof 3-quote redesign
+- **Payoff hero is now mood-based** (`reveal-payoff.tsx`): `HERO_IMAGES` map by `MoodId` → `assets/images/payoff/payoff-{mood}.png`. Mapping: sweat, muscle, explosive, calisthenics, outdoor each own photo; **lazy reuses the sweat photo** (per design note). Verified muscle + calisthenics render correct image + blurb.
+- **step-6-social-proof.tsx fully rebuilt**: 3 compact testimonial cards (James Frazier, Jermaine W. Stafford, Polica Houston) with **inline quotation marks** (removed the oversized yellow decorative quote marks). Removed the trailing "Anyone can get started with this." sentence from the Frazier quote. **Removed the stats row** (1,100+/300+) to guarantee all 3 quotes fit with NO scrolling — verified on small 375×667 and 414×896.
+- Note: stats row removed to fit; can re-add as a slim strip if desired. P1 `/api/stats` wiring now moot unless stats return.
+
 ## [2026-06-11] Payoff carousel polish + Guest workout-start gate
 - **reveal-payoff.tsx carousel cards**: title + subtext strictly 1 line (`numberOfLines={1}` + `adjustsFontSizeToFit` minFontScale 0.7/0.75), removed `maxWidth:66%` clamp (uses `paddingRight:58`), refined aesthetic (darker `#09090A` bg, gold `rgba(255,193,7,0.38)` border, ghost icon). Consistent padding via fixed card height + `marginTop:auto`.
 - **Hero image overlap**: hero is now `position:absolute` height `screenH*0.62`, multi-stop gradient fades into bg; headline "{name}, your plan is ready." now overlaps the lower hero image (image still touches top edge). Carousel/CTAs wrapped in `solidSection` (bg) so they sit above the image. Added textShadow to headline/subhead for legibility.

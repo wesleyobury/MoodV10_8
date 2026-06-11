@@ -34,6 +34,7 @@ import MaskedView from '@react-native-masked-view/masked-view';
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
 import {
   LEVEL_LABELS,
+  MoodId,
   PrimaryGoal,
   useOnboardingFunnel,
 } from '../../contexts/OnboardingFunnelContext';
@@ -46,7 +47,16 @@ import { isStoreKitAvailable, restorePurchases } from '../../modules/mood-storek
 
 const { height } = Dimensions.get('window');
 const MANAGE_SUBS_URL = 'https://apps.apple.com/account/subscriptions';
-const HERO_IMAGE = require('../../assets/images/payoff-hero.png');
+
+// Mood-specific payoff hero photos. 'lazy' reuses the sweat hero per design.
+const HERO_IMAGES: Record<MoodId, ReturnType<typeof require>> = {
+  sweat: require('../../assets/images/payoff/payoff-sweat.png'),
+  muscle: require('../../assets/images/payoff/payoff-muscle.png'),
+  explosive: require('../../assets/images/payoff/payoff-explosive.png'),
+  lazy: require('../../assets/images/payoff/payoff-sweat.png'),
+  calisthenics: require('../../assets/images/payoff/payoff-calisthenics.png'),
+  outdoor: require('../../assets/images/payoff/payoff-outdoor.png'),
+};
 const WEARABLES_ROUTE = '/onboarding/health-connect';
 
 // Short goal word used in the personalized hero blurb.
@@ -92,6 +102,7 @@ export default function RevealPayoff() {
   const firstName =
     (user?.name && user.name.split(' ')[0]) || user?.username || 'Athlete';
   const moodWord = answers.mood ?? 'chosen';
+  const heroImage = HERO_IMAGES[answers.mood ?? 'sweat'] ?? HERO_IMAGES.sweat;
   const goalWord = answers.primaryGoal ? GOAL_BLURB_WORD[answers.primaryGoal] : 'your';
   const levelWord = answers.fitnessLevel
     ? LEVEL_LABELS[answers.fitnessLevel].toLowerCase()
@@ -176,7 +187,7 @@ export default function RevealPayoff() {
       <ScrollView contentContainerStyle={styles.scroll} bounces={false}>
         <View style={[styles.firstScreen, { minHeight: screenH }]}>
           <ImageBackground
-            source={HERO_IMAGE}
+            source={heroImage}
             style={[styles.hero, { height: screenH * 0.62 }]}
             resizeMode="cover"
           >

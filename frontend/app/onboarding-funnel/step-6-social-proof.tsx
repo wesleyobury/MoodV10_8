@@ -1,27 +1,43 @@
 /**
- * Step 8 — SOCIAL PROOF.
+ * Step 6 — SOCIAL PROOF.
  *
- * Single editorial quote + real 4.8★ App Store badge + real user count.
- * IMPORTANT — DO NOT fake the user count. The number below is sourced from
- * the backend (TODO: wire to `/api/stats/user-count`); until that endpoint
- * exists, the screen displays a stable, conservative count. Update this
- * file when the backend endpoint ships.
+ * Three compact editorial quotes from coaches / performance directors.
+ * Designed to fit on a single screen with NO scrolling. Inline quotation
+ * marks (no oversized decorative marks).
  */
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { FunnelLayout } from '../../components/onboarding/FunnelLayout';
 import { COLORS } from '../../constants/brand';
 import { useOnboardingFunnel } from '../../contexts/OnboardingFunnelContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { Analytics } from '../../utils/analytics';
 
-const WORKOUTS_COMPLETED = '1,100+';
-const ATHLETES_TRAINING = '300+';
+type Testimonial = { quote: string; name: string; role: string };
 
-export default function Step8SocialProof() {
+const TESTIMONIALS: Testimonial[] = [
+  {
+    quote:
+      'I\u2019ve seen countless fitness apps, but MOOD is different. It\u2019s intuitive, adaptable, and what modern fitness should look like.',
+    name: 'James Frazier',
+    role: 'Head S&C Coach, Harvard University',
+  },
+  {
+    quote:
+      'MOOD removes the guesswork. It gives athletes structured training that matches how they\u2019re feeling while still driving results.',
+    name: 'Jermaine W. Stafford',
+    role: 'Director of Performance | Sports Performance Specialist | Head T&F Coach',
+  },
+  {
+    quote: 'It\u2019s so simple, yet so thorough.',
+    name: 'Polica Houston',
+    role: 'CEO, Denver Tennis Park | Former VP of Programs, Big Brothers Big Sisters of Colorado',
+  },
+];
+
+export default function Step6SocialProof() {
   const router = useRouter();
   const { markStepEntered, consumeStepDuration } = useOnboardingFunnel();
   const { token } = useAuth();
@@ -49,103 +65,48 @@ export default function Step8SocialProof() {
       onCtaPress={handleContinue}
       testID="funnel-step-6"
     >
-      <View style={styles.quoteCard}>
-        <Text style={styles.quoteMarkOpen}>“</Text>
-        <Text style={styles.quote}>
-          I&apos;ve seen countless fitness apps, but MOOD is different. It&apos;s intuitive,
-          adaptable, and what modern fitness should look like. Anyone can get started with this.
-        </Text>
-        <Text style={styles.quoteMarkClose}>”</Text>
-        <Text style={styles.quoteName}>James Frazier</Text>
-        <Text style={styles.quoteRole}>Head S&amp;C Coach, Harvard University</Text>
-      </View>
-
-      <View style={styles.statsRow}>
-        <View style={styles.statCard}>
-          <Ionicons name="barbell" size={20} color={COLORS.accent} style={styles.statIcon} />
-          <Text style={styles.statValue}>{WORKOUTS_COMPLETED}</Text>
-          <Text style={styles.statLabel}>Workouts completed</Text>
-        </View>
-        <View style={styles.statCard}>
-          <Ionicons name="people" size={20} color={COLORS.accent} style={styles.statIcon} />
-          <Text style={styles.statValue}>{ATHLETES_TRAINING}</Text>
-          <Text style={styles.statLabel}>Athletes training</Text>
-        </View>
+      <View style={styles.list}>
+        {TESTIMONIALS.map((t) => (
+          <View key={t.name} style={styles.quoteCard} testID={`testimonial-${t.name}`}>
+            <Text style={styles.quote}>&ldquo;{t.quote}&rdquo;</Text>
+            <Text style={styles.quoteName}>{t.name}</Text>
+            <Text style={styles.quoteRole}>{t.role}</Text>
+          </View>
+        ))}
       </View>
     </FunnelLayout>
   );
 }
 
 const styles = StyleSheet.create({
+  list: {
+    gap: 10,
+  },
   quoteCard: {
-    padding: 22,
-    paddingBottom: 30,
-    borderRadius: 16,
-    backgroundColor: COLORS.surface,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.06)',
-    marginBottom: 16,
-    position: 'relative',
-  },
-  quoteMarkOpen: {
-    fontSize: 44,
-    lineHeight: 44,
-    fontWeight: '800',
-    color: COLORS.accent,
-    marginBottom: 4,
-  },
-  quoteMarkClose: {
-    position: 'absolute',
-    right: 18,
-    bottom: 18,
-    fontSize: 44,
-    lineHeight: 44,
-    fontWeight: '800',
-    color: COLORS.accent,
-    opacity: 0.85,
-  },
-  quote: {
-    fontSize: 18,
-    lineHeight: 27,
-    fontWeight: '500',
-    color: COLORS.textPrimary,
-    letterSpacing: -0.3,
-    marginBottom: 16,
-  },
-  quoteName: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: COLORS.textPrimary,
-  },
-  quoteRole: {
-    marginTop: 2,
-    fontSize: 12,
-    color: COLORS.textTertiary,
-  },
-  statsRow: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  statCard: {
-    flex: 1,
-    padding: 18,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
     borderRadius: 14,
     backgroundColor: COLORS.surface,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.06)',
   },
-  statIcon: {
-    marginBottom: 10,
+  quote: {
+    fontSize: 13.5,
+    lineHeight: 19,
+    fontWeight: '500',
+    color: COLORS.textPrimary,
+    letterSpacing: -0.2,
+    marginBottom: 8,
   },
-  statValue: {
-    fontSize: 24,
+  quoteName: {
+    fontSize: 12.5,
     fontWeight: '700',
     color: COLORS.textPrimary,
-    letterSpacing: -0.5,
-    marginBottom: 2,
   },
-  statLabel: {
-    fontSize: 12,
+  quoteRole: {
+    marginTop: 2,
+    fontSize: 10.5,
+    lineHeight: 14,
     color: COLORS.textTertiary,
   },
 });
