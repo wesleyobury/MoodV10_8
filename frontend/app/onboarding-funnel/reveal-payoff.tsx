@@ -61,13 +61,13 @@ const GOAL_BLURB_WORD: Record<PrimaryGoal, string> = {
 
 // Value props shown in the auto-swiping feature carousel.
 const FEATURES: { icon: keyof typeof Ionicons.glyphMap; title: string; subtext: string }[] = [
-  { icon: 'sparkles', title: 'Mood-based workouts', subtext: 'A fresh session built for how you feel today.' },
-  { icon: 'locate', title: 'Personalized to your goals', subtext: 'Built around your goal, level & time.' },
+  { icon: 'sparkles', title: 'Mood-based workouts', subtext: 'A fresh session for how you feel.' },
+  { icon: 'locate', title: 'Personalized to your goals', subtext: 'Built around your goals.' },
   { icon: 'sync', title: 'Adapts to energy & recovery', subtext: 'Adjusts to how recovered you are.' },
-  { icon: 'watch', title: 'Live heart rate & wearables', subtext: 'Real-time metrics, smarter training.' },
+  { icon: 'watch', title: 'Live heart rate & wearables', subtext: 'Real-time metrics, smarter.' },
   { icon: 'stats-chart', title: 'Progress that matters', subtext: 'Track your trends and wins.' },
   { icon: 'people', title: 'Social accountability', subtext: 'Share, compete, stay on track.' },
-  { icon: 'infinite', title: 'Unlimited access', subtext: 'Every workout & program, always.' },
+  { icon: 'infinite', title: 'Unlimited access', subtext: 'Every workout & program.' },
 ];
 
 const SOCIAL_AVATARS = [
@@ -438,8 +438,8 @@ function CarouselCard({
           <Ionicons name={feature.icon} size={24} color={COLORS.accent} />
         </View>
         <View style={styles.cTextWrap}>
-          <Text style={styles.cTitle}>{feature.title}</Text>
-          <Text style={styles.cSubtext}>{feature.subtext}</Text>
+          <Text style={styles.cTitle} numberOfLines={1}>{feature.title}</Text>
+          <Text style={styles.cSubtext} numberOfLines={1}>{feature.subtext}</Text>
         </View>
       </View>
     </View>

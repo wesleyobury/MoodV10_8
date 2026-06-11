@@ -54,8 +54,8 @@ export default function Step8SocialProof() {
         <Text style={styles.quote}>
           I&apos;ve seen countless fitness apps, but MOOD is different. It&apos;s intuitive,
           adaptable, and what modern fitness should look like. Anyone can get started with this.
-          <Text style={styles.quoteMarkClose}>”</Text>
         </Text>
+        <Text style={styles.quoteMarkClose}>”</Text>
         <Text style={styles.quoteName}>James Frazier</Text>
         <Text style={styles.quoteRole}>Head S&amp;C Coach, Harvard University</Text>
       </View>
@@ -95,12 +95,14 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   quoteMarkClose: {
+    position: 'absolute',
+    right: 18,
+    bottom: 18,
     fontSize: 44,
     lineHeight: 44,
     fontWeight: '800',
     color: COLORS.accent,
     opacity: 0.85,
-    marginLeft: 2,
   },
   quote: {
     fontSize: 18,
