@@ -175,10 +175,14 @@ export default function RevealPayoff() {
     <SafeAreaView style={styles.root} edges={['bottom']} testID="reveal-payoff" data-testid="reveal-payoff">
       <ScrollView contentContainerStyle={styles.scroll} bounces={false}>
         <View style={[styles.firstScreen, { minHeight: screenH }]}>
-          <ImageBackground source={HERO_IMAGE} style={styles.hero} resizeMode="cover">
+          <ImageBackground
+            source={HERO_IMAGE}
+            style={[styles.hero, { height: screenH * 0.62 }]}
+            resizeMode="cover"
+          >
             <LinearGradient
-              colors={['transparent', 'rgba(10,10,10,0.4)', COLORS.bg]}
-              locations={[0, 0.55, 1]}
+              colors={['transparent', 'rgba(10,10,10,0.15)', 'rgba(10,10,10,0.6)', COLORS.bg]}
+              locations={[0, 0.45, 0.82, 1]}
               style={StyleSheet.absoluteFill}
             />
             <View style={[styles.heroHeader, { top: insets.top + 8 }]}>
@@ -201,17 +205,19 @@ export default function RevealPayoff() {
               <Text style={styles.heroHeadline}>{firstName}, your plan is ready.</Text>
               <Text style={styles.heroSubhead}>{blurb}</Text>
             </View>
-            <FeatureCarousel />
-            {isFoundingEligible ? (
-              <FoundingVariant
-                daysLeft={daysLeft}
-                busy={busy === 'founding'}
-                onClaim={handleClaimFounding}
-                onSkip={handleSkip}
-              />
-            ) : (
-              <StandardTop busyTrial={busy === 'trial'} onPrimary={handleStartTrial} />
-            )}
+            <View style={styles.solidSection}>
+              <FeatureCarousel />
+              {isFoundingEligible ? (
+                <FoundingVariant
+                  daysLeft={daysLeft}
+                  busy={busy === 'founding'}
+                  onClaim={handleClaimFounding}
+                  onSkip={handleSkip}
+                />
+              ) : (
+                <StandardTop busyTrial={busy === 'trial'} onPrimary={handleStartTrial} />
+              )}
+            </View>
           </View>
         </View>
 
@@ -438,10 +444,10 @@ function CarouselCard({
           <Ionicons name={feature.icon} size={24} color={COLORS.accent} />
         </View>
         <View style={styles.cTextWrap}>
-          <Text style={styles.cTitle} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
+          <Text style={styles.cTitle} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
             {feature.title}
           </Text>
-          <Text style={styles.cSubtext} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.85}>
+          <Text style={styles.cSubtext} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75}>
             {feature.subtext}
           </Text>
         </View>
@@ -453,7 +459,7 @@ function CarouselCard({
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.bg },
   scroll: { flexGrow: 1 },
-  hero: { height: Math.max(height * 0.34, 280), justifyContent: 'flex-end' },
+  hero: { position: 'absolute', top: 0, left: 0, right: 0, justifyContent: 'flex-end' },
   heroHeader: {
     position: 'absolute',
     left: 20,
@@ -473,43 +479,46 @@ const styles = StyleSheet.create({
   },
   heroContent: { paddingHorizontal: 24, paddingTop: 22, paddingBottom: 26 },
   headlineBlock: { marginBottom: 18 },
-  heroHeadline: { fontSize: 30, lineHeight: 35, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 8 },
-  heroSubhead: { fontSize: 14, lineHeight: 19, color: COLORS.textSecondary },
+  heroHeadline: { fontSize: 30, lineHeight: 35, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 8, textShadowColor: 'rgba(0,0,0,0.6)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 8 },
+  heroSubhead: { fontSize: 14, lineHeight: 19, color: COLORS.textSecondary, textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 6 },
   bottom: { flex: 1, paddingHorizontal: 24, paddingTop: 16, paddingBottom: 20, backgroundColor: COLORS.bg },
-  firstScreen: { backgroundColor: COLORS.bg },
-  flexSpacer: { flex: 1, minHeight: 12, backgroundColor: COLORS.bg },
-  aboveFold: { paddingHorizontal: 24, paddingBottom: 14, backgroundColor: COLORS.bg },
+  firstScreen: { backgroundColor: COLORS.bg, position: 'relative' },
+  flexSpacer: { flex: 1, minHeight: 12, backgroundColor: 'transparent' },
+  aboveFold: { paddingHorizontal: 24, paddingBottom: 14, backgroundColor: 'transparent' },
+  solidSection: { backgroundColor: COLORS.bg, marginHorizontal: -24, paddingHorizontal: 24, paddingTop: 6 },
   belowFold: { paddingHorizontal: 24, paddingTop: 14, paddingBottom: 24, backgroundColor: COLORS.bg },
   carouselWrap: { marginHorizontal: -24, marginBottom: 16 },
   cCard: {
-    height: 150,
+    height: 144,
     marginHorizontal: 24,
-    borderRadius: 18,
-    padding: 22,
-    backgroundColor: '#0B0B0C',
+    borderRadius: 20,
+    paddingHorizontal: 22,
+    paddingTop: 20,
+    paddingBottom: 20,
+    backgroundColor: '#09090A',
     borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.30)',
+    borderColor: 'rgba(255,193,7,0.38)',
     overflow: 'hidden',
-    shadowColor: '#FFD700',
-    shadowOpacity: 0.22,
-    shadowRadius: 16,
+    shadowColor: '#FFC107',
+    shadowOpacity: 0.28,
+    shadowRadius: 18,
     shadowOffset: { width: 0, height: 0 },
     elevation: 6,
   },
-  cGhost: { position: 'absolute', right: -26, top: '50%', marginTop: -105, opacity: 0.1 },
+  cGhost: { position: 'absolute', right: -30, top: '50%', marginTop: -105, opacity: 0.08 },
   cIconRing: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     borderWidth: 1.5,
-    borderColor: 'rgba(255,215,0,0.55)',
+    borderColor: 'rgba(255,193,7,0.6)',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,215,0,0.06)',
+    backgroundColor: 'rgba(255,193,7,0.08)',
   },
   cTextWrap: { marginTop: 'auto' },
-  cTitle: { fontSize: 19, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.3, marginBottom: 5, paddingRight: 56 },
-  cSubtext: { fontSize: 13, lineHeight: 18, color: COLORS.textSecondary, paddingRight: 56 },
+  cTitle: { fontSize: 18, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.3, marginBottom: 6, paddingRight: 58 },
+  cSubtext: { fontSize: 13, lineHeight: 18, color: COLORS.textSecondary, paddingRight: 58 },
   dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 14 },
   dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.2)' },
   dotActive: { width: 18, backgroundColor: COLORS.accent },
@@ -521,7 +530,7 @@ const styles = StyleSheet.create({
   cta: { borderRadius: 14, overflow: 'hidden' },
   ctaGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 16, minHeight: 54 },
   ctaLabel: { fontSize: 16, fontWeight: '700', color: COLORS.accentInk, letterSpacing: 0.3 },
-  orDivider: { alignItems: 'center', justifyContent: 'center', paddingVertical: 8, marginTop: 2 },
+  orDivider: { alignItems: 'center', justifyContent: 'center', paddingTop: 20, paddingBottom: 8 },
   orText: { fontSize: 12, color: COLORS.textTertiary, fontWeight: '600' },
   trialBtn: { paddingVertical: 13, alignItems: 'center', justifyContent: 'center', minHeight: 48 },
   trialBtnLabel: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary, letterSpacing: 0.2 },

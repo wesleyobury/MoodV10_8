@@ -1,9 +1,15 @@
 # MOOD Fitness App - PRD
 
 ## [2026-06-11] Payoff carousel polish + Guest workout-start gate
-- **reveal-payoff.tsx carousel cards**: title + subtext now strictly 1 line (`numberOfLines={1}` + `adjustsFontSizeToFit` + `minimumFontScale`), removed the `maxWidth:66%` truncation clamp (replaced with `paddingRight:56` to clear the ghost icon), tightened padding. The "or" divider moved down 2px (`marginTop:2`).
-- **Guest workout-start gate** (`workout-guidance.tsx::handleStartPauseTimer`): if `isGuest`, a fresh Start tap now opens `GuestPromptModal` (Create Account) instead of starting the timer. Fires `GuestAnalytics.signupPromptShown({trigger_action:'start a workout'})`.
-- **DEFERRED (pending user visual review)**: hero image "shift down behind the headline" — ambiguous layout ask; left for user confirmation against current screenshot.
+- **reveal-payoff.tsx carousel cards**: title + subtext strictly 1 line (`numberOfLines={1}` + `adjustsFontSizeToFit` minFontScale 0.7/0.75), removed `maxWidth:66%` clamp (uses `paddingRight:58`), refined aesthetic (darker `#09090A` bg, gold `rgba(255,193,7,0.38)` border, ghost icon). Consistent padding via fixed card height + `marginTop:auto`.
+- **Hero image overlap**: hero is now `position:absolute` height `screenH*0.62`, multi-stop gradient fades into bg; headline "{name}, your plan is ready." now overlaps the lower hero image (image still touches top edge). Carousel/CTAs wrapped in `solidSection` (bg) so they sit above the image. Added textShadow to headline/subhead for legibility.
+- **"or" divider**: `paddingTop:20 paddingBottom:8` — sits evenly between Subscribe Now button and the 7-day trial button.
+- **Guest workout-start gate**: guests can build/view carts but CANNOT start a workout session. Gate added at:
+  - `workout-guidance.tsx::handleStartPauseTimer` (universal backstop — covers featured, mood cards, cart, saved builds, shared)
+  - `featured-workout-detail.tsx::handleStartWorkout` (card-level, immediate modal)
+  - Both show `GuestPromptModal` (same "Create an Account" modal as the Profile tab). Verified via Playwright (localStorage is_guest=true) — modal shows on Start.
+- **IMPORTANT (stale bundle)**: Expo web served cached bundles; `sudo supervisorctl restart expo` clears Metro cache. On device, the user must reload/clear Expo cache to see changes.
+- **NOTE**: mood-card display screens funnel through the workout-guidance backstop (guest can view the plan but the Start timer is gated). Card-level immediate modal added only to featured-detail; can replicate to mood-card screens if identical UX desired.
 
 ## Original Problem Statement
 Full-stack fitness application with React Native (Expo) frontend and FastAPI backend. Key goals:

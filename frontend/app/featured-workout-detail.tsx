@@ -17,6 +17,7 @@ import Constants from 'expo-constants';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart, WorkoutItem } from '../contexts/CartContext';
 import { Analytics, GuestAnalytics } from '../utils/analytics';
+import GuestPromptModal from '../components/GuestPromptModal';
 import AddCustomExerciseModal from '../components/AddCustomExerciseModal';
 import { resolveFeaturedHeroImage } from '../utils/featuredHeroImage';
 
@@ -491,7 +492,7 @@ export default function FeaturedWorkoutDetail() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
-  const { token } = useAuth();
+  const { token, isGuest } = useAuth();
   
   const workoutId = params.id as string;
   
@@ -513,6 +514,7 @@ export default function FeaturedWorkoutDetail() {
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showAddExerciseModal, setShowAddExerciseModal] = useState(false);
+  const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   
   // Handle adding custom exercise to the featured workout
   const handleAddCustomExercise = (workout: WorkoutItem) => {
@@ -744,6 +746,14 @@ export default function FeaturedWorkoutDetail() {
 
   const handleStartWorkout = () => {
     if (exercises.length === 0) return;
+
+    // Guest gate: guests can browse and build carts but cannot start a
+    // workout session. Prompt account creation (same modal as profile tab).
+    if (isGuest) {
+      GuestAnalytics.signupPromptShown({ trigger_action: 'start a workout' });
+      setShowGuestPrompt(true);
+      return;
+    }
     
     // Track "try workout clicked" event
     if (token) {
@@ -1039,6 +1049,12 @@ export default function FeaturedWorkoutDetail() {
           </LinearGradient>
         </TouchableOpacity>
       </View>
+
+      <GuestPromptModal
+        visible={showGuestPrompt}
+        onClose={() => setShowGuestPrompt(false)}
+        action="start a workout"
+      />
     </View>
   );
 }
