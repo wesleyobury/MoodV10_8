@@ -1,5 +1,8 @@
 # MOOD Fitness App - PRD
 
+## [2026-06-11] Social-proof avatars + stats strip + role tag updates
+- **step-6-social-proof.tsx**: added headshots (frazier/stafford/houston) absolutely positioned in each card's **bottom-right** (no card-size increase; name/role text gets `paddingRight` to clear the avatar). Re-added a **compact stats strip** below the quotes (1,100+ workouts · 300+ athletes). Updated role tags: Stafford → "Head T&F Coach | Director of Sports & Performance, Upswing Foundation"; Houston → "CEO, Denver Tennis Park | VP Programs, Big Brothers of CO". Verified no-scroll on 375×667 + 414×896. Avatars in `assets/images/testimonials/`.
+
 ## [2026-06-11] Mood-based payoff hero + social-proof 3-quote redesign
 - **Payoff hero is now mood-based** (`reveal-payoff.tsx`): `HERO_IMAGES` map by `MoodId` → `assets/images/payoff/payoff-{mood}.png`. Mapping: sweat, muscle, explosive, calisthenics, outdoor each own photo; **lazy reuses the sweat photo** (per design note). Verified muscle + calisthenics render correct image + blurb.
 - **step-6-social-proof.tsx fully rebuilt**: 3 compact testimonial cards (James Frazier, Jermaine W. Stafford, Polica Houston) with **inline quotation marks** (removed the oversized yellow decorative quote marks). Removed the trailing "Anyone can get started with this." sentence from the Frazier quote. **Removed the stats row** (1,100+/300+) to guarantee all 3 quotes fit with NO scrolling — verified on small 375×667 and 414×896.
