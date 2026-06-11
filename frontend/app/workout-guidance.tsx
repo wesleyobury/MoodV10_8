@@ -26,6 +26,7 @@ import { TextWithTermLinks } from '../components/TermDefinitionPopup';
 import { API_URL } from '../utils/apiConfig';
 import InSessionProgressBar from '../components/InSessionProgressBar';
 import { SessionSafetyBanner } from '../components/SessionSafetyBanner';
+import GuestPromptModal from '../components/GuestPromptModal';
 
 interface MOODTip {
   icon: keyof typeof Ionicons.glyphMap;
@@ -274,8 +275,9 @@ export default function WorkoutGuidanceScreen() {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
+  const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   
-  const { token } = useAuth();
+  const { token, isGuest } = useAuth();
   const { canStartWorkout, openPaywall } = useSubscription();
   
   // Timer that calculates elapsed time from start timestamp
@@ -305,6 +307,13 @@ export default function WorkoutGuidanceScreen() {
   
   const handleStartPauseTimer = () => {
     if (!isRunning) {
+      // Guest gate: unauthenticated guests cannot start a workout session.
+      // Prompt them to create an account instead of beginning the timer.
+      if (isGuest) {
+        GuestAnalytics.signupPromptShown({ trigger_action: 'start a workout' });
+        setShowGuestPrompt(true);
+        return;
+      }
       // Phase B free-tier gate: a fresh "Start Workout" tap must check the
       // subscription state. Founding members + active/in-trial users pass
       // through; free users get exactly one session, then the paywall.
@@ -1105,6 +1114,13 @@ export default function WorkoutGuidanceScreen() {
       <ExerciseLookupSheet
         visible={exerciseLookupVisible}
         onClose={() => setExerciseLookupVisible(false)}
+      />
+
+      {/* Guest gate — prompt account creation before starting a workout */}
+      <GuestPromptModal
+        visible={showGuestPrompt}
+        onClose={() => setShowGuestPrompt(false)}
+        action="start a workout"
       />
     </SafeAreaView>
   );

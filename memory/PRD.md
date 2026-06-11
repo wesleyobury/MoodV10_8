@@ -1,5 +1,10 @@
 # MOOD Fitness App - PRD
 
+## [2026-06-11] Payoff carousel polish + Guest workout-start gate
+- **reveal-payoff.tsx carousel cards**: title + subtext now strictly 1 line (`numberOfLines={1}` + `adjustsFontSizeToFit` + `minimumFontScale`), removed the `maxWidth:66%` truncation clamp (replaced with `paddingRight:56` to clear the ghost icon), tightened padding. The "or" divider moved down 2px (`marginTop:2`).
+- **Guest workout-start gate** (`workout-guidance.tsx::handleStartPauseTimer`): if `isGuest`, a fresh Start tap now opens `GuestPromptModal` (Create Account) instead of starting the timer. Fires `GuestAnalytics.signupPromptShown({trigger_action:'start a workout'})`.
+- **DEFERRED (pending user visual review)**: hero image "shift down behind the headline" — ambiguous layout ask; left for user confirmation against current screenshot.
+
 ## Original Problem Statement
 Full-stack fitness application with React Native (Expo) frontend and FastAPI backend. Key goals:
 1. Deployment stability (resolve all blockers)

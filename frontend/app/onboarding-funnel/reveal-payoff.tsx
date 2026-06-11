@@ -438,8 +438,12 @@ function CarouselCard({
           <Ionicons name={feature.icon} size={24} color={COLORS.accent} />
         </View>
         <View style={styles.cTextWrap}>
-          <Text style={styles.cTitle} numberOfLines={1}>{feature.title}</Text>
-          <Text style={styles.cSubtext} numberOfLines={1}>{feature.subtext}</Text>
+          <Text style={styles.cTitle} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
+            {feature.title}
+          </Text>
+          <Text style={styles.cSubtext} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.85}>
+            {feature.subtext}
+          </Text>
         </View>
       </View>
     </View>
@@ -504,8 +508,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,215,0,0.06)',
   },
   cTextWrap: { marginTop: 'auto' },
-  cTitle: { fontSize: 20, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.3, marginBottom: 4, maxWidth: '66%' },
-  cSubtext: { fontSize: 13.5, lineHeight: 19, color: COLORS.textSecondary, maxWidth: '66%' },
+  cTitle: { fontSize: 19, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.3, marginBottom: 5, paddingRight: 56 },
+  cSubtext: { fontSize: 13, lineHeight: 18, color: COLORS.textSecondary, paddingRight: 56 },
   dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 14 },
   dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.2)' },
   dotActive: { width: 18, backgroundColor: COLORS.accent },
@@ -517,7 +521,7 @@ const styles = StyleSheet.create({
   cta: { borderRadius: 14, overflow: 'hidden' },
   ctaGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 16, minHeight: 54 },
   ctaLabel: { fontSize: 16, fontWeight: '700', color: COLORS.accentInk, letterSpacing: 0.3 },
-  orDivider: { alignItems: 'center', justifyContent: 'center', paddingVertical: 8 },
+  orDivider: { alignItems: 'center', justifyContent: 'center', paddingVertical: 8, marginTop: 2 },
   orText: { fontSize: 12, color: COLORS.textTertiary, fontWeight: '600' },
   trialBtn: { paddingVertical: 13, alignItems: 'center', justifyContent: 'center', minHeight: 48 },
   trialBtnLabel: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary, letterSpacing: 0.2 },
