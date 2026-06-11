@@ -16,6 +16,7 @@ import { useRouter } from 'expo-router';
 import {
   ActivityIndicator,
   Dimensions,
+  FlatList,
   Image,
   ImageBackground,
   Linking,
@@ -23,6 +24,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
@@ -57,9 +59,11 @@ const GOAL_BLURB_WORD: Record<PrimaryGoal, string> = {
   consistency: 'consistency',
 };
 
-// Value props shown as compact feature cards.
+// Value props shown in the auto-swiping feature carousel.
 const FEATURES: { icon: keyof typeof Ionicons.glyphMap; title: string; subtext: string }[] = [
+  { icon: 'sparkles', title: 'Mood-based workouts', subtext: 'A fresh session built for how you feel today.' },
   { icon: 'locate', title: 'Personalized to your goals', subtext: 'Built around your goal, level & time.' },
+  { icon: 'sync', title: 'Adapts to energy & recovery', subtext: 'Adjusts to how recovered you are.' },
   { icon: 'watch', title: 'Live heart rate & wearables', subtext: 'Real-time metrics, smarter training.' },
   { icon: 'stats-chart', title: 'Progress that matters', subtext: 'Track your trends and wins.' },
   { icon: 'people', title: 'Social accountability', subtext: 'Share, compete, stay on track.' },
@@ -90,7 +94,7 @@ export default function RevealPayoff() {
   const levelWord = answers.fitnessLevel
     ? LEVEL_LABELS[answers.fitnessLevel].toLowerCase()
     : 'current';
-  const blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} level, we've built a training system designed specifically for you.`;
+  const blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} lifestyle, we've curated a library of exercises and workouts designed specifically for your preferences, though you'll have access to our entire library.`;
 
   const isFoundingEligible =
     !!entitlement?.is_founding_member &&
@@ -192,11 +196,7 @@ export default function RevealPayoff() {
         </ImageBackground>
 
         <View style={styles.bottom}>
-          <View style={styles.features}>
-            {FEATURES.map((f) => (
-              <FeatureCard key={f.title} icon={f.icon} title={f.title} subtext={f.subtext} />
-            ))}
-          </View>
+          <FeatureCarousel />
 
           {isFoundingEligible ? (
             <FoundingVariant
@@ -369,23 +369,82 @@ function Disclosure({ trial }: { trial: boolean }) {
   );
 }
 
-function FeatureCard({
-  icon,
-  title,
-  subtext,
+function FeatureCarousel() {
+  const { width } = useWindowDimensions();
+  const cardWidth = width;
+  const listRef = useRef<FlatList>(null);
+  const indexRef = useRef(0);
+  const pausedRef = useRef(false);
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (pausedRef.current) return;
+      const next = (indexRef.current + 1) % FEATURES.length;
+      indexRef.current = next;
+      setActive(next);
+      listRef.current?.scrollToOffset({ offset: next * cardWidth, animated: true });
+    }, 2600);
+    return () => clearInterval(id);
+  }, [cardWidth]);
+
+  return (
+    <View style={styles.carouselWrap}>
+      <FlatList
+        ref={listRef}
+        data={FEATURES}
+        keyExtractor={(f) => f.title}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={cardWidth}
+        snapToAlignment="start"
+        decelerationRate="fast"
+        getItemLayout={(_, i) => ({ length: cardWidth, offset: cardWidth * i, index: i })}
+        onScrollBeginDrag={() => {
+          pausedRef.current = true;
+        }}
+        onMomentumScrollEnd={(e) => {
+          const i = Math.round(e.nativeEvent.contentOffset.x / cardWidth);
+          indexRef.current = i;
+          setActive(i);
+          pausedRef.current = false;
+        }}
+        renderItem={({ item }) => <CarouselCard feature={item} width={cardWidth} />}
+      />
+      <View style={styles.dots}>
+        {FEATURES.map((f, i) => (
+          <View key={f.title} style={[styles.dot, i === active && styles.dotActive]} />
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function CarouselCard({
+  feature,
+  width,
 }: {
-  icon: keyof typeof Ionicons.glyphMap;
-  title: string;
-  subtext: string;
+  feature: (typeof FEATURES)[number];
+  width: number;
 }) {
   return (
-    <View style={styles.featureCard}>
-      <View style={styles.featureIcon}>
-        <Ionicons name={icon} size={18} color={COLORS.accent} />
-      </View>
-      <View style={styles.featureBody}>
-        <Text style={styles.featureTitle}>{title}</Text>
-        <Text style={styles.featureSubtext}>{subtext}</Text>
+    <View style={{ width }}>
+      <View style={styles.cCard}>
+        <Ionicons name={feature.icon} size={120} color={COLORS.accent} style={styles.cGhost} />
+        <View style={styles.cIconChip}>
+          <LinearGradient
+            colors={BRAND_GRADIENT}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={StyleSheet.absoluteFill}
+          />
+          <Ionicons name={feature.icon} size={22} color={COLORS.accentInk} />
+        </View>
+        <View style={styles.cTextWrap}>
+          <Text style={styles.cTitle}>{feature.title}</Text>
+          <Text style={styles.cSubtext}>{feature.subtext}</Text>
+        </View>
       </View>
     </View>
   );
@@ -394,7 +453,7 @@ function FeatureCard({
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.bg },
   scroll: { flexGrow: 1 },
-  hero: { height: Math.max(height * 0.34, 280), justifyContent: 'flex-end' },
+  hero: { height: Math.max(height * 0.44, 350), justifyContent: 'flex-end' },
   heroHeader: {
     position: 'absolute',
     left: 20,
@@ -412,33 +471,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.35)',
   },
-  heroContent: { paddingHorizontal: 24, paddingTop: 16, paddingBottom: 12 },
-  heroHeadline: { fontSize: 30, lineHeight: 35, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 6 },
+  heroContent: { paddingHorizontal: 24, paddingTop: 22, paddingBottom: 26 },
+  heroHeadline: { fontSize: 30, lineHeight: 35, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 8 },
   heroSubhead: { fontSize: 14, lineHeight: 19, color: COLORS.textSecondary },
-  bottom: { flex: 1, paddingHorizontal: 24, paddingTop: 12, paddingBottom: 20, backgroundColor: COLORS.bg },
-  features: { gap: 6, marginBottom: 16 },
-  featureCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    borderRadius: 9,
-    backgroundColor: COLORS.surface,
+  bottom: { flex: 1, paddingHorizontal: 24, paddingTop: 16, paddingBottom: 20, backgroundColor: COLORS.bg },
+  carouselWrap: { marginHorizontal: -24, marginBottom: 16 },
+  cCard: {
+    height: 132,
+    marginHorizontal: 24,
+    borderRadius: 18,
+    padding: 20,
+    backgroundColor: COLORS.surfaceElevated,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(255,215,0,0.16)',
+    overflow: 'hidden',
   },
-  featureIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 9,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(255,215,0,0.12)',
-  },
-  featureBody: { flex: 1 },
-  featureTitle: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary, marginBottom: 1 },
-  featureSubtext: { fontSize: 12, lineHeight: 16, color: COLORS.textSecondary },
+  cGhost: { position: 'absolute', right: -18, top: -14, opacity: 0.06 },
+  cIconChip: { width: 44, height: 44, borderRadius: 13, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' },
+  cTextWrap: { marginTop: 'auto' },
+  cTitle: { fontSize: 19, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.3, marginBottom: 4 },
+  cSubtext: { fontSize: 13.5, lineHeight: 19, color: COLORS.textSecondary },
+  dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 14 },
+  dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.2)' },
+  dotActive: { width: 18, backgroundColor: COLORS.accent },
   socialStat: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 14 },
   avatars: { flexDirection: 'row' },
   avatar: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: COLORS.bg },
