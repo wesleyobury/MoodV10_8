@@ -1,21 +1,22 @@
 /**
- * Reveal Payoff — the conversion moment + Soft Paywall #1 (MOOD V2 Phase 4.1).
+ * Reveal Payoff — the conversion moment + Soft Paywall #1.
  *
- * Two variants:
- *  • FOUNDING (existing founding-eligible users during the window): single
- *    primary 'Claim Founding Price — $39/year' + a tertiary skip.
- *  • STANDARD (everyone else): 3-CTA stack —
- *      1. 'Start 7-Day Free Trial' → DIRECT StoreKit (NOT the PaywallModal)
- *      2. 'Subscribe Now'          → opens PaywallModal plan picker
- *      3. 'Build and save it for later if you aren't ready' → skip to wearables
+ * ONE shared layout for both variants. The standard (new-user) screen is the
+ * canonical template; the founding variant reuses it verbatim and only swaps
+ * TWO things:
+ *   • Item 7 (swap slot): standard = 92% social-proof row; founding = founding
+ *     pricing block (mutually exclusive, same position).
+ *   • Item 8 (primary button label): "Subscribe Now" vs "Claim Founding Price".
  *
- * Apple disclosure copy is rendered on-screen (App Store requirement).
+ * Architecture note: the hero is a FIXED-HEIGHT block with the headline + blurb
+ * anchored to its bottom, followed by a normal top-down content flow. This keeps
+ * the hero, headline, blurb, and carousel pixel-identical between variants — the
+ * content below the carousel can change height without ever shifting them.
  */
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'expo-router';
 import {
   ActivityIndicator,
-  Dimensions,
   FlatList,
   Image,
   ImageBackground,
@@ -28,7 +29,7 @@ import {
   View,
 } from 'react-native';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
@@ -45,15 +46,15 @@ import { useFoundingPurchase } from '../../hooks/useFoundingPurchase';
 import { foundingDaysRemaining } from '../../utils/founding';
 import { isStoreKitAvailable, restorePurchases } from '../../modules/mood-storekit/src';
 
-const { height } = Dimensions.get('window');
 const MANAGE_SUBS_URL = 'https://apps.apple.com/account/subscriptions';
+const PAGE_BG = '#0A0A0A'; // must equal COLORS.bg so the hero fade has no seam
 
-// === SHARED LAYOUT CONSTANTS ===
-// Used by both variants — defines the skeleton so nothing shifts.
+// === SHARED LAYOUT CONSTANTS (used by BOTH variants — never redefined) ===
 const HORIZONTAL_PADDING = 24;
-const getHeroHeight = (windowHeight: number) => Math.max(windowHeight * 0.62, 300);
-const CAROUSEL_HEIGHT = 144; // Fixed height to prevent layout shift on card swaps
-const SECTION_GAP = 6;
+const HERO_HEIGHT_RATIO = 0.54; // hero occupies ~top half of the screen
+const HERO_MIN_HEIGHT = 340;
+const HERO_TEXT_BOTTOM_PADDING = 22; // anchors headline/blurb near the image's bottom third
+const CAROUSEL_HEIGHT = 144; // fixed so card swaps never shift anything below
 
 // Mood-specific payoff hero photos. 'lazy' reuses the sweat hero per design.
 const HERO_IMAGES: Record<MoodId, ReturnType<typeof require>> = {
@@ -104,7 +105,8 @@ export default function RevealPayoff() {
   const [busy, setBusy] = useState<null | 'trial' | 'founding'>(null);
   const completedRef = useRef(false);
   const { height: windowHeight } = useWindowDimensions();
-  const screenH = windowHeight - insets.bottom;
+  const screenH = windowHeight;
+  const heroHeight = Math.max(screenH * HERO_HEIGHT_RATIO, HERO_MIN_HEIGHT);
 
   const firstName =
     (user?.name && user.name.split(' ')[0]) || user?.username || 'Athlete';
@@ -114,7 +116,7 @@ export default function RevealPayoff() {
   const levelWord = answers.fitnessLevel
     ? LEVEL_LABELS[answers.fitnessLevel].toLowerCase()
     : 'current';
-  const blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} lifestyle, we've curated a library of workouts designed specifically for your preferences.`;
+  const blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} level, we've curated a library of workouts designed specifically for your preferences.`;
 
   const isFoundingEligible =
     !!entitlement?.is_founding_member &&
@@ -144,8 +146,7 @@ export default function RevealPayoff() {
 
   const goWearables = () => router.replace(WEARABLES_ROUTE);
 
-  // STANDARD primary — direct StoreKit MONTHLY trial (NOT the PaywallModal).
-  // Both 'Subscribe Now' and 'Start my 7-day free trial' call this.
+  // Direct StoreKit MONTHLY trial (NOT the PaywallModal).
   const handleStartTrial = async () => {
     if (busy) return;
     Analytics.revealCtaTapped(token, { cta: 'start_free_trial' });
@@ -154,7 +155,6 @@ export default function RevealPayoff() {
     const result = await startTrial('post_onboarding_soft');
     setBusy(null);
     if (result === 'success') goWearables();
-    // cancelled/error: stay on screen so the user can retry or skip.
   };
 
   const handleRestore = async () => {
@@ -171,7 +171,7 @@ export default function RevealPayoff() {
     }
   };
 
-  // FOUNDING primary — claim + StoreKit founding SKU.
+  // Founding primary — claim + StoreKit founding SKU.
   const handleClaimFounding = async () => {
     if (busy) return;
     Analytics.revealCtaTapped(token, { cta: 'claim_founding' });
@@ -182,197 +182,130 @@ export default function RevealPayoff() {
     if (result === 'success' || result === 'ineligible') goWearables();
   };
 
-  // Safety net — 'Build now & save it for later' + the ✕ close.
+  // Safety net — 'Build now & save it for later'.
   const handleSkip = () => {
     Analytics.revealCtaTapped(token, { cta: 'build_and_save_for_later' });
     fireCompleted();
     goWearables();
   };
 
+  // === The ONLY two per-variant differences ===
+  const onPrimary = isFoundingEligible ? handleClaimFounding : handleStartTrial;
+  const primaryBusy = isFoundingEligible ? busy === 'founding' : busy === 'trial';
+  const primaryLabel = isFoundingEligible ? 'Claim Founding Price — $39/year' : 'Subscribe Now';
+  const primaryTestID = isFoundingEligible ? 'reveal-founding-cta' : 'reveal-subscribe-cta';
+
   return (
-    <SafeAreaView style={styles.root} edges={['bottom']} testID="reveal-payoff" data-testid="reveal-payoff">
-      <ScrollView contentContainerStyle={styles.scroll} bounces={false}>
-        <View style={[styles.firstScreen, { minHeight: screenH }]}>
-          {/* === HERO IMAGE WITH BOTTOM GRADIENT FADE === */}
-          <ImageBackground
-            source={heroImage}
-            style={[styles.hero, { height: getHeroHeight(screenH) }]}
-            resizeMode="cover"
-          >
-            {/* Gradient overlay: fades from transparent → #0A0A0A by bottom */}
-            <LinearGradient
-              colors={['transparent', 'transparent', 'rgba(10,10,10,0.85)', '#0A0A0A']}
-              locations={[0, 0.45, 0.82, 1]}
-              style={StyleSheet.absoluteFill}
-              pointerEvents="none"
-            />
-            {/* MOOD Wordmark + Close Button */}
-            <View style={[styles.heroHeader, { top: insets.top + 8 }]}>
-              <MaskedView maskElement={<Text style={styles.wordmark}>MOOD</Text>}>
-                <LinearGradient
-                  colors={['#FFD700', '#FFA500']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                >
-                  <Text style={[styles.wordmark, { opacity: 0 }]}>MOOD</Text>
-                </LinearGradient>
-              </MaskedView>
-            </View>
-          </ImageBackground>
+    <View style={styles.root} testID="reveal-payoff" data-testid="reveal-payoff">
+      <ScrollView
+        contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 28 }]}
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* === 1–4 HERO (wordmark + image + fade + headline + blurb) — SHARED === */}
+        <ImageBackground
+          source={heroImage}
+          style={[styles.hero, { height: heroHeight }]}
+          resizeMode="cover"
+        >
+          {/* Light top scrim — keeps the wordmark legible without darkening the photo */}
+          <LinearGradient
+            colors={['rgba(0,0,0,0.45)', 'transparent']}
+            locations={[0, 0.28]}
+            style={StyleSheet.absoluteFill}
+            pointerEvents="none"
+          />
+          {/* Bottom fade — image melts into the page background (#0A0A0A) */}
+          <LinearGradient
+            colors={['transparent', 'transparent', 'rgba(10,10,10,0.85)', PAGE_BG]}
+            locations={[0, 0.45, 0.82, 1]}
+            style={StyleSheet.absoluteFill}
+            pointerEvents="none"
+          />
 
-          <View style={styles.flexSpacer} />
-
-          <View style={styles.aboveFold}>
-            {/* === SHARED HEADLINE BLOCK === */}
-            <View style={styles.headlineBlock}>
-              <Text style={styles.heroHeadline}>{firstName}, your plan is ready.</Text>
-              <Text style={styles.heroSubhead}>{blurb}</Text>
-            </View>
-
-            <View style={styles.solidSection}>
-              {/* === FEATURE CAROUSEL (FIXED HEIGHT) === */}
-              <FeatureCarousel />
-
-              {/* === 92% SOCIAL STAT (BOTH VARIANTS) === */}
-              <View style={styles.socialStat}>
-                <View style={styles.avatars}>
-                  {SOCIAL_AVATARS.map((uri, i) => (
-                    <Image
-                      key={uri}
-                      source={{ uri }}
-                      style={[styles.avatar, i > 0 && styles.avatarOverlap]}
-                    />
-                  ))}
-                </View>
-                <Text style={styles.socialStatText}>
-                  Join <Text style={styles.bold}>92%</Text> of users who completed a workout in their first
-                  week
-                </Text>
-              </View>
-
-              {/* === OFFER BLOCK (VARIANT-DEPENDENT) === */}
-              <OfferBlock
-                isFoundingEligible={isFoundingEligible}
-                daysLeft={daysLeft}
-                busy={busy}
-                onClaim={handleClaimFounding}
-                onSubscribe={handleStartTrial}
-              />
-            </View>
+          {/* MOOD wordmark — gold, top-left */}
+          <View style={[styles.wordmarkWrap, { top: insets.top + 8 }]}>
+            <MaskedView maskElement={<Text style={styles.wordmark}>MOOD</Text>}>
+              <LinearGradient colors={['#FFD700', '#FFA500']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+                <Text style={[styles.wordmark, { opacity: 0 }]}>MOOD</Text>
+              </LinearGradient>
+            </MaskedView>
           </View>
-        </View>
 
-        {/* === SHARED BOTTOM SECTION (IDENTICAL FOR BOTH) === */}
-        <View style={styles.belowFold}>
+          {/* Headline + blurb — anchored to the bottom third of the hero */}
+          <View style={styles.heroTextWrap}>
+            <Text style={styles.heroHeadline}>{firstName}, your plan is ready.</Text>
+            <Text style={styles.heroSubhead}>{blurb}</Text>
+          </View>
+        </ImageBackground>
+
+        {/* === CONTENT SHEET (normal flow, page bg) === */}
+        <View style={styles.sheet}>
+          {/* 5 + dots — SHARED */}
+          <FeatureCarousel />
+
+          {/* 7 SWAP SLOT — the ONLY content difference */}
+          {isFoundingEligible ? (
+            <View style={styles.foundingBanner}>
+              <Ionicons name="flash" size={16} color={COLORS.accent} />
+              <Text style={styles.foundingBannerText}>
+                Founding pricing — <Text style={styles.bold}>$39/yr locked forever</Text>. Standard pricing
+                will be $79/year. Available for {daysLeft} more day{daysLeft === 1 ? '' : 's'}.
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.socialStat}>
+              <View style={styles.avatars}>
+                {SOCIAL_AVATARS.map((uri, i) => (
+                  <Image key={uri} source={{ uri }} style={[styles.avatar, i > 0 && styles.avatarOverlap]} />
+                ))}
+              </View>
+              <Text style={styles.socialStatText}>
+                Join <Text style={styles.bold}>92%</Text> of users who completed a workout in their first
+                week
+              </Text>
+            </View>
+          )}
+
+          {/* 8 PRIMARY BUTTON — label is the only difference */}
+          <TouchableOpacity
+            style={styles.cta}
+            onPress={onPrimary}
+            disabled={!!busy}
+            testID={primaryTestID}
+            data-testid={primaryTestID}
+          >
+            <LinearGradient colors={BRAND_GRADIENT} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+              {primaryBusy ? (
+                <ActivityIndicator color={COLORS.accentInk} />
+              ) : (
+                <Text style={styles.ctaLabel}>{primaryLabel}</Text>
+              )}
+            </LinearGradient>
+          </TouchableOpacity>
+
+          {/* 9 — or — divider — SHARED */}
+          <View style={styles.orDivider}>
+            <Text style={styles.orText}>or</Text>
+          </View>
+
+          {/* 10 Start free trial — SHARED */}
+          <TouchableOpacity
+            style={styles.trialBtn}
+            onPress={handleStartTrial}
+            disabled={!!busy}
+            activeOpacity={0.8}
+            testID="reveal-start-cta"
+            data-testid="reveal-start-cta"
+          >
+            <Text style={styles.trialBtnLabel}>Start my 7-day free trial</Text>
+          </TouchableOpacity>
+
+          {/* 11 Disclosure, trust, save-for-later, footer links — SHARED */}
           <StandardBottom onSkip={handleSkip} onRestore={handleRestore} />
         </View>
       </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-/**
- * OfferBlock — renders either Standard or Founding offer.
- * Only the offer differs; everything above and below is shared.
- */
-function OfferBlock({
-  isFoundingEligible,
-  daysLeft,
-  busy,
-  onClaim,
-  onSubscribe,
-}: {
-  isFoundingEligible: boolean;
-  daysLeft: number;
-  busy: null | 'trial' | 'founding';
-  onClaim: () => void;
-  onSubscribe: () => void;
-}) {
-  if (isFoundingEligible) {
-    // === FOUNDING OFFER ===
-    return (
-      <>
-        <View style={styles.foundingBanner}>
-          <Ionicons name="flash" size={16} color={COLORS.accent} />
-          <Text style={styles.foundingBannerText}>
-            Founding pricing — <Text style={styles.bold}>$39/yr locked forever</Text>. Standard pricing
-            will be $79/year. Available for {daysLeft} more day{daysLeft === 1 ? '' : 's'}.
-          </Text>
-        </View>
-
-        <TouchableOpacity
-          style={styles.cta}
-          onPress={onClaim}
-          disabled={busy === 'founding'}
-          testID="reveal-founding-cta"
-          data-testid="reveal-founding-cta"
-        >
-          <LinearGradient
-            colors={BRAND_GRADIENT}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.ctaGradient}
-          >
-            {busy === 'founding' ? (
-              <ActivityIndicator color={COLORS.accentInk} />
-            ) : (
-              <Text style={styles.ctaLabel}>Claim Founding Price — $39/year</Text>
-            )}
-          </LinearGradient>
-        </TouchableOpacity>
-
-        <View style={styles.orDivider}>
-          <Text style={styles.orText}>or</Text>
-        </View>
-
-        <TouchableOpacity
-          style={styles.trialBtn}
-          onPress={onSubscribe}
-          disabled={busy === 'founding'}
-          activeOpacity={0.8}
-          testID="reveal-start-cta"
-          data-testid="reveal-start-cta"
-        >
-          <Text style={styles.trialBtnLabel}>Start my 7-day free trial</Text>
-        </TouchableOpacity>
-      </>
-    );
-  }
-
-  // === STANDARD OFFER ===
-  return (
-    <>
-      <TouchableOpacity
-        style={styles.cta}
-        onPress={onSubscribe}
-        disabled={busy === 'trial'}
-        testID="reveal-subscribe-cta"
-        data-testid="reveal-subscribe-cta"
-      >
-        <LinearGradient colors={BRAND_GRADIENT} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
-          {busy === 'trial' ? (
-            <ActivityIndicator color={COLORS.accentInk} />
-          ) : (
-            <Text style={styles.ctaLabel}>Subscribe Now</Text>
-          )}
-        </LinearGradient>
-      </TouchableOpacity>
-
-      <View style={styles.orDivider}>
-        <Text style={styles.orText}>or</Text>
-      </View>
-
-      <TouchableOpacity
-        style={styles.trialBtn}
-        onPress={onSubscribe}
-        disabled={busy === 'trial'}
-        activeOpacity={0.8}
-        testID="reveal-start-cta"
-        data-testid="reveal-start-cta"
-      >
-        <Text style={styles.trialBtnLabel}>Start my 7-day free trial</Text>
-      </TouchableOpacity>
-    </>
+    </View>
   );
 }
 
@@ -387,14 +320,6 @@ function StandardBottom({ onSkip, onRestore }: { onSkip: () => void; onRestore: 
         <Text style={styles.trustText}>Billed securely by Apple · Cancel in 2 taps</Text>
       </View>
 
-      <Text style={styles.legalRow}>
-        <Text style={styles.link} onPress={onRestore}>Restore Purchase</Text>
-        <Text> · </Text>
-        <Text style={styles.link} onPress={() => router.push('/terms-of-service')}>Terms</Text>
-        <Text> · </Text>
-        <Text style={styles.link} onPress={() => router.push('/privacy-policy')}>Privacy</Text>
-      </Text>
-
       <View style={styles.safetyNet}>
         <Text style={styles.safetyPrompt}>Don&apos;t wanna commit? 👇</Text>
         <TouchableOpacity
@@ -407,6 +332,14 @@ function StandardBottom({ onSkip, onRestore }: { onSkip: () => void; onRestore: 
           <Text style={styles.tertiaryCtaLabel}>Build now &amp; save it for later</Text>
         </TouchableOpacity>
       </View>
+
+      <Text style={styles.legalRow}>
+        <Text style={styles.link} onPress={onRestore}>Restore Purchase</Text>
+        <Text> · </Text>
+        <Text style={styles.link} onPress={() => router.push('/terms-of-service')}>Terms</Text>
+        <Text> · </Text>
+        <Text style={styles.link} onPress={() => router.push('/privacy-policy')}>Privacy</Text>
+      </Text>
     </>
   );
 }
@@ -508,36 +441,38 @@ function CarouselCard({
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: COLORS.bg },
-  scroll: { flexGrow: 1 },
-  hero: { position: 'absolute', top: 0, left: 0, right: 0, justifyContent: 'flex-end' },
-  heroHeader: {
-    position: 'absolute',
-    left: 20,
-    right: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
+  root: { flex: 1, backgroundColor: PAGE_BG },
+  scroll: { flexGrow: 1, backgroundColor: PAGE_BG },
+
+  // HERO (fixed height; headline anchored to its bottom)
+  hero: { width: '100%', justifyContent: 'flex-end' },
+  wordmarkWrap: { position: 'absolute', left: HORIZONTAL_PADDING },
   wordmark: { fontSize: 18, fontWeight: '900', letterSpacing: 3, color: COLORS.textPrimary },
-  closeBtn: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.35)',
+  heroTextWrap: { paddingHorizontal: HORIZONTAL_PADDING, paddingBottom: HERO_TEXT_BOTTOM_PADDING },
+  heroHeadline: {
+    fontSize: 30,
+    lineHeight: 35,
+    fontWeight: '800',
+    color: COLORS.textPrimary,
+    letterSpacing: -0.8,
+    marginBottom: 8,
+    textShadowColor: 'rgba(0,0,0,0.6)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 8,
   },
-  heroContent: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 22, paddingBottom: 26 },
-  headlineBlock: { marginBottom: 18 },
-  heroHeadline: { fontSize: 30, lineHeight: 35, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 8, textShadowColor: 'rgba(0,0,0,0.6)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 8 },
-  heroSubhead: { fontSize: 14, lineHeight: 19, color: COLORS.textSecondary, textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 6 },
-  bottom: { flex: 1, paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 16, paddingBottom: 20, backgroundColor: COLORS.bg },
-  firstScreen: { backgroundColor: COLORS.bg, position: 'relative' },
-  flexSpacer: { flex: 1, minHeight: 12, backgroundColor: 'transparent' },
-  aboveFold: { paddingHorizontal: HORIZONTAL_PADDING, paddingBottom: 14, backgroundColor: 'transparent' },
-  solidSection: { backgroundColor: COLORS.bg, marginHorizontal: -HORIZONTAL_PADDING, paddingHorizontal: HORIZONTAL_PADDING, paddingTop: SECTION_GAP },
-  belowFold: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 14, paddingBottom: 24, backgroundColor: COLORS.bg },
+  heroSubhead: {
+    fontSize: 14,
+    lineHeight: 19,
+    color: COLORS.textSecondary,
+    textShadowColor: 'rgba(0,0,0,0.5)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 6,
+  },
+
+  // CONTENT SHEET
+  sheet: { backgroundColor: PAGE_BG, paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 6 },
+
+  // CAROUSEL
   carouselWrap: { marginHorizontal: -HORIZONTAL_PADDING, marginBottom: 16, height: CAROUSEL_HEIGHT + 50 },
   cCard: {
     height: CAROUSEL_HEIGHT,
@@ -573,11 +508,17 @@ const styles = StyleSheet.create({
   dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 14 },
   dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.2)' },
   dotActive: { width: 18, backgroundColor: COLORS.accent },
+
+  // SWAP SLOT — both blocks occupy the same position
   socialStat: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 14 },
   avatars: { flexDirection: 'row' },
-  avatar: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: COLORS.bg },
+  avatar: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: PAGE_BG },
   avatarOverlap: { marginLeft: -10 },
   socialStatText: { flex: 1, fontSize: 12, lineHeight: 17, color: COLORS.textSecondary },
+  foundingBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, backgroundColor: COLORS.surfaceElevated, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,215,0,0.3)', padding: 12, marginBottom: 14 },
+  foundingBannerText: { flex: 1, fontSize: 13, lineHeight: 19, color: COLORS.textSecondary },
+
+  // PRIMARY + TRIAL
   cta: { borderRadius: 14, overflow: 'hidden' },
   ctaGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 16, minHeight: 54 },
   ctaLabel: { fontSize: 16, fontWeight: '700', color: COLORS.accentInk, letterSpacing: 0.3 },
@@ -585,16 +526,16 @@ const styles = StyleSheet.create({
   orText: { fontSize: 12, color: COLORS.textTertiary, fontWeight: '600' },
   trialBtn: { paddingVertical: 13, alignItems: 'center', justifyContent: 'center', minHeight: 48 },
   trialBtnLabel: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary, letterSpacing: 0.2 },
+
+  // FOOTER
+  disclosure: { fontSize: 10, lineHeight: 15, color: COLORS.textTertiary, textAlign: 'center', marginTop: 8 },
   trustRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 8, marginBottom: 12 },
   trustText: { fontSize: 11, color: COLORS.textTertiary },
-  legalRow: { fontSize: 11, color: COLORS.textTertiary, textAlign: 'center', marginTop: 4 },
-  safetyNet: { paddingTop: 22, alignItems: 'center' },
+  safetyNet: { paddingTop: 14, alignItems: 'center' },
   safetyPrompt: { fontSize: 13, fontWeight: '600', color: COLORS.textSecondary, marginBottom: 6 },
-  foundingBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, backgroundColor: COLORS.surfaceElevated, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,215,0,0.3)', padding: 12, marginBottom: 16 },
-  foundingBannerText: { flex: 1, fontSize: 13, lineHeight: 19, color: COLORS.textSecondary },
-  bold: { color: COLORS.accent, fontWeight: '700' },
-  disclosure: { fontSize: 10, lineHeight: 15, color: COLORS.textTertiary, textAlign: 'center', marginTop: 8 },
-  link: { color: COLORS.textSecondary, textDecorationLine: 'underline' },
   tertiaryCta: { paddingVertical: 8, paddingHorizontal: 16, alignItems: 'center' },
   tertiaryCtaLabel: { fontSize: 13.5, fontWeight: '600', color: COLORS.textSecondary, textDecorationLine: 'underline', textDecorationColor: 'rgba(255,255,255,0.3)' },
+  legalRow: { fontSize: 11, color: COLORS.textTertiary, textAlign: 'center', marginTop: 14 },
+  link: { color: COLORS.textSecondary, textDecorationLine: 'underline' },
+  bold: { color: COLORS.accent, fontWeight: '700' },
 });

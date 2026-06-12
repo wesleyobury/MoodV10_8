@@ -1,5 +1,11 @@
 # MOOD Fitness App - PRD
 
+## [2026-06-12] Payoff REBUILT — single shared layout (fixed-height hero)
+- Root cause of variant drift: old layout used an absolute hero + `flexSpacer` that pushed the headline UP as content below grew; founding also rendered BOTH the 92% row and the founding block → headline collided with the MOOD wordmark and positions diverged.
+- Rebuilt `reveal-payoff.tsx` as ONE shared layout: fixed-height hero (`HERO_HEIGHT_RATIO=0.54`) with MOOD wordmark (top-left) + headline + blurb anchored to the hero's bottom (light top scrim + bottom fade to `#0A0A0A`), then normal top-down flow: carousel (fixed `CAROUSEL_HEIGHT`) + dots → SWAP SLOT → primary button → or → trial → disclosure → trust → save-for-later → Restore·Terms·Privacy. ScrollView with `paddingBottom: insets.bottom+28`.
+- The ONLY two per-variant differences: (1) swap slot = 92% social row (standard) vs founding pricing block (founding), mutually exclusive same position; (2) primary button label "Subscribe Now" vs "Claim Founding Price — $39/year".
+- Verified BOTH variants on web (forced founding via temp flag, then reverted): hero/headline/blurb/carousel/dots pixel-identical; headline no longer overlaps wordmark. Shared footer + safe-area padding verified.
+
 ## [2026-06-12] Payoff template parity + hero top-edge fix
 - Confirmed both payoff variants (standard new-user + founding) share one skeleton: MOOD wordmark → hero → "{name}, your plan is ready." → blurb → feature carousel → dots → 92% stat are rendered ONCE in the parent (`RevealPayoff`); only `OfferBlock` differs (Standard = Subscribe Now; Founding = banner + Claim $39/yr). Shared `StandardBottom` renders for both.
 - Bottom hero gradient confirmed exact: `['transparent','transparent','rgba(10,10,10,0.85)','#0A0A0A']` @ `[0,0.45,0.82,1]`, `pointerEvents="none"`; `COLORS.bg = #0A0A0A` so the image melts into content (no seam).
