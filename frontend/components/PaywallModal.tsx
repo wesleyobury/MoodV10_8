@@ -32,6 +32,7 @@ import { BRAND_GRADIENT, COLORS } from '../constants/brand';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import { useAuth } from '../contexts/AuthContext';
+import { useFoundingPurchase } from '../hooks/useFoundingPurchase';
 import { apiFetch } from '../utils/api';
 import {
   MONTHLY_PRODUCT_ID,
@@ -86,13 +87,19 @@ export function PaywallModal() {
   const { pendingTrigger, dismissPaywall, setStatus, lastConversionTrigger, clearConversionTrigger } =
     useSubscription();
   const { token, entitlement } = useAuth();
+  const { claimFounding } = useFoundingPurchase();
   const [plan, setPlan] = useState<Plan>('annual');
+  const [foundingBusy, setFoundingBusy] = useState(false);
   const visible = pendingTrigger !== null;
 
   // 1a — seconds_on_screen for paywall_dismissed.
   const openedAtRef = React.useRef<number | null>(null);
   const stage = stageForTrigger(pendingTrigger);
   const isFoundingWindow = !!entitlement?.founding_window_active;
+  const isFoundingOffer =
+    !!entitlement?.is_founding_member &&
+    !entitlement?.founding_pricing_claimed &&
+    !!entitlement?.founding_window_active;
   const planProductId = plan === 'annual' ? YEARLY_PRODUCT_ID : MONTHLY_PRODUCT_ID;
 
   // Fire view event whenever the modal mounts with a fresh trigger.
@@ -240,6 +247,19 @@ export function PaywallModal() {
     }
   };
 
+  const handleClaimFounding = async () => {
+    if (foundingBusy) return;
+    setFoundingBusy(true);
+    try {
+      const result = await claimFounding(pendingTrigger ?? 'paywall_founding_offer');
+      if (result === 'success') {
+        dismissPaywall();
+      }
+    } finally {
+      setFoundingBusy(false);
+    }
+  };
+
   const handleRestore = async () => {
     Analytics.subscriptionRestored(token, { source: 'paywall' });
     Analytics.restorePurchasesClicked(token, { source: 'paywall' });
@@ -344,6 +364,58 @@ export function PaywallModal() {
               ))}
             </View>
 
+            {isFoundingOffer && (
+              <>
+                <View style={styles.foundingBanner}>
+                  <Ionicons name="flash" size={16} color={COLORS.accent} />
+                  <Text style={styles.foundingBannerText}>
+                    Founding pricing — <Text style={styles.bold}>$39/yr locked forever</Text>.
+                    Standard pricing will be $79/year while this offer is active.
+                  </Text>
+                </View>
+
+                <TouchableOpacity
+                  style={styles.cta}
+                  onPress={handleClaimFounding}
+                  disabled={foundingBusy}
+                  testID="paywall-claim-founding"
+                  data-testid="paywall-claim-founding"
+                >
+                  <LinearGradient
+                    colors={[...BRAND_GRADIENT]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.ctaGradient}
+                  >
+                    {foundingBusy ? (
+                      <ActivityIndicator color={COLORS.accentInk} />
+                    ) : (
+                      <Text style={styles.ctaLabel}>Claim Founding Price — $39/year</Text>
+                    )}
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                <View style={styles.orDivider}>
+                  <Text style={styles.orText}>or</Text>
+                </View>
+
+                <TouchableOpacity
+                  style={styles.trialBtn}
+                  onPress={handleStartTrial}
+                  disabled={foundingBusy}
+                  activeOpacity={0.8}
+                  testID="paywall-start-trial"
+                  data-testid="paywall-start-trial"
+                >
+                  <Text style={styles.trialBtnLabel}>Start 7-day free trial</Text>
+                </TouchableOpacity>
+
+                <Text style={styles.foundingSubtext}>
+                  Try premium first — cancel anytime before the trial ends.
+                </Text>
+              </>
+            )}
+
             <View style={styles.plans}>
               <PlanCard
                 selected={plan === 'annual'}
@@ -363,24 +435,28 @@ export function PaywallModal() {
               />
             </View>
 
-            <TouchableOpacity
-              style={styles.cta}
-              onPress={handleStartTrial}
-              testID="paywall-start-trial"
-              data-testid="paywall-start-trial"
-            >
-              <LinearGradient
-                colors={[...BRAND_GRADIENT]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.ctaGradient}
-              >
-                <Text style={styles.ctaLabel}>Start 7-day free trial</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-            <Text style={styles.ctaCaption}>
-              Then {plan === 'annual' ? ANNUAL_PRICE_LABEL : MONTHLY_PRICE_LABEL}. Cancel anytime in Settings.
-            </Text>
+            {!isFoundingOffer && (
+              <>
+                <TouchableOpacity
+                  style={styles.cta}
+                  onPress={handleStartTrial}
+                  testID="paywall-start-trial"
+                  data-testid="paywall-start-trial"
+                >
+                  <LinearGradient
+                    colors={[...BRAND_GRADIENT]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.ctaGradient}
+                  >
+                    <Text style={styles.ctaLabel}>Start 7-day free trial</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+                <Text style={styles.ctaCaption}>
+                  Then {plan === 'annual' ? ANNUAL_PRICE_LABEL : MONTHLY_PRICE_LABEL}. Cancel anytime in Settings.
+                </Text>
+              </>
+            )}
 
             <Text style={styles.disclosure}>{APPLE_DISCLOSURE}</Text>
 
@@ -641,6 +717,52 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: COLORS.accentInk,
     letterSpacing: 0.3,
+  },
+  foundingBanner: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+    backgroundColor: 'rgba(255,215,0,0.08)',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.28)',
+    padding: 14,
+    marginBottom: 16,
+  },
+  foundingBannerText: {
+    flex: 1,
+    fontSize: 13,
+    lineHeight: 18,
+    color: COLORS.textSecondary,
+  },
+  foundingSubtext: {
+    fontSize: 12,
+    color: COLORS.textTertiary,
+    textAlign: 'center',
+    marginBottom: 14,
+  },
+  orDivider: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+  },
+  orText: {
+    fontSize: 12,
+    color: COLORS.textTertiary,
+    fontWeight: '600',
+  },
+  trialBtn: {
+    paddingVertical: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 48,
+    marginBottom: 10,
+  },
+  trialBtnLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: COLORS.textPrimary,
+    letterSpacing: 0.2,
   },
   ctaCaption: {
     fontSize: 12,

@@ -64,7 +64,7 @@ export default function TermsAcceptanceModal({
           <View style={styles.header}>
             <Text style={styles.title}>End User License Agreement</Text>
             <Text style={styles.subtitle}>Please review and accept to continue</Text>
-            <Text style={styles.lastUpdated}>Last Updated: February 2025</Text>
+            <Text style={styles.lastUpdated}>Last Updated: June 2026</Text>
           </View>
 
           {/* Content */}
@@ -138,9 +138,31 @@ export default function TermsAcceptanceModal({
               </Text>
             </View>
 
+            {/* Subscriptions & Billing */}
+            <View style={styles.eulaSection}>
+              <Text style={styles.eulaSectionTitle}>6. Subscriptions & Billing</Text>
+              <Text style={styles.eulaText}>
+                The App offers auto-renewing subscriptions through Apple. All billing is handled by Apple, and Apple processes your payment information.
+              </Text>
+              <Text style={styles.eulaText}>
+                Subscription options may include:
+              </Text>
+              <View style={styles.bulletList}>
+                <Text style={styles.bulletItem}>• MOOD Monthly — $9.99 per month</Text>
+                <Text style={styles.bulletItem}>• MOOD Annual — $79 per year</Text>
+                <Text style={styles.bulletItem}>• Founding Member Annual — $39 per year</Text>
+              </View>
+              <Text style={styles.eulaText}>
+                Subscriptions renew automatically unless canceled at least 24 hours before the end of the current billing period. Manage and cancel subscriptions through your Apple ID account settings.
+              </Text>
+              <Text style={styles.eulaText}>
+                We may receive subscription status and entitlement information from Apple so we can grant access to premium features, but we do not receive your payment credentials.
+              </Text>
+            </View>
+
             {/* No Warranty */}
             <View style={styles.eulaSection}>
-              <Text style={styles.eulaSectionTitle}>6. No Warranty</Text>
+              <Text style={styles.eulaSectionTitle}>7. No Warranty</Text>
               <Text style={styles.eulaTextCaps}>
                 THE APP IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND.
               </Text>
@@ -148,7 +170,7 @@ export default function TermsAcceptanceModal({
 
             {/* Limitation of Liability */}
             <View style={styles.eulaSection}>
-              <Text style={styles.eulaSectionTitle}>7. Limitation of Liability</Text>
+              <Text style={styles.eulaSectionTitle}>8. Limitation of Liability</Text>
               <Text style={styles.eulaTextCaps}>
                 TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE SHALL NOT BE LIABLE FOR ANY DAMAGES ARISING FROM YOUR USE OF THE APP, INCLUDING PERSONAL INJURY.
               </Text>
@@ -156,7 +178,7 @@ export default function TermsAcceptanceModal({
 
             {/* Termination */}
             <View style={styles.eulaSection}>
-              <Text style={styles.eulaSectionTitle}>8. Termination</Text>
+              <Text style={styles.eulaSectionTitle}>9. Termination</Text>
               <Text style={styles.eulaText}>
                 This Agreement remains effective until terminated. We may terminate it at any time if you violate its terms. Upon termination, all rights granted to you cease immediately.
               </Text>
@@ -164,7 +186,7 @@ export default function TermsAcceptanceModal({
 
             {/* Apple Disclaimer */}
             <View style={styles.eulaSection}>
-              <Text style={styles.eulaSectionTitle}>9. Apple Disclaimer</Text>
+              <Text style={styles.eulaSectionTitle}>10. Apple Disclaimer</Text>
               <Text style={styles.eulaText}>
                 This Agreement is between you and MOOD, not Apple. Apple is not responsible for the App or its content and has no obligation to provide support.
               </Text>
@@ -172,7 +194,7 @@ export default function TermsAcceptanceModal({
 
             {/* Governing Law */}
             <View style={styles.eulaSection}>
-              <Text style={styles.eulaSectionTitle}>10. Governing Law</Text>
+              <Text style={styles.eulaSectionTitle}>11. Governing Law</Text>
               <Text style={styles.eulaText}>
                 This Agreement is governed by the laws of the United States and the State of Texas, without regard to conflict-of-law principles.
               </Text>
@@ -180,7 +202,7 @@ export default function TermsAcceptanceModal({
 
             {/* Entire Agreement */}
             <View style={styles.eulaSection}>
-              <Text style={styles.eulaSectionTitle}>11. Entire Agreement</Text>
+              <Text style={styles.eulaSectionTitle}>12. Entire Agreement</Text>
               <Text style={styles.eulaText}>
                 This Agreement, together with the Terms of Service and Privacy Policy, constitutes the entire agreement between you and MOOD.
               </Text>

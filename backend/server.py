@@ -555,12 +555,31 @@ async def root_health_check():
 security = HTTPBearer()
 
 # Helper functions
-def create_jwt_token(user_id: str) -> str:
+def create_access_token(user_id: str, minutes: int = 15) -> str:
+    """Create a short-lived JWT access token."""
     payload = {
         'user_id': user_id,
-        'exp': datetime.now(timezone.utc).timestamp() + (365 * 10 * 24 * 3600)  # 10 years - essentially permanent until logout
+        'exp': datetime.now(timezone.utc).timestamp() + (minutes * 60)
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+async def create_and_store_refresh_token(user_id: str, days: int = 365) -> str:
+    """Create a long-lived opaque refresh token, store it server-side, and return it."""
+    token = secrets.token_urlsafe(64)
+    now = datetime.now(timezone.utc)
+    expires_at = now + timedelta(days=days)
+    doc = {
+        'token': token,
+        'user_id': user_id,
+        'created_at': now,
+        'expires_at': expires_at,
+        'revoked': False,
+    }
+    await db.refresh_tokens.insert_one(doc)
+    return token
+
+async def revoke_refresh_token(token: str) -> None:
+    await db.refresh_tokens.update_one({'token': token}, {'$set': {'revoked': True}})
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
     try:
@@ -1006,12 +1025,14 @@ async def register(user_data: UserCreate):
     # Send welcome message from officialmoodapp
     await send_welcome_message(mongodb_id)
     
-    # Generate JWT token using MongoDB ObjectId
-    token = create_jwt_token(mongodb_id)
+    # Generate access + refresh tokens
+    access_token = create_access_token(mongodb_id, minutes=60*24)  # 24h initial access token for new registrants
+    refresh_token = await create_and_store_refresh_token(mongodb_id, days=365)
     
     return {
         "message": "User created successfully",
-        "token": token,
+        "access_token": access_token,
+        "refresh_token": refresh_token,
         "user_id": mongodb_id  # Always return MongoDB ObjectId
     }
 
@@ -1083,8 +1104,9 @@ async def login(login_data: UserLogin, request: Request):
             )
             raise HTTPException(status_code=401, detail="Invalid credentials")
         
-        # Generate JWT token
-        token = create_jwt_token(str(user["_id"]))
+        # Generate access + refresh tokens
+        access_token = create_access_token(str(user["_id"]), minutes=60*24)  # 24h access token
+        refresh_token = await create_and_store_refresh_token(str(user["_id"]), days=365)
         
         # Track successful login
         success = True
@@ -1094,7 +1116,7 @@ async def login(login_data: UserLogin, request: Request):
         )
         await update_auth_metadata(db, user_id, "email_password", True)
         await create_session_record(
-            db, user_id, token, "email_password",
+            db, user_id, access_token, "email_password",
             ip_address, user_agent
         )
         
@@ -1110,7 +1132,8 @@ async def login(login_data: UserLogin, request: Request):
         logger.info(f"Login successful for: {login_data.username}")
         return {
             "message": "Login successful",
-            "token": token,
+            "access_token": access_token,
+            "refresh_token": refresh_token,
             "user_id": str(user["_id"])
         }
     
@@ -1164,6 +1187,52 @@ class ResetPasswordRequest(BaseModel):
 def _hash_reset_token(raw_token: str) -> str:
     """Hash a raw reset token with bcrypt before persisting."""
     return bcrypt.hashpw(raw_token.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+# Refresh token endpoint and models
+class RefreshRequest(BaseModel):
+    refresh_token: str
+
+
+@api_router.post("/auth/refresh")
+async def refresh_token_endpoint(body: RefreshRequest):
+    """Exchange a valid refresh token for a new access token and a rotated refresh token.
+
+    Rotation strategy: on each use, revoke the presented refresh token and issue a new one.
+    This prevents reuse of stolen refresh tokens and allows server-side revocation.
+    """
+    try:
+        token_doc = await db.refresh_tokens.find_one({'token': body.refresh_token, 'revoked': False})
+        if not token_doc:
+            raise HTTPException(status_code=401, detail="Invalid refresh token")
+
+        if token_doc.get('expires_at'):
+            expires_at = token_doc['expires_at']
+            if expires_at.tzinfo is None:
+                expires_at = expires_at.replace(tzinfo=timezone.utc)
+            if expires_at < datetime.now(timezone.utc):
+                # expired
+                await db.refresh_tokens.update_one({'token': body.refresh_token}, {'$set': {'revoked': True}})
+                raise HTTPException(status_code=401, detail="Refresh token expired")
+
+        user_id = token_doc['user_id']
+
+        # Revoke the old refresh token (rotation)
+        await db.refresh_tokens.update_one({'token': body.refresh_token}, {'$set': {'revoked': True}})
+
+        # Issue new tokens
+        access_token = create_access_token(user_id, minutes=15)
+        new_refresh = await create_and_store_refresh_token(user_id, days=365)
+
+        # Record session for auditing
+        await create_session_record(db, user_id, access_token, "refresh_token")
+
+        return {"access_token": access_token, "refresh_token": new_refresh}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Refresh token error: {e}")
+        raise HTTPException(status_code=500, detail="Token refresh failed")
 
 
 def _verify_reset_token(raw_token: str, hashed_token: str) -> bool:

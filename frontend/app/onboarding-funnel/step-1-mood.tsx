@@ -93,12 +93,12 @@ export default function Step1Mood() {
               data-testid={`mood-card-${id}`}
             >
               <LinearGradient
-                colors={MOOD_ICON_GRADIENT[id]}
+                colors={[COLORS.surfaceElevated, COLORS.surfaceElevated]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.iconRing}
               >
-                <Ionicons name={MOOD_ICONS[id]} size={22} color="#0c0c0c" />
+                <Ionicons name={MOOD_ICONS[id]} size={22} color={COLORS.accent} />
               </LinearGradient>
               <Text style={styles.cardTitle}>{meta.title}</Text>
               <Text style={styles.cardSubtitle}>{meta.subtitle}</Text>
@@ -127,8 +127,8 @@ const styles = StyleSheet.create({
     minHeight: 120,
   },
   cardSelected: {
-    borderColor: COLORS.accent,
-    backgroundColor: 'rgba(255,215,0,0.06)',
+    borderColor: 'rgba(255,255,255,0.10)',
+    backgroundColor: COLORS.surfaceElevated,
   },
   iconRing: {
     width: 40,

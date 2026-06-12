@@ -31,7 +31,7 @@ export default function TermsOfServiceScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.lastUpdated}>Last Updated: February 2025</Text>
+        <Text style={styles.lastUpdated}>Last Updated: June 2026</Text>
 
         {/* Zero Tolerance Policy - HARDENED VERSION */}
         <View style={styles.section}>
@@ -136,6 +136,31 @@ export default function TermsOfServiceScreen() {
             <Text style={styles.bulletItem}>• Accept responsibility for all activities under your account</Text>
             <Text style={styles.bulletItem}>• Notify us immediately of any unauthorized access</Text>
           </View>
+          <Text style={styles.paragraph}>
+            You can delete your account directly in the app settings. Deleting your account removes your personal profile, workout history, community content, and associated data.
+          </Text>
+        </View>
+
+        {/* Subscriptions & Billing */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Subscriptions & Billing</Text>
+          <Text style={styles.paragraph}>
+            MOOD offers the following auto-renewable subscriptions through Apple:
+          </Text>
+          <View style={styles.bulletList}>
+            <Text style={styles.bulletItem}>• MOOD Monthly — $9.99 per month</Text>
+            <Text style={styles.bulletItem}>• MOOD Annual — $79 per year</Text>
+            <Text style={styles.bulletItem}>• Founding Member Annual — $39 per year</Text>
+          </View>
+          <Text style={styles.paragraph}>
+            These subscriptions auto-renew unless canceled at least 24 hours before the end of the current billing period. Renewal charges occur within 24 hours before the period ends.
+          </Text>
+          <Text style={styles.paragraph}>
+            All payment processing is handled by Apple. We do not receive or store your credit card or payment credentials. Manage and cancel your subscriptions through your Apple ID account settings in the App Store.
+          </Text>
+          <Text style={styles.paragraph}>
+            Your subscription status is shared with our backend to provide access to premium content and entitlement services.
+          </Text>
         </View>
 
         {/* User Blocking - NEW SECTION */}
@@ -303,6 +328,9 @@ export default function TermsOfServiceScreen() {
             For safety, abuse, or objectionable content concerns, users may contact us directly at:
           </Text>
           <Text style={styles.contactText}>wes@officialmoodapp.com</Text>
+          <Text style={styles.paragraph}>
+            Privacy Policy: You can review our Privacy Policy from within the app or at the Privacy Policy page linked from the terms acceptance screen.
+          </Text>
         </View>
 
         <View style={styles.bottomPadding} />

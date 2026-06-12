@@ -6,7 +6,7 @@ import TermsAcceptanceModal from '../components/TermsAcceptanceModal';
 import { resetNotificationSession } from '../utils/notificationUtils';
 import { API_URL, validateApiConfig } from '../utils/apiConfig';
 import { apiFetch } from '../utils/api';
-import { secureStorage, AUTH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY, AUTH_TOKEN_LAST_VALIDATED_KEY } from '../utils/secureStorage';
+import { secureStorage, AUTH_TOKEN_KEY, AUTH_REFRESH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY, AUTH_TOKEN_LAST_VALIDATED_KEY } from '../utils/secureStorage';
 import { DEV_MOCKS_ENABLED, getDevMockEntitlement } from '../utils/devMocks';
 
 // Terms version must match backend CURRENT_TERMS_VERSION
@@ -310,15 +310,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.log('🔗 API_URL being used:', API_URL);
       
       // Use safe apiFetch that handles non-JSON responses gracefully
-      const result = await apiFetch<{ token: string; user_id: string }>('/api/auth/login', {
+      const result = await apiFetch<{ access_token: string; refresh_token: string; user_id: string }>('/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({ username, password }),
       });
 
       if (result.ok && result.data) {
-        const { token: authToken, user_id } = result.data;
+        const { access_token: authToken, refresh_token: refreshToken, user_id } = result.data as any;
         setToken(authToken);
         await secureStorage.set(AUTH_TOKEN_KEY, authToken);
+        if (refreshToken) await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, refreshToken);
         const nowIso = new Date().toISOString();
         await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, nowIso);
         await secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, nowIso);
@@ -354,15 +355,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.log('🔗 API_URL being used:', API_URL);
       
       // Use safe apiFetch that handles non-JSON responses gracefully
-      const result = await apiFetch<{ token: string; user_id: string }>('/api/auth/register', {
+      const result = await apiFetch<{ access_token: string; refresh_token: string; user_id: string }>('/api/auth/register', {
         method: 'POST',
         body: JSON.stringify({ username, email, password, name }),
       });
 
       if (result.ok && result.data) {
-        const { token: authToken, user_id } = result.data;
+        const { access_token: authToken, refresh_token: refreshToken, user_id } = result.data as any;
         setToken(authToken);
         await secureStorage.set(AUTH_TOKEN_KEY, authToken);
+        if (refreshToken) await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, refreshToken);
         const nowIso = new Date().toISOString();
         await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, nowIso);
         await secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, nowIso);
@@ -404,6 +406,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = async () => {
     try {
       await secureStorage.delete(AUTH_TOKEN_KEY);
+      await secureStorage.delete(AUTH_REFRESH_TOKEN_KEY);
       await secureStorage.delete(AUTH_TOKEN_STORED_AT_KEY);
       await secureStorage.delete(AUTH_TOKEN_LAST_VALIDATED_KEY);
       await AsyncStorage.removeItem('is_guest');

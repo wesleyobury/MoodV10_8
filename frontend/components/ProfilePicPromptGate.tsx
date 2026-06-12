@@ -1,17 +1,14 @@
 /**
- * ProfilePicPromptGate — premium 2nd-open profile-pic nudge.
+ * ProfilePicPromptGate — persistent profile-picture nudge until avatar is set.
  *
- * Spec (2026-05-14 v2):
- *  • Fires ONLY after a user reaches the authenticated home screen (a
- *    `/(tabs)` route). Cold-start auto-login pre-tabs renders are ignored
- *    so the modal never lands on splash, funnel, onboarding, or auth.
- *  • Shows AT MOST ONCE per user (forever). If the user taps "Maybe later"
- *    we mark `modal_seen` and never bug them again. No persistent banner.
+ * Behavior:
+ *  • Shows EVERY TIME user enters a home tab (/, /explore, /profile) WITHOUT an avatar.
+ *  • Automatically dismisses when avatar is uploaded via any path (settings, onboarding, etc).
+ *  • "Maybe later" hides modal for current session; reappears on next home tab entry.
+ *  • Once avatar is set, modal never shows again.
  *  • Premium visual: gold→orange gradient CTA, no card borders, soft shadow.
- *  • Tracked per-user-id in AsyncStorage; one bump per JS-runtime session
- *    via a module-level Set sentinel so re-renders don't double-count.
  */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Modal,
   View,
@@ -21,21 +18,12 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { useAuth } from '../contexts/AuthContext';
 import { API_URL } from '../utils/apiConfig';
-
-const COUNT_KEY = (userId: string) => `@mood_app_open_count_${userId}`;
-const MODAL_SEEN_KEY = (userId: string) => `@mood_pic_prompt_modal_seen_${userId}`;
-const PROMPT_TRIGGER_THRESHOLD = 2; // 2nd open
-
-/** Process-scope sentinel so background→foreground re-renders within the
- *  same JS runtime don't repeatedly bump the per-user open counter. */
-const BUMPED_THIS_SESSION = new Set<string>();
 
 /** True only when the current route is an authenticated home tab. We don't
  *  want the modal to land on splash / onboarding / funnel / auth / workout
@@ -54,74 +42,26 @@ function isOnHomeTab(pathname: string | null | undefined): boolean {
   );
 }
 
-async function bumpOpenCountOnce(userId: string): Promise<number> {
-  try {
-    if (BUMPED_THIS_SESSION.has(userId)) {
-      const existing = await AsyncStorage.getItem(COUNT_KEY(userId));
-      return existing ? parseInt(existing, 10) || 0 : 0;
-    }
-    BUMPED_THIS_SESSION.add(userId);
-    const raw = await AsyncStorage.getItem(COUNT_KEY(userId));
-    const next = (raw ? parseInt(raw, 10) || 0 : 0) + 1;
-    await AsyncStorage.setItem(COUNT_KEY(userId), String(next));
-    return next;
-  } catch {
-    return 0;
-  }
-}
-
 export default function ProfilePicPromptGate() {
   const { user, token, updateUser } = useAuth();
   const pathname = usePathname();
 
   const [showModal, setShowModal] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const evaluatedForUserRef = useRef<string | null>(null);
 
-  // We only run the bump+evaluate ONCE per user, and only after the user has
-  // actually navigated into the tabs / home area post-auth. Subsequent route
-  // changes within tabs don't re-trigger anything.
   useEffect(() => {
     const uid = user?.id;
     if (!uid || !token) return;
     if (user?.avatar) return;
     if (!isOnHomeTab(pathname)) return;
-    if (evaluatedForUserRef.current === uid) return;
-    evaluatedForUserRef.current = uid;
 
-    let cancelled = false;
-    (async () => {
-      const modalSeenRaw = await AsyncStorage.getItem(MODAL_SEEN_KEY(uid));
-      if (cancelled) return;
-      // One-and-done — if user has already seen the modal we never show it
-      // again, regardless of open count. No persistent banner either.
-      if (modalSeenRaw) return;
-
-      const count = await bumpOpenCountOnce(uid);
-      if (cancelled) return;
-      if (count >= PROMPT_TRIGGER_THRESHOLD) {
-        setShowModal(true);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
+    setShowModal(true);
   }, [user?.id, user?.avatar, token, pathname]);
 
   // Hide immediately if avatar appears via any other path (settings, register).
   useEffect(() => {
     if (user?.avatar) setShowModal(false);
   }, [user?.avatar]);
-
-  const markModalSeen = useCallback(async () => {
-    const uid = user?.id;
-    if (!uid) return;
-    try {
-      await AsyncStorage.setItem(MODAL_SEEN_KEY(uid), '1');
-    } catch {
-      /* in-memory state still reflects the right UI */
-    }
-  }, [user?.id]);
 
   const uploadAvatar = useCallback(
     async (uri: string) => {
@@ -148,7 +88,6 @@ export default function ProfilePicPromptGate() {
         const data = await uploadRes.json();
         updateUser({ avatar: data.url });
         setShowModal(false);
-        await markModalSeen();
       } catch (err) {
         console.error('ProfilePicPromptGate upload error:', err);
         Alert.alert('Upload failed', 'Could not save your picture. Please try again.');
@@ -156,7 +95,7 @@ export default function ProfilePicPromptGate() {
         setUploading(false);
       }
     },
-    [token, updateUser, markModalSeen]
+    [token, updateUser]
   );
 
   const handleAddNow = useCallback(async () => {
@@ -180,10 +119,9 @@ export default function ProfilePicPromptGate() {
     }
   }, [uploadAvatar]);
 
-  const handleSkip = useCallback(async () => {
-    await markModalSeen();
+  const handleSkip = useCallback(() => {
     setShowModal(false);
-  }, [markModalSeen]);
+  }, []);
 
   if (!user?.id || user.avatar) return null;
 

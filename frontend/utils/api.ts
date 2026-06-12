@@ -9,6 +9,7 @@
  */
 
 import { API_URL } from './apiConfig';
+import secureStorage, { AUTH_TOKEN_KEY, AUTH_REFRESH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY } from './secureStorage';
 
 // Log API base URL at module load time for debugging
 console.log("🌐 API Fetch Module Loaded");
@@ -36,8 +37,50 @@ export async function apiFetch<T = any>(
   
   console.log(`📡 API Request: ${options.method || 'GET'} ${url}`);
   
+  // Helper to attempt token refresh once
+  const tryRefreshOnce = async (): Promise<string | null> => {
+    try {
+      const refreshToken = await secureStorage.get(AUTH_REFRESH_TOKEN_KEY);
+      if (!refreshToken) return null;
+
+      console.log('🔁 Attempting token refresh...');
+      const refreshRes = await fetch(`${API_URL}/api/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh_token: refreshToken }),
+      });
+
+      const refreshText = await refreshRes.text();
+      let refreshJson: any = null;
+      try { refreshJson = refreshText ? JSON.parse(refreshText) : null; } catch {}
+
+      if (!refreshRes.ok) {
+        console.warn('🔁 Refresh failed:', refreshRes.status, refreshText);
+        // On failure, clear stored tokens
+        await secureStorage.delete(AUTH_TOKEN_KEY);
+        await secureStorage.delete(AUTH_REFRESH_TOKEN_KEY);
+        return null;
+      }
+
+      const newAccess = refreshJson?.access_token;
+      const newRefresh = refreshJson?.refresh_token;
+      if (newAccess) {
+        await secureStorage.set(AUTH_TOKEN_KEY, newAccess);
+        await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, new Date().toISOString());
+      }
+      if (newRefresh) {
+        await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, newRefresh);
+      }
+      console.log('🔁 Token refresh succeeded');
+      return newAccess || null;
+    } catch (e) {
+      console.error('🔁 Token refresh error:', e);
+      return null;
+    }
+  };
+
   try {
-    const res = await fetch(url, {
+    let res = await fetch(url, {
       ...options,
       headers: {
         'Content-Type': 'application/json',
@@ -46,7 +89,7 @@ export async function apiFetch<T = any>(
     });
 
     // Always read as text first - this avoids JSON parse errors
-    const text = await res.text();
+    let text = await res.text();
     
     // Try to parse as JSON
     let json: T | null = null;
@@ -58,6 +101,34 @@ export async function apiFetch<T = any>(
     }
 
     if (!res.ok) {
+      // If 401, attempt refresh once and retry the original request
+      if (res.status === 401 && !path.startsWith('/api/auth/refresh')) {
+        const newAccess = await tryRefreshOnce();
+        if (newAccess) {
+          // retry original request with new Authorization header
+          const retryRes = await fetch(url, {
+            ...options,
+            headers: {
+              'Content-Type': 'application/json',
+              ...options.headers,
+              'Authorization': `Bearer ${newAccess}`,
+            },
+          });
+
+          const retryText = await retryRes.text();
+          let retryJson: T | null = null;
+          try { retryJson = retryText ? JSON.parse(retryText) : null; } catch {}
+
+          if (!retryRes.ok) {
+            const errorMessage = (retryJson as any)?.detail || (retryJson as any)?.message || (retryJson as any)?.error || retryText || `HTTP ${retryRes.status}`;
+            console.error(`❌ API Error (retry): ${retryRes.status} - ${errorMessage}`);
+            return { data: null, error: errorMessage, status: retryRes.status, ok: false };
+          }
+
+          return { data: retryJson, error: null, status: retryRes.status, ok: true };
+        }
+      }
+
       // Extract error message from various sources
       const errorMessage =
         (json as any)?.detail ||

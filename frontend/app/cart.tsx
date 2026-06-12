@@ -22,6 +22,7 @@ import HomeButton from '../components/HomeButton';
 import BackButton from '../components/BackButton';
 import AddCustomExerciseModal from '../components/AddCustomExerciseModal';
 import SendWorkoutModal from '../components/SendWorkoutModal';
+import GuestPromptModal from '../components/GuestPromptModal';
 import { useCart, WorkoutItem } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useDrafts } from '../contexts/DraftsContext';
@@ -308,10 +309,11 @@ export default function CartScreen() {
   const { currentDraftId, beginDraft, markReady, markStarted } = useDrafts();
   // Send-Workout-to-Friend modal state (cart-level)
   const [sendModalVisible, setSendModalVisible] = useState(false);
-  const { token } = useAuth();
+  const { token, isGuest } = useAuth();
   const [isStarting, setIsStarting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveModalVisible, setSaveModalVisible] = useState(false);
+  const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const [workoutName, setWorkoutName] = useState('');
   const [showAddExerciseModal, setShowAddExerciseModal] = useState(false);
   
@@ -635,6 +637,10 @@ export default function CartScreen() {
 
   const handleStartWorkoutSession = async () => {
     if (cartItems.length === 0) return;
+    if (isGuest) {
+      setShowGuestPrompt(true);
+      return;
+    }
 
     setIsStarting(true);
 
@@ -1100,6 +1106,12 @@ export default function CartScreen() {
       <AddCustomExerciseModal
         visible={showAddExerciseModal}
         onClose={() => setShowAddExerciseModal(false)}
+      />
+
+      <GuestPromptModal
+        visible={showGuestPrompt}
+        onClose={() => setShowGuestPrompt(false)}
+        action="start this workout"
       />
 
       {/* Send Workout (cart-level) Modal */}

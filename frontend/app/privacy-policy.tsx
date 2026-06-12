@@ -31,7 +31,7 @@ export default function PrivacyPolicyScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.lastUpdated}>Last Updated: February 2025</Text>
+        <Text style={styles.lastUpdated}>Last Updated: June 2026</Text>
         <Text style={styles.effectiveDate}>Effective Date: February 2025</Text>
 
         {/* Introduction */}
@@ -122,22 +122,26 @@ export default function PrivacyPolicyScreen() {
             Purpose: To enable community features, content sharing, and social interactions within the app.
           </Text>
 
-          <Text style={styles.subTitle}>3.4 Workout & Fitness Data</Text>
+          <Text style={styles.subTitle}>3.4 Workout, Health & Fitness Data</Text>
           <Text style={styles.paragraph}>
-            To provide personalized fitness experiences, we track:
+            To provide personalized fitness experiences, we track and store the following health and fitness information:
           </Text>
           <View style={styles.bulletList}>
-            <Text style={styles.bulletItem}>• Workouts started, completed, skipped, or abandoned</Text>
-            <Text style={styles.bulletItem}>• Exercise completion and progress</Text>
+            <Text style={styles.bulletItem}>• Mood, energy, and preference inputs used to tailor workout recommendations</Text>
+            <Text style={styles.bulletItem}>• Workout history, including workouts started, completed, skipped, or abandoned</Text>
+            <Text style={styles.bulletItem}>• Exercise completion, progress, and performance metrics</Text>
             <Text style={styles.bulletItem}>• Equipment preferences and selections</Text>
             <Text style={styles.bulletItem}>• Difficulty level preferences (beginner, intermediate, advanced)</Text>
-            <Text style={styles.bulletItem}>• Mood and workout category selections</Text>
+            <Text style={styles.bulletItem}>• Workout category selections such as strength, cardio, or recovery</Text>
             <Text style={styles.bulletItem}>• Saved and bookmarked workouts</Text>
             <Text style={styles.bulletItem}>• Workout duration and time spent</Text>
             <Text style={styles.bulletItem}>• "Choose for me" and randomization feature usage</Text>
           </View>
           <Text style={styles.paragraph}>
             Purpose: To track your fitness progress, provide personalized workout recommendations, and improve our workout content.
+          </Text>
+          <Text style={styles.paragraph}>
+            Health/Fitness Data Restriction: We treat mood, energy, workout history, and fitness data as sensitive information. We do not sell or share your health or fitness data with third parties for advertising, data mining, or profiling.
           </Text>
 
           <Text style={styles.subTitle}>3.5 Analytics & Usage Data</Text>
@@ -302,10 +306,19 @@ export default function PrivacyPolicyScreen() {
             <Text style={styles.bulletItem}>• We do NOT share data with advertisers</Text>
             <Text style={styles.bulletItem}>• We do NOT share data with data brokers</Text>
             <Text style={styles.bulletItem}>• We do NOT share data for cross-app tracking</Text>
+            <Text style={styles.bulletItem}>• We do NOT share health or fitness data for advertising or data mining</Text>
             <Text style={styles.bulletItem}>• We do NOT share data with social media platforms for advertising</Text>
           </View>
 
-          <Text style={styles.subTitle}>6.3 Legal Requirements</Text>
+          <Text style={styles.subTitle}>6.3 Subscription & Payments Data</Text>
+          <Text style={styles.paragraph}>
+            Our app offers auto-renewable subscriptions. Payment processing is handled by Apple, and we do not receive or store your Apple payment credentials. We may receive subscription status and entitlement information from Apple to enable your access to premium content.
+          </Text>
+          <Text style={styles.paragraph}>
+            Third parties that may process your data in connection with subscriptions, analytics, crash reporting, and entitlement validation include our backend service providers, analytics/crash reporting providers, and Apple App Store services. These providers are contractually restricted from using your data for purposes other than providing services to MOOD.
+          </Text>
+
+          <Text style={styles.subTitle}>6.4 Legal Requirements</Text>
           <Text style={styles.paragraph}>
             We may disclose your information if required by law, such as:
           </Text>
@@ -347,9 +360,13 @@ export default function PrivacyPolicyScreen() {
           <Text style={styles.subTitle}>7.3 Deletion</Text>
           <View style={styles.bulletList}>
             <Text style={styles.bulletItem}>• Delete individual posts, comments, or content</Text>
+            <Text style={styles.bulletItem}>• Delete your account directly in the app via Settings &gt; Delete Account</Text>
             <Text style={styles.bulletItem}>• Request complete deletion of your account and all associated data</Text>
             <Text style={styles.bulletItem}>• Deletion requests are processed within 30 days</Text>
           </View>
+          <Text style={styles.paragraph}>
+            If you wish to revoke consent or stop processing non-essential data, delete your account through the app or contact us at wes@officialmoodapp.com.
+          </Text>
 
           <Text style={styles.subTitle}>7.4 Opt-Out Options</Text>
           <View style={styles.bulletList}>

@@ -48,6 +48,13 @@ import { isStoreKitAvailable, restorePurchases } from '../../modules/mood-storek
 const { height } = Dimensions.get('window');
 const MANAGE_SUBS_URL = 'https://apps.apple.com/account/subscriptions';
 
+// === SHARED LAYOUT CONSTANTS ===
+// Used by both variants — defines the skeleton so nothing shifts.
+const HORIZONTAL_PADDING = 24;
+const getHeroHeight = (windowHeight: number) => Math.max(windowHeight * 0.62, 300);
+const CAROUSEL_HEIGHT = 144; // Fixed height to prevent layout shift on card swaps
+const SECTION_GAP = 6;
+
 // Mood-specific payoff hero photos. 'lazy' reuses the sweat hero per design.
 const HERO_IMAGES: Record<MoodId, ReturnType<typeof require>> = {
   sweat: require('../../assets/images/payoff/payoff-sweat.png'),
@@ -186,16 +193,20 @@ export default function RevealPayoff() {
     <SafeAreaView style={styles.root} edges={['bottom']} testID="reveal-payoff" data-testid="reveal-payoff">
       <ScrollView contentContainerStyle={styles.scroll} bounces={false}>
         <View style={[styles.firstScreen, { minHeight: screenH }]}>
+          {/* === HERO IMAGE WITH BOTTOM GRADIENT FADE === */}
           <ImageBackground
             source={heroImage}
-            style={[styles.hero, { height: screenH * 0.62 }]}
+            style={[styles.hero, { height: getHeroHeight(screenH), top: insets.top + 32 }]}
             resizeMode="cover"
           >
+            {/* Gradient overlay: fades from transparent → #0A0A0A by bottom */}
             <LinearGradient
-              colors={['transparent', 'rgba(10,10,10,0.15)', 'rgba(10,10,10,0.6)', COLORS.bg]}
+              colors={['transparent', 'transparent', 'rgba(10,10,10,0.85)', '#0A0A0A']}
               locations={[0, 0.45, 0.82, 1]}
               style={StyleSheet.absoluteFill}
+              pointerEvents="none"
             />
+            {/* MOOD Wordmark + Close Button */}
             <View style={[styles.heroHeader, { top: insets.top + 8 }]}>
               <MaskedView maskElement={<Text style={styles.wordmark}>MOOD</Text>}>
                 <LinearGradient
@@ -212,64 +223,134 @@ export default function RevealPayoff() {
           <View style={styles.flexSpacer} />
 
           <View style={styles.aboveFold}>
+            {/* === SHARED HEADLINE BLOCK === */}
             <View style={styles.headlineBlock}>
               <Text style={styles.heroHeadline}>{firstName}, your plan is ready.</Text>
               <Text style={styles.heroSubhead}>{blurb}</Text>
             </View>
+
             <View style={styles.solidSection}>
+              {/* === FEATURE CAROUSEL (FIXED HEIGHT) === */}
               <FeatureCarousel />
-              {isFoundingEligible ? (
-                <FoundingVariant
-                  daysLeft={daysLeft}
-                  busy={busy === 'founding'}
-                  onClaim={handleClaimFounding}
-                  onSkip={handleSkip}
-                />
-              ) : (
-                <StandardTop busyTrial={busy === 'trial'} onPrimary={handleStartTrial} />
-              )}
+
+              {/* === 92% SOCIAL STAT (BOTH VARIANTS) === */}
+              <View style={styles.socialStat}>
+                <View style={styles.avatars}>
+                  {SOCIAL_AVATARS.map((uri, i) => (
+                    <Image
+                      key={uri}
+                      source={{ uri }}
+                      style={[styles.avatar, i > 0 && styles.avatarOverlap]}
+                    />
+                  ))}
+                </View>
+                <Text style={styles.socialStatText}>
+                  Join <Text style={styles.bold}>92%</Text> of users who completed a workout in their first
+                  week
+                </Text>
+              </View>
+
+              {/* === OFFER BLOCK (VARIANT-DEPENDENT) === */}
+              <OfferBlock
+                isFoundingEligible={isFoundingEligible}
+                daysLeft={daysLeft}
+                busy={busy}
+                onClaim={handleClaimFounding}
+                onSubscribe={handleStartTrial}
+              />
             </View>
           </View>
         </View>
 
-        {!isFoundingEligible && (
-          <View style={styles.belowFold}>
-            <StandardBottom onSkip={handleSkip} onRestore={handleRestore} />
-          </View>
-        )}
+        {/* === SHARED BOTTOM SECTION (IDENTICAL FOR BOTH) === */}
+        <View style={styles.belowFold}>
+          <StandardBottom onSkip={handleSkip} onRestore={handleRestore} />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-function StandardTop({ busyTrial, onPrimary }: { busyTrial: boolean; onPrimary: () => void }) {
+/**
+ * OfferBlock — renders either Standard or Founding offer.
+ * Only the offer differs; everything above and below is shared.
+ */
+function OfferBlock({
+  isFoundingEligible,
+  daysLeft,
+  busy,
+  onClaim,
+  onSubscribe,
+}: {
+  isFoundingEligible: boolean;
+  daysLeft: number;
+  busy: null | 'trial' | 'founding';
+  onClaim: () => void;
+  onSubscribe: () => void;
+}) {
+  if (isFoundingEligible) {
+    // === FOUNDING OFFER ===
+    return (
+      <>
+        <View style={styles.foundingBanner}>
+          <Ionicons name="flash" size={16} color={COLORS.accent} />
+          <Text style={styles.foundingBannerText}>
+            Founding pricing — <Text style={styles.bold}>$39/yr locked forever</Text>. Standard pricing
+            will be $79/year. Available for {daysLeft} more day{daysLeft === 1 ? '' : 's'}.
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.cta}
+          onPress={onClaim}
+          disabled={busy === 'founding'}
+          testID="reveal-founding-cta"
+          data-testid="reveal-founding-cta"
+        >
+          <LinearGradient
+            colors={BRAND_GRADIENT}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.ctaGradient}
+          >
+            {busy === 'founding' ? (
+              <ActivityIndicator color={COLORS.accentInk} />
+            ) : (
+              <Text style={styles.ctaLabel}>Claim Founding Price — $39/year</Text>
+            )}
+          </LinearGradient>
+        </TouchableOpacity>
+
+        <View style={styles.orDivider}>
+          <Text style={styles.orText}>or</Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.trialBtn}
+          onPress={onSubscribe}
+          disabled={busy === 'founding'}
+          activeOpacity={0.8}
+          testID="reveal-start-cta"
+          data-testid="reveal-start-cta"
+        >
+          <Text style={styles.trialBtnLabel}>Start my 7-day free trial</Text>
+        </TouchableOpacity>
+      </>
+    );
+  }
+
+  // === STANDARD OFFER ===
   return (
     <>
-      <View style={styles.socialStat}>
-        <View style={styles.avatars}>
-          {SOCIAL_AVATARS.map((uri, i) => (
-            <Image
-              key={uri}
-              source={{ uri }}
-              style={[styles.avatar, i > 0 && styles.avatarOverlap]}
-            />
-          ))}
-        </View>
-        <Text style={styles.socialStatText}>
-          Join <Text style={styles.bold}>92%</Text> of users who completed a workout in their first
-          week
-        </Text>
-      </View>
-
       <TouchableOpacity
         style={styles.cta}
-        onPress={onPrimary}
-        disabled={busyTrial}
+        onPress={onSubscribe}
+        disabled={busy === 'trial'}
         testID="reveal-subscribe-cta"
         data-testid="reveal-subscribe-cta"
       >
         <LinearGradient colors={BRAND_GRADIENT} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
-          {busyTrial ? (
+          {busy === 'trial' ? (
             <ActivityIndicator color={COLORS.accentInk} />
           ) : (
             <Text style={styles.ctaLabel}>Subscribe Now</Text>
@@ -283,8 +364,8 @@ function StandardTop({ busyTrial, onPrimary }: { busyTrial: boolean; onPrimary: 
 
       <TouchableOpacity
         style={styles.trialBtn}
-        onPress={onPrimary}
-        disabled={busyTrial}
+        onPress={onSubscribe}
+        disabled={busy === 'trial'}
         activeOpacity={0.8}
         testID="reveal-start-cta"
         data-testid="reveal-start-cta"
@@ -326,48 +407,6 @@ function StandardBottom({ onSkip, onRestore }: { onSkip: () => void; onRestore: 
           <Text style={styles.tertiaryCtaLabel}>Build now &amp; save it for later</Text>
         </TouchableOpacity>
       </View>
-    </>
-  );
-}
-
-function FoundingVariant({
-  daysLeft,
-  busy,
-  onClaim,
-  onSkip,
-}: {
-  daysLeft: number;
-  busy: boolean;
-  onClaim: () => void;
-  onSkip: () => void;
-}) {
-  return (
-    <>
-      <View style={styles.foundingBanner}>
-        <Ionicons name="flash" size={16} color={COLORS.accent} />
-        <Text style={styles.foundingBannerText}>
-          Founding pricing — <Text style={styles.bold}>$39/yr locked forever</Text>. Standard pricing
-          will be $79/year. Available for {daysLeft} more day{daysLeft === 1 ? '' : 's'}.
-        </Text>
-      </View>
-
-      <TouchableOpacity style={styles.cta} onPress={onClaim} disabled={busy}
-        testID="reveal-founding-cta" data-testid="reveal-founding-cta">
-        <LinearGradient colors={BRAND_GRADIENT} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
-          {busy ? (
-            <ActivityIndicator color={COLORS.accentInk} />
-          ) : (
-            <Text style={styles.ctaLabel}>Claim Founding Price — $39/year</Text>
-          )}
-        </LinearGradient>
-      </TouchableOpacity>
-
-      <Disclosure trial={false} />
-
-      <TouchableOpacity style={styles.tertiaryCta} onPress={onSkip} activeOpacity={0.7}
-        testID="reveal-try-free-cta" data-testid="reveal-try-free-cta">
-        <Text style={styles.tertiaryCtaLabel}>Build and save it for later</Text>
-      </TouchableOpacity>
     </>
   );
 }
@@ -429,6 +468,7 @@ function FeatureCarousel() {
           setActive(i);
           pausedRef.current = false;
         }}
+        scrollEnabled={true}
         renderItem={({ item }) => <CarouselCard feature={item} width={cardWidth} />}
       />
       <View style={styles.dots}>
@@ -488,20 +528,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.35)',
   },
-  heroContent: { paddingHorizontal: 24, paddingTop: 22, paddingBottom: 26 },
+  heroContent: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 22, paddingBottom: 26 },
   headlineBlock: { marginBottom: 18 },
   heroHeadline: { fontSize: 30, lineHeight: 35, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8, marginBottom: 8, textShadowColor: 'rgba(0,0,0,0.6)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 8 },
   heroSubhead: { fontSize: 14, lineHeight: 19, color: COLORS.textSecondary, textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 6 },
-  bottom: { flex: 1, paddingHorizontal: 24, paddingTop: 16, paddingBottom: 20, backgroundColor: COLORS.bg },
+  bottom: { flex: 1, paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 16, paddingBottom: 20, backgroundColor: COLORS.bg },
   firstScreen: { backgroundColor: COLORS.bg, position: 'relative' },
   flexSpacer: { flex: 1, minHeight: 12, backgroundColor: 'transparent' },
-  aboveFold: { paddingHorizontal: 24, paddingBottom: 14, backgroundColor: 'transparent' },
-  solidSection: { backgroundColor: COLORS.bg, marginHorizontal: -24, paddingHorizontal: 24, paddingTop: 6 },
-  belowFold: { paddingHorizontal: 24, paddingTop: 14, paddingBottom: 24, backgroundColor: COLORS.bg },
-  carouselWrap: { marginHorizontal: -24, marginBottom: 16 },
+  aboveFold: { paddingHorizontal: HORIZONTAL_PADDING, paddingBottom: 14, backgroundColor: 'transparent' },
+  solidSection: { backgroundColor: COLORS.bg, marginHorizontal: -HORIZONTAL_PADDING, paddingHorizontal: HORIZONTAL_PADDING, paddingTop: SECTION_GAP },
+  belowFold: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 14, paddingBottom: 24, backgroundColor: COLORS.bg },
+  carouselWrap: { marginHorizontal: -HORIZONTAL_PADDING, marginBottom: 16, height: CAROUSEL_HEIGHT + 50 },
   cCard: {
-    height: 144,
-    marginHorizontal: 24,
+    height: CAROUSEL_HEIGHT,
+    marginHorizontal: HORIZONTAL_PADDING,
     borderRadius: 20,
     paddingHorizontal: 22,
     paddingTop: 20,

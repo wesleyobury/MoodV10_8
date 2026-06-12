@@ -18,6 +18,7 @@ import { Analytics } from '../../utils/analytics';
 
 const WORKOUTS_COMPLETED = '1,100+';
 const ATHLETES_TRAINING = '300+';
+const APP_STORE_RATING = '5.0';
 
 type Testimonial = {
   quote: string;
@@ -44,7 +45,7 @@ const TESTIMONIALS: Testimonial[] = [
   {
     quote: 'It\u2019s so simple, yet so thorough.',
     name: 'Polica Houston',
-    role: 'CEO, Denver Tennis Park | VP Programs, Big Brothers of CO',
+    role: 'CEO, Denver Tennis Park | VP Programs, Big Brothers Big Sisters of CO',
     avatar: require('../../assets/images/testimonials/houston.png'),
   },
 ];
@@ -106,6 +107,14 @@ export default function Step6SocialProof() {
           </View>
           <Text style={styles.statLabel}>athletes training</Text>
         </View>
+        <View style={styles.statDivider} />
+        <View style={styles.statCell}>
+          <View style={styles.statTop}>
+            <Ionicons name="star" size={16} color={COLORS.accent} />
+            <Text style={styles.statValue}>{APP_STORE_RATING}</Text>
+          </View>
+          <Text style={styles.statLabel}>app store rating</Text>
+        </View>
       </View>
     </FunnelLayout>
   );
@@ -163,7 +172,7 @@ const styles = StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     marginTop: 14,
     paddingVertical: 16,
     borderRadius: 14,

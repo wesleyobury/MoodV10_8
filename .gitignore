@@ -73,6 +73,12 @@ agenthub/agents/youtube/db
 *.deb
 *.dylib
 
+# Backup file patterns
+*.backup
+*.original
+*.old
+*.bak
+
 # Build caches
 .cache/
 
