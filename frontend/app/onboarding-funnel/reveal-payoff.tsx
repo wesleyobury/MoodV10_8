@@ -201,6 +201,8 @@ export default function RevealPayoff() {
   return (
     <View style={styles.root} testID="reveal-payoff" data-testid="reveal-payoff">
       <ScrollView
+        contentInsetAdjustmentBehavior="never"
+        automaticallyAdjustContentInsets={false}
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 28 }]}
         bounces={false}
         showsVerticalScrollIndicator={false}
@@ -237,7 +239,7 @@ export default function RevealPayoff() {
 
           {/* Headline + blurb — anchored to the bottom third of the hero */}
           <View style={styles.heroTextWrap}>
-            <Text style={styles.heroHeadline}>{firstName}, your plan is ready.</Text>
+            <Text style={styles.heroHeadline}>{firstName}, your plan is ready!</Text>
             <Text style={styles.heroSubhead}>{blurb}</Text>
           </View>
         </ImageBackground>
