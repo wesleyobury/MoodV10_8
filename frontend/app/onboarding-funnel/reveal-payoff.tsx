@@ -53,8 +53,11 @@ const PAGE_BG = '#0A0A0A'; // must equal COLORS.bg so the hero fade has no seam
 const HORIZONTAL_PADDING = 24;
 const HERO_HEIGHT_RATIO = 0.54; // hero occupies ~top half of the screen
 const HERO_MIN_HEIGHT = 340;
-const HERO_TEXT_BOTTOM_PADDING = 22; // anchors headline/blurb near the image's bottom third
+const HERO_TEXT_BOTTOM_PADDING = 14; // anchors headline/blurb near the image's bottom third
 const CAROUSEL_HEIGHT = 144; // fixed so card swaps never shift anything below
+// Fixed, shared space for the swap slot (92% row OR founding block) so the
+// primary button and everything below land at the SAME position in both variants.
+const SWAP_SLOT_HEIGHT = 84;
 
 // Mood-specific payoff hero photos. 'lazy' reuses the sweat hero per design.
 const HERO_IMAGES: Record<MoodId, ReturnType<typeof require>> = {
@@ -244,28 +247,30 @@ export default function RevealPayoff() {
           {/* 5 + dots — SHARED */}
           <FeatureCarousel />
 
-          {/* 7 SWAP SLOT — the ONLY content difference */}
-          {isFoundingEligible ? (
-            <View style={styles.foundingBanner}>
-              <Ionicons name="flash" size={16} color={COLORS.accent} />
-              <Text style={styles.foundingBannerText}>
-                Founding pricing — <Text style={styles.bold}>$39/yr locked forever</Text>. Standard pricing
-                will be $79/year. Available for {daysLeft} more day{daysLeft === 1 ? '' : 's'}.
-              </Text>
-            </View>
-          ) : (
-            <View style={styles.socialStat}>
-              <View style={styles.avatars}>
-                {SOCIAL_AVATARS.map((uri, i) => (
-                  <Image key={uri} source={{ uri }} style={[styles.avatar, i > 0 && styles.avatarOverlap]} />
-                ))}
+          {/* 7 SWAP SLOT — fixed dedicated height; the ONLY content difference */}
+          <View style={styles.swapSlot}>
+            {isFoundingEligible ? (
+              <View style={styles.foundingBanner}>
+                <Ionicons name="flash" size={16} color={COLORS.accent} />
+                <Text style={styles.foundingBannerText}>
+                  Founding pricing — <Text style={styles.bold}>$39/yr locked forever</Text>. Standard pricing
+                  will be $79/year. Available for {daysLeft} more day{daysLeft === 1 ? '' : 's'}.
+                </Text>
               </View>
-              <Text style={styles.socialStatText}>
-                Join <Text style={styles.bold}>92%</Text> of users who completed a workout in their first
-                week
-              </Text>
-            </View>
-          )}
+            ) : (
+              <View style={styles.socialStat}>
+                <View style={styles.avatars}>
+                  {SOCIAL_AVATARS.map((uri, i) => (
+                    <Image key={uri} source={{ uri }} style={[styles.avatar, i > 0 && styles.avatarOverlap]} />
+                  ))}
+                </View>
+                <Text style={styles.socialStatText}>
+                  Join <Text style={styles.bold}>92%</Text> of users who completed a workout in their first
+                  week
+                </Text>
+              </View>
+            )}
+          </View>
 
           {/* 8 PRIMARY BUTTON — label is the only difference */}
           <TouchableOpacity
@@ -470,10 +475,10 @@ const styles = StyleSheet.create({
   },
 
   // CONTENT SHEET
-  sheet: { backgroundColor: PAGE_BG, paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 6 },
+  sheet: { backgroundColor: PAGE_BG, paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 4 },
 
   // CAROUSEL
-  carouselWrap: { marginHorizontal: -HORIZONTAL_PADDING, marginBottom: 16, height: CAROUSEL_HEIGHT + 50 },
+  carouselWrap: { marginHorizontal: -HORIZONTAL_PADDING, marginBottom: 8, height: CAROUSEL_HEIGHT + 18 },
   cCard: {
     height: CAROUSEL_HEIGHT,
     marginHorizontal: HORIZONTAL_PADDING,
@@ -505,17 +510,18 @@ const styles = StyleSheet.create({
   cTextWrap: { marginTop: 'auto' },
   cTitle: { fontSize: 18, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.3, marginBottom: 6, paddingRight: 58 },
   cSubtext: { fontSize: 13, lineHeight: 18, color: COLORS.textSecondary, paddingRight: 58 },
-  dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 14 },
+  dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 8 },
   dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.2)' },
   dotActive: { width: 18, backgroundColor: COLORS.accent },
 
-  // SWAP SLOT — both blocks occupy the same position
-  socialStat: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 14 },
+  // SWAP SLOT — fixed shared height; both blocks occupy the SAME space (centered)
+  swapSlot: { height: SWAP_SLOT_HEIGHT, justifyContent: 'center', marginBottom: 10 },
+  socialStat: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   avatars: { flexDirection: 'row' },
   avatar: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: PAGE_BG },
   avatarOverlap: { marginLeft: -10 },
   socialStatText: { flex: 1, fontSize: 12, lineHeight: 17, color: COLORS.textSecondary },
-  foundingBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, backgroundColor: COLORS.surfaceElevated, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,215,0,0.3)', padding: 12, marginBottom: 14 },
+  foundingBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, backgroundColor: COLORS.surfaceElevated, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,215,0,0.3)', padding: 12 },
   foundingBannerText: { flex: 1, fontSize: 13, lineHeight: 19, color: COLORS.textSecondary },
 
   // PRIMARY + TRIAL

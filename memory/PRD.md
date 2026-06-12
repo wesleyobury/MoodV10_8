@@ -1,5 +1,9 @@
 # MOOD Fitness App - PRD
 
+## [2026-06-12] Payoff spacing tightened + fixed-height swap slot
+- Reduced padding so the trial button is no longer too low: `HERO_TEXT_BOTTOM_PADDING` 22→14, `sheet.paddingTop` 6→4, `carouselWrap` height `CAROUSEL_HEIGHT+50`→`+18` & marginBottom 16→8, `dots.marginTop` 14→8.
+- Added `SWAP_SLOT_HEIGHT=84` — both the 92% social row (standard) and the founding pricing block (founding) now sit in a fixed-height, vertically-centered `swapSlot`, so the primary button (Subscribe Now / Claim Founding) and everything below land at the SAME Y in both variants. Verified on web (forced founding, then reverted): button position pixel-identical across both screens.
+
 ## [2026-06-12] Payoff REBUILT — single shared layout (fixed-height hero)
 - Root cause of variant drift: old layout used an absolute hero + `flexSpacer` that pushed the headline UP as content below grew; founding also rendered BOTH the 92% row and the founding block → headline collided with the MOOD wordmark and positions diverged.
 - Rebuilt `reveal-payoff.tsx` as ONE shared layout: fixed-height hero (`HERO_HEIGHT_RATIO=0.54`) with MOOD wordmark (top-left) + headline + blurb anchored to the hero's bottom (light top scrim + bottom fade to `#0A0A0A`), then normal top-down flow: carousel (fixed `CAROUSEL_HEIGHT`) + dots → SWAP SLOT → primary button → or → trial → disclosure → trust → save-for-later → Restore·Terms·Privacy. ScrollView with `paddingBottom: insets.bottom+28`.
