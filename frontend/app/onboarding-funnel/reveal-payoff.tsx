@@ -110,8 +110,6 @@ export default function RevealPayoff() {
   const { height: windowHeight } = useWindowDimensions();
   const screenH = windowHeight;
   const heroHeight = Math.max(screenH * HERO_HEIGHT_RATIO, HERO_MIN_HEIGHT);
-  // Push the photo down so the subject clears the iOS status bar / camera notch.
-  const heroImgShift = Math.max(insets.top + 4, 28);
 
   const firstName =
     (user?.name && user.name.split(' ')[0]) || user?.username || 'Athlete';
@@ -211,7 +209,6 @@ export default function RevealPayoff() {
         <ImageBackground
           source={heroImage}
           style={[styles.hero, { height: heroHeight }]}
-          imageStyle={{ transform: [{ translateY: heroImgShift }] }}
           resizeMode="cover"
         >
           {/* Light top scrim — keeps the wordmark legible without darkening the photo */}
