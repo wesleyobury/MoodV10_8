@@ -1,5 +1,12 @@
 # MOOD Fitness App - PRD
 
+## [2026-06-12] Payoff polish: image shift, tighter spacing, founding banner restyle, new muscle hero
+- New muscle hero photo (dumbbell-curl man) swapped into `assets/images/payoff/payoff-muscle.png`.
+- Hero photo shifted DOWN via `imageStyle translateY = max(insets.top+4, 28)` so the subject clears the iOS status bar / camera notch (gym ceiling now sits behind the status bar zone).
+- Tighter spacing so the trial button isn't too low: `SWAP_SLOT_HEIGHT` 84→70 (+ marginBottom 10→8), `orDivider` paddingTop 20→14 / paddingBottom 8→6.
+- Founding banner restyled: removed background/border/box padding, `alignItems:'center'` (lightning icon vertically centered with text). Still occupies the fixed swap slot so the Claim button aligns exactly with Subscribe Now.
+- Verified both variants on web (forced founding, then reverted): button positions pixel-identical; trial button fully visible.
+
 ## [2026-06-12] Payoff spacing tightened + fixed-height swap slot
 - Reduced padding so the trial button is no longer too low: `HERO_TEXT_BOTTOM_PADDING` 22→14, `sheet.paddingTop` 6→4, `carouselWrap` height `CAROUSEL_HEIGHT+50`→`+18` & marginBottom 16→8, `dots.marginTop` 14→8.
 - Added `SWAP_SLOT_HEIGHT=84` — both the 92% social row (standard) and the founding pricing block (founding) now sit in a fixed-height, vertically-centered `swapSlot`, so the primary button (Subscribe Now / Claim Founding) and everything below land at the SAME Y in both variants. Verified on web (forced founding, then reverted): button position pixel-identical across both screens.

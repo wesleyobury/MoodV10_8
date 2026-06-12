@@ -57,7 +57,7 @@ const HERO_TEXT_BOTTOM_PADDING = 14; // anchors headline/blurb near the image's 
 const CAROUSEL_HEIGHT = 144; // fixed so card swaps never shift anything below
 // Fixed, shared space for the swap slot (92% row OR founding block) so the
 // primary button and everything below land at the SAME position in both variants.
-const SWAP_SLOT_HEIGHT = 84;
+const SWAP_SLOT_HEIGHT = 70;
 
 // Mood-specific payoff hero photos. 'lazy' reuses the sweat hero per design.
 const HERO_IMAGES: Record<MoodId, ReturnType<typeof require>> = {
@@ -110,6 +110,8 @@ export default function RevealPayoff() {
   const { height: windowHeight } = useWindowDimensions();
   const screenH = windowHeight;
   const heroHeight = Math.max(screenH * HERO_HEIGHT_RATIO, HERO_MIN_HEIGHT);
+  // Push the photo down so the subject clears the iOS status bar / camera notch.
+  const heroImgShift = Math.max(insets.top + 4, 28);
 
   const firstName =
     (user?.name && user.name.split(' ')[0]) || user?.username || 'Athlete';
@@ -209,6 +211,7 @@ export default function RevealPayoff() {
         <ImageBackground
           source={heroImage}
           style={[styles.hero, { height: heroHeight }]}
+          imageStyle={{ transform: [{ translateY: heroImgShift }] }}
           resizeMode="cover"
         >
           {/* Light top scrim — keeps the wordmark legible without darkening the photo */}
@@ -515,20 +518,20 @@ const styles = StyleSheet.create({
   dotActive: { width: 18, backgroundColor: COLORS.accent },
 
   // SWAP SLOT — fixed shared height; both blocks occupy the SAME space (centered)
-  swapSlot: { height: SWAP_SLOT_HEIGHT, justifyContent: 'center', marginBottom: 10 },
+  swapSlot: { height: SWAP_SLOT_HEIGHT, justifyContent: 'center', marginBottom: 8 },
   socialStat: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   avatars: { flexDirection: 'row' },
   avatar: { width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: PAGE_BG },
   avatarOverlap: { marginLeft: -10 },
   socialStatText: { flex: 1, fontSize: 12, lineHeight: 17, color: COLORS.textSecondary },
-  foundingBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, backgroundColor: COLORS.surfaceElevated, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,215,0,0.3)', padding: 12 },
+  foundingBanner: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   foundingBannerText: { flex: 1, fontSize: 13, lineHeight: 19, color: COLORS.textSecondary },
 
   // PRIMARY + TRIAL
   cta: { borderRadius: 14, overflow: 'hidden' },
   ctaGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 16, minHeight: 54 },
   ctaLabel: { fontSize: 16, fontWeight: '700', color: COLORS.accentInk, letterSpacing: 0.3 },
-  orDivider: { alignItems: 'center', justifyContent: 'center', paddingTop: 20, paddingBottom: 8 },
+  orDivider: { alignItems: 'center', justifyContent: 'center', paddingTop: 14, paddingBottom: 6 },
   orText: { fontSize: 12, color: COLORS.textTertiary, fontWeight: '600' },
   trialBtn: { paddingVertical: 13, alignItems: 'center', justifyContent: 'center', minHeight: 48 },
   trialBtnLabel: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary, letterSpacing: 0.2 },
