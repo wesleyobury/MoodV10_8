@@ -196,7 +196,7 @@ export default function RevealPayoff() {
           {/* === HERO IMAGE WITH BOTTOM GRADIENT FADE === */}
           <ImageBackground
             source={heroImage}
-            style={[styles.hero, { height: getHeroHeight(screenH), top: insets.top + 32 }]}
+            style={[styles.hero, { height: getHeroHeight(screenH) }]}
             resizeMode="cover"
           >
             {/* Gradient overlay: fades from transparent → #0A0A0A by bottom */}

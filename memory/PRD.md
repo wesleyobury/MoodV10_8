@@ -1,5 +1,10 @@
 # MOOD Fitness App - PRD
 
+## [2026-06-12] Payoff template parity + hero top-edge fix
+- Confirmed both payoff variants (standard new-user + founding) share one skeleton: MOOD wordmark → hero → "{name}, your plan is ready." → blurb → feature carousel → dots → 92% stat are rendered ONCE in the parent (`RevealPayoff`); only `OfferBlock` differs (Standard = Subscribe Now; Founding = banner + Claim $39/yr). Shared `StandardBottom` renders for both.
+- Bottom hero gradient confirmed exact: `['transparent','transparent','rgba(10,10,10,0.85)','#0A0A0A']` @ `[0,0.45,0.82,1]`, `pointerEvents="none"`; `COLORS.bg = #0A0A0A` so the image melts into content (no seam).
+- **Reverted accidental hero offset** (`top: insets.top + 32`) → hero now `top:0` so the photo reaches the top edge / bleeds behind the status bar per the model. Content positions below unchanged (headline anchored via flexSpacer).
+
 ## [2026-06-11] Social-proof: Poppe swap + stacked stats
 - Swapped quote #2 from Jermaine W. Stafford → **Johnathan Poppe** (new quote, "Head Football Coach, Columbia University", `poppe.png`). Removed unused `stafford.png`.
 - Stats strip redesigned: labels ("workouts completed" / "athletes training") now stack **below** the icon+number, taller divider, more padding for better spacing.
