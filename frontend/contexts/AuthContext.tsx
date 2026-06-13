@@ -316,7 +316,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
 
       if (result.ok && result.data) {
-        const { access_token: authToken, refresh_token: refreshToken, user_id } = result.data as any;
+        const { token: authToken, refresh_token: refreshToken, user_id } = result.data as any;
         setToken(authToken);
         await secureStorage.set(AUTH_TOKEN_KEY, authToken);
         if (refreshToken) await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, refreshToken);

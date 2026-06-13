@@ -19,6 +19,7 @@ import MaskedView from '@react-native-masked-view/masked-view';
 import { Video, ResizeMode } from 'expo-av';
 import { useSubscription, PaywallTrigger } from '../contexts/SubscriptionContext';
 import { readHasCompletedFunnel } from '../contexts/OnboardingFunnelContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const { width, height } = Dimensions.get('window');
 const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
@@ -136,8 +137,29 @@ const DevPaywallTrigger = () => {
 
 export default function Welcome() {
   const insets = useSafeAreaInsets();
+  const { token, isLoading } = useAuth();
+  const [redirectChecked, setRedirectChecked] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState<boolean | null>(null);
+
+  // Redirect authenticated users — skip the landing page entirely.
+  // Once auth finishes loading: if logged in, route based on funnel status;
+  // if not logged in, show the landing page as normal.
+  useEffect(() => {
+    if (isLoading) return;
+    if (!token) {
+      setRedirectChecked(true);
+      return;
+    }
+    (async () => {
+      const completed = await readHasCompletedFunnel();
+      if (completed) {
+        router.replace('/(tabs)');
+      } else {
+        router.replace('/onboarding-funnel/step-1-mood');
+      }
+    })();
+  }, [token, isLoading]);
 
   // Video background fade-in
   const videoRef = useRef<Video>(null);
@@ -230,6 +252,12 @@ export default function Welcome() {
     router.push('/auth/login');
   };
   
+  // Hold rendering until we know the user isn't authenticated — avoids
+  // a flash of the landing page before the redirect fires.
+  if (!redirectChecked) {
+    return <View style={styles.container} />;
+  }
+
   return (
     <View style={styles.container}>
       {/* Privacy Policy & Terms Modal */}
