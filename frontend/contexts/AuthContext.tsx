@@ -310,7 +310,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.log('🔗 API_URL being used:', API_URL);
       
       // Use safe apiFetch that handles non-JSON responses gracefully
-      const result = await apiFetch<{ access_token: string; refresh_token: string; user_id: string }>('/api/auth/login', {
+      const result = await apiFetch<{ token: string; refresh_token: string; user_id: string }>('/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({ username, password }),
       });
@@ -355,13 +355,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.log('🔗 API_URL being used:', API_URL);
       
       // Use safe apiFetch that handles non-JSON responses gracefully
-      const result = await apiFetch<{ access_token: string; refresh_token: string; user_id: string }>('/api/auth/register', {
+      const result = await apiFetch<{ token: string; refresh_token: string; user_id: string }>('/api/auth/register', {
         method: 'POST',
         body: JSON.stringify({ username, email, password, name }),
       });
 
       if (result.ok && result.data) {
-        const { access_token: authToken, refresh_token: refreshToken, user_id } = result.data as any;
+        const { token: authToken, refresh_token: refreshToken, user_id } = result.data as any;
         setToken(authToken);
         await secureStorage.set(AUTH_TOKEN_KEY, authToken);
         if (refreshToken) await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, refreshToken);
