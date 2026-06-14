@@ -6,9 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Animated,
-  Modal,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +20,6 @@ import { readHasCompletedFunnel } from '../contexts/OnboardingFunnelContext';
 import { useAuth } from '../contexts/AuthContext';
 
 const { width, height } = Dimensions.get('window');
-const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
 
 // Background video — bundled locally for instant load on every launch.
 const BG_VIDEO_SOURCE = require('../assets/videos/bg.mp4');
@@ -139,8 +136,6 @@ export default function Welcome() {
   const insets = useSafeAreaInsets();
   const { token, isLoading } = useAuth();
   const [redirectChecked, setRedirectChecked] = useState(false);
-  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
-  const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState<boolean | null>(null);
 
   // Redirect authenticated users — skip the landing page entirely.
   // Once auth finishes loading: if logged in, route based on funnel status;
@@ -179,53 +174,7 @@ export default function Welcome() {
     return () => clearTimeout(t);
   }, [videoReady, videoOpacity]);
 
-  useEffect(() => {
-    checkPrivacyAccepted();
-  }, []);
-
-  const checkPrivacyAccepted = async () => {
-    try {
-      const accepted = await AsyncStorage.getItem(PRIVACY_ACCEPTED_KEY);
-      if (accepted === 'true') {
-        setHasAcceptedPrivacy(true);
-      } else {
-        setHasAcceptedPrivacy(false);
-        setShowPrivacyModal(true);
-      }
-    } catch (error) {
-      console.error('Error checking privacy acceptance:', error);
-      setHasAcceptedPrivacy(false);
-      setShowPrivacyModal(true);
-    }
-  };
-
-  const handleAcceptPrivacy = async () => {
-    try {
-      await AsyncStorage.setItem(PRIVACY_ACCEPTED_KEY, 'true');
-      setHasAcceptedPrivacy(true);
-      setShowPrivacyModal(false);
-      // Navigate to login after accepting privacy policy and terms
-      router.push('/auth/login');
-    } catch (error) {
-      console.error('Error saving privacy acceptance:', error);
-    }
-  };
-
-  const handleViewFullPolicy = () => {
-    setShowPrivacyModal(false);
-    router.push('/privacy-policy');
-  };
-
-  const handleViewTerms = () => {
-    setShowPrivacyModal(false);
-    router.push('/terms-of-service');
-  };
-
   const handleGetStarted = async () => {
-    if (!hasAcceptedPrivacy) {
-      setShowPrivacyModal(true);
-      return;
-    }
     // Brand-new authenticated user just landed back here from registration
     // (FunnelEntryGate set `@mood_needs_funnel` and re-routed to `/` so the
     // user could watch the video first). Consume the flag and push into the
@@ -260,128 +209,6 @@ export default function Welcome() {
 
   return (
     <View style={styles.container}>
-      {/* Privacy Policy & Terms Modal */}
-      <Modal
-        visible={showPrivacyModal}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => {}}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={[styles.modalContent, { paddingBottom: insets.bottom + 20 }]}>
-            <View style={styles.modalHeader}>
-              <View style={styles.modalIconContainer}>
-                <Ionicons name="shield-checkmark" size={32} color="#FFD700" />
-              </View>
-              <Text style={styles.modalTitle}>Terms & Privacy</Text>
-              <Text style={styles.modalSubtitle}>
-                Please review our terms and privacy practices
-              </Text>
-            </View>
-
-            <ScrollView style={styles.modalScroll} showsVerticalScrollIndicator={false}>
-              {/* Zero Tolerance Notice */}
-              <View style={styles.zeroToleranceNotice}>
-                <View style={styles.zeroToleranceHeader}>
-                  <Ionicons name="warning" size={20} color="#FF3B30" />
-                  <Text style={styles.zeroToleranceTitle}>Community Guidelines</Text>
-                </View>
-                <Text style={styles.zeroToleranceText}>
-                  We have <Text style={styles.boldText}>zero tolerance</Text> for objectionable content or abusive users. 
-                  Violations result in immediate account suspension or ban.
-                </Text>
-              </View>
-
-              <View style={styles.privacySummarySection}>
-                <Text style={styles.privacySummaryTitle}>What we collect:</Text>
-                
-                <View style={styles.privacyItem}>
-                  <View style={styles.privacyIconBadge}>
-                    <Ionicons name="fitness" size={16} color="#FFD700" />
-                  </View>
-                  <View style={styles.privacyItemContent}>
-                    <Text style={styles.privacyItemTitle}>Workout Data</Text>
-                    <Text style={styles.privacyItemText}>
-                      Exercise progress, equipment & difficulty preferences
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={styles.privacyItem}>
-                  <View style={styles.privacyIconBadge}>
-                    <Ionicons name="analytics" size={16} color="#FFD700" />
-                  </View>
-                  <View style={styles.privacyItemContent}>
-                    <Text style={styles.privacyItemTitle}>App Usage</Text>
-                    <Text style={styles.privacyItemText}>
-                      Session data, navigation patterns to improve experience
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={styles.privacyItem}>
-                  <View style={styles.privacyIconBadge}>
-                    <Ionicons name="people" size={16} color="#FFD700" />
-                  </View>
-                  <View style={styles.privacyItemContent}>
-                    <Text style={styles.privacyItemTitle}>Social Activity</Text>
-                    <Text style={styles.privacyItemText}>
-                      Posts, likes, comments, and follows (when you use these features)
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.privacyNote}>
-                <Ionicons name="information-circle" size={18} color="#888" />
-                <Text style={styles.privacyNoteText}>
-                  We never sell your data. Your information is used only to improve your fitness journey.
-                </Text>
-              </View>
-            </ScrollView>
-
-            <View style={styles.modalActions}>
-              <View style={styles.policyLinksRow}>
-                <TouchableOpacity 
-                  style={styles.viewPolicyButton}
-                  onPress={handleViewFullPolicy}
-                >
-                  <Ionicons name="document-text-outline" size={16} color="#FFD700" />
-                  <Text style={styles.viewPolicyText}>Privacy Policy</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity 
-                  style={styles.viewPolicyButton}
-                  onPress={handleViewTerms}
-                >
-                  <Ionicons name="reader-outline" size={16} color="#FFD700" />
-                  <Text style={styles.viewPolicyText}>Terms of Service</Text>
-                </TouchableOpacity>
-              </View>
-
-              <Text style={styles.agreementText}>
-                By tapping 'Accept & Continue', you agree to our Terms of Service and Privacy Policy, 
-                including our zero tolerance policy for objectionable content.
-              </Text>
-
-              <TouchableOpacity 
-                style={styles.acceptButton}
-                onPress={handleAcceptPrivacy}
-              >
-                <LinearGradient
-                  colors={['#FFD700', '#FFA500']}
-                  style={styles.acceptButtonGradient}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                >
-                  <Text style={styles.acceptButtonText}>Accept & Continue</Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
       <View style={styles.simplifiedGradient}>
         {/* Full-screen looping background video — fades in 600ms after first
             frame is decoded so users never see a jank-y load. */}

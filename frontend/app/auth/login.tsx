@@ -1,27 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import * as Linking from 'expo-linking';
+import { router } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
+  Alert,
   KeyboardAvoidingView,
   Platform,
-  Alert,
-  Linking as RNLinking,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
-import { router } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
-import { useAuth } from '../../contexts/AuthContext';
-import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as WebBrowser from 'expo-web-browser';
-import * as Linking from 'expo-linking';
-import * as AppleAuthentication from 'expo-apple-authentication';
-import Constants from 'expo-constants';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
+import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
+import TermsPrivacyConsentModal from '../../components/TermsPrivacyConsentModal';
+import { useAuth } from '../../contexts/AuthContext';
 import { API_URL } from '../../utils/apiConfig';
-import { secureStorage, AUTH_TOKEN_KEY } from '../../utils/secureStorage';
+import { AUTH_TOKEN_KEY, secureStorage } from '../../utils/secureStorage';
+
+const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -67,8 +69,9 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isAppleAvailable, setIsAppleAvailable] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const insets = useSafeAreaInsets();
-  
+
   // Hidden diagnostics trigger - 5 rapid taps on header
   const tapCountRef = useRef(0);
   const lastTapRef = useRef(0);
@@ -90,6 +93,28 @@ export default function Login() {
       console.log('🔧 Opening diagnostics panel...');
       router.push('/diagnostics');
     }
+  };
+
+  // Show Terms & Privacy modal if user hasn't accepted yet
+  useEffect(() => {
+    AsyncStorage.getItem(PRIVACY_ACCEPTED_KEY).then((val) => {
+      if (val !== 'true') setShowPrivacyModal(true);
+    });
+  }, []);
+
+  const handleAcceptPrivacy = async () => {
+    await AsyncStorage.setItem(PRIVACY_ACCEPTED_KEY, 'true');
+    setShowPrivacyModal(false);
+  };
+
+  const handleViewPrivacyPolicy = () => {
+    setShowPrivacyModal(false);
+    router.push('/privacy-policy');
+  };
+
+  const handleViewTerms = () => {
+    setShowPrivacyModal(false);
+    router.push('/terms-of-service');
   };
 
   // Check if Apple Sign-In is available (iOS only)
@@ -350,7 +375,13 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView 
+      <TermsPrivacyConsentModal
+        visible={showPrivacyModal}
+        onAccept={handleAcceptPrivacy}
+        onViewPrivacyPolicy={handleViewPrivacyPolicy}
+        onViewTerms={handleViewTerms}
+      />
+      <KeyboardAvoidingView
         style={styles.keyboardView}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
