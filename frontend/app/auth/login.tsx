@@ -2,9 +2,9 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Linking from 'expo-linking';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -95,12 +95,15 @@ export default function Login() {
     }
   };
 
-  // Show Terms & Privacy modal if user hasn't accepted yet
-  useEffect(() => {
-    AsyncStorage.getItem(PRIVACY_ACCEPTED_KEY).then((val) => {
-      if (val !== 'true') setShowPrivacyModal(true);
-    });
-  }, []);
+  // Re-check on every focus so the modal reappears if the user navigated
+  // away to read the Privacy Policy / Terms and hasn't accepted yet.
+  useFocusEffect(
+    useCallback(() => {
+      AsyncStorage.getItem(PRIVACY_ACCEPTED_KEY).then((val) => {
+        setShowPrivacyModal(val !== 'true');
+      });
+    }, [])
+  );
 
   const handleAcceptPrivacy = async () => {
     await AsyncStorage.setItem(PRIVACY_ACCEPTED_KEY, 'true');
