@@ -19,7 +19,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { useHealth } from '../../contexts/HealthContext';
 import { setHealthOnboardingComplete } from '../../utils/healthStorage';
+import { markWorkoutHandoffPending } from '../../utils/onboardingFunnelDefer';
 import { WearablesSuccessState } from '../../components/WearablesSuccessState';
+import { useAuth } from '../../contexts/AuthContext';
 
 const BULLETS = [
   'Resting heart rate',
@@ -31,6 +33,7 @@ const BULLETS = [
 
 export default function HealthConnectScreen() {
   const router = useRouter();
+  const { user } = useAuth();
   const { requestPermissions } = useHealth();
   const [busy, setBusy] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -39,6 +42,7 @@ export default function HealthConnectScreen() {
   // mood-intro then forwards to the first decision screen of the funnel mood.
   const goToMoodIntro = async () => {
     await setHealthOnboardingComplete();
+    if (user?.id) await markWorkoutHandoffPending(user.id);
     router.replace('/mood-intro');
   };
 

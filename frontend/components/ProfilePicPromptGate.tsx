@@ -2,11 +2,12 @@
  * ProfilePicPromptGate — persistent profile-picture nudge until avatar is set.
  *
  * Behavior:
- *  • Shows EVERY TIME user enters a home tab (/, /explore, /profile) WITHOUT an avatar.
- *  • Automatically dismisses when avatar is uploaded via any path (settings, onboarding, etc).
+ *  • Shows on authenticated home tabs (/, /explore, /profile) WITHOUT an avatar.
+ *  • Waits until funnel + metrics are done — never blocks onboarding or the
+ *    brief post-metrics workout handoff (mood-intro → workout picker).
+ *  • Automatically dismisses when avatar is uploaded via any path.
  *  • "Maybe later" hides modal for current session; reappears on next home tab entry.
  *  • Once avatar is set, modal never shows again.
- *  • Premium visual: gold→orange gradient CTA, no card borders, soft shadow.
  */
 import React, { useCallback, useEffect, useState } from 'react';
 import {
@@ -19,33 +20,21 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { usePathname } from 'expo-router';
+import { useSegments, usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { API_URL } from '../utils/apiConfig';
-
-/** True only when the current route is an authenticated home tab. We don't
- *  want the modal to land on splash / onboarding / funnel / auth / workout
- *  flow screens. Spec §5 — switched from deny-list to explicit allow-list
- *  so the modal can only appear ON the home tab (`/`), explore (`/explore`),
- *  or profile (`/profile`). Workout flow / cart / settings etc. don't qualify. */
-function isOnHomeTab(pathname: string | null | undefined): boolean {
-  if (!pathname) return false;
-  // Expo Router collapses `app/(tabs)/index.tsx` into `/` and other tab files
-  // into `/<name>`. Whitelist exactly the three tab routes — anything else
-  // (workout-session, create-post, cart, settings, …) waits its turn.
-  return (
-    pathname === '/' ||
-    pathname === '/explore' ||
-    pathname === '/profile'
-  );
-}
+import {
+  isOnAuthenticatedHomeTab,
+  shouldDeferProfilePicPrompt,
+} from '../utils/onboardingFunnelDefer';
 
 export default function ProfilePicPromptGate() {
   const { user, token, updateUser } = useAuth();
   const { pendingTrigger } = useSubscription();
+  const segments = useSegments();
   const pathname = usePathname();
 
   const [showModal, setShowModal] = useState(false);
@@ -57,16 +46,41 @@ export default function ProfilePicPromptGate() {
 
   useEffect(() => {
     const uid = user?.id;
-    if (!uid || !token) return;
+    if (!uid || !token) {
+      setShowModal(false);
+      return;
+    }
     if (user?.avatar) return;
-    if (!isOnHomeTab(pathname)) return;
-    // Soft Paywall #2 takes priority over the profile-pic nudge.
     if (pendingTrigger) return;
 
-    setShowModal(true);
-  }, [user?.id, user?.avatar, token, pathname, pendingTrigger]);
+    if (!isOnAuthenticatedHomeTab(segments, pathname)) {
+      setShowModal(false);
+      return;
+    }
 
-  // Hide immediately if avatar appears via any other path (settings, register).
+    let cancelled = false;
+    (async () => {
+      const defer = await shouldDeferProfilePicPrompt({
+        userId: uid,
+        segments,
+        pathname,
+      });
+      if (cancelled) return;
+      setShowModal(!defer);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    user?.id,
+    user?.avatar,
+    token,
+    segments,
+    pathname,
+    pendingTrigger,
+  ]);
+
   useEffect(() => {
     if (user?.avatar) setShowModal(false);
   }, [user?.avatar]);
@@ -142,7 +156,6 @@ export default function ProfilePicPromptGate() {
     >
       <View style={styles.backdrop}>
         <View style={styles.card} data-testid="profile-pic-prompt-modal">
-          {/* Gold-orange halo behind the icon for premium depth */}
           <View style={styles.iconHaloWrap}>
             <LinearGradient
               colors={['rgba(255, 215, 0, 0.32)', 'rgba(255, 140, 0, 0.05)']}
@@ -213,7 +226,6 @@ const styles = StyleSheet.create({
     paddingBottom: 22,
     paddingHorizontal: 26,
     alignItems: 'center',
-    // Soft drop shadow for premium depth (no border).
     shadowColor: '#000',
     shadowOpacity: 0.55,
     shadowOffset: { width: 0, height: 18 },
@@ -264,7 +276,6 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     overflow: 'hidden',
     marginBottom: 6,
-    // Inner glow shadow on the CTA for premium pop
     shadowColor: '#FFA500',
     shadowOpacity: 0.4,
     shadowOffset: { width: 0, height: 6 },

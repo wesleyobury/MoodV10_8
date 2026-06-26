@@ -69,12 +69,20 @@ export function routeForMood(moodId: string | null | undefined, moodTitle?: stri
   }
 }
 
+const FUNNEL_ANSWERS_KEY_PREFIX = '@mood_funnel_answers_v1';
+
 /** Read the mood picked during the onboarding funnel (step 1).
  *  Returns null when no answers persisted yet (e.g. returning user
  *  who never went through the funnel — defaults to home). */
-export async function readFunnelMoodId(): Promise<string | null> {
+export async function readFunnelMoodId(userId?: string | null): Promise<string | null> {
   try {
-    const raw = await AsyncStorage.getItem('@mood_funnel_answers_v1');
+    let raw: string | null = null;
+    if (userId) {
+      raw = await AsyncStorage.getItem(`${FUNNEL_ANSWERS_KEY_PREFIX}:${userId}`);
+    }
+    if (!raw) {
+      raw = await AsyncStorage.getItem(FUNNEL_ANSWERS_KEY_PREFIX);
+    }
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     return typeof parsed?.mood === 'string' ? parsed.mood : null;

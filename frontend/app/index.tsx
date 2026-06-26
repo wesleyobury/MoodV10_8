@@ -8,7 +8,7 @@ import {
   Animated,
   ScrollView,
 } from 'react-native';
-import { router } from 'expo-router';
+import { router, useSegments } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -134,6 +134,7 @@ const DevPaywallTrigger = () => {
 
 export default function Welcome() {
   const insets = useSafeAreaInsets();
+  const segments = useSegments();
   const { token, isLoading, user } = useAuth();
   const [redirectChecked, setRedirectChecked] = useState(false);
 
@@ -153,6 +154,13 @@ export default function Welcome() {
       setRedirectChecked(true);
       return;
     }
+    // register.tsx (and other screens) own funnel navigation — never double-
+    // replace() from here while the user is mid-auth or already in the funnel.
+    const root = segments[0];
+    if (root === 'auth' || root === 'onboarding-funnel') {
+      setRedirectChecked(true);
+      return;
+    }
     if (landingShownRef.current) return;
     if (!user?.id) return;
     (async () => {
@@ -162,8 +170,9 @@ export default function Welcome() {
       } else {
         router.replace('/onboarding-funnel/step-1-mood');
       }
+      setRedirectChecked(true);
     })();
-  }, [token, isLoading, user?.id]);
+  }, [token, isLoading, user?.id, segments]);
 
   // Video background fade-in
   const videoRef = useRef<Video>(null);

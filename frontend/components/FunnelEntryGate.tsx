@@ -1,26 +1,11 @@
 /**
  * FunnelEntryGate — Phase A/B paid launch entry-point wiring.
  *
- * Mounted once near the root. Watches for the `@mood_needs_funnel` flag
- * (set by `AuthContext.register()` immediately after a successful new-
- * account registration). When seen, routes the user BACK TO THE LANDING
- * PAGE (`/`) so they experience the brand video + the "Get Started" CTA
- * before opting into the 8-step onboarding funnel. The flag is NOT
- * cleared here — the landing page's "Get Started" button consumes it:
- *
- *   register → (FunnelEntryGate) → `/` (landing video) →
- *   tap "Get Started" → `/onboarding-funnel/step-1-mood` (flag cleared)
- *
- * This restores the original product intent of giving every new user the
- * full brand impression before pushing them into product flow.
- *
- * Why a flag instead of in-line `router.replace()` from register? Two
- * reasons:
- *   1. `AuthContext.register()` runs BEFORE the navigation root is fully
- *      hydrated on cold-start sign-ups, so an immediate route push can
- *      race the SafeAreaProvider / theme provider mount.
- *   2. The flag survives the inevitable react-strict-mode double mount
- *      and any hot-reload mid-funnel.
+ * Mounted once near the root. Watches for the legacy `@mood_needs_funnel`
+ * flag (set only by older builds / the landing "Get Started" recovery path).
+ * When seen, routes the user BACK TO THE LANDING PAGE (`/`) so they can
+ * tap "Get Started" to enter the funnel. Fresh signups skip this entirely —
+ * `app/auth/register.tsx` routes directly into the funnel.
  *
  * Founding members + already-subscribed accounts still run the funnel
  * once on first registration — it's a teach moment, not a paywall
@@ -29,7 +14,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
+import { useRouter, useSegments } from 'expo-router';
 import { useAuth } from '../contexts/AuthContext';
 import { readHasCompletedFunnel } from '../contexts/OnboardingFunnelContext';
 
@@ -37,6 +22,7 @@ const FLAG_KEY = '@mood_needs_funnel';
 
 export function FunnelEntryGate() {
   const router = useRouter();
+  const segments = useSegments();
   const { token, isLoading, user } = useAuth();
   // Latch so the route push only fires once per authenticated session.
   // NOTE (Spec §2b): This ref alone is NOT sufficient — it resets on
@@ -45,6 +31,13 @@ export function FunnelEntryGate() {
 
   useEffect(() => {
     if (isLoading || !token || !user?.id || dispatched.current) return;
+    // Register routes straight into the funnel — don't yank the user back to
+    // the landing page mid-navigation.
+    const root = segments[0];
+    if (root === 'onboarding-funnel' || root === 'auth') {
+      dispatched.current = true;
+      return;
+    }
     const userId = user.id;
     let cancelled = false;
     (async () => {
@@ -72,7 +65,7 @@ export function FunnelEntryGate() {
     return () => {
       cancelled = true;
     };
-  }, [token, isLoading, user?.id, router]);
+  }, [token, isLoading, user?.id, router, segments]);
 
   return null;
 }

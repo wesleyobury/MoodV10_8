@@ -14,9 +14,10 @@ import {
   isHealthOnboardingComplete,
   isMedicalDisclaimerAcknowledged,
 } from '../utils/healthStorage';
+import { shouldDeferAuxiliaryOnboardingGates } from '../utils/onboardingFunnelDefer';
 
 export default function HealthOnboardingGate() {
-  const { token, isGuest, isLoading } = useAuth();
+  const { token, isGuest, isLoading, user } = useAuth();
   const router = useRouter();
   const segments = useSegments();
   const redirectedRef = useRef(false);
@@ -35,6 +36,10 @@ export default function HealthOnboardingGate() {
     if (inOnboarding) return;
 
     (async () => {
+      // Health connect runs AFTER reveal-payoff (Spec §6). Never hijack a
+      // fresh signup that still owes the onboarding funnel.
+      if (await shouldDeferAuxiliaryOnboardingGates(user?.id)) return;
+
       const [done, disclaimerAck] = await Promise.all([
         isHealthOnboardingComplete(),
         isMedicalDisclaimerAcknowledged(),
@@ -54,7 +59,7 @@ export default function HealthOnboardingGate() {
       }
       router.replace('/onboarding/health-connect');
     })();
-  }, [token, isGuest, isLoading, segments, router]);
+  }, [token, isGuest, isLoading, segments, router, user?.id]);
 
   return null;
 }

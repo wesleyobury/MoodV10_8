@@ -384,14 +384,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
           console.log(`✅ Merged ${mergedCount} guest events to new user account`);
         }
 
-        // Phase A/B paid launch — every freshly-registered account should
-        // run through the 8-step onboarding funnel + reveal payoff before
-        // it sees the home tabs. FoundingMemberGate later short-circuits
-        // the paywall for accounts that pre-date the 2026-05-15 cutoff,
-        // but they still get the funnel teach moment (it's intentionally
-        // a teach moment, not a paywall trigger). Flag is consumed +
-        // cleared by `<FunnelEntryGate />` at root.
-        await AsyncStorage.setItem('@mood_needs_funnel', 'true');
+        // Phase A/B paid launch — new signups are routed directly into the
+        // onboarding funnel by `app/auth/register.tsx`. Do NOT set
+        // `@mood_needs_funnel` here: it races FunnelEntryGate → landing and
+        // causes a double funnel transition. Incomplete-funnel recovery is
+        // handled by `app/index.tsx` (cold start) + `readHasCompletedFunnel`.
         // Fresh account — clear any legacy device-wide funnel blob left by a
         // prior account on this device. Per-user answers use `:${userId}` keys.
         await AsyncStorage.removeItem('@mood_funnel_answers_v1');

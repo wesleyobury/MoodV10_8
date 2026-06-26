@@ -17,15 +17,18 @@ import { readFunnelMoodId, routeForMood } from '../utils/moodRoute';
 import { moodIntroCopy } from '../utils/moodConfig';
 import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
+import { clearWorkoutHandoffPending } from '../utils/onboardingFunnelDefer';
 
 export default function MoodIntro() {
   const router = useRouter();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [moodId, setMoodId] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
-    readFunnelMoodId().then(setMoodId).catch(() => setMoodId(null));
-  }, []);
+    readFunnelMoodId(user?.id)
+      .then(setMoodId)
+      .catch(() => setMoodId(null));
+  }, [user?.id]);
 
   useEffect(() => {
     if (moodId !== undefined) {
@@ -35,8 +38,9 @@ export default function MoodIntro() {
     }
   }, [moodId, token]);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     Analytics.moodIntroCtaTapped(token, { mood: moodId ?? 'unknown' });
+    if (user?.id) await clearWorkoutHandoffPending(user.id);
     const route = routeForMood(moodId);
     if (route) {
       router.replace({ pathname: route.pathname as any, params: route.params });
