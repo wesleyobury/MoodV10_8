@@ -137,15 +137,23 @@ export default function Welcome() {
   const { token, isLoading } = useAuth();
   const [redirectChecked, setRedirectChecked] = useState(false);
 
+  // Track whether the landing page was shown to an unauthenticated user.
+  // If true and token later becomes truthy (registration from a child screen
+  // still on the stack), we skip the redirect here — register.tsx owns that
+  // navigation and a second replace() causes the funnel to appear twice.
+  const landingShownRef = useRef(false);
+
   // Redirect authenticated users — skip the landing page entirely.
   // Once auth finishes loading: if logged in, route based on funnel status;
   // if not logged in, show the landing page as normal.
   useEffect(() => {
     if (isLoading) return;
     if (!token) {
+      landingShownRef.current = true;
       setRedirectChecked(true);
       return;
     }
+    if (landingShownRef.current) return;
     (async () => {
       const completed = await readHasCompletedFunnel();
       if (completed) {
