@@ -392,6 +392,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // a teach moment, not a paywall trigger). Flag is consumed +
         // cleared by `<FunnelEntryGate />` at root.
         await AsyncStorage.setItem('@mood_needs_funnel', 'true');
+        // Fresh account — clear any legacy device-wide paywall/session flags
+        // left by a prior account on this device (user-scoped keys are written
+        // once fetchCurrentUser resolves with the new user id).
+        await AsyncStorage.removeItem('@mood_subscription_state_v1');
+        await AsyncStorage.removeItem('@mood_post_first_workout_paywall_shown_v1');
+        await AsyncStorage.removeItem('@mood_pulse_sync_played_v1');
 
         await fetchCurrentUser(authToken);
       } else {
@@ -417,6 +423,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // user who registered + bailed mid-funnel must also start clean.
       await AsyncStorage.removeItem('@mood_needs_funnel');
       await AsyncStorage.removeItem('@mood_funnel_answers_v1');
+      // Legacy device-wide keys from before per-user scoping. Harmless hygiene
+      // on sign-out so an old-format blob cannot leak if someone logs into a
+      // different account without a full app reinstall. Paywall + subscription
+      // state now live under `:${user.id}` keys and are isolated per account.
+      await AsyncStorage.removeItem('@mood_subscription_state_v1');
+      await AsyncStorage.removeItem('@mood_post_first_workout_paywall_shown_v1');
+      // Pulse Sync flag is still device-wide — clear so the next account on
+      // this device can see the first-workout celebration.
+      await AsyncStorage.removeItem('@mood_pulse_sync_played_v1');
       setToken(null);
       setUser(null);
       setIsGuest(false);

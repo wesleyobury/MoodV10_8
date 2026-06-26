@@ -29,7 +29,7 @@ import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { BRAND_GRADIENT, COLORS } from '../constants/brand';
-import { useSubscription } from '../contexts/SubscriptionContext';
+import { useSubscription, markPostFirstWorkoutPaywallShown, STAGE_2_PAYWALL_TRIGGERS } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import { useAuth } from '../contexts/AuthContext';
 import { useFoundingPurchase } from '../hooks/useFoundingPurchase';
@@ -86,7 +86,7 @@ export function PaywallModal() {
   const insets = useSafeAreaInsets();
   const { pendingTrigger, dismissPaywall, setStatus, lastConversionTrigger, clearConversionTrigger } =
     useSubscription();
-  const { token, entitlement } = useAuth();
+  const { token, entitlement, user } = useAuth();
   const { claimFounding } = useFoundingPurchase();
   const [plan, setPlan] = useState<Plan>('annual');
   const [foundingBusy, setFoundingBusy] = useState(false);
@@ -109,6 +109,9 @@ export function PaywallModal() {
   useEffect(() => {
     if (visible && pendingTrigger) {
       openedAtRef.current = Date.now();
+      if (user?.id && STAGE_2_PAYWALL_TRIGGERS.has(pendingTrigger)) {
+        markPostFirstWorkoutPaywallShown(user.id).catch(() => {});
+      }
       Analytics.paywallViewed(token, {
         trigger_source: pendingTrigger,
         stage,

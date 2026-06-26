@@ -23,6 +23,7 @@ import { usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import { API_URL } from '../utils/apiConfig';
 
 /** True only when the current route is an authenticated home tab. We don't
@@ -44,19 +45,26 @@ function isOnHomeTab(pathname: string | null | undefined): boolean {
 
 export default function ProfilePicPromptGate() {
   const { user, token, updateUser } = useAuth();
+  const { pendingTrigger } = useSubscription();
   const pathname = usePathname();
 
   const [showModal, setShowModal] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
+    if (pendingTrigger) setShowModal(false);
+  }, [pendingTrigger]);
+
+  useEffect(() => {
     const uid = user?.id;
     if (!uid || !token) return;
     if (user?.avatar) return;
     if (!isOnHomeTab(pathname)) return;
+    // Soft Paywall #2 takes priority over the profile-pic nudge.
+    if (pendingTrigger) return;
 
     setShowModal(true);
-  }, [user?.id, user?.avatar, token, pathname]);
+  }, [user?.id, user?.avatar, token, pathname, pendingTrigger]);
 
   // Hide immediately if avatar appears via any other path (settings, register).
   useEffect(() => {

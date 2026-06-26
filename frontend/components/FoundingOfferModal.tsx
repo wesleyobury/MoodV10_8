@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { BRAND_GRADIENT, COLORS } from '../constants/brand';
 import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import { useFoundingPurchase } from '../hooks/useFoundingPurchase';
 import { foundingDaysRemaining } from '../utils/founding';
@@ -29,6 +30,7 @@ let shownThisSession = false;
 
 export function FoundingOfferModal() {
   const { token, entitlement } = useAuth();
+  const { pendingTrigger } = useSubscription();
   const { claimFounding } = useFoundingPurchase();
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
@@ -48,7 +50,13 @@ export function FoundingOfferModal() {
   const daysLeft = foundingDaysRemaining(entitlement?.founding_window_expires_at);
 
   useEffect(() => {
+    if (pendingTrigger) setVisible(false);
+  }, [pendingTrigger]);
+
+  useEffect(() => {
     if (!token || inOnboarding) return;
+    // Soft Paywall #2 takes priority over the founding launch modal.
+    if (pendingTrigger) return;
     if (eligible && !shownThisSession && !firedRef.current) {
       firedRef.current = true;
       shownThisSession = true;
@@ -57,7 +65,7 @@ export function FoundingOfferModal() {
       // 1c — canonical founding-offer-shown event for the funnel.
       Analytics.foundingMemberOfferShown(token, { days_remaining_in_window: daysLeft });
     }
-  }, [token, eligible, daysLeft, inOnboarding]);
+  }, [token, eligible, daysLeft, inOnboarding, pendingTrigger]);
 
   const handleRemindLater = () => {
     setVisible(false);

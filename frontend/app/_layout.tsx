@@ -186,12 +186,12 @@ function AppContent() {
       <NavigationStack />
       <FloatingCart />
       <DevPill />
-      <PaywallModal />
       <FoundingMemberGate />
       <FoundingOfferModal />
       <LegalReacceptGate />
       <FunnelEntryGate />
       <ProfilePicPromptGate />
+      <PaywallModal />
     </ForceUpdateGate>
   );
 }

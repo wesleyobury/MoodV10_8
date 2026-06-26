@@ -1073,7 +1073,9 @@ export default function CreatePost() {
     // route home; PaywallModal renders on top of `/(tabs)` so the modal will
     // appear over the home screen rather than over a torn-down route.
     try {
-      await tryFirePostFirstWorkoutPaywall('post_achievement_close_soft');
+      await tryFirePostFirstWorkoutPaywall('post_achievement_close_soft', {
+        completedWorkoutConfirmed: !!workoutStats,
+      });
     } catch {
       /* never block navigation on paywall fire */
     }
@@ -1553,7 +1555,9 @@ export default function CreatePost() {
         // explore so the paywall lands on top of the explore feed (not
         // on top of a transitioning route).
         try {
-          await tryFirePostFirstWorkoutPaywall('post_share_soft');
+          await tryFirePostFirstWorkoutPaywall('post_share_soft', {
+            completedWorkoutConfirmed: !!workoutStats,
+          });
         } catch {
           /* never block navigation on paywall fire */
         }
@@ -2254,7 +2258,7 @@ export default function CreatePost() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.freeSessionSecondary}
-                onPress={() => router.replace('/(tabs)')}
+                onPress={() => navigateToHome()}
                 data-testid="free-session-maybe-later"
                 testID="free-session-maybe-later"
               >
