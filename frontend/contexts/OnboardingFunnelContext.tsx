@@ -20,6 +20,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { useAuth } from './AuthContext';
 
 /* ---------------------------- Domain types ---------------------------- */
 
@@ -89,13 +90,11 @@ interface OnboardingFunnelContextValue {
 
 /** Spec §2c — async one-shot read used by gates that fire before the
  *  provider has rehydrated (e.g. cold-start route guards). Reads the same
- *  underlying key directly so callers don't need to mount the provider. */
-export async function readHasCompletedFunnel(): Promise<boolean> {
+ *  per-user key directly so callers don't need to mount the provider. */
+export async function readHasCompletedFunnel(userId?: string | null): Promise<boolean> {
   try {
-    const raw = await AsyncStorage.getItem(STORAGE_KEY);
-    if (!raw) return false;
-    const parsed = JSON.parse(raw) as FunnelAnswers;
-    return Boolean(parsed?.completedAt);
+    const answers = await readPersistedForUser(userId ?? null);
+    return Boolean(answers.completedAt);
   } catch {
     return false;
   }
@@ -103,20 +102,45 @@ export async function readHasCompletedFunnel(): Promise<boolean> {
 
 /* --------------------------- Storage layer --------------------------- */
 
-const STORAGE_KEY = '@mood_funnel_answers_v1';
+const STORAGE_KEY_PREFIX = '@mood_funnel_answers_v1';
+const LEGACY_STORAGE_KEY = STORAGE_KEY_PREFIX;
 
-async function readPersisted(): Promise<FunnelAnswers> {
+function funnelStorageKey(userId: string): string {
+  return `${STORAGE_KEY_PREFIX}:${userId}`;
+}
+
+async function readLegacyPersisted(): Promise<FunnelAnswers> {
   try {
-    const raw = await AsyncStorage.getItem(STORAGE_KEY);
+    const raw = await AsyncStorage.getItem(LEGACY_STORAGE_KEY);
     return raw ? (JSON.parse(raw) as FunnelAnswers) : {};
   } catch {
     return {};
   }
 }
 
-async function writePersisted(next: FunnelAnswers): Promise<void> {
+async function readPersistedForUser(userId: string | null): Promise<FunnelAnswers> {
+  if (!userId) return readLegacyPersisted();
   try {
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    const scopedRaw = await AsyncStorage.getItem(funnelStorageKey(userId));
+    if (scopedRaw) return JSON.parse(scopedRaw) as FunnelAnswers;
+
+    // One-time migration from the pre-user-scoping device-wide blob.
+    const legacy = await readLegacyPersisted();
+    if (Object.keys(legacy).length > 0) {
+      await AsyncStorage.setItem(funnelStorageKey(userId), JSON.stringify(legacy));
+      await AsyncStorage.removeItem(LEGACY_STORAGE_KEY);
+    }
+    return legacy;
+  } catch {
+    return {};
+  }
+}
+
+async function writePersistedForUser(userId: string | null, next: FunnelAnswers): Promise<void> {
+  if (!userId) return;
+  try {
+    await AsyncStorage.setItem(funnelStorageKey(userId), JSON.stringify(next));
+    await AsyncStorage.removeItem(LEGACY_STORAGE_KEY);
   } catch {
     // Silent — funnel still works in-memory.
   }
@@ -127,25 +151,34 @@ async function writePersisted(next: FunnelAnswers): Promise<void> {
 const Ctx = createContext<OnboardingFunnelContextValue | undefined>(undefined);
 
 export function OnboardingFunnelProvider({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth();
+  const userId = user?.id ?? null;
+  const userIdRef = useRef(userId);
+  userIdRef.current = userId;
+
   const [answers, setAnswers] = useState<FunnelAnswers>({});
   const timingsRef = useRef<Map<number, FunnelStepTiming>>(new Map());
 
-  // Rehydrate once on mount.
+  // Rehydrate per-user answers when the authenticated user changes.
   useEffect(() => {
     let cancelled = false;
+    if (!userId) {
+      setAnswers({});
+      return;
+    }
     (async () => {
-      const persisted = await readPersisted();
+      const persisted = await readPersistedForUser(userId);
       if (!cancelled) setAnswers(persisted);
     })();
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [userId]);
 
   const patch = useCallback((delta: Partial<FunnelAnswers>) => {
     setAnswers((prev) => {
       const next = { ...prev, ...delta };
-      writePersisted(next);
+      writePersistedForUser(userIdRef.current, next);
       return next;
     });
   }, []);
@@ -165,7 +198,7 @@ export function OnboardingFunnelProvider({ children }: { children: React.ReactNo
     const completedAt = new Date().toISOString();
     setAnswers((prev) => {
       const next = { ...prev, completedAt };
-      writePersisted(next);
+      writePersistedForUser(userIdRef.current, next);
       return next;
     });
   }, []);
@@ -173,8 +206,11 @@ export function OnboardingFunnelProvider({ children }: { children: React.ReactNo
   const reset = useCallback(async () => {
     timingsRef.current.clear();
     setAnswers({});
+    const uid = userIdRef.current;
+    if (!uid) return;
     try {
-      await AsyncStorage.removeItem(STORAGE_KEY);
+      await AsyncStorage.removeItem(funnelStorageKey(uid));
+      await AsyncStorage.removeItem(LEGACY_STORAGE_KEY);
     } catch {
       // ignore
     }
@@ -195,8 +231,7 @@ export function OnboardingFunnelProvider({ children }: { children: React.ReactNo
       markCompleted,
       // Spec §2c — derive from the same persisted field `markCompleted`
       // writes. True the moment `reveal-payoff` is reached for the first
-      // time; survives app kills + reinstalls (until `logout()` clears
-      // the underlying storage key per §2a).
+      // time; survives app kills and re-login (scoped per user id).
       hasCompletedFunnel: Boolean(answers.completedAt),
       reset,
     }),

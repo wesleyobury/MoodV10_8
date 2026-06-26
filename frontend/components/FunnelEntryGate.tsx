@@ -37,14 +37,15 @@ const FLAG_KEY = '@mood_needs_funnel';
 
 export function FunnelEntryGate() {
   const router = useRouter();
-  const { token, isLoading } = useAuth();
+  const { token, isLoading, user } = useAuth();
   // Latch so the route push only fires once per authenticated session.
   // NOTE (Spec §2b): This ref alone is NOT sufficient — it resets on
   // remount. The persisted `completedAt` check below is the real guard.
   const dispatched = useRef(false);
 
   useEffect(() => {
-    if (isLoading || !token || dispatched.current) return;
+    if (isLoading || !token || !user?.id || dispatched.current) return;
+    const userId = user.id;
     let cancelled = false;
     (async () => {
       const flag = await AsyncStorage.getItem(FLAG_KEY);
@@ -54,7 +55,7 @@ export function FunnelEntryGate() {
       // funnel, even if `@mood_needs_funnel` somehow survived (e.g. force-
       // quit mid-register, schema drift, manual debug). Self-heal by
       // purging the flag and bailing.
-      const completed = await readHasCompletedFunnel();
+      const completed = await readHasCompletedFunnel(userId);
       if (cancelled) return;
       if (completed) {
         await AsyncStorage.removeItem(FLAG_KEY);
@@ -71,7 +72,7 @@ export function FunnelEntryGate() {
     return () => {
       cancelled = true;
     };
-  }, [token, isLoading, router]);
+  }, [token, isLoading, user?.id, router]);
 
   return null;
 }

@@ -392,6 +392,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // a teach moment, not a paywall trigger). Flag is consumed +
         // cleared by `<FunnelEntryGate />` at root.
         await AsyncStorage.setItem('@mood_needs_funnel', 'true');
+        // Fresh account — clear any legacy device-wide funnel blob left by a
+        // prior account on this device. Per-user answers use `:${userId}` keys.
+        await AsyncStorage.removeItem('@mood_funnel_answers_v1');
         // Fresh account — clear any legacy device-wide paywall/session flags
         // left by a prior account on this device (user-scoped keys are written
         // once fetchCurrentUser resolves with the new user id).
@@ -416,13 +419,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await secureStorage.delete(AUTH_TOKEN_STORED_AT_KEY);
       await secureStorage.delete(AUTH_TOKEN_LAST_VALIDATED_KEY);
       await AsyncStorage.removeItem('is_guest');
-      // Spec §2a — purge the funnel re-entry flag and the persisted funnel
-      // answers so a returning user on session N+1 cannot accidentally
-      // get rerouted into the 8-step funnel. The `completedAt` selector
-      // would already block this once written, but defense-in-depth: a
-      // user who registered + bailed mid-funnel must also start clean.
+      // Spec §2a — purge the funnel re-entry flag so a stale register flag
+      // cannot reroute a returning user. Funnel completion (`completedAt`)
+      // is scoped per user id and intentionally preserved across logout.
       await AsyncStorage.removeItem('@mood_needs_funnel');
-      await AsyncStorage.removeItem('@mood_funnel_answers_v1');
       // Legacy device-wide keys from before per-user scoping. Harmless hygiene
       // on sign-out so an old-format blob cannot leak if someone logs into a
       // different account without a full app reinstall. Paywall + subscription

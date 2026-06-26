@@ -134,7 +134,7 @@ const DevPaywallTrigger = () => {
 
 export default function Welcome() {
   const insets = useSafeAreaInsets();
-  const { token, isLoading } = useAuth();
+  const { token, isLoading, user } = useAuth();
   const [redirectChecked, setRedirectChecked] = useState(false);
 
   // Track whether the landing page was shown to an unauthenticated user.
@@ -154,15 +154,16 @@ export default function Welcome() {
       return;
     }
     if (landingShownRef.current) return;
+    if (!user?.id) return;
     (async () => {
-      const completed = await readHasCompletedFunnel();
+      const completed = await readHasCompletedFunnel(user.id);
       if (completed) {
         router.replace('/(tabs)');
       } else {
         router.replace('/onboarding-funnel/step-1-mood');
       }
     })();
-  }, [token, isLoading]);
+  }, [token, isLoading, user?.id]);
 
   // Video background fade-in
   const videoRef = useRef<Video>(null);
@@ -196,7 +197,9 @@ export default function Welcome() {
     try {
       const needsFunnel = await AsyncStorage.getItem('@mood_needs_funnel');
       if (needsFunnel === 'true') {
-        const alreadyCompleted = await readHasCompletedFunnel();
+        const alreadyCompleted = user?.id
+          ? await readHasCompletedFunnel(user.id)
+          : await readHasCompletedFunnel();
         await AsyncStorage.removeItem('@mood_needs_funnel');
         if (!alreadyCompleted) {
           router.replace('/onboarding-funnel/step-1-mood');
