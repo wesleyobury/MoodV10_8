@@ -22,6 +22,14 @@ export interface ApiResponse<T = any> {
   ok: boolean;
 }
 
+/** Shape returned by `/api/auth/login` and `/api/auth/register`. */
+export interface AuthTokenResponse {
+  access_token: string;
+  refresh_token: string;
+  user_id: string;
+  message?: string;
+}
+
 /**
  * Safe fetch wrapper that handles both JSON and non-JSON responses
  * 

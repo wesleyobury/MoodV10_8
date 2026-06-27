@@ -5,7 +5,7 @@ import { trackEvent, aliasGuestToUser, GuestAnalytics } from '../utils/analytics
 import TermsAcceptanceModal from '../components/TermsAcceptanceModal';
 import { resetNotificationSession } from '../utils/notificationUtils';
 import { API_URL, validateApiConfig } from '../utils/apiConfig';
-import { apiFetch } from '../utils/api';
+import { apiFetch, AuthTokenResponse } from '../utils/api';
 import { secureStorage, AUTH_TOKEN_KEY, AUTH_REFRESH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY, AUTH_TOKEN_LAST_VALIDATED_KEY } from '../utils/secureStorage';
 import { DEV_MOCKS_ENABLED, getDevMockEntitlement } from '../utils/devMocks';
 
@@ -100,29 +100,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Derived state: Check if user has accepted the CURRENT version of terms
   // User must have accepted terms AND their version must match current version
   const hasAcceptedTerms = Boolean(
-    user?.terms_accepted_at && 
+    user?.terms_accepted_at &&
     user?.terms_accepted_version === CURRENT_TERMS_VERSION
   );
 
   useEffect(() => {
     // Auth initialization timeout - never block app startup
     const AUTH_INIT_TIMEOUT = 5000; // 5 seconds max for auth init
-    
+
     // Auto-login or load stored session with timeout protection
     const initAuth = async () => {
       let timeoutId: NodeJS.Timeout | null = null;
-      
+
       try {
         console.log('🔐 Initializing auth...');
-        
+
         // Validate API configuration and log for debugging
         await validateApiConfig();
-        
+
         // Safety timeout - ensure we never hang
         const timeoutPromise = new Promise<'timeout'>((resolve) => {
           timeoutId = setTimeout(() => resolve('timeout'), AUTH_INIT_TIMEOUT);
         });
-        
+
         // Check if user is in guest mode (fast local check)
         const guestMode = await AsyncStorage.getItem('is_guest');
         if (guestMode === 'true') {
@@ -134,17 +134,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
           if (timeoutId) clearTimeout(timeoutId);
           return;
         }
-        
+
         // Try to get stored token first (fast local check)
         // SecureStore is the primary source; migrate from AsyncStorage if needed.
         const storedToken = await secureStorage.migrate(AUTH_TOKEN_KEY);
         if (storedToken) {
           console.log('Found stored token, validating with timeout...');
-          
+
           // Create abort controller for fetch timeout
           const controller = new AbortController();
           const fetchTimeoutId = setTimeout(() => controller.abort(), AUTH_INIT_TIMEOUT - 1000);
-          
+
           try {
             // Validate token by fetching user with timeout
             const userResp = await Promise.race([
@@ -154,9 +154,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
               }),
               timeoutPromise,
             ]);
-            
+
             clearTimeout(fetchTimeoutId);
-            
+
             if (userResp === 'timeout') {
               console.warn('🕐 Auth token validation timed out, proceeding without validation');
               // Set token optimistically - will be validated on next API call
@@ -165,13 +165,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
               if (timeoutId) clearTimeout(timeoutId);
               return;
             }
-            
+
             if (userResp.ok) {
               const userData = await userResp.json();
               setToken(storedToken);
               setUser(userData);
               // Mark token as freshly validated
-              secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, new Date().toISOString()).catch(() => {});
+              secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, new Date().toISOString()).catch(() => { });
               console.log('✅ Restored session for:', userData.username);
 
               // Check if user needs to accept current terms version (show modal after login)
@@ -189,7 +189,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
               // Track app session start on successful restore (non-blocking)
               trackEvent(storedToken, 'app_session_start', {
                 restored_session: true,
-              }).catch(() => {}); // Ignore tracking errors
+              }).catch(() => { }); // Ignore tracking errors
 
               setIsLoading(false);
               if (timeoutId) clearTimeout(timeoutId);
@@ -228,12 +228,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
             }
           }
         }
-        
+
         // No valid stored token - user needs to log in
         console.log('No valid session found, user needs to authenticate');
         setUser(null);
         setToken(null);
-        
+
         if (timeoutId) clearTimeout(timeoutId);
       } catch (err) {
         console.error('❌ Auth error:', err);
@@ -274,13 +274,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const userData = await response.json();
         setUser(userData);
         // Mark token as freshly validated
-        secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, new Date().toISOString()).catch(() => {});
-        
+        secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, new Date().toISOString()).catch(() => { });
+
         // Check if user needs to accept current terms version (show modal after login)
         // Show modal if: no terms accepted OR version doesn't match current version
-        const needsTermsAcceptance = !userData.terms_accepted_at || 
+        const needsTermsAcceptance = !userData.terms_accepted_at ||
           userData.terms_accepted_version !== CURRENT_TERMS_VERSION;
-        
+
         if (needsTermsAcceptance) {
           console.log('⚠️ User has not accepted current terms version, showing modal...');
           console.log('  User version:', userData.terms_accepted_version);
@@ -308,37 +308,37 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       console.log('🔐 Attempting login...');
       console.log('🔗 API_URL being used:', API_URL);
-      
+
       // Use safe apiFetch that handles non-JSON responses gracefully
-      const result = await apiFetch<{ token: string; refresh_token: string; user_id: string }>('/api/auth/login', {
+      const result = await apiFetch<AuthTokenResponse>('/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({ username, password }),
       });
 
       if (result.ok && result.data) {
-        const { token: authToken, refresh_token: refreshToken, user_id } = result.data as any;
+        const { access_token: authToken, refresh_token: refreshToken, user_id } = result.data;
         setToken(authToken);
         await secureStorage.set(AUTH_TOKEN_KEY, authToken);
         if (refreshToken) await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, refreshToken);
         const nowIso = new Date().toISOString();
         await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, nowIso);
         await secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, nowIso);
-        
+
         // Reset notification session on login
         await resetNotificationSession();
-        
+
         // Clear guest mode if user was a guest
         const wasGuest = await AsyncStorage.getItem('is_guest');
         if (wasGuest === 'true') {
           await AsyncStorage.removeItem('is_guest');
           setIsGuest(false);
-          
+
           // Alias guest activity to the user account (identity merge)
           console.log('🔗 Merging guest activity to user account...');
           const mergedCount = await aliasGuestToUser(authToken);
           console.log(`✅ Merged ${mergedCount} guest events to user account`);
         }
-        
+
         await fetchCurrentUser(authToken);
       } else {
         throw new Error(result.error || 'Login failed');
@@ -353,31 +353,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       console.log('📝 Attempting registration...');
       console.log('🔗 API_URL being used:', API_URL);
-      
+
       // Use safe apiFetch that handles non-JSON responses gracefully
-      const result = await apiFetch<{ token: string; refresh_token: string; user_id: string }>('/api/auth/register', {
+      const result = await apiFetch<AuthTokenResponse>('/api/auth/register', {
         method: 'POST',
         body: JSON.stringify({ username, email, password, name }),
       });
 
       if (result.ok && result.data) {
-        const { token: authToken, refresh_token: refreshToken, user_id } = result.data as any;
+        console.log('🔐 Registration successful:', result.data);
+        const { access_token: authToken, refresh_token: refreshToken, user_id } = result.data;
         setToken(authToken);
         await secureStorage.set(AUTH_TOKEN_KEY, authToken);
         if (refreshToken) await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, refreshToken);
         const nowIso = new Date().toISOString();
         await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, nowIso);
         await secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, nowIso);
-        
+
         // Reset notification session on registration
         await resetNotificationSession();
-        
+
         // Clear guest mode if user was a guest
         const wasGuest = await AsyncStorage.getItem('is_guest');
         if (wasGuest === 'true') {
           await AsyncStorage.removeItem('is_guest');
           setIsGuest(false);
-          
+
           // Alias guest activity to the new user account (identity merge)
           console.log('🔗 Merging guest activity to new user account...');
           const mergedCount = await aliasGuestToUser(authToken);
@@ -445,10 +446,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setToken(null);
     try {
       await AsyncStorage.setItem('is_guest', 'true');
-      
+
       // Clear guest tooltip session key so it shows for each new guest session
       await AsyncStorage.removeItem('guest_tooltip_session_shown');
-      
+
       // Track guest session start
       await GuestAnalytics.guestSessionStarted();
       console.log('📊 Guest session tracking started');
@@ -477,7 +478,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Heartbeat for real-time active user tracking
   useEffect(() => {
     if (!token) return;
-    
+
     const sendHeartbeat = async () => {
       try {
         await fetch(`${API_URL}/api/analytics/heartbeat`, {
@@ -489,13 +490,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         console.log('Heartbeat failed:', error);
       }
     };
-    
+
     // Send initial heartbeat
     sendHeartbeat();
-    
+
     // Set up interval - every 45 seconds
     const heartbeatInterval = setInterval(sendHeartbeat, 180000); // Every 3 minutes
-    
+
     return () => {
       clearInterval(heartbeatInterval);
     };
@@ -562,11 +563,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (!token) {
       throw new Error('User must be logged in to accept terms');
     }
-    
+
     try {
       console.log('📜 Accepting terms of service...');
       console.log('  Version being accepted:', CURRENT_TERMS_VERSION);
-      
+
       const response = await fetch(`${API_URL}/api/users/me/accept-terms`, {
         method: 'POST',
         headers: {
@@ -580,7 +581,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
 
       const data = await response.json();
-      
+
       // Update local user state with terms acceptance AND version
       if (user) {
         setUser({
@@ -589,10 +590,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
           terms_accepted_version: data.terms_accepted_version || CURRENT_TERMS_VERSION,
         });
       }
-      
+
       // Hide the modal
       setShowTermsModal(false);
-      
+
       console.log('✅ Terms accepted successfully');
       console.log('  Version:', data.terms_accepted_version || CURRENT_TERMS_VERSION);
     } catch (error) {
