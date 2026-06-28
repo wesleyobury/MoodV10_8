@@ -28,25 +28,35 @@ export function useSubscriptionSync() {
   const syncingRef = useRef(false);
   const appStateRef = useRef(AppState.currentState);
 
-  const runSync = useCallback(
-    async (force = false) => {
-      if (!token || syncingRef.current) return;
-      syncingRef.current = true;
-      try {
-        const { response } = await syncSubscriptionOnAppOpen(token, { force });
-        applySyncResponse(response, setStatus);
-        await refreshEntitlement();
-        await refreshUser();
-      } catch (err) {
-        console.error('[IAP] subscription sync failed', err);
-      } finally {
-        syncingRef.current = false;
-      }
-    },
-    [token, setStatus, refreshEntitlement, refreshUser],
-  );
+  const tokenRef = useRef(token);
+  const refreshEntitlementRef = useRef(refreshEntitlement);
+  const refreshUserRef = useRef(refreshUser);
+  const setStatusRef = useRef(setStatus);
 
-  // Cold start + login
+  tokenRef.current = token;
+  refreshEntitlementRef.current = refreshEntitlement;
+  refreshUserRef.current = refreshUser;
+  setStatusRef.current = setStatus;
+
+  const runSync = useCallback(async (force = false) => {
+    const currentToken = tokenRef.current;
+    if (!currentToken || syncingRef.current) return;
+    syncingRef.current = true;
+    try {
+      const { response, skipped } = await syncSubscriptionOnAppOpen(currentToken, { force });
+      if (skipped) return;
+
+      applySyncResponse(response, setStatusRef.current);
+      await refreshEntitlementRef.current();
+      await refreshUserRef.current();
+    } catch (err) {
+      console.error('[IAP] subscription sync failed', err);
+    } finally {
+      syncingRef.current = false;
+    }
+  }, []);
+
+  // Cold start + login — token only; runSync is stable via refs
   useEffect(() => {
     if (!token) return;
     runSync(false);
@@ -72,11 +82,11 @@ export function useSubscriptionSync() {
     if (!token) return () => {};
 
     return listenForSubscriptionUpdates(token, async (response) => {
-      applySyncResponse(response, setStatus);
-      await refreshEntitlement();
-      await refreshUser();
+      applySyncResponse(response, setStatusRef.current);
+      await refreshEntitlementRef.current();
+      await refreshUserRef.current();
     });
-  }, [token, setStatus, refreshEntitlement, refreshUser]);
+  }, [token]);
 
   return { syncSubscription: runSync };
 }
