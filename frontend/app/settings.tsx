@@ -305,7 +305,7 @@ export default function Settings() {
                 { text: 'Cancel', style: 'cancel' },
                 {
                   text: 'Submit & Stay',
-                  onPress: async (feedback) => {
+                  onPress: async (feedback: string | undefined) => {
                     if (feedback) {
                       await sendFeedbackEmail(feedback, 'Account Deletion Prevented - User Stayed');
                     }
@@ -315,7 +315,7 @@ export default function Settings() {
                 {
                   text: 'Submit & Delete',
                   style: 'destructive',
-                  onPress: async (feedback) => {
+                  onPress: async (feedback: string | undefined) => {
                     if (feedback) {
                       await sendFeedbackEmail(feedback, 'Account Deletion Feedback');
                     }
@@ -441,7 +441,7 @@ export default function Settings() {
                 size={20}
                 color="#FFD700"
               />
-              <View>
+              <View style={styles.settingsItemTextCol}>
                 <Text style={styles.settingsItemText}>
                   {subscriptionLabels.title}
                 </Text>
@@ -464,7 +464,7 @@ export default function Settings() {
             >
               <View style={styles.settingsItemLeft}>
                 <Ionicons name="cog-outline" size={20} color="#FFD700" />
-                <View>
+                <View style={styles.settingsItemTextCol}>
                   <Text style={styles.settingsItemText}>Manage in App Store</Text>
                   <Text style={styles.settingsItemSubtext}>Change plan, cancel, or update billing</Text>
                 </View>
@@ -481,7 +481,7 @@ export default function Settings() {
             >
               <View style={styles.settingsItemLeft}>
                 <Ionicons name="sparkles" size={20} color="#FFD700" />
-                <View>
+                <View style={styles.settingsItemTextCol}>
                   <Text style={styles.settingsItemText}>{subscribeCta.title}</Text>
                   <Text style={styles.settingsItemSubtext}>{subscribeCta.subtitle}</Text>
                 </View>
@@ -500,7 +500,7 @@ export default function Settings() {
           >
             <View style={styles.settingsItemLeft}>
               <Ionicons name="refresh-outline" size={20} color="#FFD700" />
-              <View>
+              <View style={styles.settingsItemTextCol}>
                 <Text style={styles.settingsItemText}>Restore Purchases</Text>
                 <Text style={styles.settingsItemSubtext}>Re-sync your active subscription</Text>
               </View>
@@ -1256,6 +1256,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
+    flex: 1,
+    minWidth: 0,
+  },
+  settingsItemTextCol: {
+    flex: 1,
+    flexShrink: 1,
+    minWidth: 0,
   },
   iconContainer: {
     width: 36,
@@ -1270,6 +1277,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#fff',
     fontWeight: '600',
+    flexShrink: 1,
   },
   deleteItem: {
     flexDirection: 'row',
@@ -1452,6 +1460,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
     marginTop: 2,
+    flexShrink: 1,
+    lineHeight: 17,
   },
   healthFooter: {
     fontSize: 12,
@@ -1460,66 +1470,5 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     paddingHorizontal: 4,
     lineHeight: 18,
-  },
-  credentialsDescription: {
-    fontSize: 15,
-    color: '#999',
-    lineHeight: 22,
-    marginBottom: 24,
-  },
-  inputSection: {
-    marginBottom: 20,
-  },
-  inputLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#fff',
-    marginBottom: 8,
-  },
-  credentialInput: {
-    backgroundColor: '#1a1a1a',
-    borderRadius: 12,
-    padding: 16,
-    fontSize: 16,
-    color: '#fff',
-    borderWidth: 1,
-    borderColor: '#333',
-  },
-  passwordInputContainer: {
-    position: 'relative',
-  },
-  eyeButton: {
-    position: 'absolute',
-    right: 16,
-    top: 16,
-    padding: 4,
-  },
-  dividerLine: {
-    height: 1,
-    backgroundColor: '#333',
-    marginVertical: 20,
-  },
-  credentialsNote: {
-    fontSize: 13,
-    color: '#666',
-    lineHeight: 20,
-    marginTop: 8,
-    marginBottom: 24,
-    fontStyle: 'italic',
-  },
-  updateButton: {
-    backgroundColor: '#FFD700',
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  updateButtonDisabled: {
-    backgroundColor: '#333',
-  },
-  updateButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#000',
   },
 });

@@ -532,6 +532,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         headers: { Authorization: `Bearer ${storedToken}` },
       });
       if (res.ok && res.data) {
+        console.log('entitlement fetched:', res.data);
         setEntitlement(res.data);
       }
     } catch (e) {

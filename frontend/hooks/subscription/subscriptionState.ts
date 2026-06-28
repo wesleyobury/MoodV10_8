@@ -40,7 +40,7 @@ export function getSubscribeCtaCopy(status: SubscriptionStatus): {
   }
   return {
     title: 'Subscribe to MOOD Premium',
-    subtitle: 'Apple shows available offers, including any free trial, at checkout.',
+    subtitle: 'Trial offers, if eligible, appear at App Store checkout.',
   };
 }
 
