@@ -15,6 +15,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import {
+  ActivityIndicator,
   Linking,
   Modal,
   Pressable,
@@ -34,6 +35,9 @@ import { Analytics } from '../utils/analytics';
 import { useAuth } from '../contexts/AuthContext';
 import { useFoundingPurchase } from '../hooks/useFoundingPurchase';
 import { apiFetch } from '../utils/api';
+import { validateSubscriptionTransaction } from '../hooks/subscription/subscriptionApi';
+import { mapServerStatusToLocal } from '../hooks/subscription/mapSubscriptionStatus';
+import { getLatestSubscriptionEntitlement } from '../hooks/subscription/subscriptionSync';
 import {
   MONTHLY_PRODUCT_ID,
   YEARLY_PRODUCT_ID,
@@ -86,7 +90,7 @@ export function PaywallModal() {
   const insets = useSafeAreaInsets();
   const { pendingTrigger, dismissPaywall, setStatus, lastConversionTrigger, clearConversionTrigger } =
     useSubscription();
-  const { token, entitlement, user } = useAuth();
+  const { token, entitlement, user, refreshEntitlement, refreshUser } = useAuth();
   const { claimFounding } = useFoundingPurchase();
   const [plan, setPlan] = useState<Plan>('annual');
   const [foundingBusy, setFoundingBusy] = useState(false);
@@ -110,7 +114,7 @@ export function PaywallModal() {
     if (visible && pendingTrigger) {
       openedAtRef.current = Date.now();
       if (user?.id && STAGE_2_PAYWALL_TRIGGERS.has(pendingTrigger)) {
-        markPostFirstWorkoutPaywallShown(user.id).catch(() => {});
+        markPostFirstWorkoutPaywallShown(user.id).catch(() => { });
       }
       Analytics.paywallViewed(token, {
         trigger_source: pendingTrigger,
@@ -119,6 +123,10 @@ export function PaywallModal() {
         is_founding_window: isFoundingWindow,
       });
       if (token) {
+        console.log('[IAP] POST /api/subscription/record-trigger — starting', {
+          trigger: pendingTrigger,
+          plan,
+        });
         apiFetch('/api/subscription/record-trigger', {
           method: 'POST',
           headers: {
@@ -126,11 +134,17 @@ export function PaywallModal() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ trigger: pendingTrigger, plan }),
-        }).catch(() => {
-          // Silent — the local `lastConversionTrigger` is still authoritative
-          // for client-side analytics. Server-side attribution will recover
-          // on the next paywall open.
-        });
+        })
+          .then((res) => {
+            if (res.ok) {
+              console.log('[IAP] POST /api/subscription/record-trigger — OK', res.status);
+            } else {
+              console.error('[IAP] POST /api/subscription/record-trigger — FAILED', res.status, res.error);
+            }
+          })
+          .catch((err) => {
+            console.error('[IAP] POST /api/subscription/record-trigger — network error', err);
+          });
       }
     }
   }, [visible, pendingTrigger, token, plan]);
@@ -205,24 +219,17 @@ export function PaywallModal() {
         // pulled from the user record (set by `record-trigger` when this
         // modal mounted).
         if (token) {
-          await apiFetch('/api/subscription/validate', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              signed_payload: result.signedPayload,
-              product_id: result.productID,
-              transaction_id: result.transactionID,
-              original_transaction_id: result.originalTransactionID,
-              purchase_date: result.purchaseDate,
-              expiration_date: result.expirationDate,
-            }),
-          }).catch(() => {
-            // Silent — `Transaction.updates` listener will re-fire on next
-            // app open and we'll reconcile then.
+          const validateRes = await validateSubscriptionTransaction(token, result, {
+            status_hint: 'in_trial',
           });
+          const mapped = mapServerStatusToLocal(validateRes.data?.status);
+          if (mapped) {
+            setStatus(mapped);
+          } else {
+            setStatus('in_trial');
+          }
+          await refreshEntitlement();
+          await refreshUser();
         }
         Analytics.subscriptionPurchased(token, {
           plan,
@@ -231,11 +238,9 @@ export function PaywallModal() {
         // 1a — purchase confirmed by the store.
         Analytics.purchaseCompleted(token, { plan_id: result.productID, is_trial: true });
         clearConversionTrigger();
-        // The intro-offer flag is determined by Apple — we mark `in_trial`
-        // here because every product has a 7-day intro. If Apple denies
-        // the intro (already used etc.), they auto-charge, and the next
-        // `Transaction.updates` event reconciles to `active` on app reopen.
-        setStatus('in_trial');
+        if (!token) {
+          setStatus('in_trial');
+        }
         dismissPaywall();
       } else if (result.status === 'cancelled') {
         // User dismissed Apple's sheet — leave the paywall up so they can
@@ -269,11 +274,20 @@ export function PaywallModal() {
     if (!isStoreKitAvailable()) return;
     try {
       const entitlements = await storeKitRestore();
-      if (entitlements.length > 0) {
+      if (entitlements.length > 0 && token) {
         Analytics.restorePurchasesCompleted(token, {
           restored_plan_id: entitlements[0]?.productID,
         });
-        setStatus('active');
+        const latest = await getLatestSubscriptionEntitlement();
+        if (latest) {
+          const validateRes = await validateSubscriptionTransaction(token, latest);
+          const mapped = mapServerStatusToLocal(validateRes.data?.status);
+          if (mapped) setStatus(mapped);
+        } else {
+          setStatus('active');
+        }
+        await refreshEntitlement();
+        await refreshUser();
         dismissPaywall();
       }
     } catch (err) {
@@ -315,7 +329,7 @@ export function PaywallModal() {
   };
 
   const handleManageBilling = () => {
-    Linking.openURL('https://apps.apple.com/account/subscriptions').catch(() => {});
+    Linking.openURL('https://apps.apple.com/account/subscriptions').catch(() => { });
   };
 
   return (

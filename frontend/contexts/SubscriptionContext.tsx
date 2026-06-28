@@ -22,6 +22,8 @@ import React, {
   useState,
 } from 'react';
 import { useAuth } from './AuthContext';
+import { mapServerStatusToLocal } from '../hooks/subscription/mapSubscriptionStatus';
+import { SubscriptionSyncRunner } from '../hooks/subscription/useSubscriptionSync';
 
 /* ----------------------------- Types ----------------------------- */
 
@@ -223,6 +225,26 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const userIdRef = useRef(userId);
   userIdRef.current = userId;
 
+  // Mirror server subscription_status from /users/me when available.
+  useEffect(() => {
+    const mapped = mapServerStatusToLocal(user?.subscription_status);
+    if (mapped != null && mapped !== 'none') {
+      setState((prev) => {
+        if (prev.status === mapped) return prev;
+        const next: SubscriptionState = { ...prev, status: mapped };
+        writeStateForUser(userIdRef.current, next);
+        return next;
+      });
+    } else if (mapped === 'none' && user?.subscription_status === null) {
+      setState((prev) => {
+        if (prev.status === 'none') return prev;
+        const next: SubscriptionState = { ...prev, status: 'none' };
+        writeStateForUser(userIdRef.current, next);
+        return next;
+      });
+    }
+  }, [user?.subscription_status, user?.id]);
+
   const persistState = useCallback((next: SubscriptionState) => {
     writeStateForUser(userIdRef.current, next);
   }, []);
@@ -407,7 +429,12 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     ]
   );
 
-  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
+  return (
+    <Ctx.Provider value={value}>
+      <SubscriptionSyncRunner />
+      {children}
+    </Ctx.Provider>
+  );
 }
 
 export function useSubscription(): SubscriptionContextValue {

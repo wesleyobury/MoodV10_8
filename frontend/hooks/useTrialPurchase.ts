@@ -10,7 +10,8 @@
 import { useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
-import { apiFetch } from '../utils/api';
+import { mapServerStatusToLocal } from './subscription/mapSubscriptionStatus';
+import { validateSubscriptionTransaction } from './subscription/subscriptionApi';
 import { Analytics } from '../utils/analytics';
 import {
   MONTHLY_PRODUCT_ID,
@@ -21,7 +22,7 @@ import {
 export type TrialResult = 'success' | 'cancelled' | 'error';
 
 export function useTrialPurchase() {
-  const { token, refreshEntitlement } = useAuth();
+  const { token, refreshEntitlement, refreshUser } = useAuth();
   const { setStatus } = useSubscription();
 
   const startTrial = useCallback(
@@ -29,7 +30,6 @@ export function useTrialPurchase() {
       Analytics.trialStarted(token, { plan: 'monthly', trigger_source: triggerSource });
 
       if (!isStoreKitAvailable()) {
-        // Web/Expo Go QA path — optimistic trial.
         setStatus('in_trial');
         await refreshEntitlement();
         return 'success';
@@ -39,23 +39,18 @@ export function useTrialPurchase() {
         const result = await storeKitPurchase(MONTHLY_PRODUCT_ID);
         if (result.status === 'success') {
           if (token) {
-            await apiFetch('/api/subscription/validate', {
-              method: 'POST',
-              headers: { Authorization: `Bearer ${token}` },
-              body: JSON.stringify({
-                signed_payload: result.signedPayload,
-                product_id: result.productID,
-                transaction_id: result.transactionID,
-                original_transaction_id: result.originalTransactionID,
-                purchase_date: result.purchaseDate,
-                expiration_date: result.expirationDate,
-                trigger_source: triggerSource,
-              }),
-            }).catch(() => {});
+            const validateRes = await validateSubscriptionTransaction(token, result, {
+              trigger_source: triggerSource,
+              status_hint: 'in_trial',
+            });
+            const mapped = mapServerStatusToLocal(validateRes.data?.status);
+            setStatus(mapped ?? 'in_trial');
+            await refreshEntitlement();
+            await refreshUser();
+          } else {
+            setStatus('in_trial');
           }
           Analytics.subscriptionPurchased(token, { plan: 'monthly', trigger_source: triggerSource });
-          setStatus('active');
-          await refreshEntitlement();
           return 'success';
         }
         if (result.status === 'cancelled') return 'cancelled';
@@ -65,7 +60,7 @@ export function useTrialPurchase() {
         return 'error';
       }
     },
-    [token, refreshEntitlement, setStatus]
+    [token, refreshEntitlement, refreshUser, setStatus]
   );
 
   return { startTrial };

@@ -14,6 +14,8 @@
 import { useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
+import { mapServerStatusToLocal } from './subscription/mapSubscriptionStatus';
+import { validateSubscriptionTransaction } from './subscription/subscriptionApi';
 import { apiFetch } from '../utils/api';
 import { Analytics } from '../utils/analytics';
 import {
@@ -25,27 +27,27 @@ import {
 export type FoundingClaimResult = 'success' | 'cancelled' | 'error' | 'ineligible';
 
 export function useFoundingPurchase() {
-  const { token, refreshEntitlement } = useAuth();
+  const { token, refreshEntitlement, refreshUser } = useAuth();
   const { setStatus } = useSubscription();
 
   const claimFounding = useCallback(
     async (triggerSource: string): Promise<FoundingClaimResult> => {
       Analytics.foundingModalClaimed(token, { trigger_source: triggerSource });
 
-      // 1) Reserve the founding SKU server-side.
+      console.log('[IAP] POST /api/me/claim-founding — starting');
       const claim = await apiFetch<{ sku_id: string }>('/api/me/claim-founding', {
         method: 'POST',
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       if (!claim.ok || !claim.data?.sku_id) {
+        console.error('[IAP] POST /api/me/claim-founding — FAILED', claim.status, claim.error);
         return 'ineligible';
       }
+      console.log('[IAP] POST /api/me/claim-founding — OK', claim.status, { sku_id: claim.data.sku_id });
       const sku = claim.data.sku_id || FOUNDING_PRODUCT_ID;
 
-      // 1a — purchase sheet about to open (founding annual).
       Analytics.purchaseInitiated(token, { plan_id: sku });
 
-      // 2) Purchase. Web/Expo Go: optimistic.
       if (!isStoreKitAvailable()) {
         Analytics.foundingMemberClaimed(token, { revenue_usd: 39 });
         Analytics.purchaseCompleted(token, { plan_id: sku, revenue_usd: 39, is_trial: false });
@@ -58,33 +60,27 @@ export function useFoundingPurchase() {
         const result = await storeKitPurchase(sku);
         if (result.status === 'success') {
           if (token) {
-            await apiFetch('/api/subscription/validate', {
-              method: 'POST',
-              headers: { Authorization: `Bearer ${token}` },
-              body: JSON.stringify({
-                signed_payload: result.signedPayload,
-                product_id: result.productID,
-                transaction_id: result.transactionID,
-                original_transaction_id: result.originalTransactionID,
-                purchase_date: result.purchaseDate,
-                expiration_date: result.expirationDate,
-              }),
-            }).catch(() => {});
+            const validateRes = await validateSubscriptionTransaction(token, result, {
+              trigger_source: triggerSource,
+              status_hint: 'active',
+            });
+            const mapped = mapServerStatusToLocal(validateRes.data?.status);
+            setStatus(mapped ?? 'active');
+            await refreshEntitlement();
+            await refreshUser();
+          } else {
+            setStatus('active');
           }
           Analytics.subscriptionPurchased(token, {
             plan: 'annual',
             trigger_source: triggerSource,
           });
-          // 1c — founding annual successfully purchased.
           Analytics.foundingMemberClaimed(token, { revenue_usd: 39 });
-          // 1a — store-confirmed purchase.
           Analytics.purchaseCompleted(token, {
             plan_id: result.productID,
             revenue_usd: 39,
             is_trial: false,
           });
-          setStatus('active');
-          await refreshEntitlement();
           return 'success';
         }
         if (result.status === 'cancelled') {
@@ -99,7 +95,7 @@ export function useFoundingPurchase() {
         return 'error';
       }
     },
-    [token, refreshEntitlement, setStatus]
+    [token, refreshEntitlement, refreshUser, setStatus]
   );
 
   return { claimFounding };

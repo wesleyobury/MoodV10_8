@@ -92,5 +92,12 @@ export async function getDevMockEntitlement(): Promise<DevMockEntitlement | null
 /** Wipe ALL dev mock state (funnel answers + every @mood_dev_mock_* key). */
 export async function clearDevMocks(): Promise<void> {
   if (!DEV_MOCKS_ENABLED) return;
-  await AsyncStorage.multiRemove([FUNNEL_ANSWERS_KEY, ...DEV_MOCK_KEYS]);
+  await AsyncStorage.multiRemove([
+    FUNNEL_ANSWERS_KEY,
+    ...DEV_MOCK_KEYS,
+    'privacy_policy_accepted',
+    '@mood_subscription_state_v1',
+    '@mood_post_first_workout_paywall_shown_v1',
+    '@mood_pulse_sync_played_v1',
+  ]);
 }

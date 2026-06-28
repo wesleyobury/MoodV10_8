@@ -61,6 +61,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   updateUser: (userData: Partial<User>) => void;
   refreshAuth: () => Promise<void>;
+  refreshUser: () => Promise<void>;
   entitlement: Entitlement | null;
   refreshEntitlement: () => Promise<void>;
   continueAsGuest: () => void;
@@ -558,6 +559,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  const refreshUser = async () => {
+    const storedToken = token || (await secureStorage.get(AUTH_TOKEN_KEY));
+    if (storedToken) {
+      await fetchCurrentUser(storedToken);
+    }
+  };
+
   // Accept terms of service - called when user agrees to terms
   const acceptTerms = async () => {
     if (!token) {
@@ -619,6 +627,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     logout,
     updateUser,
     refreshAuth,
+    refreshUser,
     entitlement,
     refreshEntitlement,
     continueAsGuest,
