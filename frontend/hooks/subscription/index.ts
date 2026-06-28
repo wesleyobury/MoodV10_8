@@ -4,8 +4,13 @@ export { mapServerStatusToLocal } from './mapSubscriptionStatus';
 export {
   validateSubscriptionTransaction,
   syncSubscriptionWithBackend,
-  inferStatusHint,
 } from './subscriptionApi';
+export {
+  resolveSubscriptionStatus,
+  getSubscribeCtaCopy,
+  getSubscriptionDisplayLabels,
+  refreshSubscriptionFromServer,
+} from './subscriptionState';
 export type { SubscriptionSyncResponse } from './subscriptionApi';
 export {
   getLatestSubscriptionEntitlement,

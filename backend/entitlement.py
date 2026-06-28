@@ -120,3 +120,23 @@ def can_start_workout(user: dict, is_admin: bool = False) -> bool:
 def free_workouts_remaining(user: dict) -> int:
     """Remaining free workouts for a non-entitled user (never negative)."""
     return max(0, FREE_WORKOUT_ALLOWANCE - int(user.get("free_workouts_used", 0) or 0))
+
+
+def subscription_mirror_for_client(user: dict) -> dict:
+    """
+    Persisted subscription doc mirrored for the client (same self-correction
+    as GET /auth/me). Keeps entitlement + status in one server response.
+    """
+    sub = user.get("subscription") or {}
+    raw_status = sub.get("status")
+    expiration_iso = sub.get("expiration_date")
+    if raw_status in ("active", "in_trial") and expiration_iso:
+        exp = _parse_dt(expiration_iso)
+        if exp is not None and exp < datetime.now(timezone.utc):
+            raw_status = "lapsed"
+    return {
+        "subscription_status": raw_status,
+        "subscription_plan": sub.get("plan"),
+        "subscription_product_id": sub.get("product_id"),
+        "subscription_expiration_date": expiration_iso,
+    }

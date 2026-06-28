@@ -36,7 +36,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { useFoundingPurchase } from '../hooks/useFoundingPurchase';
 import { apiFetch } from '../utils/api';
 import { validateSubscriptionTransaction } from '../hooks/subscription/subscriptionApi';
-import { mapServerStatusToLocal } from '../hooks/subscription/mapSubscriptionStatus';
 import { getLatestSubscriptionEntitlement } from '../hooks/subscription/subscriptionSync';
 import {
   MONTHLY_PRODUCT_ID,
@@ -90,7 +89,7 @@ export function PaywallModal() {
   const insets = useSafeAreaInsets();
   const { pendingTrigger, dismissPaywall, setStatus, lastConversionTrigger, clearConversionTrigger } =
     useSubscription();
-  const { token, entitlement, user, refreshEntitlement, refreshUser } = useAuth();
+  const { token, entitlement, user, refreshSubscriptionState } = useAuth();
   const { claimFounding } = useFoundingPurchase();
   const [plan, setPlan] = useState<Plan>('annual');
   const [foundingBusy, setFoundingBusy] = useState(false);
@@ -218,25 +217,17 @@ export function PaywallModal() {
         // `subscription_purchased` with the original `trigger_source`
         // pulled from the user record (set by `record-trigger` when this
         // modal mounted).
+        let isTrial = false;
         if (token) {
-          const validateRes = await validateSubscriptionTransaction(token, result, {
-            status_hint: 'in_trial',
-          });
-          const mapped = mapServerStatusToLocal(validateRes.data?.status);
-          if (mapped) {
-            setStatus(mapped);
-          } else {
-            setStatus('in_trial');
-          }
-          await refreshEntitlement();
-          await refreshUser();
+          const validateRes = await validateSubscriptionTransaction(token, result);
+          isTrial = validateRes.data?.status === 'in_trial';
+          await refreshSubscriptionState();
         }
         Analytics.subscriptionPurchased(token, {
           plan,
           trigger_source: lastConversionTrigger ?? pendingTrigger ?? 'unknown',
         });
-        // 1a — purchase confirmed by the store.
-        Analytics.purchaseCompleted(token, { plan_id: result.productID, is_trial: true });
+        Analytics.purchaseCompleted(token, { plan_id: result.productID, is_trial: isTrial });
         clearConversionTrigger();
         if (!token) {
           setStatus('in_trial');
@@ -280,14 +271,9 @@ export function PaywallModal() {
         });
         const latest = await getLatestSubscriptionEntitlement();
         if (latest) {
-          const validateRes = await validateSubscriptionTransaction(token, latest);
-          const mapped = mapServerStatusToLocal(validateRes.data?.status);
-          if (mapped) setStatus(mapped);
-        } else {
-          setStatus('active');
+          await validateSubscriptionTransaction(token, latest);
         }
-        await refreshEntitlement();
-        await refreshUser();
+        await refreshSubscriptionState();
         dismissPaywall();
       }
     } catch (err) {

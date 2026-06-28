@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import { trackEvent, aliasGuestToUser, GuestAnalytics } from '../utils/analytics';
@@ -8,6 +8,7 @@ import { API_URL, validateApiConfig } from '../utils/apiConfig';
 import { apiFetch, AuthTokenResponse } from '../utils/api';
 import { secureStorage, AUTH_TOKEN_KEY, AUTH_REFRESH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY, AUTH_TOKEN_LAST_VALIDATED_KEY } from '../utils/secureStorage';
 import { DEV_MOCKS_ENABLED, getDevMockEntitlement } from '../utils/devMocks';
+import { refreshSubscriptionFromServer } from '../hooks/subscription/subscriptionState';
 
 // Terms version must match backend CURRENT_TERMS_VERSION
 // Update this when terms change to force re-acceptance for all users
@@ -44,7 +45,7 @@ interface User {
   // entitlement on every app launch (handles the reinstall edge case
   // where AsyncStorage is wiped but the Apple receipt is still valid).
   subscription_status?: 'active' | 'in_trial' | 'lapsed' | null;
-  subscription_plan?: 'annual' | 'monthly' | null;
+  subscription_plan?: 'annual' | 'monthly' | 'founding_annual' | null;
   subscription_product_id?: string | null;
   subscription_expiration_date?: string | null;
 }
@@ -64,6 +65,8 @@ interface AuthContextType {
   refreshUser: () => Promise<void>;
   entitlement: Entitlement | null;
   refreshEntitlement: () => Promise<void>;
+  /** Parallel refresh of /users/me + /me/entitlement — call after any IAP event. */
+  refreshSubscriptionState: () => Promise<void>;
   continueAsGuest: () => void;
   exitGuestMode: () => void;
   acceptTerms: () => Promise<void>;
@@ -80,6 +83,10 @@ export interface Entitlement {
   founding_pricing_claimed: boolean;
   founding_window_active: boolean;
   founding_window_expires_at?: string | null;
+  subscription_status?: 'active' | 'in_trial' | 'lapsed' | null;
+  subscription_plan?: 'annual' | 'monthly' | 'founding_annual' | null;
+  subscription_product_id?: string | null;
+  subscription_expiration_date?: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -507,11 +514,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // on error we leave the last-known value (or null), and the backend still
   // enforces on every paywalled action. Re-run whenever the token changes
   // (login/restore/refresh) so SubscriptionContext stays in sync.
-  const refreshEntitlement = async () => {
+  const refreshEntitlement = useCallback(async () => {
     try {
-      // DEV-only override (auditable: utils/devMocks.ts). Inert in production
-      // (DEV_MOCKS_ENABLED === false) and only returns a value when the
-      // /dev/screens menu has explicitly armed the founding-eligible mock.
       if (DEV_MOCKS_ENABLED) {
         const mock = await getDevMockEntitlement();
         if (mock) {
@@ -533,7 +537,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } catch (e) {
       console.log('entitlement fetch failed (failing soft):', e);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     if (token) {
@@ -541,8 +545,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } else {
       setEntitlement(null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [token, refreshEntitlement]);
 
   // Refresh auth from stored token - used after OAuth/Apple login
   const refreshAuth = async () => {
@@ -559,12 +562,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const refreshUser = async () => {
+  const refreshUser = useCallback(async () => {
     const storedToken = token || (await secureStorage.get(AUTH_TOKEN_KEY));
     if (storedToken) {
       await fetchCurrentUser(storedToken);
     }
-  };
+  }, [token]);
+
+  const refreshSubscriptionState = useCallback(async () => {
+    await refreshSubscriptionFromServer(refreshUser, refreshEntitlement);
+  }, [refreshUser, refreshEntitlement]);
 
   // Accept terms of service - called when user agrees to terms
   const acceptTerms = async () => {
@@ -630,6 +637,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     refreshUser,
     entitlement,
     refreshEntitlement,
+    refreshSubscriptionState,
     continueAsGuest,
     exitGuestMode,
     acceptTerms,

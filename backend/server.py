@@ -172,6 +172,7 @@ from entitlement import (
     can_generate_workout,
     can_start_workout,
     free_workouts_remaining,
+    subscription_mirror_for_client,
     EntitlementReason,
 )
 
@@ -2054,6 +2055,7 @@ async def get_entitlement(current_user_id: str = Depends(get_current_user)):
     window_open = await is_founding_window_open()
     expires = user.get("founding_window_expires_at")
     expires_iso = expires.isoformat() if isinstance(expires, datetime) else expires
+    sub_mirror = subscription_mirror_for_client(user)
 
     return {
         "has_full_access": access,
@@ -2063,6 +2065,7 @@ async def get_entitlement(current_user_id: str = Depends(get_current_user)):
         "founding_pricing_claimed": claimed,
         "founding_window_active": bool(window_open and is_founding and not claimed),
         "founding_window_expires_at": expires_iso,
+        **sub_mirror,
     }
 
 

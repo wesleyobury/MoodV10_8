@@ -1,6 +1,5 @@
 import { apiFetch } from '../../utils/api';
 import type { StoreKitTransaction } from '../../modules/mood-storekit/src';
-import { INTRO_TRIAL_WINDOW_MS } from './constants';
 import { markSubscriptionSynced } from './subscriptionVerifySchedule';
 
 export interface SubscriptionSyncResponse {
@@ -13,22 +12,12 @@ export interface SubscriptionSyncResponse {
 
 export interface ValidateSubscriptionOptions {
   trigger_source?: string;
-  status_hint?: 'in_trial' | 'active';
-}
-
-function toApiStatusHint(
-  hint: 'in_trial' | 'active' | 'lapsed' | undefined,
-): 'in_trial' | 'active' | undefined {
-  if (hint === 'in_trial' || hint === 'active') return hint;
-  return undefined;
 }
 
 function buildTransactionPayload(
   txn: StoreKitTransaction,
   extra?: ValidateSubscriptionOptions,
-  inferredHint?: 'in_trial' | 'active' | 'lapsed',
 ) {
-  const status_hint = toApiStatusHint(extra?.status_hint ?? inferredHint);
   return {
     signed_payload: txn.signedPayload,
     product_id: txn.productID,
@@ -37,21 +26,7 @@ function buildTransactionPayload(
     purchase_date: txn.purchaseDate,
     expiration_date: txn.expirationDate,
     ...(extra?.trigger_source ? { trigger_source: extra.trigger_source } : {}),
-    ...(status_hint ? { status_hint } : {}),
   };
-}
-
-/** Infer trial vs paid from purchase/expiration window (StoreKit2 intro offer). */
-export function inferStatusHint(txn: StoreKitTransaction): 'in_trial' | 'active' | 'lapsed' {
-  if (!txn.expirationDate) return 'active';
-  const expMs = new Date(txn.expirationDate).getTime();
-  const nowMs = Date.now();
-  if (!Number.isFinite(expMs) || expMs <= nowMs) return 'lapsed';
-  const purchaseMs = new Date(txn.purchaseDate).getTime();
-  if (Number.isFinite(purchaseMs) && expMs - purchaseMs <= INTRO_TRIAL_WINDOW_MS) {
-    return 'in_trial';
-  }
-  return 'active';
 }
 
 export async function validateSubscriptionTransaction(
@@ -59,12 +34,9 @@ export async function validateSubscriptionTransaction(
   txn: StoreKitTransaction,
   options?: ValidateSubscriptionOptions,
 ) {
-  const inferred = inferStatusHint(txn);
-  const status_hint = toApiStatusHint(options?.status_hint ?? inferred);
   console.log('[IAP] POST /api/subscription/validate — starting', {
     product_id: txn.productID,
     transaction_id: txn.transactionID,
-    status_hint: status_hint ?? inferred,
   });
 
   const res = await apiFetch<SubscriptionSyncResponse>('/api/subscription/validate', {
@@ -72,7 +44,7 @@ export async function validateSubscriptionTransaction(
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(buildTransactionPayload(txn, options, inferred)),
+    body: JSON.stringify(buildTransactionPayload(txn, options)),
   });
 
   if (res.ok) {
@@ -90,12 +62,9 @@ export async function syncSubscriptionWithBackend(
   txn: StoreKitTransaction | null,
 ) {
   if (txn) {
-    const inferred = inferStatusHint(txn);
-    const status_hint = toApiStatusHint(inferred);
     console.log('[IAP] POST /api/subscription/sync — starting (entitlement)', {
       product_id: txn.productID,
       transaction_id: txn.transactionID,
-      status_hint: status_hint ?? inferred,
     });
 
     const res = await apiFetch<SubscriptionSyncResponse>('/api/subscription/sync', {
@@ -105,7 +74,7 @@ export async function syncSubscriptionWithBackend(
       },
       body: JSON.stringify({
         has_active_entitlement: true,
-        ...buildTransactionPayload(txn, undefined, inferred),
+        ...buildTransactionPayload(txn),
       }),
     });
 

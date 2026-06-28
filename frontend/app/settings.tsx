@@ -17,13 +17,17 @@ import {
   NativeModules,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import * as MediaLibrary from 'expo-media-library';
 import { useAuth } from '../contexts/AuthContext';
 import { useHealth } from '../contexts/HealthContext';
-import { useSubscription, SubscriptionStatus } from '../contexts/SubscriptionContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
+import {
+  getSubscribeCtaCopy,
+  getSubscriptionDisplayLabels,
+} from '../hooks/subscription/subscriptionState';
 import { loadUserAge, saveUserAge } from '../utils/workoutSessionStorage';
 import { Analytics, isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
 import { getNotificationStatus, openNotificationSettings, initNotifications, type NotifStatus } from '../utils/notifications';
@@ -31,25 +35,9 @@ import BackButton from '../components/BackButton';
 
 import { API_URL } from '../utils/apiConfig';
 
-// Phase E paid-launch — Subscription section copy.
-const SUBSCRIPTION_STATUS_LABEL: Record<SubscriptionStatus, string> = {
-  none: 'Not subscribed',
-  in_trial: 'Free trial active',
-  active: 'MOOD Premium',
-  lapsed: 'Subscription lapsed',
-  founding_member: 'Founding Member',
-};
-
-const SUBSCRIPTION_STATUS_SUBLABEL: Record<SubscriptionStatus, string> = {
-  none: 'Start a 7-day trial to unlock Premium.',
-  in_trial: 'Renews to MOOD Premium after the trial.',
-  active: 'Renews automatically. Cancel anytime.',
-  lapsed: 'Restart your subscription to keep training.',
-  founding_member: 'Day-one MOOD. Lifetime access.',
-};
+// Phase E paid-launch — Subscription section copy comes from subscriptionState helpers.
 const SUPPORT_EMAIL = 'wes@officialmoodapp.com';
 
-// External URLs for legal pages
 const EXTERNAL_URLS = {
   termsOfService: 'https://www.officialmood.app/terms-of-service',
   privacyPolicy: 'https://www.officialmood.app/privacy-policy',
@@ -59,9 +47,19 @@ const EXTERNAL_URLS = {
 export default function Settings() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { token, logout, user, updateUser } = useAuth();
+  const { token, logout, user, updateUser, refreshSubscriptionState } = useAuth();
   const { status: healthStatus, available: healthAvailable, requestPermissions: requestHealthPermissions } = useHealth();
   const { status: subscriptionStatus, hasActiveAccess, openPaywall } = useSubscription();
+
+  const subscriptionLabels = getSubscriptionDisplayLabels(subscriptionStatus);
+  const subscribeCta = getSubscribeCtaCopy(subscriptionStatus);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!token) return;
+      refreshSubscriptionState().catch(() => {});
+    }, [token, refreshSubscriptionState]),
+  );
   const [isDeleting, setIsDeleting] = useState(false);
   const [userAge, setUserAge] = useState<number | null>(null);
 
@@ -445,10 +443,10 @@ export default function Settings() {
               />
               <View>
                 <Text style={styles.settingsItemText}>
-                  {SUBSCRIPTION_STATUS_LABEL[subscriptionStatus]}
+                  {subscriptionLabels.title}
                 </Text>
                 <Text style={styles.settingsItemSubtext}>
-                  {SUBSCRIPTION_STATUS_SUBLABEL[subscriptionStatus]}
+                  {subscriptionLabels.subtitle}
                 </Text>
               </View>
             </View>
@@ -484,8 +482,8 @@ export default function Settings() {
               <View style={styles.settingsItemLeft}>
                 <Ionicons name="sparkles" size={20} color="#FFD700" />
                 <View>
-                  <Text style={styles.settingsItemText}>Start 7-day free trial</Text>
-                  <Text style={styles.settingsItemSubtext}>Unlock unlimited workouts + live HR</Text>
+                  <Text style={styles.settingsItemText}>{subscribeCta.title}</Text>
+                  <Text style={styles.settingsItemSubtext}>{subscribeCta.subtitle}</Text>
                 </View>
               </View>
               <Ionicons name="chevron-forward" size={18} color="#666" />

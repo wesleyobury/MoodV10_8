@@ -22,7 +22,7 @@ import React, {
   useState,
 } from 'react';
 import { useAuth } from './AuthContext';
-import { mapServerStatusToLocal } from '../hooks/subscription/mapSubscriptionStatus';
+import { resolveSubscriptionStatus } from '../hooks/subscription/subscriptionState';
 import { SubscriptionSyncRunner } from '../hooks/subscription/useSubscriptionSync';
 
 /* ----------------------------- Types ----------------------------- */
@@ -58,7 +58,6 @@ export type PaywallTrigger =
   | 'unknown';
 
 interface SubscriptionState {
-  status: SubscriptionStatus;
   /** True after the user has tapped Start on their one free live session. */
   hasUsedFreeSession: boolean;
   /** Number of generations consumed in the initial free flow. Cap = 3. */
@@ -72,7 +71,9 @@ interface SubscriptionState {
 }
 
 interface SubscriptionContextValue extends SubscriptionState {
-  /** Convenience derived flag — `status === 'active' | 'in_trial' | 'founding_member'`. */
+  /** Server-derived subscription status for UI (entitlement is SoT). */
+  status: SubscriptionStatus;
+  /** From /me/entitlement.has_full_access — gates paywall + workout start. */
   hasActiveAccess: boolean;
   /** True if user is allowed to generate another workout in the initial free flow. */
   canGenerate: boolean;
@@ -98,8 +99,10 @@ interface SubscriptionContextValue extends SubscriptionState {
   pendingTrigger: PaywallTrigger | null;
   /** Dismiss the paywall (used by <PaywallModal /> close/back). */
   dismissPaywall: () => void;
-  /** Set status. Phase C wires this to StoreKit transaction observers. */
+  /** Dev/Expo Go only — production status comes from refreshSubscriptionState(). */
   setStatus: (status: SubscriptionStatus) => void;
+  /** Refresh /users/me + /me/entitlement after IAP (single SoT update path). */
+  refreshSubscriptionState: () => Promise<void>;
   /**
    * The trigger that opened the most recent paywall. Stays sticky through
    * trial_started → subscription_purchased so conversion attribution works
@@ -158,7 +161,6 @@ export async function markPostFirstWorkoutPaywallShown(userId: string): Promise<
 }
 
 const DEFAULT_STATE: SubscriptionState = {
-  status: 'none',
   hasUsedFreeSession: false,
   freeGenerationsUsed: 0,
   lastConversionTrigger: null,
@@ -173,7 +175,6 @@ const ACTIVE_STATUSES: SubscriptionStatus[] = ['active', 'in_trial'];
 function parseSubscriptionState(raw: string): SubscriptionState {
   const parsed = JSON.parse(raw);
   return {
-    status: parsed.status ?? 'none',
     hasUsedFreeSession: Boolean(parsed.hasUsedFreeSession),
     freeGenerationsUsed: Number.isFinite(parsed.freeGenerationsUsed)
       ? parsed.freeGenerationsUsed
@@ -213,37 +214,26 @@ const Ctx = createContext<SubscriptionContextValue | undefined>(undefined);
 export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<SubscriptionState>(DEFAULT_STATE);
   const [pendingTrigger, setPendingTrigger] = useState<PaywallTrigger | null>(null);
+  const [devStatusOverride, setDevStatusOverride] = useState<SubscriptionStatus | null>(null);
   const prevUserIdRef = useRef<string | null>(null);
 
-  // MOOD V2 Phase 1 — server-authoritative entitlement. The local
-  // `@mood_subscription_state_v1` is now only an OFFLINE CACHE; the server's
-  // /api/me/entitlement is the source of truth. When entitlement is loaded we
-  // trust it; while it's null (not yet fetched / offline) we fall back to the
-  // local status so we don't lock out a real subscriber on a cold start.
-  const { entitlement, user } = useAuth();
+  const { entitlement, user, refreshSubscriptionState } = useAuth();
   const userId = user?.id ?? null;
   const userIdRef = useRef(userId);
   userIdRef.current = userId;
 
-  // Mirror server subscription_status from /users/me when available.
+  const serverStatus = useMemo(
+    () => resolveSubscriptionStatus(entitlement, user?.subscription_status),
+    [entitlement, user?.subscription_status],
+  );
+
+  const status = devStatusOverride ?? serverStatus;
+
   useEffect(() => {
-    const mapped = mapServerStatusToLocal(user?.subscription_status);
-    if (mapped != null && mapped !== 'none') {
-      setState((prev) => {
-        if (prev.status === mapped) return prev;
-        const next: SubscriptionState = { ...prev, status: mapped };
-        writeStateForUser(userIdRef.current, next);
-        return next;
-      });
-    } else if (mapped === 'none' && user?.subscription_status === null) {
-      setState((prev) => {
-        if (prev.status === 'none') return prev;
-        const next: SubscriptionState = { ...prev, status: 'none' };
-        writeStateForUser(userIdRef.current, next);
-        return next;
-      });
+    if (entitlement?.has_full_access) {
+      setDevStatusOverride(null);
     }
-  }, [user?.subscription_status, user?.id]);
+  }, [entitlement?.has_full_access]);
 
   const persistState = useCallback((next: SubscriptionState) => {
     writeStateForUser(userIdRef.current, next);
@@ -263,6 +253,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
 
     if (!userId) {
       setState(DEFAULT_STATE);
+      setDevStatusOverride(null);
       return;
     }
 
@@ -284,10 +275,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     });
   }, [persistState]);
 
-  // Server entitlement wins when present; local status is the offline fallback.
-  const hasActiveAccess = entitlement
-    ? entitlement.has_full_access
-    : ACTIVE_STATUSES.includes(state.status);
+  const hasActiveAccess = entitlement?.has_full_access ?? ACTIVE_STATUSES.includes(status);
 
   // Free-workout START gate. With server entitlement we trust
   // `free_workouts_remaining`; otherwise fall back to the local flag.
@@ -302,13 +290,13 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
 
   const recordGeneration = useCallback(() => {
     setState((prev) => {
-      if (ACTIVE_STATUSES.includes(prev.status)) return prev;
+      if (hasActiveAccess) return prev;
       if (prev.freeGenerationsUsed >= FREE_GENERATION_CAP) return prev;
       const next = { ...prev, freeGenerationsUsed: prev.freeGenerationsUsed + 1 };
       persistState(next);
       return next;
     });
-  }, [persistState]);
+  }, [persistState, hasActiveAccess]);
 
   const recordStartFreeWorkout = useCallback(() => {
     setState((prev) => {
@@ -391,16 +379,14 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     [hasActiveAccess, freeWorkoutUsedServer, state.hasUsedFreeSession, openPaywall, userId]
   );
 
-  const setStatus = useCallback(
-    (status: SubscriptionStatus) => {
-      patch({ status });
-    },
-    [patch]
-  );
+  const setStatus = useCallback((nextStatus: SubscriptionStatus) => {
+    setDevStatusOverride(nextStatus);
+  }, []);
 
   const value: SubscriptionContextValue = useMemo(
     () => ({
       ...state,
+      status,
       hasActiveAccess,
       canGenerate,
       canStartWorkout,
@@ -411,10 +397,12 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       pendingTrigger,
       dismissPaywall,
       setStatus,
+      refreshSubscriptionState,
       clearConversionTrigger,
     }),
     [
       state,
+      status,
       hasActiveAccess,
       canGenerate,
       canStartWorkout,
@@ -425,6 +413,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       pendingTrigger,
       dismissPaywall,
       setStatus,
+      refreshSubscriptionState,
       clearConversionTrigger,
     ]
   );

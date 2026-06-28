@@ -1,20 +1,9 @@
 /**
  * MOOD V2 — founding claim + purchase flow (Phase 2).
- *
- * Shared by FoundingOfferModal, FoundingBanner, and the reveal-payoff
- * founding variant. Steps:
- *   1. POST /api/me/claim-founding  (validates eligibility, locks the SKU)
- *   2. StoreKit purchase with the returned founding SKU
- *   3. POST /api/subscription/validate  (server marks founding_pricing_claimed)
- *   4. refreshEntitlement() so the app reflects full access immediately
- *
- * On web/Expo Go (no native StoreKit) we optimistically flip local state so
- * QA can proceed; the real iOS build hits Apple's sheet.
  */
 import { useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
-import { mapServerStatusToLocal } from './subscription/mapSubscriptionStatus';
 import { validateSubscriptionTransaction } from './subscription/subscriptionApi';
 import { apiFetch } from '../utils/api';
 import { Analytics } from '../utils/analytics';
@@ -27,7 +16,7 @@ import {
 export type FoundingClaimResult = 'success' | 'cancelled' | 'error' | 'ineligible';
 
 export function useFoundingPurchase() {
-  const { token, refreshEntitlement, refreshUser } = useAuth();
+  const { token, refreshSubscriptionState } = useAuth();
   const { setStatus } = useSubscription();
 
   const claimFounding = useCallback(
@@ -52,7 +41,7 @@ export function useFoundingPurchase() {
         Analytics.foundingMemberClaimed(token, { revenue_usd: 39 });
         Analytics.purchaseCompleted(token, { plan_id: sku, revenue_usd: 39, is_trial: false });
         setStatus('active');
-        await refreshEntitlement();
+        await refreshSubscriptionState();
         return 'success';
       }
 
@@ -60,14 +49,10 @@ export function useFoundingPurchase() {
         const result = await storeKitPurchase(sku);
         if (result.status === 'success') {
           if (token) {
-            const validateRes = await validateSubscriptionTransaction(token, result, {
+            await validateSubscriptionTransaction(token, result, {
               trigger_source: triggerSource,
-              status_hint: 'active',
             });
-            const mapped = mapServerStatusToLocal(validateRes.data?.status);
-            setStatus(mapped ?? 'active');
-            await refreshEntitlement();
-            await refreshUser();
+            await refreshSubscriptionState();
           } else {
             setStatus('active');
           }
@@ -95,7 +80,7 @@ export function useFoundingPurchase() {
         return 'error';
       }
     },
-    [token, refreshEntitlement, refreshUser, setStatus]
+    [token, refreshSubscriptionState, setStatus]
   );
 
   return { claimFounding };

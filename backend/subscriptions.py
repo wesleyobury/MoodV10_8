@@ -17,6 +17,8 @@ from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 
+from apple_transaction_verifier import resolve_subscription_from_receipt
+
 logger = logging.getLogger(__name__)
 
 # ── App Store Connect product identifiers ───────────────────────────────────
@@ -61,7 +63,6 @@ class SubscriptionValidateRequest(BaseModel):
     original_transaction_id: Optional[str] = None
     purchase_date: Optional[str] = None
     expiration_date: Optional[str] = None
-    status_hint: Optional[str] = None  # client-inferred: in_trial | active
 
 
 class SubscriptionSyncRequest(BaseModel):
@@ -77,7 +78,6 @@ class SubscriptionSyncRequest(BaseModel):
     original_transaction_id: Optional[str] = None
     purchase_date: Optional[str] = None
     expiration_date: Optional[str] = None
-    status_hint: Optional[str] = None
 
 
 # ── Catalog helpers (exported for tests/scripts) ──────────────────────────
@@ -97,10 +97,7 @@ def plan_for_product(product_id: str) -> Optional[str]:
 
 
 def subscription_status_for(expiration_iso: Optional[str]) -> str:
-    """
-    Returns 'active' | 'lapsed' based on the expiration date.
-    Trial vs paid distinction is approximated client-side.
-    """
+    """Returns 'active' | 'lapsed' based on expiration (fallback when JWS unavailable)."""
     if not expiration_iso:
         return "active"
     try:
@@ -112,16 +109,16 @@ def subscription_status_for(expiration_iso: Optional[str]) -> str:
     return "active"
 
 
-def resolve_subscription_status(
-    expiration_iso: Optional[str],
-    status_hint: Optional[str] = None,
-) -> str:
-    """Combine expiration check with optional client trial/active hint."""
-    if subscription_status_for(expiration_iso) == "lapsed":
-        return "lapsed"
-    if status_hint in ("in_trial", "active"):
-        return status_hint
-    return subscription_status_for(expiration_iso)
+def _reconcile_from_payload(payload) -> tuple[str, Dict[str, Optional[str]]]:
+    """Status + canonical fields from verified Apple JWS (SoT)."""
+    return resolve_subscription_from_receipt(
+        payload.signed_payload,
+        fallback_product_id=getattr(payload, "product_id", None),
+        fallback_transaction_id=getattr(payload, "transaction_id", None),
+        fallback_original_transaction_id=getattr(payload, "original_transaction_id", None),
+        fallback_purchase_date=getattr(payload, "purchase_date", None),
+        fallback_expiration_date=getattr(payload, "expiration_date", None),
+    )
 
 
 def user_can_claim_founding(user: dict, window_open: bool) -> bool:
@@ -219,20 +216,16 @@ def build_subscriptions_router(
         payload: SubscriptionValidateRequest,
         current_user_id: str = Depends(get_current_user),
     ):
-        plan = plan_for_product(payload.product_id)
+        status_value, apple_fields = _reconcile_from_payload(payload)
+        product_id = normalize_product_id(apple_fields.get("product_id") or payload.product_id)
+        plan = plan_for_product(product_id)
         if not plan:
             logger.warning(
                 "subscription/validate: unknown product_id=%r (known: %s)",
-                payload.product_id,
+                product_id,
                 ", ".join(ALL_PRODUCT_IDS),
             )
-            raise HTTPException(status_code=400, detail=f"Unknown product {payload.product_id}")
-
-        product_id = normalize_product_id(payload.product_id)
-        status_value = resolve_subscription_status(
-            payload.expiration_date,
-            payload.status_hint,
-        )
+            raise HTTPException(status_code=400, detail=f"Unknown product {product_id}")
 
         trigger_source = await _persist_subscription_record(
             db,
@@ -240,10 +233,10 @@ def build_subscriptions_router(
             product_id=product_id,
             plan=plan,
             status=status_value,
-            transaction_id=payload.transaction_id,
-            original_transaction_id=payload.original_transaction_id,
-            purchase_date=payload.purchase_date,
-            expiration_date=payload.expiration_date,
+            transaction_id=apple_fields.get("transaction_id"),
+            original_transaction_id=apple_fields.get("original_transaction_id"),
+            purchase_date=apple_fields.get("purchase_date"),
+            expiration_date=apple_fields.get("expiration_date"),
             consume_trigger=True,
         )
 
@@ -330,20 +323,16 @@ def build_subscriptions_router(
                 detail="product_id and signed_payload required when has_active_entitlement is true",
             )
 
-        plan = plan_for_product(payload.product_id)
+        status_value, apple_fields = _reconcile_from_payload(payload)
+        product_id = normalize_product_id(apple_fields.get("product_id") or payload.product_id)
+        plan = plan_for_product(product_id)
         if not plan:
             logger.warning(
                 "subscription/sync: unknown product_id=%r (known: %s)",
-                payload.product_id,
+                product_id,
                 ", ".join(ALL_PRODUCT_IDS),
             )
-            raise HTTPException(status_code=400, detail=f"Unknown product {payload.product_id}")
-
-        product_id = normalize_product_id(payload.product_id)
-        status_value = resolve_subscription_status(
-            payload.expiration_date,
-            payload.status_hint,
-        )
+            raise HTTPException(status_code=400, detail=f"Unknown product {product_id}")
 
         await _persist_subscription_record(
             db,
@@ -351,10 +340,10 @@ def build_subscriptions_router(
             product_id=product_id,
             plan=plan,
             status=status_value,
-            transaction_id=payload.transaction_id,
-            original_transaction_id=payload.original_transaction_id,
-            purchase_date=payload.purchase_date,
-            expiration_date=payload.expiration_date,
+            transaction_id=apple_fields.get("transaction_id"),
+            original_transaction_id=apple_fields.get("original_transaction_id"),
+            purchase_date=apple_fields.get("purchase_date"),
+            expiration_date=apple_fields.get("expiration_date"),
             consume_trigger=False,
         )
 
