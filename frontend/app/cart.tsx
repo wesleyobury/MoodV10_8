@@ -25,8 +25,10 @@ import SendWorkoutModal from '../components/SendWorkoutModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import { useCart, WorkoutItem } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import { useDrafts } from '../contexts/DraftsContext';
 import { Analytics } from '../utils/analytics';
+import { tryBeginWorkoutSession } from '../utils/workoutStartGate';
 import { resolveCartHeroImage, isFeaturedHeroBroken } from '../utils/cartHero';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -310,6 +312,7 @@ export default function CartScreen() {
   // Send-Workout-to-Friend modal state (cart-level)
   const [sendModalVisible, setSendModalVisible] = useState(false);
   const { token, isGuest } = useAuth();
+  const { canStartWorkout, openPaywall } = useSubscription();
   const [isStarting, setIsStarting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveModalVisible, setSaveModalVisible] = useState(false);
@@ -639,6 +642,9 @@ export default function CartScreen() {
     if (cartItems.length === 0) return;
     if (isGuest) {
       setShowGuestPrompt(true);
+      return;
+    }
+    if (!tryBeginWorkoutSession(canStartWorkout, openPaywall, token)) {
       return;
     }
 

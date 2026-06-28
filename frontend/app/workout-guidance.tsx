@@ -24,6 +24,7 @@ import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
 import { TextWithTermLinks } from '../components/TermDefinitionPopup';
 import { API_URL } from '../utils/apiConfig';
+import { tryBeginWorkoutSession } from '../utils/workoutStartGate';
 import InSessionProgressBar from '../components/InSessionProgressBar';
 import { SessionSafetyBanner } from '../components/SessionSafetyBanner';
 import GuestPromptModal from '../components/GuestPromptModal';
@@ -277,8 +278,8 @@ export default function WorkoutGuidanceScreen() {
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   
-  const { token, isGuest } = useAuth();
-  const { canStartWorkout, openPaywall } = useSubscription();
+  const { token, isGuest, refreshEntitlement } = useAuth();
+  const { canStartWorkout, openPaywall, recordStartFreeWorkout } = useSubscription();
   
   // Timer that calculates elapsed time from start timestamp
   // This ensures timer continues even when app is in background
@@ -304,7 +305,44 @@ export default function WorkoutGuidanceScreen() {
       if (interval) clearInterval(interval);
     };
   }, [isRunning, isPaused, startTimestamp, pausedTime]);
-  
+
+  const logCompletedWorkoutToServer = async (
+    workoutId: string,
+    totalDuration: number,
+    moodCategory: string,
+  ) => {
+    if (!token) return;
+    try {
+      await fetch(`${API_URL}/api/user-workouts`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          workout_id: workoutId,
+          completed_at: new Date().toISOString(),
+          duration_actual: totalDuration,
+          mood_before: moodCategory,
+          mood_after: moodCategory,
+        }),
+      });
+      refreshEntitlement().catch(() => {});
+    } catch {
+      // best-effort — local `hasUsedFreeSession` still gates Hard Paywall #3
+    }
+  };
+
+  /** Spec §3 Stage 3 — idempotent; mirrors workout-session completion hook. */
+  const consumeFreeWorkoutAllowance = async (
+    workoutId: string,
+    totalDuration: number,
+    moodCategory: string,
+  ) => {
+    recordStartFreeWorkout();
+    await logCompletedWorkoutToServer(workoutId, totalDuration, moodCategory);
+  };
+
   const handleStartPauseTimer = () => {
     if (!isRunning) {
       // Guest gate: unauthenticated guests cannot start a workout session.
@@ -317,21 +355,12 @@ export default function WorkoutGuidanceScreen() {
       // Phase B free-tier gate: a fresh "Start Workout" tap must check the
       // subscription state. Founding members + active/in-trial users pass
       // through; free users get exactly one session, then the paywall.
-      if (!canStartWorkout) {
-        Analytics.startWorkoutTapped(token, {
-          allowed: false,
-          trigger_source: 'start_workout_after_free_session',
-        });
-        openPaywall('start_workout_after_free_session');
+      if (!tryBeginWorkoutSession(canStartWorkout, openPaywall, token)) {
         return;
       }
       Analytics.startWorkoutTapped(token, { allowed: true });
-      // Spec §3 Stage 3 — free-session consumption now fires on workout
-      // COMPLETION (see workout-session.tsx `handleFinishSession`), not
-      // on start tap. This way a user who bails mid-workout doesn't lose
-      // their free session. The paywall still fires on workout #2 because
-      // `hasUsedFreeSession` flips on completion, before the next start.
-      // Starting fresh
+      // Spec §3 Stage 3 — free-session consumption fires on workout COMPLETION
+      // (see `consumeFreeWorkoutAllowance` below), not on start tap.
       setStartTimestamp(Date.now());
       setPausedTime(0);
       setIsRunning(true);
@@ -347,7 +376,7 @@ export default function WorkoutGuidanceScreen() {
       setIsPaused(true);
     }
   };
-  
+
   const handleResetTimer = () => {
     setElapsedTime(0);
     setStartTimestamp(null);
@@ -462,6 +491,12 @@ export default function WorkoutGuidanceScreen() {
   };
   
   const handleCompletedWorkout = async () => {
+    // Featured + other direct-to-guidance paths can progress via "Next
+    // Workout" without ever tapping the timer Start button.
+    if (isSession && !isGuest && !tryBeginWorkoutSession(canStartWorkout, openPaywall, token)) {
+      return;
+    }
+
     console.log('🎯 handleCompletedWorkout called');
     console.log('🎯 isSession:', isSession);
     console.log('🎯 sessionWorkouts.length:', sessionWorkouts.length);
@@ -671,6 +706,11 @@ export default function WorkoutGuidanceScreen() {
           }
           
           console.log('🧹 Clearing cart...');
+          await consumeFreeWorkoutAllowance(
+            workoutSnapshotId || `session-${Date.now()}`,
+            totalDuration,
+            overallMoodCategory,
+          );
           clearCart();
           
           console.log('📱 Navigating to create-post...');
@@ -769,6 +809,12 @@ export default function WorkoutGuidanceScreen() {
         day: 'numeric', 
         year: 'numeric' 
       });
+
+      await consumeFreeWorkoutAllowance(
+        workoutSnapshotId || `single-${Date.now()}`,
+        totalDuration,
+        workoutType || moodCard || 'Workout',
+      );
       
       // Save workout card to profile
       const saved = await saveWorkoutCard([completedWorkout], totalDuration, completedAt);

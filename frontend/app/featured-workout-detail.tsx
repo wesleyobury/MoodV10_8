@@ -15,8 +15,10 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import { useCart, WorkoutItem } from '../contexts/CartContext';
 import { Analytics, GuestAnalytics } from '../utils/analytics';
+import { tryBeginWorkoutSession } from '../utils/workoutStartGate';
 import GuestPromptModal from '../components/GuestPromptModal';
 import AddCustomExerciseModal from '../components/AddCustomExerciseModal';
 import { resolveFeaturedHeroImage } from '../utils/featuredHeroImage';
@@ -493,6 +495,7 @@ export default function FeaturedWorkoutDetail() {
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { token, isGuest } = useAuth();
+  const { canStartWorkout, openPaywall } = useSubscription();
   
   const workoutId = params.id as string;
   
@@ -752,6 +755,9 @@ export default function FeaturedWorkoutDetail() {
     if (isGuest) {
       GuestAnalytics.signupPromptShown({ trigger_action: 'start a workout' });
       setShowGuestPrompt(true);
+      return;
+    }
+    if (!tryBeginWorkoutSession(canStartWorkout, openPaywall, token)) {
       return;
     }
     
