@@ -144,13 +144,12 @@ export function HealthProvider({ children }: ProviderProps) {
     return () => sub.remove();
   }, [available, refresh]);
 
-  // One refresh after first successful hydrate if we already have permission.
+  // Fresh snapshot on mount — do not gate on authorizationStatus; Apple often
+  // reports read-only grants as notDetermined even after the user allowed access.
   useEffect(() => {
     if (!available) return;
-    if (status === 'determined') {
-      refresh({ silent: true });
-    }
-  }, [available, status, refresh]);
+    refresh({ silent: true });
+  }, [available, refresh]);
 
   const value = useMemo<HealthContextValue>(
     () => ({

@@ -6,9 +6,8 @@
  * Three states:
  *   1. HealthKit unavailable (non-iOS / Expo Go / older devices) → terse
  *      banner explaining the platform constraint.
- *   2. HealthKit available but no snapshot yet → "Connect to start
- *      tracking" empty-state with a single CTA that fires the iOS
- *      permission sheet via HealthContext.requestPermissions().
+ *   2. HealthKit available but no metric values yet → "Connect to start
+ *      tracking" (or "No data yet" after first sync) with a CTA.
  *   3. Snapshot present → dashboard grid of the 5 metrics + last-synced
  *      footer + manual Refresh affordance.
  *
@@ -114,7 +113,6 @@ const METRICS: MetricDef[] = [
 export default function WearableDataScreen() {
   const {
     available,
-    status,
     snapshot,
     lastSyncedAt,
     isRefreshing,
@@ -126,6 +124,10 @@ export default function WearableDataScreen() {
     if (!snapshot) return false;
     return METRICS.some((m) => snapshot[m.key] != null);
   }, [snapshot]);
+
+  // At least one fetch completed — permission may still read as notDetermined
+  // on iOS even after the user granted read access.
+  const hasSynced = lastSyncedAt != null;
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -146,7 +148,7 @@ export default function WearableDataScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          available && status === 'determined' ? (
+          available ? (
             <RefreshControl
               tintColor={GOLD}
               refreshing={isRefreshing}
@@ -183,19 +185,19 @@ export default function WearableDataScreen() {
           </View>
         )}
 
-        {/* State 2 — HealthKit available, no permission yet OR no data */}
-        {available && (status !== 'determined' || !hasAnyValue) && (
+        {/* State 2 — HealthKit available, not connected yet OR no metric values */}
+        {available && !hasAnyValue && (
           <View style={styles.emptyCard} testID="wearable-data-empty">
             <Ionicons name="watch-outline" size={42} color={GOLD} />
             <Text style={styles.emptyTitle}>
-              {status === 'determined' ? 'No data yet' : 'Connect to start tracking'}
+              {hasSynced ? 'No data yet' : 'Connect to start tracking'}
             </Text>
             <Text style={styles.emptyBody}>
-              {status === 'determined'
+              {hasSynced
                 ? "We haven't received any metrics from your wearable yet. Open the Health app on your iPhone to confirm your watch is syncing, then pull down to refresh."
                 : 'Link MOOD to Apple Health to pull in resting heart rate, HRV, sleep, active energy, and steps from your wearable.'}
             </Text>
-            {status !== 'determined' ? (
+            {!hasSynced ? (
               <TouchableOpacity
                 style={styles.cta}
                 onPress={async () => {
@@ -228,8 +230,8 @@ export default function WearableDataScreen() {
           </View>
         )}
 
-        {/* State 3 — Snapshot present */}
-        {available && status === 'determined' && hasAnyValue && snapshot && (
+        {/* State 3 — At least one metric value in the latest snapshot */}
+        {available && hasAnyValue && snapshot && (
           <>
             <View style={styles.lastSynced}>
               <Ionicons name="sync-outline" size={14} color="#888" />

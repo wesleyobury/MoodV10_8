@@ -7,7 +7,9 @@
  *   • SF Pro footnote, regular weight (system font default in RN on iOS)
  *   • Copy: "Synced 2m ago" — nothing else
  *   • Tap → silent refresh, 0.8s opacity dip-and-restore
- *   • Hidden entirely when permissions denied (status !== 'determined')
+ *   • Hidden until at least one successful snapshot fetch (lastSyncedAt set).
+ *     Apple often keeps read authorization opaque (notDetermined) even after
+ *     grant — we key off sync timestamp, not authorizationStatus.
  *   • Relative time updates every 60s
  */
 import React, { useEffect, useRef, useState } from 'react';
@@ -36,7 +38,7 @@ function formatRelative(iso: string | null): string | null {
 }
 
 export function HealthSyncIndicator() {
-  const { status, lastSyncedAt, refresh } = useHealth();
+  const { lastSyncedAt, refresh } = useHealth();
   const opacity = useRef(new Animated.Value(RESTING_OPACITY)).current;
   const [, forceTick] = useState(0);
 
@@ -46,7 +48,6 @@ export function HealthSyncIndicator() {
     return () => clearInterval(id);
   }, []);
 
-  if (status !== 'determined') return null;
   const label = formatRelative(lastSyncedAt);
   if (!label) return null;
 
