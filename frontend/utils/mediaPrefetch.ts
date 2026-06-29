@@ -10,11 +10,12 @@
  * All prefetches are fire-and-forget with session-level deduplication.
  */
 
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import {
   getOptimizedVideoUrls,
   cloudinaryThumbnailUrlFromVideoUrl,
 } from './cloudinaryVideo';
+import { optimizedImageUrl, FEATURED_CARD_IMAGE_WIDTH } from './cloudinaryImage';
 
 // Session-level dedup — never prefetch the same URL twice
 const prefetchedUrls = new Set<string>();
@@ -26,11 +27,13 @@ function dedupPrefetch(url: string, fn: () => Promise<void>): Promise<void> {
 }
 
 /**
- * Prefetch a single image URL via React Native Image.prefetch.
+ * Prefetch a single image URL via expo-image, warming the SAME disk cache the
+ * UI reads from (carousel <Image> uses cachePolicy="disk"). Using react-native's
+ * Image.prefetch here would warm a different cache and never speed up the UI.
  */
 function prefetchImage(url: string): Promise<void> {
   return dedupPrefetch(url, () =>
-    Image.prefetch(url).then(() => {})
+    Image.prefetch(url, { cachePolicy: 'disk' }).then(() => {})
   );
 }
 
@@ -73,7 +76,11 @@ export function prefetchFeaturedWorkoutImages(
   const urls: string[] = [];
 
   for (const w of workouts) {
-    if (w.heroImageUrl) urls.push(w.heroImageUrl);
+    // Optimize the hero URL to the SAME width the carousel renders, so the
+    // prefetched bytes land on the exact cache key the carousel will request.
+    if (w.heroImageUrl) {
+      urls.push(optimizedImageUrl(w.heroImageUrl, FEATURED_CARD_IMAGE_WIDTH));
+    }
     for (const ex of w.exercises) {
       if (ex.imageUrl) urls.push(ex.imageUrl);
     }
