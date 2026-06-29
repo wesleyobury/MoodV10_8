@@ -28,6 +28,7 @@ import { Analytics } from '../../utils/analytics';
 import { useScreenTime } from '../../hooks/useScreenTime';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import { useFeaturedWorkouts, FeaturedWorkout } from '../../hooks/useFeaturedWorkouts';
+import { optimizedImageUrl, FEATURED_CARD_IMAGE_WIDTH } from '../../utils/cloudinaryImage';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import HealthSyncIndicator from '../../components/HealthSyncIndicator';
 
@@ -164,7 +165,10 @@ const transformWorkoutForCarousel = (workout: FeaturedWorkout): CarouselWorkout 
   duration: workout.duration || `${workout.durationMin || 30} min`,
   badge: workout.badge || 'Featured',
   exercises: workout.exercises.map(ex => ex.name ? `${ex.equipment} - ${ex.name}` : ex.exerciseId),
-  image: workout.heroImageUrl || workout.exercises[0]?.imageUrl || '',
+  image: optimizedImageUrl(
+    workout.heroImageUrl || workout.exercises[0]?.imageUrl || '',
+    FEATURED_CARD_IMAGE_WIDTH,
+  ),
 });
 
 // Workout Carousel Card Component
