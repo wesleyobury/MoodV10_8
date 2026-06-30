@@ -20,6 +20,7 @@ import { useDrafts } from '../contexts/DraftsContext';
 import { useHealth } from '../contexts/HealthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
+import { recordWorkoutCompletionForRating } from '../utils/ratingPrompt';
 import { API_URL } from '../utils/apiConfig';
 import {
   subscribeHeartRateStream,
@@ -396,6 +397,17 @@ export default function WorkoutSessionScreen() {
         exercises_completed: sessionWorkouts.length,
         workout_snapshot_id: workoutSnapshotId || undefined,
       });
+    }
+
+    // Rating prompt — increment the persistent completed-workout counter for
+    // ALL users (independent of subscription/server free-workout state). The
+    // in-app rating pre-prompt fires off this count at the post-achievement
+    // moment in create-post.tsx (3rd completed workout). Awaited so the count
+    // is durable before the achievement screen can read it.
+    try {
+      await recordWorkoutCompletionForRating();
+    } catch {
+      /* never block session finish on the rating counter */
     }
 
     // Spec §11 — gate Pulse Sync on "is this their first ever completed

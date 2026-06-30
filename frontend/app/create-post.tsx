@@ -29,6 +29,7 @@ import WorkoutStatsCard from '../components/WorkoutStatsCard';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
+import { maybeRequestReview } from '../utils/ratingPrompt';
 import ImageCropModal from '../components/ImageCropModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import VideoFrameSelector from '../components/VideoFrameSelector';
@@ -1072,6 +1073,23 @@ export default function CreatePost() {
     // free workout. Awaiting it ensures the paywall is enqueued before we
     // route home; PaywallModal renders on top of `/(tabs)` so the modal will
     // appear over the home screen rather than over a torn-down route.
+    // In-app rating prompt — fires at the post-achievement moment, BEFORE the
+    // soft paywall, on the user's 3rd completed workout (one-shot, self-gating).
+    // On the 3rd workout Soft Paywall #2 is already consumed, so in practice
+    // these never stack; ordering rating first keeps the favor-ask ahead of the
+    // money-ask even in edge cases.
+    try {
+      await maybeRequestReview({
+        onOutcome: (outcome, count) =>
+          Analytics.ratingPromptOutcome(token, {
+            outcome,
+            workout_count: count,
+            placement: 'post_achievement_close',
+          }),
+      });
+    } catch {
+      /* never block navigation on the rating prompt */
+    }
     try {
       await tryFirePostFirstWorkoutPaywall('post_achievement_close_soft', {
         completedWorkoutConfirmed: !!workoutStats,
@@ -1554,6 +1572,21 @@ export default function CreatePost() {
         // exit happens first consumes the flag. Fired BEFORE we route to
         // explore so the paywall lands on top of the explore feed (not
         // on top of a transitioning route).
+        // In-app rating prompt — same post-achievement moment, BEFORE the soft
+        // paywall. One-shot + count-gated (3rd workout), so it no-ops here if it
+        // already fired on the achievement-close path.
+        try {
+          await maybeRequestReview({
+            onOutcome: (outcome, count) =>
+              Analytics.ratingPromptOutcome(token, {
+                outcome,
+                workout_count: count,
+                placement: 'post_share',
+              }),
+          });
+        } catch {
+          /* never block navigation on the rating prompt */
+        }
         try {
           await tryFirePostFirstWorkoutPaywall('post_share_soft', {
             completedWorkoutConfirmed: !!workoutStats,
