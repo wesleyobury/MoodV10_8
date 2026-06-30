@@ -1555,6 +1555,15 @@ const ANCILLARY_COUNT_V3 = 2;
 const ABS_COUNT_V3: Record<IntensityLevel, number> = { beginner: 2, intermediate: 3, advanced: 3 };
 const FLOOR_V3 = 2;
 
+// (E) Structural jitter. Primary muscle counts may bump +1 (within a tier cap)
+// some of the time so the NUMBER of exercises and the slot shape visibly change
+// between carts and between generations. Bumping the count auto-selects a longer
+// slot plan in SLOT_PLANS_V3 (e.g. 2 → 3 adds an isolation slot), so structure
+// changes for free. Jitter never applies under the 3+ muscle trim (keeps the
+// volume floor intact) and never to ancillary/abs slots.
+const PRIMARY_COUNT_CAP: Record<IntensityLevel, number> = { beginner: 3, intermediate: 4, advanced: 4 };
+const JITTER_BUMP_CHANCE = 0.4;
+
 function computeTargetCountsV3(
   orderedMuscles: string[],
   roles: Record<string, MuscleRole>,
@@ -1571,8 +1580,20 @@ function computeTargetCountsV3(
       counts[m] = ABS_COUNT_V3[tier]; // exempt from 3+ trim
       continue;
     }
-    const base = role === 'ancillary' ? ANCILLARY_COUNT_V3 : PRIMARY_COUNTS_V3[cartType][tier];
-    counts[m] = apply3PlusTrim ? FLOOR_V3 : base;
+    if (apply3PlusTrim) {
+      counts[m] = FLOOR_V3; // trim mode: hold the floor, no jitter
+      continue;
+    }
+    if (role === 'ancillary') {
+      counts[m] = ANCILLARY_COUNT_V3; // ancillaries stay fixed
+      continue;
+    }
+    // Primary muscle: base count with occasional +1 structural jitter.
+    let count = PRIMARY_COUNTS_V3[cartType][tier];
+    if (Math.random() < JITTER_BUMP_CHANCE) {
+      count = Math.min(count + 1, PRIMARY_COUNT_CAP[tier]);
+    }
+    counts[m] = count;
   }
   return counts;
 }
@@ -1606,6 +1627,13 @@ function isCartFeasible(
   return true;
 }
 
+// v4: surface EVERY feasible cart type, in a fresh random order each generation,
+// so the user can scroll the whole library (up to all 8) instead of just 3.
+// Variety between generations now comes from (a) the shuffled order and (b) the
+// exercise-level scoring/memory that refills each cart differently every time.
+//
+// `recentlySeen` is used only as a light touch to avoid opening on the same cart
+// type two generations in a row — it no longer restricts which carts appear.
 export function selectCartTypes(
   selectedMuscles: string[],
   tier: IntensityLevel,
@@ -1614,38 +1642,23 @@ export function selectCartTypes(
   const feasible = MUSCLE_GAINER_CART_LIBRARY.filter(c =>
     isCartFeasible(c.id, selectedMuscles, tier)
   );
+  if (feasible.length === 0) return [];
 
-  // Default opening generation (no recent history): Strength / Builder Day / Athletic Day.
-  if (recentlySeen.length === 0) {
-    const wantedDefaults: CartTypeId[] = ['strength', 'builder_day', 'athletic_day'];
-    const defaults = wantedDefaults.filter(id => feasible.some(c => c.id === id));
-    if (defaults.length === 3) return defaults;
+  // Fisher–Yates shuffle of all feasible cart types.
+  const shuffled = [...feasible];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
 
-  // Prefer carts not seen in last 2 generations
-  let pool = feasible.filter(c => !recentlySeen.includes(c.id));
-  if (pool.length < 3) pool = feasible;
-
-  const picks: CartLibraryEntry[] = [];
-  for (let slot = 0; slot < 3; slot++) {
-    const remaining = pool.filter(c => !picks.includes(c));
-    if (remaining.length === 0) break;
-
-    let candidates = remaining;
-    if (slot < 2) {
-      // Find the least-represented axis among picks; prefer that axis
-      const axisCount: Record<CartAxis, number> = { intensity: 0, equipment: 0, specialty: 0 };
-      for (const p of picks) axisCount[p.axis]++;
-      const minCount = Math.min(...Object.values(axisCount));
-      const underweighted = (Object.keys(axisCount) as CartAxis[]).filter(a => axisCount[a] === minCount);
-      const axisCandidates = remaining.filter(c => underweighted.includes(c.axis));
-      if (axisCandidates.length > 0) candidates = axisCandidates;
-    }
-    const idx = Math.floor(Math.random() * candidates.length);
-    picks.push(candidates[idx]);
+  // Light anti-repeat: if we'd open on the same cart shown first last time and we
+  // have an alternative, rotate the opener so the first card feels new.
+  const lastOpener = recentlySeen[0];
+  if (lastOpener && shuffled.length > 1 && shuffled[0].id === lastOpener) {
+    [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
   }
 
-  return picks.map(p => p.id);
+  return shuffled.map(c => c.id);
 }
 
 // --- v3 slot plans + pool filtering ----------------------------------------
@@ -1696,26 +1709,102 @@ const SLOT_PLANS_V3: Record<CartTypeId, Record<number, SlotSpec[]>> = {
   },
 };
 
-function applyEquipmentBias(
-  pool: FlavorWorkout[],
-  cartType: CartTypeId
-): FlavorWorkout[] {
+// ---------------------------------------------------------------------------
+// v4 VARIETY ENGINE — weighted scoring instead of hard filters.
+// Every candidate stays reachable; preferences become score nudges so the
+// random pick samples the WHOLE pool (weighted), not a pre-collapsed survivor
+// set. This is what unlocks the full ~36-exercise pool the old chain hid.
+// ---------------------------------------------------------------------------
+
+// Per-cart mutable budget for "off-theme" equipment picks (equipment-themed
+// carts only). Capped at 1 so Builder/Athletic/Heavy stay recognizable while
+// still occasionally reaching beyond their core gear.
+interface OffThemeBudget { remaining: number }
+
+// Tunable score weights. Positive = more likely; negative = less likely.
+const SCORE = {
+  styleMatch: 2.0,        // training_style matches the cart's preference
+  typeMatch: 2.5,         // exercise_type matches the slot (compound/isolation)
+  finisherPump: 2.0,      // pump-style workout in a finisher slot
+  eqPrimary: 2.2,         // equipment in the cart theme's primary list
+  eqFallback: 1.0,        // equipment in the theme's fallback list
+  eccentricKw: 2.5,       // eccentric keyword for the eccentric_focus cart
+  freshPattern: 1.2,      // movement_pattern not yet used in this section
+  stalePattern: -1.5,     // movement_pattern already used in this section
+  freshEquip: 0.8,        // equipment not yet used in this section
+  staleEquip: -1.0,       // equipment already used in this section
+  recentSeen: -3.0,       // exercise shown in the last N generations (memory)
+};
+const SOFTMAX_TEMP = 1.0; // higher = flatter (more random); lower = greedier
+
+function isOnTheme(c: FlavorWorkout, cartType: CartTypeId): boolean {
   const bias = CART_EQUIPMENT_BIAS[cartType];
-  if (!bias) return pool;
-  const primarySet = new Set(bias.primary);
-  const fallbackSet = new Set(bias.fallback);
-  const inPrimary = pool.filter(p => primarySet.has(p.equipment));
-  if (inPrimary.length > 0) return inPrimary;
-  const inFallback = pool.filter(p => fallbackSet.has(p.equipment));
-  if (inFallback.length > 0) return inFallback;
-  return pool; // graceful degradation
+  if (!bias) return true; // non-equipment carts: everything is on-theme
+  return bias.primary.includes(c.equipment) || bias.fallback.includes(c.equipment);
 }
 
-function applyEccentricKeywordFilter(pool: FlavorWorkout[]): FlavorWorkout[] {
-  const filtered = pool.filter(p =>
-    ECCENTRIC_KEYWORDS.some(k => p.workout.name.includes(k))
-  );
-  return filtered.length > 0 ? filtered : pool;
+function scoreCandidate(
+  c: FlavorWorkout,
+  cartType: CartTypeId,
+  slot: SlotSpec,
+  usedEquipment: Set<string>,
+  usedPatterns: Set<MovementPattern>,
+  recentNames: Set<string>,
+): number {
+  let s = 1.0;
+
+  // Style preference (soft, was a hard cut)
+  const stylePrefs = CART_STYLE_PREFERENCE[cartType];
+  if (c.workout.training_style && stylePrefs.includes(c.workout.training_style)) {
+    s += SCORE.styleMatch;
+  }
+
+  // Slot exercise_type match (soft, was a hard cut)
+  const wantCompound = slot === 'compound' || slot === 'compound_diff';
+  const wantIso = slot === 'isolation' || slot === 'isolation_diff';
+  if (wantCompound && c.workout.exercise_type === 'compound') s += SCORE.typeMatch;
+  if (wantIso && c.workout.exercise_type === 'isolation') s += SCORE.typeMatch;
+  if (slot === 'finisher' && c.workout.training_style === 'pump') s += SCORE.finisherPump;
+
+  // Equipment theme (soft, was a hard gate). Off-theme gets no boost but stays in.
+  const bias = CART_EQUIPMENT_BIAS[cartType];
+  if (bias) {
+    if (bias.primary.includes(c.equipment)) s += SCORE.eqPrimary;
+    else if (bias.fallback.includes(c.equipment)) s += SCORE.eqFallback;
+  }
+
+  // Eccentric keyword nudge for the eccentric cart
+  if (cartType === 'eccentric_focus' &&
+      ECCENTRIC_KEYWORDS.some(k => c.workout.name.includes(k))) {
+    s += SCORE.eccentricKw;
+  }
+
+  // Movement-pattern uniqueness (soft, was hard return-null). Thin pools relax
+  // naturally because everything still gets a (lower) score.
+  const mp = c.workout.movement_pattern as MovementPattern | undefined;
+  if (mp) s += usedPatterns.has(mp) ? SCORE.stalePattern : SCORE.freshPattern;
+
+  // Equipment uniqueness within the section (soft)
+  s += usedEquipment.has(c.equipment) ? SCORE.staleEquip : SCORE.freshEquip;
+
+  // Recent-exercise memory: strongly down-weight anything seen recently.
+  if (recentNames.has(c.workout.name)) s += SCORE.recentSeen;
+
+  return s;
+}
+
+// Weighted (softmax) sample over scored candidates — every candidate is
+// reachable, higher scores just more likely.
+function weightedPick(scored: { c: FlavorWorkout; score: number }[]): FlavorWorkout {
+  const maxS = Math.max(...scored.map(x => x.score));
+  const weights = scored.map(x => Math.exp((x.score - maxS) / SOFTMAX_TEMP));
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < scored.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return scored[i].c;
+  }
+  return scored[scored.length - 1].c;
 }
 
 function pickFromCandidates(
@@ -1724,65 +1813,33 @@ function pickFromCandidates(
   slot: SlotSpec,
   excludeIds: Set<string>,
   usedEquipment: Set<string>,
-  usedPatterns: Set<MovementPattern>
+  usedPatterns: Set<MovementPattern>,
+  recentNames: Set<string>,
+  offThemeBudget: OffThemeBudget,
 ): FlavorWorkout | null {
-  // Filter by exercise_type per slot
+  // Hard constraint kept: never repeat an exercise already in this cart.
   let candidates = pool.filter(c => !excludeIds.has(c.workout.name));
   if (candidates.length === 0) return null;
 
-  if (slot === 'compound' || slot === 'compound_diff') {
-    const compoundOnly = candidates.filter(c => c.workout.exercise_type === 'compound');
-    if (compoundOnly.length > 0) candidates = compoundOnly;
-    // else fall through to whole pool (graceful)
-  } else if (slot === 'isolation' || slot === 'isolation_diff') {
-    const isoOnly = candidates.filter(c => c.workout.exercise_type === 'isolation');
-    if (isoOnly.length > 0) candidates = isoOnly;
-  } else if (slot === 'finisher') {
-    const fin = candidates.filter(c => c.workout.training_style === 'pump');
-    if (fin.length > 0) candidates = fin;
+  // Off-theme budget: only restrict to on-theme gear once the budget is spent,
+  // and only for equipment-themed carts (and only if on-theme options exist).
+  const bias = CART_EQUIPMENT_BIAS[cartType];
+  if (bias && offThemeBudget.remaining <= 0) {
+    const onTheme = candidates.filter(c => isOnTheme(c, cartType));
+    if (onTheme.length > 0) candidates = onTheme;
   }
 
-  // Apply equipment bias for equipment-themed carts
-  candidates = applyEquipmentBias(candidates, cartType);
+  const scored = candidates.map(c => ({
+    c,
+    score: scoreCandidate(c, cartType, slot, usedEquipment, usedPatterns, recentNames),
+  }));
+  const pick = weightedPick(scored);
 
-  // Eccentric keyword filter (only for that cart)
-  if (cartType === 'eccentric_focus') {
-    candidates = applyEccentricKeywordFilter(candidates);
+  // Spend the off-theme budget if this pick reached outside the theme.
+  if (bias && !isOnTheme(pick, cartType)) {
+    offThemeBudget.remaining -= 1;
   }
-
-  // Soft style preference
-  const stylePrefs = CART_STYLE_PREFERENCE[cartType];
-  const styleMatched = candidates.filter(c =>
-    c.workout.training_style && stylePrefs.includes(c.workout.training_style)
-  );
-  if (styleMatched.length > 0) candidates = styleMatched;
-  // mixed is acceptable as a soft fallback when style pool is empty
-  // (already handled by upstream pool size).
-
-  // HARD: pattern uniqueness within the muscle section, when supported.
-  // For "diff" slots (compound_diff, isolation_diff) and isolation slots,
-  // pattern uniqueness is REQUIRED — return null when the pool can't supply
-  // a fresh pattern, so the upstream fallback (compound-with-different-pattern)
-  // can kick in instead of silently picking a same-pattern duplicate.
-  const patternFresh = candidates.filter(c => {
-    const mp = c.workout.movement_pattern as MovementPattern | undefined;
-    return mp ? !usedPatterns.has(mp) : true;
-  });
-  const requiresFreshPattern =
-    slot === 'compound_diff' || slot === 'isolation' || slot === 'isolation_diff';
-  if (patternFresh.length > 0) {
-    candidates = patternFresh;
-  } else if (requiresFreshPattern) {
-    return null; // signal upstream to try a different slot type
-  }
-  // (For 'compound' / 'finisher' first-pick slots, fall through allowing same
-  //  pattern as last-resort. usedPatterns is empty on first-pick anyway.)
-
-  // SOFT: equipment uniqueness within muscle section
-  const equipFresh = candidates.filter(c => !usedEquipment.has(c.equipment));
-  if (equipFresh.length > 0) candidates = equipFresh;
-
-  return candidates[Math.floor(Math.random() * candidates.length)];
+  return pick;
 }
 
 // --- v3 leg-section picker (cart-type aware) -------------------------------
@@ -1805,7 +1862,9 @@ function pickLegSection(
   tier: IntensityLevel,
   target: number,
   cartType: CartTypeId,
-  excludeIds: Set<string>
+  excludeIds: Set<string>,
+  recentNames: Set<string>,
+  offThemeBudget: OffThemeBudget,
 ): FlavorWorkout[] {
   // Compounds come from compound-legs DB (+ sub-file compounds like barbell squats from quads)
   const compoundPool: FlavorWorkout[] = [];
@@ -1843,10 +1902,10 @@ function pickLegSection(
       const fresh = pool.filter(p => !usedSubs.has(getLegSubGroup(p)));
       if (fresh.length > 0) pool = fresh;
     }
-    let pick = pickFromCandidates(pool, cartType, slot, excludeIds, usedEq, usedPat);
+    let pick = pickFromCandidates(pool, cartType, slot, excludeIds, usedEq, usedPat, recentNames, offThemeBudget);
     // If isolation slot empty, fall back to compound-diff
     if (!pick && !isCompoundSlot) {
-      pick = pickFromCandidates(compoundPool, cartType, 'compound_diff', excludeIds, usedEq, usedPat);
+      pick = pickFromCandidates(compoundPool, cartType, 'compound_diff', excludeIds, usedEq, usedPat, recentNames, offThemeBudget);
     }
     if (!pick) continue;
     section.push(pick);
@@ -1865,10 +1924,12 @@ function pickMuscleSection(
   tier: IntensityLevel,
   target: number,
   cartType: CartTypeId,
-  excludeIds: Set<string>
+  excludeIds: Set<string>,
+  recentNames: Set<string>,
+  offThemeBudget: OffThemeBudget,
 ): FlavorWorkout[] {
   if (muscle === 'Legs' && target >= 2) {
-    return pickLegSection(tier, target, cartType, excludeIds);
+    return pickLegSection(tier, target, cartType, excludeIds, recentNames, offThemeBudget);
   }
 
   const pool = getMuscleGainerPool(muscle, tier);
@@ -1883,21 +1944,15 @@ function pickMuscleSection(
   const usedPat = new Set<MovementPattern>();
 
   for (const slot of slotPlan) {
-    let pick = pickFromCandidates(pool, cartType, slot, excludeIds, usedEq, usedPat);
-
-    // Thin-isolation fallback: if isolation slot can't be filled, substitute with
-    // compound-with-different-pattern (per spec).
+    // With weighted scoring the picker fills the slot from the whole pool, so a
+    // single call suffices; the fallbacks below only matter if the pool is
+    // exhausted by excludeIds.
+    let pick = pickFromCandidates(pool, cartType, slot, excludeIds, usedEq, usedPat, recentNames, offThemeBudget);
     if (!pick && (slot === 'isolation' || slot === 'isolation_diff')) {
-      pick = pickFromCandidates(pool, cartType, 'compound_diff', excludeIds, usedEq, usedPat);
+      pick = pickFromCandidates(pool, cartType, 'compound_diff', excludeIds, usedEq, usedPat, recentNames, offThemeBudget);
     }
     if (!pick && slot === 'compound_diff') {
-      // Last-resort: any pick that's pattern-fresh
-      pick = pickFromCandidates(pool, cartType, 'compound', excludeIds, usedEq, usedPat);
-    }
-    if (!pick) {
-      // Final degradation: relax pattern uniqueness by clearing usedPat for one pick
-      const relaxedPatterns = new Set<MovementPattern>();
-      pick = pickFromCandidates(pool, cartType, slot, excludeIds, usedEq, relaxedPatterns);
+      pick = pickFromCandidates(pool, cartType, 'compound', excludeIds, usedEq, usedPat, recentNames, offThemeBudget);
     }
     if (!pick) continue;
 
@@ -1934,13 +1989,18 @@ export function generateMuscleGainerCarts(
   selectedMuscleGroups: string[] = [],
   moodCard: string = 'I want to gain muscle',
   workoutType: string = 'Muscle Building',
-  recentlySeenCartTypes: CartTypeId[] = []
+  recentlySeenCartTypes: CartTypeId[] = [],
+  /** (B) Exercise names shown in the last N generations — strongly down-weighted
+   *  so re-rolling the same selection surfaces visibly fresh exercises. Flat list
+   *  across muscles; exercise names are globally unique so no per-muscle keying. */
+  recentExerciseNames: string[] = [],
 ): MuscleGainerCart[] {
   if (selectedMuscleGroups.length === 0) return [];
 
   const orderedMuscles = sortMusclesForSession(selectedMuscleGroups);
   const roles = computeMuscleRoles(orderedMuscles);
   const cartTypes = selectCartTypes(orderedMuscles, intensity, recentlySeenCartTypes);
+  const recentNames = new Set(recentExerciseNames);
 
   const carts: MuscleGainerCart[] = [];
 
@@ -1948,11 +2008,13 @@ export function generateMuscleGainerCarts(
     const targetCounts = computeTargetCountsV3(orderedMuscles, roles, intensity, cartType);
     const sections: FlavorWorkout[] = [];
     const excludeIds = new Set<string>();
+    // (C) One off-theme equipment pick allowed per cart, shared across muscles.
+    const offThemeBudget: OffThemeBudget = { remaining: 1 };
 
     for (const muscle of orderedMuscles) {
       const tgt = targetCounts[muscle];
       if (tgt <= 0) continue;
-      const section = pickMuscleSection(muscle, intensity, tgt, cartType, excludeIds);
+      const section = pickMuscleSection(muscle, intensity, tgt, cartType, excludeIds, recentNames, offThemeBudget);
       sections.push(...section);
     }
 

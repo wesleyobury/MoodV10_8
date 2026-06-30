@@ -173,11 +173,23 @@ export default function BodyPartsScreen() {
       }
     } catch (_) { /* ignore — fall back to empty */ }
 
+    // Read recently-seen EXERCISE names (last 2 generations) for variety memory.
+    // Stored as an array of generations: string[][]. Flattened before use.
+    let recentExerciseGens: string[][] = [];
+    try {
+      const raw = await AsyncStorage.getItem('mg_recent_exercises_v1');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) recentExerciseGens = parsed.slice(0, 2);
+      }
+    } catch (_) { /* ignore — fall back to empty */ }
+    const recentExerciseNames = recentExerciseGens.flat();
+
     const { carts } = runTrackedGeneration(
       token,
       { mood: moodTitle, energy_level: intensity, equipment: workoutType },
       () => generateMuscleGainerCarts(
-        intensity, selectedMuscleNames, moodTitle, workoutType, recentlySeen
+        intensity, selectedMuscleNames, moodTitle, workoutType, recentlySeen, recentExerciseNames
       )
     );
 
@@ -186,6 +198,15 @@ export default function BodyPartsScreen() {
       try {
         const newRecent = carts.map(c => c.cartType).filter(Boolean) as string[];
         await AsyncStorage.setItem('mg_recent_cart_types_v1', JSON.stringify(newRecent));
+      } catch (_) { /* ignore */ }
+
+      // Persist this generation's exercise names, keeping only the last 2 gens.
+      try {
+        const thisGenNames = Array.from(new Set(
+          carts.flatMap(c => c.workouts.map(w => w.name))
+        ));
+        const updatedGens = [thisGenNames, ...recentExerciseGens].slice(0, 2);
+        await AsyncStorage.setItem('mg_recent_exercises_v1', JSON.stringify(updatedGens));
       } catch (_) { /* ignore */ }
     }
     

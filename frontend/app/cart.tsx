@@ -12,6 +12,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
@@ -31,8 +32,21 @@ import { Analytics } from '../utils/analytics';
 import { tryBeginWorkoutSession } from '../utils/workoutStartGate';
 import { resolveCartHeroImage, isFeaturedHeroBroken } from '../utils/cartHero';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 import { API_URL } from '../utils/apiConfig';
+
+// Shared icon per muscle-gainer cart flavor (used by the badge + flavor dropdown).
+type CartFlavorIcon = 'barbell' | 'fitness' | 'flame' | 'construct' | 'body' | 'flash' | 'hourglass';
+const CART_FLAVOR_ICONS: Record<string, CartFlavorIcon> = {
+  strength: 'barbell',
+  hypertrophy: 'fitness',
+  pump: 'flame',
+  heavy_day: 'barbell',
+  builder_day: 'construct',
+  athletic_day: 'body',
+  express: 'flash',
+  eccentric_focus: 'hourglass',
+};
 
 // Dynamic workout title pools by intensity category
 const WORKOUT_TITLES = {
@@ -327,6 +341,14 @@ export default function CartScreen() {
   const [moodCard, setMoodCard] = useState('');
   const [dynamicTitle, setDynamicTitle] = useState('');
 
+  // Flavor dropdown (jump to any generated cart) + its anchor position.
+  const [showFlavorDropdown, setShowFlavorDropdown] = useState(false);
+  const [badgeAnchor, setBadgeAnchor] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
+  const badgeRef = useRef<View>(null);
+
+  // Shimmer sweep on the flavor badge to signal it's tappable.
+  const shimmerAnim = useRef(new Animated.Value(0)).current;
+
   // Track explicit cart clears to prevent re-hydration from stale route params
   const userClearedRef = useRef(false);
   // 1d — counts how many times the user shuffles to another generated option.
@@ -455,6 +477,46 @@ export default function CartScreen() {
     return () => { cancelled = true; };
   }, [params.featuredId, params.pushCartItems, cartItems.length]);
 
+  // Continuous shimmer sweep on the flavor badge (signals it's tappable).
+  useEffect(() => {
+    if (!isGeneratedWorkout || generatedCarts.length <= 1) return;
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(shimmerAnim, { toValue: 1, duration: 1400, useNativeDriver: true }),
+        Animated.delay(1600),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [isGeneratedWorkout, generatedCarts.length, shimmerAnim]);
+
+  // Swap the active cart to a specific index (shared by skip + flavor dropdown).
+  const goToCart = (nextIndex: number) => {
+    if (!isGeneratedWorkout || generatedCarts.length === 0) return;
+    if (nextIndex === currentCartIndex) return;
+    const nextCart = generatedCarts[nextIndex];
+    if (!nextCart) return;
+
+    setCurrentCartIndex(nextIndex);
+
+    // 1d — user requested a different generated workout ("try again").
+    regenCountRef.current += 1;
+    Analytics.workoutRegenerated(token, {
+      mood: moodCard,
+      previous_workout_id:
+        generatedCarts[currentCartIndex]?.id || generatedCarts[currentCartIndex]?.cartType,
+      regeneration_count: regenCountRef.current,
+    });
+
+    const intensity = nextCart?.intensity || 'intermediate';
+    setDynamicTitle(getRandomWorkoutTitle(intensity, moodCard));
+
+    clearCart();
+    nextCart.workouts.forEach((workout: WorkoutItem) => {
+      addToCart(workout);
+    });
+  };
+
   // Handle skip to next generated cart. Skips are unlimited — when we reach the
   // end of the batch we wrap back to the start so the user can keep cycling
   // through options endlessly (no quota, no dead-end).
@@ -475,32 +537,33 @@ export default function CartScreen() {
     }
 
     // Load next cart, wrapping around to the first when past the last
-    const nextIndex = (currentCartIndex + 1) % generatedCarts.length;
-    const nextCart = generatedCarts[nextIndex];
-    setCurrentCartIndex(nextIndex);
+    goToCart((currentCartIndex + 1) % generatedCarts.length);
+  };
 
-    // 1d — user requested a different generated workout ("try again").
-    regenCountRef.current += 1;
-    Analytics.workoutRegenerated(token, {
-      mood: moodCard,
-      previous_workout_id:
-        generatedCarts[currentCartIndex]?.id || generatedCarts[currentCartIndex]?.cartType,
-      regeneration_count: regenCountRef.current,
-    });
+  // Open the flavor dropdown anchored to the badge's on-screen position.
+  const openFlavorDropdown = () => {
+    if (generatedCarts.length <= 1) return;
+    if (badgeRef.current) {
+      badgeRef.current.measureInWindow((x, y, w, h) => {
+        setBadgeAnchor({ x, y, w, h });
+        setShowFlavorDropdown(true);
+      });
+    } else {
+      setShowFlavorDropdown(true);
+    }
+  };
 
-    // Generate new dynamic title for the new cart
-    const intensity = nextCart?.intensity || 'intermediate';
-    setDynamicTitle(getRandomWorkoutTitle(intensity, moodCard));
-
-    // Update cart with next workout
-    clearCart();
-    nextCart.workouts.forEach((workout: WorkoutItem) => {
-      addToCart(workout);
-    });
+  // Pick a specific flavor from the dropdown.
+  const handleSelectFlavor = (index: number) => {
+    setShowFlavorDropdown(false);
+    goToCart(index);
   };
 
   // Check if skip is available — unlimited as long as there's more than one option
   const canSkip = isGeneratedWorkout && generatedCarts.length > 1;
+  // Flavor dropdown is available for multi-cart muscle-gainer generations.
+  const hasFlavorPicker = isGeneratedWorkout && generatedCarts.length > 1
+    && !!generatedCarts[currentCartIndex]?.cartType;
 
   const handleGoBack = () => {
     router.back();
@@ -1006,45 +1069,80 @@ export default function CartScreen() {
           const v3Cart = generatedCarts[currentCartIndex];
           const v3CartType = v3Cart?.cartType as string | undefined;
           const v3CartBadge = v3Cart?.cartBadge as string | undefined;
-          if (v3CartType && v3CartBadge) {
-            const v3IconMap: Record<string, 'barbell' | 'fitness' | 'flame' | 'construct' | 'body' | 'flash' | 'hourglass'> = {
-              strength: 'barbell',
-              hypertrophy: 'fitness',
-              pump: 'flame',
-              heavy_day: 'barbell',
-              builder_day: 'construct',
-              athletic_day: 'body',
-              express: 'flash',
-              eccentric_focus: 'hourglass',
-            };
-            return (
-              <View style={styles.cartFlavorBadge} testID="cart-flavor-badge">
-                <Ionicons name={v3IconMap[v3CartType] || 'fitness'} size={14} color="#FFD700" />
-                <Text style={styles.cartFlavorBadgeText}>{v3CartBadge}</Text>
-              </View>
-            );
-          }
 
-          // LEGACY fallback for non-muscle-gainer carts (sweat, lazy, outdoor, etc.)
-          const styles_count: Record<string, number> = {};
-          for (const it of cartItems) {
-            if (it.training_style && it.training_style !== 'mixed') {
-              styles_count[it.training_style] = (styles_count[it.training_style] || 0) + 1;
+          let icon: CartFlavorIcon = 'fitness';
+          let label: string | null = null;
+
+          if (v3CartType && v3CartBadge) {
+            icon = CART_FLAVOR_ICONS[v3CartType] || 'fitness';
+            label = v3CartBadge;
+          } else {
+            // LEGACY fallback for non-muscle-gainer carts (sweat, lazy, outdoor, etc.)
+            const styles_count: Record<string, number> = {};
+            for (const it of cartItems) {
+              if (it.training_style && it.training_style !== 'mixed') {
+                styles_count[it.training_style] = (styles_count[it.training_style] || 0) + 1;
+              }
+            }
+            const top = Object.entries(styles_count).sort((a, b) => b[1] - a[1])[0];
+            if (top) {
+              const flavorMap: Record<string, { label: string; icon: CartFlavorIcon }> = {
+                strength: { label: 'Strength', icon: 'barbell' },
+                hypertrophy: { label: 'Hypertrophy', icon: 'fitness' },
+                pump: { label: 'Pump', icon: 'flame' },
+              };
+              const fl = flavorMap[top[0]];
+              if (fl) { icon = fl.icon; label = fl.label; }
             }
           }
-          const top = Object.entries(styles_count).sort((a, b) => b[1] - a[1])[0];
-          if (!top) return null;
-          const flavorMap: Record<string, { label: string; icon: 'barbell' | 'fitness' | 'flame' }> = {
-            strength: { label: 'Strength', icon: 'barbell' },
-            hypertrophy: { label: 'Hypertrophy', icon: 'fitness' },
-            pump: { label: 'Pump', icon: 'flame' },
-          };
-          const fl = flavorMap[top[0]];
-          if (!fl) return null;
+
+          if (!label) return null;
+
+          // Shimmer sheen sweeping left→right across the badge.
+          const shimmerTranslate = shimmerAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [-140, 140],
+          });
+          const badgeInner = (
+            <>
+              <Ionicons name={icon} size={14} color="#FFD700" />
+              <Text style={styles.cartFlavorBadgeText}>{label}</Text>
+              {hasFlavorPicker && (
+                <Ionicons name="chevron-down" size={13} color="rgba(255,255,255,0.85)" style={{ marginLeft: 1 }} />
+              )}
+              {/* moving sheen — only on the tappable picker badge */}
+              {hasFlavorPicker && (
+                <Animated.View
+                  pointerEvents="none"
+                  style={[styles.cartFlavorShimmer, { transform: [{ translateX: shimmerTranslate }, { rotate: '18deg' }] }]}
+                >
+                  <LinearGradient
+                    colors={['transparent', 'rgba(255,255,255,0.45)', 'transparent']}
+                    start={{ x: 0, y: 0.5 }}
+                    end={{ x: 1, y: 0.5 }}
+                    style={{ flex: 1 }}
+                  />
+                </Animated.View>
+              )}
+            </>
+          );
+
+          if (hasFlavorPicker) {
+            return (
+              <TouchableOpacity
+                ref={badgeRef}
+                style={styles.cartFlavorBadge}
+                onPress={openFlavorDropdown}
+                activeOpacity={0.85}
+                testID="cart-flavor-badge"
+              >
+                {badgeInner}
+              </TouchableOpacity>
+            );
+          }
           return (
             <View style={styles.cartFlavorBadge} testID="cart-flavor-badge">
-              <Ionicons name={fl.icon} size={14} color="#FFD700" />
-              <Text style={styles.cartFlavorBadgeText}>{fl.label}</Text>
+              {badgeInner}
             </View>
           );
         })()}
@@ -1137,6 +1235,63 @@ export default function CartScreen() {
         moodCategory={moodInfo.mood || ''}
         subtext={(isGeneratedWorkout && dynamicTitle) ? '' : (moodInfo.type || '')}
       />
+
+      {/* Flavor dropdown — jump to any generated cart */}
+      <Modal
+        visible={showFlavorDropdown}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowFlavorDropdown(false)}
+      >
+        <TouchableOpacity
+          style={styles.flavorDropdownOverlay}
+          activeOpacity={1}
+          onPress={() => setShowFlavorDropdown(false)}
+        >
+          <View
+            style={[
+              styles.flavorDropdownCard,
+              badgeAnchor
+                ? {
+                    bottom: SCREEN_HEIGHT - badgeAnchor.y + 6,
+                    right: Math.max(8, SCREEN_WIDTH - (badgeAnchor.x + badgeAnchor.w)),
+                  }
+                : { top: 120, right: 16 },
+            ]}
+          >
+            <Text style={styles.flavorDropdownHeader}>
+              Workout style · {generatedCarts.length}
+            </Text>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {generatedCarts.map((c: any, i: number) => {
+                const active = i === currentCartIndex;
+                const icon = CART_FLAVOR_ICONS[c?.cartType as string] || 'fitness';
+                return (
+                  <TouchableOpacity
+                    key={c?.id || i}
+                    style={[styles.flavorDropdownRow, active && styles.flavorDropdownRowActive]}
+                    onPress={() => handleSelectFlavor(i)}
+                    activeOpacity={0.7}
+                  >
+                    <Ionicons name={icon} size={16} color={active ? '#FFD700' : 'rgba(255,255,255,0.7)'} />
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.flavorDropdownRowTitle}>
+                        {c?.flavor || c?.cartBadge || 'Workout'}
+                      </Text>
+                      {c?.cartSubtitle ? (
+                        <Text style={styles.flavorDropdownRowSub} numberOfLines={1}>
+                          {c.cartSubtitle}
+                        </Text>
+                      ) : null}
+                    </View>
+                    {active && <Ionicons name="checkmark" size={16} color="#FFD700" />}
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
+        </TouchableOpacity>
+      </Modal>
 
       {/* Bottom Action Bar */}
       <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 20) }]}>
@@ -1336,17 +1491,75 @@ const styles = StyleSheet.create({
     gap: 6,
     backgroundColor: 'rgba(0, 0, 0, 0.55)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.18)',
+    borderColor: 'rgba(255, 215, 0, 0.35)',
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 14,
     zIndex: 10,
+    overflow: 'hidden',
   },
   cartFlavorBadgeText: {
     fontSize: 12,
     fontWeight: '700',
     color: '#FFFFFF',
     letterSpacing: 0.3,
+  },
+  cartFlavorShimmer: {
+    position: 'absolute',
+    top: -10,
+    bottom: -10,
+    width: 40,
+  },
+  // Flavor dropdown
+  flavorDropdownOverlay: {
+    flex: 1,
+  },
+  flavorDropdownCard: {
+    position: 'absolute',
+    minWidth: 210,
+    maxWidth: 280,
+    maxHeight: 360,
+    backgroundColor: 'rgba(20, 20, 22, 0.98)',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.25)',
+    paddingVertical: 6,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 12,
+  },
+  flavorDropdownHeader: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: 'rgba(255,255,255,0.5)',
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    paddingHorizontal: 14,
+    paddingTop: 8,
+    paddingBottom: 6,
+  },
+  flavorDropdownRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 11,
+  },
+  flavorDropdownRowActive: {
+    backgroundColor: 'rgba(255, 215, 0, 0.12)',
+  },
+  flavorDropdownRowTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  flavorDropdownRowSub: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.55)',
+    marginTop: 1,
   },
   // Content Section Styles
   contentContainer: {

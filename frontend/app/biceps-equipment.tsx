@@ -315,7 +315,7 @@ export default function BicepsEquipmentScreen() {
         {/* Equipment Selection - Vertically Stacked */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Select Equipment</Text>
-          <Text style={styles.sectionSubtitle}>Choose one or multiple biceps equipment options</Text>
+          <Text style={styles.sectionSubtitle}>Select the equipment you have or want to use — you'll see exercises on the next screen you can build from.</Text>
           
           <View style={styles.equipmentContainer}>
             {equipmentOptions.map((equipment) => (
@@ -332,7 +332,7 @@ export default function BicepsEquipmentScreen() {
         {/* Difficulty Selection */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Select Difficulty</Text>
-          <Text style={styles.sectionSubtitle}>Choose your fitness level</Text>
+          <Text style={styles.sectionSubtitle}>Pick a level to match the exercises you'll see next.</Text>
           
           <View style={styles.difficultyContainer}>
             {difficultyLevels.map((level) => (

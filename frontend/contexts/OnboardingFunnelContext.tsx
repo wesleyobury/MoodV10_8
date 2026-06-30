@@ -57,6 +57,9 @@ export interface FunnelAnswers {
   biggestBarrier?: BiggestBarrier;
   workoutLength?: WorkoutLength;
   equipment?: EquipmentAccess;
+  /** First name captured in the funnel — used to personalize the payoff
+   *  greeting regardless of what (if anything) Apple/Google returned. */
+  firstName?: string;
   completedAt?: string; // ISO timestamp
 }
 
@@ -74,6 +77,7 @@ interface OnboardingFunnelContextValue {
   setBiggestBarrier: (barrier: BiggestBarrier) => void;
   setWorkoutLength: (length: WorkoutLength) => void;
   setEquipment: (equipment: EquipmentAccess) => void;
+  setFirstName: (firstName: string) => void;
   /** Returns ms spent on the given step since `markStepEntered` was called. */
   markStepEntered: (step: number) => void;
   consumeStepDuration: (step: number) => number;
@@ -226,6 +230,7 @@ export function OnboardingFunnelProvider({ children }: { children: React.ReactNo
       setBiggestBarrier: (biggestBarrier) => patch({ biggestBarrier }),
       setWorkoutLength: (workoutLength) => patch({ workoutLength }),
       setEquipment: (equipment) => patch({ equipment }),
+      setFirstName: (firstName) => patch({ firstName }),
       markStepEntered,
       consumeStepDuration,
       markCompleted,

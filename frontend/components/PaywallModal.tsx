@@ -52,12 +52,21 @@ const ANNUAL_MONTHLY_BREAKDOWN = '$6.58/mo';
 const ANNUAL_SAVINGS_BADGE = 'Save 34%';
 const MONTHLY_PRICE_LABEL = '$9.99/month';
 
-const VALUE_BULLETS = [
-  'Unlimited AI-generated workouts',
-  'Live heart rate tracking',
-  'Shareable workout charts',
+// Two grouped sections so the social value reads as its own pillar, not just
+// more feature bullets. Kept tight to avoid pushing the plan picker / CTA below
+// the fold. Mirrors the FEATURES carousel copy in reveal-payoff.tsx.
+const FEATURE_BULLETS = [
+  'Unlimited workouts for your mood, goals & level',
   'Recovery-tuned intensity',
+  'Live heart rate & wearable tracking',
+  'Shareable progress charts',
   'Full exercise video library',
+];
+
+const COMMUNITY_BULLETS = [
+  'See what other athletes are training',
+  "Copy any athlete's workout in a tap",
+  'A driven community that keeps you going',
 ];
 
 const APPLE_DISCLOSURE =
@@ -337,6 +346,7 @@ export function PaywallModal() {
           </TouchableOpacity>
 
           <ScrollView
+            style={styles.scrollArea}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scroll}
           >
@@ -359,14 +369,31 @@ export function PaywallModal() {
             </View>
 
             <View style={styles.bullets}>
-              {VALUE_BULLETS.map((bullet) => (
+              {FEATURE_BULLETS.map((bullet) => (
+                <View key={bullet} style={styles.bulletRow}>
+                  <View style={styles.bulletDot} />
+                  <Text style={styles.bulletText}>{bullet}</Text>
+                </View>
+              ))}
+
+              <View style={styles.groupDivider}>
+                <View style={styles.groupDividerLine} />
+                <Text style={styles.groupDividerLabel}>THE COMMUNITY</Text>
+                <View style={styles.groupDividerLine} />
+              </View>
+
+              {COMMUNITY_BULLETS.map((bullet) => (
                 <View key={bullet} style={styles.bulletRow}>
                   <View style={styles.bulletDot} />
                   <Text style={styles.bulletText}>{bullet}</Text>
                 </View>
               ))}
             </View>
+          </ScrollView>
 
+          {/* Pinned footer — plan picker + CTA stay visible without scrolling,
+              regardless of screen size or how long the value list runs. */}
+          <View style={styles.footer}>
             {isFoundingOffer && (
               <>
                 <View style={styles.foundingBanner}>
@@ -474,7 +501,7 @@ export function PaywallModal() {
             <TouchableOpacity onPress={handleManageBilling} style={styles.manageRow}>
               <Text style={styles.manageText}>Manage subscription in App Store</Text>
             </TouchableOpacity>
-          </ScrollView>
+          </View>
         </View>
       </View>
     </Modal>
@@ -560,20 +587,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 10,
   },
+  scrollArea: {
+    // Bounds the scrollable header+bullets region so it shrinks (and scrolls)
+    // when content exceeds the sheet's maxHeight, keeping the footer pinned.
+    flexShrink: 1,
+  },
   scroll: {
-    paddingTop: 12,
+    paddingTop: 8,
     paddingBottom: 8,
+  },
+  footer: {
+    paddingTop: 8,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(255,255,255,0.06)',
   },
   header: {
     alignItems: 'center',
-    marginBottom: 22,
+    marginBottom: 14,
   },
   iconRing: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     overflow: 'hidden',
-    marginBottom: 16,
+    marginBottom: 10,
   },
   iconRingGradient: {
     flex: 1,
@@ -585,7 +622,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.8,
     color: COLORS.accent,
     fontWeight: '600',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   headline: {
     fontSize: 26,
@@ -593,7 +630,7 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     letterSpacing: -0.4,
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   subhead: {
     fontSize: 14,
@@ -603,13 +640,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   bullets: {
-    marginBottom: 20,
+    marginBottom: 14,
     paddingHorizontal: 4,
   },
   bulletRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 9,
   },
   bulletDot: {
     width: 5,
@@ -623,20 +660,38 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     fontWeight: '500',
   },
+  groupDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginTop: 2,
+    marginBottom: 10,
+  },
+  groupDividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 215, 0, 0.28)',
+  },
+  groupDividerLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: COLORS.accent,
+    letterSpacing: 1.3,
+  },
   plans: {
-    marginBottom: 16,
+    marginBottom: 12,
   },
   planCard: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 14,
+    paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 12,
     backgroundColor: COLORS.surfaceElevated,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.08)',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   planCardSelected: {
     borderColor: COLORS.accent,
@@ -737,6 +792,10 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     color: COLORS.textSecondary,
+  },
+  bold: {
+    fontWeight: '700',
+    color: COLORS.textPrimary,
   },
   foundingSubtext: {
     fontSize: 12,

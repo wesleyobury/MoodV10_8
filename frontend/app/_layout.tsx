@@ -27,6 +27,7 @@ import DevPill from '../components/DevPill';
 import ErrorBoundary from '../components/ErrorBoundary';
 import AppBootstrap from '../components/AppBootstrap';
 import { ForceUpdateGate } from '../components/ForceUpdateGate';
+import { AddWorkoutCoachmarkProvider } from '../components/AddWorkoutCoachmark';
 import { FoundingOfferModal } from '../components/FoundingOfferModal';
 
 // Keep splash screen visible while we load
@@ -180,18 +181,20 @@ function NavigationStack() {
 function AppContent() {
   return (
     <ForceUpdateGate>
-      <AppStateTracker />
-      <NotificationInitializer />
-      <HealthOnboardingGate />
-      <NavigationStack />
-      <FloatingCart />
-      <DevPill />
-      <FoundingMemberGate />
-      <FoundingOfferModal />
-      <LegalReacceptGate />
-      <FunnelEntryGate />
-      <ProfilePicPromptGate />
-      <PaywallModal />
+      <AddWorkoutCoachmarkProvider>
+        <AppStateTracker />
+        <NotificationInitializer />
+        <HealthOnboardingGate />
+        <NavigationStack />
+        <FloatingCart />
+        <DevPill />
+        <FoundingMemberGate />
+        <FoundingOfferModal />
+        <LegalReacceptGate />
+        <FunnelEntryGate />
+        <ProfilePicPromptGate />
+        <PaywallModal />
+      </AddWorkoutCoachmarkProvider>
     </ForceUpdateGate>
   );
 }

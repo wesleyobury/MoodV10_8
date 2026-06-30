@@ -70,6 +70,35 @@ export function routeForMood(moodId: string | null | undefined, moodTitle?: stri
 }
 
 const FUNNEL_ANSWERS_KEY_PREFIX = '@mood_funnel_answers_v1';
+const SEEN_INTRO_KEY = '@mood_intro_seen_v1';
+
+/** Whether the user has already seen the mood-intro interstitial for this mood.
+ *  Returning users see each mood's intro once (a newly-picked mood card can have
+ *  a different layout/flow), then skip it on repeat visits. */
+export async function hasSeenMoodIntro(moodId: string): Promise<boolean> {
+  try {
+    const raw = await AsyncStorage.getItem(SEEN_INTRO_KEY);
+    if (!raw) return false;
+    const seen = JSON.parse(raw);
+    return Array.isArray(seen) && seen.includes(moodId);
+  } catch {
+    return false;
+  }
+}
+
+/** Mark a mood's intro as seen so it won't show again for that mood. */
+export async function markMoodIntroSeen(moodId: string): Promise<void> {
+  try {
+    const raw = await AsyncStorage.getItem(SEEN_INTRO_KEY);
+    const seen: string[] = raw ? JSON.parse(raw) : [];
+    if (!seen.includes(moodId)) {
+      seen.push(moodId);
+      await AsyncStorage.setItem(SEEN_INTRO_KEY, JSON.stringify(seen));
+    }
+  } catch {
+    // Non-fatal — worst case the intro shows again.
+  }
+}
 
 /** Read the mood picked during the onboarding funnel (step 1).
  *  Returns null when no answers persisted yet (e.g. returning user

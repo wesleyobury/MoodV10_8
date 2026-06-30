@@ -186,8 +186,9 @@ export default function Register() {
         }
       }
 
-      // Phase 3.1 — route new signups directly into the onboarding funnel.
-      router.replace('/onboarding-funnel/step-1-mood');
+      // Phase 3.1 — route new signups into the onboarding funnel (starts with
+      // the cinematic intro, which hands off to step-1-mood).
+      router.replace('/onboarding-funnel/intro');
     } catch (error: any) {
       Alert.alert('Registration Failed', error.message || 'Please try again');
     } finally {

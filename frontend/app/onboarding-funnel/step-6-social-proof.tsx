@@ -66,7 +66,7 @@ export default function Step6SocialProof() {
       question: 'social_proof',
       time_spent_ms: consumeStepDuration(6),
     });
-    router.push('/onboarding-funnel/reveal-loading');
+    router.push('/onboarding-funnel/name');
   };
 
   return (

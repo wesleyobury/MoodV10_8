@@ -25,12 +25,14 @@ import Constants from 'expo-constants';
 import { useAuth } from '../../contexts/AuthContext';
 import { useHealth } from '../../contexts/HealthContext';
 import { Analytics } from '../../utils/analytics';
+import { hasSeenMoodIntro } from '../../utils/moodRoute';
 import { useScreenTime } from '../../hooks/useScreenTime';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import { useFeaturedWorkouts, FeaturedWorkout } from '../../hooks/useFeaturedWorkouts';
 import { optimizedImageUrl, FEATURED_CARD_IMAGE_WIDTH } from '../../utils/cloudinaryImage';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import HealthSyncIndicator from '../../components/HealthSyncIndicator';
+import GlossyEmblem from '../../components/GlossyEmblem';
 
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
@@ -433,7 +435,6 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
   // Show the "this week" trend badge once a mood has been picked at least
   // twice in the last 7 days (was >5, which almost never triggered).
   const showTrend = (weeklyCount ?? 0) >= 2;
-  const accent = mood.accent;
 
   return (
     <TouchableOpacity
@@ -449,57 +450,30 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
         locations={[0, 0.5, 1]}
         style={styles.visibleMoodCard}
       >
-        {/* Warm gold glow blooming from the right — vivid yet on-brand */}
+        {/* Soft top sheen — subtle gloss across the charcoal surface */}
         <LinearGradient
-          colors={[hexToRgba(accent, 0), hexToRgba(accent, 0.16), hexToRgba(accent, 0.42)]}
+          colors={['rgba(255,255,255,0.05)', 'rgba(255,255,255,0)']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          locations={[0, 0.22]}
+          style={StyleSheet.absoluteFillObject}
+        />
+        {/* Faint ambient-gold center glow — warmth without the old bright bloom */}
+        <LinearGradient
+          colors={['rgba(244,195,22,0)', 'rgba(244,195,22,0.035)', 'rgba(244,195,22,0)']}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           locations={[0, 0.5, 1]}
           style={StyleSheet.absoluteFillObject}
         />
-        {/* Diagonal gold bloom anchored bottom-right for dimensional depth */}
-        <LinearGradient
-          colors={[hexToRgba(accent, 0), hexToRgba(accent, 0.10), hexToRgba(accent, 0.34)]}
-          start={{ x: 0.3, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          locations={[0, 0.55, 1]}
-          style={StyleSheet.absoluteFillObject}
-        />
-        {/* Warm halo behind the icon (left) so the glow reads across the whole card */}
-        <LinearGradient
-          colors={[hexToRgba(accent, 0.22), hexToRgba(accent, 0.04), hexToRgba(accent, 0)]}
-          start={{ x: 0, y: 0.5 }}
-          end={{ x: 0.5, y: 0.5 }}
-          style={StyleSheet.absoluteFillObject}
-        />
-        {/* Top sheen highlight — fine texture / glassy finish */}
-        <LinearGradient
-          colors={['rgba(255,255,255,0.08)', 'rgba(255,255,255,0.02)', 'rgba(255,255,255,0)']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          locations={[0, 0.35, 1]}
-          style={StyleSheet.absoluteFillObject}
-        />
         <View style={styles.cardContent}>
           <Animated.View
             style={[
-              styles.iconContainer,
-              {
-                backgroundColor: hexToRgba(accent, 0.20),
-                borderColor: hexToRgba(accent, 0.42),
-                transform: [
-                  { scale: scaleAnim },
-                  { rotate: rotateZ }
-                ]
-              }
+              styles.emblemWrap,
+              { transform: [{ scale: scaleAnim }, { rotate: rotateZ }] },
             ]}
           >
-            <Ionicons 
-              name={mood.icon} 
-              size={28} 
-              color="#FFD700" 
-              style={styles.cardIcon}
-            />
+            <GlossyEmblem icon={mood.icon} size={56} />
           </Animated.View>
           <View style={styles.textContainer}>
             <Text style={styles.cardTitle}>{mood.title}</Text>
@@ -509,10 +483,10 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
             <WeeklyTrendIndicator count={weeklyCount!} />
           ) : (
             <View style={styles.arrowContainer}>
-              <Ionicons 
-                name="chevron-forward" 
-                size={20} 
-                color="rgba(255, 255, 255, 0.45)" 
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color="#6C6C70"
               />
             </View>
           )}
@@ -600,7 +574,7 @@ const moodCards: MoodCard[] = [
     icon: 'flame',
     gradient: ['#FF6B6B', '#FF8E53'],
     accent: '#FFC93C',
-    base: ['#2E2A20', '#1A1711', '#0C0A06'],
+    base: ['#131316', '#0E0E10', '#0A0A0B'],
   },
   {
     id: 'muscle',
@@ -609,7 +583,7 @@ const moodCards: MoodCard[] = [
     icon: 'barbell',
     gradient: ['#4ECDC4', '#44A08D'],
     accent: '#E6B94C',
-    base: ['#2B2B2B', '#181818', '#0A0A0A'],
+    base: ['#131316', '#0E0E10', '#0A0A0B'],
   },
   {
     id: 'explosive',
@@ -618,7 +592,7 @@ const moodCards: MoodCard[] = [
     icon: 'flash',
     gradient: ['#FFD93D', '#FF6B6B'],
     accent: '#FFB300',
-    base: ['#302B1C', '#1B1810', '#0D0B06'],
+    base: ['#131316', '#0E0E10', '#0A0A0B'],
   },
   {
     id: 'lazy',
@@ -627,7 +601,7 @@ const moodCards: MoodCard[] = [
     icon: 'bed',
     gradient: ['#D299C2', '#FEF9D7'],
     accent: '#D9BA6B',
-    base: ['#2A2A28', '#171614', '#0A0A09'],
+    base: ['#131316', '#0E0E10', '#0A0A0B'],
   },
   {
     id: 'calisthenics',
@@ -636,7 +610,7 @@ const moodCards: MoodCard[] = [
     icon: 'body',
     gradient: ['#667eea', '#764ba2'],
     accent: '#EBC76A',
-    base: ['#2C2C2C', '#191919', '#0B0B0B'],
+    base: ['#131316', '#0E0E10', '#0A0A0B'],
   },
   {
     id: 'outdoor',
@@ -645,7 +619,7 @@ const moodCards: MoodCard[] = [
     icon: 'bicycle',
     gradient: ['#56ab2f', '#a8e6cf'],
     accent: '#C9A44C',
-    base: ['#2A2B27', '#171813', '#0A0B08'],
+    base: ['#131316', '#0E0E10', '#0A0A0B'],
   },
   // Hidden for now - will be enabled later
   // {
@@ -1066,14 +1040,25 @@ export default function WorkoutsHome() {
     }, [refreshHealth])
   );
 
-  const handleMoodSelect = (mood: MoodCard) => {
+  const handleMoodSelect = async (mood: MoodCard) => {
     console.log('Selected mood:', mood.title);
-    
+
     // Track mood selection
     if (token) {
       Analytics.moodSelected(token, { mood_category: mood.id });
     }
-    
+
+    // Show the mood-intro interstitial once per mood. A returning user picking a
+    // new mood card (different layout/flow) sees its intro the first time; the
+    // ringer daily challenge is not part of the build flow, so it's excluded.
+    if (mood.id !== 'ringer' && !(await hasSeenMoodIntro(mood.id))) {
+      router.push({
+        pathname: '/mood-intro',
+        params: { moodId: mood.id, mood: mood.title },
+      });
+      return;
+    }
+
     if (mood.id === 'sweat') {
       // Navigate to workout type selection for "Sweat / burn fat"
       router.push({
@@ -1263,19 +1248,25 @@ export default function WorkoutsHome() {
           </View>
         </View>
 
-        {/* Social Icons */}
+        {/* Social + website — glossy convex pucks matching the mood cards */}
         <View style={styles.bottomSocialContainer}>
-          <TouchableOpacity 
-            style={styles.bottomSocialButton}
+          <TouchableOpacity
+            activeOpacity={0.8}
             onPress={() => handleSocialLink('https://www.instagram.com/officialmoodapp/', 'Instagram')}
           >
-            <Ionicons name="logo-instagram" size={20} color="#FFD700" />
+            <GlossyEmblem icon="logo-instagram" size={46} glyphSize={21} />
           </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.bottomSocialButton}
+          <TouchableOpacity
+            activeOpacity={0.8}
             onPress={() => handleSocialLink('https://www.tiktok.com/@officialmoodapp', 'TikTok')}
           >
-            <Ionicons name="logo-tiktok" size={20} color="#FFD700" />
+            <GlossyEmblem icon="logo-tiktok" size={46} glyphSize={21} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => handleSocialLink('https://officialmood.app', 'Website')}
+          >
+            <GlossyEmblem icon="globe-outline" size={46} glyphSize={22} />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -1718,7 +1709,7 @@ const styles = StyleSheet.create({
     minHeight: 80,
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.10)',
+    borderColor: 'rgba(154, 122, 53, 0.26)',
     overflow: 'hidden',
     shadowColor: 'transparent',
     shadowOffset: { width: 0, height: 0 },
@@ -1731,6 +1722,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 16,
+  },
+  emblemWrap: {
+    marginRight: 16,
   },
   iconContainer: {
     width: 48,
@@ -1760,7 +1754,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 17,
     fontWeight: '600',
-    color: '#fff',
+    color: '#F3F3F3',
     marginBottom: 4,
     textShadowColor: 'transparent',
     textShadowOffset: { width: 0, height: 0 },
@@ -1768,7 +1762,7 @@ const styles = StyleSheet.create({
   },
   cardSubtitle: {
     fontSize: 13,
-    color: '#888',
+    color: '#8D8D90',
     textShadowColor: 'transparent',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 0,
@@ -1795,7 +1789,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 24,
     borderWidth: 0.5,
-    borderColor: 'rgba(255, 215, 0, 0.08)',
+    borderColor: 'rgba(154, 122, 53, 0.20)',
     shadowColor: 'transparent',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0,
@@ -1968,7 +1962,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.03)',
     borderWidth: 0.5,
-    borderColor: 'rgba(255, 215, 0, 0.08)',
+    borderColor: 'rgba(154, 122, 53, 0.16)',
   },
   wearableTile: {
     flex: 1,

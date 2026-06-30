@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import MaskedView from '@react-native-masked-view/masked-view';
 import { Workout } from '../types/workout';
 import CustomWorkoutModal from './CustomWorkoutModal';
 import { shuffleArray } from '../utils/shuffle';
+import { useAddWorkoutCoachmark } from './AddWorkoutCoachmark';
 
 const { width } = Dimensions.get('window');
 
@@ -44,7 +45,26 @@ const WorkoutCard = React.memo(({
   const [customModalVisible, setCustomModalVisible] = useState(false);
   const [selectedWorkoutForEdit, setSelectedWorkoutForEdit] = useState<Workout | null>(null);
   const flatListRef = useRef<FlatList>(null);
-  
+
+  // First-time "Add workout" coachmark: report this card's Add button position
+  // (window coords) so the overlay can anchor to it wherever it lands.
+  const coach = useAddWorkoutCoachmark();
+  const addBtnRef = useRef<any>(null);
+
+  useEffect(() => {
+    coach?.mountCard();
+    return () => coach?.unmountCard();
+  }, [coach]);
+
+  const reportAddButton = useCallback(() => {
+    if (!coach || !addBtnRef.current?.measureInWindow) return;
+    requestAnimationFrame(() => {
+      addBtnRef.current?.measureInWindow((x: number, y: number, w: number, h: number) => {
+        if (w > 0 && h > 0) coach.reportAddButtonRect({ x, y, width: w, height: h });
+      });
+    });
+  }, [coach]);
+
   // Shuffle workouts once when the card mounts - stays consistent during the session
   const shuffledWorkouts = useMemo(() => shuffleArray(workouts), []);
   
@@ -140,6 +160,8 @@ const WorkoutCard = React.memo(({
         {/* Add Workout Button */}
         <Animated.View style={{ transform: [{ scale: localScaleAnim }] }}>
           <TouchableOpacity
+            ref={index === 0 ? addBtnRef : undefined}
+            onLayout={index === 0 ? reportAddButton : undefined}
             style={styles.addWorkoutButton}
             onPress={() => handleAddToCartWithAnimation(item)}
             activeOpacity={0.8}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import {
   getEquipmentIcon,
   getFirstSentence,
+  getSessionSubPathLabel,
 } from '../utils/inSessionProgress';
 
 export interface InSessionExercise {
@@ -33,6 +34,9 @@ const ITEM_WIDTH = 76;
 const ITEM_GAP = 12;
 const SCROLL_PADDING = 16;
 const ROW_HEIGHT_ESTIMATE = 56;
+// Width of an inline muscle-group divider in the horizontal bar. Used to keep
+// the auto-scroll centering accurate once dividers shift item positions.
+const DIVIDER_WIDTH = 13;
 
 // Palette: light/mid grays with gold reserved for the active icon and accents.
 const C = {
@@ -58,15 +62,34 @@ export default function InSessionProgressBar({
   const [expanded, setExpanded] = useState(false);
   const expandAnim = useRef(new Animated.Value(0)).current;
 
+  // Muscle-group (sub-path) label per exercise. In the Muscle Gainer path this
+  // is the muscle group (CHEST, SHOULDERS, …); other multi-part paths resolve
+  // to their own sub-paths. A divider is drawn wherever the group changes.
+  const groupLabels = useMemo(
+    () => exercises.map((ex) => getSessionSubPathLabel(ex)),
+    [exercises]
+  );
+  const showDividerBefore = (idx: number): boolean =>
+    idx > 0 && !!groupLabels[idx] && groupLabels[idx] !== groupLabels[idx - 1];
+
   useEffect(() => {
     if (!scrollRef.current) return;
     const itemAdvance = ITEM_WIDTH + ITEM_GAP;
-    const targetOffset = Math.max(0, (currentIndex - 1) * itemAdvance);
+    // Count dividers rendered before the active item so centering stays correct
+    // once they shift the horizontal layout.
+    let dividersBefore = 0;
+    for (let i = 1; i <= currentIndex && i < exercises.length; i++) {
+      if (showDividerBefore(i)) dividersBefore++;
+    }
+    const targetOffset = Math.max(
+      0,
+      (currentIndex - 1) * itemAdvance + dividersBefore * (DIVIDER_WIDTH + ITEM_GAP)
+    );
     const t = setTimeout(() => {
       scrollRef.current?.scrollTo({ x: targetOffset, animated: true });
     }, 80);
     return () => clearTimeout(t);
-  }, [currentIndex]);
+  }, [currentIndex, groupLabels, exercises.length]);
 
   useEffect(() => {
     Animated.timing(expandAnim, {
@@ -138,7 +161,7 @@ export default function InSessionProgressBar({
             const label =
               ex.equipment || ex.workoutName || ex.name || `Step ${idx + 1}`;
 
-            return (
+            const stepView = (
               <View
                 key={`${label}-${idx}`}
                 style={styles.stepItem}
@@ -173,6 +196,19 @@ export default function InSessionProgressBar({
                   {label}
                 </Text>
               </View>
+            );
+
+            if (!showDividerBefore(idx)) return stepView;
+            return (
+              <React.Fragment key={`group-${idx}`}>
+                <View
+                  style={styles.barDivider}
+                  testID={`in-session-group-divider-${idx}`}
+                >
+                  <View style={styles.barDividerLine} />
+                </View>
+                {stepView}
+              </React.Fragment>
             );
           })}
         </ScrollView>
@@ -221,8 +257,9 @@ export default function InSessionProgressBar({
             const titleLine =
               ex.workoutName || ex.name || ex.equipment || `Exercise ${idx + 1}`;
             const equipmentLine = ex.equipment;
+            const dividerLabel = showDividerBefore(idx) ? groupLabels[idx] : null;
 
-            return (
+            const detailView = (
               <View
                 key={`detail-${titleLine}-${idx}`}
                 style={[
@@ -272,6 +309,23 @@ export default function InSessionProgressBar({
                   ) : null}
                 </View>
               </View>
+            );
+
+            if (!dividerLabel) return detailView;
+            return (
+              <React.Fragment key={`detail-group-${idx}`}>
+                <View
+                  style={styles.detailDivider}
+                  testID={`in-session-detail-divider-${idx}`}
+                >
+                  <View style={styles.detailDividerLine} />
+                  <Text style={styles.detailDividerLabel}>
+                    {dividerLabel.toUpperCase()}
+                  </Text>
+                  <View style={styles.detailDividerLine} />
+                </View>
+                {detailView}
+              </React.Fragment>
             );
           })}
         </ScrollView>
@@ -345,6 +399,40 @@ const styles = StyleSheet.create({
   },
   stepLabelUpcoming: {
     color: C.labelMuted,
+  },
+  // Vertical muscle-group divider inside the horizontal bar.
+  barDivider: {
+    width: DIVIDER_WIDTH,
+    height: 56,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  barDividerLine: {
+    width: 1.5,
+    height: 30,
+    borderRadius: 1,
+    backgroundColor: 'rgba(255, 215, 0, 0.35)',
+    marginTop: 0,
+  },
+  // Labeled muscle-group divider inside the expanded dropdown.
+  detailDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 2,
+    marginTop: 12,
+    marginBottom: 2,
+  },
+  detailDividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 215, 0, 0.30)',
+  },
+  detailDividerLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: C.goldDim,
+    letterSpacing: 1.3,
   },
   chevronFloating: {
     position: 'absolute',

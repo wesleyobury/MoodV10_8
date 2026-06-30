@@ -492,7 +492,7 @@ export default function LegsEquipmentScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Choose Your Equipment</Text>
           <Text style={styles.sectionSubtitle}>
-            Select equipment for {muscleGroupNames.join(', ')} workout
+            Select the equipment you have or want to use — you'll see exercises on the next screen you can build from.
           </Text>
           
           {relevantEquipmentData.map((muscleGroupData) => (
@@ -509,7 +509,7 @@ export default function LegsEquipmentScreen() {
             <View style={styles.intensitySection}>
               <Text style={styles.sectionTitle}>Select Intensity Level</Text>
               <Text style={styles.sectionSubtitle}>
-                Choose your workout difficulty level
+                Pick a level to match the exercises you'll see next.
               </Text>
               
               <View style={styles.intensityContainer}>

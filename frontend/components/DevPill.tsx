@@ -1,5 +1,6 @@
 /**
- * DevPill — a small floating "DEV" button shown ONLY in dev builds (`__DEV__`).
+ * DevPill — a small floating "DEV" button shown in dev builds and in QA builds
+ * that opt in via `EXPO_PUBLIC_DEV_SCREENS=true` (see utils/devFlags).
  * Tap → /dev/screens. Bottom-left so it never collides with the FloatingCart
  * (bottom-right). Renders nothing in production.
  */
@@ -7,12 +8,13 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { DEV_TOOLS_ENABLED } from '../utils/devFlags';
 
 export default function DevPill() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  if (!__DEV__) return null;
+  if (!DEV_TOOLS_ENABLED) return null;
 
   return (
     <TouchableOpacity

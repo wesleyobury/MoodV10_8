@@ -27,6 +27,7 @@ import {
   setDevMockFounding,
   setDevMockMood,
 } from '../../utils/devMocks';
+import { DEV_TOOLS_ENABLED } from '../../utils/devFlags';
 import { useAuth } from '../../contexts/AuthContext';
 
 // ── Mood option sets ────────────────────────────────────────────────────────
@@ -130,8 +131,9 @@ export default function DevScreens() {
   const [revealVariant, setRevealVariant] = useState<Variant>('standard');
   const [cleared, setCleared] = useState(false);
 
-  // Production / non-dev: never expose this surface.
-  if (!__DEV__) return <Redirect href="/" />;
+  // Production: never expose this surface. Dev builds (__DEV__) and opted-in
+  // QA builds (EXPO_PUBLIC_DEV_SCREENS=true) pass.
+  if (!DEV_TOOLS_ENABLED) return <Redirect href="/" />;
 
   const go = (path: string) => router.push(path as any);
 
@@ -180,12 +182,14 @@ export default function DevScreens() {
         <Row label="Register" route="/auth/register" onPress={() => go('/auth/register')} />
 
         <SectionHeader title="Onboarding Funnel" />
+        <Row label="Intro (cinematic)" route="/onboarding-funnel/intro" onPress={() => go('/onboarding-funnel/intro')} />
         <Row label="Step 1 — Mood" route="/onboarding-funnel/step-1-mood" onPress={() => go('/onboarding-funnel/step-1-mood')} />
         <Row label="Step 2 — Goal" route="/onboarding-funnel/step-2-goal" onPress={() => go('/onboarding-funnel/step-2-goal')} />
         <Row label="Step 3 — Level" route="/onboarding-funnel/step-3-level" onPress={() => go('/onboarding-funnel/step-3-level')} />
         <Row label="Step 4 — Barrier" route="/onboarding-funnel/step-4-barrier" onPress={() => go('/onboarding-funnel/step-4-barrier')} />
         <Row label="Step 5 — Length" route="/onboarding-funnel/step-5-length" onPress={() => go('/onboarding-funnel/step-5-length')} />
         <Row label="Step 6 — Social Proof" route="/onboarding-funnel/step-6-social-proof" onPress={() => go('/onboarding-funnel/step-6-social-proof')} />
+        <Row label="Name capture" route="/onboarding-funnel/name" onPress={() => go('/onboarding-funnel/name')} />
         <Row label="Reveal — Loading" route="/onboarding-funnel/reveal-loading" onPress={() => go('/onboarding-funnel/reveal-loading')} />
         <Row
           label="Reveal — Payoff (Soft Paywall #1)"

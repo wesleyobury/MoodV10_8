@@ -81,14 +81,20 @@ const GOAL_BLURB_WORD: Record<PrimaryGoal, string> = {
 };
 
 // Value props shown in the auto-swiping feature carousel.
+// Mirrors PaywallModal.tsx copy so all three paywalls read consistently.
+// Community cards (flame / people / copy) are interleaved early rather than
+// trailing, so the social pillar surfaces within the first few auto-advancing
+// cards instead of ~20s in.
 const FEATURES: { icon: keyof typeof Ionicons.glyphMap; title: string; subtext: string }[] = [
-  { icon: 'sparkles', title: 'Mood-based workouts', subtext: 'A fresh session for how you feel.' },
-  { icon: 'locate', title: 'Personalized to your goals', subtext: 'Built around your goals.' },
-  { icon: 'sync', title: 'Adapts to energy & recovery', subtext: 'Adjusts to how recovered you are.' },
-  { icon: 'watch', title: 'Live heart rate & wearables', subtext: 'Real-time metrics, smarter.' },
-  { icon: 'stats-chart', title: 'Progress that matters', subtext: 'Track your trends and wins.' },
-  { icon: 'people', title: 'Social accountability', subtext: 'Share, compete, stay on track.' },
-  { icon: 'infinite', title: 'Unlimited access', subtext: 'Every workout & program.' },
+  { icon: 'sparkles', title: 'Mood-based workouts', subtext: 'Unlimited sessions for how you feel.' },
+  { icon: 'flame', title: 'A driven community', subtext: 'Train alongside people who show up.' },
+  { icon: 'locate', title: 'Personalized to you', subtext: 'Built around your goals and level.' },
+  { icon: 'people', title: 'See other athletes', subtext: 'Browse what real athletes are training.' },
+  { icon: 'sync', title: 'Adapts to recovery', subtext: 'Intensity tuned to how recovered you are.' },
+  { icon: 'copy', title: 'Copy any workout', subtext: "Duplicate an athlete's session in a tap." },
+  { icon: 'watch', title: 'Heart rate & wearables', subtext: 'Real-time metrics from your watch.' },
+  { icon: 'stats-chart', title: 'Progress that matters', subtext: 'Shareable charts that track your wins.' },
+  { icon: 'barbell', title: 'Full exercise library', subtext: 'Every move, with video guidance.' },
 ];
 
 const SOCIAL_AVATARS = [
@@ -111,8 +117,13 @@ export default function RevealPayoff() {
   const screenH = windowHeight;
   const heroHeight = Math.max(screenH * HERO_HEIGHT_RATIO, HERO_MIN_HEIGHT);
 
+  // Prefer the name captured in the funnel (always present once the user fills
+  // it in), then any provider-supplied name, and finally a friendly default —
+  // never the raw username (which can be `apple_user_xxx` or a relay handle).
   const firstName =
-    (user?.name && user.name.split(' ')[0]) || user?.username || 'Athlete';
+    answers.firstName?.trim() ||
+    (user?.name && user.name.split(' ')[0]) ||
+    'Athlete';
   const moodWord = answers.mood ?? 'chosen';
   const heroImage = HERO_IMAGES[answers.mood ?? 'sweat'] ?? HERO_IMAGES.sweat;
   const goalWord = answers.primaryGoal ? GOAL_BLURB_WORD[answers.primaryGoal] : 'your';

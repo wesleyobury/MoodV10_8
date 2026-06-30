@@ -168,7 +168,7 @@ export default function Welcome() {
       if (completed) {
         router.replace('/(tabs)');
       } else {
-        router.replace('/onboarding-funnel/step-1-mood');
+        router.replace('/onboarding-funnel/intro');
       }
       setRedirectChecked(true);
     })();
@@ -211,7 +211,7 @@ export default function Welcome() {
           : await readHasCompletedFunnel();
         await AsyncStorage.removeItem('@mood_needs_funnel');
         if (!alreadyCompleted) {
-          router.replace('/onboarding-funnel/step-1-mood');
+          router.replace('/onboarding-funnel/intro');
           return;
         }
       }
@@ -337,7 +337,7 @@ export default function Welcome() {
               <>
                 <TouchableOpacity
                   style={styles.devSkipButton}
-                  onPress={() => router.push('/onboarding-funnel/step-1-mood')}
+                  onPress={() => router.push('/onboarding-funnel/intro')}
                   testID="dev-skip-to-funnel"
                   data-testid="dev-skip-to-funnel"
                 >
