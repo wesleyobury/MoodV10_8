@@ -29,6 +29,7 @@ import {
 } from '../../utils/devMocks';
 import { DEV_TOOLS_ENABLED } from '../../utils/devFlags';
 import { useAuth } from '../../contexts/AuthContext';
+import { useSubscription } from '../../contexts/SubscriptionContext';
 
 // ── Mood option sets ────────────────────────────────────────────────────────
 const ALL_MOODS: { id: MoodId; label: string }[] = [
@@ -123,6 +124,7 @@ function SectionHeader({ title }: { title: string }) {
 export default function DevScreens() {
   const router = useRouter();
   const { refreshEntitlement } = useAuth();
+  const { openPaywall } = useSubscription();
 
   // Per-row dropdown selections
   const [introMood, setIntroMood] = useState<MoodId>('sweat');
@@ -196,6 +198,18 @@ export default function DevScreens() {
           route="/onboarding-funnel/reveal-payoff"
           onPress={goRevealPayoff}
           right={<DevSelect value={revealVariant} options={VARIANTS} onChange={setRevealVariant} />}
+        />
+
+        <SectionHeader title="Paywalls (modal triggers)" />
+        <Row
+          label="Soft Paywall #2 (post-workout)"
+          route="openPaywall('post_achievement_close_soft')"
+          onPress={() => openPaywall('post_achievement_close_soft')}
+        />
+        <Row
+          label="Hard Paywall #3 (workout #2 / cap)"
+          route="openPaywall('generate_after_cap')"
+          onPress={() => openPaywall('generate_after_cap')}
         />
 
         <SectionHeader title="Post-Funnel" />

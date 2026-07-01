@@ -12,6 +12,7 @@ import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
+import BackButton from '../components/BackButton';
 import { BRAND_GRADIENT, COLORS } from '../constants/brand';
 import { markMoodIntroSeen, readFunnelMoodId, routeForMood } from '../utils/moodRoute';
 import { moodIntroCopy } from '../utils/moodConfig';
@@ -72,6 +73,9 @@ export default function MoodIntro() {
 
   return (
     <SafeAreaView style={styles.root} edges={['top', 'bottom']} testID="mood-intro">
+      <View style={styles.topBar}>
+        <BackButton />
+      </View>
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.content}
@@ -83,34 +87,56 @@ export default function MoodIntro() {
         <Text style={styles.headline}>{copy.headline}</Text>
         <Text style={styles.body}>{copy.body}</Text>
 
+        {/* Hero — auto-generate is the core value prop, featured up top. */}
+        <View style={styles.heroWrap}>
+          <View style={styles.heroGlowOuter} pointerEvents="none" />
+          <View style={styles.heroGlowInner} pointerEvents="none" />
+          <LinearGradient
+            colors={['#1D1710', '#100D0A']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.hero}
+          >
+            <View style={styles.heroRow}>
+              <LinearGradient
+                colors={BRAND_GRADIENT}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.flash}
+              >
+                <Ionicons name="flash" size={22} color="#3A2600" />
+              </LinearGradient>
+              <View style={styles.heroTextWrap}>
+                <Text style={styles.heroTitle}>Build for me</Text>
+                <Text style={styles.heroSub}>
+                  A complete, personalized workout — generated in seconds. Zero setup.
+                </Text>
+              </View>
+            </View>
+          </LinearGradient>
+          <View style={styles.heroBadge}>
+            <Text style={styles.heroBadgeText}>FASTEST WAY</Text>
+          </View>
+        </View>
+
+        {/* Secondary — manual build path. */}
+        <View style={styles.dividerRow}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>OR BUILD YOUR OWN</Text>
+          <View style={styles.dividerLine} />
+        </View>
         <View style={styles.steps}>
-          <Text style={styles.stepsLabel}>WHAT TO EXPECT</Text>
           {copy.steps.map((step, i) => (
             <View
               key={i}
               style={[styles.stepRow, i === copy.steps.length - 1 && styles.stepRowLast]}
             >
-              <LinearGradient
-                colors={BRAND_GRADIENT}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.stepBadge}
-              >
+              <View style={styles.stepDot}>
                 <Text style={styles.stepNum}>{i + 1}</Text>
-              </LinearGradient>
+              </View>
               <Text style={styles.stepText}>{step}</Text>
             </View>
           ))}
-        </View>
-
-        <View style={styles.buildForMe}>
-          <View style={styles.bfmIcon}>
-            <Ionicons name="sparkles" size={18} color={COLORS.accent} />
-          </View>
-          <Text style={styles.bfmText}>
-            Short on time? Tap <Text style={styles.bfmHighlight}>Build for me</Text> and MOOD
-            instantly creates a full workout tailored to you — no setup needed.
-          </Text>
         </View>
       </ScrollView>
 
@@ -133,6 +159,7 @@ export default function MoodIntro() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.bg, paddingHorizontal: 28 },
+  topBar: { height: 44, justifyContent: 'center', marginLeft: -8 },
   loading: { flex: 1, backgroundColor: COLORS.bg, alignItems: 'center', justifyContent: 'center' },
   scroll: { flex: 1 },
   content: { flexGrow: 1, justifyContent: 'center', paddingVertical: 24 },

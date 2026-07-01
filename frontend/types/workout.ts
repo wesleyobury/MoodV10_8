@@ -89,11 +89,46 @@ export type MovementFocus =
   | 'hinge_pull'
   | 'core';
 
+// --- Standardized Battle Plan structure (additive migration) ---
+// `battlePlan` (the legacy string) is kept for back-compat and the existing
+// render/snapshot pipeline. New code reads `plan` when present and renders
+// structured tiles; falls back to the string otherwise.
+export type BattlePlanFormat = 'strength' | 'circuit' | 'interval' | 'rounds';
+export type BlockType = 'straight' | 'superset' | 'circuit' | 'interval';
+
+export interface Movement {
+  name: string;            // clean movement name, e.g. "Paused Decline Press"
+  tutorialSlug?: string;   // resolved library match; undefined = no tutorial → show search fallback
+  // reps-based
+  sets?: number;
+  reps?: string;           // kept as string to allow ranges: "5", "8–10", "15–25s"
+  rest?: string;           // "90s", "60–90s"
+  // time/effort-based
+  duration?: string;       // "5 min", "30 sec"
+  intensity?: string;      // "5.2 mph", "RPE 4", "resistance 6", "6% incline"
+  note?: string;           // per-movement extra ("drop set", "4s eccentric")
+}
+
+export interface BattlePlanBlock {
+  label?: string;          // "Main", "Circuit A", "Intervals"
+  type: BlockType;
+  rounds?: number;         // defaults to 1; "repeat 3x" → 3
+  rest?: string;           // rest between rounds
+  movements: Movement[];
+}
+
+export interface BattlePlan {
+  format: BattlePlanFormat;
+  instructions?: string;   // single one-line cue ("Pause 1s on the chest")
+  blocks: BattlePlanBlock[];
+}
+
 export interface Workout {
   name: string;
   duration: string;
   description: string;
-  battlePlan: string;
+  battlePlan: string;      // legacy free-text; retained for back-compat
+  plan?: BattlePlan;       // structured plan; preferred when present
   imageUrl: string;
   videoUrl?: string;
   intensityReason: string;

@@ -20,47 +20,47 @@ export interface MoodIntroCopy {
 export const MOOD_INTRO_COPY: Record<string, MoodIntroCopy> = {
   sweat: {
     headline: "Let's get your heart rate up.",
-    body: 'Pick the type of session — cardio-driven or light weights for a sweat. Build it yourself, or tap Generate to have MOOD build one for you.',
+    body: 'Pick the kind of session you feel like today.',
     cta: "Let's go",
-    steps: ['Pick your session type', 'Choose equipment & level', 'Build your cart', 'Train & earn your card'],
+    steps: ['Pick your session type', 'Choose equipment & level', 'Build your workout'],
   },
   muscle: {
     headline: 'Time to build.',
-    body: 'Choose the muscle groups you want to hit today. Build from our exercise library, or tap Generate to have MOOD build it for you.',
+    body: 'Choose the muscle groups you want to hit today.',
     cta: "Let's go",
-    steps: ['Pick your muscle groups', 'Choose equipment & level', 'Build your cart', 'Train & earn your card'],
+    steps: ['Pick your muscle groups', 'Choose equipment & level', 'Build your workout'],
   },
   explosive: {
     headline: 'Power mode.',
-    body: "Pick your style — bodyweight for raw athleticism, or light weight to add load. Build it yourself, or tap Generate and we'll structure the work.",
+    body: 'Pick the style of power work you want today.',
     cta: "Let's go",
-    steps: ['Pick your style', 'Choose equipment & level', 'Build your cart', 'Train & earn your card'],
+    steps: ['Pick your style', 'Choose equipment & level', 'Build your workout'],
   },
   lazy: {
     headline: 'Low effort, real results.',
-    body: "Choose bodyweight or weight-based. Build it yourself, or tap Generate to keep it effortless — minimum setup, maximum return.",
+    body: 'Keep it easy — pick how you want to move today.',
     cta: "Let's go",
-    steps: ['Pick your style', 'Choose equipment & level', 'Build your cart', 'Train & earn your card'],
+    steps: ['Pick your style', 'Choose equipment & level', 'Build your workout'],
   },
   calisthenics: {
     headline: 'Bodyweight, refined.',
-    body: "Tell us what equipment you have — even if it's just the floor. Build from matched exercises, or tap Generate and we'll do it for you.",
+    body: "Tell us what you've got — even just the floor.",
     cta: "Let's go",
-    steps: ['Pick your equipment & level', 'Build your cart', 'Train & earn your card'],
+    steps: ['Choose equipment & level', 'Build your workout'],
   },
   outdoor: {
     headline: 'Take it outside.',
-    body: "Tell us what equipment you've got with you — bench, bars, none. Build your session, or tap Generate to have MOOD build it for you.",
+    body: "Tell us what you've brought — bench, bars, or nothing.",
     cta: "Let's go",
-    steps: ['Pick your equipment & level', 'Build your cart', 'Train & earn your card'],
+    steps: ['Choose equipment & level', 'Build your workout'],
   },
 };
 
 export const MOOD_INTRO_FALLBACK: MoodIntroCopy = {
   headline: "Let's build your session.",
-  body: "Make a few quick choices and we'll put together a workout tuned to you.",
+  body: "Make a few quick choices and we'll tune it to you.",
   cta: "Let's go",
-  steps: ['Make a few quick choices', 'Build your cart', 'Train & earn your card'],
+  steps: ['Choose equipment & level', 'Build your workout'],
 };
 
 export function moodIntroCopy(moodId: string | null | undefined): MoodIntroCopy {

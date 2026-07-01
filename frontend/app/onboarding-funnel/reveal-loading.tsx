@@ -261,6 +261,7 @@ export default function RevealLoading() {
       </View>
 
       <View style={styles.hero}>
+        <View style={styles.radarBox}>
         <View style={styles.glow} />
 
         {/* Rotating ring scaffold */}
@@ -320,6 +321,7 @@ export default function RevealLoading() {
             <Text style={styles.chipText}>{c.label}</Text>
           </Animated.View>
         ))}
+        </View>
       </View>
 
       <View style={styles.stream}>
@@ -349,11 +351,13 @@ export default function RevealLoading() {
   );
 }
 
+// Chips sit at the corners of the radar box (which is sized to the radar), so
+// they hug the graphic instead of drifting out to the screen edges.
 const CHIP_POS = [
-  { top: 4, left: 6 },
-  { top: 4, right: 6 },
-  { bottom: 4, left: 10 },
-  { bottom: 4, right: 10 },
+  { top: 2, left: 2 },
+  { top: 2, right: 2 },
+  { bottom: 2, left: 2 },
+  { bottom: 2, right: 2 },
 ];
 
 const styles = StyleSheet.create({
@@ -363,6 +367,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 23, fontWeight: '700', color: COLORS.textPrimary, marginTop: 9, letterSpacing: -0.3 },
   sub: { fontSize: 12.5, color: COLORS.textSecondary, marginTop: 7, lineHeight: 18 },
   hero: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  radarBox: { width: 250, height: 250, alignItems: 'center', justifyContent: 'center' },
   glow: {
     position: 'absolute',
     width: 210,

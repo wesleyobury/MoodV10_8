@@ -52,15 +52,15 @@ const WorkoutCard = React.memo(({
   const addBtnRef = useRef<any>(null);
 
   useEffect(() => {
-    coach?.mountCard();
-    return () => coach?.unmountCard();
+    coach?.cardMounted();
+    return () => coach?.cardUnmounted();
   }, [coach]);
 
   const reportAddButton = useCallback(() => {
     if (!coach || !addBtnRef.current?.measureInWindow) return;
     requestAnimationFrame(() => {
       addBtnRef.current?.measureInWindow((x: number, y: number, w: number, h: number) => {
-        if (w > 0 && h > 0) coach.reportAddButtonRect({ x, y, width: w, height: h });
+        if (w > 0 && h > 0) coach.reportFirstAddButton({ x, y, w, h });
       });
     });
   }, [coach]);

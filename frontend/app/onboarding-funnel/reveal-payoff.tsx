@@ -339,7 +339,7 @@ function StandardBottom({ onSkip, onRestore }: { onSkip: () => void; onRestore: 
       </View>
 
       <View style={styles.safetyNet}>
-        <Text style={styles.safetyPrompt}>Don&apos;t wanna commit? 👇</Text>
+        <Text style={styles.safetyPrompt}>Not ready to subscribe?</Text>
         <TouchableOpacity
           style={styles.tertiaryCta}
           onPress={onSkip}
@@ -347,7 +347,7 @@ function StandardBottom({ onSkip, onRestore }: { onSkip: () => void; onRestore: 
           testID="reveal-try-free-cta"
           data-testid="reveal-try-free-cta"
         >
-          <Text style={styles.tertiaryCtaLabel}>Build now &amp; save it for later</Text>
+          <Text style={styles.tertiaryCtaLabel}>Try my first workout — free</Text>
         </TouchableOpacity>
       </View>
 
