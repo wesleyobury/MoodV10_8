@@ -868,8 +868,8 @@ export default function Profile() {
               style={styles.statsButton} 
               onPress={() => router.push('/user-stats')}
             >
-              <Ionicons name="stats-chart" size={18} color="#FFD700" />
-              <Text style={styles.statsButtonText}>Stats</Text>
+              <Ionicons name="trophy" size={18} color="#FFD700" />
+              <Text style={styles.statsButtonText}>Achievements</Text>
             </TouchableOpacity>
           </View>
 

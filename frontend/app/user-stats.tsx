@@ -171,7 +171,7 @@ export default function UserStatsScreen() {
       {/* Minimal Header */}
       <View style={styles.header}>
         <BackButton />
-        <Text style={styles.headerTitle}>Your Stats</Text>
+        <Text style={styles.headerTitle}>Achievements</Text>
         <View style={styles.placeholder} />
       </View>
 
@@ -227,6 +227,40 @@ export default function UserStatsScreen() {
                 best{'\n'}{signals.workout_streak_best}
               </Text>
             )}
+          </View>
+        </View>
+
+        {/* Badges — the headline of the Achievements screen */}
+        <View style={styles.badgesSection}>
+          <View style={styles.badgesHeader}>
+            <Text style={styles.badgesLabel}>BADGES</Text>
+            <Text style={styles.badgesCount}>
+              {earnedSet.size} / {TOTAL_ACHIEVEMENTS}
+            </Text>
+          </View>
+          <View style={styles.badgesProgressTrack}>
+            <View
+              style={[
+                styles.badgesProgressFill,
+                { width: `${Math.round((earnedSet.size / TOTAL_ACHIEVEMENTS) * 100)}%` },
+              ]}
+            />
+          </View>
+          <View style={styles.badgesGrid}>
+            {ACHIEVEMENTS.map((a) => {
+              const earned = earnedSet.has(a.id);
+              return (
+                <View key={a.id} style={styles.badgeCell}>
+                  <AchievementMedallion icon={a.icon as any} size={58} locked={!earned} />
+                  <Text
+                    style={[styles.badgeCaption, !earned && styles.badgeCaptionLocked]}
+                    numberOfLines={1}
+                  >
+                    {a.label}
+                  </Text>
+                </View>
+              );
+            })}
           </View>
         </View>
 
@@ -352,40 +386,6 @@ export default function UserStatsScreen() {
               <Text style={styles.activityValue}>{activityStats?.total_comments || 0}</Text>
               <Text style={styles.activityItemLabel}>Comments</Text>
             </View>
-          </View>
-        </View>
-
-        {/* Badges */}
-        <View style={styles.badgesSection}>
-          <View style={styles.badgesHeader}>
-            <Text style={styles.badgesLabel}>BADGES</Text>
-            <Text style={styles.badgesCount}>
-              {earnedSet.size} / {TOTAL_ACHIEVEMENTS}
-            </Text>
-          </View>
-          <View style={styles.badgesProgressTrack}>
-            <View
-              style={[
-                styles.badgesProgressFill,
-                { width: `${Math.round((earnedSet.size / TOTAL_ACHIEVEMENTS) * 100)}%` },
-              ]}
-            />
-          </View>
-          <View style={styles.badgesGrid}>
-            {ACHIEVEMENTS.map((a) => {
-              const earned = earnedSet.has(a.id);
-              return (
-                <View key={a.id} style={styles.badgeCell}>
-                  <AchievementMedallion icon={a.icon as any} size={58} locked={!earned} />
-                  <Text
-                    style={[styles.badgeCaption, !earned && styles.badgeCaptionLocked]}
-                    numberOfLines={1}
-                  >
-                    {a.label}
-                  </Text>
-                </View>
-              );
-            })}
           </View>
         </View>
 
