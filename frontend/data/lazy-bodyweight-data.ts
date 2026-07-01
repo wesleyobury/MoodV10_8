@@ -11,6 +11,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Easy base with brief brisk pops; smooth steps and breaths.',
           battlePlan: '3 rounds\n• 2 min Easy Walk (RPE 3)\n• 1 min Brisk Walk (RPE 4)\nNo extra rest; repeat sequence continuously',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy Walk"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 4",
+                    "name": "Brisk Walk"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241046/mood_app/workout_images/0jyalb2d_download_26_.jpg',
           intensityReason: 'Gentle surges raise HR without impact or joint strain.',
           moodTips: [
@@ -31,6 +52,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Steady incline walk; relaxed shoulders; even cadence.',
           battlePlan: '1 set\n• 8–10 min Walk @ 3–5% incline (RPE 3–4)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Incline Cruise",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "8–10 min",
+                    "intensity": "RPE 3–4",
+                    "name": "Walk @ 3–5% incline"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241072/mood_app/workout_images/lcrp3pfp_download_27_.jpg',
           intensityReason: 'Mild grade adds work quietly with stable mechanics.',
           moodTips: [
@@ -53,6 +93,32 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Easy base with 30s surges; smooth recoveries between.',
           battlePlan: '4 rounds\n• 2 min Easy (RPE 3)\n• 30s Brisk (RPE 5)\n• 30s Easy (RPE 3) to reset, then repeat',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  },
+                  {
+                    "duration": "30s",
+                    "intensity": "RPE 5",
+                    "name": "Brisk"
+                  },
+                  {
+                    "duration": "30s",
+                    "intensity": "RPE 3",
+                    "name": "Easy  to reset, then repeat"
+                  }
+                ],
+                "rounds": 4
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241046/mood_app/workout_images/0jyalb2d_download_26_.jpg',
           intensityReason: 'Short brisk segments raise cadence and HR safely.',
           moodTips: [
@@ -73,6 +139,23 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Change incline each minute; maintain easy comfortable pace.',
           battlePlan: '10–12 min continuous\n• Alternate each minute: 2% → 5% → 3% → 6% … (RPE 4–5)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "10–12 min",
+                    "name": "continuous"
+                  },
+                  {
+                    "name": "Alternate each minute: 2% → 5% → 3% → 6% …"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241072/mood_app/workout_images/lcrp3pfp_download_27_.jpg',
           intensityReason: 'Alternating grades keep interest without impact load.',
           moodTips: [
@@ -95,6 +178,28 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Easy walk base with tiny jog sprinkles and soft landings.',
           battlePlan: '4 rounds\n• 2 min Easy Walk (RPE 3)\n• 30–45s Easy Jog (RPE 5–6)\nRepeat back-to-back; no extra rest',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy Walk"
+                  },
+                  {
+                    "duration": "30–45s",
+                    "intensity": "RPE 5–6",
+                    "name": "Easy Jog",
+                    "note": "Repeat back-to-back; no extra rest"
+                  }
+                ],
+                "rounds": 4
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241046/mood_app/workout_images/0jyalb2d_download_26_.jpg',
           intensityReason: 'Short jogs elevate HR while total fatigue stays low.',
           moodTips: [
@@ -115,6 +220,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'One-minute hill efforts with flat recoveries; breathe calm.',
           battlePlan: '6 cycles continuous\n• 1 min @ 5–6% (RPE 5)\n• 1 min flat (RPE 3–4)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 5",
+                    "name": "@ 5–6%"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 3–4",
+                    "name": "flat"
+                  }
+                ],
+                "rounds": 6
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241072/mood_app/workout_images/lcrp3pfp_download_27_.jpg',
           intensityReason: 'Short hill rises engage legs gently without heavy load.',
           moodTips: [
@@ -143,6 +269,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Light resistance 80–90 rpm; shoulders relaxed and tall.',
           battlePlan: '1 set\n• 8–10 min Easy Spin (RPE 3)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Cruise Spin",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "8–10 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy Spin"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241059/mood_app/workout_images/8k8d6fo4_download_24_.jpg',
           intensityReason: 'Easy spin boosts circulation with very low muscular load.',
           moodTips: [
@@ -163,6 +308,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Easy spin punctuated by quick fast-leg bursts; reset easy.',
           battlePlan: '3 rounds\n• 2 min Easy (RPE 3)\n• 20s Fast Legs / 40s Easy (repeat 1× = 1 block)\nComplete both intervals back-to-back to finish each round',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  },
+                  {
+                    "duration": "20s",
+                    "intensity": "repeat 1× = 1 block",
+                    "name": "Fast Legs / 40s Easy"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241071/mood_app/workout_images/jx5sn8pf_download_25_.jpg',
           intensityReason: 'Short fast legs nudge HR without accumulating fatigue.',
           moodTips: [
@@ -185,6 +351,31 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Alternate light and moderate minutes at steady cadence.',
           battlePlan: '10–12 min continuous\n• 1 min Light (RPE 3)\n• 1 min Moderate (RPE 5)\nRepeat sequence',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "10–12 min",
+                    "name": "continuous"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 3",
+                    "name": "Gear Nudge"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 5",
+                    "name": "Moderate",
+                    "note": "Repeat sequence"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241059/mood_app/workout_images/8k8d6fo4_download_24_.jpg',
           intensityReason: 'Slight resistance bumps engage muscles yet stay comfy.',
           moodTips: [
@@ -205,6 +396,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Thirty-second surge, ninety seconds easy; smooth cycles.',
           battlePlan: '6 cycles continuous\n• 30s Surge (RPE 6)\n• 90s Easy (RPE 3)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Surge",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Easy",
+                    "reps": "90s"
+                  }
+                ],
+                "rounds": 6
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241071/mood_app/workout_images/jx5sn8pf_download_25_.jpg',
           intensityReason: 'Short controlled pushes lift HR then settle cleanly.',
           moodTips: [
@@ -227,6 +437,44 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: '1–2–3–2–1 @ RPE 5 with 1-min easy recoveries between.',
           battlePlan: '1 set\n• 2 min Easy\n• 1 min @ RPE 5 → 1 min Easy\n• 2 min @ RPE 5 → 1 min Easy\n• 3 min @ RPE 5 → 1 min Easy\n• 2 min @ RPE 5 → 1 min Easy\n• 1 min @ RPE 5 → 2 min Easy finish',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Pyramid Spin",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "2 min",
+                    "name": "Easy"
+                  },
+                  {
+                    "duration": "1 min",
+                    "name": "@ RPE 5 → 1 min Easy"
+                  },
+                  {
+                    "duration": "2 min",
+                    "name": "@ RPE 5 → 1 min Easy"
+                  },
+                  {
+                    "duration": "3 min",
+                    "name": "@ RPE 5 → 1 min Easy"
+                  },
+                  {
+                    "duration": "2 min",
+                    "name": "@ RPE 5 → 1 min Easy"
+                  },
+                  {
+                    "duration": "1 min",
+                    "name": "@ RPE 5 → 2 min Easy finish"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241059/mood_app/workout_images/8k8d6fo4_download_24_.jpg',
           intensityReason: 'Build and drop ladder sustains focus without strain.',
           moodTips: [
@@ -247,6 +495,28 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Seated easy with short stands; return to seat smoothly.',
           battlePlan: '5 rounds\n• 2 min Easy (RPE 3)\n• 15–20s Standing (RPE 6)\nRepeat; no extra rest between rounds',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  },
+                  {
+                    "duration": "15–20s",
+                    "intensity": "RPE 6",
+                    "name": "Standing",
+                    "note": "Repeat; no extra rest between rounds"
+                  }
+                ],
+                "rounds": 5
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241071/mood_app/workout_images/jx5sn8pf_download_25_.jpg',
           intensityReason: 'Brief standing bouts add variety with mild leg load.',
           moodTips: [
@@ -275,6 +545,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Light resistance; smooth strides; relaxed upright posture.',
           battlePlan: '1 set\n• 8–10 min Easy Glide (RPE 3)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Glide Easy",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "8–10 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy Glide"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241047/mood_app/workout_images/1b8gmmf3_download_11_.jpg',
           intensityReason: 'Low-impact glide increases flow with minimal stress.',
           moodTips: [
@@ -295,6 +584,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: '20s quicker strides with 40s easy glides; repeat calm.',
           battlePlan: '3 rounds\n• 2 min Easy\n• 3 × (20s Quick, 40s Easy) done back-to-back\nRecovery is the 40s Easy within each trio',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "name": "Easy"
+                  },
+                  {
+                    "name": "3 × done back-to-back"
+                  },
+                  {
+                    "name": "Recovery is the 40s Easy within each trio"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241061/mood_app/workout_images/c5a1o86a_download_12_.jpg',
           intensityReason: 'Short tempo lifts add spark while effort stays easy.',
           moodTips: [
@@ -317,6 +627,31 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Alternate low and high ramp minutes; steady cadence.',
           battlePlan: '10–12 min continuous\n• 1 min Low Ramp (RPE 3–4)\n• 1 min High Ramp (RPE 5)\nRepeat sequence',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "10–12 min",
+                    "name": "continuous"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 3–4",
+                    "name": "Low Ramp"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 5",
+                    "name": "High Ramp",
+                    "note": "Repeat sequence"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241047/mood_app/workout_images/1b8gmmf3_download_11_.jpg',
           intensityReason: 'Mild ramp changes add novelty without taxing joints.',
           moodTips: [
@@ -337,6 +672,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: '30s arm focus paired with 60s easy stride; smooth flow.',
           battlePlan: '6 cycles continuous\n• 30s Arm Focus (RPE 5)\n• 60s Easy (RPE 3)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Arm Focus",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Easy",
+                    "reps": "60s"
+                  }
+                ],
+                "rounds": 6
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241061/mood_app/workout_images/c5a1o86a_download_12_.jpg',
           intensityReason: 'Upper-body emphasis spreads load while staying light.',
           moodTips: [
@@ -359,6 +713,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Two minutes easy then one-minute tempo; repeat smooth.',
           battlePlan: '5 cycles continuous\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 6)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 6",
+                    "name": "Tempo Sprinkle"
+                  }
+                ],
+                "rounds": 5
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241047/mood_app/workout_images/1b8gmmf3_download_11_.jpg',
           intensityReason: 'Short tempo bouts lift HR gently without impact.',
           moodTips: [
@@ -379,6 +754,36 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Climb every two minutes; descend smoothly to finish.',
           battlePlan: '1 set\n• 2 min Easy\n• 2 min Ramp 3 → 2 min Ramp 6 → 2 min Ramp 9\n• 2 min Ramp 6 → 2 min Ramp 3\n• 2 min Easy',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Ramp Pyramid",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "2 min",
+                    "name": "Easy"
+                  },
+                  {
+                    "duration": "2 min",
+                    "name": "Ramp 3 → 2 min Ramp 6 → 2 min Ramp 9"
+                  },
+                  {
+                    "duration": "2 min",
+                    "name": "Ramp 6 → 2 min Ramp 3"
+                  },
+                  {
+                    "duration": "2 min",
+                    "name": "Easy"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241061/mood_app/workout_images/c5a1o86a_download_12_.jpg',
           intensityReason: 'Gradual ramp build challenges, then eases smoothly.',
           moodTips: [
@@ -407,6 +812,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Low level, smooth steps, light hands, steady breathing.',
           battlePlan: '1 set\n• 8–10 min Level 1–3 (RPE 3)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Easy Steps",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "8–10 min",
+                    "intensity": "RPE 3",
+                    "name": "Level 1–3"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241058/mood_app/workout_images/891czvrs_download_22_.jpg',
           intensityReason: 'Gentle stepping raises HR with clean, safe mechanics.',
           moodTips: [
@@ -427,6 +851,28 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Two minutes steady work with 30s very easy reset bouts.',
           battlePlan: '3 rounds\n• 2 min Steady (RPE 4)\n• 30s Very Easy (RPE 2–3)\nRepeat continuous; no extra rest',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 4",
+                    "name": "Steady"
+                  },
+                  {
+                    "duration": "30s",
+                    "intensity": "RPE 2–3",
+                    "name": "Very Easy",
+                    "note": "Repeat continuous; no extra rest"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241051/mood_app/workout_images/4vr4kipb_download_23_.jpg',
           intensityReason: 'Cadence dips ensure control while preventing fatigue.',
           moodTips: [
@@ -449,6 +895,30 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'One minute brisk stepping, one minute easy; repeat flow.',
           battlePlan: '10–12 min continuous\n• 1 min Brisk (RPE 5)\n• 1 min Easy (RPE 3)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "10–12 min",
+                    "name": "continuous"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 5",
+                    "name": "Brisk"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241058/mood_app/workout_images/891czvrs_download_22_.jpg',
           intensityReason: 'Cadence shifts add variety without heavy muscular load.',
           moodTips: [
@@ -469,6 +939,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Insert five double-steps at 30s mark each minute set.',
           battlePlan: '6 cycles\n• 1 min Normal Steps (RPE 4)\n• At 30s within each minute: perform 5 double-steps',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 4",
+                    "name": "Normal Steps"
+                  },
+                  {
+                    "name": "At 30s within each minute: perform 5 double-steps"
+                  }
+                ],
+                "rounds": 6
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241051/mood_app/workout_images/4vr4kipb_download_23_.jpg',
           intensityReason: 'Occasional double-steps wake hips and balance safely.',
           moodTips: [
@@ -491,6 +980,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Mostly forward steps with 30s lateral work each minute.',
           battlePlan: '6 cycles\n• 90s Forward (RPE 4)\n• 30s Side-Steps L/R (RPE 5)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Forward",
+                    "reps": "90s"
+                  },
+                  {
+                    "name": "Side-Steps L/R",
+                    "reps": "30s"
+                  }
+                ],
+                "rounds": 6
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241058/mood_app/workout_images/891czvrs_download_22_.jpg',
           intensityReason: 'Light lateral steps add variety with modest intensity.',
           moodTips: [
@@ -511,6 +1019,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Two minutes level 3–4, one minute level 5–6; repeat flow.',
           battlePlan: '4 rounds\n• 2 min Level 3–4 (RPE 4)\n• 1 min Level 5–6 (RPE 6)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 4",
+                    "name": "Level 3–4"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 6",
+                    "name": "Level 5–6"
+                  }
+                ],
+                "rounds": 4
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241051/mood_app/workout_images/4vr4kipb_download_23_.jpg',
           intensityReason: 'Slight level waves lift HR then settle it smoothly again.',
           moodTips: [
@@ -539,6 +1068,24 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Smooth 18–20 spm, gentle pressure, relaxed breathing.',
           battlePlan: '1 set\n• 8–10 min @ 18–20 spm, RPE 3',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Easy Row Flow",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "8–10 min",
+                    "name": "@ 18–20 spm, RPE 3"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241053/mood_app/workout_images/6b87wtzw_download_20_.jpg',
           intensityReason: 'Light strokes increase flow with minimal joint loading.',
           moodTips: [
@@ -559,6 +1106,35 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Arms-only, arms+body, then full strokes; crisp sequence.',
           battlePlan: '1 set\n• 2 min Arms-only (RPE 2–3)\n• 3 min Arms+Body (RPE 3)\n• 3–5 min Full Stroke (RPE 3–4)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Pick Drill Lite",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 2–3",
+                    "name": "Arms-only"
+                  },
+                  {
+                    "duration": "3 min",
+                    "intensity": "RPE 3",
+                    "name": "Arms+Body"
+                  },
+                  {
+                    "duration": "3–5 min",
+                    "intensity": "RPE 3–4",
+                    "name": "Full Stroke"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241079/mood_app/workout_images/zxa3naw1_download_21_.jpg',
           intensityReason: 'Technique segments build rhythm at very easy effort.',
           moodTips: [
@@ -581,6 +1157,31 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'One minute 18 spm, 30s 24 spm; smooth easy pressure.',
           battlePlan: '6 cycles continuous\n• 1 min @ 18 spm (RPE 3–4)\n• 30s @ 24 spm (RPE 5)\n• 30s @ 18 spm reset',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 3–4",
+                    "name": "@ 18 spm"
+                  },
+                  {
+                    "duration": "30s",
+                    "intensity": "RPE 5",
+                    "name": "@ 24 spm"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "@ 18 spm reset"
+                  }
+                ],
+                "rounds": 6
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241053/mood_app/workout_images/6b87wtzw_download_20_.jpg',
           intensityReason: 'Short rate lifts nudge HR while technique stays clean.',
           moodTips: [
@@ -601,6 +1202,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Two minutes easy, one-minute tempo; controlled repeats.',
           battlePlan: '4 rounds\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 5)\nNo extra rest; continuous flow',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 5",
+                    "name": "Technique Tempo"
+                  }
+                ],
+                "rounds": 4
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241079/mood_app/workout_images/zxa3naw1_download_21_.jpg',
           intensityReason: 'Slight tempo raises HR while mechanics remain crisp.',
           moodTips: [
@@ -623,6 +1245,35 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Easy row blocks surrounding one controlled 500m piece.',
           battlePlan: '1 set\n• 4 min Easy (RPE 3)\n• 500m Steady (RPE 6)\n• 4–6 min Easy (RPE 3)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "500m Sprinkle",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "4 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  },
+                  {
+                    "duration": "500m",
+                    "intensity": "RPE 6",
+                    "name": "Steady"
+                  },
+                  {
+                    "duration": "4–6 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241053/mood_app/workout_images/6b87wtzw_download_20_.jpg',
           intensityReason: 'Short 500m adds spice while total load remains easy.',
           moodTips: [
@@ -643,6 +1294,30 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: '2 min each at 18, 20, 22 spm, then descend back down.',
           battlePlan: '1 set\n• 2 min @ 18 spm → 2 @ 20 → 2 @ 22\n• 2 @ 20 → 2 @ 18\nAll at RPE 4–5 max',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Ladder Rate",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "2 min",
+                    "name": "@ 18 spm → 2 @ 20 → 2 @ 22"
+                  },
+                  {
+                    "name": "2 @ 20 → 2 @ 18"
+                  },
+                  {
+                    "name": "All at RPE 4–5 max"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241079/mood_app/workout_images/zxa3naw1_download_21_.jpg',
           intensityReason: 'Rate ladder entertains without adding heavy intensity.',
           moodTips: [
@@ -671,6 +1346,26 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Smooth hinge and arm drive; stable cadence; calm breath.',
           battlePlan: '1 set\n• 8–10 min Easy (RPE 3)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Easy Glide Pulls",
+                    "reps": "1",
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "duration": "8–10 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241048/mood_app/workout_images/1zo355rz_skiierg.jpg',
           intensityReason: 'Gentle pulls engage lats/core with low joint loading.',
           moodTips: [
@@ -691,6 +1386,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: '15s quicker pulls with 45s easy glides; repeat smooth.',
           battlePlan: '3 rounds\n• 2 min Easy\n• 3 × (15s Quick, 45s Easy) back-to-back\nThe 45s Easy is the rest; no extra pause',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "name": "Easy"
+                  },
+                  {
+                    "name": "3 × back-to-back"
+                  },
+                  {
+                    "name": "The 45s Easy is the rest; no extra pause"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241056/mood_app/workout_images/7ynxfrel_ski1.jpg',
           intensityReason: 'Short pick-ups wake rhythm while keeping effort light.',
           moodTips: [
@@ -713,6 +1429,30 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Alternate 1 min @ 20 spm and 1 min @ 24 spm; easy power.',
           battlePlan: '10–12 min continuous\n• 1 min @ 20 spm (RPE 3–4)\n• 1 min @ 24 spm (RPE 5)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "10–12 min",
+                    "name": "continuous"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 3–4",
+                    "name": "@ 20 spm"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 5",
+                    "name": "@ 24 spm"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241048/mood_app/workout_images/1zo355rz_skiierg.jpg',
           intensityReason: 'Small rate changes add interest without added strain.',
           moodTips: [
@@ -733,6 +1473,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: '30s hinge-led pulls with 60s easy glide; repeat calm.',
           battlePlan: '6 cycles continuous\n• 30s Focus (RPE 5)\n• 60s Easy (RPE 3)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Focus",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Easy",
+                    "reps": "60s"
+                  }
+                ],
+                "rounds": 6
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241056/mood_app/workout_images/7ynxfrel_ski1.jpg',
           intensityReason: 'Technique emphasis spreads work while staying easy.',
           moodTips: [
@@ -755,6 +1514,32 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: '20–30–40s pulls with equal easy; keep stroke smooth.',
           battlePlan: '3 cycles continuous\n• 20s Pull / 20s Easy\n• 30s Pull / 30s Easy\n• 40s Pull / 40s Easy',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Pull / 20s Easy",
+                    "reps": "20s",
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "name": "Pull / 30s Easy",
+                    "reps": "30s",
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "name": "Pull / 40s Easy",
+                    "reps": "40s",
+                    "tutorialSlug": "pull_ups"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241048/mood_app/workout_images/1zo355rz_skiierg.jpg',
           intensityReason: 'Small builds keep fun up without heavy fatigue buildup.',
           moodTips: [
@@ -775,6 +1560,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: '2 min easy then 1 min tempo pulls; repeat smoothly.',
           battlePlan: '5 cycles continuous\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 6)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 6",
+                    "name": "Technique Tempo (SkiErg)"
+                  }
+                ],
+                "rounds": 5
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241056/mood_app/workout_images/7ynxfrel_ski1.jpg',
           intensityReason: 'Slight tempo keeps interest while mechanics stay crisp.',
           moodTips: [
@@ -803,6 +1609,21 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '6–8 min',
           description: 'Simple singles; short contacts; relaxed quiet shoulders.',
           battlePlan: '3 rounds\n• 40s Jump / 20s Rest (RPE 3–4)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Jump / 20s Rest",
+                    "reps": "40s"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241067/mood_app/workout_images/hx5xzvml_download_14_.jpg',
           intensityReason: 'Light rhythm warms calves and lungs with minimal stress.',
           moodTips: [
@@ -823,6 +1644,21 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '6–8 min',
           description: 'Alternating steps under rope; easy beat; relaxed flow.',
           battlePlan: '3 rounds\n• 45s Step Rope / 15s Rest (RPE 3–4)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Step Rope / 15s Rest",
+                    "reps": "45s"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241078/mood_app/workout_images/vjbmjg1y_jr_singles.jpg',
           intensityReason: 'Step pattern lowers impact and keeps rhythm friendly.',
           moodTips: [
@@ -845,6 +1681,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: '50s steady singles and 10s rest; repeat calm rhythm.',
           battlePlan: '8–10 min\n• 50s Jump / 10s Rest (RPE 5)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "8–10 min",
+                    "name": "Interval"
+                  },
+                  {
+                    "duration": "50s",
+                    "intensity": "RPE 5",
+                    "name": "Jump / 10s Rest"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241067/mood_app/workout_images/hx5xzvml_download_14_.jpg',
           intensityReason: 'Slight tempo raises HR while remaining comfortable.',
           moodTips: [
@@ -865,6 +1720,21 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Small side shuffles under rope; smooth even rhythm.',
           battlePlan: '5 rounds\n• 40s Lateral Steps / 20s Rest (RPE 4–5)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Lateral Steps / 20s Rest",
+                    "reps": "40s"
+                  }
+                ],
+                "rounds": 5
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241078/mood_app/workout_images/vjbmjg1y_jr_singles.jpg',
           intensityReason: 'Mild lateral steps add variety and light coordination.',
           moodTips: [
@@ -887,6 +1757,29 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: '40s singles plus 20s fast singles; high cadence for appropriate challenge',
           battlePlan: '6 cycles\n• 40s Singles (RPE 4)\n• 20s Fast Singles (RPE 6)\n• 30s Easy Rest between cycles',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Singles",
+                    "reps": "40s"
+                  },
+                  {
+                    "name": "Fast Singles",
+                    "reps": "20s"
+                  },
+                  {
+                    "name": "Easy Rest between cycles",
+                    "reps": "30s"
+                  }
+                ],
+                "rounds": 6
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241055/mood_app/workout_images/7xdwafzn_download_15_.jpg',
           intensityReason: 'Short rhythm changes stimulate without heavy strain.',
           moodTips: [
@@ -907,6 +1800,21 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Singles base with 5–10 double-unders sprinkled in calmly.',
           battlePlan: '5 rounds\n• 60s Singles; add 5–10 DU anywhere (RPE 5–6)\n• 30–45s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Singles; add 5–10 DU anywhere",
+                    "reps": "60s"
+                  }
+                ],
+                "rounds": 5
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241075/mood_app/workout_images/nj4p5yh5_download_16_.jpg',
           intensityReason: 'Occasional doubles add challenge while volume stays low.',
           moodTips: [
@@ -935,6 +1843,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Steady step-ups; alternate leads; smooth controlled pace.',
           battlePlan: '1 set\n• 8–10 min Continuous Step-Ups (RPE 3–4)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Step-Ups Easy",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "8–10 min",
+                    "intensity": "RPE 3–4",
+                    "name": "Continuous Step-Ups"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241050/mood_app/workout_images/43a622qp_download_17_.jpg',
           intensityReason: 'Low step work moves legs with minimal joint impact.',
           moodTips: [
@@ -955,6 +1882,26 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Light tap to box; stand tall; relaxed smooth rhythm.',
           battlePlan: '3 rounds\n• 60s Squat-to-Stand\n• 30s Easy Step-Ups\nNo extra rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Squat-to-Stand",
+                    "reps": "60s",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Easy Step-Ups",
+                    "reps": "30s"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241062/mood_app/workout_images/dgbd4a69_download_18_.jpg',
           intensityReason: 'Box target keeps depth safe with comfortable cadence.',
           moodTips: [
@@ -977,6 +1924,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Step-up with gentle knee lift; alternate legs; control.',
           battlePlan: '4 rounds\n• 60s Step-Up + Knee (RPE 5)\n• 60s Easy Step-Ups (RPE 3–4)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Step-Up + Knee",
+                    "reps": "60s"
+                  },
+                  {
+                    "name": "Easy Step-Ups",
+                    "reps": "60s"
+                  }
+                ],
+                "rounds": 4
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241050/mood_app/workout_images/43a622qp_download_17_.jpg',
           intensityReason: 'Small knee drive lifts HR without jumping impact.',
           moodTips: [
@@ -997,6 +1963,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Tap box, two pulses, stand tall; repeat with control.',
           battlePlan: '4 rounds\n• 45s Squat 2-Pulse + Stand\n• 45s Step-Ups Easy\nRepeat flow',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Squat 2-Pulse + Stand",
+                    "reps": "45s",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Step-Ups Easy",
+                    "reps": "45s",
+                    "note": "Repeat flow"
+                  }
+                ],
+                "rounds": 4
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241067/mood_app/workout_images/ikffehr2_download_19_.jpg',
           intensityReason: 'Light pulses increase time under tension comfortably.',
           moodTips: [
@@ -1019,6 +2006,26 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Small jumps; quiet sticks; step down; reset each rep.',
           battlePlan: '5 rounds\n• 30s Box Jumps (low)\n• 60s Step-Ups Easy\n• 30s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Box Jumps",
+                    "reps": "30s",
+                    "tutorialSlug": "plyo_box_jump"
+                  },
+                  {
+                    "name": "Step-Ups Easy",
+                    "reps": "60s"
+                  }
+                ],
+                "rounds": 5
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241067/mood_app/workout_images/ikffehr2_download_19_.jpg',
           intensityReason: 'Low jumps keep playful intent with soft controlled landings.',
           moodTips: [
@@ -1039,6 +2046,22 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Two jumps, 10s rest, two jumps; step down always.',
           battlePlan: '5 rounds\n• Cluster: 2 Jumps → 10s rest → 2 Jumps\n• Then 60s Easy Step-Ups\nRepeat; total RPE 5–6',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Jumps → 10s rest → 2 Jumps",
+                    "reps": "2",
+                    "note": "Then 60s Easy Step-Ups; Repeat; total RPE 5–6"
+                  }
+                ],
+                "rounds": 5
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241076/mood_app/workout_images/qj1k6asd_bj.jpg',
           intensityReason: 'Clusters sustain jump quality with brief micro-rests.',
           moodTips: [
@@ -1067,6 +2090,34 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Squats, wall pushups, glute bridges, dead bugs; steady.',
           battlePlan: '3 rounds\n• 30s Squats\n• 30s Wall Pushups\n• 30s Glute Bridges\n• 30s Dead Bug\n• 30s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Squats",
+                    "reps": "30s",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Wall Pushups",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Glute Bridges",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "reps": "30s"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241066/mood_app/workout_images/gwmz0zxk_download_3_.jpg',
           intensityReason: 'Simple moves elevate flow with low joint and back stress.',
           moodTips: [
@@ -1087,6 +2138,35 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Reverse lunges, plank, hip hinges, calf raises; calm.',
           battlePlan: '3 rounds\n• 30s Reverse Lunges (alt)\n• 30s Forearm Plank\n• 30s Hip Hinge Good Mornings\n• 30s Calf Raises\n• 30s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Reverse Lunges",
+                    "reps": "30s",
+                    "tutorialSlug": "barbell_reverse_lunge"
+                  },
+                  {
+                    "name": "Forearm Plank",
+                    "reps": "30s",
+                    "tutorialSlug": "plank"
+                  },
+                  {
+                    "name": "Hip Hinge Good Mornings",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Calf Raises",
+                    "reps": "30s"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241073/mood_app/workout_images/lz6xvlc5_download_4_.jpg',
           intensityReason: 'Gentle full-body mix builds heat without large fatigue.',
           moodTips: [
@@ -1107,6 +2187,47 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–13 min',
           description: 'Bird dogs, side planks, clamshells, hollow holds; smooth.',
           battlePlan: '2 rounds\n• 30s Bird Dogs (alt)\n• 30s Side Plank L\n• 30s Side Plank R\n• 30s Clamshells L\n• 30s Clamshells R\n• 30s Hollow Hold\n• 60s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Bird Dogs",
+                    "reps": "30s",
+                    "tutorialSlug": "bird_dog"
+                  },
+                  {
+                    "name": "Side Plank L",
+                    "reps": "30s",
+                    "tutorialSlug": "side_plank"
+                  },
+                  {
+                    "name": "Side Plank R",
+                    "reps": "30s",
+                    "tutorialSlug": "side_plank"
+                  },
+                  {
+                    "name": "Clamshells L",
+                    "reps": "30s",
+                    "tutorialSlug": "clamshells"
+                  },
+                  {
+                    "name": "Clamshells R",
+                    "reps": "30s",
+                    "tutorialSlug": "clamshells"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "reps": "30s",
+                    "tutorialSlug": "hollow_holds"
+                  }
+                ],
+                "rounds": 2
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241045/mood_app/workout_images/04x6jgb3_download_5_.jpg',
           intensityReason: 'Light core and hip work supports posture and ease.',
           moodTips: [
@@ -1127,6 +2248,40 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Step-back lunges, knee pushups, squat holds, core.',
           battlePlan: '3 rounds\n• 30s Step-Back Lunges (alt)\n• 30s Incline or Knee Pushups\n• 30s Squat Hold (comfortable depth)\n• 30s Dead Bug\n• 30s Rest',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "30s",
+                    "intensity": "alt",
+                    "name": "Step-Back Lunges"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Incline or Knee Pushups"
+                  },
+                  {
+                    "duration": "30s",
+                    "intensity": "comfortable depth",
+                    "name": "Squat Hold",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Dead Bug"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Rest"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241063/mood_app/workout_images/e0xo73cq_download_6_.jpg',
           intensityReason: 'Low-impact pace warms body without jumping stress.',
           moodTips: [
@@ -1149,6 +2304,40 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Squats, pushups, alternating lunges, plank; steady flow.',
           battlePlan: '3 rounds\n• 40s Squats\n• 30s Pushups (incline if needed)\n• 40s Alternating Lunges\n• 30s Forearm Plank\n• 30s Rest',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "40s",
+                    "name": "Squats",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "duration": "30s",
+                    "intensity": "incline if needed",
+                    "name": "Pushups"
+                  },
+                  {
+                    "duration": "40s",
+                    "name": "Alternating Lunges"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Forearm Plank",
+                    "tutorialSlug": "plank"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Rest"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241066/mood_app/workout_images/gwmz0zxk_download_3_.jpg',
           intensityReason: 'Short sets raise HR while pace stays conversational.',
           moodTips: [
@@ -1169,6 +2358,35 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Good mornings, reverse lunges, dead bugs, side planks.',
           battlePlan: '3 rounds\n• 40s Hip Hinge Good Mornings\n• 40s Reverse Lunges (alt)\n• 30s Dead Bug\n• 30s Side Plank (switch at 15s)\n• 30s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Hip Hinge Good Mornings",
+                    "reps": "40s"
+                  },
+                  {
+                    "name": "Reverse Lunges",
+                    "reps": "40s",
+                    "tutorialSlug": "barbell_reverse_lunge"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "reps": "30s",
+                    "tutorialSlug": "side_plank"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241073/mood_app/workout_images/lz6xvlc5_download_4_.jpg',
           intensityReason: 'Hinge, core, balance blend with easy controlled pacing.',
           moodTips: [
@@ -1189,6 +2407,35 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Small squat hops, step-back lunges, pushups, hollow.',
           battlePlan: '3 rounds\n• 30s Small Squat Hops (or Squats)\n• 40s Step-Back Lunges (alt)\n• 30s Pushups\n• 30s Hollow Hold\n• 30s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Small Squat Hops",
+                    "reps": "30s",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Step-Back Lunges",
+                    "reps": "40s"
+                  },
+                  {
+                    "name": "Pushups",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "reps": "30s",
+                    "tutorialSlug": "hollow_holds"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241045/mood_app/workout_images/04x6jgb3_download_5_.jpg',
           intensityReason: 'Tiny hops add pop while impact stays manageable.',
           moodTips: [
@@ -1209,6 +2456,34 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Plank taps, pike holds, dead bugs, scapular pushups.',
           battlePlan: '3 rounds\n• 30s High Plank Shoulder Taps\n• 20–30s Pike Hold (hips high)\n• 30s Dead Bug\n• 30s Scapular Pushups\n• 30s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "High Plank Shoulder Taps",
+                    "reps": "30s",
+                    "tutorialSlug": "plank"
+                  },
+                  {
+                    "name": "Pike Hold",
+                    "reps": "20–30s"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Scapular Pushups",
+                    "reps": "30s"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241063/mood_app/workout_images/e0xo73cq_download_6_.jpg',
           intensityReason: 'Gentle core and shoulder work adds tone without strain.',
           moodTips: [
@@ -1231,6 +2506,35 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Jump squats, alternating lunges, pushups, plank; flow.',
           battlePlan: '4 rounds\n• 20s Jump Squats → 40s Squats\n• 40s Alternating Lunges\n• 30s Pushups\n• 30s Plank\n• 30s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Jump Squats → 40s Squats",
+                    "reps": "20s",
+                    "tutorialSlug": "landmine_hack_squat_jump"
+                  },
+                  {
+                    "name": "Alternating Lunges",
+                    "reps": "40s"
+                  },
+                  {
+                    "name": "Pushups",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Plank",
+                    "reps": "30s",
+                    "tutorialSlug": "plank"
+                  }
+                ],
+                "rounds": 4
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241070/mood_app/workout_images/jurt20jc_download_7_.jpg',
           intensityReason: 'Short jump sets lift HR; total impact stays moderate.',
           moodTips: [
@@ -1251,6 +2555,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Few burpees per minute; squats and core fill remaining.',
           battlePlan: 'EMOM 12 min\nOdd: 4–6 Burpees, then Squats till minute\nEven: 20s Hollow Hold, then Lunges till minute',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Odd: 4–6 Burpees, then Squats till minute",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Even: 20s Hollow Hold, then Lunges till minute",
+                    "tutorialSlug": "hollow_holds",
+                    "note": "EMOM 12 min"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241052/mood_app/workout_images/560zzeug_download_8_.jpg',
           intensityReason: 'Sparse burpees add spice while rest moves stay easy.',
           moodTips: [
@@ -1271,6 +2594,35 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Pushups and V-ups ladder; lunges fill rest time segments.',
           battlePlan: '1 set flow\n• 6 Pushups → 10 V-ups\n• 8 Pushups → 12 V-ups\n• 10 Pushups → 14 V-ups\n• Between rungs: 20s Alternating Lunges',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "set flow",
+                    "reps": "1"
+                  },
+                  {
+                    "name": "Pushups → 10 V-ups",
+                    "reps": "6"
+                  },
+                  {
+                    "name": "Pushups → 12 V-ups",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Pushups → 14 V-ups",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Between rungs: 20s Alternating Lunges"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241077/mood_app/workout_images/r5b5c9ea_download_9_.jpg',
           intensityReason: 'Short ladders challenge without heavy fatigue buildup.',
           moodTips: [
@@ -1291,6 +2643,35 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Split jumps, squat jumps, pike shoulder taps, planks.',
           battlePlan: '4 rounds\n• 20s Split Jumps → 40s Reverse Lunges\n• 20s Squat Jumps → 40s Squats\n• 30s Pike Shoulder Taps\n• 30s Side Plank (switch at 15s)\n• 30s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Split Jumps → 40s Reverse Lunges",
+                    "reps": "20s"
+                  },
+                  {
+                    "name": "Squat Jumps → 40s Squats",
+                    "reps": "20s",
+                    "tutorialSlug": "landmine_hack_squat_jump"
+                  },
+                  {
+                    "name": "Pike Shoulder Taps",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "reps": "30s",
+                    "tutorialSlug": "side_plank"
+                  }
+                ],
+                "rounds": 4
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241064/mood_app/workout_images/fx9b15hc_download_10_.jpg',
           intensityReason: 'Mixed jumps challenge safely with soft controlled landings.',
           moodTips: [
@@ -1319,6 +2700,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Light pace, gentle arm swing, calm nasal–mouth breathing.',
           battlePlan: '1 set\n• 8–10 min Easy (RPE 3)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Breeze Pedal",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "8–10 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241069/mood_app/workout_images/j0sczg6l_download_2_.jpg',
           intensityReason: 'Easy spin moves blood with very low systemic stress.',
           moodTips: [
@@ -1339,6 +2739,27 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: '20s quick spin with 40s easy reset; repeat smoothly.',
           battlePlan: '3 rounds\n• 2 min Easy\n• 3 × (20s Quick, 40s Easy) back-to-back\nThe 40s Easy is the rest; no extra pause',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "2 min",
+                    "name": "Easy"
+                  },
+                  {
+                    "name": "3 × back-to-back"
+                  },
+                  {
+                    "name": "The 40s Easy is the rest; no extra pause"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241074/mood_app/workout_images/m4tsgs02_download_1_.jpg',
           intensityReason: 'Brief pickups add spark without accumulating fatigue.',
           moodTips: [
@@ -1361,6 +2782,30 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'One minute brisk, one minute easy; repeat balanced.',
           battlePlan: '10–12 min continuous\n• 1 min Brisk (RPE 5)\n• 1 min Easy (RPE 3)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "10–12 min",
+                    "name": "continuous"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 5",
+                    "name": "Brisk"
+                  },
+                  {
+                    "duration": "1 min",
+                    "intensity": "RPE 3",
+                    "name": "Easy"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241069/mood_app/workout_images/j0sczg6l_download_2_.jpg',
           intensityReason: 'Oscillations lift HR while the ride stays comfortable.',
           moodTips: [
@@ -1381,6 +2826,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: '90s easy then 30s firmer push; repeat controlled cycles.',
           battlePlan: '6 cycles continuous\n• 90s Easy (RPE 3)\n• 30s Push (RPE 6)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Easy",
+                    "reps": "90s"
+                  },
+                  {
+                    "name": "Push",
+                    "reps": "30s"
+                  }
+                ],
+                "rounds": 6
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241074/mood_app/workout_images/m4tsgs02_download_1_.jpg',
           intensityReason: 'Resistance shifts add variety under steady cadence.',
           moodTips: [
@@ -1403,6 +2867,29 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: '6 rounds 10s hard/20s easy with long easy bookends.',
           battlePlan: '1 set\n• 4 min Easy\n• 6 rounds: 10s Hard (RPE 7) / 20s Easy\n• 4–6 min Easy finish',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Mini-Tabata Lite",
+                    "reps": "1"
+                  },
+                  {
+                    "duration": "4 min",
+                    "name": "Easy"
+                  },
+                  {
+                    "duration": "4–6 min",
+                    "name": "Easy finish"
+                  }
+                ],
+                "rounds": 6
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241069/mood_app/workout_images/j0sczg6l_download_2_.jpg',
           intensityReason: 'Very short efforts spice an otherwise easy ride safely.',
           moodTips: [
@@ -1423,6 +2910,29 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: '20–30–40s push with equal easy; relaxed steady cadence.',
           battlePlan: '3 cycles continuous\n• 20s Push / 20s Easy\n• 30s Push / 30s Easy\n• 40s Push / 40s Easy',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Push / 20s Easy",
+                    "reps": "20s"
+                  },
+                  {
+                    "name": "Push / 30s Easy",
+                    "reps": "30s"
+                  },
+                  {
+                    "name": "Push / 40s Easy",
+                    "reps": "40s"
+                  }
+                ],
+                "rounds": 3
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241074/mood_app/workout_images/m4tsgs02_download_1_.jpg',
           intensityReason: 'Short building pushes lift HR without overreaching.',
           moodTips: [

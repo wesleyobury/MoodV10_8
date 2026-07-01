@@ -11,6 +11,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Leg press foundation, chest press next, core crunch close.',
           battlePlan: 'Leg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nMachine Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Cable Crunch",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "crunches"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241219/mood_app/workout_images/f8k0kcti_download.jpg',
           intensityReason: 'Simple machines pair leg and press lines with minimal setup.',
           moodTips: [
@@ -31,6 +64,38 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Hack squats first, shoulder press next, anti-rotation core.',
           battlePlan: 'Hack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nMachine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nCable Anti-Rotation Hold or Dead Bug\n• 3 × 20–30s/side (RPE 4), 45s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Machine Shoulder Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Cable Anti-Rotation Hold or Dead Bug",
+                    "intensity": "RPE 4",
+                    "rest": "45s",
+                    "sets": 3,
+                    "reps": "20–30s/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241252/mood_app/workout_images/uwuwsltl_download_30_.jpg',
           intensityReason: 'Guided squats and overhead press reduce bracing demand.',
           moodTips: [
@@ -51,6 +116,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Smith back squat, Smith bench press, plank for bracing.',
           battlePlan: 'Smith Back Squat\n• 3 × 8–10 (RPE 4), 60–75s rest\nSmith Machine Bench Press\n• 3 × 8–10 (RPE 4), 60s rest\nFront Plank\n• 3 × 20–40s (RPE 4), 45s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith Back Squat",
+                    "intensity": "RPE 4",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "smith_machine_back_squat"
+                  },
+                  {
+                    "name": "Smith Machine Bench Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Front Plank",
+                    "intensity": "RPE 4",
+                    "rest": "45s",
+                    "sets": 3,
+                    "reps": "20–40s",
+                    "tutorialSlug": "plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241198/mood_app/workout_images/5a61mmh2_sms.jpg',
           intensityReason: 'Smith paths stabilize compound lines for safer control.',
           moodTips: [
@@ -73,6 +171,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '28–35 min',
           description: 'Leg press volume, chest press sets, cable crunch closer.',
           battlePlan: 'Leg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nMachine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Cable Crunch",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "crunches"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241202/mood_app/workout_images/85rxong7_download_29_.jpg',
           intensityReason: 'Moderate compounds pair quads, chest, and stable core.',
           moodTips: [
@@ -93,6 +224,38 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '28–35 min',
           description: 'Hack squats, shoulder press sequence, Pallof press core.',
           battlePlan: 'Hack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nMachine Shoulder Press\n• 4 × 8 (RPE 5), 60–75s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "intensity": "RPE 5–6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Machine Shoulder Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Cable Pallof Press",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/e0ct7tlh_hs.avif',
           intensityReason: 'Overhead work with hack squats balances systemic load.',
           moodTips: [
@@ -113,6 +276,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '28–35 min',
           description: 'Smith squat series, Smith bench sets, hanging knees finish.',
           battlePlan: 'Smith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith Machine Bench Press\n• 4 × 8 (RPE 5), 60–75s rest\nHanging Knee Raise\n• 3 × 10–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith Back Squat",
+                    "intensity": "RPE 5–6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "smith_machine_back_squat"
+                  },
+                  {
+                    "name": "Smith Machine Bench Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Hanging Knee Raise",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–15",
+                    "tutorialSlug": "hanging_knee_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241196/mood_app/workout_images/3wkbxmxc_download.jpg',
           intensityReason: 'Smith guidance reduces balance while loading safely heavy.',
           moodTips: [
@@ -135,6 +331,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '35–42 min',
           description: 'Leg press plus chest press drops, then controlled abs.',
           battlePlan: 'Leg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 2–3 total series\nMachine Chest Press\n• 1 × 6–8 heavy (RPE 7) → drop 15% → 1 × 6–8 (RPE 6)\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "8",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "6–8",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Cable Crunch",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "crunches"
+                  }
+                ],
+                "rest": "90s; repeat for 2–3 total series"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241219/mood_app/workout_images/f8k0kcti_download.jpg',
           intensityReason: 'Drop-set presses expand work capacity without complexity.',
           moodTips: [
@@ -155,6 +384,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '35–42 min',
           description: 'Hack clusters, Smith bench clusters, chops for core.',
           battlePlan: 'Hack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSmith Machine Bench Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "reps": "3",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Smith Machine Bench Press",
+                    "reps": "3"
+                  },
+                  {
+                    "name": "High-to-Low Cable Chop",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241215/mood_app/workout_images/clw7t7y4_smbp.jpg',
           intensityReason: 'Cluster sets keep power high while posture stays crisp.',
           moodTips: [
@@ -175,6 +430,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '35–42 min',
           description: 'Cable goblet 1.5s, incline fly 1.5s, anti-rotation hold.',
           battlePlan: 'Cable Goblet Squat (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nIncline Cable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Goblet Squat",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_squat"
+                  },
+                  {
+                    "name": "Incline Cable Fly",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_fly_low_to_high"
+                  },
+                  {
+                    "name": "Cable Anti-Rotation Hold",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "25–35s/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241248/mood_app/workout_images/rvk5my8t_cgs.jpg',
           intensityReason: '1.5 reps add time under tension at manageable loads.',
           moodTips: [
@@ -203,6 +491,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Seated curls or RDL, row machine, core with Pallof.',
           battlePlan: 'Smith RDL or Seated Leg Curl (machine)\n• 3 × 10 (RPE 4), 60s rest\nSeated Row (neutral)\n• 3 × 8–10 (RPE 4), 60s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith RDL or Seated Leg Curl",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10",
+                    "tutorialSlug": "db_rdl"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Cable Pallof Press",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241223/mood_app/workout_images/gs71guo5_download_5_.jpg',
           intensityReason: 'Machines pair hinge and pull lines with minimal setup.',
           moodTips: [
@@ -223,6 +544,38 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: '45° back extension, pulldown, dead bug or cable core.',
           battlePlan: '45° Back Extension (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nLat Pulldown\n• 3 × 8–10 (RPE 4), 60s rest\nDead Bug or Cable Anti-Rotation Hold\n• 3 × 20–30s/side (RPE 4), 45s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "45° Back Extension",
+                    "tutorialSlug": "roman_chair_weighted_back_extension"
+                  },
+                  {
+                    "name": "3 × 10–12 , 60s rest"
+                  },
+                  {
+                    "name": "Lat Pulldown",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "neutral_grip_lat_pulldown"
+                  },
+                  {
+                    "name": "Dead Bug or Cable Anti-Rotation Hold",
+                    "intensity": "RPE 4",
+                    "rest": "45s",
+                    "sets": 3,
+                    "reps": "20–30s/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241225/mood_app/workout_images/gwy2em83_download_34_.jpg',
           intensityReason: 'Supported hinge plus vertical pull reduce bracing.',
           moodTips: [
@@ -243,6 +596,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Pull-throughs, high cable row, crunches to complete.',
           battlePlan: 'Cable Pull-Through\n• 3 × 10–12 (RPE 4), 60s rest\nHigh Cable Row\n• 3 × 10 (RPE 4), 60s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Pull-Through",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_pull_through"
+                  },
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Cable Crunch",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "crunches"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241193/mood_app/workout_images/1tdr3nmt_download_4_.jpg',
           intensityReason: 'Cable pull-through and rows guide motion with ease.',
           moodTips: [
@@ -265,6 +651,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '28–35 min',
           description: 'Smith RDLs, seated rows, anti-rotation core to finish.',
           battlePlan: 'Smith RDL\n• 4 × 8 (RPE 5–6), 75s rest\nSeated Row (neutral)\n• 4 × 8 (RPE 5), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith RDL",
+                    "intensity": "RPE 5–6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Cable Anti-Rotation Hold",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "25–35s/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241255/mood_app/workout_images/wayclwit_download_33_.jpg',
           intensityReason: 'Moderate hinge with rows builds pull chain efficiently.',
           moodTips: [
@@ -285,6 +704,40 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '28–35 min',
           description: 'Machine back extensions, pulldowns, cable crunch sets.',
           battlePlan: 'Back Extension (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Back Extension",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10",
+                    "tutorialSlug": "roman_chair_back_extension"
+                  },
+                  {
+                    "name": "Lat Pulldown",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "neutral_grip_lat_pulldown"
+                  },
+                  {
+                    "name": "Cable Crunch",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "crunches"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241225/mood_app/workout_images/gwy2em83_download_34_.jpg',
           intensityReason: 'Back extension pairs with pulldown for balanced pull.',
           moodTips: [
@@ -305,6 +758,38 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '28–35 min',
           description: 'Pull-through volume, high rows, chops for anti-rotation.',
           battlePlan: 'Cable Pull-Through\n• 4 × 10 (RPE 5), 60–75s rest\nHigh Cable Row\n• 4 × 8–10 (RPE 5), 60–75s rest\nLow-to-High Cable Chop\n• 3 × 8–10/side (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Pull-Through",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10",
+                    "tutorialSlug": "cable_pull_through"
+                  },
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Low-to-High Cable Chop",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241193/mood_app/workout_images/1tdr3nmt_download_4_.jpg',
           intensityReason: 'Cable hinge and rows add control with low setup needs.',
           moodTips: [
@@ -327,6 +812,38 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '35–42 min',
           description: 'Curl or pulldown drops, rows next, core bracing finish.',
           battlePlan: 'Seated Leg Curl (machine) or Lat Pulldown\n• 1 × 8–10 heavy (RPE 7) → drop 15% → 1 × 8–10 (RPE 6)\n• Rest 90s; repeat for 2–3 total series\nSeated Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Leg Curl or Lat Pulldown",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Cable Pallof Press",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  }
+                ],
+                "rest": "90s; repeat for 2–3 total series"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241246/mood_app/workout_images/rdlmprvh_download_19_.jpg',
           intensityReason: 'Drop sets extend tension without complex technique.',
           moodTips: [
@@ -347,6 +864,36 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '35–42 min',
           description: 'Smith RDL clusters, chest-supported row, cable chops.',
           battlePlan: 'Smith RDL\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nChest-Supported Row Machine\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith RDL",
+                    "reps": "3",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Chest-Supported Row Machine",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "chest_supported_db_row"
+                  },
+                  {
+                    "name": "High-to-Low Cable Chop",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241191/mood_app/workout_images/0wssum58_Screenshot_2025-12-04_at_12_00_14_AM.jpg',
           intensityReason: 'Clusters preserve output while scap control stays crisp.',
           moodTips: [
@@ -367,6 +914,38 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '35–42 min',
           description: 'Back extension 1.5s, high rows, anti-rotation hold close.',
           battlePlan: 'Back Extension (1.5 reps, machine)\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Back Extension",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "roman_chair_back_extension"
+                  },
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Cable Anti-Rotation Hold",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "25–35s/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241262/mood_app/workout_images/zpva3a7u_download_1_.jpg',
           intensityReason: '1.5 reps add time under tension using controlled loads.',
           moodTips: [
@@ -395,6 +974,46 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–32 min',
           description: 'Leg press, chest press, row machine, Pallof core finish.',
           battlePlan: 'Leg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nMachine Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nSeated Row (neutral)\n• 3 × 8–10 (RPE 4), 60s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Cable Pallof Press",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241254/mood_app/workout_images/v9n7t5ul_download_31_.jpg',
           intensityReason: 'Machines guide compound lines with very simple setup.',
           moodTips: [
@@ -415,6 +1034,46 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–32 min',
           description: 'Hack squat, shoulder press, pulldown, anti-rotation core.',
           battlePlan: 'Hack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nMachine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nLat Pulldown\n• 3 × 8–10 (RPE 4), 60s rest\nCable Anti-Rotation Hold\n• 3 × 20–30s/side (RPE 4), 45s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Machine Shoulder Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Lat Pulldown",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "neutral_grip_lat_pulldown"
+                  },
+                  {
+                    "name": "Cable Anti-Rotation Hold",
+                    "intensity": "RPE 4",
+                    "rest": "45s",
+                    "sets": 3,
+                    "reps": "20–30s/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241217/mood_app/workout_images/e65l9jkf_download_34_.jpg',
           intensityReason: 'Vertical push and pull anchor guided lower and core.',
           moodTips: [
@@ -435,6 +1094,45 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–32 min',
           description: 'Cable goblet squat, chest press, high row, cable chops.',
           battlePlan: 'Cable Goblet Squat (low cable)\n• 3 × 10–12 (RPE 4), 60s rest\nCable Chest Press\n• 3 × 10 (RPE 4), 60s rest\nHigh Cable Row\n• 3 × 10 (RPE 4), 60s rest\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Goblet Squat",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_squat"
+                  },
+                  {
+                    "name": "Cable Chest Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10"
+                  },
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10"
+                  },
+                  {
+                    "name": "High-to-Low Cable Chop",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241227/mood_app/workout_images/ivpc3qvz_cgs.jpg',
           intensityReason: 'Cable squat, press, and row reduce bracing demands.',
           moodTips: [
@@ -457,6 +1155,46 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '32–40 min',
           description: 'Leg press, chest press, seated row, overhead Pallof.',
           battlePlan: 'Leg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nMachine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nSeated Row (neutral)\n• 4 × 8 (RPE 5), 60–75s rest\nCable Overhead Pallof\n• 3 × 10–12/side (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Cable Overhead Pallof",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241247/mood_app/workout_images/re7tjas0_download_33_.jpg',
           intensityReason: 'Moderate compound volume across legs, push, and pull.',
           moodTips: [
@@ -477,6 +1215,46 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '32–40 min',
           description: 'Hack squat, shoulder press, pulldown series, core hold.',
           battlePlan: 'Hack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nMachine Shoulder Press\n• 4 × 8 (RPE 5), 60–75s rest\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "intensity": "RPE 5–6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Machine Shoulder Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Lat Pulldown",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "neutral_grip_lat_pulldown"
+                  },
+                  {
+                    "name": "Cable Anti-Rotation Hold",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "25–35s/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/hmkic4v7_hs.avif',
           intensityReason: 'Vertical pairs build balanced output with simple cues.',
           moodTips: [
@@ -497,6 +1275,46 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '32–40 min',
           description: 'Smith squat, Smith bench, row machine, cable chops.',
           battlePlan: 'Smith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith Machine Bench Press\n• 4 × 8 (RPE 5), 60–75s rest\nChest-Supported Row Machine\n• 3 × 8–10 (RPE 5), 60–75s rest\nLow-to-High Cable Chop\n• 3 × 8–10/side (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith Back Squat",
+                    "intensity": "RPE 5–6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "smith_machine_back_squat"
+                  },
+                  {
+                    "name": "Smith Machine Bench Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Chest-Supported Row Machine",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "chest_supported_db_row"
+                  },
+                  {
+                    "name": "Low-to-High Cable Chop",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241250/mood_app/workout_images/uazsquaz_download_8_.jpg',
           intensityReason: 'Smith guidance allows heavier compounds with control.',
           moodTips: [
@@ -519,6 +1337,47 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '40–50 min',
           description: 'Leg press drop, chest press drop, rows, Pallof finish.',
           battlePlan: 'Leg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 2–3 total series\nMachine Chest Press\n• 1 × 6–8 heavy (RPE 7) → drop 15% → 1 × 6–8 (RPE 6)\nSeated Row (neutral)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "8",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "6–8",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Cable Pallof Press",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side",
+                    "tutorialSlug": "leg_press"
+                  }
+                ],
+                "rest": "90s; repeat for 2–3 total series"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241261/mood_app/workout_images/zpkugltm_download.jpg',
           intensityReason: 'Drop sets scale volume across lifts without complexity.',
           moodTips: [
@@ -539,6 +1398,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '40–50 min',
           description: 'Hack clusters, Smith bench clusters, rows, cable chops.',
           battlePlan: 'Hack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSmith Machine Bench Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "reps": "3",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Smith Machine Bench Press",
+                    "reps": "3"
+                  },
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "High-to-Low Cable Chop",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241260/mood_app/workout_images/zjzedsvc_download_8_.jpg',
           intensityReason: 'Clusters maintain power while form remains reliable.',
           moodTips: [
@@ -559,6 +1451,46 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           duration: '40–50 min',
           description: 'Goblet 1.5s, cable fly 1.5s, high rows, overhead Pallof.',
           battlePlan: 'Cable Goblet Squat (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Overhead Pallof\n• 3 × 10–12/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Goblet Squat",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_squat"
+                  },
+                  {
+                    "name": "Cable Fly",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_machine_fly"
+                  },
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Cable Overhead Pallof",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241203/mood_app/workout_images/8uykic1g_download_2_.jpg',
           intensityReason: '1.5 reps add tension at manageable loads across lifts.',
           moodTips: [

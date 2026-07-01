@@ -87,11 +87,10 @@ const GOAL_BLURB_WORD: Record<PrimaryGoal, string> = {
 // cards instead of ~20s in.
 const FEATURES: { icon: keyof typeof Ionicons.glyphMap; title: string; subtext: string }[] = [
   { icon: 'sparkles', title: 'Mood-based workouts', subtext: 'Unlimited sessions for how you feel.' },
-  { icon: 'flame', title: 'A driven community', subtext: 'Train alongside people who show up.' },
+  { icon: 'people', title: 'See & copy other athletes', subtext: 'Browse their content, duplicate any workout.' },
   { icon: 'locate', title: 'Personalized to you', subtext: 'Built around your goals and level.' },
-  { icon: 'people', title: 'See other athletes', subtext: 'Browse what real athletes are training.' },
+  { icon: 'flame', title: 'An amazing community', subtext: 'Train alongside a driven crew that shows up.' },
   { icon: 'sync', title: 'Adapts to recovery', subtext: 'Intensity tuned to how recovered you are.' },
-  { icon: 'copy', title: 'Copy any workout', subtext: "Duplicate an athlete's session in a tap." },
   { icon: 'watch', title: 'Heart rate & wearables', subtext: 'Real-time metrics from your watch.' },
   { icon: 'stats-chart', title: 'Progress that matters', subtext: 'Shareable charts that track your wins.' },
   { icon: 'barbell', title: 'Full exercise library', subtext: 'Every move, with video guidance.' },
@@ -441,6 +440,16 @@ function CarouselCard({
   return (
     <View style={{ width }}>
       <View style={styles.cCard}>
+        {/* HUD corner brackets + INCLUDED tag — signals this is part of the membership */}
+        <View style={[styles.cCorner, styles.cCornerTL]} />
+        <View style={[styles.cCorner, styles.cCornerTR]} />
+        <View style={[styles.cCorner, styles.cCornerBL]} />
+        <View style={[styles.cCorner, styles.cCornerBR]} />
+        <View style={styles.cIncWrap}>
+          <View style={styles.cIncPill}>
+            <Text style={styles.cIncText}>INCLUDED</Text>
+          </View>
+        </View>
         <Ionicons name={feature.icon} size={210} color={COLORS.accent} style={styles.cGhost} />
         <View style={styles.cIconRing}>
           <Ionicons name={feature.icon} size={24} color={COLORS.accent} />
@@ -523,6 +532,14 @@ const styles = StyleSheet.create({
   cTextWrap: { marginTop: 'auto' },
   cTitle: { fontSize: 18, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.3, marginBottom: 6, paddingRight: 58 },
   cSubtext: { fontSize: 13, lineHeight: 18, color: COLORS.textSecondary, paddingRight: 58 },
+  cCorner: { position: 'absolute', width: 14, height: 14, borderColor: 'rgba(244,195,22,0.6)' },
+  cCornerTL: { top: 10, left: 10, borderTopWidth: 1.5, borderLeftWidth: 1.5, borderTopLeftRadius: 4 },
+  cCornerTR: { top: 10, right: 10, borderTopWidth: 1.5, borderRightWidth: 1.5, borderTopRightRadius: 4 },
+  cCornerBL: { bottom: 10, left: 10, borderBottomWidth: 1.5, borderLeftWidth: 1.5, borderBottomLeftRadius: 4 },
+  cCornerBR: { bottom: 10, right: 10, borderBottomWidth: 1.5, borderRightWidth: 1.5, borderBottomRightRadius: 4 },
+  cIncWrap: { position: 'absolute', top: 12, left: 0, right: 0, alignItems: 'center' },
+  cIncPill: { backgroundColor: 'rgba(244,195,22,0.12)', borderWidth: 1, borderColor: 'rgba(244,195,22,0.4)', borderRadius: 10, paddingHorizontal: 9, paddingVertical: 2 },
+  cIncText: { fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: COLORS.accent },
   dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 8 },
   dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.2)' },
   dotActive: { width: 18, backgroundColor: COLORS.accent },

@@ -12,6 +12,36 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Four 4‑min rounds: squats, lunges, push press, programmed rest.',
           battlePlan: 'Perform 4 rounds (4 min each):\n• 30s Goblet Squat\n• 30s Alternating Reverse Lunge\n• 30s Push Press\n• 30s Rest',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "30s",
+                    "name": "Goblet Squat",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Alternating Reverse Lunge",
+                    "tutorialSlug": "barbell_reverse_lunge"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Push Press",
+                    "tutorialSlug": "barbell_push_press"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Rest"
+                  }
+                ],
+                "rounds": 4
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240916/mood_app/workout_images/xgk4blng_download_2_.jpg',
           intensityReason: 'Intervals raise HR while preserving form and control.',
           role: 'main_block',
@@ -35,6 +65,33 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Three rounds: squat‑to‑press, light snatch, rows, steady rest.',
           battlePlan: 'Perform 3 rounds:\n• 8 Squat to Press\n• 8 Alternating Snatch (light)\n• 8 Bent-Over Row\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Squat to Press",
+                    "reps": "8",
+                    "tutorialSlug": "slam_ball_squat_press"
+                  },
+                  {
+                    "name": "Alternating Snatch",
+                    "reps": "8",
+                    "tutorialSlug": "bb_snatch"
+                  },
+                  {
+                    "name": "Bent-Over Row",
+                    "reps": "8",
+                    "tutorialSlug": "barbell_row"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240860/mood_app/workout_images/0x3bwc7i_download_1_.jpg',
           intensityReason: 'Continuous flow maintains pace with minimal setup time.',
           role: 'main_block',
@@ -60,6 +117,43 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '28–30 min',
           description: 'Four rounds of sixes: hinge, clean, squat, press, lunge, rest.',
           battlePlan: 'Perform 4 rounds (no rest between moves):\n• 6 Deadlifts\n• 6 Hang Cleans\n• 6 Front Squats\n• 6 Push Presses\n• 6 Reverse Lunges\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Deadlifts",
+                    "reps": "6",
+                    "tutorialSlug": "barbell_deadlift"
+                  },
+                  {
+                    "name": "Hang Cleans",
+                    "reps": "6",
+                    "tutorialSlug": "hang_clean"
+                  },
+                  {
+                    "name": "Front Squats",
+                    "reps": "6",
+                    "tutorialSlug": "barbell_front_squat"
+                  },
+                  {
+                    "name": "Push Presses",
+                    "reps": "6",
+                    "tutorialSlug": "barbell_push_press"
+                  },
+                  {
+                    "name": "Reverse Lunges",
+                    "reps": "6",
+                    "tutorialSlug": "barbell_reverse_lunge"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240890/mood_app/workout_images/guxsbtyu_download_3_.jpg',
           intensityReason: 'Full‑body complex sustains output with limited resting.',
           role: 'main_block',
@@ -83,6 +177,26 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12 min',
           description: 'Odd: thrusters; Even: renegade rows; sustain steady pace.',
           battlePlan: 'For 12 minutes (alternating each minute):\n• Odd min: 10 Dumbbell Thrusters\n• Even min: 12 Alternating Renegade Rows',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "For 12 minutes :"
+                  },
+                  {
+                    "name": "Odd min: 10 Dumbbell Thrusters"
+                  },
+                  {
+                    "name": "Even min: 12 Alternating Renegade Rows",
+                    "tutorialSlug": "db_renegade_rows"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240865/mood_app/workout_images/7dkvjash_download_6_.jpg',
           intensityReason: 'Alternating minutes build cadence, repeatable intensity.',
           role: 'finisher',
@@ -108,6 +222,29 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–24 min',
           description: 'Five sets 10–2: squat clean, push press, burpee over DB.',
           battlePlan: 'Perform ladder 10–8–6–4–2 reps:\n• Squat Clean\n• Push Press\n• Burpee Over Dumbbell\n• Rest as needed to finish',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Squat Clean",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Push Press",
+                    "tutorialSlug": "barbell_push_press"
+                  },
+                  {
+                    "name": "Burpee Over Dumbbell",
+                    "note": "Perform ladder 10–8–6–4–2 reps:"
+                  }
+                ],
+                "rest": "as needed to finish"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241081/mood_app/workout_images/uz466s67_download_5_.jpg',
           intensityReason: 'Descending reps sustain power under mounting fatigue.',
           role: 'main_block',
@@ -131,6 +268,38 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '15 min',
           description: 'Loop snatches, jump squats, push‑up rows, reverse lunges.',
           battlePlan: 'As many rounds as possible in 15 min:\n• 10 Alternating Snatches\n• 10 Goblet Jump Squats\n• 10 Push-Up to Row (5/side)\n• 10 Alternating Reverse Lunges (holding DBs)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "As many rounds as possible in 15 min:"
+                  },
+                  {
+                    "name": "Alternating Snatches",
+                    "reps": "10",
+                    "tutorialSlug": "bb_snatch"
+                  },
+                  {
+                    "name": "Goblet Jump Squats",
+                    "reps": "10",
+                    "tutorialSlug": "kb_goblet_jump_squat"
+                  },
+                  {
+                    "name": "Push-Up to Row",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Alternating Reverse Lunges",
+                    "reps": "10",
+                    "tutorialSlug": "barbell_reverse_lunge"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240909/mood_app/workout_images/u48z26jq_download_8_.jpg',
           intensityReason: 'Fixed clock drives density while encouraging smooth flow.',
           role: 'finisher',
@@ -162,6 +331,27 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Five rounds: short swings, longer carries, planned recovery.',
           battlePlan: 'Perform 5 rounds:\n• 20s Kettlebell Swings\n• 40s Farmer\'s Carry\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "20s",
+                    "name": "Kettlebell Swings",
+                    "tutorialSlug": "kb_single_arm_swing"
+                  },
+                  {
+                    "duration": "40s",
+                    "name": "Farmer's Carry"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241381/mood_app/workout_images/sn9i3ng0_download_1_.jpg',
           intensityReason: 'Hinge bursts plus carries elevate HR with safe loading.',
           role: 'main_block',
@@ -185,6 +375,33 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Three rounds: goblet squats, swings, presses, one‑minute rest.',
           battlePlan: 'Perform 3 rounds:\n• 8 Goblet Squats\n• 8 Single-Arm Swings (each side)\n• 8 Overhead Presses (each side)\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Goblet Squats",
+                    "reps": "8",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Single-Arm Swings",
+                    "reps": "8",
+                    "tutorialSlug": "kb_single_arm_swing"
+                  },
+                  {
+                    "name": "Overhead Presses",
+                    "reps": "8",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240864/mood_app/workout_images/6gvgn2e8_download.jpg',
           intensityReason: 'Simple sequence builds rhythm and steady conditioning.',
           role: 'main_block',
@@ -210,6 +427,42 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–24 min',
           description: 'Four rounds: swings, cleans, snatches, squats, push presses.',
           battlePlan: 'Perform 4 rounds:\n• 10 Swings\n• 8 Cleans (4/side)\n• 6 Snatches (3/side)\n• 4 Goblet Squats\n• 2 Push Presses (each side)\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Swings",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Cleans",
+                    "reps": "8",
+                    "tutorialSlug": "kb_clean"
+                  },
+                  {
+                    "name": "Snatches",
+                    "reps": "6",
+                    "tutorialSlug": "kettlebell_snatch"
+                  },
+                  {
+                    "name": "Goblet Squats",
+                    "reps": "4",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Push Presses",
+                    "reps": "2",
+                    "tutorialSlug": "barbell_push_press"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240914/mood_app/workout_images/x797b7x6_download_7_.jpg',
           intensityReason: 'Mixed rep ladder balances power, skill, and position.',
           role: 'main_block',
@@ -233,6 +486,35 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '16 min',
           description: 'Four moves cycled Tabata‑style for sixteen total intervals.',
           battlePlan: '20s work / 10s rest, cycle through:\n• Swings\n• Goblet Squats\n• Alternating Lunges\n• High Pulls\nRepeat 4 rounds (16 intervals total).',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "work / 10s rest, cycle through:",
+                    "reps": "20s"
+                  },
+                  {
+                    "name": "Swings"
+                  },
+                  {
+                    "name": "Goblet Squats",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Alternating Lunges"
+                  },
+                  {
+                    "name": "High Pulls",
+                    "tutorialSlug": "kb_high_pull",
+                    "note": "Repeat 4 rounds (16 intervals total)."
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241371/mood_app/workout_images/9cotsg82_download.jpg',
           intensityReason: 'Timed sprints maximize output with controlled recovery.',
           role: 'finisher',
@@ -258,6 +540,37 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '25–26 min',
           description: 'Five rounds, six per side: swing, clean, squat, press, snatch.',
           battlePlan: 'Perform 5 rounds (6 reps each, per side, no rest between moves):\n• Swing\n• Clean\n• Front Squat\n• Push Press\n• Snatch\n• Rest 1 min between rounds',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Swing"
+                  },
+                  {
+                    "name": "Clean",
+                    "tutorialSlug": "kb_clean"
+                  },
+                  {
+                    "name": "Front Squat",
+                    "tutorialSlug": "barbell_front_squat"
+                  },
+                  {
+                    "name": "Push Press",
+                    "tutorialSlug": "barbell_push_press"
+                  },
+                  {
+                    "name": "Snatch",
+                    "tutorialSlug": "kettlebell_snatch"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "1 min between rounds"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240914/mood_app/workout_images/x797b7x6_download_7_.jpg',
           intensityReason: 'Continuous complex taxes full chain with minimal rest.',
           role: 'main_block',
@@ -281,6 +594,38 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '15 min',
           description: 'Double swings, alternating snatches, jump squats, TGUs.',
           battlePlan: 'As many rounds as possible in 15 min:\n• 10 Double Swings\n• 8 Alternating Snatches\n• 6 Goblet Squat Jumps\n• 4 Turkish Get-Ups (2/side)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "As many rounds as possible in 15 min:"
+                  },
+                  {
+                    "name": "Double Swings",
+                    "reps": "10",
+                    "tutorialSlug": "kb_double_swing"
+                  },
+                  {
+                    "name": "Alternating Snatches",
+                    "reps": "8",
+                    "tutorialSlug": "bb_snatch"
+                  },
+                  {
+                    "name": "Goblet Squat Jumps",
+                    "reps": "6",
+                    "tutorialSlug": "kb_goblet_jump_squat"
+                  },
+                  {
+                    "name": "Turkish Get-Ups",
+                    "reps": "4"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240877/mood_app/workout_images/c1v64uta_download_9_.jpg',
           intensityReason: 'Timed density pushes pace while preserving crisp form.',
           role: 'finisher',
@@ -312,6 +657,33 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Three rounds: deadlifts, front squats, push press, rest.',
           battlePlan: 'Perform 3 rounds (light weight):\n• 8 Deadlifts\n• 8 Front Squats\n• 8 Push Presses\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Deadlifts",
+                    "reps": "8",
+                    "tutorialSlug": "barbell_deadlift"
+                  },
+                  {
+                    "name": "Front Squats",
+                    "reps": "8",
+                    "tutorialSlug": "barbell_front_squat"
+                  },
+                  {
+                    "name": "Push Presses",
+                    "reps": "8",
+                    "tutorialSlug": "barbell_push_press"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240866/mood_app/workout_images/7trsgls6_download_4_.jpg',
           intensityReason: 'Light loads cycle quickly for safe cardio emphasis.',
           role: 'main_block',
@@ -335,6 +707,38 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Three rounds: cleans, presses, back squats, rows, rest.',
           battlePlan: 'Perform 3 rounds:\n• 6 Hang Cleans\n• 6 Push Presses\n• 6 Back Squats\n• 6 Bent-Over Rows\n• Rest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Hang Cleans",
+                    "reps": "6",
+                    "tutorialSlug": "hang_clean"
+                  },
+                  {
+                    "name": "Push Presses",
+                    "reps": "6",
+                    "tutorialSlug": "barbell_push_press"
+                  },
+                  {
+                    "name": "Back Squats",
+                    "reps": "6",
+                    "tutorialSlug": "smith_machine_back_squat"
+                  },
+                  {
+                    "name": "Bent-Over Rows",
+                    "reps": "6",
+                    "tutorialSlug": "barbell_row"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241370/mood_app/workout_images/2tl6mdrg_download.jpg',
           intensityReason: 'Linked barbell lifts maintain tempo and breathing.',
           role: 'main_block',
@@ -360,6 +764,48 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '28–30 min',
           description: 'Four rounds of fives across six classic barbell patterns.',
           battlePlan: 'Perform 4 rounds (no rest between moves):\n• 5 Deadlifts\n• 5 Hang Power Cleans\n• 5 Front Squats\n• 5 Push Presses\n• 5 Back Squats\n• 5 Bent-Over Rows\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Deadlifts",
+                    "reps": "5",
+                    "tutorialSlug": "barbell_deadlift"
+                  },
+                  {
+                    "name": "Hang Power Cleans",
+                    "reps": "5",
+                    "tutorialSlug": "power_clean"
+                  },
+                  {
+                    "name": "Front Squats",
+                    "reps": "5",
+                    "tutorialSlug": "barbell_front_squat"
+                  },
+                  {
+                    "name": "Push Presses",
+                    "reps": "5",
+                    "tutorialSlug": "barbell_push_press"
+                  },
+                  {
+                    "name": "Back Squats",
+                    "reps": "5",
+                    "tutorialSlug": "smith_machine_back_squat"
+                  },
+                  {
+                    "name": "Bent-Over Rows",
+                    "reps": "5",
+                    "tutorialSlug": "barbell_row"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241372/mood_app/workout_images/aw3s2ke8_download_1_.jpg',
           intensityReason: 'Full‑chain complex sustains output with minimal rest.',
           role: 'main_block',
@@ -383,6 +829,26 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12 min',
           description: 'Odd minutes thrusters; even minutes sumo high pulls.',
           battlePlan: 'For 12 minutes (alternating each minute):\n• Odd min: 8 Thrusters\n• Even min: 10 Sumo Deadlift High Pulls',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "For 12 minutes :"
+                  },
+                  {
+                    "name": "Odd min: 8 Thrusters"
+                  },
+                  {
+                    "name": "Even min: 10 Sumo Deadlift High Pulls",
+                    "tutorialSlug": "kb_high_pull"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241370/mood_app/workout_images/2tl6mdrg_download.jpg',
           intensityReason: 'Alternating minutes sharpen cadence and repeatability.',
           role: 'finisher',
@@ -408,6 +874,32 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–24 min',
           description: '10–2 reps: power clean, push jerk, front squat, burpees.',
           battlePlan: 'Perform 10–8–6–4–2 reps:\n• Power Clean\n• Push Jerk\n• Front Squat\n• Burpee Over Bar\n• Rest as needed to finish',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Power Clean",
+                    "tutorialSlug": "power_clean"
+                  },
+                  {
+                    "name": "Push Jerk"
+                  },
+                  {
+                    "name": "Front Squat",
+                    "tutorialSlug": "barbell_front_squat"
+                  },
+                  {
+                    "name": "Burpee Over Bar",
+                    "note": "Perform 10–8–6–4–2 reps:"
+                  }
+                ],
+                "rest": "as needed to finish"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240893/mood_app/workout_images/k0r2xgj4_download_10_.jpg',
           intensityReason: 'Descending ladder sustains power as fatigue rises.',
           role: 'main_block',
@@ -431,6 +923,43 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '15 min',
           description: 'Continuous sixes of deads, cleans, presses, squats, burpees.',
           battlePlan: 'As many rounds as possible in 15 min:\n• 6 Deadlifts\n• 6 Hang Cleans\n• 6 Push Presses\n• 6 Back Squats\n• 6 Bar-Facing Burpees',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "As many rounds as possible in 15 min:"
+                  },
+                  {
+                    "name": "Deadlifts",
+                    "reps": "6",
+                    "tutorialSlug": "barbell_deadlift"
+                  },
+                  {
+                    "name": "Hang Cleans",
+                    "reps": "6",
+                    "tutorialSlug": "hang_clean"
+                  },
+                  {
+                    "name": "Push Presses",
+                    "reps": "6",
+                    "tutorialSlug": "barbell_push_press"
+                  },
+                  {
+                    "name": "Back Squats",
+                    "reps": "6",
+                    "tutorialSlug": "smith_machine_back_squat"
+                  },
+                  {
+                    "name": "Bar-Facing Burpees",
+                    "reps": "6"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241370/mood_app/workout_images/2tl6mdrg_download.jpg',
           intensityReason: 'Fixed window promotes smooth cycling and steady pace.',
           role: 'finisher',
@@ -462,6 +991,31 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–16 min',
           description: 'Three rounds: wall balls, slams, twists, one‑minute rest.',
           battlePlan: 'Perform 3 rounds:\n• 10 Wall Balls\n• 10 Slams\n• 10 Russian Twists (each side)\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Wall Balls",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Slams",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Russian Twists",
+                    "reps": "10",
+                    "tutorialSlug": "medicine_ball_russian_twists"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241373/mood_app/workout_images/cu85n2we_download_1_.jpg',
           intensityReason: 'Short sets build rhythm and raise HR with control.',
           role: 'main_block',
@@ -485,6 +1039,32 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Three rounds: chest pass, overhead throw, squat press.',
           battlePlan: 'Perform 3 rounds:\n• 8 Chest Passes (against wall)\n• 8 Overhead Throws\n• 8 Squat-to-Press\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Chest Passes",
+                    "reps": "8",
+                    "tutorialSlug": "slam_ball_chest_pass"
+                  },
+                  {
+                    "name": "Overhead Throws",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Squat-to-Press",
+                    "reps": "8",
+                    "tutorialSlug": "slam_ball_squat_press"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241384/mood_app/workout_images/vv8j4fll_download.jpg',
           intensityReason: 'Linked throws and presses train drive and timing.',
           role: 'main_block',
@@ -510,6 +1090,32 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Ten‑minute loop: wall balls, slams, overhead lunges.',
           battlePlan: 'As many rounds as possible in 10 min:\n• 10 Wall Balls\n• 10 Ball Slams\n• 10 Lunges (ball overhead)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "As many rounds as possible in 10 min:"
+                  },
+                  {
+                    "name": "Wall Balls",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Ball Slams",
+                    "reps": "10",
+                    "tutorialSlug": "slam_ball_slams"
+                  },
+                  {
+                    "name": "Lunges",
+                    "reps": "10"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241373/mood_app/workout_images/cu85n2we_download_1_.jpg',
           intensityReason: 'Short AMRAP encourages pace and crisp technique.',
           role: 'finisher',
@@ -533,6 +1139,35 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '16 min',
           description: 'Four‑movement Tabata repeated for sixteen total intervals.',
           battlePlan: '20s work / 10s rest:\n• Wall Balls\n• Slams\n• Rotational Throws\n• Squat-to-Press\nRepeat 4 rounds (16 intervals total).',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "work / 10s rest:",
+                    "reps": "20s"
+                  },
+                  {
+                    "name": "Wall Balls"
+                  },
+                  {
+                    "name": "Slams"
+                  },
+                  {
+                    "name": "Rotational Throws",
+                    "tutorialSlug": "slam_ball_rotational_throw"
+                  },
+                  {
+                    "name": "Squat-to-Press",
+                    "tutorialSlug": "slam_ball_squat_press",
+                    "note": "Repeat 4 rounds (16 intervals total)."
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241384/mood_app/workout_images/vv8j4fll_download.jpg',
           intensityReason: 'Work‑rest cycles maximize output with quick resets.',
           role: 'finisher',
@@ -558,6 +1193,34 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '16–20 min',
           description: 'Four rounds 12‑10‑8‑6 with one‑minute rests between sets.',
           battlePlan: 'Perform 4 rounds:\n• 12 Wall Balls\n• 10 Slams\n• 8 Rotations (per side)\n• 6 Burpee Slams\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Wall Balls",
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Slams",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Rotations",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Burpee Slams",
+                    "reps": "6"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241373/mood_app/workout_images/cu85n2we_download_1_.jpg',
           intensityReason: 'Sequenced lifts elevate cardio under moderate load.',
           role: 'main_block',
@@ -581,6 +1244,36 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Five rounds: wall balls, sprint, slams, sprint, recover.',
           battlePlan: 'Perform 5 rounds:\n• 10 Wall Balls\n• 20 m Sprint (with ball)\n• 10 Slams\n• 20 m Sprint (with ball)\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Wall Balls",
+                    "reps": "10"
+                  },
+                  {
+                    "duration": "20 m",
+                    "intensity": "with ball",
+                    "name": "Sprint"
+                  },
+                  {
+                    "name": "Slams",
+                    "reps": "10"
+                  },
+                  {
+                    "duration": "20 m",
+                    "intensity": "with ball",
+                    "name": "Sprint"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241384/mood_app/workout_images/vv8j4fll_download.jpg',
           intensityReason: 'Throws plus sprints tax power and quick recovery.',
           role: 'main_block',
@@ -612,6 +1305,32 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–16 min',
           description: 'Three rounds: slams, squat‑to‑press, lunges, one‑minute rest.',
           battlePlan: 'Perform 3 rounds:\n• 10 Slams\n• 10 Squat-to-Press\n• 10 Reverse Lunges (ball at chest)\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Slams",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Squat-to-Press",
+                    "reps": "10",
+                    "tutorialSlug": "slam_ball_squat_press"
+                  },
+                  {
+                    "name": "Reverse Lunges",
+                    "reps": "10",
+                    "tutorialSlug": "barbell_reverse_lunge"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241380/mood_app/workout_images/rfw3jxg0_download_3_.jpg',
           intensityReason: 'Repeated slams and squats build pace with control.',
           role: 'main_block',
@@ -635,6 +1354,31 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Three rounds: slams, overhead throws, twists, recover.',
           battlePlan: 'Perform 3 rounds:\n• 8 Slams\n• 8 Overhead Throws\n• 8 Russian Twists (per side)\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Slams",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Overhead Throws",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Russian Twists",
+                    "reps": "8",
+                    "tutorialSlug": "medicine_ball_russian_twists"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241382/mood_app/workout_images/twsti3d5_download_2_.jpg',
           intensityReason: 'Linked throws maintain rhythm and moderate heart rate.',
           role: 'main_block',
@@ -660,6 +1404,32 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Ten‑minute loop: slams, lateral slams, squat jumps.',
           battlePlan: 'As many rounds as possible in 10 min:\n• 10 Slams\n• 10 Lateral Slams (5/side)\n• 10 Squat Jumps (ball at chest)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "As many rounds as possible in 10 min:"
+                  },
+                  {
+                    "name": "Slams",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Lateral Slams",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Squat Jumps",
+                    "reps": "10",
+                    "tutorialSlug": "landmine_hack_squat_jump"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241380/mood_app/workout_images/rfw3jxg0_download_3_.jpg',
           intensityReason: 'Short AMRAP drives pace while keeping form tidy.',
           role: 'finisher',
@@ -683,6 +1453,34 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '16 min',
           description: 'Four‑move Tabata repeated to total sixteen intervals.',
           battlePlan: '20s work / 10s rest with:\n• Slams\n• Squat-to-Press\n• Lateral Slams\n• Burpee Slams\nRepeat 4 rounds (16 intervals total).',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "work / 10s rest with:",
+                    "reps": "20s"
+                  },
+                  {
+                    "name": "Slams"
+                  },
+                  {
+                    "name": "Squat-to-Press",
+                    "tutorialSlug": "slam_ball_squat_press"
+                  },
+                  {
+                    "name": "Lateral Slams"
+                  },
+                  {
+                    "name": "Burpee Slams",
+                    "note": "Repeat 4 rounds (16 intervals total)."
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241382/mood_app/workout_images/twsti3d5_download_2_.jpg',
           intensityReason: 'Fast intervals spur output with quick station shifts.',
           role: 'finisher',
@@ -708,6 +1506,34 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–24 min',
           description: 'Four rounds 12‑10‑8‑6 with one‑minute rests between sets.',
           battlePlan: 'Perform 4 rounds:\n• 12 Slams\n• 10 Lateral Slams\n• 8 Burpee Slams\n• 6 Overhead Throws\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Slams",
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Lateral Slams",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Burpee Slams",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Overhead Throws",
+                    "reps": "6"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241380/mood_app/workout_images/rfw3jxg0_download_3_.jpg',
           intensityReason: 'Linked series challenges power across repeated efforts.',
           role: 'main_block',
@@ -731,6 +1557,36 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Five rounds: slams, sprint, lateral slams, sprint, rest.',
           battlePlan: 'Perform 5 rounds:\n• 10 Slams\n• 20 m Sprint (with ball)\n• 10 Lateral Slams\n• 20 m Sprint (with ball)\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Slams",
+                    "reps": "10"
+                  },
+                  {
+                    "duration": "20 m",
+                    "intensity": "with ball",
+                    "name": "Sprint"
+                  },
+                  {
+                    "name": "Lateral Slams",
+                    "reps": "10"
+                  },
+                  {
+                    "duration": "20 m",
+                    "intensity": "with ball",
+                    "name": "Sprint"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241382/mood_app/workout_images/twsti3d5_download_2_.jpg',
           intensityReason: 'Alternating slams and sprints elevate output safely.',
           role: 'main_block',
@@ -762,6 +1618,26 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Five rounds alternating waves and double slams with rest.',
           battlePlan: 'Perform 5 rounds:\n• 20s Alternating Waves\n• 20s Rest\n• 20s Double Slams\n• 20s Rest',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Alternating Waves",
+                    "reps": "20s",
+                    "tutorialSlug": "battle_rope_alternating_waves"
+                  },
+                  {
+                    "name": "Double Slams",
+                    "reps": "20s"
+                  }
+                ],
+                "rounds": 5
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241369/mood_app/workout_images/264ds1si_download.jpg',
           intensityReason: 'Short bouts build rhythm without technique overload.',
           role: 'main_block',
@@ -785,6 +1661,31 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Four rounds: waves, side‑to‑side waves, slams, programmed rest.',
           battlePlan: 'Perform 4 rounds:\n• 20s Waves\n• 20s Side-to-Side Waves\n• 20s Slams\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "20s",
+                    "name": "Waves"
+                  },
+                  {
+                    "duration": "20s",
+                    "name": "Side-to-Side Waves",
+                    "tutorialSlug": "battle_rope_side_to_side_slams"
+                  },
+                  {
+                    "duration": "20s",
+                    "name": "Slams"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240867/mood_app/workout_images/7urm2u9b_download_5_.jpg',
           intensityReason: 'Cycling patterns sustains output and coordination.',
           role: 'main_block',
@@ -810,6 +1711,33 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '16 min',
           description: 'Waves, slams, circles, jacks rotated for sixteen intervals.',
           battlePlan: '20s work / 10s rest alternating:\n• Waves\n• Slams\n• Circles\n• Jumping Jacks\nRepeat 4 rounds (16 intervals).',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "work / 10s rest alternating:",
+                    "reps": "20s"
+                  },
+                  {
+                    "name": "Waves"
+                  },
+                  {
+                    "name": "Slams"
+                  },
+                  {
+                    "name": "Circles"
+                  },
+                  {
+                    "name": "Jumping Jacks",
+                    "note": "Repeat 4 rounds (16 intervals)."
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241369/mood_app/workout_images/264ds1si_download.jpg',
           intensityReason: 'Tabata sprints maximize power with managed fatigue.',
           role: 'finisher',
@@ -833,6 +1761,34 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–22 min',
           description: 'Four rounds: waves, burpees, slams, burpees, timed rest.',
           battlePlan: 'Perform 4 rounds:\n• 30s Waves\n• 5 Burpees\n• 30s Slams\n• 5 Burpees\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "30s",
+                    "name": "Waves"
+                  },
+                  {
+                    "name": "Burpees",
+                    "reps": "5"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Slams"
+                  },
+                  {
+                    "name": "Burpees",
+                    "reps": "5"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240867/mood_app/workout_images/7urm2u9b_download_5_.jpg',
           intensityReason: 'Ropes plus burpees challenge power and recovery speed.',
           role: 'main_block',
@@ -858,6 +1814,38 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '24–26 min',
           description: 'Four rounds: waves, slams, sides, jacks, circles, rest.',
           battlePlan: 'Perform 4 rounds:\n• 30s Waves\n• 30s Slams\n• 30s Side-to-Sides\n• 30s Jacks\n• 30s Circles\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "30s",
+                    "name": "Waves"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Slams"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Side-to-Sides"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Jacks"
+                  },
+                  {
+                    "duration": "30s",
+                    "name": "Circles"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241369/mood_app/workout_images/264ds1si_download.jpg',
           intensityReason: 'Extended sequence sustains output across patterns.',
           role: 'main_block',
@@ -881,6 +1869,34 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Five rounds: waves, sprint, slams, sprint, planned rest.',
           battlePlan: 'Perform 5 rounds:\n• 20s Waves\n• 20 m Sprint\n• 20s Slams\n• 20 m Sprint\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "20s",
+                    "name": "Waves"
+                  },
+                  {
+                    "duration": "20 m",
+                    "name": "Sprint"
+                  },
+                  {
+                    "duration": "20s",
+                    "name": "Slams"
+                  },
+                  {
+                    "duration": "20 m",
+                    "name": "Sprint"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241376/mood_app/workout_images/eezapz0l_download_2_.jpg',
           intensityReason: 'High‑output rope bouts paired with short sprints.',
           role: 'main_block',
@@ -912,6 +1928,28 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Five rounds: 10 m push, 10 m backward pull, one‑minute rest.',
           battlePlan: 'Perform 5 rounds:\n• 10 m Push (light)\n• 10 m Backward Pull\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "10 m",
+                    "intensity": "light",
+                    "name": "Push"
+                  },
+                  {
+                    "duration": "10 m",
+                    "name": "Backward Pull",
+                    "tutorialSlug": "pull_ups"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241377/mood_app/workout_images/k6ha38p9_download_1_.jpg',
           intensityReason: 'Light pushes and pulls build pace with safe control.',
           role: 'main_block',
@@ -935,6 +1973,27 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–16 min',
           description: 'Four rounds: 15 m slow push, 15 m slow pull, timed rest.',
           battlePlan: 'Perform 4 rounds:\n• 15 m Slow Push\n• 15 m Slow Pull\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "15 m",
+                    "name": "Slow Push"
+                  },
+                  {
+                    "duration": "15 m",
+                    "name": "Slow Pull",
+                    "tutorialSlug": "pull_ups"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241378/mood_app/workout_images/k8lo936w_download.jpg',
           intensityReason: 'Slow pushes and pulls reinforce position and tempo.',
           role: 'main_block',
@@ -960,6 +2019,24 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20 min',
           description: 'Ten rounds: 10 m sprint push, walk back recovery pacing.',
           battlePlan: 'Perform 10 rounds:\n• 10 m Sprint Push\n• Walk back slow (rest)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "m Sprint Push",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Walk back slow"
+                  }
+                ],
+                "rounds": 10
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241377/mood_app/workout_images/k6ha38p9_download_1_.jpg',
           intensityReason: 'Short sprint pushes spike power with full walkback rest.',
           role: 'finisher',
@@ -983,6 +2060,32 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–22 min',
           description: 'Four rounds: push, backward drag, lateral push, rest.',
           battlePlan: 'Perform 4 rounds:\n• 10 m Push (moderate)\n• 10 m Backward Drag\n• 10 m Lateral Push (sideways)\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "10 m",
+                    "intensity": "moderate",
+                    "name": "Push"
+                  },
+                  {
+                    "duration": "10 m",
+                    "name": "Backward Drag"
+                  },
+                  {
+                    "duration": "10 m",
+                    "intensity": "sideways",
+                    "name": "Lateral Push"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241378/mood_app/workout_images/k8lo936w_download.jpg',
           intensityReason: 'Mixed directions tax mechanics and aerobic capacity.',
           role: 'main_block',
@@ -1008,6 +2111,35 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '24–28 min',
           description: 'Five rounds: heavy push, sprint push, drag, lateral, rest.',
           battlePlan: 'Perform 5 rounds:\n• 10 m Heavy Push\n• 10 m Sprint Push (light)\n• 10 m Backward Drag\n• 10 m Lateral Push\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "10 m",
+                    "name": "Heavy Push"
+                  },
+                  {
+                    "duration": "10 m",
+                    "intensity": "light",
+                    "name": "Sprint Push"
+                  },
+                  {
+                    "duration": "10 m",
+                    "name": "Backward Drag"
+                  },
+                  {
+                    "duration": "10 m",
+                    "name": "Lateral Push"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241377/mood_app/workout_images/k6ha38p9_download_1_.jpg',
           intensityReason: 'Heavy plus fast bouts sustain output under fatigue.',
           role: 'main_block',
@@ -1031,6 +2163,34 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '24–26 min',
           description: 'Four rounds: heavy push, burpees, drag, burpees, rest.',
           battlePlan: 'Perform 4 rounds:\n• 10 m Heavy Push\n• 10 Burpees\n• 10 m Backward Drag\n• 10 Burpees\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "10 m",
+                    "name": "Heavy Push"
+                  },
+                  {
+                    "name": "Burpees",
+                    "reps": "10"
+                  },
+                  {
+                    "duration": "10 m",
+                    "name": "Backward Drag"
+                  },
+                  {
+                    "name": "Burpees",
+                    "reps": "10"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241378/mood_app/workout_images/k8lo936w_download.jpg',
           intensityReason: 'Heavy sled plus burpees challenge power and recovery.',
           role: 'main_block',
@@ -1062,6 +2222,26 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Three rounds: strikes each side, tire step‑ups, rest block.',
           battlePlan: 'Perform 3 rounds:\n• 10 Hammer Strikes (each side)\n• 10 Tire Step-Ups\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Hammer Strikes",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Tire Step-Ups",
+                    "reps": "10"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241374/mood_app/workout_images/dehw59za_download_3_.jpg',
           intensityReason: 'Simple strikes and steps elevate HR with safe skill.',
           role: 'main_block',
@@ -1085,6 +2265,26 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–16 min',
           description: 'Four rounds: strikes each side, toe taps on tire, recover.',
           battlePlan: 'Perform 4 rounds:\n• 8 Strikes (each side)\n• 8 Tire Toe Taps\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Strikes",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Tire Toe Taps",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241383/mood_app/workout_images/v5drjc07_download_2_.jpg',
           intensityReason: 'Moderate strikes with light footwork build steady pace.',
           role: 'main_block',
@@ -1110,6 +2310,30 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Four rounds: strikes, burpees, tire jumps, one‑minute rest.',
           battlePlan: 'Perform 4 rounds:\n• 10 Strikes (each side)\n• 8 Burpees\n• 10 Tire Jumps\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Strikes",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Burpees",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Tire Jumps",
+                    "reps": "10"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241374/mood_app/workout_images/dehw59za_download_3_.jpg',
           intensityReason: 'Strikes, burpees, and jumps stress power and recovery.',
           role: 'main_block',
@@ -1133,6 +2357,24 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Repeated sprints of strikes build power under fatigue.',
           battlePlan: '20s strikes (switch side halfway) / 10s rest\n8 rounds = 4 min\nRest 1 min\nRepeat for 3 cycles (~16–18 min)',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "duration": "20s",
+                    "intensity": "switch side halfway",
+                    "name": "strikes  / 10s rest",
+                    "note": "Repeat for 3 cycles (~16–18 min)"
+                  }
+                ],
+                "rounds": 8,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241383/mood_app/workout_images/v5drjc07_download_2_.jpg',
           intensityReason: 'Repeated sprints of strikes build power under fatigue.',
           role: 'finisher',
@@ -1158,6 +2400,35 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–24 min',
           description: 'Four rounds: strikes, jumps, burpees, tire flips, recover.',
           battlePlan: 'Perform 4 rounds:\n• 12 Strikes (each side)\n• 10 Tire Jumps\n• 8 Burpees\n• 6 Tire Flips\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Strikes",
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Tire Jumps",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Burpees",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Tire Flips",
+                    "reps": "6",
+                    "tutorialSlug": "tire_flip"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241374/mood_app/workout_images/dehw59za_download_3_.jpg',
           intensityReason: 'Mixed tasks tax strength, power, and aerobic recovery.',
           role: 'main_block',
@@ -1181,6 +2452,34 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Five rounds: strikes, sprint, jumps, sprint, planned rest.',
           battlePlan: 'Perform 5 rounds:\n• 10 Strikes (each side)\n• 20 m Sprint\n• 10 Tire Jumps\n• 20 m Sprint\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Strikes",
+                    "reps": "10"
+                  },
+                  {
+                    "duration": "20 m",
+                    "name": "Sprint"
+                  },
+                  {
+                    "name": "Tire Jumps",
+                    "reps": "10"
+                  },
+                  {
+                    "duration": "20 m",
+                    "name": "Sprint"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241383/mood_app/workout_images/v5drjc07_download_2_.jpg',
           intensityReason: 'Strikes plus sprints challenge output and quick reset.',
           role: 'main_block',
@@ -1212,6 +2511,26 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–15 min',
           description: 'Three rounds: flips, step‑ups to tire, consistent recovery.',
           battlePlan: 'Perform 3 rounds:\n• 5 Flips\n• 10 Tire Step-Ups\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Flips",
+                    "reps": "5"
+                  },
+                  {
+                    "name": "Tire Step-Ups",
+                    "reps": "10"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241385/mood_app/workout_images/vyfyeozq_download_2_.jpg',
           intensityReason: 'Light flip volume with steps raises HR without overload.',
           role: 'main_block',
@@ -1235,6 +2554,26 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '12–16 min',
           description: 'Four rounds: flips, fast toe taps on tire, minute rest.',
           battlePlan: 'Perform 4 rounds:\n• 4 Flips\n• 20 Toe Taps on Tire\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Flips",
+                    "reps": "4"
+                  },
+                  {
+                    "name": "Toe Taps on Tire",
+                    "reps": "20"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241379/mood_app/workout_images/q5iv9oux_download_1_.jpg',
           intensityReason: 'Short flip sets plus quick feet build cardio safely.',
           role: 'main_block',
@@ -1260,6 +2599,26 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Four rounds: flips, tire jumps, one‑minute recoveries.',
           battlePlan: 'Perform 4 rounds:\n• 6 Flips\n• 8 Tire Jumps\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Flips",
+                    "reps": "6"
+                  },
+                  {
+                    "name": "Tire Jumps",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241385/mood_app/workout_images/vyfyeozq_download_2_.jpg',
           intensityReason: 'Moderate flips plus jumps increase demand and pacing.',
           role: 'main_block',
@@ -1283,6 +2642,30 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '14–18 min',
           description: 'Three rounds: flips, tire push‑ups, lateral jumps, rest.',
           battlePlan: 'Perform 3 rounds:\n• 5 Flips\n• 10 Tire Push-Ups\n• 10 Lateral Jumps\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Flips",
+                    "reps": "5"
+                  },
+                  {
+                    "name": "Tire Push-Ups",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Lateral Jumps",
+                    "reps": "10"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241379/mood_app/workout_images/q5iv9oux_download_1_.jpg',
           intensityReason: 'Mixed push, press, and jump patterns raise capacity.',
           role: 'main_block',
@@ -1308,6 +2691,34 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–22 min',
           description: 'Four rounds: flips, burpees, jumps, push‑ups, programmed rest.',
           battlePlan: 'Perform 4 rounds:\n• 8 Flips\n• 8 Burpees\n• 8 Tire Jumps\n• 8 Tire Push-Ups\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Flips",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Burpees",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Tire Jumps",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Tire Push-Ups",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241385/mood_app/workout_images/vyfyeozq_download_2_.jpg',
           intensityReason: 'Repeated flips and plyos sustain power under fatigue.',
           role: 'main_block',
@@ -1331,6 +2742,34 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           duration: '20–22 min',
           description: 'Four rounds: flips, sprint, flips, sprint, one‑minute rest.',
           battlePlan: 'Perform 4 rounds:\n• 6 Flips\n• 20 m Sprint\n• 6 Flips\n• 20 m Sprint\n• Rest 1 min',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Flips",
+                    "reps": "6"
+                  },
+                  {
+                    "duration": "20 m",
+                    "name": "Sprint"
+                  },
+                  {
+                    "name": "Flips",
+                    "reps": "6"
+                  },
+                  {
+                    "duration": "20 m",
+                    "name": "Sprint"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "1 min"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241379/mood_app/workout_images/q5iv9oux_download_1_.jpg',
           intensityReason: 'Heavy flips plus short sprints challenge recovery.',
           role: 'main_block',

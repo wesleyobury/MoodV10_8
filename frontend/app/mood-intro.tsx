@@ -20,6 +20,17 @@ import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
 import { clearWorkoutHandoffPending } from '../utils/onboardingFunnelDefer';
 
+// Full mood-card titles (mirrors the cards on the Workouts tab) so the intro
+// names the mood the user tapped.
+const MOOD_CARD_TITLE: Record<string, string> = {
+  sweat: 'Sweat / burn fat',
+  muscle: 'Muscle gainer',
+  explosive: 'Build explosion',
+  lazy: "I'm feeling lazy",
+  calisthenics: 'I want to do calisthenics',
+  outdoor: 'I want to get outside',
+};
+
 export default function MoodIntro() {
   const router = useRouter();
   const { token, user } = useAuth();
@@ -70,9 +81,18 @@ export default function MoodIntro() {
   }
 
   const copy = moodIntroCopy(moodId);
+  const moodTitle = MOOD_CARD_TITLE[String(moodId)] ?? '';
 
   return (
     <SafeAreaView style={styles.root} edges={['top', 'bottom']} testID="mood-intro">
+      <View pointerEvents="none" style={styles.starfield}>
+        <View style={[styles.star, { top: '16%', left: '14%' }]} />
+        <View style={[styles.star, { top: '27%', right: '18%' }]} />
+        <View style={[styles.star, { top: '49%', left: '20%' }]} />
+        <View style={[styles.star, { top: '61%', right: '22%' }]} />
+        <View style={[styles.star, { top: '41%', left: '80%' }]} />
+        <View style={[styles.star, { top: '72%', left: '34%' }]} />
+      </View>
       <View style={styles.topBar}>
         <BackButton />
       </View>
@@ -84,6 +104,7 @@ export default function MoodIntro() {
         <View style={styles.iconRing}>
           <Ionicons name="flame" size={28} color={COLORS.accent} />
         </View>
+        {moodTitle ? <Text style={styles.moodEyebrow}>{moodTitle}</Text> : null}
         <Text style={styles.headline}>{copy.headline}</Text>
         <Text style={styles.body}>{copy.body}</Text>
 
@@ -169,39 +190,52 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: 'rgba(255,215,0,0.35)',
     alignItems: 'center', justifyContent: 'center', marginBottom: 28,
   },
+  moodEyebrow: { fontSize: 12, letterSpacing: 1.6, color: COLORS.accent, fontWeight: '700', textTransform: 'uppercase', marginBottom: 10 },
   headline: { fontSize: 32, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.6, lineHeight: 38, marginBottom: 16 },
   body: { fontSize: 17, lineHeight: 26, color: COLORS.textSecondary },
-  steps: {
-    marginTop: 28,
-    backgroundColor: '#141414',
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.06)',
-    padding: 18,
+  starfield: { ...StyleSheet.absoluteFillObject },
+  star: { position: 'absolute', width: 2, height: 2, borderRadius: 1, backgroundColor: 'rgba(255,255,255,0.28)' },
+
+  heroWrap: { marginTop: 30, position: 'relative' },
+  heroGlowOuter: {
+    position: 'absolute', top: -100, left: '50%', marginLeft: -150,
+    width: 300, height: 300, borderRadius: 150, backgroundColor: 'rgba(255,160,50,0.05)',
   },
-  stepsLabel: { fontSize: 12, fontWeight: '600', color: COLORS.textTertiary, letterSpacing: 1.4, marginBottom: 14 },
-  buildForMe: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 18,
-    backgroundColor: 'rgba(255,215,0,0.08)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.40)',
-    borderRadius: 14,
-    padding: 14,
+  heroGlowInner: {
+    position: 'absolute', top: -50, left: '50%', marginLeft: -100,
+    width: 200, height: 200, borderRadius: 100, backgroundColor: 'rgba(255,180,60,0.09)',
   },
-  bfmIcon: {
-    width: 34, height: 34, borderRadius: 17,
-    backgroundColor: 'rgba(255,215,0,0.14)',
-    alignItems: 'center', justifyContent: 'center', marginRight: 12,
+  hero: {
+    borderRadius: 18, padding: 16,
+    borderWidth: 1, borderColor: 'rgba(255,200,80,0.5)',
+    shadowColor: '#FFB13C', shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.45, shadowRadius: 16, elevation: 8,
   },
-  bfmText: { flex: 1, fontSize: 13, lineHeight: 19, color: COLORS.textSecondary },
-  bfmHighlight: { color: COLORS.accent, fontWeight: '700' },
+  heroRow: { flexDirection: 'row', alignItems: 'center' },
+  flash: { width: 46, height: 46, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginRight: 14 },
+  heroTextWrap: { flex: 1 },
+  heroTitle: { fontSize: 18, fontWeight: '800', color: '#FFE8A6', letterSpacing: 0.2 },
+  heroSub: { fontSize: 12, lineHeight: 17, color: 'rgba(255,255,255,0.75)', marginTop: 3 },
+  heroBadge: {
+    position: 'absolute', top: -9, left: 16,
+    backgroundColor: COLORS.accent, paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6,
+  },
+  heroBadgeText: { fontSize: 9, fontWeight: '800', color: COLORS.accentInk, letterSpacing: 0.6 },
+
+  dividerRow: { flexDirection: 'row', alignItems: 'center', marginTop: 24, marginBottom: 14 },
+  dividerLine: { flex: 1, height: 1, backgroundColor: 'rgba(255,255,255,0.10)' },
+  dividerText: { fontSize: 10, letterSpacing: 1, color: 'rgba(255,255,255,0.40)', marginHorizontal: 10 },
+
+  steps: { marginTop: 0 },
   stepRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
   stepRowLast: { marginBottom: 0 },
-  stepBadge: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
-  stepNum: { fontSize: 14, fontWeight: '700', color: COLORS.accentInk },
-  stepText: { fontSize: 15, fontWeight: '600', color: COLORS.textPrimary, flex: 1 },
+  stepDot: {
+    width: 24, height: 24, borderRadius: 12,
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.18)',
+    alignItems: 'center', justifyContent: 'center', marginRight: 12,
+  },
+  stepNum: { fontSize: 12, fontWeight: '600', color: 'rgba(255,255,255,0.75)' },
+  stepText: { fontSize: 14, fontWeight: '500', color: 'rgba(255,255,255,0.82)', flex: 1 },
   footer: { paddingBottom: 12 },
   cta: { borderRadius: 14, overflow: 'hidden' },
   ctaGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 16 },

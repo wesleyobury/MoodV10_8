@@ -11,6 +11,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard machine press workout for joint-friendly delt activation.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Shoulder Press Machine — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Shoulder Press Machine",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240966/mood_app/workout_images/4tfizieb_download_8_.jpg',
           intensityReason: 'Standard machine press workout for joint-friendly delt activation.',
           moodTips: [
@@ -40,6 +58,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused machine workout emphasizing control.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×10 Shoulder Press — eccentric reps (3s down)\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Shoulder Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "eccentric reps (3s down)",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240964/mood_app/workout_images/0sr4xno3_download_4_.jpg',
           intensityReason: 'Eccentric-focused machine workout emphasizing control.',
           moodTips: [
@@ -69,6 +106,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard neutral-grip workout biasing delts over triceps.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×15 Neutral-Grip Press — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Neutral-Grip Press",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240990/mood_app/workout_images/cc6w2q7t_download_3_.jpg',
           intensityReason: 'Standard neutral-grip workout biasing delts over triceps.',
           moodTips: [
@@ -98,6 +153,17 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Drop-set press workout using early fatigue to drive volume.',
           battlePlan: 'Battle Plan — Drop Set (mid-workout)\n• Set 1–2: 10 reps — standard\n• Set 3: triple drop set — 10 reps → drop → 8 → drop → 6 (no rest)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [],
+                "label": "Drop Set (mid-workout)",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240996/mood_app/workout_images/dq10rl9d_download_4_.jpg',
           intensityReason: 'Drop-set press workout using early fatigue to drive volume.',
           moodTips: [
@@ -129,6 +195,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard unilateral press workout for balance and stability.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×10 Single-Arm Shoulder Press — standard reps\nRest 75s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Shoulder Press",
+                    "sets": 5,
+                    "reps": "10",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240966/mood_app/workout_images/4tfizieb_download_8_.jpg',
           intensityReason: 'Standard unilateral press workout for balance and stability.',
           moodTips: [
@@ -158,6 +242,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Paused-rep press workout emphasizing bottom-end strength.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×8 Shoulder Press — pause reps (1s bottom)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Shoulder Press",
+                    "sets": 4,
+                    "reps": "8",
+                    "note": "pause reps (1s bottom)",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240964/mood_app/workout_images/0sr4xno3_download_4_.jpg',
           intensityReason: 'Paused-rep press workout emphasizing bottom-end strength.',
           moodTips: [
@@ -187,6 +290,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Burnout press workout emphasizing time under tension.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 Shoulder Press — burnout reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Shoulder Press",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240990/mood_app/workout_images/cc6w2q7t_download_3_.jpg',
           intensityReason: 'Burnout press workout emphasizing time under tension.',
           moodTips: [
@@ -216,6 +338,30 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing machine pressing with bodyweight fatigue.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 Shoulder Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Shoulder Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  },
+                  {
+                    "name": "Pushups",
+                    "reps": "12–15",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240996/mood_app/workout_images/dq10rl9d_download_4_.jpg',
           intensityReason: 'Superset workout pairing machine pressing with bodyweight fatigue.',
           moodTips: [
@@ -247,6 +393,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy press workout for advanced overload.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Shoulder Press — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Shoulder Press",
+                    "sets": 6,
+                    "reps": "8",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240966/mood_app/workout_images/4tfizieb_download_8_.jpg',
           intensityReason: 'Standard heavy press workout for advanced overload.',
           moodTips: [
@@ -276,6 +441,23 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop press workout pushing mechanical fatigue.',
           battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  8 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s between rounds',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "reps → drop ~20% → 8 reps → drop ~15% → AMRAP",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 3,
+                "label": "Drop Ladder",
+                "rest": "90s between rounds"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240964/mood_app/workout_images/0sr4xno3_download_4_.jpg',
           intensityReason: 'Multi-drop press workout pushing mechanical fatigue.',
           moodTips: [
@@ -305,6 +487,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout workout using shortened range for constant tension.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 Top-half presses — burnout reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Top-half presses",
+                    "sets": 4,
+                    "reps": "20",
+                    "note": "burnout reps"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240990/mood_app/workout_images/cc6w2q7t_download_3_.jpg',
           intensityReason: 'Burnout workout using shortened range for constant tension.',
           moodTips: [
@@ -334,6 +534,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Paused-rep machine workout exposing true strength.',
           battlePlan: 'Battle Plan — Pause Sets\n• 5×6 Shoulder Press — pause reps (2s bottom)\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Shoulder Press",
+                    "sets": 5,
+                    "reps": "6",
+                    "note": "pause reps (2s bottom)",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240996/mood_app/workout_images/dq10rl9d_download_4_.jpg',
           intensityReason: 'Paused-rep machine workout exposing true strength.',
           moodTips: [
@@ -371,6 +590,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard Smith press workout with fixed-path stability.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Smith Shoulder Press — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Smith Shoulder Press",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240987/mood_app/workout_images/9mj7bam7_download_9_.jpg',
           intensityReason: 'Standard Smith press workout with fixed-path stability.',
           moodTips: [
@@ -400,6 +637,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused Smith workout reinforcing control.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×10 Smith Shoulder Press — eccentric reps (3s down)\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Smith Shoulder Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "eccentric reps (3s down)"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241010/mood_app/workout_images/hphatpce_Smith-Machine-Shoulder-Press.jpg',
           intensityReason: 'Eccentric-focused Smith workout reinforcing control.',
           moodTips: [
@@ -429,6 +684,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard pull workout targeting delts and traps.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Smith Upright Row — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Smith Upright Row",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240985/mood_app/workout_images/9btj6m9u_image.jpg',
           intensityReason: 'Standard pull workout targeting delts and traps.',
           moodTips: [
@@ -458,6 +731,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard press workout with isometric finish.',
           battlePlan: 'Battle Plan — Standard + Isometric\n• 4×10 Smith Shoulder Press — standard reps\n• Final set: squeeze to finish — hold top 10s\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Smith Shoulder Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: squeeze to finish — hold top 10s"
+                  }
+                ],
+                "label": "Standard + Isometric",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241027/mood_app/workout_images/rmh1bypt_download_6_.jpg',
           intensityReason: 'Standard press workout with isometric finish.',
           moodTips: [
@@ -489,6 +780,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Paused-rep Smith workout removing momentum.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×8 Smith Shoulder Press — pause reps (1s bottom)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Smith Shoulder Press",
+                    "sets": 4,
+                    "reps": "8",
+                    "note": "pause reps (1s bottom)"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240987/mood_app/workout_images/9mj7bam7_download_9_.jpg',
           intensityReason: 'Paused-rep Smith workout removing momentum.',
           moodTips: [
@@ -518,6 +827,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Pause-rep pull workout emphasizing contraction.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Smith Upright Row — pause reps (1s top)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Smith Upright Row",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "pause reps (1s top)"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240985/mood_app/workout_images/9btj6m9u_image.jpg',
           intensityReason: 'Pause-rep pull workout emphasizing contraction.',
           moodTips: [
@@ -547,6 +874,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Burnout press workout emphasizing time under tension.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 Smith Shoulder Press — burnout reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Smith Shoulder Press",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241010/mood_app/workout_images/hphatpce_Smith-Machine-Shoulder-Press.jpg',
           intensityReason: 'Burnout press workout emphasizing time under tension.',
           moodTips: [
@@ -576,6 +921,29 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing fixed-path pressing with bodyweight fatigue.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 Smith Shoulder Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith Shoulder Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps"
+                  },
+                  {
+                    "name": "Pushups",
+                    "reps": "12–15",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241027/mood_app/workout_images/rmh1bypt_download_6_.jpg',
           intensityReason: 'Superset workout pairing fixed-path pressing with bodyweight fatigue.',
           moodTips: [
@@ -607,6 +975,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy Smith workout for controlled overload.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Smith Shoulder Press — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Smith Shoulder Press",
+                    "sets": 6,
+                    "reps": "8",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240987/mood_app/workout_images/9mj7bam7_download_9_.jpg',
           intensityReason: 'Standard heavy Smith workout for controlled overload.',
           moodTips: [
@@ -636,6 +1022,23 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Extended drop-set workout for mechanical fatigue.',
           battlePlan: 'Battle Plan — Drop Cluster\n• 3 rounds:\n  10 reps → drop ~15% → 8 reps → drop ~15% → 6 reps\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "reps → drop ~15% → 8 reps → drop ~15% → 6 reps",
+                    "reps": "10"
+                  }
+                ],
+                "rounds": 3,
+                "label": "Drop Cluster",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241010/mood_app/workout_images/hphatpce_Smith-Machine-Shoulder-Press.jpg',
           intensityReason: 'Extended drop-set workout for mechanical fatigue.',
           moodTips: [
@@ -665,6 +1068,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout + isometric workout finishing with static tension.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×15 Smith Shoulder Press — burnout reps\n• Final set: squeeze to finish — hold top 10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Smith Shoulder Press",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps; Final set: squeeze to finish — hold top 10s"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241040/mood_app/workout_images/yx8bl42q_smith_press_burnout_hold.jpg',
           intensityReason: 'Burnout + isometric workout finishing with static tension.',
           moodTips: [
@@ -694,6 +1115,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Paused-rep Smith workout exposing true shoulder capacity.',
           battlePlan: 'Battle Plan — Pause Sets\n• 5×6 Smith Shoulder Press — pause reps (2s bottom)\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Smith Shoulder Press",
+                    "sets": 5,
+                    "reps": "6",
+                    "note": "pause reps (2s bottom)"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241027/mood_app/workout_images/rmh1bypt_download_6_.jpg',
           intensityReason: 'Paused-rep Smith workout exposing true shoulder capacity.',
           moodTips: [
@@ -731,6 +1170,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard isolation workout targeting rear delts.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×15 Rear Delt Fly — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Rear Delt Fly",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "standard reps",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240989/mood_app/workout_images/bvadq5vi_download_7_.jpg',
           intensityReason: 'Standard isolation workout targeting rear delts.',
           moodTips: [
@@ -760,6 +1218,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused isolation workout emphasizing control.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×12 Rear Delt Fly — eccentric reps (3s return)\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Rear Delt Fly",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "eccentric reps (3s return)",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240971/mood_app/workout_images/2gc40bi1_download_5_.jpg',
           intensityReason: 'Eccentric-focused isolation workout emphasizing control.',
           moodTips: [
@@ -789,6 +1266,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Pause-rep isolation workout locking in contraction.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×12 Rear Delt Fly — pause reps (1s back)\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Rear Delt Fly",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "pause reps (1s back)",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241016/mood_app/workout_images/kqdzk509_image.jpg',
           intensityReason: 'Pause-rep isolation workout locking in contraction.',
           moodTips: [
@@ -818,6 +1314,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Burnout isolation workout for rear-delt endurance.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 Rear Delt Fly — burnout reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Rear Delt Fly",
+                    "sets": 4,
+                    "reps": "20",
+                    "note": "burnout reps",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240988/mood_app/workout_images/a6216mca_image.jpg',
           intensityReason: 'Burnout isolation workout for rear-delt endurance.',
           moodTips: [
@@ -849,6 +1364,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard unilateral isolation workout for balance.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×12 Single-Arm Rear Delt Fly — standard reps\nRest 75s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Rear Delt Fly",
+                    "sets": 5,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "db_fly"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241001/mood_app/workout_images/gchfnmx0_image.jpg',
           intensityReason: 'Standard unilateral isolation workout for balance.',
           moodTips: [
@@ -878,6 +1412,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Extended pause-rep isolation workout emphasizing contraction.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Rear Delt Fly — pause reps (2s back)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Rear Delt Fly",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "pause reps (2s back)",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240971/mood_app/workout_images/2gc40bi1_download_5_.jpg',
           intensityReason: 'Extended pause-rep isolation workout emphasizing contraction.',
           moodTips: [
@@ -907,6 +1460,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'High-density isolation workout with moderate reps.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×10 Rear Delt Fly — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Rear Delt Fly",
+                    "sets": 6,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241016/mood_app/workout_images/kqdzk509_image.jpg',
           intensityReason: 'High-density isolation workout with moderate reps.',
           moodTips: [
@@ -936,6 +1508,31 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing machine isolation with cable stability.',
           battlePlan: 'Battle Plan — Superset\n• 4×12 Rear Delt Fly — standard reps\nsuperset with\n• 12–15 Face Pulls\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Rear Delt Fly",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  },
+                  {
+                    "name": "Face Pulls",
+                    "reps": "12–15",
+                    "tutorialSlug": "cable_face_pull",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240988/mood_app/workout_images/a6216mca_image.jpg',
           intensityReason: 'Superset workout pairing machine isolation with cable stability.',
           moodTips: [
@@ -967,6 +1564,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard isolation workout using heavier loads.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×10 Rear Delt Fly — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Rear Delt Fly",
+                    "sets": 6,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240989/mood_app/workout_images/bvadq5vi_download_7_.jpg',
           intensityReason: 'Standard isolation workout using heavier loads.',
           moodTips: [
@@ -996,6 +1612,23 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop isolation workout driving mechanical fatigue.',
           battlePlan: 'Battle Plan — Drop Cluster\n• 3 rounds:\n  12 reps → drop ~20% → 10 reps → drop ~15% → AMRAP\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "reps → drop ~20% → 10 reps → drop ~15% → AMRAP",
+                    "reps": "12"
+                  }
+                ],
+                "rounds": 3,
+                "label": "Drop Cluster",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240971/mood_app/workout_images/2gc40bi1_download_5_.jpg',
           intensityReason: 'Multi-drop isolation workout driving mechanical fatigue.',
           moodTips: [
@@ -1025,6 +1658,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout + isometric workout finishing with static tension.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×15 Rear Delt Fly — burnout reps\n• Final set: squeeze to finish — hold back 10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Rear Delt Fly",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps; Final set: squeeze to finish — hold back 10s",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241016/mood_app/workout_images/kqdzk509_image.jpg',
           intensityReason: 'Burnout + isometric workout finishing with static tension.',
           moodTips: [
@@ -1054,6 +1706,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Paused-rep isolation workout exposing true rear-delt control.',
           battlePlan: 'Battle Plan — Pause Sets\n• 5×10 Rear Delt Fly — pause reps (2s back)\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Rear Delt Fly",
+                    "sets": 5,
+                    "reps": "10",
+                    "note": "pause reps (2s back)",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240988/mood_app/workout_images/a6216mca_image.jpg',
           intensityReason: 'Paused-rep isolation workout exposing true rear-delt control.',
           moodTips: [
@@ -1091,6 +1762,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard isolation workout using low-to-high cable laterals for constant delt tension.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Cable Lateral Raise (low → high) — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Lateral Raise",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "cable_lateral_raise"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241019/mood_app/workout_images/ndk3n5nw_image.jpg',
           intensityReason: 'Standard isolation workout using low-to-high cable laterals for constant delt tension.',
           moodTips: [
@@ -1120,6 +1810,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Pause-rep single-arm isolation workout to clean up imbalances.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×12 Single-Arm Cable Lateral Raise — pause reps (1s top)\nRest 60s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Cable Lateral Raise",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "pause reps (1s top)",
+                    "tutorialSlug": "cable_lateral_raise"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "60s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241004/mood_app/workout_images/gowvsmtm_image.jpg',
           intensityReason: 'Pause-rep single-arm isolation workout to clean up imbalances.',
           moodTips: [
@@ -1149,6 +1858,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard rear-delt isolation workout using constant cable tension.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×15 Cable Rear Delt Fly — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Rear Delt Fly",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "standard reps",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241011/mood_app/workout_images/hwr2ym9m_image.jpg',
           intensityReason: 'Standard rear-delt isolation workout using constant cable tension.',
           moodTips: [
@@ -1178,6 +1906,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard anterior-delt workout using a pull-through cable path.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Cable Front Raise\n(facing away, handle pulled through legs) — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Front Raise",
+                    "sets": 4,
+                    "reps": "12",
+                    "tutorialSlug": "db_front_raise"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240994/mood_app/workout_images/d3k00azw_image.jpg',
           intensityReason: 'Standard anterior-delt workout using a pull-through cable path.',
           moodTips: [
@@ -1209,6 +1955,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Pause-rep rear-delt and upper-back workout for shoulder balance.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×12 Face Pull — pause reps (1s squeeze)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Face Pull",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "pause reps (1s squeeze)",
+                    "tutorialSlug": "cable_face_pull"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241042/mood_app/workout_images/z8ycso14_face_pull.jpg',
           intensityReason: 'Pause-rep rear-delt and upper-back workout for shoulder balance.',
           moodTips: [
@@ -1238,6 +2003,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard unilateral press workout emphasizing shoulder stability.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×10 Single-Arm Cable Shoulder Press — standard reps\nRest 75s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Cable Shoulder Press",
+                    "sets": 5,
+                    "reps": "10",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240983/mood_app/workout_images/7pnnumeo_image.jpg',
           intensityReason: 'Standard unilateral press workout emphasizing shoulder stability.',
           moodTips: [
@@ -1267,6 +2050,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Pulse-rep isolation workout for extended time under tension.',
           battlePlan: 'Battle Plan — Pulse Sets\n• 4×15 Cable Lateral Raise — pulse reps (top ⅓)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Lateral Raise",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "pulse reps (top ⅓)",
+                    "tutorialSlug": "cable_lateral_raise"
+                  }
+                ],
+                "label": "Pulse Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241019/mood_app/workout_images/ndk3n5nw_image.jpg',
           intensityReason: 'Pulse-rep isolation workout for extended time under tension.',
           moodTips: [
@@ -1296,6 +2098,31 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing lateral raises with rear-delt stability work.',
           battlePlan: 'Battle Plan — Superset\n• 4×12 Cable Lateral Raise (low → high) — standard reps\nsuperset with\n• 12–15 Face Pulls\nRest 90s between rounds',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Lateral Raise",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "cable_lateral_raise"
+                  },
+                  {
+                    "name": "Face Pulls",
+                    "reps": "12–15",
+                    "tutorialSlug": "cable_face_pull",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s between rounds"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241033/mood_app/workout_images/w8421t38_image.jpg',
           intensityReason: 'Superset workout pairing lateral raises with rear-delt stability work.',
           moodTips: [
@@ -1327,6 +2154,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'High-density unilateral isolation workout for side-delt overload.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×10 Single-Arm Cable Delt Fly — standard reps\nRest 75s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Cable Delt Fly",
+                    "sets": 6,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "db_fly"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241004/mood_app/workout_images/gowvsmtm_image.jpg',
           intensityReason: 'High-density unilateral isolation workout for side-delt overload.',
           moodTips: [
@@ -1356,6 +2202,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Single-exercise drop-set workout driving mechanical fatigue.',
           battlePlan: 'Battle Plan — Drop Set\n• 4×12 Cable Lateral Raise — standard reps\n• Final set: drop set — 2 drops, no rest\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Lateral Raise",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps; Final set: drop set — 2 drops, no rest",
+                    "tutorialSlug": "cable_lateral_raise"
+                  }
+                ],
+                "label": "Drop Set",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241019/mood_app/workout_images/ndk3n5nw_image.jpg',
           intensityReason: 'Single-exercise drop-set workout driving mechanical fatigue.',
           moodTips: [
@@ -1385,6 +2250,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout isolation workout for rear-delt hypertrophy.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 Cable Rear Delt Fly — burnout reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Rear Delt Fly",
+                    "sets": 4,
+                    "reps": "20",
+                    "note": "burnout reps",
+                    "tutorialSlug": "cable_rear_delt_fly"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241011/mood_app/workout_images/hwr2ym9m_image.jpg',
           intensityReason: 'Burnout isolation workout for rear-delt hypertrophy.',
           moodTips: [
@@ -1414,6 +2298,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout + isometric workout targeting anterior delts.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×15 Cable Front Raise (pull-through) — burnout reps\n• Final set: squeeze to finish — hold at eye level 8–10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Front Raise",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps; Final set: squeeze to finish — hold at eye level 8–10s",
+                    "tutorialSlug": "db_front_raise"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240994/mood_app/workout_images/d3k00azw_image.jpg',
           intensityReason: 'Burnout + isometric workout targeting anterior delts.',
           moodTips: [
@@ -1451,6 +2354,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard set workout building foundational shoulder strength.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Seated Dumbbell Shoulder Press — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Dumbbell Shoulder Press",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241020/mood_app/workout_images/njrg622y_shoulder_press.jpg',
           intensityReason: 'Standard set workout building foundational shoulder strength.',
           moodTips: [
@@ -1480,6 +2402,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused workout using slow negatives to build strength safely.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×10 Seated Dumbbell Shoulder Press — eccentric reps (3s down)\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Dumbbell Shoulder Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "eccentric reps (3s down)",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240969/mood_app/workout_images/2f5b0c4l_db_shoulder_press.jpg',
           intensityReason: 'Eccentric-focused workout using slow negatives to build strength safely.',
           moodTips: [
@@ -1509,6 +2450,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Pause-rep isolation workout targeting side delts.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×15 Dumbbell Lateral Raise — pause reps (1s top)\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Dumbbell Lateral Raise",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "pause reps (1s top)",
+                    "tutorialSlug": "dumbbell_lateral_raise"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241021/mood_app/workout_images/no2mapks_Low_incline_delt_fly.jpg',
           intensityReason: 'Pause-rep isolation workout targeting side delts.',
           moodTips: [
@@ -1538,6 +2498,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish hold.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Standing Dumbbell Shoulder Press — standard reps\n• Final set: squeeze to finish — hold last rep overhead 8–10s\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Standing Dumbbell Shoulder Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: squeeze to finish — hold last rep overhead 8–10s",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241031/mood_app/workout_images/uhw14hf9_db_shoulder_press.jpg',
           intensityReason: 'Standard press workout with squeeze-to-finish hold.',
           moodTips: [
@@ -1569,6 +2548,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard rotational press workout for full delt recruitment.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×10 Arnold Press — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Arnold Press",
+                    "sets": 5,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "db_arnold_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240980/mood_app/workout_images/64d4m132_arnold_press.jpg',
           intensityReason: 'Standard rotational press workout for full delt recruitment.',
           moodTips: [
@@ -1598,6 +2596,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard power-press workout increasing load tolerance.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×8 Push Press — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Push Press",
+                    "sets": 5,
+                    "reps": "8",
+                    "note": "standard reps",
+                    "tutorialSlug": "barbell_push_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240984/mood_app/workout_images/8rj9v297_db_push_press.jpg',
           intensityReason: 'Standard power-press workout increasing load tolerance.',
           moodTips: [
@@ -1627,6 +2644,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Pulse-rep isolation workout for accumulated delt fatigue.',
           battlePlan: 'Battle Plan — Pulse Sets\n• 4×15 Dumbbell Lateral Raise — pulse reps (top ⅓)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Dumbbell Lateral Raise",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "pulse reps (top ⅓)",
+                    "tutorialSlug": "dumbbell_lateral_raise"
+                  }
+                ],
+                "label": "Pulse Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241043/mood_app/workout_images/zbplnvku_db_lateral_raise.jpg',
           intensityReason: 'Pulse-rep isolation workout for accumulated delt fatigue.',
           moodTips: [
@@ -1656,6 +2692,30 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing shoulder pressing with bodyweight fatigue.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 Standing Dumbbell Shoulder Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 75s between rounds',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Standing Dumbbell Shoulder Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  },
+                  {
+                    "name": "Pushups",
+                    "reps": "12–15",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "75s between rounds"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241003/mood_app/workout_images/geafno9z_shoulder_press.jpg',
           intensityReason: 'Superset workout pairing shoulder pressing with bodyweight fatigue.',
           moodTips: [
@@ -1687,6 +2747,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy press workout for advanced overhead strength.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×5 Push Press — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Push Press",
+                    "sets": 6,
+                    "reps": "5",
+                    "note": "standard reps",
+                    "tutorialSlug": "barbell_push_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240984/mood_app/workout_images/8rj9v297_db_push_press.jpg',
           intensityReason: 'Standard heavy press workout for advanced overhead strength.',
           moodTips: [
@@ -1716,6 +2795,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Single-exercise drop-set workout driving mechanical fatigue.',
           battlePlan: 'Battle Plan — Drop Set\n• 4×10 Arnold Press — standard reps\n• Final set: drop set — 2 drops, no rest\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Arnold Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: drop set — 2 drops, no rest",
+                    "tutorialSlug": "db_arnold_press"
+                  }
+                ],
+                "label": "Drop Set",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240980/mood_app/workout_images/64d4m132_arnold_press.jpg',
           intensityReason: 'Single-exercise drop-set workout driving mechanical fatigue.',
           moodTips: [
@@ -1745,6 +2843,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout isolation workout finished with isometric hold.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×20 Lateral Raise — burnout reps\n• Final set: squeeze to finish — hold top 10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Lateral Raise",
+                    "sets": 4,
+                    "reps": "20",
+                    "note": "burnout reps; Final set: squeeze to finish — hold top 10s",
+                    "tutorialSlug": "db_lat_raise"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241043/mood_app/workout_images/zbplnvku_db_lateral_raise.jpg',
           intensityReason: 'Burnout isolation workout finished with isometric hold.',
           moodTips: [
@@ -1774,6 +2891,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Paused-rep strength workout removing all momentum.',
           battlePlan: 'Battle Plan — Pause Sets\n• 5×8 Standing Dumbbell Shoulder Press — pause reps (1s bottom)\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Standing Dumbbell Shoulder Press",
+                    "sets": 5,
+                    "reps": "8",
+                    "note": "pause reps (1s bottom)",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240991/mood_app/workout_images/cwihbei1_db_shoulder_press.jpg',
           intensityReason: 'Paused-rep strength workout removing all momentum.',
           moodTips: [
@@ -1811,6 +2947,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard set workout building foundational vertical pressing strength.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Standing Barbell Overhead Press — standard reps\nRest 60–75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Standing Barbell Overhead Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60–75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241017/mood_app/workout_images/kv2n6i9e_download.jpg',
           intensityReason: 'Standard set workout building foundational vertical pressing strength.',
           moodTips: [
@@ -1840,6 +2994,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused press workout reinforcing control.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×8 Overhead Press — eccentric reps (3s down)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Overhead Press",
+                    "sets": 4,
+                    "reps": "8",
+                    "note": "eccentric reps (3s down)",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240997/mood_app/workout_images/dz69brtd_bb_press_2.jpg',
           intensityReason: 'Eccentric-focused press workout reinforcing control.',
           moodTips: [
@@ -1869,6 +3042,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Paused-rep press workout eliminating momentum.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×8 Overhead Press — pause reps (1s bottom)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Overhead Press",
+                    "sets": 4,
+                    "reps": "8",
+                    "note": "pause reps (1s bottom)",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241026/mood_app/workout_images/q6gtwvmb_bb_shoulder_press.jpg',
           intensityReason: 'Paused-rep press workout eliminating momentum.',
           moodTips: [
@@ -1898,6 +3090,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish hold.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×8 Overhead Press — standard reps\n• Final set: squeeze to finish — hold overhead 8–10s\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Overhead Press",
+                    "sets": 4,
+                    "reps": "8",
+                    "note": "standard reps; Final set: squeeze to finish — hold overhead 8–10s",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241018/mood_app/workout_images/l4hch2z0_bb_press_1.jpg',
           intensityReason: 'Standard press workout with squeeze-to-finish hold.',
           moodTips: [
@@ -1929,6 +3140,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard power-press workout increasing load tolerance.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×6 Push Press — standard reps\nRest 75–90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Push Press",
+                    "sets": 5,
+                    "reps": "6",
+                    "note": "standard reps",
+                    "tutorialSlug": "barbell_push_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75–90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240975/mood_app/workout_images/4n1f2oy3_bb_push_press.jpg',
           intensityReason: 'Standard power-press workout increasing load tolerance.',
           moodTips: [
@@ -1958,6 +3188,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Pause-rep pull workout targeting delts and traps.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Upright Row — pause reps (1s top)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Upright Row",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "pause reps (1s top)"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240972/mood_app/workout_images/3jble54r_Upright_row.jpg',
           intensityReason: 'Pause-rep pull workout targeting delts and traps.',
           moodTips: [
@@ -1987,6 +3235,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'High-density standard press workout using moderate loads.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×6 Overhead Press — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Overhead Press",
+                    "sets": 6,
+                    "reps": "6",
+                    "note": "standard reps",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241026/mood_app/workout_images/q6gtwvmb_bb_shoulder_press.jpg',
           intensityReason: 'High-density standard press workout using moderate loads.',
           moodTips: [
@@ -2016,6 +3283,30 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing heavy barbell presses with bodyweight fatigue.',
           battlePlan: 'Battle Plan — Superset\n• 4×6 Push Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s between rounds',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Push Press",
+                    "sets": 4,
+                    "reps": "6",
+                    "note": "standard reps",
+                    "tutorialSlug": "barbell_push_press"
+                  },
+                  {
+                    "name": "Pushups",
+                    "reps": "12–15",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s between rounds"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241025/mood_app/workout_images/q0873m98_download_8_.jpg',
           intensityReason: 'Superset workout pairing heavy barbell presses with bodyweight fatigue.',
           moodTips: [
@@ -2047,6 +3338,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy power workout emphasizing max overhead output.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×4 Push Jerk — standard reps\nRest 90–120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Push Jerk",
+                    "sets": 6,
+                    "reps": "4",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90–120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241025/mood_app/workout_images/q0873m98_download_8_.jpg',
           intensityReason: 'Standard heavy power workout emphasizing max overhead output.',
           moodTips: [
@@ -2076,6 +3385,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Single-exercise drop-set workout using strict presses.',
           battlePlan: 'Battle Plan — Drop Set\n• 4×6 Strict Press — standard reps\n• Final set: drop set — 2 drops, no rest\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Strict Press",
+                    "sets": 4,
+                    "reps": "6",
+                    "note": "standard reps; Final set: drop set — 2 drops, no rest",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Drop Set",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241017/mood_app/workout_images/kv2n6i9e_download.jpg',
           intensityReason: 'Single-exercise drop-set workout using strict presses.',
           moodTips: [
@@ -2105,6 +3433,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout press workout to exhaust remaining fibers.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×12 Overhead Press — burnout reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Overhead Press",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "burnout reps",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241030/mood_app/workout_images/sn9rtt8c_bb_press_2.jpg',
           intensityReason: 'Burnout press workout to exhaust remaining fibers.',
           moodTips: [
@@ -2134,6 +3481,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Paused-rep strength workout exposing true shoulder capacity.',
           battlePlan: 'Battle Plan — Pause Sets\n• 5×5 Overhead Press — pause reps (2s bottom)\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Overhead Press",
+                    "sets": 5,
+                    "reps": "5",
+                    "note": "pause reps (2s bottom)",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241026/mood_app/workout_images/q6gtwvmb_bb_shoulder_press.jpg',
           intensityReason: 'Paused-rep strength workout exposing true shoulder capacity.',
           moodTips: [
@@ -2171,6 +3537,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard landmine press workout using the arc path to build shoulder strength safely.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Single-Arm Landmine Press — standard reps\nRest 60s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Landmine Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "landmine_push_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240998/mood_app/workout_images/e2d8369i_landmine_sa_press.jpg',
           intensityReason: 'Standard landmine press workout using the arc path to build shoulder strength safely.',
           moodTips: [
@@ -2200,6 +3585,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard two-arm press workout for stable, repeatable reps.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Two-Arm Landmine Press — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Two-Arm Landmine Press",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240973/mood_app/workout_images/40vv8ike_Landmine_double_arm_press.jpg',
           intensityReason: 'Standard two-arm press workout for stable, repeatable reps.',
           moodTips: [
@@ -2229,6 +3632,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused landmine workout to build control and tendon tolerance.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×8 Single-Arm Landmine Press — eccentric reps (3s down)\nRest 60–75s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Landmine Press",
+                    "sets": 4,
+                    "reps": "8",
+                    "note": "eccentric reps (3s down)",
+                    "tutorialSlug": "landmine_push_press"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "60–75s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240992/mood_app/workout_images/cww4hl7b_landmine_single_arm_press_2.jpg',
           intensityReason: 'Eccentric-focused landmine workout to build control and tendon tolerance.',
           moodTips: [
@@ -2258,6 +3680,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish in the contracted range.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Single-Arm Landmine Press — standard reps\n• Final set: squeeze to finish — hold the bar just short of lockout (peak delt contraction) for 8–10s\nRest 60s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Landmine Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: squeeze to finish — hold the bar just short of lockout (peak delt contraction) for 8–10s",
+                    "tutorialSlug": "landmine_push_press"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "60s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241008/mood_app/workout_images/hggocyeh_landmine_rotation_press.jpg',
           intensityReason: 'Standard press workout with squeeze-to-finish in the contracted range.',
           moodTips: [
@@ -2289,6 +3730,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Paused-rep landmine workout removing momentum for true shoulder strength.',
           battlePlan: 'Battle Plan — Pause Sets\n• 5×8 Single-Arm Landmine Press — pause reps (1s bottom)\nRest 75s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Landmine Press",
+                    "sets": 5,
+                    "reps": "8",
+                    "note": "pause reps (1s bottom)",
+                    "tutorialSlug": "landmine_push_press"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240998/mood_app/workout_images/e2d8369i_landmine_sa_press.jpg',
           intensityReason: 'Paused-rep landmine workout removing momentum for true shoulder strength.',
           moodTips: [
@@ -2318,6 +3778,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Pulse-rep landmine workout keeping tension in the strongest range.',
           battlePlan: 'Battle Plan — Pulse Sets\n• 4×12 Single-Arm Landmine Press — pulse reps (top ⅓ of arc)\nRest 75s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Landmine Press",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "pulse reps (top ⅓ of arc)",
+                    "tutorialSlug": "landmine_push_press"
+                  }
+                ],
+                "label": "Pulse Sets",
+                "rest": "75s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240992/mood_app/workout_images/cww4hl7b_landmine_single_arm_press_2.jpg',
           intensityReason: 'Pulse-rep landmine workout keeping tension in the strongest range.',
           moodTips: [
@@ -2347,6 +3826,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Standard power-press landmine workout allowing heavier overload.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×6 Single-Arm Landmine Push Press — standard reps\nRest 75–90s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Landmine Push Press",
+                    "sets": 6,
+                    "reps": "6",
+                    "note": "standard reps",
+                    "tutorialSlug": "landmine_push_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75–90s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241028/mood_app/workout_images/rrxbxdk3_image.jpg',
           intensityReason: 'Standard power-press landmine workout allowing heavier overload.',
           moodTips: [
@@ -2376,6 +3874,30 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing strict pressing with rotational pressing.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 Single-Arm Landmine Press — standard reps\nsuperset with\n• 8 each side Landmine Rotational Press — standard reps\nRest 90s between rounds',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Single-Arm Landmine Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "landmine_push_press"
+                  },
+                  {
+                    "name": "each side Landmine Rotational Press",
+                    "reps": "8",
+                    "note": "standard reps; superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s between rounds"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241008/mood_app/workout_images/hggocyeh_landmine_rotation_press.jpg',
           intensityReason: 'Superset workout pairing strict pressing with rotational pressing.',
           moodTips: [
@@ -2407,6 +3929,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy landmine workout for advanced overload.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Single-Arm Landmine Press — standard reps\nRest 90s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Landmine Press",
+                    "sets": 6,
+                    "reps": "8",
+                    "note": "standard reps",
+                    "tutorialSlug": "landmine_push_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240998/mood_app/workout_images/e2d8369i_landmine_sa_press.jpg',
           intensityReason: 'Standard heavy landmine workout for advanced overload.',
           moodTips: [
@@ -2436,6 +3977,23 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop press workout driving mechanical fatigue.',
           battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  8 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "reps → drop ~20% → 8 reps → drop ~15% → AMRAP",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 3,
+                "label": "Drop Ladder",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240992/mood_app/workout_images/cww4hl7b_landmine_single_arm_press_2.jpg',
           intensityReason: 'Multi-drop press workout driving mechanical fatigue.',
           moodTips: [
@@ -2465,6 +4023,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout landmine workout for nonstop shoulder tension.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 Two-Arm Landmine Press — burnout reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Two-Arm Landmine Press",
+                    "sets": 4,
+                    "reps": "20",
+                    "note": "burnout reps"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241028/mood_app/workout_images/rrxbxdk3_image.jpg',
           intensityReason: 'Burnout landmine workout for nonstop shoulder tension.',
           moodTips: [
@@ -2494,6 +4070,17 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Drop-set cluster workout with multiple drop-based sets.',
           battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps — standard\n• Set 2: drop set — 10 → drop ~15% → 6\n• Set 3: triple drop set — 8 → drop ~20% → 6 → drop ~15% → 6\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [],
+                "label": "Drop Cluster",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241008/mood_app/workout_images/hggocyeh_landmine_rotation_press.jpg',
           intensityReason: 'Drop-set cluster workout with multiple drop-based sets.',
           moodTips: [
@@ -2531,6 +4118,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard seated press workout using bench support for clean shoulder loading.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Seated Dumbbell Shoulder Press (bench ~80–85°) — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Dumbbell Shoulder Press",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241013/mood_app/workout_images/idt8edgt_db_shoulder_press.jpg',
           intensityReason: 'Standard seated press workout using bench support for clean shoulder loading.',
           moodTips: [
@@ -2560,6 +4166,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard isolation workout using bench angle to bias side delts.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×15 Incline Dumbbell Lateral Raise (bench ~30°) — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Incline Dumbbell Lateral Raise",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "standard reps",
+                    "tutorialSlug": "incline_bench_lat_t_raise"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241032/mood_app/workout_images/w1oc6g1w_incline_db_lat_raise.jpg',
           intensityReason: 'Standard isolation workout using bench angle to bias side delts.',
           moodTips: [
@@ -2589,6 +4214,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard anterior-delt workout with bench support to control swing.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Seated Front Raise (bench ~70°) — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Front Raise",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "db_front_raise"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240986/mood_app/workout_images/9k5yy7z7_db_chest_supported_front_raise.jpg',
           intensityReason: 'Standard anterior-delt workout with bench support to control swing.',
           moodTips: [
@@ -2618,6 +4262,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish in the contracted range.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Seated Shoulder Press — standard reps\n• Final set: squeeze to finish — hold just before lockout (peak delt contraction) 8–10s\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Shoulder Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: squeeze to finish — hold just before lockout (peak delt contraction) 8–10s"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240977/mood_app/workout_images/61sfuskm_Low_incline_delt_fly.jpg',
           intensityReason: 'Standard press workout with squeeze-to-finish in the contracted range.',
           moodTips: [
@@ -2649,6 +4311,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard rotational press workout for full-delt recruitment.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×10 Seated Arnold Press — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Arnold Press",
+                    "sets": 5,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "db_arnold_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240976/mood_app/workout_images/5i0ksrbr_arnold_press.jpg',
           intensityReason: 'Standard rotational press workout for full-delt recruitment.',
           moodTips: [
@@ -2678,6 +4359,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard isolation workout targeting front-to-side delt fibers.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Low-Incline Dumbbell Delt Fly (bench ~20–30°) — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Low-Incline Dumbbell Delt Fly",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "incline_db_fly"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240977/mood_app/workout_images/61sfuskm_Low_incline_delt_fly.jpg',
           intensityReason: 'Standard isolation workout targeting front-to-side delt fibers.',
           moodTips: [
@@ -2707,6 +4407,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Pause-rep isolation workout emphasizing top-end control.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×12 Seated Dumbbell Lateral Raise — pause reps (1s top)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Dumbbell Lateral Raise",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "pause reps (1s top)",
+                    "tutorialSlug": "dumbbell_lateral_raise"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240982/mood_app/workout_images/73grv174_db_lateral_raise.jpg',
           intensityReason: 'Pause-rep isolation workout emphasizing top-end control.',
           moodTips: [
@@ -2736,6 +4455,30 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing heavy pressing with isolation fatigue.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 Seated Dumbbell Shoulder Press — standard reps\nsuperset with\n• 12–15 Seated Lateral Raises\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Seated Dumbbell Shoulder Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_shoulder_press"
+                  },
+                  {
+                    "name": "Seated Lateral Raises",
+                    "reps": "12–15",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241013/mood_app/workout_images/idt8edgt_db_shoulder_press.jpg',
           intensityReason: 'Superset workout pairing heavy pressing with isolation fatigue.',
           moodTips: [
@@ -2767,6 +4510,23 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard press workout progressing through multiple bench angles.',
           battlePlan: 'Battle Plan — Standard Sets\n• 3 rounds:\n  8 reps @ 85° → 8 reps @ 70° → 8 reps @ 60°\nRest 90s between rounds',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "reps @ 85° → 8 reps @ 70° → 8 reps @ 60°",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 3,
+                "label": "Standard Sets",
+                "rest": "90s between rounds"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241013/mood_app/workout_images/idt8edgt_db_shoulder_press.jpg',
           intensityReason: 'Standard press workout progressing through multiple bench angles.',
           moodTips: [
@@ -2796,6 +4556,17 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop rotational press workout driving mechanical fatigue.',
           battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps — standard\n• Set 2: drop set — 10 → drop ~15% → 8\n• Set 3: triple drop set — 8 → drop ~20% → 6 → drop ~15% → 6\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [],
+                "label": "Drop Cluster",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240976/mood_app/workout_images/5i0ksrbr_arnold_press.jpg',
           intensityReason: 'Multi-drop rotational press workout driving mechanical fatigue.',
           moodTips: [
@@ -2825,6 +4596,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout isolation workout for nonstop side-delt tension.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 Seated Dumbbell Lateral Raise — burnout reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Dumbbell Lateral Raise",
+                    "sets": 4,
+                    "reps": "20",
+                    "note": "burnout reps",
+                    "tutorialSlug": "dumbbell_lateral_raise"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240982/mood_app/workout_images/73grv174_db_lateral_raise.jpg',
           intensityReason: 'Burnout isolation workout for nonstop side-delt tension.',
           moodTips: [
@@ -2854,6 +4644,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout + isometric workout emphasizing stretched-to-contracted control.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×15 Incline Dumbbell Delt Fly — burnout reps\n• Final set: squeeze to finish — hold arms wide and slightly raised (peak delt contraction) 10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Incline Dumbbell Delt Fly",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps; Final set: squeeze to finish — hold arms wide and slightly raised (peak delt contraction) 10s",
+                    "tutorialSlug": "incline_db_fly"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240977/mood_app/workout_images/61sfuskm_Low_incline_delt_fly.jpg',
           intensityReason: 'Burnout + isometric workout emphasizing stretched-to-contracted control.',
           moodTips: [
@@ -2891,6 +4700,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard unilateral press workout using kettlebell instability for delt activation.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Single-Arm Kettlebell Press — standard reps\nRest 60s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Kettlebell Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241038/mood_app/workout_images/y6ofpbdj_kb_sa_press_v2.jpg',
           intensityReason: 'Standard unilateral press workout using kettlebell instability for delt activation.',
           moodTips: [
@@ -2920,6 +4747,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard isolation workout targeting anterior delts with offset load.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Kettlebell Front Raise — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Kettlebell Front Raise",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "db_front_raise"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241007/mood_app/workout_images/hd1jejdj_kb_front_raise.jpg',
           intensityReason: 'Standard isolation workout targeting anterior delts with offset load.',
           moodTips: [
@@ -2949,6 +4795,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard isolation workout emphasizing side delts and grip control.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×15 Kettlebell Lateral Raise — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Kettlebell Lateral Raise",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241022/mood_app/workout_images/nokhthfd_kb_lat_riase.jpg',
           intensityReason: 'Standard isolation workout emphasizing side delts and grip control.',
           moodTips: [
@@ -2978,6 +4842,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish in the contracted range.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Single-Arm KB Press — standard reps\n• Final set: squeeze to finish — hold just before lockout (peak delt contraction) 8–10s\nRest 60s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm KB Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: squeeze to finish — hold just before lockout (peak delt contraction) 8–10s"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "60s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241044/mood_app/workout_images/zr277bch_kb_press_or_offset_rack_hold.jpg',
           intensityReason: 'Standard press workout with squeeze-to-finish in the contracted range.',
           moodTips: [
@@ -3009,6 +4891,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard rotational press workout for full-delt recruitment.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×8 Kettlebell Arnold Press — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Kettlebell Arnold Press",
+                    "sets": 5,
+                    "reps": "8",
+                    "note": "standard reps",
+                    "tutorialSlug": "db_arnold_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241044/mood_app/workout_images/zr277bch_kb_press_or_offset_rack_hold.jpg',
           intensityReason: 'Standard rotational press workout for full-delt recruitment.',
           moodTips: [
@@ -3038,6 +4939,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard pull-focused shoulder workout biasing delts over traps.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Kettlebell Upright Row — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Kettlebell Upright Row",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241041/mood_app/workout_images/yznqwyz0_kb_upright_row.jpg',
           intensityReason: 'Standard pull-focused shoulder workout biasing delts over traps.',
           moodTips: [
@@ -3067,6 +4986,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Paused-rep press workout removing momentum.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×8 Single-Arm KB Press — pause reps (1s bottom)\nRest 75s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm KB Press",
+                    "sets": 4,
+                    "reps": "8",
+                    "note": "pause reps (1s bottom)"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241014/mood_app/workout_images/ijanvd0e_kb_shoulder_press.jpg',
           intensityReason: 'Paused-rep press workout removing momentum.',
           moodTips: [
@@ -3096,6 +5033,29 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing pressing with controlled shoulder mobility.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 Single-Arm KB Press — standard reps\nsuperset with\n• 8–10 KB Halos (each direction)\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Single-Arm KB Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps"
+                  },
+                  {
+                    "name": "KB Halos",
+                    "reps": "8–10",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241037/mood_app/workout_images/xcrgse2b_kb_halo.jpg',
           intensityReason: 'Superset workout pairing pressing with controlled shoulder mobility.',
           moodTips: [
@@ -3127,6 +5087,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard power-press workout allowing heavier loading.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×6 Single-Arm KB Push Press — standard reps\nRest 90s per side',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heavy KB Push Press",
+                    "sets": 6,
+                    "reps": "6",
+                    "note": "standard reps",
+                    "tutorialSlug": "landmine_push_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s per side"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240969/mood_app/workout_images/0zc5r7x4_kb_push_press.jpg',
           intensityReason: 'Standard power-press workout allowing heavier loading.',
           moodTips: [
@@ -3156,6 +5135,17 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop pull workout driving shoulder fatigue safely.',
           battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 12 reps — standard\n• Set 2: drop set — 12 → drop ~20% → 8\n• Set 3: triple drop set — 10 → drop ~15% → 8 → drop ~10% → 8\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [],
+                "label": "Drop Cluster",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241015/mood_app/workout_images/jjgy8pfh_KB_upright_row.jpg',
           intensityReason: 'Multi-drop pull workout driving shoulder fatigue safely.',
           moodTips: [
@@ -3185,6 +5175,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout isolation workout for side-delt saturation.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 KB Lateral Raise — burnout reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "KB Lateral Raise",
+                    "sets": 4,
+                    "reps": "20",
+                    "note": "burnout reps",
+                    "tutorialSlug": "dumbbell_lateral_raise"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240995/mood_app/workout_images/daoo7ik5_kb_lat_riase.jpg',
           intensityReason: 'Burnout isolation workout for side-delt saturation.',
           moodTips: [
@@ -3214,6 +5223,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout + isometric workout combining instability and contraction.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×12 KB Press — burnout reps\n• Final set: squeeze to finish — hold bell in front-rack, elbow forward (peak delt contraction) 10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "KB Press",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "burnout reps; Final set: squeeze to finish — hold bell in front-rack, elbow forward (peak delt contraction) 10s"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241044/mood_app/workout_images/zr277bch_kb_press_or_offset_rack_hold.jpg',
           intensityReason: 'Burnout + isometric workout combining instability and contraction.',
           moodTips: [
@@ -3251,6 +5278,24 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard barbell press workout building foundational shoulder strength.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Standing Barbell Overhead Press — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Standing Barbell Overhead Press",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240968/mood_app/workout_images/0tjqvfc4_bb_press_2.jpg',
           intensityReason: 'Standard barbell press workout building foundational shoulder strength.',
           moodTips: [
@@ -3280,6 +5325,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused press workout emphasizing bar control.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×8 Overhead Press — eccentric reps (3s down)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Overhead Press",
+                    "sets": 4,
+                    "reps": "8",
+                    "note": "eccentric reps (3s down)",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241034/mood_app/workout_images/wpyi7rra_bb_press_1.jpg',
           intensityReason: 'Eccentric-focused press workout emphasizing bar control.',
           moodTips: [
@@ -3309,6 +5373,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Paused-rep press workout removing momentum.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×8 Overhead Press — pause reps (1s bottom)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Overhead Press",
+                    "sets": 4,
+                    "reps": "8",
+                    "note": "pause reps (1s bottom)",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241039/mood_app/workout_images/yi9y3sr0_push_press.jpg',
           intensityReason: 'Paused-rep press workout removing momentum.',
           moodTips: [
@@ -3338,6 +5421,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish in the contracted range.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×8 Overhead Press — standard reps\n• Final set: squeeze to finish — hold bar just short of lockout (peak delt contraction) 8–10s\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Overhead Press",
+                    "sets": 4,
+                    "reps": "8",
+                    "note": "standard reps; Final set: squeeze to finish — hold bar just short of lockout (peak delt contraction) 8–10s",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240981/mood_app/workout_images/6wounjt1_bb_press_3.jpg',
           intensityReason: 'Standard press workout with squeeze-to-finish in the contracted range.',
           moodTips: [
@@ -3369,6 +5471,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard power-press workout increasing load tolerance.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×6 Push Press — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Push Press",
+                    "sets": 5,
+                    "reps": "6",
+                    "note": "standard reps",
+                    "tutorialSlug": "barbell_push_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241039/mood_app/workout_images/yi9y3sr0_push_press.jpg',
           intensityReason: 'Standard power-press workout increasing load tolerance.',
           moodTips: [
@@ -3398,6 +5519,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard explosive pull workout targeting delts and traps.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×6 Barbell High Pull — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Barbell High Pull",
+                    "sets": 4,
+                    "reps": "6",
+                    "note": "standard reps",
+                    "tutorialSlug": "kb_high_pull"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240999/mood_app/workout_images/ehcn1tsd_High_pull.jpg',
           intensityReason: 'Standard explosive pull workout targeting delts and traps.',
           moodTips: [
@@ -3427,6 +5567,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'High-density power press workout using moderate loads.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×5 Push Press — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Push Press",
+                    "sets": 6,
+                    "reps": "5",
+                    "note": "standard reps",
+                    "tutorialSlug": "barbell_push_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241034/mood_app/workout_images/wpyi7rra_bb_press_1.jpg',
           intensityReason: 'High-density power press workout using moderate loads.',
           moodTips: [
@@ -3456,6 +5615,30 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing barbell power with bodyweight fatigue.',
           battlePlan: 'Battle Plan — Superset\n• 4×6 Push Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Push Press",
+                    "sets": 4,
+                    "reps": "6",
+                    "note": "standard reps",
+                    "tutorialSlug": "barbell_push_press"
+                  },
+                  {
+                    "name": "Pushups",
+                    "reps": "12–15",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240968/mood_app/workout_images/0tjqvfc4_bb_press_2.jpg',
           intensityReason: 'Superset workout pairing barbell power with bodyweight fatigue.',
           moodTips: [
@@ -3487,6 +5670,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy press workout for advanced strength.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×5 Strict Overhead Press — standard reps\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Strict Overhead Press",
+                    "sets": 6,
+                    "reps": "5",
+                    "note": "standard reps",
+                    "tutorialSlug": "barbell_military_press"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241024/mood_app/workout_images/nqoj7ndk_strict_press.jpg',
           intensityReason: 'Standard heavy press workout for advanced strength.',
           moodTips: [
@@ -3516,6 +5718,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard Olympic power movement emphasizing speed and coordination.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×3 Split Jerk — standard reps\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Split Jerk",
+                    "sets": 6,
+                    "reps": "3",
+                    "note": "standard reps",
+                    "tutorialSlug": "barbell_split_jerk"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241005/mood_app/workout_images/h2z9y5b7_split_jerk.jpg',
           intensityReason: 'Standard Olympic power movement emphasizing speed and coordination.',
           moodTips: [
@@ -3545,6 +5766,23 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop power workout combining speed and fatigue.',
           battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  4 reps → drop ~15% → 4 reps → drop ~10% → AMRAP\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "reps → drop ~15% → 4 reps → drop ~10% → AMRAP",
+                    "reps": "4"
+                  }
+                ],
+                "rounds": 3,
+                "label": "Drop Ladder",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241039/mood_app/workout_images/yi9y3sr0_push_press.jpg',
           intensityReason: 'Multi-drop power workout combining speed and fatigue.',
           moodTips: [
@@ -3574,6 +5812,25 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Wide-grip power press workout to switch up the range and path of motion.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×5 Snatch-Grip Push Press — standard reps\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Snatch-Grip Push Press",
+                    "sets": 5,
+                    "reps": "5",
+                    "note": "standard reps",
+                    "tutorialSlug": "bb_snatch"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241035/mood_app/workout_images/wxlcn70h_bb_push_press.jpg',
           intensityReason: 'Wide-grip power press workout to switch up the range and path of motion.',
           moodTips: [

@@ -30,6 +30,7 @@ import {
 import { DEV_TOOLS_ENABLED } from '../../utils/devFlags';
 import { useAuth } from '../../contexts/AuthContext';
 import { useSubscription } from '../../contexts/SubscriptionContext';
+import { maybeRequestReview } from '../../utils/ratingPrompt';
 
 // ── Mood option sets ────────────────────────────────────────────────────────
 const ALL_MOODS: { id: MoodId; label: string }[] = [
@@ -158,6 +159,17 @@ export default function DevScreens() {
     });
   };
 
+  const fireRatingPrompt = () => {
+    // bypassGates: always show the pre-prompt (skips one-shot, 3rd-workout
+    // count gate, and native-availability check), so it's previewable on a
+    // simulator and repeatable without clearing storage.
+    maybeRequestReview({
+      bypassGates: true,
+      onOutcome: (outcome, count) =>
+        console.log('[dev] rating prompt outcome:', outcome, '· workout count:', count),
+    });
+  };
+
   const handleClear = async () => {
     await clearDevMocks();
     await refreshEntitlement();
@@ -210,6 +222,13 @@ export default function DevScreens() {
           label="Hard Paywall #3 (workout #2 / cap)"
           route="openPaywall('generate_after_cap')"
           onPress={() => openPaywall('generate_after_cap')}
+        />
+
+        <SectionHeader title="Rating Prompt" />
+        <Row
+          label="Rating Pre-Prompt (force-fire)"
+          route="maybeRequestReview({ bypassGates: true })"
+          onPress={fireRatingPrompt}
         />
 
         <SectionHeader title="Post-Funnel" />

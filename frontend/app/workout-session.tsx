@@ -549,6 +549,10 @@ export default function WorkoutSessionScreen() {
       sessionCalories: sessionCaloriesBurned != null ? String(sessionCaloriesBurned) : '',
       sessionSteps: sessionSteps != null ? String(sessionSteps) : '',
       sessionHrv: sessionHrvSdnn != null ? String(Math.round(sessionHrvSdnn)) : '',
+      // Session window — lets the achievement screen re-query HealthKit (resync)
+      // and show the real elapsed time instead of the planned estimate.
+      startedAt: sessionStartRef.current,
+      endedAt,
     };
 
     if (pulseSyncEligible) {

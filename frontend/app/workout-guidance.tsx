@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   Animated,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
@@ -22,6 +23,8 @@ import Toast from '../components/Toast';
 import { Analytics, GuestAnalytics } from '../utils/analytics';
 import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
+import { parseBattlePlan, tutorialThumbUrl } from '../utils/battlePlanFormat';
+import type { Movement } from '../types/workout';
 import { TextWithTermLinks } from '../components/TermDefinitionPopup';
 import { API_URL } from '../utils/apiConfig';
 import { tryBeginWorkoutSession } from '../utils/workoutStartGate';
@@ -276,6 +279,7 @@ export default function WorkoutGuidanceScreen() {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
+  const [lookupQuery, setLookupQuery] = useState<string | undefined>(undefined);
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   
   const { token, isGuest, refreshEntitlement } = useAuth();
@@ -985,30 +989,78 @@ export default function WorkoutGuidanceScreen() {
               )}
             </View>
             
-            {/* Step-by-Step Instructions - User Friendly Format */}
+            {/* Battle Plan — structured tiles with per-movement form tutorials */}
             <View style={styles.stepsContainer}>
               <Text style={styles.stepsHeader}>Battle Plan</Text>
-              <View style={styles.stepsList}>
-                {(() => {
-                  // Use battlePlan for workout instructions, fallback to description for backward compatibility
-                  const workoutInstructions = battlePlan || description;
-                  const workoutSteps = parseWorkoutDescription(workoutInstructions);
-                  return workoutSteps;
-                })().map((step, index) => (
-                  <View key={index} style={styles.stepItem}>
-                    {step.startsWith('•') ? (
-                      // Step already has bullet - use StepTextWithLinks for RPE/SPM linking
-                      <StepTextWithLinks step={step} style={styles.stepText} />
-                    ) : (
-                      // Step doesn't have bullet - it's an instruction, use StepTextWithLinks
-                      <StepTextWithLinks step={step} style={styles.stepTextNoBullet} />
-                    )}
-                  </View>
-                ))}
-              </View>
-              
-              {/* Exercise Lookup Trigger */}
-              <ExerciseLookupTrigger onPress={() => setExerciseLookupVisible(true)} />
+              {(() => {
+                const plan = parseBattlePlan(battlePlan || description || '', workoutName);
+                const openTutorial = (query?: string) => {
+                  setLookupQuery(query);
+                  setExerciseLookupVisible(true);
+                };
+                const formatPresc = (mv: Movement): string => {
+                  if (mv.sets && mv.reps) return `${mv.sets} × ${mv.reps}`;
+                  if (mv.duration) return mv.intensity ? `${mv.duration} · ${mv.intensity}` : mv.duration;
+                  return mv.reps || mv.intensity || '';
+                };
+                return (
+                  <>
+                    {plan.instructions ? (
+                      <View style={styles.bpCueRow}>
+                        <Ionicons name="information-circle" size={16} color="#FFD700" />
+                        <Text style={styles.bpCueText}>{plan.instructions}</Text>
+                      </View>
+                    ) : null}
+                    {plan.blocks.map((block, bi) => {
+                      const meta = [
+                        block.label,
+                        block.rounds ? `${block.rounds} rounds` : '',
+                        block.rest ? `Rest ${block.rest}` : '',
+                      ].filter(Boolean).join('  ·  ');
+                      return (
+                        <View key={bi} style={styles.bpBlock}>
+                          {meta ? <Text style={styles.bpBlockMeta}>{meta}</Text> : null}
+                          {block.movements.map((mv, mi) => (
+                            <TouchableOpacity
+                              key={mi}
+                              style={styles.bpRow}
+                              activeOpacity={0.7}
+                              onPress={() => openTutorial(mv.name)}
+                            >
+                              <View style={styles.bpThumb}>
+                                {mv.tutorialSlug ? (
+                                  <Image source={{ uri: tutorialThumbUrl(mv.tutorialSlug) }} style={styles.bpThumbImg} />
+                                ) : (
+                                  <Ionicons name="play-circle" size={24} color="#FFD700" />
+                                )}
+                                {mv.tutorialSlug ? (
+                                  <View style={styles.bpPlayBadge}>
+                                    <Ionicons name="play" size={10} color="#000" />
+                                  </View>
+                                ) : null}
+                              </View>
+                              <View style={styles.bpInfo}>
+                                <Text style={styles.bpName}>{mv.name}</Text>
+                                {formatPresc(mv) ? <Text style={styles.bpPresc}>{formatPresc(mv)}</Text> : null}
+                                {mv.note ? <Text style={styles.bpNote}>{mv.note}</Text> : null}
+                              </View>
+                              <View style={styles.bpCta}>
+                                <Ionicons name="videocam" size={16} color="#FFD700" />
+                              </View>
+                            </TouchableOpacity>
+                          ))}
+                        </View>
+                      );
+                    })}
+                    {plan.blocks.some(b => b.movements.some(m => m.tutorialSlug)) ? (
+                      <Text style={styles.bpDisclaimer}>
+                        *Tutorials show the closest matching demo and may not reflect the exact movement variation.
+                      </Text>
+                    ) : null}
+                    <ExerciseLookupTrigger onPress={() => openTutorial(undefined)} />
+                  </>
+                );
+              })()}
             </View>
           </View>
         </View>
@@ -1045,59 +1097,6 @@ export default function WorkoutGuidanceScreen() {
         </View>
         )}
 
-        {/* Enhanced Workout Details - Always Show */}
-        <View style={styles.moodTipsContainer}>
-          <View style={styles.workoutDetailsBlock}>
-            <View style={styles.detailsHeader}>
-              <Ionicons name="clipboard" size={20} color="#FFD700" />
-              <Text style={styles.detailsTitle}>Workout Details</Text>
-            </View>
-            
-            <View style={styles.detailsGrid}>
-              <View style={styles.detailCard}>
-                <Ionicons name="time" size={24} color="#FFD700" />
-                <Text style={styles.detailValue}>{duration}</Text>
-                <Text style={styles.detailLabel}>Duration</Text>
-              </View>
-              
-              <View style={styles.detailCard}>
-                <Ionicons name="speedometer" size={24} color='#FFD700' />
-                <Text style={styles.detailValueSmall}>
-                  {difficulty.toLowerCase() === 'intermediate' ? 'Intermed.' : difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
-                </Text>
-                <Text style={styles.detailLabel}>Intensity</Text>
-              </View>
-              
-              <View style={styles.detailCard}>
-                <Ionicons name="fitness" size={24} color="#FFD700" />
-                <Text style={styles.detailValue}>{equipment}</Text>
-                <Text style={styles.detailLabel}>Equipment</Text>
-              </View>
-            </View>
-            
-            {/* Workout Preparation Section */}
-            <View style={styles.preparationSection}>
-              <View style={styles.preparationHeader}>
-                <Ionicons name="checkmark-circle" size={18} color="#FFD700" />
-                <Text style={styles.preparationTitle}>Before You Begin</Text>
-              </View>
-              <View style={styles.preparationList}>
-                <View style={styles.preparationItem}>
-                  <Ionicons name="water" size={16} color="#FFD700" />
-                  <Text style={styles.preparationText}>Ensure you have water nearby for hydration</Text>
-                </View>
-                <View style={styles.preparationItem}>
-                  <Ionicons name="body" size={16} color="#FFD700" />
-                  <Text style={styles.preparationText}>Start with light warm-up movements</Text>
-                </View>
-                <View style={styles.preparationItem}>
-                  <Ionicons name="timer" size={16} color='#FFD700' />
-                  <Text style={styles.preparationText}>Focus on proper form over speed</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
       </ScrollView>
 
       {/* Bottom Button - Fixed at Bottom */}
@@ -1159,7 +1158,8 @@ export default function WorkoutGuidanceScreen() {
       {/* Exercise Lookup Bottom Sheet */}
       <ExerciseLookupSheet
         visible={exerciseLookupVisible}
-        onClose={() => setExerciseLookupVisible(false)}
+        initialQuery={lookupQuery}
+        onClose={() => { setExerciseLookupVisible(false); setLookupQuery(undefined); }}
       />
 
       {/* Guest gate — prompt account creation before starting a workout */}
@@ -1654,6 +1654,103 @@ const styles = StyleSheet.create({
   },
   stepsContainer: {
     marginTop: 8,
+  },
+  bpCueRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+    backgroundColor: 'rgba(255, 215, 0, 0.08)',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginTop: 12,
+    marginBottom: 12,
+  },
+  bpCueText: {
+    flex: 1,
+    fontSize: 13,
+    color: 'rgba(255, 255, 255, 0.9)',
+    lineHeight: 19,
+  },
+  bpBlock: {
+    marginBottom: 8,
+  },
+  bpBlockMeta: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
+    color: '#FFD700',
+    marginBottom: 8,
+    marginTop: 4,
+  },
+  bpRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 8,
+  },
+  bpThumb: {
+    width: 46,
+    height: 46,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255, 215, 0, 0.08)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  bpThumbImg: {
+    width: '100%',
+    height: '100%',
+  },
+  bpPlayBadge: {
+    position: 'absolute',
+    right: 3,
+    bottom: 3,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: '#FFD700',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bpInfo: {
+    flex: 1,
+  },
+  bpName: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#ffffff',
+  },
+  bpPresc: {
+    fontSize: 13,
+    color: 'rgba(255, 255, 255, 0.6)',
+    marginTop: 2,
+  },
+  bpNote: {
+    fontSize: 12,
+    color: 'rgba(255, 215, 0, 0.75)',
+    fontStyle: 'italic',
+    marginTop: 2,
+  },
+  bpCta: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'rgba(255, 215, 0, 0.12)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bpDisclaimer: {
+    fontSize: 11,
+    color: 'rgba(255, 255, 255, 0.45)',
+    fontStyle: 'italic',
+    lineHeight: 15,
+    marginTop: 4,
+    marginBottom: 8,
   },
   stepsHeader: {
     fontSize: 18,

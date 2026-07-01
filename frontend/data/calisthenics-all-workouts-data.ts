@@ -12,6 +12,37 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Support hold low, ring rows high, kneeling pushups.',
           battlePlan: 'Ring Support Lean (feet down)\n• 3 × 15–25s (RPE 4), 60s rest\nHigh Ring Row (knees bent)\n• 3 × 8–10 (RPE 4), 60s rest\nKneeling Ring Pushup\n• 3 × 8–12 (RPE 4), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Ring Support Lean",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "15–25s"
+                  },
+                  {
+                    "name": "High Ring Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Kneeling Ring Pushup",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241244/mood_app/workout_images/qhw328ft_download_6_.jpg',
           intensityReason: 'Stable regressions teach alignment and shoulder set.',
           movement_focus: 'mixed_upper',
@@ -34,6 +65,37 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Scap rows, scap pushups, dead bug for core control.',
           battlePlan: 'Ring Scap Rows\n• 3 × 10–12 (RPE 4), 60s rest\nRing Scap Pushups\n• 3 × 10–12 (RPE 4), 60s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Ring Scap Rows",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Ring Scap Pushups",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241236/mood_app/workout_images/n3zrasp5_download_5_.jpg',
           intensityReason: 'Scap control on rings builds robust base stability.',
           movement_focus: 'mixed_upper',
@@ -56,6 +118,38 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Ring rows, ring pushups, hollow hold finisher for light challenge.',
           battlePlan: 'Ring Row (medium angle)\n• 3 × 8–10 (RPE 4), 60s rest\nRing Pushup (incline)\n• 3 × 8–12 (RPE 4), 60s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Ring Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Ring Pushup",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "20–30s",
+                    "tutorialSlug": "hollow_holds"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241259/mood_app/workout_images/z7qrv937_download_4_.jpg',
           intensityReason: 'Angle adjustments dial in intensity while stable.',
           movement_focus: 'mixed_upper',
@@ -80,6 +174,37 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Mid-angle rows, pushups, knee tucks for core finish.',
           battlePlan: 'Ring Row (mid angle)\n• 4 × 8–10 (RPE 5), 75s rest\nRing Pushup (horizontal)\n• 4 × 8–12 (RPE 5), 75s rest\nRing Knee Tucks (support)\n• 3 × 10–12 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Ring Row",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Ring Pushup",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Ring Knee Tucks",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241190/mood_app/workout_images/0ah02106_download_9_.jpg',
           intensityReason: 'Moderate ring angles challenge stabilizers with control.',
           movement_focus: 'mixed_upper',
@@ -102,6 +227,37 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Archer rows beginners, narrow pushups, hollow rocks.',
           battlePlan: 'Ring Archer Row (assisted)\n• 4 × 6–8/side (RPE 5–6), 90s rest\nRing Pushup (narrow)\n• 4 × 8–10 (RPE 5), 75s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Ring Archer Row",
+                    "intensity": "RPE 5–6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "6–8/side"
+                  },
+                  {
+                    "name": "Ring Pushup",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Hollow Rock",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–15"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241256/mood_app/workout_images/wd1l2iea_download_8_.jpg',
           intensityReason: 'Unilateral bias builds strength and positional control.',
           movement_focus: 'mixed_upper',
@@ -124,6 +280,38 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Straight rows and pushups, modest volume increase for strength gains.',
           battlePlan: 'Ring Row (neutral)\n• 4 × 8–12 (RPE 5), 75s rest\nRing Pushup (horizontal)\n• 4 × 10–12 (RPE 5), 75s rest\nFront Plank\n• 3 × 30–40s (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Ring Row",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Ring Pushup",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Front Plank",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "30–40s",
+                    "tutorialSlug": "plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241222/mood_app/workout_images/fv7h4gkz_row.jpg',
           intensityReason: 'Moderate volume builds work capacity while stable.',
           movement_focus: 'upper_push',
@@ -148,6 +336,37 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '24–32 min',
           description: 'Full archer rows and pushups, pistol assists for leg balance.',
           battlePlan: 'Ring Archer Row (full)\n• 5 × 4–6/side (RPE 6–7), 90–120s rest\nRing Archer Pushup\n• 4 × 4–6/side (RPE 6), 90s rest\nRing-Assisted Pistol\n• 3 × 6–8/side (RPE 6), 75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Ring Archer Row",
+                    "intensity": "RPE 6–7",
+                    "rest": "90–120s",
+                    "sets": 5,
+                    "reps": "4–6/side"
+                  },
+                  {
+                    "name": "Ring Archer Pushup",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "4–6/side"
+                  },
+                  {
+                    "name": "Ring-Assisted Pistol",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "6–8/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241256/mood_app/workout_images/wd1l2iea_download_8_.jpg',
           intensityReason: 'Full unilateral work challenges single-arm control.',
           movement_focus: 'mixed_upper',
@@ -170,6 +389,39 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '24–32 min',
           description: 'False-grip rows, explosive transition drills, ring dips.',
           battlePlan: 'False-Grip Ring Row\n• 5 × 6–8 (RPE 6), 90s rest\nRing Muscle-Up Transition Practice (assisted)\n• 4 × 3–4 (RPE 6–7), 120s rest\nRing Dip\n• 4 × 6–8 (RPE 6), 90s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "False-Grip Ring Row",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 5,
+                    "reps": "6–8"
+                  },
+                  {
+                    "name": "Ring Muscle-Up Transition Practice",
+                    "intensity": "RPE 6–7",
+                    "rest": "120s",
+                    "sets": 4,
+                    "reps": "3–4",
+                    "tutorialSlug": "muscle_ups"
+                  },
+                  {
+                    "name": "Ring Dip",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "6–8",
+                    "tutorialSlug": "dips"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240922/mood_app/workout_images/dq0uzole_download_7_.jpg',
           intensityReason: 'MU drills require powerful pull, dip, and transition.',
           movement_focus: 'mixed_upper',
@@ -192,6 +444,38 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '24–32 min',
           description: 'High-rep rows and pushups, ring planks for total stability.',
           battlePlan: 'Ring Row (neutral)\n• 5 × 10–15 (RPE 6), 75s rest\nRing Pushup (horizontal)\n• 5 × 12–16 (RPE 6), 75s rest\nRing Front Plank\n• 4 × 30–50s (RPE 6), 60–75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Ring Row",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 5,
+                    "reps": "10–15"
+                  },
+                  {
+                    "name": "Ring Pushup",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 5,
+                    "reps": "12–16"
+                  },
+                  {
+                    "name": "Ring Front Plank",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "30–50s",
+                    "tutorialSlug": "plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241235/mood_app/workout_images/n2vbefok_download_7_.jpg',
           intensityReason: 'High volume builds muscular endurance on unstable surface.',
           movement_focus: 'mixed_upper',
@@ -222,6 +506,39 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–16 min',
           description: 'Kneeling short-rolls, dead bug, plank bracing closer.',
           battlePlan: 'Kneeling Ab Wheel (short ROM)\n• 3 × 6–8 (RPE 4), 75s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest\nFront Plank\n• 3 × 20–30s (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Kneeling Ab Wheel",
+                    "intensity": "RPE 4",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "6–8",
+                    "tutorialSlug": "kneeling_ab_wheel"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  },
+                  {
+                    "name": "Front Plank",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "20–30s",
+                    "tutorialSlug": "plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241241/mood_app/workout_images/pgkoxn00_download.jpg',
           intensityReason: 'Short ranges teach control without overloading spine.',
           movement_focus: 'core',
@@ -244,6 +561,40 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–16 min',
           description: 'Eccentric kneeling rolls, hollow hold, bird dog for total ab development.',
           battlePlan: 'Kneeling Ab Wheel Eccentric (stand up after)\n• 3 × 4–6 (RPE 4), 90s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest\nBird Dog\n• 3 × 8–10/side (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Kneeling Ab Wheel Eccentric",
+                    "intensity": "RPE 4",
+                    "rest": "90s",
+                    "sets": 3,
+                    "reps": "4–6",
+                    "tutorialSlug": "kneeling_ab_wheel"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "20–30s",
+                    "tutorialSlug": "hollow_holds"
+                  },
+                  {
+                    "name": "Bird Dog",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side",
+                    "tutorialSlug": "bird_dog"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241258/mood_app/workout_images/ytutfbco_download_1_.jpg',
           intensityReason: 'Controlled negatives build safe end-range capacity.',
           movement_focus: 'core',
@@ -266,6 +617,40 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–16 min',
           description: 'Kneeling rolls mid-range, side planks for stability development.',
           battlePlan: 'Kneeling Ab Wheel (moderate ROM)\n• 3 × 6–8 (RPE 4), 75s rest\nSide Plank\n• 3 × 20–30s/side (RPE 4), 45–60s rest\nFront Plank\n• 3 × 20–30s (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Kneeling Ab Wheel",
+                    "intensity": "RPE 4",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "6–8",
+                    "tutorialSlug": "kneeling_ab_wheel"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "20–30s/side",
+                    "tutorialSlug": "side_plank"
+                  },
+                  {
+                    "name": "Front Plank",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "20–30s",
+                    "tutorialSlug": "plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241257/mood_app/workout_images/wgjgrxlk_download_2_.jpg',
           intensityReason: 'Gradual ROM progression increases tension safely.',
           movement_focus: 'core',
@@ -290,6 +675,39 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–18 min',
           description: 'Kneeling rolls fuller range, hollow rocks to polish.',
           battlePlan: 'Kneeling Ab Wheel (fuller ROM)\n• 4 × 6–8 (RPE 5), 90s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest\nSide Plank with Hip Tap\n• 3 × 8–10/side (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Kneeling Ab Wheel",
+                    "intensity": "RPE 5",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "6–8",
+                    "tutorialSlug": "kneeling_ab_wheel"
+                  },
+                  {
+                    "name": "Hollow Rock",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–15"
+                  },
+                  {
+                    "name": "Side Plank with Hip Tap",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side",
+                    "tutorialSlug": "side_plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241241/mood_app/workout_images/pgkoxn00_download.jpg',
           intensityReason: 'Moderate volume kneeling rolls challenge midline.',
           movement_focus: 'core',
@@ -312,6 +730,39 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–18 min',
           description: '4–5s eccentrics, pause, return; then dead bugs.',
           battlePlan: 'Kneeling Ab Wheel Eccentric (4–5s down)\n• 4 × 4–6 (RPE 5–6), 90s rest\nDead Bug\n• 3 × 12–14/side (RPE 5), 60s rest\nFront Plank\n• 3 × 25–35s (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Kneeling Ab Wheel Eccentric",
+                    "intensity": "RPE 5–6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "4–6",
+                    "tutorialSlug": "kneeling_ab_wheel"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–14/side"
+                  },
+                  {
+                    "name": "Front Plank",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "25–35s",
+                    "tutorialSlug": "plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241258/mood_app/workout_images/ytutfbco_download_1_.jpg',
           intensityReason: 'Longer negatives build strength in extended ranges.',
           movement_focus: 'core',
@@ -334,6 +785,40 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–18 min',
           description: 'Kneeling diagonals, side planks, hollow holds finish.',
           battlePlan: 'Kneeling Ab Wheel Diagonal Rolls\n• 4 × 5–6/side (RPE 5), 90s rest\nSide Plank\n• 3 × 25–35s/side (RPE 5), 45–60s rest\nHollow Hold\n• 3 × 25–35s (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Kneeling Ab Wheel Diagonal Rolls",
+                    "intensity": "RPE 5",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "5–6/side",
+                    "tutorialSlug": "kneeling_ab_wheel"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "25–35s/side",
+                    "tutorialSlug": "side_plank"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "25–35s",
+                    "tutorialSlug": "hollow_holds"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241257/mood_app/workout_images/wgjgrxlk_download_2_.jpg',
           intensityReason: 'Slight angle changes load obliques and anti-rotation.',
           movement_focus: 'core',
@@ -358,6 +843,39 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Full kneeling rolls, hollow rocks, side plank reach.',
           battlePlan: 'Kneeling Ab Wheel (full ROM)\n• 5 × 6–8 (RPE 6), 90s rest\nHollow Rock\n• 4 × 12–16 (RPE 6), 60s rest\nSide Plank with Reach\n• 3 × 10–12/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Kneeling Ab Wheel",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 5,
+                    "reps": "6–8",
+                    "tutorialSlug": "kneeling_ab_wheel"
+                  },
+                  {
+                    "name": "Hollow Rock",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 4,
+                    "reps": "12–16"
+                  },
+                  {
+                    "name": "Side Plank with Reach",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side",
+                    "tutorialSlug": "side_plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241241/mood_app/workout_images/pgkoxn00_download.jpg',
           intensityReason: 'Full-range kneeling rolls challenge deep core safely.',
           movement_focus: 'core',
@@ -380,6 +898,40 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: '5–6s eccentrics, micro-pauses, strict plank holds.',
           battlePlan: 'Kneeling Ab Wheel Eccentric (5–6s down)\n• 5 × 3–5 (RPE 6–7), 120s rest\nFront Plank (hard)\n• 4 × 30–45s (RPE 6), 60–75s rest\nHollow Hold\n• 3 × 30–40s (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Kneeling Ab Wheel Eccentric",
+                    "intensity": "RPE 6–7",
+                    "rest": "120s",
+                    "sets": 5,
+                    "reps": "3–5",
+                    "tutorialSlug": "kneeling_ab_wheel"
+                  },
+                  {
+                    "name": "Front Plank",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "30–45s",
+                    "tutorialSlug": "plank"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "30–40s",
+                    "tutorialSlug": "hollow_holds"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241258/mood_app/workout_images/ytutfbco_download_1_.jpg',
           intensityReason: 'Very slow negatives build resilience in long ranges.',
           movement_focus: 'core',
@@ -402,6 +954,39 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Wheel outs with 1.5 reps, diagonal rolls light, side planks for core development.',
           battlePlan: 'Kneeling Ab Wheel (1.5 reps)\n• 4 × 5–6 (RPE 6), 90s rest\nKneeling Diagonal Rolls (short)\n• 3 × 5–6/side (RPE 6), 90s rest\nSide Plank\n• 3 × 30–40s/side (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Kneeling Ab Wheel",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "5–6",
+                    "tutorialSlug": "kneeling_ab_wheel"
+                  },
+                  {
+                    "name": "Kneeling Diagonal Rolls",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 3,
+                    "reps": "5–6/side"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "30–40s/side",
+                    "tutorialSlug": "side_plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241257/mood_app/workout_images/wgjgrxlk_download_2_.jpg',
           intensityReason: '1.5 wheel reps add bracing time at safe midrange.',
           movement_focus: 'core',
@@ -432,6 +1017,37 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Incline pushups, row regressions, dead bug finish.',
           battlePlan: 'Incline Pushup on Parallettes\n• 3 × 8–12 (RPE 4), 60s rest\nTable Row or Band Row (if available)\n• 3 × 10–12 (RPE 4), 60s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Incline Pushup on Parallettes",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Table Row or Band Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240928/mood_app/workout_images/kencpix3_incline_pushup.jpg',
           intensityReason: 'Elevated grips reduce wrist strain and aid control.',
           movement_focus: 'upper_push',
@@ -454,6 +1070,38 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Deficit pushups, scap pushups, side planks finish.',
           battlePlan: 'Deficit Pushup (small blocks)\n• 3 × 8–10 (RPE 4), 60s rest\nScapular Pushups on Bars\n• 3 × 10–12 (RPE 4), 60s rest\nSide Plank\n• 3 × 20–30s/side (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Deficit Pushup",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Scapular Pushups on Bars",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "20–30s/side",
+                    "tutorialSlug": "side_plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240917/mood_app/workout_images/3ltjblfg_deficit_pushup.jpg',
           intensityReason: 'Slight deficit allows safe depth and chest tension.',
           movement_focus: 'upper_push',
@@ -476,6 +1124,39 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Pseudo planche lean, pushups, hollow holds finish.',
           battlePlan: 'Parallette Lean Hold (pseudo planche)\n• 3 × 15–25s (RPE 4), 60s rest\nParallette Pushup (neutral wrists)\n• 3 × 8–12 (RPE 4), 60s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Parallette Lean Hold",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "15–25s"
+                  },
+                  {
+                    "name": "Parallette Pushup",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–12",
+                    "tutorialSlug": "parallette_push_ups"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "20–30s",
+                    "tutorialSlug": "hollow_holds"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240933/mood_app/workout_images/yneg02k1_pseduo_planch_lean.jpg',
           intensityReason: 'Forward lean introduces planche-line loading gently.',
           movement_focus: 'upper_push',
@@ -500,6 +1181,38 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Deep pushups, ring/table rows, knee tucks finisher.',
           battlePlan: 'Deep Parallette Pushup\n• 4 × 8–12 (RPE 5), 75s rest\nInverted Row (table/rings)\n• 4 × 8–10 (RPE 5), 75s rest\nParallette Knee Tucks (L-sit prep)\n• 3 × 10–12 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Deep Parallette Pushup",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–12",
+                    "tutorialSlug": "parallette_push_ups"
+                  },
+                  {
+                    "name": "Inverted Row",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Parallette Knee Tucks",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240917/mood_app/workout_images/3ltjblfg_deficit_pushup.jpg',
           intensityReason: 'Deeper range increases tension at manageable load.',
           movement_focus: 'upper_push',
@@ -522,6 +1235,38 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Pseudo planche pushups, dips light, hollow rocks.',
           battlePlan: 'Pseudo Planche Pushup (on bars)\n• 4 × 6–8 (RPE 5–6), 90s rest\nBox/Bench Dips (light)\n• 3 × 8–10 (RPE 5), 60–75s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Pseudo Planche Pushup",
+                    "intensity": "RPE 5–6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "6–8"
+                  },
+                  {
+                    "name": "Box/Bench Dips",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "bench_dips"
+                  },
+                  {
+                    "name": "Hollow Rock",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–15"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240933/mood_app/workout_images/yneg02k1_pseduo_planch_lean.jpg',
           intensityReason: 'Lean progressions build anterior shoulder integrity.',
           movement_focus: 'upper_push',
@@ -544,6 +1289,38 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Wide pushups, neutral pushups, side plank reaches.',
           battlePlan: 'Wide Parallette Pushup\n• 4 × 8–12 (RPE 5), 75s rest\nNeutral Parallette Pushup\n• 3 × 8–12 (RPE 5), 60–75s rest\nSide Plank with Reach\n• 3 × 8–10/side (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Wide Parallette Pushup",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Neutral Parallette Pushup",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Side Plank with Reach",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side",
+                    "tutorialSlug": "side_plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240921/mood_app/workout_images/9f2tiro6_download_24_.jpg',
           intensityReason: 'Hand placement changes emphasize different fibers.',
           movement_focus: 'upper_push',
@@ -568,6 +1345,38 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Pike pushups feet-high, pseudo planche holds, L-sit.',
           battlePlan: 'Feet-Elevated Pike Pushup (on bars)\n• 5 × 6–8 (RPE 6), 90s rest\nParallette Lean Hold (harder angle)\n• 4 × 20–30s (RPE 6), 75s rest\nParallette Tuck L-Sit\n• 4 × 10–15s (RPE 6), 60–75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Feet-Elevated Pike Pushup",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 5,
+                    "reps": "6–8"
+                  },
+                  {
+                    "name": "Parallette Lean Hold",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "20–30s"
+                  },
+                  {
+                    "name": "Parallette Tuck L-Sit",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10–15s",
+                    "tutorialSlug": "parallette_l_sit"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240934/mood_app/workout_images/yrisnwxk_pike.jpg',
           intensityReason: 'Elevated pike positions build overhead pressing lines.',
           movement_focus: 'upper_push',
@@ -590,6 +1399,37 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Deep deficit pushups, rows feet-high, hollow rocks.',
           battlePlan: 'Deep Deficit Parallette Pushup\n• 5 × 6–10 (RPE 6), 90s rest\nFeet-Elevated Inverted Row\n• 4 × 8–10 (RPE 6), 75s rest\nHollow Rock\n• 4 × 12–16 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Deep Deficit Parallette Pushup",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 5,
+                    "reps": "6–10"
+                  },
+                  {
+                    "name": "Feet-Elevated Inverted Row",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Hollow Rock",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 4,
+                    "reps": "12–16"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240917/mood_app/workout_images/3ltjblfg_deficit_pushup.jpg',
           intensityReason: 'Deeper deficit increases load and shoulder stability.',
           movement_focus: 'upper_push',
@@ -612,6 +1452,39 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Pushup 1.5s, pseudo planche pushups, L-sit holds.',
           battlePlan: 'Parallette Pushup (1.5 reps)\n• 4 × 6–8 (RPE 6), 90s rest\nPseudo Planche Pushup\n• 4 × 6–8 (RPE 6), 90s rest\nParallette L-Sit (tuck or one leg)\n• 4 × 10–15s (RPE 6), 60–75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Parallette Pushup",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "6–8",
+                    "tutorialSlug": "parallette_push_ups"
+                  },
+                  {
+                    "name": "Pseudo Planche Pushup",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "6–8"
+                  },
+                  {
+                    "name": "Parallette L-Sit",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10–15s",
+                    "tutorialSlug": "parallette_l_sit"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240927/mood_app/workout_images/hbfykdfb_download_25_.jpg',
           intensityReason: '1.5 pushups add tension without joint irritability.',
           movement_focus: 'upper_push',
@@ -646,6 +1519,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '16–20 min',
           description: 'Squats and incline pushups, dead bugs for core stability.',
           battlePlan: 'Bodyweight Squat\n• 3 × 12–15 (RPE 4), 60s rest\nIncline Pushup (hands on bench/wall)\n• 3 × 8–12 (RPE 4), 60s rest\nDead Bug\n• 3 × 8–10/side (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Bodyweight Squat",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Incline Pushup",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240920/mood_app/workout_images/8pq54s9o_download_16_.jpg',
           intensityReason: 'Simple patterns build control without loading demands.',
           movement_focus: 'full_body',
@@ -668,6 +1573,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '16–20 min',
           description: 'Hip hinge, step-back lunges, plank hold for midline.',
           battlePlan: 'Hip Hinge (bodyweight RDL pattern)\n• 3 × 12 (RPE 4), 60s rest\nReverse Lunge\n• 3 × 8/side (RPE 4), 60s rest\nFront Plank\n• 3 × 20–40s (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hip Hinge",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Reverse Lunge",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8/side",
+                    "tutorialSlug": "barbell_reverse_lunge"
+                  },
+                  {
+                    "name": "Front Plank",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "20–40s",
+                    "tutorialSlug": "plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240923/mood_app/workout_images/dvx5s4v8_download_17_.jpg',
           intensityReason: 'Hip hinge and knee patterns build base body control.',
           movement_focus: 'lower',
@@ -690,6 +1628,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '16–20 min',
           description: 'Doorframe rows, incline pushups, hollow holds finish.',
           battlePlan: 'Towel/Doorframe Row (light angle)\n• 3 × 10–12 (RPE 4), 60s rest\nIncline Pushup\n• 3 × 8–12 (RPE 4), 60s rest\nHollow Hold\n• 3 × 15–25s (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Towel/Doorframe Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Incline Pushup",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "15–25s",
+                    "tutorialSlug": "hollow_holds"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240919/mood_app/workout_images/3v9vj2rl_download_20_.jpg',
           intensityReason: 'Vertical pulls regress to build scap control safely.',
           movement_focus: 'mixed_upper',
@@ -712,6 +1682,47 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '18–22 min',
           description: 'Squats, wall sits, pushups from knees, side planks.',
           battlePlan: 'Bodyweight Squat\n• 3 × 12–15 (RPE 4), 60s rest\nWall Sit\n• 3 × 30–45s (RPE 4), 45–60s rest\nKnee Pushup\n• 3 × 8–12 (RPE 4), 60s rest\nSide Plank\n• 3 × 15–25s/side (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Bodyweight Squat",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Wall Sit",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "30–45s",
+                    "tutorialSlug": "sit_ups"
+                  },
+                  {
+                    "name": "Knee Pushup",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "15–25s/side",
+                    "tutorialSlug": "side_plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240930/mood_app/workout_images/udye11gr_download_21_.jpg',
           intensityReason: 'Controlled flow builds capacity with minimal strain.',
           movement_focus: 'full_body',
@@ -736,6 +1747,46 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Split squats, pushups, hip lifts, hollow rocks for bodyweight challenge.',
           battlePlan: 'Rear-Foot Flat Split Squat\n• 4 × 8/side (RPE 5), 60–75s rest\nPushup (standard)\n• 4 × 8–12 (RPE 5), 60–75s rest\nGlute Bridge\n• 3 × 12–15 (RPE 5), 60s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Rear-Foot Flat Split Squat",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8/side",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Pushup",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Glute Bridge",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "glute_bridge"
+                  },
+                  {
+                    "name": "Hollow Rock",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–15"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240923/mood_app/workout_images/dvx5s4v8_download_17_.jpg',
           intensityReason: 'Moderate volume builds strength with steady control.',
           movement_focus: 'full_body',
@@ -758,6 +1809,45 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Step-downs, skater squats, pushups, dead bugs.',
           battlePlan: 'Heel Tap Step-Down (low step)\n• 4 × 6–8/side (RPE 5), 60–75s rest\nSkater Squat (assisted)\n• 3 × 6–8/side (RPE 5), 60–75s rest\nPushup\n• 3 × 8–12 (RPE 5), 60s rest\nDead Bug\n• 3 × 10–12/side (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Heel Tap Step-Down",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "6–8/side"
+                  },
+                  {
+                    "name": "Skater Squat",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "6–8/side",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Pushup",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240929/mood_app/workout_images/t0xtqts3_download_19_.jpg',
           intensityReason: 'Unilateral patterns build balance and hip stability.',
           movement_focus: 'unilateral',
@@ -780,6 +1870,46 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Good mornings, table rows, pushups, side planks.',
           battlePlan: 'Bodyweight Good Morning\n• 4 × 12 (RPE 5), 60s rest\nTable/Ring Row Regression (feet bent)\n• 4 × 8–10 (RPE 5), 60–75s rest\nPushup\n• 3 × 8–12 (RPE 5), 60s rest\nSide Plank\n• 3 × 25–35s/side (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Bodyweight Good Morning",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 4,
+                    "reps": "12",
+                    "tutorialSlug": "barbell_good_mornings"
+                  },
+                  {
+                    "name": "Table/Ring Row Regression",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Pushup",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "25–35s/side",
+                    "tutorialSlug": "side_plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240927/mood_app/workout_images/jb142mdj_download_22_.jpg',
           intensityReason: 'Hip hinge pairs with row regressions for posture.',
           movement_focus: 'hinge_pull',
@@ -802,6 +1932,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Squat to lunge flow, pushups, hollow hold finisher.',
           battlePlan: 'Squat → Reverse Lunge (alt sides)\n• 4 × 6/side (RPE 5), 60–75s rest\nPushup\n• 4 × 8–12 (RPE 5), 60–75s rest\nHollow Hold\n• 3 × 25–35s (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Squat → Reverse Lunge",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "6/side",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Pushup",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "25–35s",
+                    "tutorialSlug": "hollow_holds"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240920/mood_app/workout_images/8pq54s9o_download_16_.jpg',
           intensityReason: 'Alternating patterns elevate capacity with control.',
           movement_focus: 'full_body',
@@ -826,6 +1989,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Pistol regressions, decline pushups, hollow rocks.',
           battlePlan: 'Pistol Box Squat (to box/bench)\n• 4 × 5–7/side (RPE 6), 75s rest\nDecline Pushup (feet elevated)\n• 4 × 8–12 (RPE 6), 60–75s rest\nHollow Rock\n• 4 × 10–15 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Pistol Box Squat",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "5–7/side",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Decline Pushup",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Hollow Rock",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 4,
+                    "reps": "10–15"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240925/mood_app/workout_images/h7zvxkan_PS.jpg',
           intensityReason: 'Higher tension bodyweight builds strength under control.',
           movement_focus: 'full_body',
@@ -848,6 +2043,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Single-leg RDL reach, hard rows, side plank holds.',
           battlePlan: 'Single-Leg RDL Reach (unloaded)\n• 4 × 6–8/side (RPE 6), 75s rest\nTable/Ring Row (feet forward)\n• 4 × 8–10 (RPE 6), 60–75s rest\nSide Plank\n• 3 × 35–45s/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Single-Leg RDL Reach",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "6–8/side",
+                    "tutorialSlug": "db_single_leg_rdl"
+                  },
+                  {
+                    "name": "Table/Ring Row",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Side Plank",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "35–45s/side",
+                    "tutorialSlug": "side_plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240932/mood_app/workout_images/voz31xv4_download_23_.jpg',
           intensityReason: 'Single-leg hinge and rows increase posterior demand.',
           movement_focus: 'hinge_pull',
@@ -870,6 +2098,46 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Pushups, rows, squat jumps light, hollow hold closer.',
           battlePlan: 'Pushup\n• 5 × 8–12 (RPE 6), 60–75s rest\nInverted Row (low table or rail)\n• 4 × 8–10 (RPE 6), 60–75s rest\nSquat Jump (small height)\n• 3 × 8 (RPE 6), 60s rest\nHollow Hold\n• 3 × 30–40s (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Pushup",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 5,
+                    "reps": "8–12"
+                  },
+                  {
+                    "name": "Inverted Row",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Squat Jump",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8",
+                    "tutorialSlug": "landmine_hack_squat_jump"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "30–40s",
+                    "tutorialSlug": "hollow_holds"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240924/mood_app/workout_images/e6le95i4_download_18_.jpg',
           intensityReason: 'Higher push–pull volume builds endurance and control.',
           movement_focus: 'full_body',
@@ -892,6 +2160,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: '1.5 tempo adds time under tension for safe progress.',
           battlePlan: 'Bodyweight Squat (1.5 reps)\n• 4 × 8–10 (RPE 6), 60–75s rest\nPushup (1.5 reps)\n• 4 × 6–8 (RPE 6), 60–75s rest\nSide Plank with Top-Arm Reach\n• 3 × 8–10/side (RPE 6), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Bodyweight Squat",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8–10",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Pushup",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "6–8"
+                  },
+                  {
+                    "name": "Side Plank with Top-Arm Reach",
+                    "intensity": "RPE 6",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10/side",
+                    "tutorialSlug": "side_plank"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240920/mood_app/workout_images/8pq54s9o_download_16_.jpg',
           intensityReason: '1.5 tempo adds time under tension for safe progress.',
           movement_focus: 'full_body',
@@ -922,6 +2223,37 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Dead hangs, band-assisted pulls, incline inverted rows.',
           battlePlan: 'Dead Hang (feet supported if needed)\n• 3 × 20–30s (RPE 4), 60s rest\nBand-Assisted Pullup (light angle)\n• 3 × 4–6 (RPE 4), 75s rest\nInverted Row (high bar, feet bent)\n• 3 × 8–10 (RPE 4), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Dead Hang",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "20–30s"
+                  },
+                  {
+                    "name": "Band-Assisted Pullup",
+                    "intensity": "RPE 4",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "4–6"
+                  },
+                  {
+                    "name": "Inverted Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241216/mood_app/workout_images/cvdrz3i5_inverted_rows.jpg',
           intensityReason: 'Assisted hangs and rows build grip and scap control.',
           movement_focus: 'upper_pull',
@@ -944,6 +2276,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Scap pullups, eccentric lowers, hollow hold for core.',
           battlePlan: 'Scapular Pullups (top to bottom)\n• 3 × 8–10 (RPE 4), 60s rest\nEccentric Pullup (3–4s lowers, band if needed)\n• 3 × 3–5 (RPE 4), 75s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Scapular Pullups",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Eccentric Pullup",
+                    "intensity": "RPE 4",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "3–5",
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "name": "Hollow Hold",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "20–30s",
+                    "tutorialSlug": "hollow_holds"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241221/mood_app/workout_images/fh1b52aj_dead_hang.jpg',
           intensityReason: 'Scapular movement priming builds safer pull strength.',
           movement_focus: 'upper_pull',
@@ -966,6 +2331,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Neutral band pulls, chin-up eccentrics, rows to close.',
           battlePlan: 'Neutral-Grip Band-Assisted Pullup\n• 3 × 5–7 (RPE 4), 75s rest\nEccentric Chin-Up (4s down)\n• 3 × 3–4 (RPE 4), 75s rest\nInverted Row (bar chest height)\n• 3 × 8–10 (RPE 4), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Neutral-Grip Band-Assisted Pullup",
+                    "intensity": "RPE 4",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "5–7"
+                  },
+                  {
+                    "name": "Eccentric Chin-Up",
+                    "intensity": "RPE 4",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "3–4",
+                    "tutorialSlug": "chin_ups"
+                  },
+                  {
+                    "name": "Inverted Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241201/mood_app/workout_images/7475d60t_chin_ups.jpg',
           intensityReason: 'Different bar grips distribute load and teach control.',
           movement_focus: 'upper_pull',
@@ -990,6 +2387,37 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Assisted pullups, inverted rows, hollow rocks finish.',
           battlePlan: 'Band-Assisted Pullup\n• 4 × 6–8 (RPE 5), 90s rest\nInverted Row (feet flat)\n• 4 × 8–10 (RPE 5), 75s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Band-Assisted Pullup",
+                    "intensity": "RPE 5",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "6–8"
+                  },
+                  {
+                    "name": "Inverted Row",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Hollow Rock",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–15"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241216/mood_app/workout_images/cvdrz3i5_inverted_rows.jpg',
           intensityReason: 'Moderate band assist allows higher-quality volume.',
           movement_focus: 'upper_pull',
@@ -1012,6 +2440,40 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Chin-up eccentrics, isometric holds, knee raises.',
           battlePlan: 'Eccentric Chin-Up\n• 4 × 3–4 (RPE 5–6), 90s rest\nTop Isometric Pullup Hold (chin over bar)\n• 3 × 10–15s (RPE 5), 75s rest\nHanging Knee Raise\n• 3 × 10–12 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Eccentric Chin-Up",
+                    "intensity": "RPE 5–6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "3–4",
+                    "tutorialSlug": "chin_ups"
+                  },
+                  {
+                    "name": "Top Isometric Pullup Hold",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "10–15s",
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "name": "Hanging Knee Raise",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "hanging_knee_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241201/mood_app/workout_images/7475d60t_chin_ups.jpg',
           intensityReason: 'Negatives build strength through full, safe range.',
           movement_focus: 'upper_pull',
@@ -1034,6 +2496,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Neutral pullups, pronated rows, dead hangs for grip.',
           battlePlan: 'Neutral-Grip Pullup (light band if needed)\n• 4 × 5–7 (RPE 5–6), 90s rest\nPronated Inverted Row (feet bent)\n• 4 × 8–10 (RPE 5), 75s rest\nDead Hang\n• 3 × 30–40s (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Neutral-Grip Pullup",
+                    "intensity": "RPE 5–6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "5–7",
+                    "tutorialSlug": "neutral_grip_assisted_pull_up"
+                  },
+                  {
+                    "name": "Pronated Inverted Row",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Dead Hang",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "30–40s"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241221/mood_app/workout_images/fh1b52aj_dead_hang.jpg',
           intensityReason: 'Grip variations balance forearm and lat engagement.',
           movement_focus: 'upper_pull',
@@ -1058,6 +2552,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Pullups strict, chest-to-bar rows, hanging leg raises.',
           battlePlan: 'Strict Pullup (bodyweight)\n• 5 × 4–6 (RPE 6), 90s rest\nChest-to-Bar Inverted Row (feet extended)\n• 4 × 8–10 (RPE 6), 75s rest\nHanging Leg Raise\n• 3 × 8–12 (RPE 6), 60–75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Strict Pullup",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 5,
+                    "reps": "4–6",
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "name": "Chest-to-Bar Inverted Row",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Hanging Leg Raise",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–12",
+                    "tutorialSlug": "hanging_toe_touch"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241230/mood_app/workout_images/kzuswott_download_15_.jpg',
           intensityReason: 'Strict sets prioritize clean strength and scap control.',
           movement_focus: 'upper_pull',
@@ -1080,6 +2607,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Eccentric pullups weighted, hollow rocks, grip holds.',
           battlePlan: 'Weighted Eccentric Pullup (dip belt/DB)\n• 5 × 2–3 (RPE 6–7), 120s rest\nHollow Rock\n• 4 × 12–16 (RPE 6), 60–75s rest\nBar Hang (thick grip/towel)\n• 3 × 30–40s (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Weighted Eccentric Pullup",
+                    "intensity": "RPE 6–7",
+                    "rest": "120s",
+                    "sets": 5,
+                    "reps": "2–3",
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "name": "Hollow Rock",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "12–16"
+                  },
+                  {
+                    "name": "Bar Hang",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "30–40s"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241226/mood_app/workout_images/iqs19xds_weighted_pullup.jpg',
           intensityReason: 'Weighted negatives push strength beyond sticking zones.',
           movement_focus: 'upper_pull',
@@ -1102,6 +2661,40 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Neutral pullups, pronated pullups, chin hold finisher.',
           battlePlan: 'Neutral-Grip Pullup\n• 4 × 5–7 (RPE 6), 90s rest\nPronated Pullup\n• 3 × 4–6 (RPE 6), 90s rest\nTop Isometric Chin-Up Hold\n• 3 × 10–15s (RPE 6), 75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Neutral-Grip Pullup",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "5–7",
+                    "tutorialSlug": "neutral_grip_assisted_pull_up"
+                  },
+                  {
+                    "name": "Pronated Pullup",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 3,
+                    "reps": "4–6",
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "name": "Top Isometric Chin-Up Hold",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "10–15s",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241201/mood_app/workout_images/7475d60t_chin_ups.jpg',
           intensityReason: 'Higher total pulls with varied grips improve capacity.',
           movement_focus: 'upper_pull',
@@ -1132,6 +2725,23 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Hanging knee raises building core control and lower ab strength',
           battlePlan: '3 rounds\n• 10–12 reps\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hanging Knee Raise",
+                    "reps": "10–12",
+                    "tutorialSlug": "hanging_knee_raise"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/t73he7a9_hanging%20knee%20raise%202.png',
           intensityReason: 'Knee raises teach lower-ab control without overloading the core',
           movement_focus: 'core',
@@ -1147,6 +2757,23 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Alternating knee raises improving coordination and core control',
           battlePlan: '3 rounds\n• 12 total reps\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Alternating Hanging Knee Raise",
+                    "reps": "12",
+                    "tutorialSlug": "hanging_knee_raise"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/50qyiwtg_alternating%20hangin%20knee%20raise.png',
           intensityReason: 'Alternating reps build coordination and unilateral core stability',
           movement_focus: 'core',
@@ -1162,6 +2789,23 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Knee raises with pauses increasing abdominal tension and control',
           battlePlan: '3 rounds\n• 8 reps (2s hold)\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hanging Knee Raise Hold",
+                    "reps": "8",
+                    "tutorialSlug": "hanging_knee_raise"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/5lr2vsej_hanging%20knee%20raise%203.png',
           intensityReason: 'Top-position holds maximize ab tension and time-under-load',
           movement_focus: 'core',
@@ -1177,6 +2821,23 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '8–10 min',
           description: 'Slow-tempo knee raises increasing lower ab tension and control',
           battlePlan: '3 rounds\n• 8–10 reps (3s eccentric)\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Slow Hanging Knee Raise",
+                    "reps": "8–10",
+                    "tutorialSlug": "hanging_knee_raise"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/cjxoatel_hanging%20knee%20raise%204.png',
           intensityReason: 'Slow tempo increases time under tension for the lower abs',
           movement_focus: 'core',
@@ -1194,6 +2855,23 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Straight-leg raises increasing lower ab strength and tension',
           battlePlan: '4 rounds\n• 10–12 reps\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hanging Leg Raise",
+                    "reps": "10–12",
+                    "tutorialSlug": "hanging_toe_touch"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/btrm5pgt_pull%20up%20bar%20leg%20raise.png',
           intensityReason: 'Straight legs lengthen the lever and overload the lower abs',
           movement_focus: 'core',
@@ -1209,6 +2887,22 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Controlled toe raises improving compression and abdominal strength',
           battlePlan: '4 rounds\n• 8–10 reps\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Toes-to-Bar Progression",
+                    "reps": "8–10"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/dadu4ryl_pull%20up%20bar%20toe%20to%20bar.png',
           intensityReason: 'Reaching for the bar develops abdominal compression strength',
           movement_focus: 'core',
@@ -1224,6 +2918,22 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Leg raises extended with pulses increasing abdominal tension',
           battlePlan: '4 rounds\n• 8 reps + 4 pulses\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "reps + 4 pulses",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/8x9e66q8_hanging%20leg%20raise%202.png',
           intensityReason: 'Top-end pulses keep the abs loaded in their hardest range',
           movement_focus: 'core',
@@ -1239,6 +2949,22 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Rotational hanging raises building oblique strength and control',
           battlePlan: '4 rounds\n• 6 per side\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Windshield Wiper Intro",
+                    "reps": "6"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/xv28u0mp_windshield%20wipers.png',
           intensityReason: 'Rotational pattern teaches oblique control and core stability',
           movement_focus: 'core',
@@ -1256,6 +2982,23 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Full toes-to-bar reps demanding advanced core compression strength',
           battlePlan: '4 rounds\n• 10–12 reps\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Toes-to-Bar",
+                    "reps": "10–12",
+                    "tutorialSlug": "hanging_toe_touch"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/dadu4ryl_pull%20up%20bar%20toe%20to%20bar.png',
           intensityReason: 'Full range requires elite compression strength and grip',
           movement_focus: 'core',
@@ -1271,6 +3014,23 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'L-sit raises combining compression strength with core endurance',
           battlePlan: '4 rounds\n• 8–10 reps\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hanging L-Sit Raise",
+                    "reps": "8–10",
+                    "tutorialSlug": "sit_ups"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/k7ylihgl_L%20sit%20pull%20up.png',
           intensityReason: 'L-sit hold demands max compression + endurance simultaneously',
           movement_focus: 'core',
@@ -1286,6 +3046,22 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Full rotational raises building advanced oblique and core strength',
           battlePlan: '4 rounds\n• 8 per side\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hanging Windshield Wipers",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/xv28u0mp_windshield%20wipers.png',
           intensityReason: 'Full rotation overloads the obliques with elite control',
           movement_focus: 'core',
@@ -1301,6 +3077,22 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'High-rep toes-to-bar sets pushing abdominal endurance and grip',
           battlePlan: '3 rounds\n• 15–20 reps\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Toes-to-Bar Burnout",
+                    "reps": "15–20"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/khia1c9e_hanging%20toe%20to%20bar%202.png',
           intensityReason: 'High-rep volume drives abdominal endurance and grip stamina',
           movement_focus: 'core',
@@ -1324,6 +3116,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Support holds, band-assisted dips, knee tucks closer.',
           battlePlan: 'Parallel Bar Support Hold\n• 3 × 15–25s (RPE 4), 60s rest\nBand-Assisted Dips\n• 3 × 5–7 (RPE 4), 75s rest\nParallel Bar Knee Tucks\n• 3 × 10–12 (RPE 4), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Parallel Bar Support Hold",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "15–25s"
+                  },
+                  {
+                    "name": "Band-Assisted Dips",
+                    "intensity": "RPE 4",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "5–7",
+                    "tutorialSlug": "assisted_dips"
+                  },
+                  {
+                    "name": "Parallel Bar Knee Tucks",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241218/mood_app/workout_images/eyqn2a9a_download_10_.jpg',
           intensityReason: 'Support holds and assisted dips teach body alignment.',
           movement_focus: 'upper_push',
@@ -1346,6 +3170,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Bar rows, band dips light, dead bug finish for light challenge.',
           battlePlan: 'Parallel Bar Inverted Row (knees bent)\n• 3 × 8–10 (RPE 4), 60s rest\nBand-Assisted Dips\n• 3 × 5–7 (RPE 4), 75s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Parallel Bar Inverted Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Band-Assisted Dips",
+                    "intensity": "RPE 4",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "5–7",
+                    "tutorialSlug": "assisted_dips"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241212/mood_app/workout_images/bhu7tjin_download_14_.jpg',
           intensityReason: 'Bar rows build scap control with simple setup.',
           movement_focus: 'mixed_upper',
@@ -1368,6 +3224,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '16–22 min',
           description: 'Support holds, assisted dip eccentrics, knee raises.',
           battlePlan: 'Parallel Bar Support Hold\n• 3 × 20–30s (RPE 4), 60s rest\nAssisted Dip Eccentric (3–4s down)\n• 3 × 3–5 (RPE 4), 75s rest\nHanging Knee Raise (on bars)\n• 3 × 8–10 (RPE 4), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Parallel Bar Support Hold",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "20–30s"
+                  },
+                  {
+                    "name": "Assisted Dip Eccentric",
+                    "intensity": "RPE 4",
+                    "rest": "75s",
+                    "sets": 3,
+                    "reps": "3–5",
+                    "tutorialSlug": "assisted_dips"
+                  },
+                  {
+                    "name": "Hanging Knee Raise",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "hanging_knee_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241253/mood_app/workout_images/v42ceu0x_download_11_.jpg',
           intensityReason: 'Stable support positions teach shoulder packing.',
           movement_focus: 'upper_push',
@@ -1392,6 +3281,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Dips banded, bar rows, knee raise strict to finish.',
           battlePlan: 'Band-Assisted Dips\n• 4 × 6–8 (RPE 5), 90s rest\nParallel Bar Inverted Row (feet flat)\n• 4 × 8–10 (RPE 5), 75s rest\nParallel Bar Knee Raise\n• 3 × 10–12 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Band-Assisted Dips",
+                    "intensity": "RPE 5",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "6–8",
+                    "tutorialSlug": "assisted_dips"
+                  },
+                  {
+                    "name": "Parallel Bar Inverted Row",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Parallel Bar Knee Raise",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241212/mood_app/workout_images/bhu7tjin_download_14_.jpg',
           intensityReason: 'Moderate dip volume strengthens chest and triceps.',
           movement_focus: 'mixed_upper',
@@ -1414,6 +3335,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Support holds, tempo dips, dead bugs for brace.',
           battlePlan: 'Parallel Bar Support Hold\n• 4 × 25–35s (RPE 5), 60–75s rest\nTempo Dips (3s down) with Band\n• 4 × 5–7 (RPE 5–6), 90s rest\nDead Bug\n• 3 × 12–14/side (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Parallel Bar Support Hold",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "25–35s"
+                  },
+                  {
+                    "name": "Tempo Dips with Band",
+                    "intensity": "RPE 5–6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "5–7",
+                    "tutorialSlug": "dips"
+                  },
+                  {
+                    "name": "Dead Bug",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–14/side"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241208/mood_app/workout_images/acv740pg_download_12_.jpg',
           intensityReason: 'Isometrics add control for safer pressing patterns.',
           movement_focus: 'upper_push',
@@ -1436,6 +3389,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Pronated bar rows, dips, knee tucks controlled.',
           battlePlan: 'Parallel Bar Row (pronated, feet bent)\n• 4 × 8–10 (RPE 5), 75s rest\nBand-Assisted Dips\n• 4 × 6–8 (RPE 5–6), 90s rest\nParallel Bar Knee Tucks\n• 3 × 10–12 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Parallel Bar Row",
+                    "intensity": "RPE 5",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Band-Assisted Dips",
+                    "intensity": "RPE 5–6",
+                    "rest": "90s",
+                    "sets": 4,
+                    "reps": "6–8",
+                    "tutorialSlug": "assisted_dips"
+                  },
+                  {
+                    "name": "Parallel Bar Knee Tucks",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241253/mood_app/workout_images/v42ceu0x_download_11_.jpg',
           intensityReason: 'Pair rows with dips for balanced push–pull control.',
           movement_focus: 'mixed_upper',
@@ -1460,6 +3445,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Strict dips, feet-elevated rows, L-sit tuck holds.',
           battlePlan: 'Strict Parallel Bar Dips\n• 5 × 5–7 (RPE 6), 90s rest\nFeet-Elevated Parallel Bar Row\n• 4 × 8–10 (RPE 6), 75s rest\nParallel Bar Tuck L-Sit Hold\n• 4 × 10–15s (RPE 6), 60–75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Strict Parallel Bar Dips",
+                    "intensity": "RPE 6",
+                    "rest": "90s",
+                    "sets": 5,
+                    "reps": "5–7",
+                    "tutorialSlug": "dips"
+                  },
+                  {
+                    "name": "Feet-Elevated Parallel Bar Row",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Parallel Bar Tuck L-Sit Hold",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10–15s",
+                    "tutorialSlug": "sit_ups"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241208/mood_app/workout_images/acv740pg_download_12_.jpg',
           intensityReason: 'Bodyweight dips build pressing power and stability.',
           movement_focus: 'mixed_upper',
@@ -1482,6 +3500,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Dip negatives weighted, hard rows, strict knee raises.',
           battlePlan: 'Weighted Eccentric Dip\n• 5 × 2–3 (RPE 6–7), 120s rest\nParallel Bar Row (feet extended)\n• 4 × 8–10 (RPE 6), 75s rest\nParallel Bar Knee Raise\n• 4 × 10–12 (RPE 6), 60–75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Weighted Eccentric Dip",
+                    "intensity": "RPE 6–7",
+                    "rest": "120s",
+                    "sets": 5,
+                    "reps": "2–3",
+                    "tutorialSlug": "dips"
+                  },
+                  {
+                    "name": "Parallel Bar Row",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Parallel Bar Knee Raise",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241212/mood_app/workout_images/bhu7tjin_download_14_.jpg',
           intensityReason: 'Weighted eccentrics increase force in safe ranges.',
           movement_focus: 'mixed_upper',
@@ -1504,6 +3554,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           duration: '26–34 min',
           description: 'Dip 1.5 reps, chest-to-bar rows, tuck L-sit holds for advanced challenge.',
           battlePlan: 'Dips (1.5 reps: half up, down, full press)\n• 4 × 4–6 (RPE 6), 120s rest\nChest-to-Bar Parallel Bar Row\n• 4 × 8–10 (RPE 6), 75s rest\nTuck L-Sit Hold\n• 4 × 12–18s (RPE 6), 60–75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Dips",
+                    "intensity": "RPE 6",
+                    "rest": "120s",
+                    "sets": 4,
+                    "reps": "4–6",
+                    "tutorialSlug": "dips"
+                  },
+                  {
+                    "name": "Chest-to-Bar Parallel Bar Row",
+                    "intensity": "RPE 6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Tuck L-Sit Hold",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "12–18s",
+                    "tutorialSlug": "sit_ups"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241224/mood_app/workout_images/gua5r4vy_download_13_.jpg',
           intensityReason: '1.5 dip reps increase time under tension efficiently.',
           movement_focus: 'mixed_upper',

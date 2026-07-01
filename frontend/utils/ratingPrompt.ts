@@ -21,7 +21,29 @@
  */
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as StoreReview from 'expo-store-review';
+import { openFeedbackEmail } from './feedback';
+
+/**
+ * LAZY guarded native access. `expo-store-review` resolves its native module
+ * at MODULE-EVAL time via `requireNativeModule('ExpoStoreReview')`, which
+ * THROWS in a dev client compiled before the module was added. We therefore
+ * never import it at the top level — importing this file (and thus
+ * create-post / workout-session / the dev screen) must never touch native.
+ *
+ * `getStoreReview()` requires it lazily inside try/catch, so the native module
+ * is only ever evaluated when we actually attempt a REAL review request. The
+ * dev-screen force-fire path uses `bypassGates` and never calls this, so it
+ * previews the pre-prompt with zero native involvement. Returns `null` when
+ * the module isn't in the binary; rebuild the dev client to get the real
+ * dialog.
+ */
+function getStoreReview(): typeof import('expo-store-review') | null {
+  try {
+    return require('expo-store-review') as typeof import('expo-store-review');
+  } catch {
+    return null;
+  }
+}
 
 /** Persisted completed-workout counter (ALL users). */
 const WORKOUT_COUNT_KEY = '@mood_completed_workout_count_v1';
@@ -84,6 +106,13 @@ export interface MaybeRequestReviewOptions {
   onRequestFeedback?: () => void;
   /** Skip the count gate (dev/QA only). */
   force?: boolean;
+  /**
+   * DEV/QA only: bypass ALL gates (one-shot, count, native availability) and
+   * never persist the one-shot flag, so the pre-prompt shows every time and
+   * even on a simulator where the native review API reports unavailable.
+   * Used by the /dev/screens force-fire row.
+   */
+  bypassGates?: boolean;
 }
 
 /**
@@ -103,7 +132,7 @@ export interface MaybeRequestReviewOptions {
 export async function maybeRequestReview(
   opts: MaybeRequestReviewOptions = {},
 ): Promise<RatingPromptOutcome> {
-  const { onOutcome, onRequestFeedback, force } = opts;
+  const { onOutcome, onRequestFeedback, force, bypassGates } = opts;
 
   const count = await getCompletedCount();
   const emit = (o: RatingPromptOutcome): RatingPromptOutcome => {
@@ -111,20 +140,24 @@ export async function maybeRequestReview(
     return o;
   };
 
-  if (await hasShownPrompt()) return emit('suppressed_not_eligible');
-  if (!force && count !== RATING_TRIGGER_AT) return emit('suppressed_not_eligible');
+  if (!bypassGates) {
+    if (await hasShownPrompt()) return emit('suppressed_not_eligible');
+    if (!force && count !== RATING_TRIGGER_AT) return emit('suppressed_not_eligible');
 
-  // Native availability (false on simulators / unsupported OS versions).
-  let available = false;
-  try {
-    available = await StoreReview.isAvailableAsync();
-  } catch {
-    available = false;
+    // Native availability (false on simulators, unsupported OS, or a dev
+    // client built without the native module).
+    let available = false;
+    try {
+      const sr = getStoreReview();
+      available = sr ? await sr.isAvailableAsync() : false;
+    } catch {
+      available = false;
+    }
+    if (!available) return emit('suppressed_unavailable');
+
+    // Mark BEFORE showing so a crash mid-flow can't re-trigger on next completion.
+    await markPromptShown();
   }
-  if (!available) return emit('suppressed_unavailable');
-
-  // Mark BEFORE showing so a crash mid-flow can't re-trigger on next completion.
-  await markPromptShown();
 
   return new Promise<RatingPromptOutcome>((resolve) => {
     Alert.alert(
@@ -135,7 +168,10 @@ export async function maybeRequestReview(
           text: 'Not really',
           style: 'cancel',
           onPress: () => {
-            onRequestFeedback?.();
+            // Route to feedback: caller override if provided, otherwise the
+            // shared support-email flow (same destination as Settings).
+            if (onRequestFeedback) onRequestFeedback();
+            else void openFeedbackEmail({ subject: 'MOOD feedback (rating prompt)' });
             resolve(emit('shown_feedback'));
           },
         },
@@ -144,7 +180,7 @@ export async function maybeRequestReview(
           style: 'default',
           onPress: () => {
             // Fire-and-forget; the OS owns whether the dialog actually renders.
-            StoreReview.requestReview().catch(() => {});
+            getStoreReview()?.requestReview?.().catch(() => {});
             resolve(emit('shown_review_requested'));
           },
         },

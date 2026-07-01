@@ -11,6 +11,37 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Press first, laterals next, rope pressdowns finish smoothly.',
           battlePlan: 'Machine Chest Press\n• 3 × 8–10 (RPE 4), 45–60s rest\nMachine Lateral Raise\n• 3 × 10–12 (RPE 4), 45–60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Machine Lateral Raise",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Rope Pressdown",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241122/mood_app/workout_images/tp8hgvtb_download_28_.jpg',
           intensityReason: 'Simple machines train chest, delts, tris with minimal setup.',
           moodTips: [
@@ -31,6 +62,37 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Light incline press, reverse fly, overhead triceps closer.',
           battlePlan: 'Machine Incline Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nReverse Pec Deck\n• 3 × 12 (RPE 4), 45–60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Incline Chest Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Reverse Pec Deck",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Overhead Rope Triceps",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241114/mood_app/workout_images/inhlehab_download_29_.jpg',
           intensityReason: 'Incline press pairs with rear delts and tris for balance.',
           moodTips: [
@@ -51,6 +113,39 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Shoulder press, pec-deck squeeze, dip assist to finish clean.',
           battlePlan: 'Machine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nPec Deck\n• 3 × 10–12 (RPE 4), 60s rest\nAssisted Dips\n• 3 × 8–10 (RPE 4), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Shoulder Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Pec Deck",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "pec_deck_fly"
+                  },
+                  {
+                    "name": "Assisted Dips",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "assisted_dips"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241119/mood_app/workout_images/nj4fggwr_download_30_.jpg',
           intensityReason: 'Vertical press with fly and assisted dips keeps effort light.',
           moodTips: [
@@ -73,6 +168,39 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Machine press, incline cable fly, cable Y-raise to polish.',
           battlePlan: 'Machine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nIncline Cable Fly\n• 3 × 10 (RPE 5), 60s rest\nCable Y Raise\n• 3 × 12 (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Incline Cable Fly",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10",
+                    "tutorialSlug": "cable_fly_low_to_high"
+                  },
+                  {
+                    "name": "Cable Y Raise",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12",
+                    "tutorialSlug": "cable_lateral_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241122/mood_app/workout_images/tp8hgvtb_download_28_.jpg',
           intensityReason: 'Strong press plus fly stretch and Y-raise for delt detail.',
           moodTips: [
@@ -93,6 +221,37 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Press for delts, upright row adds caps, overhead tris finish.',
           battlePlan: 'Machine Shoulder Press\n• 4 × 8 (RPE 5–6), 60–75s rest\nCable Upright Row (wide)\n• 3 × 10 (RPE 5), 60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Shoulder Press",
+                    "intensity": "RPE 5–6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Cable Upright Row",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Overhead Rope Triceps",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241119/mood_app/workout_images/nj4fggwr_download_30_.jpg',
           intensityReason: 'Shoulder press, upright row, overhead tris build balance.',
           moodTips: [
@@ -113,6 +272,37 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Decline press base, medial delts next, rope pressdowns close.',
           battlePlan: 'Machine Decline Chest Press\n• 3 × 8–10 (RPE 5), 60s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 5), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Decline Chest Press",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Machine Lateral Raise",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Rope Pressdown",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241118/mood_app/workout_images/n6oa31c5_download_31_.jpg',
           intensityReason: 'Decline chest plus laterals and pressdowns target pressers.',
           moodTips: [
@@ -135,6 +325,38 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Heavy press drops, incline fly control, rope finishers.',
           battlePlan: 'Machine Chest Press\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nIncline Cable Fly\n• 3 × 10 (RPE 6), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 6), 60–75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "6"
+                  },
+                  {
+                    "name": "Incline Cable Fly",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10",
+                    "tutorialSlug": "cable_fly_low_to_high"
+                  },
+                  {
+                    "name": "Rope Pressdown",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ],
+                "rest": "90s; repeat for 3 total series"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241122/mood_app/workout_images/tp8hgvtb_download_28_.jpg',
           intensityReason: 'Drop-set press boosts volume; fly and pushdown refine.',
           moodTips: [
@@ -155,6 +377,34 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Shoulder press clusters; rear delts next; overhead tris close.',
           battlePlan: 'Machine Shoulder Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nReverse Pec Deck\n• 3 × 12 (RPE 6), 60–75s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Shoulder Press",
+                    "reps": "3"
+                  },
+                  {
+                    "name": "Reverse Pec Deck",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Overhead Rope Triceps",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241119/mood_app/workout_images/nj4fggwr_download_30_.jpg',
           intensityReason: 'Cluster presses maintain power while technique stays tidy.',
           moodTips: [
@@ -175,6 +425,38 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Cable fly one-and-a-halfs; laterals and rope pressdowns.',
           battlePlan: 'Cable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 6), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Fly",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_machine_fly"
+                  },
+                  {
+                    "name": "Machine Lateral Raise",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Rope Pressdown",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241113/mood_app/workout_images/bbb40x4e_download_32_.jpg',
           intensityReason: '1.5 fly increases tension; delts and tris support work.',
           moodTips: [
@@ -203,6 +485,40 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Lats first, mid-back next, rear delts and posture finish.',
           battlePlan: 'Lat Pulldown (wide or neutral)\n• 3 × 8–10 (RPE 4), 45–60s rest\nSeated Row (neutral)\n• 3 × 8–10 (RPE 4), 45–60s rest\nCable Face Pull\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Lat Pulldown",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "neutral_grip_lat_pulldown"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Cable Face Pull",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "cable_face_pull"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241101/mood_app/workout_images/224yyt9s_download_34_.jpg',
           intensityReason: 'Pulldown, row, face pull cover back and biceps simply.',
           moodTips: [
@@ -223,6 +539,39 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Row machine, straight-arm pulldown, cable curls finish.',
           battlePlan: 'Chest-Supported Row Machine\n• 3 × 8–10 (RPE 4), 60s rest\nCable Straight-Arm Pulldown\n• 3 × 12 (RPE 4), 45–60s rest\nCable Curl (EZ or rope)\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Chest-Supported Row Machine",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "chest_supported_db_row"
+                  },
+                  {
+                    "name": "Cable Straight-Arm Pulldown",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Cable Curl",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241112/mood_app/workout_images/8wag7xpf_Screenshot_2025-12-04_at_12_00_14_AM.jpg',
           intensityReason: 'Supported rows reduce bracing and simplify posture.',
           moodTips: [
@@ -243,6 +592,38 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'High cable row, reverse pec deck, cable curls sequence.',
           battlePlan: 'High Cable Row\n• 3 × 8–10 (RPE 4), 60s rest\nReverse Pec Deck\n• 3 × 12 (RPE 4), 45–60s rest\nCable Curl\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Reverse Pec Deck",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Cable Curl",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241106/mood_app/workout_images/4gyd3y66_download_35_.jpg',
           intensityReason: 'Upper-back bias plus curls for balanced pulling day.',
           moodTips: [
@@ -265,6 +646,39 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Pulldown work, straight-arm sweeps, incline cable curls.',
           battlePlan: 'Lat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nCable Straight-Arm Pulldown\n• 3 × 10–12 (RPE 5), 60s rest\nIncline Cable Curl (low to high)\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Lat Pulldown",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "neutral_grip_lat_pulldown"
+                  },
+                  {
+                    "name": "Cable Straight-Arm Pulldown",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Incline Cable Curl",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "incline_db_curl"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241101/mood_app/workout_images/224yyt9s_download_34_.jpg',
           intensityReason: 'Vertical pull pairs with length-tension lat training.',
           moodTips: [
@@ -285,6 +699,38 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Neutral rows, reverse fly sets, rope hammer curls finish.',
           battlePlan: 'Seated Row (neutral)\n• 4 × 8 (RPE 5), 60–75s rest\nReverse Pec Deck\n• 3 × 12 (RPE 5), 60s rest\nRope Hammer Curl\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Reverse Pec Deck",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Rope Hammer Curl",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241109/mood_app/workout_images/51z4cigt_download_33_.jpg',
           intensityReason: 'Rows, rear delts, and hammers build the mid-back chain.',
           moodTips: [
@@ -305,6 +751,37 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'High cable rows, reverse pec deck, preacher curl machine.',
           battlePlan: 'High Cable Row\n• 4 × 8 (RPE 5–6), 60–75s rest\nReverse Pec Deck\n• 3 × 12 (RPE 5), 60s rest\nPreacher Curl Machine\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 5–6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Reverse Pec Deck",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Preacher Curl Machine",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241111/mood_app/workout_images/5z9stzyy_Screenshot_2025-12-04_at_12_01_30_AM.jpg',
           intensityReason: 'High rows, rear delts, preacher curls cover pull angles.',
           moodTips: [
@@ -327,6 +804,40 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Heavy pulldown drops, rows next, cable curls to close.',
           battlePlan: 'Lat Pulldown\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSeated Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Curl\n• 3 × 10–12 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Lat Pulldown",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "6",
+                    "tutorialSlug": "neutral_grip_lat_pulldown"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Cable Curl",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ],
+                "rest": "90s; repeat for 3 total series"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241101/mood_app/workout_images/224yyt9s_download_34_.jpg',
           intensityReason: 'Pulldown drops extend time under tension efficiently.',
           moodTips: [
@@ -347,6 +858,36 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Cluster rows, rear delts after, incline cable curls finish.',
           battlePlan: 'Chest-Supported Row Machine\n• 3 clusters: 4 + 4 + 4 (15s between), 90s between clusters\nReverse Pec Deck\n• 3 × 12 (RPE 6), 60–75s rest\nIncline Cable Curl\n• 3 × 10–12 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Chest-Supported Row Machine",
+                    "reps": "3",
+                    "tutorialSlug": "chest_supported_db_row"
+                  },
+                  {
+                    "name": "Reverse Pec Deck",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Incline Cable Curl",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "incline_db_curl"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241106/mood_app/workout_images/4gyd3y66_download_35_.jpg',
           intensityReason: 'Row clusters sustain output with crisp scap control.',
           moodTips: [
@@ -367,6 +908,38 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Face pull 1.5 reps, high rows next, rope hammer curls.',
           battlePlan: 'Cable Face Pull (1.5 reps)\n• 3 × 10–12 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nRope Hammer Curl\n• 3 × 10–12 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Face Pull",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_face_pull"
+                  },
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Rope Hammer Curl",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241105/mood_app/workout_images/3mysq3rj_Screenshot_2025-12-04_at_12_02_09_AM.jpg',
           intensityReason: '1.5 face pulls intensify rear delts with safe load.',
           moodTips: [
@@ -395,6 +968,45 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Chest press, row, laterals, pressdowns for simple flow.',
           battlePlan: 'Machine Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nSeated Row\n• 3 × 8–10 (RPE 4), 60s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 4), 45–60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Machine Lateral Raise",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Rope Pressdown",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241102/mood_app/workout_images/2idat5d8_download_29_.jpg',
           intensityReason: 'Balanced machines load push and pull with few cues.',
           moodTips: [
@@ -415,6 +1027,47 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Shoulder press, pulldown, pec deck, cable curls lineup.',
           battlePlan: 'Machine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nLat Pulldown\n• 3 × 8–10 (RPE 4), 60s rest\nPec Deck\n• 3 × 10–12 (RPE 4), 60s rest\nCable Curl\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Shoulder Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Lat Pulldown",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "neutral_grip_lat_pulldown"
+                  },
+                  {
+                    "name": "Pec Deck",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "pec_deck_fly"
+                  },
+                  {
+                    "name": "Cable Curl",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241117/mood_app/workout_images/kwgc495p_download_30_.jpg',
           intensityReason: 'Vertical press and pull with easy isolation finishers.',
           moodTips: [
@@ -435,6 +1088,45 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Cable press, high row, Y-raises, rope triceps to finish.',
           battlePlan: 'Cable Chest Press\n• 3 × 10 (RPE 4), 60s rest\nHigh Cable Row\n• 3 × 10 (RPE 4), 60s rest\nCable Y Raise\n• 3 × 12 (RPE 4), 45–60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Chest Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10"
+                  },
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Cable Y Raise",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12",
+                    "tutorialSlug": "cable_lateral_raise"
+                  },
+                  {
+                    "name": "Rope Pressdown",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241108/mood_app/workout_images/4vnqx30z_download_32_.jpg',
           intensityReason: 'Cables guide paths and reduce setup, keeping it easy.',
           moodTips: [
@@ -457,6 +1149,46 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Chest press, row, lateral raise, curls; clean sequence.',
           battlePlan: 'Machine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nSeated Row\n• 4 × 8 (RPE 5), 60–75s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 5), 60s rest\nCable Curl\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Machine Lateral Raise",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Cable Curl",
+                    "intensity": "RPE 5",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241102/mood_app/workout_images/2idat5d8_download_29_.jpg',
           intensityReason: 'Machines train push, pull, and delts with control.',
           moodTips: [
@@ -477,6 +1209,46 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Shoulder press, pulldown, pec deck, rope tris; tidy flow.',
           battlePlan: 'Machine Shoulder Press\n• 4 × 8 (RPE 5–6), 60–75s rest\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nPec Deck\n• 3 × 10–12 (RPE 5), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Shoulder Press",
+                    "intensity": "RPE 5–6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Lat Pulldown",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "neutral_grip_lat_pulldown"
+                  },
+                  {
+                    "name": "Pec Deck",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "pec_deck_fly"
+                  },
+                  {
+                    "name": "Rope Pressdown",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241117/mood_app/workout_images/kwgc495p_download_30_.jpg',
           intensityReason: 'Overhead press and pulldown anchor simple accessory.',
           moodTips: [
@@ -497,6 +1269,44 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Cable press, high row, rear delts, overhead tris polish.',
           battlePlan: 'Cable Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nHigh Cable Row\n• 4 × 8 (RPE 5), 60–75s rest\nReverse Pec Deck\n• 3 × 12 (RPE 5), 60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Chest Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Reverse Pec Deck",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Overhead Rope Triceps",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241104/mood_app/workout_images/2skt7b9o_Screenshot_2025-12-04_at_12_01_30_AM.jpg',
           intensityReason: 'Cable paths allow smooth arcs and moderate control.',
           moodTips: [
@@ -519,6 +1329,45 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Chest and row drops, then laterals and cable curls.',
           battlePlan: 'Machine Chest Press\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSeated Row\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nMachine Lateral Raise\n• 3 × 12 (RPE 6), 60–75s rest\nCable Curl\n• 3 × 10–12 (RPE 6), 60–75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Machine Chest Press",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "6"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "6",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Machine Lateral Raise",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Cable Curl",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ],
+                "rest": "90s; repeat for 3 total series"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241121/mood_app/workout_images/tbt1jia8_download_35_.jpg',
           intensityReason: 'Drop sets increase volume without extra complexity.',
           moodTips: [
@@ -539,6 +1388,39 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Press and row clusters, then rear delts and rope tris.',
           battlePlan: 'Machine Chest Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSeated Row\n• 3 clusters: 4 + 4 + 4 (15s between), 90s between clusters\nReverse Pec Deck\n• 3 × 12 (RPE 6), 60–75s rest\nRope Pressdown\n• 3 × 10–12 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Chest Press",
+                    "reps": "3"
+                  },
+                  {
+                    "name": "Seated Row",
+                    "reps": "3",
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Reverse Pec Deck",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Rope Pressdown",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241100/mood_app/workout_images/12gt6fvb_download_2_.jpg',
           intensityReason: 'Cluster sets keep output high with preserved form.',
           moodTips: [
@@ -559,6 +1441,46 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Fly 1.5s, high rows, Y raises, overhead triceps finisher.',
           battlePlan: 'Cable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Y Raise\n• 3 × 12 (RPE 6), 60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Fly",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_machine_fly"
+                  },
+                  {
+                    "name": "High Cable Row",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Cable Y Raise",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12",
+                    "tutorialSlug": "cable_lateral_raise"
+                  },
+                  {
+                    "name": "Overhead Rope Triceps",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241115/mood_app/workout_images/jjomvfxr_download_1_.jpg',
           intensityReason: 'Midrange focus with cables adds tension at modest load.',
           moodTips: [

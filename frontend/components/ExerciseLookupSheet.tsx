@@ -43,6 +43,7 @@ export interface Exercise {
 interface ExerciseLookupSheetProps {
   visible: boolean;
   onClose: () => void;
+  initialQuery?: string;
 }
 
 // Popular exercises (default chips)
@@ -58,7 +59,7 @@ const POPULAR_EXERCISES = [
 const RECENT_LOOKUPS_KEY = '@exercise_recent_lookups';
 const MAX_RECENT = 6;
 
-export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookupSheetProps) {
+export default function ExerciseLookupSheet({ visible, onClose, initialQuery }: ExerciseLookupSheetProps) {
   const insets = useSafeAreaInsets();
   const [searchQuery, setSearchQuery] = useState('');
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -79,15 +80,21 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
   // Focus search input when sheet opens
   useEffect(() => {
     if (visible) {
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 300);
+      if (initialQuery && initialQuery.trim()) {
+        // Opened from a specific movement — jump straight to its results.
+        setSearchQuery(initialQuery);
+        searchExercises(initialQuery);
+      } else {
+        setTimeout(() => {
+          searchInputRef.current?.focus();
+        }, 300);
+      }
     } else {
       setSearchQuery('');
       setExercises([]);
       setSelectedExercise(null);
     }
-  }, [visible]);
+  }, [visible, initialQuery]);
 
   const loadRecentLookups = async () => {
     try {
@@ -638,7 +645,8 @@ export default function ExerciseLookupSheet({ visible, onClose }: ExerciseLookup
               ) : searchQuery.length > 0 ? (
                 <View style={styles.emptyContainer}>
                   <Ionicons name="search-outline" size={48} color="rgba(255,255,255,0.2)" />
-                  <Text style={styles.emptyText}>No exercises found</Text>
+                  <Text style={styles.emptyText}>No exact match found</Text>
+                  <Text style={styles.emptySubtext}>Search by name or keyword to explore the form tutorial library.</Text>
                 </View>
               ) : null}
             </View>
@@ -758,8 +766,17 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(255,255,255,0.6)',
+    fontWeight: '600',
     marginTop: 12,
+  },
+  emptySubtext: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.4)',
+    marginTop: 6,
+    textAlign: 'center',
+    paddingHorizontal: 40,
+    lineHeight: 18,
   },
   exerciseItem: {
     flexDirection: 'row',

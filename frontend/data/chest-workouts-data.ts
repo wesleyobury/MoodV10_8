@@ -499,27 +499,12 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Bench Press (Heavy)",
-                    "reps": "max",
-                    "tutorialSlug": "barbell_flat_bench_press"
-                  },
-                  {
-                    "name": "Drop 1 (Medium)",
-                    "reps": "max",
-                    "tutorialSlug": "barbell_flat_bench_press"
-                  },
-                  {
-                    "name": "Drop 2 (Light)",
-                    "reps": "12–15",
-                    "tutorialSlug": "barbell_flat_bench_press"
-                  },
-                  {
-                    "name": "Drop 3 (Very Light)",
-                    "reps": "burnout",
-                    "tutorialSlug": "barbell_flat_bench_press"
+                    "name": "Bench Press",
+                    "reps": "max reps",
+                    "tutorialSlug": "barbell_flat_bench_press",
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15 reps; Drop 3 (Very Light) — burnout"
                   }
                 ],
-                "label": "Drop set",
                 "rest": "2:30"
               }
             ],
@@ -806,10 +791,10 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           description: 'Cluster incline pressing to maintain power and bar speed.',
           battlePlan: 'Instructions: 15s breaths between mini-sets.\nSets: 4\nRest: 2:00 between clusters\n\n• Incline Press — 4 × (4 / 4 / 4)',
           plan: {
-            "format": "strength",
+            "format": "interval",
             "blocks": [
               {
-                "type": "straight",
+                "type": "interval",
                 "movements": [
                   {
                     "name": "Incline Press",
@@ -1002,10 +987,10 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           description: 'Heavy incline clusters to sustain upper chest power.',
           battlePlan: 'Instructions: Short breaths, full recovery between sets.\nSets: 5\nRest: 2:00\n\n• Incline Press — 5 × (3 / 3 / 3)',
           plan: {
-            "format": "strength",
+            "format": "interval",
             "blocks": [
               {
-                "type": "straight",
+                "type": "interval",
                 "movements": [
                   {
                     "name": "Incline Press",
@@ -1096,33 +1081,18 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           description: 'Four-stage incline drop set for deep upper chest fatigue.',
           battlePlan: 'Instructions: Strip weight immediately between stages.\nSets: 3\nRest: 2:30\n\n• Incline Press (Heavy) — max reps\n• Drop 1 (Medium) — max reps\n• Drop 2 (Light) — 12–15 reps\n• Drop 3 (Very Light) — burnout',
           plan: {
-            "format": "strength",
+            "format": "interval",
             "blocks": [
               {
-                "type": "straight",
+                "type": "interval",
                 "movements": [
                   {
-                    "name": "Incline Press (Heavy)",
-                    "reps": "max",
-                    "tutorialSlug": "barbell_incline_bench_press"
-                  },
-                  {
-                    "name": "Drop 1 (Medium)",
-                    "reps": "max",
-                    "tutorialSlug": "barbell_incline_bench_press"
-                  },
-                  {
-                    "name": "Drop 2 (Light)",
-                    "reps": "12–15",
-                    "tutorialSlug": "barbell_incline_bench_press"
-                  },
-                  {
-                    "name": "Drop 3 (Very Light)",
-                    "reps": "burnout",
-                    "tutorialSlug": "barbell_incline_bench_press"
+                    "name": "Incline Press",
+                    "reps": "max reps",
+                    "tutorialSlug": "barbell_incline_bench_press",
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15 reps; Drop 3 (Very Light) — burnout"
                   }
                 ],
-                "label": "Drop set",
                 "rest": "2:30"
               }
             ],
@@ -1723,22 +1693,12 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "DB Press (Heavy)",
-                    "reps": "max",
-                    "tutorialSlug": "dumbbell_flat_bench_press"
-                  },
-                  {
-                    "name": "Drop 1 (Medium)",
-                    "reps": "max",
-                    "tutorialSlug": "dumbbell_flat_bench_press"
-                  },
-                  {
-                    "name": "Drop 2 (Light)",
-                    "reps": "15–20",
-                    "tutorialSlug": "dumbbell_flat_bench_press"
+                    "name": "DB Press",
+                    "reps": "max reps",
+                    "tutorialSlug": "dumbbell_flat_bench_press",
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 15–20 reps"
                   }
                 ],
-                "label": "Drop set",
                 "rest": "2:30"
               }
             ],
@@ -2321,27 +2281,12 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Decline Press (Heavy)",
-                    "reps": "max",
-                    "tutorialSlug": "decline_bench_press"
-                  },
-                  {
-                    "name": "Drop 1 (Medium)",
-                    "reps": "max",
-                    "tutorialSlug": "decline_bench_press"
-                  },
-                  {
-                    "name": "Drop 2 (Light)",
-                    "reps": "12–15",
-                    "tutorialSlug": "decline_bench_press"
-                  },
-                  {
-                    "name": "Drop 3 (Very Light)",
-                    "reps": "burnout",
-                    "tutorialSlug": "decline_bench_press"
+                    "name": "Decline Press",
+                    "reps": "max reps",
+                    "tutorialSlug": "decline_bench_press",
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15 reps; Drop 3 (Very Light) — burnout"
                   }
                 ],
-                "label": "Drop set",
                 "rest": "2:30"
               }
             ],
@@ -2918,23 +2863,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Smith Press (Heavy)",
-                    "reps": "max"
-                  },
-                  {
-                    "name": "Drop 1 (Medium)",
-                    "reps": "max"
-                  },
-                  {
-                    "name": "Drop 2 (Light)",
-                    "reps": "12–15"
-                  },
-                  {
-                    "name": "Drop 3 (Very Light)",
-                    "reps": "burnout"
+                    "name": "Smith Press",
+                    "reps": "max reps",
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15; Drop 3 (Very Light) — burnout"
                   }
-                ],
-                "label": "Drop set"
+                ]
               }
             ],
             "instructions": "Strip plates immediately."
@@ -3484,23 +3417,11 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Chest Press (Heavy)",
-                    "reps": "max"
-                  },
-                  {
-                    "name": "Drop 1 (Medium)",
-                    "reps": "max"
-                  },
-                  {
-                    "name": "Drop 2 (Light)",
-                    "reps": "12–15"
-                  },
-                  {
-                    "name": "Drop 3 (Very Light)",
-                    "reps": "burnout"
+                    "name": "Chest Press",
+                    "reps": "max reps",
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15; Drop 3 (Very Light) — burnout"
                   }
-                ],
-                "label": "Drop set"
+                ]
               }
             ]
           },
@@ -4058,27 +3979,12 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Pec Deck (Heavy)",
-                    "reps": "max",
-                    "tutorialSlug": "pec_deck_fly"
-                  },
-                  {
-                    "name": "Drop 1",
-                    "reps": "max",
-                    "tutorialSlug": "pec_deck_fly"
-                  },
-                  {
-                    "name": "Drop 2",
-                    "reps": "12–15",
-                    "tutorialSlug": "pec_deck_fly"
-                  },
-                  {
-                    "name": "Drop 3",
-                    "reps": "burnout",
-                    "tutorialSlug": "pec_deck_fly"
+                    "name": "Pec Deck",
+                    "reps": "max reps",
+                    "tutorialSlug": "pec_deck_fly",
+                    "note": "Drop 1 — max reps; Drop 2 — 12–15; Drop 3 — burnout"
                   }
-                ],
-                "label": "Drop set"
+                ]
               }
             ]
           },
@@ -4657,27 +4563,12 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Cable Fly (Heavy)",
-                    "reps": "max",
-                    "tutorialSlug": "cable_machine_fly"
-                  },
-                  {
-                    "name": "Drop 1",
-                    "reps": "max",
-                    "tutorialSlug": "cable_machine_fly"
-                  },
-                  {
-                    "name": "Drop 2",
-                    "reps": "12–15",
-                    "tutorialSlug": "cable_machine_fly"
-                  },
-                  {
-                    "name": "Drop 3",
-                    "reps": "burnout",
-                    "tutorialSlug": "cable_machine_fly"
+                    "name": "Cable Fly",
+                    "reps": "max reps",
+                    "tutorialSlug": "cable_machine_fly",
+                    "note": "Drop 1 — max reps; Drop 2 — 12–15; Drop 3 — burnout"
                   }
-                ],
-                "label": "Drop set"
+                ]
               }
             ],
             "instructions": "Strip weight immediately."
@@ -5239,21 +5130,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Weighted Dips",
-                    "reps": "max",
+                    "reps": "max reps",
                     "tutorialSlug": "dips"
                   },
                   {
                     "name": "Bodyweight Dips",
-                    "reps": "max",
-                    "tutorialSlug": "dips"
+                    "reps": "max reps",
+                    "tutorialSlug": "bench_dips"
                   },
                   {
                     "name": "Assisted Dips",
                     "reps": "burnout",
                     "tutorialSlug": "assisted_dips"
                   }
-                ],
-                "label": "Drop set"
+                ]
               }
             ]
           },

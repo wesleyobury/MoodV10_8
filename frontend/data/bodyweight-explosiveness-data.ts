@@ -15,6 +15,24 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Short all-out bursts build crisp explosive intent and fast resets',
           battlePlan: '3 rounds\n• 3 × 8s Max Slams (15s between efforts)\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Explosive Rope Slams",
+                    "sets": 3,
+                    "reps": "8s",
+                    "tutorialSlug": "battle_rope_slams"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240593/mood_app/workout_images/6c5jmoo9_download_32_.jpg',
           intensityReason: 'Braced core and hip hinge connection builds safe full-body power',
           moodTips: [
@@ -38,6 +56,27 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Fast alternating arms with high knees build efficient elastic rhythm',
           battlePlan: '4 rounds\n• 15s Alternating Waves\n• 10s In-place High Knees\nRest 45–60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Alternating Waves",
+                    "reps": "15s",
+                    "tutorialSlug": "battle_rope_alternating_waves"
+                  },
+                  {
+                    "name": "In-place High Knees",
+                    "reps": "10s"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "45–60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240590/mood_app/workout_images/5mc5mvzc_download_33_.jpg',
           intensityReason: 'High-knee wave combo builds explosive arm speed and postural control',
           moodTips: [
@@ -61,6 +100,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Hip shifts drive crisp lateral hits without excessive trunk twist',
           battlePlan: '3 rounds\n• 12s Side-to-Side Waves\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Side-to-Side Waves",
+                    "reps": "12s",
+                    "tutorialSlug": "battle_rope_side_to_side_slams"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240589/mood_app/workout_images/4pzxeicw_download_34_.jpg',
           intensityReason: 'Lateral strikes train frontal-plane power control and stability',
           moodTips: [
@@ -86,6 +142,27 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Quick catches teach fast elastic rebound control with rapid transitions',
           battlePlan: '4 rounds\n• 10 Hard Slams\n• 4 Reactive Drop Squats (stick 1s, then pop)\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hard Slams",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Reactive Drop Squats",
+                    "reps": "4",
+                    "tutorialSlug": "kb_squat"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240593/mood_app/workout_images/6c5jmoo9_download_32_.jpg',
           intensityReason: 'Slam-to-drop pairing builds reactive control and deceleration skills',
           moodTips: [
@@ -109,6 +186,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Light bounce steps maintain high cadence while keeping waves crisp',
           battlePlan: '4 rounds\n• 20s Alternating Waves + Bounce Steps\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Alternating Waves + Bounce Steps",
+                    "reps": "20s"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240590/mood_app/workout_images/5mc5mvzc_download_33_.jpg',
           intensityReason: 'Pogo foot rhythm enhances stiffness training and arm velocity',
           moodTips: [
@@ -132,6 +225,26 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Low stance with quick re-grips maintaining constant sled tension',
           battlePlan: '3 rounds\n• 1 × 20–25m Weighted Rope Pull (hand-over-hand)\n• 10s Easy Waves reset\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "1 × 20–25m Weighted Rope Pull",
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "name": "Easy Waves reset",
+                    "reps": "10s"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240589/mood_app/workout_images/4pzxeicw_download_34_.jpg',
           intensityReason: 'Heavy horizontal pulls develop rapid start-phase force production',
           moodTips: [
@@ -157,6 +270,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Repeat maximum slams while preserving consistent height and tempo',
           battlePlan: '5 rounds\n• 12s Max Slams\nRest 18s\nRepeat 2 efforts per round (total 10 max efforts)',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Max Slams",
+                    "reps": "12s",
+                    "note": "Repeat 2 efforts per round (total 10 max efforts)"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "18s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240593/mood_app/workout_images/6c5jmoo9_download_32_.jpg',
           intensityReason: 'Short bursts with tight rest intervals sustain peak power output',
           moodTips: [
@@ -180,6 +310,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Crisp lateral hits maintained across short cluster intervals',
           battlePlan: '4 rounds\n• Cluster: 10s Side-to-Side Waves, 10s rest, 10s Waves\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Side-to-Side Waves, 10s rest, 10s Waves",
+                    "reps": "10s"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240590/mood_app/workout_images/5mc5mvzc_download_33_.jpg',
           intensityReason: 'Cluster format sharpens lateral velocity maintenance under fatigue',
           moodTips: [
@@ -203,6 +349,25 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Load the movement pattern, then sprint tall with explosive knee drive',
           battlePlan: '5 rounds\n• 1 × 20m HEAVY Rope Pull (hand-over-hand to sled)\n• 20m Acceleration Sprint\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "1 × 20m HEAVY Rope Pull",
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "name": "20m Acceleration Sprint"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240589/mood_app/workout_images/4pzxeicw_download_34_.jpg',
           intensityReason: 'Heavy pulls potentiate and enhance sprint acceleration mechanics',
           moodTips: [
@@ -234,6 +399,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Fast step drive, brief float phase, and soft balanced landing',
           battlePlan: '3 rounds\n• 6 per leg Step-Up Pops (low box)\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Step-Up Pops",
+                    "reps": "6",
+                    "tutorialSlug": "plyo_box_step_up_pops"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240614/mood_app/workout_images/nro93355_slbj.jpg',
           intensityReason: 'Low-impact vertical force development with precise movement control',
           moodTips: [
@@ -257,6 +439,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Jump up confidently, hold two seconds, train calm deceleration',
           battlePlan: '3 rounds\n• 5 Box Jumps (stick 2s)\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Box Jumps",
+                    "reps": "5",
+                    "tutorialSlug": "plyo_box_jump"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240628/mood_app/workout_images/wok1mz8a_rbj.jpg',
           intensityReason: 'Emphasizes safe landing quality and proper joint alignment skills',
           moodTips: [
@@ -280,6 +479,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Step off 6-8 inches, pop to box with minimal ground contact',
           battlePlan: '3 rounds\n• 3 Depth Step → Rebound to Box (low)\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Depth Step → Rebound to Box",
+                    "reps": "3",
+                    "tutorialSlug": "depth_step_rebound"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240617/mood_app/workout_images/ofqstfu6_download_1_.jpg',
           intensityReason: 'Drop then quick rebound primes stretch-shortening cycle timing',
           moodTips: [
@@ -305,6 +521,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Crisp consecutive jumps with short resets to preserve power output',
           battlePlan: '4 rounds\n• 6–8 Box Jumps\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Box Jumps",
+                    "reps": "6–8",
+                    "tutorialSlug": "plyo_box_jump"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240628/mood_app/workout_images/wok1mz8a_rbj.jpg',
           intensityReason: 'Repeated jump efforts build sustainable explosive power capacity',
           moodTips: [
@@ -328,6 +561,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Hold dumbbells at sides; drive up quick; land soft on box top',
           battlePlan: '4 rounds\n• 5 per leg Weighted Step-Up Pops\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Weighted Step-Up Pops",
+                    "reps": "5",
+                    "tutorialSlug": "plyo_box_step_up_pops"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240599/mood_app/workout_images/9x4an2wx_wstepups.jpg',
           intensityReason: 'Light external load raises concentric force demand safely',
           moodTips: [
@@ -351,6 +601,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Drop down, stick one second hold, then rebound to box immediately',
           battlePlan: '4 rounds\n• 3 Depth Drop (stick 1s) → Rebound to Box\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Depth Drop → Rebound to Box",
+                    "reps": "3"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240617/mood_app/workout_images/ofqstfu6_download_1_.jpg',
           intensityReason: 'Eccentric stick then rapid takeoff improves force development rate',
           moodTips: [
@@ -376,6 +642,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Light dumbbells or vest; jump explosively to moderate-high box',
           battlePlan: '5 rounds\n• 6–8 Weighted Box Jumps\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Weighted Box Jumps",
+                    "reps": "6–8",
+                    "tutorialSlug": "plyo_box_jump"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240619/mood_app/workout_images/okorghxb_wbj.jpg',
           intensityReason: 'Small load increases power demands under controlled landing stress',
           moodTips: [
@@ -399,6 +682,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Drop down, rebound on floor, then jump to box with quick rhythm',
           battlePlan: '5 rounds\n• Triplet: 1 Depth Drop → 1 Floor Rebound → 1 Box Jump\n• Repeat 2 triplets/round (6 jumps)\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Triplet: 1 Depth Drop → 1 Floor Rebound → 1 Box Jump",
+                    "note": "Repeat 2 triplets/round (6 jumps)"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240617/mood_app/workout_images/ofqstfu6_download_1_.jpg',
           intensityReason: 'Multi-contact jump series develops reactive elastic stiffness',
           moodTips: [
@@ -422,6 +721,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Continuous box bounds followed immediately by crisp weighted steps',
           battlePlan: '4 rounds\n• 8–10 Continuous Box Bounds (no full reset)\n• Immediately 6 Weighted Step-Up Pops (3/leg)\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Continuous Box Bounds",
+                    "reps": "8–10",
+                    "note": "Immediately 6 Weighted Step-Up Pops (3/leg)"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240599/mood_app/workout_images/9x4an2wx_wstepups.jpg',
           intensityReason: 'Rhythm bounds then loaded pops challenge explosive power endurance',
           moodTips: [
@@ -453,6 +769,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Step forward, snap wrists through, receive softly, repeat quickly',
           battlePlan: '4 rounds\n• 8–10 Chest Passes (medium ball)\nRest 45–60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Chest Passes",
+                    "reps": "8–10",
+                    "tutorialSlug": "slam_ball_chest_pass"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "45–60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240630/mood_app/workout_images/xacltrm0_download.jpg',
           intensityReason: 'Linear throw patterns teach explosive timing and core stiffness',
           moodTips: [
@@ -476,6 +809,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Tall reach overhead, neutral spine, direct powerful slam motion',
           battlePlan: '3 rounds\n• 8–10 Overhead Slams\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Overhead Slams",
+                    "reps": "8–10",
+                    "tutorialSlug": "slam_ball_slams"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240600/mood_app/workout_images/dkiyafwm_download_1_.jpg',
           intensityReason: 'Full-body slam movement grooves explosive hinge-to-slam linkage',
           moodTips: [
@@ -499,6 +849,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Quick hip lead rotation into wall with controlled ball rebound',
           battlePlan: '3 rounds\n• 6–8 per side Short Tosses\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Short Tosses",
+                    "reps": "6–8"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240615/mood_app/workout_images/od2vv8jo_mb.jpg',
           intensityReason: 'Compact rotational movement links hips, core, and release timing',
           moodTips: [
@@ -524,6 +890,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Hinge load deep, tall finish, toss high, catch safely overhead',
           battlePlan: '4 rounds\n• 6–8 Vertical Scoop Tosses\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Vertical Scoop Tosses",
+                    "reps": "6–8"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240609/mood_app/workout_images/lywbjyl3_download_2_.jpg',
           intensityReason: 'Hip triple extension movement with clean explosive release timing',
           moodTips: [
@@ -547,6 +929,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Load back hip deeply, rotate through core, snap into wall target',
           battlePlan: '4 rounds\n• 6–8 per side Rotational Throws\nRest 75–90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Rotational Throws",
+                    "reps": "6–8"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "75–90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240615/mood_app/workout_images/od2vv8jo_mb.jpg',
           intensityReason: 'Larger range of motion increases explosive lateral power transfer',
           moodTips: [
@@ -570,6 +968,27 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Hard slam down, instant scoop up, repeat at consistent steady height',
           battlePlan: '4 rounds\n• 8–10 Overhead Slams\n• 8–10 Fast Scoop Resets\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Overhead Slams",
+                    "reps": "8–10",
+                    "tutorialSlug": "slam_ball_slams"
+                  },
+                  {
+                    "name": "Fast Scoop Resets",
+                    "reps": "8–10"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240600/mood_app/workout_images/dkiyafwm_download_1_.jpg',
           intensityReason: 'Rapid reset pattern trains repeatable explosive power output',
           moodTips: [
@@ -595,6 +1014,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Stretch away from target, unwind explosively, heave far with stick landing',
           battlePlan: '4 rounds\n• 5–6 per side Heaves (mark distance)\nRest 90–120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Heaves",
+                    "reps": "5–6"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90–120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240615/mood_app/workout_images/od2vv8jo_mb.jpg',
           intensityReason: 'Counter-rotation preload enables maximal explosive lateral power release',
           moodTips: [
@@ -618,6 +1053,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Short explosive bursts separated by micro-rests to maintain crisp quality',
           battlePlan: '4 rounds\n• Cluster: 4 Slams, 12s rest, 4 Slams\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Slams, 12s rest, 4 Slams",
+                    "reps": "4"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240600/mood_app/workout_images/dkiyafwm_download_1_.jpg',
           intensityReason: 'Cluster training design sustains high-quality explosive outputs',
           moodTips: [
@@ -641,6 +1092,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Big rotational heave for distance; freeze posture on finish position',
           battlePlan: '5 rounds\n• 4–5 per side Heave + Stick (mark best)\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Heave + Stick",
+                    "reps": "4–5"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240615/mood_app/workout_images/od2vv8jo_mb.jpg',
           intensityReason: 'Maximum lateral power output combined with controlled deceleration',
           moodTips: [
@@ -672,6 +1139,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Short 8-10 meter drives with stacked, rigid core positioning',
           battlePlan: '4 rounds\n• 8–10m Sled Push (light)\nRest 60–75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "8–10m Sled Push",
+                    "tutorialSlug": "sled_push"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "60–75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240625/mood_app/workout_images/tpb5vjf0_download_8_.jpg',
           intensityReason: 'Training teaches forward lean mechanics, stride, and first-step power',
           moodTips: [
@@ -695,6 +1178,21 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Quick small backward steps maintaining tall upright posture',
           battlePlan: '3 rounds\n• 12–15m Backward Drag (light)\nRest 60–75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "12–15m Backward Drag"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60–75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240603/mood_app/workout_images/hl5sfr6f_Screenshot_2025-12-03_at_1_34_15_PM.jpg',
           intensityReason: 'Quad-focused drag movement builds deceleration and drive strength',
           moodTips: [
@@ -718,6 +1216,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Smooth 180-degree turn, re-set lean angle, continue powerful steps',
           battlePlan: '3 rounds\n• 10m Push → 10m Pull (harness or rope)\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "10m Push → 10m Pull",
+                    "tutorialSlug": "pull_ups"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240591/mood_app/workout_images/5naojfbu_download_7_.jpg',
           intensityReason: 'Direction changes sharpen re-acceleration and movement transition',
           moodTips: [
@@ -743,6 +1257,21 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'High-quality explosive drives with measured recovery between efforts',
           battlePlan: '5 rounds\n• 12–15m Sprint Push (light-moderate)\nRest 75–90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "12–15m Sprint Push"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "75–90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240591/mood_app/workout_images/5naojfbu_download_7_.jpg',
           intensityReason: 'Repeated 12-15 meter efforts build explosive acceleration rate capacity',
           moodTips: [
@@ -766,6 +1295,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Long ground pushes, steady forward lean, rope tension constant',
           battlePlan: '4 rounds\n• 20–25m Harness Pull\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "20–25m Harness Pull",
+                    "tutorialSlug": "pull_ups"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240607/mood_app/workout_images/l5cdm1b1_download_6_.jpg',
           intensityReason: 'Horizontal pull resistance increases posterior chain force output',
           moodTips: [
@@ -789,6 +1334,24 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Forward explosive push then backward drag with smooth direction turn',
           battlePlan: '4 rounds\n• 15m Sprint Push\n• 15m Backward Drag\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "15m Sprint Push"
+                  },
+                  {
+                    "name": "15m Backward Drag"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240625/mood_app/workout_images/tpb5vjf0_download_8_.jpg',
           intensityReason: 'Contrast pairing effectively balances front and back chain strength',
           moodTips: [
@@ -814,6 +1377,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Micro-efforts with micro-rest intervals to maintain explosive quality',
           battlePlan: '4 rounds\n• Cluster: 4 × 5m Sled Push, 15s between efforts\nRest 120s between clusters',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "4 × 5m Sled Push, 15s between efforts",
+                    "tutorialSlug": "sled_push"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "120s between clusters"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240591/mood_app/workout_images/5naojfbu_download_7_.jpg',
           intensityReason: 'Repeated 5-meter bursts sharpen explosive first-step power output',
           moodTips: [
@@ -837,6 +1416,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Direction shuttle changes with quick re-acceleration timing control',
           battlePlan: '5 rounds\n• 10m Push → 10m Pull → 10m Push\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "10m Push → 10m Pull → 10m Push",
+                    "tutorialSlug": "pull_ups"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240620/mood_app/workout_images/orxi24d4_Screenshot_2025-12-03_at_1_34_50_PM.jpg',
           intensityReason: 'Fast directional transitions challenge loaded agility and control',
           moodTips: [
@@ -860,6 +1455,25 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Smooth sled push followed immediately by tall, fast free sprint',
           battlePlan: '5 rounds\n• 15m Sled Push (light)\n• 20–25m Free Sprint\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "15m Sled Push",
+                    "tutorialSlug": "sled_push"
+                  },
+                  {
+                    "name": "20–25m Free Sprint"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240625/mood_app/workout_images/tpb5vjf0_download_8_.jpg',
           intensityReason: 'Light sled resistance primes then free sprint expresses max speed',
           moodTips: [
@@ -891,6 +1505,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Hips drive explosively; bell floats; arms stay relaxed as hooks',
           battlePlan: '4 rounds\n• 12–15 Swings\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "KB Swing Hip Snap",
+                    "reps": "12–15",
+                    "tutorialSlug": "kb_hip_swing"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240602/mood_app/workout_images/hdv3g2g2_download.jpg',
           intensityReason: 'Hip hinge timing builds explosive hip extension velocity patterns',
           moodTips: [
@@ -914,6 +1545,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Deep hike pass, tall explosive stand, crisp stop at chest line',
           battlePlan: '3 rounds\n• 6 × 2 Dead-Start Swings\nRest 60–75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Dead-Start Swings",
+                    "sets": 6,
+                    "reps": "2"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60–75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240602/mood_app/workout_images/hdv3g2g2_download.jpg',
           intensityReason: 'Dead start resets reinforce clean, powerful explosive reps',
           moodTips: [
@@ -937,6 +1585,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Close zip path, explosive hip pop, quiet catch in front rack',
           battlePlan: '3 rounds\n• 6 per side Cleans\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Cleans",
+                    "reps": "6",
+                    "tutorialSlug": "kb_clean"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240626/mood_app/workout_images/ua443jp0_download_1_.jpg',
           intensityReason: 'Clean movement path teaches explosive rack timing and turnover',
           moodTips: [
@@ -962,6 +1627,21 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Short consistent bursts every minute maintain explosive quality outputs',
           battlePlan: 'EMOM 10 min\n• 12 Swings each minute',
+          plan: {
+            "format": "interval",
+            "blocks": [
+              {
+                "type": "interval",
+                "movements": [
+                  {
+                    "name": "Swings each minute",
+                    "reps": "12",
+                    "note": "EMOM 10 min"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240602/mood_app/workout_images/hdv3g2g2_download.jpg',
           intensityReason: 'On-the-minute training sets sharpen sustainable explosive power',
           moodTips: [
@@ -985,6 +1665,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Explosive pop to rack, fast drop squat, explosive stand tall finish',
           battlePlan: '4 rounds\n• 5 per side Clean → Squat (alt)\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Clean → Squat",
+                    "reps": "5",
+                    "tutorialSlug": "kb_squat"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240594/mood_app/workout_images/87sblt74_download_2_.jpg',
           intensityReason: 'Clean-to-squat movement strengthens complete explosive power chain',
           moodTips: [
@@ -1008,6 +1705,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'High explosive pull, punch through fast, crisp overhead lockout',
           battlePlan: '4 rounds\n• 6 per side Snatches\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Snatches",
+                    "reps": "6",
+                    "tutorialSlug": "kettlebell_snatch"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240605/mood_app/workout_images/ic2iad2y_download_3_.jpg',
           intensityReason: 'Overhead hip power movement with smooth explosive turnover path',
           moodTips: [
@@ -1033,6 +1747,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Big explosive hip snap; stable ribs; float bell to chest height',
           battlePlan: '5 rounds\n• 12 Heavy Swings\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heavy Two-Hand Swings",
+                    "reps": "12",
+                    "tutorialSlug": "kb_double_swing"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240601/mood_app/workout_images/fetvhtg2_download_4_.jpg',
           intensityReason: 'Heavier kettlebells raise power output and demand movement control',
           moodTips: [
@@ -1056,6 +1787,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Tight rack position, strict press up, alternate sides cleanly',
           battlePlan: '4 rounds\n• Ladder per side: 3-2-1 Clean + Press\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Ladder per side: 3-2-1 Clean + Press",
+                    "tutorialSlug": "kb_clean"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240605/mood_app/workout_images/ic2iad2y_download_3_.jpg',
           intensityReason: 'Clean-to-press movement converts explosive force to vertical work',
           moodTips: [
@@ -1079,6 +1826,27 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Explosive snatch reps then stick broad jumps for max distance',
           battlePlan: '4 rounds\n• 8 per side Snatches\n• 3 Broad Jumps (stick 2s)\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "per side Snatches",
+                    "reps": "8",
+                    "tutorialSlug": "kettlebell_snatch"
+                  },
+                  {
+                    "name": "Broad Jumps",
+                    "reps": "3"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240605/mood_app/workout_images/ic2iad2y_download_3_.jpg',
           intensityReason: 'Overhead explosive power primes horizontal jumping explosion',
           moodTips: [
@@ -1110,6 +1878,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Scoop bag close to body, drive hips tall for controlled shoulder positioning',
           battlePlan: '3 rounds\n• 5 per side Shouldering (alt)\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Shouldering",
+                    "reps": "5"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240588/mood_app/workout_images/0i6z6vvq_download_2_.jpg',
           intensityReason: 'Ground-to-shoulder movement pattern builds explosive triple extension power',
           moodTips: [
@@ -1133,6 +1917,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Drive hips explosively to front rack position with quick high elbow turnover',
           battlePlan: '3 rounds\n• 6–8 Cleans\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cleans",
+                    "reps": "6–8",
+                    "tutorialSlug": "kb_clean"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240595/mood_app/workout_images/93nr796t_sbclean.jpg',
           intensityReason: 'Clean turnover develops fast elbow timing and explosive catch positioning',
           moodTips: [
@@ -1156,6 +1957,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Load with deep hinge, launch bag 2-4 meters, chase and reset stance safely',
           battlePlan: '4 rounds\n• 4 Heaves (mark distance)\nRest 60–75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heaves",
+                    "reps": "4"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "60–75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240611/mood_app/workout_images/m2c4155r_download_3_.jpg',
           intensityReason: 'Short heave distances build safe release timing and throwing form control',
           moodTips: [
@@ -1181,6 +1998,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Switch shoulders each rep maintaining snug, stable holds throughout movement',
           battlePlan: '4 rounds\n• 6 per side Shouldering (alt)\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Shouldering",
+                    "reps": "6"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240588/mood_app/workout_images/0i6z6vvq_download_2_.jpg',
           intensityReason: 'Alternating shoulder reps develop balanced symmetrical explosive power work',
           moodTips: [
@@ -1204,6 +2037,28 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Clean bag, safely drop to ground, then perform quick soft bodyweight jumps',
           battlePlan: '4 rounds\n• 5 Cleans\n• 4 Jump Squats\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Cleans",
+                    "reps": "5",
+                    "tutorialSlug": "kb_clean"
+                  },
+                  {
+                    "name": "Jump Squats",
+                    "reps": "4",
+                    "tutorialSlug": "kb_goblet_jump_squat"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240595/mood_app/workout_images/93nr796t_sbclean.jpg',
           intensityReason: 'Clean primes neuromuscular system for vertical jump with better power output',
           moodTips: [
@@ -1227,6 +2082,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Pivot feet explosively, drive hips forcefully, release bag across the body',
           battlePlan: '4 rounds\n• 5 per side Tosses (mark distance)\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Tosses",
+                    "reps": "5"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240621/mood_app/workout_images/p8n74eov_download_4_.jpg',
           intensityReason: 'Hip-led rotational movement develops powerful frontal-plane explosive power',
           moodTips: [
@@ -1252,6 +2123,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Front rack drop position, explosive leg drive, crisp overhead lockout finish',
           battlePlan: '5 rounds\n• 4 Clean → Thrusters\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Clean → Thrusters",
+                    "reps": "4",
+                    "tutorialSlug": "kb_clean"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240595/mood_app/workout_images/93nr796t_sbclean.jpg',
           intensityReason: 'Clean-to-press movement ties lower and upper explosive power chain together',
           moodTips: [
@@ -1275,6 +2163,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Hug bag tight against torso; perform quick low-amplitude reactive jumps safely',
           battlePlan: '5 rounds\n• 6–8 Loaded Jumps\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Loaded Jumps",
+                    "reps": "6–8"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240612/mood_app/workout_images/mmapy9w7_download_5_.jpg',
           intensityReason: 'Light unstable load pattern trains reactive vertical core stiffness control',
           moodTips: [
@@ -1298,6 +2202,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Deep hinge preload, tall explosive snap, launch bag near optimal 45 degrees',
           battlePlan: '5 rounds\n• 3–4 Heaves (measure best)\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heaves",
+                    "reps": "3–4"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240611/mood_app/workout_images/m2c4155r_download_3_.jpg',
           intensityReason: 'Maximum-distance throws challenge explosive timing and power output intent',
           moodTips: [
@@ -1329,6 +2249,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Small amplitude leg switches with quiet, aligned soft landings',
           battlePlan: '3 rounds\n• 6–8 per side Split Jumps\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Split Squat Jumps",
+                    "reps": "6–8",
+                    "tutorialSlug": "split_squat_jump"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240608/mood_app/workout_images/l6tkpcq3_ssj.jpg',
           intensityReason: 'Switch jumps teach reactive stiffness with controlled low shock',
           moodTips: [
@@ -1352,6 +2289,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Pop jump up, two-second hold position, repeat crisp landings',
           battlePlan: '3 rounds\n• 6–8 Squat Pops (stick 2s)\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Squat Pops",
+                    "reps": "6–8",
+                    "tutorialSlug": "squat_pop_stick"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240627/mood_app/workout_images/wc6us2rn_download_35_.jpg',
           intensityReason: 'Deceleration focus improves landing control and joint stability',
           moodTips: [
@@ -1375,6 +2329,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 3,
           description: 'Lateral side hops with controlled stick landing and knee tracking',
           battlePlan: '3 rounds\n• 6–8 per side Skater Bounds (stick 1–2s)\nRest 60–75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Skater Bounds",
+                    "reps": "6–8",
+                    "tutorialSlug": "skater_bounds"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60–75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240622/mood_app/workout_images/rzd2lfq8_download_36_.jpg',
           intensityReason: 'Lateral bound movements build explosive frontal-plane strength',
           moodTips: [
@@ -1400,6 +2371,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Clean plank position, snap feet in, tall jump with soft landing',
           battlePlan: '4 rounds\n• 10–12 Burpees\nRest 75–90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Burpees",
+                    "reps": "10–12"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "75–90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240596/mood_app/workout_images/9hhkr62t_download_37_.jpg',
           intensityReason: 'Ground-to-air cycles train rapid full-body explosive power',
           moodTips: [
@@ -1423,6 +2410,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Big explosive arm swing, hinge load deep, stick stable landings',
           battlePlan: '4 rounds\n• 5–6 Broad Jumps (stick 2s)\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Broad Jumps",
+                    "reps": "5–6"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240598/mood_app/workout_images/9vb7hgg8_bj.jpg',
           intensityReason: 'Horizontal jump patterns build explosive hip drive and projection',
           moodTips: [
@@ -1446,6 +2449,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 4,
           description: 'Minimal ground contact rebounds with quiet mid-foot spring action',
           battlePlan: '4 rounds\n• 20s Pogos\nRest 60–75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Pogos",
+                    "reps": "20s"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "60–75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240631/mood_app/workout_images/yfhezq7k_download_38_.jpg',
           intensityReason: 'Ankle pogo hop pattern trains reactive stiffness and rhythm',
           moodTips: [
@@ -1471,6 +2490,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Quick reactive floor contact into long, stuck broad jump distance',
           battlePlan: '5 rounds\n• Cluster: 1 Depth Jump → 1 Broad Jump, 20s rest, repeat once (2 pairings)\nRest 120s between clusters',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Depth Jump → 1 Broad Jump, 20s rest, repeat once",
+                    "reps": "1"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "120s between clusters"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240613/mood_app/workout_images/n37wkroc_dj.jpg',
           intensityReason: 'Shock absorption drop then explosive horizontal power expression',
           moodTips: [
@@ -1494,6 +2529,23 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'High tempo jumps with consistent height and quiet landing control',
           battlePlan: '5 rounds\n• 10–12 per side Split Jumps\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Split Squat Jump Repeats",
+                    "reps": "10–12",
+                    "tutorialSlug": "split_squat_jump"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240629/mood_app/workout_images/wpx96hu6_Screenshot_2025-12-03_at_11_25_54_AM.jpg',
           intensityReason: 'Repeated leg switches stress explosive elastic reactivity patterns',
           moodTips: [
@@ -1517,6 +2569,22 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           intensity_cost: 5,
           description: 'Complete burpee into long broad jump with decisive explosive burst',
           battlePlan: '5 rounds\n• 5 Burpee → Broad Jump\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Burpee → Broad Jump",
+                    "reps": "5"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240623/mood_app/workout_images/snvyacrk_download_40_.jpg',
           intensityReason: 'Combined movement cycles train complete full-body explosive flow',
           moodTips: [

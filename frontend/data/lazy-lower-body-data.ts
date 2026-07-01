@@ -11,6 +11,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Leg press base, knee extensions next, calves finish smoothly.',
           battlePlan: 'Leg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 4), 45–60s rest\nSeated Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Seated Calf Raise",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241239/mood_app/workout_images/p3j5vmje_download.jpg',
           intensityReason: 'Guided machines load quads safely with minimal setup.',
           moodTips: [
@@ -31,6 +65,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Extensions first, press for volume, calves for finish.',
           battlePlan: 'Leg Extension (machine)\n• 3 × 10–12 (RPE 4), 45–60s rest\nLeg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Calf Press",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241251/mood_app/workout_images/ujjqi8g2_download_1_.jpg',
           intensityReason: 'Simple seated chain builds quads with gentle guidance.',
           moodTips: [
@@ -51,6 +119,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Light hack squats, knee extensions, gentle calf raises.',
           battlePlan: 'Hack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Standing Calf Raise",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/sb8mhy0d_hs.avif',
           intensityReason: 'Supported hack squat targets quads with easy bracing.',
           moodTips: [
@@ -73,6 +175,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Leg press sets, extensions next, calves polish the finish.',
           battlePlan: 'Leg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nSeated Calf Raise (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Seated Calf Raise",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241239/mood_app/workout_images/p3j5vmje_download.jpg',
           intensityReason: 'Moderate sled volume with clean knee extension focus.',
           moodTips: [
@@ -93,6 +229,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Hack squats first, extensions second, calves to close.',
           battlePlan: 'Hack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "intensity": "RPE 5–6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Calf Press",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/sb8mhy0d_hs.avif',
           intensityReason: 'Guided squat pattern builds quads without balance load.',
           moodTips: [
@@ -113,6 +283,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Smith front squats, extensions next, calves to finish.',
           battlePlan: 'Smith Front Squat\n• 4 × 8 (RPE 5–6), 75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith Front Squat",
+                    "intensity": "RPE 5–6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "db_front_squat"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Standing Calf Raise",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241199/mood_app/workout_images/6q78aa0l_smfs.jpg',
           intensityReason: 'Smith guidance reduces setup and stabilizer demands.',
           moodTips: [
@@ -135,6 +339,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Heavy press drops, precise extensions, high-rep calves.',
           battlePlan: 'Leg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 3 total series\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nSeated Calf Raise (machine)\n• 3 × 15–20 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "8",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Seated Calf Raise",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "15–20",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ],
+                "rest": "90s; repeat for 3 total series"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241239/mood_app/workout_images/p3j5vmje_download.jpg',
           intensityReason: 'Drop set increases volume without complex technique.',
           moodTips: [
@@ -155,6 +393,37 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Hack squat clusters, extensions next, standing calves.',
           battlePlan: 'Hack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "reps": "3",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Standing Calf Raise",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/sb8mhy0d_hs.avif',
           intensityReason: 'Clusters sustain output while preserving clean rep quality.',
           moodTips: [
@@ -175,6 +444,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Smith split squats, machine extensions, calves to close.',
           battlePlan: 'Smith Split Squat\n• 3 × 8–10/side (RPE 6), 60–75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith Split Squat",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10/side",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Calf Press",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241207/mood_app/workout_images/a1srgmco_download_2_.jpg',
           intensityReason: 'Supported split squats bias quads with low balance load.',
           moodTips: [
@@ -203,6 +506,38 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Seated curls, RDL machine or Smith, glute machine finish.',
           battlePlan: 'Seated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSmith RDL or Plate-Loaded RDL Machine\n• 3 × 8–10 (RPE 4), 60s rest\nGlute Drive / Hip Thrust Machine\n• 3 × 10–12 (RPE 4), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Smith RDL or Plate-Loaded RDL Machine",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Glute Drive / Hip Thrust Machine",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241229/mood_app/workout_images/k4j5yazw_download_5_.jpg',
           intensityReason: 'Simple hip hinge machines train hams and glutes safely.',
           moodTips: [
@@ -223,6 +558,38 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: 'Seated curls, hip thrusts next, ham-biased calf finish.',
           battlePlan: 'Seated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Calf Raise (toes in slightly)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Hip Thrust Machine",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Seated Calf Raise",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241214/mood_app/workout_images/cj4dx97r_download_3_.jpg',
           intensityReason: 'Knee flexion focus with easy glute and calf support.',
           moodTips: [
@@ -243,6 +610,38 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '15–18 min',
           description: '45° back extension machine, curls, cable pull-throughs.',
           battlePlan: '45° Back Extension (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nCable Pull-Through\n• 3 × 10–12 (RPE 4), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "45° Back Extension",
+                    "tutorialSlug": "roman_chair_weighted_back_extension"
+                  },
+                  {
+                    "name": "3 × 10–12 , 60s rest"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Cable Pull-Through",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_pull_through"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241192/mood_app/workout_images/149z42kp_download_19_.jpg',
           intensityReason: 'Supported hinge and curls reduce setup complexity.',
           moodTips: [
@@ -265,6 +664,37 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Seated curls, lying curls, hip thrusts for glute support.',
           battlePlan: 'Seated Leg Curl (machine)\n• 4 × 8–10 (RPE 5), 60–75s rest\nLying Leg Curl (machine)\n• 3 × 10 (RPE 5), 60s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Lying Leg Curl",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Hip Thrust Machine",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241192/mood_app/workout_images/149z42kp_download_19_.jpg',
           intensityReason: 'Seated and lying curls load hams through full range.',
           moodTips: [
@@ -285,6 +715,39 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Smith RDLs, seated curls, back extension machine.',
           battlePlan: 'Smith RDL\n• 4 × 8 (RPE 5–6), 75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nBack Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith RDL",
+                    "intensity": "RPE 5–6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Back Extension",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "roman_chair_back_extension"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241229/mood_app/workout_images/k4j5yazw_download_5_.jpg',
           intensityReason: 'Guided RDL reduces balance needs while loading safely.',
           moodTips: [
@@ -305,6 +768,39 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '20–25 min',
           description: 'Pull-throughs first, curls next, hip abduction finisher.',
           battlePlan: 'Cable Pull-Through\n• 4 × 10 (RPE 5), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Pull-Through",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10",
+                    "tutorialSlug": "cable_pull_through"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Hip Abduction",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "hip_abductor"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241210/mood_app/workout_images/aggvazg1_download_4_.jpg',
           intensityReason: 'Cables guide hinge arcs with modest setup demands.',
           moodTips: [
@@ -327,6 +823,38 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Heavy seated curl drops, RDLs after, thrust finish.',
           battlePlan: 'Seated Leg Curl (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSmith RDL\n• 3 × 8–10 (RPE 6), 60–75s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 6), 60–75s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Smith RDL",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Hip Thrust Machine",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  }
+                ],
+                "rest": "90s; repeat for 3 total series"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241214/mood_app/workout_images/cj4dx97r_download_3_.jpg',
           intensityReason: 'Drop sets extend ham tension without complex skills.',
           moodTips: [
@@ -347,6 +875,36 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'RDL clusters, lying curls next, abduction finisher.',
           battlePlan: 'Smith RDL\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nLying Leg Curl (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith RDL",
+                    "reps": "3",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Lying Leg Curl",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Hip Abduction",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "hip_abductor"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241229/mood_app/workout_images/k4j5yazw_download_5_.jpg',
           intensityReason: 'Hinge clusters keep power while preserving spine control.',
           moodTips: [
@@ -367,6 +925,39 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '25–30 min',
           description: 'Seated curl 1.5s, pull-throughs next, back extensions.',
           battlePlan: 'Seated Leg Curl (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Pull-Through\n• 3 × 10–12 (RPE 6), 60–75s rest\nBack Extension (machine)\n• 3 × 10–12 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Cable Pull-Through",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_pull_through"
+                  },
+                  {
+                    "name": "Back Extension",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "roman_chair_back_extension"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241210/mood_app/workout_images/aggvazg1_download_4_.jpg',
           intensityReason: '1.5 curls add time under tension in safe positions.',
           moodTips: [
@@ -395,6 +986,47 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '18–22 min',
           description: 'Leg press, seated curl, extensions, seated calves finish.',
           battlePlan: 'Leg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Seated Calf Raise",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241231/mood_app/workout_images/l69s6mlz_download.jpg',
           intensityReason: 'Balanced machines target legs with minimal coaching.',
           moodTips: [
@@ -415,6 +1047,46 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '18–22 min',
           description: 'Hack squat, hip thrust, leg curl, standing calves lineup.',
           battlePlan: 'Hack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Hip Thrust Machine",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Standing Calf Raise",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/rchrkjlm_hs.avif',
           intensityReason: 'Guided paths reduce setup and stabilize each lift.',
           moodTips: [
@@ -435,6 +1107,47 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '18–22 min',
           description: 'Pull-throughs, cable squats, curls, abduction closer.',
           battlePlan: 'Cable Pull-Through\n• 3 × 10–12 (RPE 4), 60s rest\nCable Goblet Squat (low cable)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Pull-Through",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_pull_through"
+                  },
+                  {
+                    "name": "Cable Goblet Squat",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_squat"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 4",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Hip Abduction",
+                    "intensity": "RPE 4",
+                    "rest": "45–60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "hip_abductor"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241206/mood_app/workout_images/9k0i6seo_download_4_.jpg',
           intensityReason: 'Cable arcs guide hips and knees with modest effort.',
           moodTips: [
@@ -457,6 +1170,47 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Leg press, curls, extensions, calf press; steady flow.',
           battlePlan: 'Leg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Calf Press",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241231/mood_app/workout_images/l69s6mlz_download.jpg',
           intensityReason: 'Moderate volume across quads, hams, glutes, calves.',
           moodTips: [
@@ -477,6 +1231,46 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Hack squats, hip thrusts, curls, standing calves finish.',
           battlePlan: 'Hack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 5), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "intensity": "RPE 5–6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Hip Thrust Machine",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Standing Calf Raise",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241238/mood_app/workout_images/nsyfdaao_download_3_.jpg',
           intensityReason: 'Guided squat and hinge pair simplifies workload.',
           moodTips: [
@@ -497,6 +1291,47 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '22–28 min',
           description: 'Smith squats, RDLs, curls, hip abduction machine close.',
           battlePlan: 'Smith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith RDL\n• 3 × 8–10 (RPE 5), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Smith Back Squat",
+                    "intensity": "RPE 5–6",
+                    "rest": "75s",
+                    "sets": 4,
+                    "reps": "8",
+                    "tutorialSlug": "smith_machine_back_squat"
+                  },
+                  {
+                    "name": "Smith RDL",
+                    "intensity": "RPE 5",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "8–10",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Hip Abduction",
+                    "intensity": "RPE 5",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "hip_abductor"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241233/mood_app/workout_images/lzw2ud21_download.jpg',
           intensityReason: 'Smith guidance reduces balance demands and setup.',
           moodTips: [
@@ -519,6 +1354,47 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '28–35 min',
           description: 'Press drop, curl drop, extensions, calf volume finish.',
           battlePlan: 'Leg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSeated Leg Curl (machine)\n• 1 × 10 heavy (RPE 7) → drop 15% → 1 × 10 (RPE 6)\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nSeated Calf Raise (machine)\n• 3 × 15–20 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Leg Press",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "8",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 7",
+                    "sets": 1,
+                    "reps": "10",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Leg Extension",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12",
+                    "tutorialSlug": "quad_extension"
+                  },
+                  {
+                    "name": "Seated Calf Raise",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "15–20",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ],
+                "rest": "90s; repeat for 3 total series"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241231/mood_app/workout_images/l69s6mlz_download.jpg',
           intensityReason: 'Drop sets add volume without technical complexity.',
           moodTips: [
@@ -539,6 +1415,41 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '28–35 min',
           description: 'Hack clusters, RDL clusters, curls, abduction closer.',
           battlePlan: 'Hack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSmith RDL\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Hack Squat",
+                    "reps": "3",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Smith RDL",
+                    "reps": "3",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Hip Abduction",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "hip_abductor"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/0tawdmfz_hs.avif',
           intensityReason: 'Clusters preserve form while keeping output high.',
           moodTips: [
@@ -559,6 +1470,47 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           duration: '28–35 min',
           description: 'Pull-throughs, cable goblets, curls, standing calves.',
           battlePlan: 'Cable Pull-Through\n• 4 × 10 (RPE 6), 60–75s rest\nCable Goblet Squat (low cable)\n• 4 × 8–10 (RPE 6), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 6), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Pull-Through",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "10",
+                    "tutorialSlug": "cable_pull_through"
+                  },
+                  {
+                    "name": "Cable Goblet Squat",
+                    "intensity": "RPE 6",
+                    "rest": "60–75s",
+                    "sets": 4,
+                    "reps": "8–10",
+                    "tutorialSlug": "cable_squat"
+                  },
+                  {
+                    "name": "Seated Leg Curl",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Standing Calf Raise",
+                    "intensity": "RPE 6",
+                    "rest": "60s",
+                    "sets": 3,
+                    "reps": "12–15",
+                    "tutorialSlug": "calf_raise"
+                  }
+                ]
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241194/mood_app/workout_images/3gaohp2y_cgs.jpg',
           intensityReason: 'Midrange cable work adds tension at modest loading.',
           moodTips: [

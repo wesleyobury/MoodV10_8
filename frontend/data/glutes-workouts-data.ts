@@ -11,6 +11,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Back squats building glute strength through controlled movement',
           battlePlan: '3 rounds\n• 8–10 reps\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Controlled Back Squat",
+                    "reps": "8–10",
+                    "tutorialSlug": "kb_squat"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
           intensityReason: 'Controlled tempo teaches glute loading and squat positioning',
           moodTips: [
@@ -28,6 +45,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Box-guided squats reinforcing glute loading and depth control',
           battlePlan: '3 rounds\n• 8 reps\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Box Back Squat",
+                    "reps": "8",
+                    "tutorialSlug": "kb_squat"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
           intensityReason: 'Box reference reinforces depth and consistent glute loading',
           moodTips: [
@@ -45,6 +79,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Slow eccentric squats increasing glute tension and positioning',
           battlePlan: '3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Tempo Back Squat",
+                    "reps": "8",
+                    "tutorialSlug": "smith_machine_back_squat"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
           intensityReason: 'Slow eccentric amplifies glute tension under controlled load',
           moodTips: [
@@ -64,6 +115,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Wider stance squats emphasizing glute engagement and strength',
           battlePlan: '4 rounds\n• 8–10 reps\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Glute-Biased Back Squat",
+                    "reps": "8–10",
+                    "tutorialSlug": "kb_squat"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
           intensityReason: 'Wider stance emphasizes hip drive and glute recruitment',
           moodTips: [
@@ -81,6 +149,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Squats extended with bottom pulses increasing glute tension',
           battlePlan: '4 rounds\n• 8 reps + 4 pulses\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Back Squat Pulses",
+                    "reps": "8",
+                    "tutorialSlug": "kb_squat"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
           intensityReason: 'Bottom pulses sustain glute tension in the deepest range',
           moodTips: [
@@ -98,6 +183,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Paused squats building glute strength from the bottom position',
           battlePlan: '4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Back Squat Pause Reps",
+                    "reps": "6–8",
+                    "tutorialSlug": "kb_squat"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
           intensityReason: 'Paused bottom develops strength out of the hardest position',
           moodTips: [
@@ -117,6 +219,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Heavy squats emphasizing maximal glute strength and output',
           battlePlan: '5 rounds\n• 5–6 reps\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heavy Glute Back Squat",
+                    "reps": "5–6",
+                    "tutorialSlug": "kb_squat"
+                  }
+                ],
+                "rounds": 5,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
           intensityReason: 'Heavy load drives maximal glute strength adaptations',
           moodTips: [
@@ -134,6 +253,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Extended-rep squats increasing glute tension and fatigue output',
           battlePlan: '4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Back Squat 1.5 Reps",
+                    "reps": "6–8",
+                    "tutorialSlug": "smith_machine_back_squat"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
           intensityReason: '1.5 reps double time spent in the deepest glute-loading range',
           moodTips: [
@@ -151,6 +287,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'High-rep squats driving deep glute fatigue and endurance',
           battlePlan: '3 rounds\n• 15–20 reps\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Back Squat Burnout",
+                    "reps": "15–20",
+                    "tutorialSlug": "kb_squat"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
           intensityReason: 'High-rep volume drives deep glute fatigue and endurance',
           moodTips: [
@@ -176,6 +329,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Ankle‑strapped motion builds activation through glutes',
           battlePlan: '3 rounds\n• 10–12 per leg Kickbacks\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per leg Kickbacks",
+                    "reps": "10–12"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241386/mood_app/workout_images/2ambyktp_gk2.jpg',
           intensityReason: 'Cable adds constant tension for strict hip extension',
           moodTips: [
@@ -200,6 +369,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Great hip hinge builder for posterior chain activation',
           battlePlan: '3 rounds\n• 10–12 Pull‑Throughs\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Pull‑Through",
+                    "reps": "10–12",
+                    "tutorialSlug": "cable_pull_through"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241343/mood_app/workout_images/hgi9y71r_cpt.jpg',
           intensityReason: 'Rope hinge motion loads glutes with safe posture path',
           moodTips: [
@@ -224,6 +410,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Standing extensions reinforcing glute firing',
           battlePlan: '3 rounds\n• 12–15 Extensions per leg\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Extensions per leg",
+                    "reps": "12–15"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240658/mood_app/workout_images/7v4ve2vi_cable_hip_ext.jpg',
           intensityReason: 'Cable resistance teaches proper hip extension pattern',
           moodTips: [
@@ -253,6 +455,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Static squat holds emphasizing glute tension',
           battlePlan: '3 rounds\n• 20–30s Holds\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Assisted Squat Hold",
+                    "reps": "20–30s",
+                    "tutorialSlug": "cable_squat"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240676/mood_app/workout_images/j9bwfr8q_Cable_squat_1.jpg',
           intensityReason: 'Isometric holds build glute endurance and stability',
           moodTips: [
@@ -284,6 +503,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Cable anchor increases balance and constant tension',
           battlePlan: '4 rounds\n• 8–10 per leg Step‑Back Lunges\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per leg Step‑Back Lunges",
+                    "reps": "8–10"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241349/mood_app/workout_images/kbqqdimd_download_2_.jpg',
           intensityReason: 'Rear lunges with cable build unilateral glute force',
           moodTips: [
@@ -308,6 +543,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Top‑end contraction isolates and strengthens glutes',
           battlePlan: '3 rounds\n• 8–10 per leg Kickbacks (2s pause top)\nRest 75–90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per leg Kickbacks",
+                    "reps": "8–10"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75–90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241390/mood_app/workout_images/coxrp5yp_gk.jpg',
           intensityReason: 'Kickbacks with higher angle add peak glute tension',
           moodTips: [
@@ -332,6 +583,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Elevated step-ups emphasizing glute drive',
           battlePlan: '4 rounds\n• 8 Step-Ups per leg\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Step-Ups per leg",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Step-ups with cable resistance build unilateral power',
           moodTips: [
@@ -361,6 +628,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Reverse lunges with bottom-position pauses',
           battlePlan: '4 rounds\n• 8 Lunges per leg (2s pause)\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Lunges per leg",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Paused lunges strengthen glutes in stretched position',
           moodTips: [
@@ -392,6 +675,27 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Constant tension pairing ensures strong hypertrophy',
           battlePlan: '4 rounds\n• 8 Pull‑Throughs\n• 8 Cable Squats\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Pull‑Throughs",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Cable Squats",
+                    "reps": "8",
+                    "tutorialSlug": "cable_squat"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241343/mood_app/workout_images/hgi9y71r_cpt.jpg',
           intensityReason: 'Pair hinge and squat hits glutes from dual angles',
           moodTips: [
@@ -416,6 +720,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Ankle‑cuff movement torches glutes with total volume',
           battlePlan: '3 rounds\n• 15–20 per leg Kickbacks\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per leg Kickbacks",
+                    "reps": "15–20"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241390/mood_app/workout_images/coxrp5yp_gk.jpg',
           intensityReason: 'High rep burnout floods glutes with strict tension',
           moodTips: [
@@ -440,6 +760,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'High-rep squats under constant glute tension',
           battlePlan: '3 rounds\n• 20 Squats\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Squats",
+                    "reps": "20",
+                    "tutorialSlug": "kb_squat"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'High-rep cable squats maximize metabolic stress',
           moodTips: [
@@ -469,6 +806,24 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Hinges extended with multiple fast drops',
           battlePlan: '3 rounds\n• 8 RDLs\n• Drop → 6\n• Drop → 6\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "RDLs",
+                    "reps": "8",
+                    "tutorialSlug": "smith_machine_rdl",
+                    "note": "Drop → 6; Drop → 6"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Drop series extends glute and hamstring fatigue',
           moodTips: [
@@ -506,6 +861,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Teaches thrust basics before loading with bar weight',
           battlePlan: '3 rounds\n• 12–15 Bodyweight Hip Thrusts\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Bodyweight Hip Thrusts",
+                    "reps": "12–15",
+                    "tutorialSlug": "barbell_hip_thrust"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241401/mood_app/workout_images/odvl0o6h_ht.jpg',
           intensityReason: 'Entry thrust builds safe mechanics for hip extension',
           moodTips: [
@@ -530,6 +902,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Adds external weight to strengthen glute hip drive',
           battlePlan: '3 rounds\n• 10–12 Light Bar Hip Thrusts\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Light Bar Hip Thrusts",
+                    "reps": "10–12"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241402/mood_app/workout_images/roi44n5q_download_10_.jpg',
           intensityReason: 'Light load introduces controlled thrust progression',
           moodTips: [
@@ -554,6 +942,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Bench-elevated thrusts emphasizing full glute lockout',
           battlePlan: '3 rounds\n• 12 Hip Thrusts\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hip Thrusts",
+                    "reps": "12",
+                    "tutorialSlug": "barbell_hip_thrust"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240679/mood_app/workout_images/mr69uwpz_bb_hip_thrust.jpg',
           intensityReason: 'Elevated position teaches proper hip extension mechanics',
           moodTips: [
@@ -583,6 +988,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Short-range pulses maintaining constant glute tension',
           battlePlan: '3 rounds\n• 15 Pulse Thrusts\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hip Thrust Pulse Reps",
+                    "reps": "15",
+                    "tutorialSlug": "barbell_hip_thrust"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240654/mood_app/workout_images/60kuhstx_hip_thrust.jpg',
           intensityReason: 'Continuous tension builds glute endurance and activation',
           moodTips: [
@@ -614,6 +1036,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Builds glute lockout with band top range tension',
           battlePlan: '4 rounds\n• 10 Banded Hip Thrusts\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Banded Hip Thrusts",
+                    "reps": "10"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241401/mood_app/workout_images/odvl0o6h_ht.jpg',
           intensityReason: 'Band drives abduction for long range contraction',
           moodTips: [
@@ -638,6 +1076,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Unilateral load prevents imbalance and aids stability',
           battlePlan: '3 rounds\n• 8–10 per leg Single‑Leg Hip Thrusts\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per leg Single‑Leg Hip Thrusts",
+                    "reps": "8–10"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241361/mood_app/workout_images/sq01qvar_image.jpg',
           intensityReason: 'One‑leg thrust isolates glutes for stronger balance',
           moodTips: [
@@ -662,6 +1116,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Slow eccentrics increasing glute time under tension',
           battlePlan: '4 rounds\n• 8–10 Thrusts (3s eccentric)\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Tempo Hip Thrust",
+                    "reps": "8–10",
+                    "tutorialSlug": "barbell_hip_thrust"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240679/mood_app/workout_images/mr69uwpz_bb_hip_thrust.jpg',
           intensityReason: 'Extended eccentric phase maximizes muscle fiber recruitment',
           moodTips: [
@@ -691,6 +1162,24 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Extended thrust sets using fast load reductions',
           battlePlan: '3 rounds\n• 8 Thrusts\n• Drop → 8\n• Drop → 8\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hip Thrust Drop Set",
+                    "reps": "8",
+                    "tutorialSlug": "barbell_hip_thrust",
+                    "note": "Drop → 8; Drop → 8"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240654/mood_app/workout_images/60kuhstx_hip_thrust.jpg',
           intensityReason: 'Drop sets extend time under tension for hypertrophy',
           moodTips: [
@@ -722,6 +1211,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Barbell lift grows strength and posterior hip power',
           battlePlan: '4 rounds\n• 6–8 Heavy Hip Thrusts\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heavy Hip Thrusts",
+                    "reps": "6–8",
+                    "tutorialSlug": "barbell_hip_thrust"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241401/mood_app/workout_images/odvl0o6h_ht.jpg',
           videoUrl: 'https://res.cloudinary.com/dfsygar5c/video/upload/v1770240480/mood_app/workout_videos/BB_hip_thrust.mov',
           intensityReason: 'Heavy thrust progression maximizes glute overload',
@@ -747,6 +1253,24 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Finisher combo challenges endurance and contraction',
           battlePlan: '3 rounds\n• 8–10 Hip Thrusts\nFinish with 10s Iso Hold at top\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hip Thrusts",
+                    "reps": "8–10",
+                    "tutorialSlug": "barbell_hip_thrust",
+                    "note": "Finish with 10s Iso Hold at top"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241402/mood_app/workout_images/roi44n5q_download_10_.jpg',
           intensityReason: 'Iso hold extending reps prolongs glute time under load',
           moodTips: [
@@ -771,6 +1295,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Heavy thrusts with long lockout pauses',
           battlePlan: '4 rounds\n• 5–6 Thrusts (2s pause)\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heavy Hip Thrust Pause",
+                    "reps": "5–6",
+                    "tutorialSlug": "barbell_hip_thrust"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241401/mood_app/workout_images/odvl0o6h_ht.jpg',
           intensityReason: 'Paused heavy thrusts build peak glute strength',
           moodTips: [
@@ -800,6 +1341,24 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Descending ladder maximizing glute fatigue',
           battlePlan: '2–3 ladders\n• 12 → 10 → 8 → 6 Thrusts\nRest 150s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "ladders",
+                    "reps": "2–3"
+                  },
+                  {
+                    "name": "12 → 10 → 8 → 6 Thrusts"
+                  }
+                ],
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241402/mood_app/workout_images/roi44n5q_download_10_.jpg',
           intensityReason: 'Ladder format accumulates massive training volume',
           moodTips: [
@@ -837,6 +1396,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Pad press hip drive builds foundation safely first',
           battlePlan: '3 rounds\n• 10–12 per leg Kickbacks\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per leg Kickbacks",
+                    "reps": "10–12"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241405/mood_app/workout_images/u602jvhu_download_9_.jpg',
           intensityReason: 'Guided extension path isolates glutes effectively',
           moodTips: [
@@ -861,6 +1436,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Seated pad drive provides beginner stability focus',
           battlePlan: '3 rounds\n• 12 per leg Seated Kickbacks\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per leg Seated Kickbacks",
+                    "reps": "12"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241397/mood_app/workout_images/k5zii6kf_download_8_.jpg',
           intensityReason: 'Torso support stabilizes movement for beginners',
           moodTips: [
@@ -885,6 +1476,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Straight-path kickbacks building glute control',
           battlePlan: '3 rounds\n• 12 Kickbacks per leg\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Kickbacks per leg",
+                    "reps": "12"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240675/mood_app/workout_images/haz45wxi_glute_kickback_2.jpg',
           intensityReason: 'Machine-guided movement teaches proper kickback form',
           moodTips: [
@@ -914,6 +1521,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Short-range pulses keeping glutes loaded',
           battlePlan: '3 rounds\n• 15 Pulses per leg\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Pulses per leg",
+                    "reps": "15"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240680/mood_app/workout_images/nyipzbcv_glute_kickback.jpg',
           intensityReason: 'Continuous tension builds glute endurance',
           moodTips: [
@@ -945,6 +1568,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Progressive overload builds strength at extension',
           battlePlan: '4 rounds\n• 8–10 Heavy Kickbacks per leg\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heavy Kickbacks per leg",
+                    "reps": "8–10"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241405/mood_app/workout_images/u602jvhu_download_9_.jpg',
           intensityReason: 'Increased load pushes hypertrophy for glutes',
           moodTips: [
@@ -969,6 +1608,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Strict tempo isolates stronger contraction at end',
           battlePlan: '3 rounds\n• 8 per leg Pause Kickbacks\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per leg Pause Kickbacks",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241397/mood_app/workout_images/k5zii6kf_download_8_.jpg',
           intensityReason: 'Added pause loads glute contraction maximally',
           moodTips: [
@@ -993,6 +1648,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Slow eccentrics extending glute fatigue',
           battlePlan: '4 rounds\n• 10 Reps per leg (3s eccentric)\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Tempo Kickback",
+                    "reps": "10"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Tempo work increases time under tension dramatically',
           moodTips: [
@@ -1022,6 +1693,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Extended kickbacks with rapid load reductions',
           battlePlan: '3 rounds\n• 10 Reps\n• Drop → 8\n• Drop → 8\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Kickback Drop Set",
+                    "reps": "10",
+                    "note": "Drop → 8; Drop → 8"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Drop sets extend fatigue without rest',
           moodTips: [
@@ -1053,6 +1741,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Sequential weight drops demand non‑stop contraction',
           battlePlan: '3 rounds\n• 8 Heavy Kickbacks per leg\n• Drop 15% weight → 6–8 reps\n• Drop 15% again → 6–8 reps\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heavy Kickbacks per leg",
+                    "reps": "8",
+                    "note": "Drop 15% weight → 6–8 reps; Drop 15% again → 6–8 reps"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241405/mood_app/workout_images/u602jvhu_download_9_.jpg',
           intensityReason: 'Drop loading pattern extends tension for hypertrophy',
           moodTips: [
@@ -1077,6 +1782,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Static‑dynamic combo adds brutal finishing stimulus',
           battlePlan: '4 rounds\n• 8 Kickbacks each leg\nFinish with 10s Iso Hold on last rep\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Kickbacks each leg",
+                    "reps": "8",
+                    "note": "Finish with 10s Iso Hold on last rep"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241397/mood_app/workout_images/k5zii6kf_download_8_.jpg',
           intensityReason: 'Iso hold after reps enhances glute activation burn',
           moodTips: [
@@ -1101,6 +1823,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Loaded kickbacks with long peak holds',
           battlePlan: '4 rounds\n• 8 Reps per leg (2s hold)\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heavy Kickback Pause",
+                    "reps": "8"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Heavy paused kickbacks build peak glute strength',
           moodTips: [
@@ -1130,6 +1868,24 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Descending ladder maximizing glute exhaustion',
           battlePlan: '2–3 ladders\n• 15 → 12 → 10 Reps\nRest 150s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "ladders",
+                    "reps": "2–3"
+                  },
+                  {
+                    "name": "15 → 12 → 10 Reps"
+                  }
+                ],
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Ladder format accumulates maximum training volume',
           moodTips: [
@@ -1167,6 +1923,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Intro machine work builds stability in outer hips',
           battlePlan: '3 rounds\n• 12–15 Abductions\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Abductions",
+                    "reps": "12–15",
+                    "tutorialSlug": "hip_abductor"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241400/mood_app/workout_images/o6mep0pr_ha.jpg',
           intensityReason: 'Basic seated movement strengthens glute medius',
           moodTips: [
@@ -1191,6 +1964,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Shifts emphasis effectively into upper glute tissues',
           battlePlan: '3 rounds\n• 12–15 Lean Abductions\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Lean Abductions",
+                    "reps": "12–15"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241329/mood_app/workout_images/ca2oebzr_lfha.jpg',
           intensityReason: 'Lean angle biases deeper glute muscle activity',
           moodTips: [
@@ -1215,6 +2004,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Controlled abductions targeting outer glutes',
           battlePlan: '3 rounds\n• 15 Abductions\nRest 60s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Abductions",
+                    "reps": "15",
+                    "tutorialSlug": "hip_abductor"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Seated position isolates glute medius effectively',
           moodTips: [
@@ -1244,6 +2050,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '10–12 min',
           description: 'Abductions with extended peak contractions',
           battlePlan: '3 rounds\n• 12 Reps (2s hold)\nRest 75s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Abduction Hold Reps",
+                    "reps": "12",
+                    "tutorialSlug": "hip_abductor"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Isometric holds enhance mind-muscle connection',
           moodTips: [
@@ -1275,6 +2098,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Combo band+machine emphasizes hypertrophy work',
           battlePlan: '4 rounds\n• 12 Banded Abductions\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Banded Abductions",
+                    "reps": "12"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241400/mood_app/workout_images/o6mep0pr_ha.jpg',
           intensityReason: 'Band tension increases abductor contraction top end',
           moodTips: [
@@ -1299,6 +2138,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Asymmetry training balances strength between hips',
           battlePlan: '4 rounds\n• 8–10 per side Abductions\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "per side Abductions",
+                    "reps": "8–10",
+                    "tutorialSlug": "hip_abductor"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241392/mood_app/workout_images/eqwbozow_Screenshot_2025-12-02_at_4_48_10_PM.jpg',
           intensityReason: 'One‑sided work isolates weaker glute completely',
           moodTips: [
@@ -1323,6 +2179,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Slower eccentrics increasing glute med load',
           battlePlan: '4 rounds\n• 12 Reps (3s eccentric)\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Tempo Abduction",
+                    "reps": "12",
+                    "tutorialSlug": "hip_abductor"
+                  }
+                ],
+                "rounds": 4,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Tempo work maximizes time under tension',
           moodTips: [
@@ -1352,6 +2225,24 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Extended sets using rapid load reductions',
           battlePlan: '3 rounds\n• 12 Reps\n• Drop → 10\n• Drop → 10\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Abduction Drop Set",
+                    "reps": "12",
+                    "tutorialSlug": "hip_abductor",
+                    "note": "Drop → 10; Drop → 10"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: '',
           intensityReason: 'Drop sets extend fatigue for enhanced hypertrophy',
           moodTips: [
@@ -1383,6 +2274,24 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Stacked reps crush glute medius with high overload',
           battlePlan: '3 rounds\n• 12 Heavy Abductions\n• Drop 20% → 10 reps\n• Drop 20% again → 10 reps\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Heavy Abductions",
+                    "reps": "12",
+                    "tutorialSlug": "hip_abductor",
+                    "note": "Drop 20% → 10 reps; Drop 20% again → 10 reps"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241400/mood_app/workout_images/o6mep0pr_ha.jpg',
           intensityReason: 'Drop set prolongs effort rising metabolic fatigue',
           moodTips: [
@@ -1407,6 +2316,26 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '16–18 min',
           description: 'Brutal pairing fully activates and fatigues hips',
           battlePlan: '3 rounds\n• 10s Iso Hold wide\n• 10–12 Full Reps immediately after\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "circuit",
+                "movements": [
+                  {
+                    "name": "Iso Hold wide",
+                    "reps": "10s"
+                  },
+                  {
+                    "name": "Full Reps immediately after",
+                    "reps": "10–12"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241392/mood_app/workout_images/eqwbozow_Screenshot_2025-12-02_at_4_48_10_PM.jpg',
           intensityReason: 'Iso hold primes glutes then high‑rep sets extend',
           moodTips: [
@@ -1431,6 +2360,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'High-tension abductions finished with long holds',
           battlePlan: '3 rounds\n• 15 Reps + 20s Hold\nRest 150s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Reps + 20s Hold",
+                    "reps": "15"
+                  }
+                ],
+                "rounds": 3,
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240656/mood_app/workout_images/746w3mny_hip_abductor.jpg',
           intensityReason: 'Combined reps and holds maximize glute medius fatigue',
           moodTips: [
@@ -1460,6 +2405,24 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop abductions for full exhaustion',
           battlePlan: '2–3 rounds\n• 12 → 10 → 8 → 8\nRest 150s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "rounds",
+                    "reps": "2–3"
+                  },
+                  {
+                    "name": "12 → 10 → 8 → 8"
+                  }
+                ],
+                "rest": "150s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240686/mood_app/workout_images/swjfi31g_hip_abductor_2.jpg',
           intensityReason: 'Triple drops ensure complete muscle fiber recruitment',
           moodTips: [

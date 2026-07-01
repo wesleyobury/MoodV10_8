@@ -64,9 +64,8 @@ const FEATURE_BULLETS = [
 ];
 
 const COMMUNITY_BULLETS = [
-  'See what other athletes are training',
-  "Copy any athlete's workout in a tap",
-  'A driven community that keeps you going',
+  "See other athletes' content — and copy any workout",
+  'Access to an amazing, driven community',
 ];
 
 const APPLE_DISCLOSURE =

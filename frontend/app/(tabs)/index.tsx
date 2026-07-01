@@ -442,6 +442,13 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
       onPress={() => onPress(mood)}
       activeOpacity={0.85}
     >
+      {/* Gradient edge — catches light at the corners instead of a flat border */}
+      <LinearGradient
+        colors={CARD_EDGE_COLORS}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.cardEdge}
+      >
       {/* Premium layered card — charcoal/black base with a warm vivid gold glow */}
       <LinearGradient
         colors={mood.base}
@@ -491,6 +498,7 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
             </View>
           )}
         </View>
+      </LinearGradient>
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -566,6 +574,11 @@ const WearablesSnapshot = ({
   );
 };
 
+// Non-uniform card edge: a warm rim that catches light at the top-left (soft
+// warm-white) and a gold glint at the bottom-right, dim through the middle —
+// so the 1px border reads as reflecting glimpses of light, not a flat outline.
+const CARD_EDGE_COLORS = ['rgba(255,238,210,0.32)', 'rgba(154,122,53,0.08)', 'rgba(244,195,22,0.26)'];
+
 const moodCards: MoodCard[] = [
   {
     id: 'sweat',
@@ -574,7 +587,7 @@ const moodCards: MoodCard[] = [
     icon: 'flame',
     gradient: ['#FF6B6B', '#FF8E53'],
     accent: '#FFC93C',
-    base: ['#131316', '#0E0E10', '#0A0A0B'],
+    base: ['#101114', '#0C0C0D', '#0A0A0B'],
   },
   {
     id: 'muscle',
@@ -583,7 +596,7 @@ const moodCards: MoodCard[] = [
     icon: 'barbell',
     gradient: ['#4ECDC4', '#44A08D'],
     accent: '#E6B94C',
-    base: ['#131316', '#0E0E10', '#0A0A0B'],
+    base: ['#101114', '#0C0C0D', '#0A0A0B'],
   },
   {
     id: 'explosive',
@@ -592,7 +605,7 @@ const moodCards: MoodCard[] = [
     icon: 'flash',
     gradient: ['#FFD93D', '#FF6B6B'],
     accent: '#FFB300',
-    base: ['#131316', '#0E0E10', '#0A0A0B'],
+    base: ['#101114', '#0C0C0D', '#0A0A0B'],
   },
   {
     id: 'lazy',
@@ -601,7 +614,7 @@ const moodCards: MoodCard[] = [
     icon: 'bed',
     gradient: ['#D299C2', '#FEF9D7'],
     accent: '#D9BA6B',
-    base: ['#131316', '#0E0E10', '#0A0A0B'],
+    base: ['#101114', '#0C0C0D', '#0A0A0B'],
   },
   {
     id: 'calisthenics',
@@ -610,7 +623,7 @@ const moodCards: MoodCard[] = [
     icon: 'body',
     gradient: ['#667eea', '#764ba2'],
     accent: '#EBC76A',
-    base: ['#131316', '#0E0E10', '#0A0A0B'],
+    base: ['#101114', '#0C0C0D', '#0A0A0B'],
   },
   {
     id: 'outdoor',
@@ -619,7 +632,7 @@ const moodCards: MoodCard[] = [
     icon: 'bicycle',
     gradient: ['#56ab2f', '#a8e6cf'],
     accent: '#C9A44C',
-    base: ['#131316', '#0E0E10', '#0A0A0B'],
+    base: ['#101114', '#0C0C0D', '#0A0A0B'],
   },
   // Hidden for now - will be enabled later
   // {
@@ -1703,13 +1716,15 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 8,
   },
-  visibleMoodCard: {
+  cardEdge: {
     borderRadius: 16,
+    padding: 1, // 1px gradient rim that catches light at the corners
+  },
+  visibleMoodCard: {
+    borderRadius: 15,
     padding: 0,
     minHeight: 80,
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(154, 122, 53, 0.26)',
     overflow: 'hidden',
     shadowColor: 'transparent',
     shadowOffset: { width: 0, height: 0 },

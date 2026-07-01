@@ -11,6 +11,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard curl workout building foundational elbow-flexion strength.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Alternating Dumbbell Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Alternating Dumbbell Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Builds curl discipline with stable elbow position',
           moodTips: [
@@ -40,6 +59,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard seated curl workout removing momentum.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Seated Dumbbell Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Dumbbell Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Seated position removes momentum for better isolation',
           moodTips: [
@@ -69,6 +107,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard neutral-grip curl workout targeting brachialis.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Hammer Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Hammer Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_hammer_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240788/mood_app/workout_images/2j38bvu7_download_1_.jpg',
           intensityReason: 'Neutral grip activates forearms and brachialis',
           moodTips: [
@@ -98,6 +155,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard curl workout with squeeze-to-finish at peak flexion.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Dumbbell Curl — standard reps\n• Final set: squeeze to finish — hold at top (elbow fully flexed) 8–10s\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Dumbbell Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: squeeze to finish — hold at top (elbow fully flexed) 8–10s",
+                    "tutorialSlug": "dumbbell_curl"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Isometric finish maximizes muscle recruitment',
           moodTips: [
@@ -129,6 +205,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard long-head curl workout using shoulder extension.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Incline Dumbbell Curl — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Incline Dumbbell Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "incline_db_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Incline position maximizes long-head stretch',
           moodTips: [
@@ -158,6 +253,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Pause-rep curl workout removing momentum.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Dumbbell Curl — pause reps (1s halfway up)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Dumbbell Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "pause reps (1s halfway up)",
+                    "tutorialSlug": "dumbbell_curl"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240788/mood_app/workout_images/2j38bvu7_download_1_.jpg',
           intensityReason: 'Pauses eliminate momentum for honest tension',
           moodTips: [
@@ -187,6 +301,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Burnout-style curl workout extending time under tension.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×16 Alternating DB Curls — burnout reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Alternating DB Curls",
+                    "sets": 4,
+                    "reps": "16",
+                    "note": "burnout reps",
+                    "tutorialSlug": "dumbbell_curl"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Extended time under tension builds endurance and pump',
           moodTips: [
@@ -216,6 +349,31 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing supinated and neutral curls.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 Dumbbell Curl — standard reps\nsuperset with\n• 10 Hammer Curls\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Dumbbell Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_curl"
+                  },
+                  {
+                    "name": "Hammer Curls",
+                    "reps": "10",
+                    "tutorialSlug": "dumbbell_hammer_curl",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240788/mood_app/workout_images/2j38bvu7_download_1_.jpg',
           intensityReason: 'Two grip styles maximize total arm development',
           moodTips: [
@@ -247,6 +405,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy curl workout emphasizing load control.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Dumbbell Curl — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Dumbbell Curl",
+                    "sets": 6,
+                    "reps": "8",
+                    "note": "standard reps",
+                    "tutorialSlug": "dumbbell_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Heavy loads with strict form build maximum strength',
           moodTips: [
@@ -276,6 +453,23 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop curl workout driving mechanical fatigue.',
           battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  10 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "reps → drop ~20% → 8 reps → drop ~15% → AMRAP",
+                    "reps": "10"
+                  }
+                ],
+                "rounds": 3,
+                "label": "Drop Ladder",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240788/mood_app/workout_images/2j38bvu7_download_1_.jpg',
           intensityReason: 'Drop sets extend time under tension past failure',
           moodTips: [
@@ -305,6 +499,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout long-head curl workout using stretch-bias.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 Incline DB Curl — burnout reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Incline DB Curl",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps",
+                    "tutorialSlug": "incline_db_curl"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Stretch-biased burnout maximizes long-head hypertrophy',
           moodTips: [
@@ -334,6 +547,18 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Partial-range burnout workout finishing with peak contraction hold.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 3 rounds of 21s\n• Final set: squeeze to finish — hold top flex 10s\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [],
+                "rounds": 3,
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240788/mood_app/workout_images/2j38bvu7_download_1_.jpg',
           intensityReason: '21s with iso hold completely exhausts biceps fibers',
           moodTips: [
@@ -371,6 +596,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard barbell curl workout for joint-friendly loading.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 EZ Bar Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "EZ Bar Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "ez_bar_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'EZ bar reduces wrist stress for comfortable curling',
           moodTips: [
@@ -400,6 +644,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused curl workout emphasizing control.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×10 EZ Curl — eccentric reps (3s down)\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "EZ Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "eccentric reps (3s down)",
+                    "tutorialSlug": "ez_bar_curl"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'Slow eccentrics build strength through control',
           moodTips: [
@@ -429,6 +692,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard close-grip curl workout biasing long head.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Close-Grip EZ Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Close-Grip EZ Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240570/mood_app/workout_images/annq3ae8_download_3_.jpg',
           intensityReason: 'Close grip emphasizes long head development',
           moodTips: [
@@ -458,6 +739,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard curl workout with squeeze-to-finish at peak flexion.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 EZ Curl — standard reps\n• Final set: squeeze to finish — hold bar at top 8–10s\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "EZ Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: squeeze to finish — hold bar at top 8–10s",
+                    "tutorialSlug": "ez_bar_curl"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240571/mood_app/workout_images/b35vwad0_download_4_.jpg',
           intensityReason: 'Isometric finish maximizes muscle engagement',
           moodTips: [
@@ -489,6 +789,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard curl workout biasing short head.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Wide-Grip EZ Curl — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Wide-Grip EZ Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'Wide grip targets short head for peak development',
           moodTips: [
@@ -518,6 +836,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Pause-rep curl workout eliminating momentum.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×10 EZ Curl — pause reps (1s halfway)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "EZ Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "pause reps (1s halfway)",
+                    "tutorialSlug": "ez_bar_curl"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'Pauses eliminate momentum for honest loading',
           moodTips: [
@@ -547,6 +884,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Burnout curl workout emphasizing time under tension.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 EZ Curl — burnout reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "EZ Curl",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps",
+                    "tutorialSlug": "ez_bar_curl"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240570/mood_app/workout_images/annq3ae8_download_3_.jpg',
           intensityReason: 'Extended reps build endurance and pump',
           moodTips: [
@@ -576,6 +932,30 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing supinated and pronated grips.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 EZ Curl — standard reps\nsuperset with\n• 10 Reverse EZ Curls\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "EZ Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "ez_bar_curl"
+                  },
+                  {
+                    "name": "Reverse EZ Curls",
+                    "reps": "10",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240571/mood_app/workout_images/b35vwad0_download_4_.jpg',
           intensityReason: 'Two grip styles maximize forearm and bicep development',
           moodTips: [
@@ -607,6 +987,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy curl workout emphasizing control.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×6 EZ Curl — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "EZ Curl",
+                    "sets": 6,
+                    "reps": "6",
+                    "note": "standard reps",
+                    "tutorialSlug": "ez_bar_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'Heavy loads with strict form build maximum strength',
           moodTips: [
@@ -636,6 +1035,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop curl workout driving fatigue safely.',
           battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps\n• Set 2: drop set — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [],
+                "label": "Drop Cluster",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'Drop clusters extend time under tension past failure',
           moodTips: [
@@ -665,6 +1075,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout + isometric curl workout.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×12 EZ Curl — burnout reps\n• Final set: squeeze to finish — hold top 10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "EZ Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "burnout reps; Final set: squeeze to finish — hold top 10s",
+                    "tutorialSlug": "ez_bar_curl"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240570/mood_app/workout_images/annq3ae8_download_3_.jpg',
           intensityReason: 'Burnout with iso hold completely exhausts biceps',
           moodTips: [
@@ -694,6 +1123,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Partial-range curl workout extending time under tension.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×8 EZ Curl — 1.5 reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "EZ Curl",
+                    "sets": 5,
+                    "reps": "8",
+                    "note": "1.5 reps",
+                    "tutorialSlug": "ez_bar_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240571/mood_app/workout_images/b35vwad0_download_4_.jpg',
           intensityReason: '1.5 reps double time under tension per rep',
           moodTips: [
@@ -731,6 +1179,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard cable curl workout emphasizing constant tension.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Standing Cable Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Standing Cable Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240587/mood_app/workout_images/yv5l5jby_cable_curl.jpg',
           intensityReason: 'Cables provide constant tension throughout the movement',
           moodTips: [
@@ -760,6 +1226,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard neutral-grip curl workout for elbow-friendly loading.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Rope Cable Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Rope Cable Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps",
+                    "tutorialSlug": "cable_rope_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240797/mood_app/workout_images/jzrqwni6_download.jpg',
           intensityReason: 'Neutral grip with constant cable tension hits brachialis',
           moodTips: [
@@ -789,6 +1274,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard seated curl workout removing momentum.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Seated Low Cable Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Seated Low Cable Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240575/mood_app/workout_images/lz1p2boy_seated_low_cable_curl.jpg',
           intensityReason: 'Seated position removes momentum for pure biceps isolation',
           moodTips: [
@@ -818,6 +1321,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard cable curl workout with squeeze-to-finish at peak flexion.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Cable Curl — standard reps\n• Final set: squeeze to finish — hold handle at full elbow flexion 8–10s\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: squeeze to finish — hold handle at full elbow flexion 8–10s",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240573/mood_app/workout_images/f0ehglmc_cable_curl_2.jpg',
           intensityReason: 'Isometric finish with cable tension maximizes pump',
           moodTips: [
@@ -849,6 +1371,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard long-head curl workout using shoulder extension.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Incline Cable Curl — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Incline Cable Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "incline_db_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240905/mood_app/workout_images/qi05o2xg_download_19_.jpg',
           intensityReason: 'Incline position with cable creates extreme long-head stretch',
           moodTips: [
@@ -878,6 +1419,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Pause-rep cable curl workout eliminating momentum.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Cable Curl — pause reps (1s halfway)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "pause reps (1s halfway)",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240911/mood_app/workout_images/vqw55nvb_download_18_.jpg',
           intensityReason: 'Pauses eliminate cable rebound for honest tension',
           moodTips: [
@@ -907,6 +1467,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Burnout-style unilateral curl workout for extended tension.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×14 Single-Arm Cable Curls — burnout reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Single-Arm Cable Curls",
+                    "sets": 4,
+                    "reps": "14",
+                    "note": "burnout reps"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240905/mood_app/workout_images/qi05o2xg_download_19_.jpg',
           intensityReason: 'Unilateral work with continuous cable tension builds endurance',
           moodTips: [
@@ -936,6 +1514,30 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing front-facing and face-away curls.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 Cable Curl (facing stack) — standard reps\nsuperset with\n• 10 Face-Away Cable Curls\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Cable Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  },
+                  {
+                    "name": "Face-Away Cable Curls",
+                    "reps": "10",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240911/mood_app/workout_images/vqw55nvb_download_18_.jpg',
           intensityReason: 'Two angles maximize stretch and contraction phases',
           moodTips: [
@@ -967,6 +1569,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy cable curl workout emphasizing control.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Cable Curl — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Curl",
+                    "sets": 6,
+                    "reps": "8",
+                    "note": "standard reps",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240913/mood_app/workout_images/waan6rau_download_20_.jpg',
           intensityReason: 'Heavy cable loads with constant tension build strength',
           moodTips: [
@@ -996,6 +1617,23 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop cable curl workout driving mechanical fatigue.',
           battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  10 reps → drop ~15% → 8 reps → drop ~10% → AMRAP\nRest 90s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "reps → drop ~15% → 8 reps → drop ~10% → AMRAP",
+                    "reps": "10"
+                  }
+                ],
+                "rounds": 3,
+                "label": "Drop Ladder",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240913/mood_app/workout_images/waan6rau_download_20_.jpg',
           intensityReason: 'Cable drop sets maintain tension without momentum',
           moodTips: [
@@ -1025,6 +1663,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout + isometric cable curl workout.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×15 Cable Curl — burnout reps\n• Final set: squeeze to finish — hold at peak flexion 10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Curl",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps; Final set: squeeze to finish — hold at peak flexion 10s",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240797/mood_app/workout_images/jzrqwni6_download.jpg',
           intensityReason: 'Burnout with iso hold under cable tension exhausts biceps',
           moodTips: [
@@ -1054,6 +1711,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Partial-range curl workout emphasizing the strongest range.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×8 Cable Curl — 1.5 reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Cable Curl",
+                    "sets": 5,
+                    "reps": "8",
+                    "note": "1.5 reps",
+                    "tutorialSlug": "cable_straight_bar_curl"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240790/mood_app/workout_images/3z2y67t7_cc.jpg',
           intensityReason: '1.5 reps with cable tension double time under tension',
           moodTips: [
@@ -1091,6 +1767,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard preacher curl workout emphasizing strict elbow flexion.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Preacher Machine Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Preacher Machine Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240798/mood_app/workout_images/rmfkhn59_download_6_.jpg',
           intensityReason: 'Preacher pad eliminates cheating for pure biceps isolation',
           moodTips: [
@@ -1120,6 +1814,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused preacher curl workout emphasizing control.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×10 Preacher Curl — eccentric reps (3s down)\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Preacher Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "eccentric reps (3s down)"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240787/mood_app/workout_images/2h81ucwk_download_5_.jpg',
           intensityReason: 'Slow eccentrics on preacher pad hit hard',
           moodTips: [
@@ -1149,6 +1861,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard narrow-grip preacher curl biasing long head.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Close-Grip Preacher Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Close-Grip Preacher Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240578/mood_app/workout_images/otlde2yi_preacher_curl_3.jpg',
           intensityReason: 'Close grip on preacher targets long head effectively',
           moodTips: [
@@ -1178,6 +1908,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard preacher curl workout with squeeze-to-finish at peak flexion.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Preacher Curl — standard reps\n• Final set: squeeze to finish — hold top 8–10s\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Preacher Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: squeeze to finish — hold top 8–10s"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240574/mood_app/workout_images/g54uz2wp_preacher_curl.jpg',
           intensityReason: 'Isometric finish on preacher maximizes contraction',
           moodTips: [
@@ -1209,6 +1957,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Pause-rep preacher curl workout removing momentum.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Preacher Curl — pause reps (1s bottom)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Preacher Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "pause reps (1s bottom)"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240798/mood_app/workout_images/rmfkhn59_download_6_.jpg',
           intensityReason: 'Bottom pauses on preacher eliminate all momentum',
           moodTips: [
@@ -1238,6 +2004,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard preacher curl workout biasing short head.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Wide-Grip Preacher Curl — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Wide-Grip Preacher Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240787/mood_app/workout_images/2h81ucwk_download_5_.jpg',
           intensityReason: 'Wide grip on preacher targets short head for peak development',
           moodTips: [
@@ -1267,6 +2051,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Burnout preacher curl workout emphasizing time under tension.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 Preacher Curl — burnout reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Preacher Curl",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240578/mood_app/workout_images/otlde2yi_preacher_curl_3.jpg',
           intensityReason: 'Extended reps on preacher build endurance and pump',
           moodTips: [
@@ -1296,6 +2098,29 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing full ROM with top-range preacher reps.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 Preacher Curl — standard reps\nsuperset with\n• 10 Top-Range Partial Preacher Curls\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Preacher Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps"
+                  },
+                  {
+                    "name": "Top-Range Partial Preacher Curls",
+                    "reps": "10",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240574/mood_app/workout_images/g54uz2wp_preacher_curl.jpg',
           intensityReason: 'Full and partial reps maximize fiber recruitment',
           moodTips: [
@@ -1327,6 +2152,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy preacher curl workout emphasizing control.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Preacher Curl — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Preacher Curl",
+                    "sets": 6,
+                    "reps": "8",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240798/mood_app/workout_images/rmfkhn59_download_6_.jpg',
           intensityReason: 'Heavy loads on preacher build strength without cheating',
           moodTips: [
@@ -1356,6 +2199,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop preacher curl workout driving fatigue.',
           battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps\n• Set 2: drop set — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [],
+                "label": "Drop Cluster",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240798/mood_app/workout_images/rmfkhn59_download_6_.jpg',
           intensityReason: 'Drop clusters on preacher extend time under tension',
           moodTips: [
@@ -1385,6 +2239,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout + isometric preacher curl workout.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×12 Preacher Curl — burnout reps\n• Final set: squeeze to finish — hold top 10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Preacher Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "burnout reps; Final set: squeeze to finish — hold top 10s"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240578/mood_app/workout_images/otlde2yi_preacher_curl_3.jpg',
           intensityReason: 'Burnout with iso hold on preacher exhausts biceps completely',
           moodTips: [
@@ -1414,6 +2286,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Partial-range preacher curl workout increasing time under tension.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×8 Preacher Curl — 1.5 reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Preacher Curl",
+                    "sets": 5,
+                    "reps": "8",
+                    "note": "1.5 reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240574/mood_app/workout_images/g54uz2wp_preacher_curl.jpg',
           intensityReason: '1.5 reps on preacher double time under tension per rep',
           moodTips: [
@@ -1451,6 +2341,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard machine curl workout for clean biceps isolation.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Machine Biceps Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Machine Biceps Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240799/mood_app/workout_images/um46qpzr_download_3_.jpg',
           intensityReason: 'Fixed path machine provides perfect biceps isolation',
           moodTips: [
@@ -1480,6 +2388,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused machine curl workout emphasizing control.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×10 Machine Curl — eccentric reps (3s down)\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Machine Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "eccentric reps (3s down)"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240793/mood_app/workout_images/h9obln9e_download_2_.jpg',
           intensityReason: 'Slow eccentrics on machine hit brutally hard',
           moodTips: [
@@ -1509,6 +2435,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard narrow-grip curl workout biasing long head.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Close-Grip Machine Curl — standard reps\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Close-Grip Machine Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240586/mood_app/workout_images/tqfomss4_Screenshot_2026-02-02_at_11_52_43_PM.jpg',
           intensityReason: 'Narrow grip on machine targets long head',
           moodTips: [
@@ -1538,6 +2482,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard machine curl workout with squeeze-to-finish at peak flexion.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Machine Curl — standard reps\n• Final set: squeeze to finish — hold handles at top 8–10s\nRest 60s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Machine Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps; Final set: squeeze to finish — hold handles at top 8–10s"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "60s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240582/mood_app/workout_images/qfupz5zv_bicep_curl_machine.jpg',
           intensityReason: 'Isometric finish on machine maximizes contraction',
           moodTips: [
@@ -1569,6 +2531,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Pause-rep machine curl workout eliminating momentum.',
           battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Machine Curl — pause reps (1s halfway)\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Machine Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "pause reps (1s halfway)"
+                  }
+                ],
+                "label": "Pause Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240799/mood_app/workout_images/um46qpzr_download_3_.jpg',
           intensityReason: 'Pauses eliminate machine assist for pure biceps work',
           moodTips: [
@@ -1598,6 +2578,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Standard curl workout biasing short head.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Wide-Grip Machine Curl — standard reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Wide-Grip Machine Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240793/mood_app/workout_images/h9obln9e_download_2_.jpg',
           intensityReason: 'Wide grip on machine targets inner biceps',
           moodTips: [
@@ -1627,6 +2625,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Burnout-style machine curl workout extending time under tension.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 Machine Curl — burnout reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Machine Curl",
+                    "sets": 4,
+                    "reps": "15",
+                    "note": "burnout reps"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240586/mood_app/workout_images/tqfomss4_Screenshot_2026-02-02_at_11_52_43_PM.jpg',
           intensityReason: 'Extended reps on machine build endurance and pump',
           moodTips: [
@@ -1656,6 +2672,29 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing full ROM with top-range partials.',
           battlePlan: 'Battle Plan — Superset\n• 4×10 Machine Curl — standard reps\nsuperset with\n• 10 Top-Range Partial Curls\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Machine Curl",
+                    "sets": 4,
+                    "reps": "10",
+                    "note": "standard reps"
+                  },
+                  {
+                    "name": "Top-Range Partial Curls",
+                    "reps": "10",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240582/mood_app/workout_images/qfupz5zv_bicep_curl_machine.jpg',
           intensityReason: 'Full and partial reps maximize fiber recruitment',
           moodTips: [
@@ -1687,6 +2726,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard heavy machine curl workout emphasizing strict form.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Machine Curl — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Machine Curl",
+                    "sets": 6,
+                    "reps": "8",
+                    "note": "standard reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240799/mood_app/workout_images/um46qpzr_download_3_.jpg',
           intensityReason: 'Heavy loads on machine build strength without cheating',
           moodTips: [
@@ -1716,6 +2773,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop machine curl workout driving fatigue.',
           battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps\n• Set 2: drop set — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [],
+                "label": "Drop Cluster",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240799/mood_app/workout_images/um46qpzr_download_3_.jpg',
           intensityReason: 'Drop clusters on machine extend time under tension',
           moodTips: [
@@ -1745,6 +2813,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout + isometric machine curl workout.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×12 Machine Curl — burnout reps\n• Final set: squeeze to finish — hold top 10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Machine Curl",
+                    "sets": 4,
+                    "reps": "12",
+                    "note": "burnout reps; Final set: squeeze to finish — hold top 10s"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240586/mood_app/workout_images/tqfomss4_Screenshot_2026-02-02_at_11_52_43_PM.jpg',
           intensityReason: 'Burnout with iso hold on machine exhausts biceps completely',
           moodTips: [
@@ -1774,6 +2860,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Partial-range machine curl workout increasing time under tension.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×8 Machine Curl — 1.5 reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Machine Curl",
+                    "sets": 5,
+                    "reps": "8",
+                    "note": "1.5 reps"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240582/mood_app/workout_images/qfupz5zv_bicep_curl_machine.jpg',
           intensityReason: '1.5 reps on machine double time under tension per rep',
           moodTips: [
@@ -1811,6 +2915,23 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard chin-up workout emphasizing elbow flexion under bodyweight.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×AMRAP Chin-Ups — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "4×AMRAP Chin-Ups",
+                    "reps": "standard reps",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Bodyweight chin-ups build functional pulling strength',
           moodTips: [
@@ -1840,6 +2961,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Assisted bodyweight curl workout reducing load for clean reps.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×8–10 Assisted Chin-Ups — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Assisted Chin-Ups",
+                    "sets": 4,
+                    "reps": "8–10",
+                    "note": "standard reps",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Band assistance allows proper form development',
           moodTips: [
@@ -1869,6 +3009,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Eccentric-focused bodyweight curl workout emphasizing control.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×5 Chin-Ups — eccentric reps (5s down)\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Chin-Ups",
+                    "sets": 4,
+                    "reps": "5",
+                    "note": "eccentric reps (5s down)",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: 'Slow negatives build eccentric strength for full reps',
           moodTips: [
@@ -1898,6 +3057,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '12–14 min',
           description: 'Standard chin-up workout with squeeze-to-finish at peak flexion.',
           battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×6 Chin-Ups — standard reps\n• Final set: squeeze to finish — hold chin over bar 10s\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Chin-Ups",
+                    "sets": 4,
+                    "reps": "6",
+                    "note": "standard reps; Final set: squeeze to finish — hold chin over bar 10s",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ],
+                "label": "Standard + Isometric Finish",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: 'Isometric hold at top maximizes biceps contraction',
           moodTips: [
@@ -1929,6 +3107,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Tempo-controlled chin-up workout increasing time under tension.',
           battlePlan: 'Battle Plan — Eccentric Sets\n• 4×6 Chin-Ups — eccentric reps (3s down)\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Chin-Ups",
+                    "sets": 4,
+                    "reps": "6",
+                    "note": "eccentric reps (3s down)",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ],
+                "label": "Eccentric Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Controlled tempo maximizes time under tension',
           moodTips: [
@@ -1958,6 +3155,23 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '14–16 min',
           description: 'Grip-biased chin-up workout increasing elbow flexion demand.',
           battlePlan: 'Battle Plan — Standard Sets\n• 4×AMRAP Close-Grip Chin-Ups — standard reps\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "4×AMRAP Close-Grip Chin-Ups",
+                    "reps": "standard reps",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Close grip increases biceps demand',
           moodTips: [
@@ -1987,6 +3201,23 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Burnout-style chin-up workout extending fatigue.',
           battlePlan: 'Battle Plan — Burnout Sets\n• 5×AMRAP Chin-Ups — burnout reps\nRest 75s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "5×AMRAP Chin-Ups",
+                    "reps": "burnout reps",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ],
+                "label": "Burnout Sets",
+                "rest": "75s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: 'Short rest burnout builds endurance and pump',
           moodTips: [
@@ -2016,6 +3247,30 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '15–17 min',
           description: 'Superset workout pairing reps with isometric holds.',
           battlePlan: 'Battle Plan — Superset\n• 4×6 Chin-Ups — standard reps\nsuperset with\n• 20s Flexed-Arm Hang\nRest 90s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "superset",
+                "movements": [
+                  {
+                    "name": "Chin-Ups",
+                    "sets": 4,
+                    "reps": "6",
+                    "note": "standard reps",
+                    "tutorialSlug": "chin_ups"
+                  },
+                  {
+                    "name": "Flexed-Arm Hang",
+                    "reps": "20s",
+                    "note": "superset with"
+                  }
+                ],
+                "label": "Superset",
+                "rest": "90s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: 'Reps plus iso hang maximize biceps fatigue',
           moodTips: [
@@ -2047,6 +3302,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Standard weighted chin-up workout for advanced biceps loading.',
           battlePlan: 'Battle Plan — Standard Sets\n• 6×5 Weighted Chin-Ups — standard reps\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Weighted Chin-Ups",
+                    "sets": 6,
+                    "reps": "5",
+                    "note": "standard reps",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Added weight builds serious pulling strength',
           moodTips: [
@@ -2076,6 +3350,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Multi-drop bodyweight workout driving fatigue.',
           battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  5 weighted reps → remove weight → AMRAP bodyweight → band-assist AMRAP\nRest 120s',
+          plan: {
+            "format": "circuit",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Weighted Chin-Up Drop Ladder",
+                    "reps": "5",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ],
+                "rounds": 3,
+                "label": "Drop Ladder",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Progressive drops extend set past failure',
           moodTips: [
@@ -2105,6 +3397,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Burnout + isometric chin-up workout.',
           battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×AMRAP Chin-Ups — burnout reps\n• Final set: squeeze to finish — hold top 10–15s\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "4×AMRAP Chin-Ups",
+                    "reps": "burnout reps",
+                    "tutorialSlug": "chin_ups",
+                    "note": "Final set: squeeze to finish — hold top 10–15s"
+                  }
+                ],
+                "label": "Burnout + Isometric",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: 'Burnout with iso hold exhausts biceps completely',
           moodTips: [
@@ -2134,6 +3444,25 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           duration: '18–20 min',
           description: 'Partial-range chin-up workout increasing time under tension.',
           battlePlan: 'Battle Plan — Standard Sets\n• 5×4 Chin-Ups — 1.5 reps\nRest 120s',
+          plan: {
+            "format": "strength",
+            "blocks": [
+              {
+                "type": "straight",
+                "movements": [
+                  {
+                    "name": "Chin-Ups",
+                    "sets": 5,
+                    "reps": "4",
+                    "note": "1.5 reps",
+                    "tutorialSlug": "chin_ups"
+                  }
+                ],
+                "label": "Standard Sets",
+                "rest": "120s"
+              }
+            ]
+          },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: '1.5 reps double time under tension per rep',
           moodTips: [

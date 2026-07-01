@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -26,6 +26,7 @@ import { Video, ResizeMode } from 'expo-av';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WorkoutStatsCard from '../components/WorkoutStatsCard';
+import { fetchSessionMetrics } from '../modules/mood-healthkit/src';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
@@ -120,25 +121,41 @@ export default function CreatePost() {
     return undefined;
   }, [params.heartRateAvg, params.heartRatePeak]);
 
+  // Session window (start → end ISO) forwarded from workout-session — used to
+  // re-query HealthKit (resync) and to show the REAL elapsed time.
+  const sessionStartISO = (params.startedAt as string) || '';
+  const sessionEndISO = (params.endedAt as string) || '';
+  const actualMinutes = useMemo<number | undefined>(() => {
+    const s = Date.parse(sessionStartISO);
+    const e = Date.parse(sessionEndISO);
+    if (!Number.isFinite(s) || !Number.isFinite(e) || e <= s) return undefined;
+    return Math.max(1, Math.round((e - s) / 60000));
+  }, [sessionStartISO, sessionEndISO]);
+
+  // Values pulled by a manual/auto "resync" after the Apple Watch flushes to
+  // HealthKit (active energy / steps / HRV can lag the end of a session by
+  // 5–60s). Any resynced value wins over the one captured at completion.
+  const [resynced, setResynced] = useState<{ calories?: number; steps?: number; hrv?: number }>({});
+  const [isResyncing, setIsResyncing] = useState(false);
+
   // Session-actual wearable metrics forwarded from workout-session.tsx.
-  // When present these come from HealthKit aggregated over the session window
-  // (start → end). Used to:
-  //   • pre-fill the editable calories field with the real value, and
-  //   • surface session steps + HRV on the achievement card.
   const sessionCaloriesFromWearable = useMemo<number | undefined>(() => {
+    if (resynced.calories != null && resynced.calories > 0) return resynced.calories;
     const n = parseInt((params.sessionCalories as string) || '', 10);
     return Number.isFinite(n) && n > 0 ? n : undefined;
-  }, [params.sessionCalories]);
+  }, [resynced.calories, params.sessionCalories]);
 
   const sessionStepsFromWearable = useMemo<number | undefined>(() => {
+    if (resynced.steps != null) return resynced.steps;
     const n = parseInt((params.sessionSteps as string) || '', 10);
     return Number.isFinite(n) && n >= 0 ? n : undefined;
-  }, [params.sessionSteps]);
+  }, [resynced.steps, params.sessionSteps]);
 
   const sessionHrvFromWearable = useMemo<number | undefined>(() => {
+    if (resynced.hrv != null && resynced.hrv > 0) return resynced.hrv;
     const n = parseInt((params.sessionHrv as string) || '', 10);
     return Number.isFinite(n) && n > 0 ? n : undefined;
-  }, [params.sessionHrv]);
+  }, [resynced.hrv, params.sessionHrv]);
   const [hasStatsCard, setHasStatsCard] = useState(false);
   const [saveButtonPressed, setSaveButtonPressed] = useState(false);
   const statsCardRef = useRef(null);
@@ -160,6 +177,49 @@ export default function CreatePost() {
       caloriesPrefilledRef.current = true;
     }
   }, [sessionCaloriesFromWearable, editedCalories]);
+
+  // Prefill duration with the REAL elapsed time (start → end), not the planned
+  // estimate. One-shot; the user can still edit afterward.
+  const durationPrefilledRef = useRef(false);
+  useEffect(() => {
+    if (durationPrefilledRef.current) return;
+    if (actualMinutes != null && editedDuration === undefined) {
+      setEditedDuration(actualMinutes);
+      durationPrefilledRef.current = true;
+    }
+  }, [actualMinutes, editedDuration]);
+
+  // Re-query HealthKit for the session window and merge in whatever has landed.
+  const resync = useCallback(async () => {
+    if (!sessionStartISO || !sessionEndISO) return;
+    setIsResyncing(true);
+    try {
+      const m = await fetchSessionMetrics(sessionStartISO, sessionEndISO);
+      if (m) {
+        setResynced((prev) => ({
+          calories: m.activeEnergyKcal != null ? Math.round(m.activeEnergyKcal) : prev.calories,
+          steps: m.stepCount != null ? Math.round(m.stepCount) : prev.steps,
+          hrv: m.heartRateVariabilitySDNN != null ? Math.round(m.heartRateVariabilitySDNN) : prev.hrv,
+        }));
+      }
+    } catch {
+      // ignore — the user can tap Resync again
+    } finally {
+      setIsResyncing(false);
+    }
+  }, [sessionStartISO, sessionEndISO]);
+
+  // Silent auto-retries so numbers often fill in before the user even taps.
+  useEffect(() => {
+    if (!sessionStartISO || !sessionEndISO) return;
+    if (sessionCaloriesFromWearable != null) return; // already have the laggy metric
+    const t1 = setTimeout(resync, 3000);
+    const t2 = setTimeout(resync, 10000);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [sessionStartISO, sessionEndISO, sessionCaloriesFromWearable, resync]);
   
   // Editable targets for donut rings
   const [calorieTarget, setCalorieTarget] = useState(500);
@@ -2121,6 +2181,27 @@ export default function CreatePost() {
                   ))}
                 </ScrollView>
 
+                {/* Resync — re-pull HealthKit stats (Apple Watch → phone sync can
+                    lag the end of a session by a few seconds to a minute). */}
+                {sessionStartISO && sessionEndISO ? (
+                  <TouchableOpacity
+                    style={styles.resyncBtn}
+                    onPress={resync}
+                    disabled={isResyncing}
+                    activeOpacity={0.8}
+                    testID="achievement-resync"
+                  >
+                    {isResyncing ? (
+                      <ActivityIndicator size="small" color="#FFD700" />
+                    ) : (
+                      <Ionicons name="refresh" size={15} color="#FFD700" />
+                    )}
+                    <Text style={styles.resyncText}>
+                      {isResyncing ? 'Syncing…' : 'Resync stats'}
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
+
                 {/* Variant dots indicator */}
                 <View style={styles.variantDotsRow} pointerEvents="none">
                   {CARD_VARIANTS.map((v) => (
@@ -2779,6 +2860,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 6,
     backgroundColor: '#000',
+  },
+  resyncBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    alignSelf: 'center',
+    marginTop: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.35)',
+  },
+  resyncText: {
+    fontSize: 12,
+    color: '#FFD700',
+    fontWeight: '600',
   },
   variantScroll: {
     width: SCREEN_WIDTH,
