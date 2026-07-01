@@ -46,6 +46,7 @@ try {
 }
 
 import { API_URL } from '../utils/apiConfig';
+import { navigateToTabsAfterWorkoutComplete } from '../utils/resetRootStack';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 // Storage keys for persisting user goals
@@ -1087,15 +1088,12 @@ export default function CreatePost() {
         window.location.href = '/(tabs)';
         console.log('window.location.href set to /(tabs)');
       } else {
-        console.log('Platform is native, using router.replace');
-        router.replace('/(tabs)');
+        console.log('Platform is native, resetting stack and navigating to tabs');
+        navigateToTabsAfterWorkoutComplete(router);
       }
     } catch (error) {
       console.error('Navigation error:', error);
-      if (router.canGoBack()) {
-        console.log('Trying router.back()');
-        router.back();
-      }
+      navigateToTabsAfterWorkoutComplete(router);
     }
     console.log('navigateToHome completed');
   };

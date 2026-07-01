@@ -34,6 +34,7 @@ import { getNotificationStatus, openNotificationSettings, initNotifications, typ
 import BackButton from '../components/BackButton';
 
 import { API_URL } from '../utils/apiConfig';
+import { navigateToLoginAfterSessionEnd } from '../utils/navigateToLoginAfterSessionEnd';
 
 // Phase E paid-launch — Subscription section copy comes from subscriptionState helpers.
 const SUPPORT_EMAIL = 'wes@officialmoodapp.com';
@@ -57,7 +58,7 @@ export default function Settings() {
   useFocusEffect(
     React.useCallback(() => {
       if (!token) return;
-      refreshSubscriptionState().catch(() => {});
+      refreshSubscriptionState().catch(() => { });
     }, [token, refreshSubscriptionState]),
   );
   const [isDeleting, setIsDeleting] = useState(false);
@@ -73,10 +74,10 @@ export default function Settings() {
     };
   }, []);
   const [showTerms, setShowTerms] = useState(false);
-  
+
   // Analytics opt-out state
   const [analyticsEnabled, setAnalyticsEnabled] = useState(true);
-  
+
   // Credentials modal state
   const [showCredentialsModal, setShowCredentialsModal] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
@@ -112,7 +113,7 @@ export default function Settings() {
         // rest of the JS bundle and the call is instant + crash-free.
         await MediaLibrary.getPermissionsAsync();
         hasML = true;
-      } catch {}
+      } catch { }
       const info = `${build}\nHAS ExpoMediaLibrary: ${hasML}`;
       console.log(info);
       setDebugInfo(info);
@@ -188,7 +189,7 @@ export default function Settings() {
         if (newEmail && updateUser) {
           updateUser({ email: newEmail });
         }
-        
+
         Alert.alert('Success', 'Your credentials have been updated successfully');
         resetCredentialsForm();
         setShowCredentialsModal(false);
@@ -217,7 +218,7 @@ export default function Settings() {
     const subject = encodeURIComponent('Support request - MOOD');
     const body = encodeURIComponent(`Hi,\n\nI need help with:\n\n\n---\nUser: ${user?.username || 'Unknown'}\nApp Version: 1.0.0`);
     const mailtoUrl = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
-    
+
     try {
       const canOpen = await Linking.canOpenURL(mailtoUrl);
       if (canOpen) {
@@ -255,7 +256,7 @@ export default function Settings() {
     const subject = encodeURIComponent('MOOD feedback');
     const body = encodeURIComponent(`Hi,\n\nI'd like to share the following feedback:\n\n\n---\nUser: ${user?.username || 'Unknown'}\nApp Version: 1.0.0`);
     const mailtoUrl = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
-    
+
     try {
       const canOpen = await Linking.canOpenURL(mailtoUrl);
       if (canOpen) {
@@ -280,7 +281,7 @@ export default function Settings() {
     const subject = encodeURIComponent('Support request - MOOD');
     const body = encodeURIComponent(`Feedback Type: ${type}\n\nFeedback:\n${feedback}`);
     const mailtoUrl = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
-    
+
     const supported = await Linking.canOpenURL(mailtoUrl);
     if (supported) {
       await Linking.openURL(mailtoUrl);
@@ -369,9 +370,9 @@ export default function Settings() {
           [
             {
               text: 'OK',
-              onPress: () => {
-                logout();
-                router.replace('/');
+              onPress: async () => {
+                await logout();
+                navigateToLoginAfterSessionEnd(router);
               },
             },
           ]
@@ -400,8 +401,8 @@ export default function Settings() {
         {/* Account Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Account</Text>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={() => setShowCredentialsModal(true)}
           >
@@ -415,7 +416,7 @@ export default function Settings() {
             <Ionicons name="chevron-forward" size={18} color='#666' />
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={() => router.push('/notification-settings')}
           >
@@ -459,7 +460,7 @@ export default function Settings() {
               onPress={() => {
                 // Apple's universal deep-link surface for the user's
                 // active App Store subscriptions list.
-                Linking.openURL('https://apps.apple.com/account/subscriptions').catch(() => {});
+                Linking.openURL('https://apps.apple.com/account/subscriptions').catch(() => { });
               }}
             >
               <View style={styles.settingsItemLeft}>
@@ -525,7 +526,7 @@ export default function Settings() {
                 if (healthStatus === 'determined') {
                   // Deep-link to iOS Settings so the user can fine-tune per-metric grants.
                   Linking.openURL('x-apple-health://').catch(() => {
-                    Linking.openURL('app-settings:').catch(() => {});
+                    Linking.openURL('app-settings:').catch(() => { });
                   });
                 } else {
                   await requestHealthPermissions();
@@ -604,7 +605,7 @@ export default function Settings() {
             <Ionicons name="chevron-forward" size={18} color='#666' />
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={() => router.push('/privacy-policy')}
           >
@@ -618,7 +619,7 @@ export default function Settings() {
             <Ionicons name="chevron-forward" size={18} color='#666' />
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={() => router.push('/community-guidelines')}
           >
@@ -637,7 +638,7 @@ export default function Settings() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Help & Support</Text>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={() => openExternalUrl(EXTERNAL_URLS.support, 'Unable to open Support page. Please try again later.')}
           >
@@ -651,7 +652,7 @@ export default function Settings() {
             <Ionicons name="open-outline" size={18} color="#666" />
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={handleSubmitFeedback}
           >
@@ -662,7 +663,7 @@ export default function Settings() {
             <Ionicons name="chevron-forward" size={18} color="#666" />
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={handleContactSupport}
           >
@@ -677,7 +678,7 @@ export default function Settings() {
         {/* Privacy & Safety Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Privacy & Safety</Text>
-          
+
           {/* Analytics Toggle - Apple Compliance */}
           <View style={styles.settingsItemWithSwitch}>
             <View style={styles.settingsItemLeft}>
@@ -695,8 +696,8 @@ export default function Settings() {
               ios_backgroundColor="#3a3a3a"
             />
           </View>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={() => router.push('/blocked-users')}
           >
@@ -710,7 +711,7 @@ export default function Settings() {
             <Ionicons name="chevron-forward" size={18} color='#666' />
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={() => router.push('/content-filter')}
           >
@@ -728,8 +729,8 @@ export default function Settings() {
         {/* Account Management */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Account Management</Text>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.settingsItem}
             onPress={handleDeleteAccount}
             disabled={isDeleting}
@@ -751,143 +752,143 @@ export default function Settings() {
 
         {/* Push Notifications — admin-only debug tools */}
         {isAdmin && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Push Notifications</Text>
-          
-          {/* Status row — derived from OS permission + stored token */}
-          {notifStatus.permission === 'granted' && notifStatus.pushToken ? (
-            // Registered & active
-            <>
-              <View style={styles.settingsItem}>
-                <View style={styles.settingsItemLeft}>
-                  <Ionicons name="notifications" size={20} color="#4CAF50" />
-                  <View>
-                    <Text style={styles.settingsItemText}>Notifications Active</Text>
-                    <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#4CAF50' }]}>
-                      Token registered to your account
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Push Notifications</Text>
+
+            {/* Status row — derived from OS permission + stored token */}
+            {notifStatus.permission === 'granted' && notifStatus.pushToken ? (
+              // Registered & active
+              <>
+                <View style={styles.settingsItem}>
+                  <View style={styles.settingsItemLeft}>
+                    <Ionicons name="notifications" size={20} color="#4CAF50" />
+                    <View>
+                      <Text style={styles.settingsItemText}>Notifications Active</Text>
+                      <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#4CAF50' }]}>
+                        Token registered to your account
+                      </Text>
+                    </View>
+                  </View>
+                  <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
+                </View>
+
+                {/* Re-register (e.g. after reinstall) */}
+                <TouchableOpacity
+                  style={styles.settingsItem}
+                  data-testid="push-reregister-btn"
+                  onPress={async () => {
+                    if (!token) return;
+                    setPushRefreshing(true);
+                    const s = await initNotifications(token);
+                    setNotifStatus(s);
+                    setPushRefreshing(false);
+                    Alert.alert('Refreshed', s.registeredWithBackend ? 'Token re-registered with backend.' : 'Could not reach backend.');
+                  }}
+                >
+                  <View style={styles.settingsItemLeft}>
+                    <Ionicons name="refresh-outline" size={20} color="#FFD700" />
+                    <Text style={styles.settingsItemText}>{pushRefreshing ? 'Refreshing...' : 'Re-register Token'}</Text>
+                  </View>
+                  {pushRefreshing ? <ActivityIndicator size="small" color="#FFD700" /> : <Ionicons name="chevron-forward" size={18} color="#666" />}
+                </TouchableOpacity>
+
+                {/* Token display */}
+                <View style={styles.settingsItem}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.settingsItemText}>Expo Push Token</Text>
+                    <Text
+                      selectable
+                      style={{ marginTop: 6, fontSize: 11, color: '#aaa', fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' }}
+                      data-testid="push-token-display"
+                    >
+                      {notifStatus.pushToken}
                     </Text>
                   </View>
                 </View>
-                <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
-              </View>
 
-              {/* Re-register (e.g. after reinstall) */}
+                {/* Copy token */}
+                <TouchableOpacity
+                  style={styles.settingsItem}
+                  data-testid="push-copy-token-btn"
+                  onPress={async () => {
+                    try {
+                      const ClipboardModule = require('expo-clipboard');
+                      await ClipboardModule.setStringAsync(notifStatus.pushToken);
+                    } catch {
+                      // expo-clipboard not available, token is selectable text
+                    }
+                    Alert.alert('Copied', 'Push token copied to clipboard');
+                  }}
+                >
+                  <View style={styles.settingsItemLeft}>
+                    <Ionicons name="copy-outline" size={20} color="#FFD700" />
+                    <Text style={styles.settingsItemText}>Copy Token</Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={18} color="#666" />
+                </TouchableOpacity>
+              </>
+            ) : notifStatus.permission === 'denied' ? (
+              // Denied — "Open Settings" CTA, never re-request
               <TouchableOpacity
                 style={styles.settingsItem}
-                data-testid="push-reregister-btn"
-                onPress={async () => {
-                  if (!token) return;
-                  setPushRefreshing(true);
-                  const s = await initNotifications(token);
-                  setNotifStatus(s);
-                  setPushRefreshing(false);
-                  Alert.alert('Refreshed', s.registeredWithBackend ? 'Token re-registered with backend.' : 'Could not reach backend.');
-                }}
+                data-testid="push-open-settings-btn"
+                onPress={() => openNotificationSettings()}
               >
                 <View style={styles.settingsItemLeft}>
-                  <Ionicons name="refresh-outline" size={20} color="#FFD700" />
-                  <Text style={styles.settingsItemText}>{pushRefreshing ? 'Refreshing...' : 'Re-register Token'}</Text>
+                  <Ionicons name="notifications-off-outline" size={20} color="#FF6B6B" />
+                  <View>
+                    <Text style={styles.settingsItemText}>Notifications Disabled</Text>
+                    <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#FF6B6B' }]}>
+                      Tap to open Settings and enable notifications
+                    </Text>
+                  </View>
                 </View>
-                {pushRefreshing ? <ActivityIndicator size="small" color="#FFD700" /> : <Ionicons name="chevron-forward" size={18} color="#666" />}
+                <Ionicons name="open-outline" size={18} color="#666" />
               </TouchableOpacity>
-
-              {/* Token display */}
+            ) : (
+              // Undetermined or loading
               <View style={styles.settingsItem}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.settingsItemText}>Expo Push Token</Text>
-                  <Text 
-                    selectable 
-                    style={{ marginTop: 6, fontSize: 11, color: '#aaa', fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' }}
-                    data-testid="push-token-display"
-                  >
-                    {notifStatus.pushToken}
-                  </Text>
-                </View>
-              </View>
-
-              {/* Copy token */}
-              <TouchableOpacity
-                style={styles.settingsItem}
-                data-testid="push-copy-token-btn"
-                onPress={async () => {
-                  try {
-                    const ClipboardModule = require('expo-clipboard');
-                    await ClipboardModule.setStringAsync(notifStatus.pushToken);
-                  } catch {
-                    // expo-clipboard not available, token is selectable text
-                  }
-                  Alert.alert('Copied', 'Push token copied to clipboard');
-                }}
-              >
                 <View style={styles.settingsItemLeft}>
-                  <Ionicons name="copy-outline" size={20} color="#FFD700" />
-                  <Text style={styles.settingsItemText}>Copy Token</Text>
+                  <Ionicons name="notifications-outline" size={20} color="#FFD700" />
+                  <View>
+                    <Text style={styles.settingsItemText}>Notification Status</Text>
+                    <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#888' }]}>
+                      Checking permission...
+                    </Text>
+                  </View>
                 </View>
-                <Ionicons name="chevron-forward" size={18} color="#666" />
-              </TouchableOpacity>
-            </>
-          ) : notifStatus.permission === 'denied' ? (
-            // Denied — "Open Settings" CTA, never re-request
+                <ActivityIndicator size="small" color="#FFD700" />
+              </View>
+            )}
+
+            {/* Test local notification */}
             <TouchableOpacity
               style={styles.settingsItem}
-              data-testid="push-open-settings-btn"
-              onPress={() => openNotificationSettings()}
+              data-testid="push-test-local-btn"
+              onPress={async () => {
+                try {
+                  const Notifications = require('expo-notifications');
+                  await Notifications.scheduleNotificationAsync({
+                    content: {
+                      title: 'MOOD Test Notification',
+                      body: 'Push notifications are working!',
+                      data: { type: 'test' },
+                    },
+                    trigger: null,
+                  });
+                  Alert.alert('Sent', 'Local test notification fired');
+                } catch (err: any) {
+                  Alert.alert('Error', err?.message || 'Could not send notification');
+                }
+              }}
             >
               <View style={styles.settingsItemLeft}>
-                <Ionicons name="notifications-off-outline" size={20} color="#FF6B6B" />
-                <View>
-                  <Text style={styles.settingsItemText}>Notifications Disabled</Text>
-                  <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#FF6B6B' }]}>
-                    Tap to open Settings and enable notifications
-                  </Text>
-                </View>
+                <Ionicons name="notifications-circle-outline" size={20} color="#FFD700" />
+                <Text style={styles.settingsItemText}>Test Local Notification</Text>
               </View>
-              <Ionicons name="open-outline" size={18} color="#666" />
+              <Ionicons name="chevron-forward" size={18} color="#666" />
             </TouchableOpacity>
-          ) : (
-            // Undetermined or loading
-            <View style={styles.settingsItem}>
-              <View style={styles.settingsItemLeft}>
-                <Ionicons name="notifications-outline" size={20} color="#FFD700" />
-                <View>
-                  <Text style={styles.settingsItemText}>Notification Status</Text>
-                  <Text style={[styles.settingsItemSubtext, { fontSize: 12, color: '#888' }]}>
-                    Checking permission...
-                  </Text>
-                </View>
-              </View>
-              <ActivityIndicator size="small" color="#FFD700" />
-            </View>
-          )}
-
-          {/* Test local notification */}
-          <TouchableOpacity
-            style={styles.settingsItem}
-            data-testid="push-test-local-btn"
-            onPress={async () => {
-              try {
-                const Notifications = require('expo-notifications');
-                await Notifications.scheduleNotificationAsync({
-                  content: {
-                    title: 'MOOD Test Notification',
-                    body: 'Push notifications are working!',
-                    data: { type: 'test' },
-                  },
-                  trigger: null,
-                });
-                Alert.alert('Sent', 'Local test notification fired');
-              } catch (err: any) {
-                Alert.alert('Error', err?.message || 'Could not send notification');
-              }
-            }}
-          >
-            <View style={styles.settingsItemLeft}>
-              <Ionicons name="notifications-circle-outline" size={20} color="#FFD700" />
-              <Text style={styles.settingsItemText}>Test Local Notification</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color="#666" />
-          </TouchableOpacity>
-        </View>
+          </View>
         )}
 
         {/* App Info */}
@@ -904,7 +905,7 @@ export default function Settings() {
         )}
 
         {/* Sign Out Button */}
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.signOutButton}
           onPress={() => {
             Alert.alert(
@@ -912,12 +913,12 @@ export default function Settings() {
               'Are you sure you want to sign out?',
               [
                 { text: 'Cancel', style: 'cancel' },
-                { 
-                  text: 'Sign Out', 
+                {
+                  text: 'Sign Out',
                   style: 'destructive',
                   onPress: async () => {
                     await logout();
-                    router.replace('/auth/login');
+                    navigateToLoginAfterSessionEnd(router);
                   }
                 },
               ]
@@ -938,7 +939,7 @@ export default function Settings() {
       >
         <SafeAreaView style={styles.modalContainer}>
           <View style={styles.modalHeader}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.modalCloseButton}
               onPress={() => setShowTerms(false)}
             >
@@ -947,10 +948,10 @@ export default function Settings() {
             <Text style={styles.modalTitle}>Terms of Service</Text>
             <View style={styles.placeholder} />
           </View>
-          
+
           <ScrollView style={styles.termsContent} showsVerticalScrollIndicator={false}>
             <Text style={styles.termsLastUpdated}>Last Updated: December 2025</Text>
-            
+
             <Text style={styles.termsHeading}>1. Acceptance of Terms</Text>
             <Text style={styles.termsText}>
               By accessing and using this fitness application ('App'), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to these terms, please do not use the App.
@@ -1035,12 +1036,12 @@ export default function Settings() {
         }}
       >
         <SafeAreaView style={styles.modalContainer}>
-          <KeyboardAvoidingView 
+          <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={{ flex: 1 }}
           >
             <View style={styles.modalHeader}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.modalCloseButton}
                 onPress={() => {
                   resetCredentialsForm();
@@ -1052,7 +1053,7 @@ export default function Settings() {
               <Text style={styles.modalTitle}>Change Credentials</Text>
               <View style={styles.placeholder} />
             </View>
-            
+
             <ScrollView style={styles.credentialsContent} showsVerticalScrollIndicator={false}>
               <Text style={styles.credentialsDescription}>
                 Update your login information below. You'll need to enter your current password to make any changes.
@@ -1071,14 +1072,14 @@ export default function Settings() {
                     onChangeText={setCurrentPassword}
                     autoCapitalize='none'
                   />
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.eyeButton}
                     onPress={() => setShowCurrentPassword(!showCurrentPassword)}
                   >
-                    <Ionicons 
-                      name={showCurrentPassword ? 'eye-off' : 'eye'} 
-                      size={20} 
-                      color="#666" 
+                    <Ionicons
+                      name={showCurrentPassword ? 'eye-off' : 'eye'}
+                      size={20}
+                      color="#666"
                     />
                   </TouchableOpacity>
                 </View>
@@ -1128,14 +1129,14 @@ export default function Settings() {
                     onChangeText={setNewPassword}
                     autoCapitalize='none'
                   />
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.eyeButton}
                     onPress={() => setShowNewPassword(!showNewPassword)}
                   >
-                    <Ionicons 
-                      name={showNewPassword ? 'eye-off' : 'eye'} 
-                      size={20} 
-                      color="#666" 
+                    <Ionicons
+                      name={showNewPassword ? 'eye-off' : 'eye'}
+                      size={20}
+                      color="#666"
                     />
                   </TouchableOpacity>
                 </View>
