@@ -11,8 +11,12 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/AuthContext';
+import { useAchievements } from '../contexts/AchievementsContext';
+import { ACHIEVEMENTS, TOTAL_ACHIEVEMENTS } from '../constants/achievements';
+import AchievementMedallion from '../components/AchievementMedallion';
 import BackButton from '../components/BackButton';
 import Constants from 'expo-constants';
 
@@ -56,6 +60,15 @@ export default function UserStatsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { token, user } = useAuth();
+  const { signals, earnedIds, refresh: refreshAchievements } = useAchievements();
+  const earnedSet = React.useMemo(() => new Set(earnedIds), [earnedIds]);
+
+  // Keep badges fresh whenever this screen regains focus.
+  useFocusEffect(
+    React.useCallback(() => {
+      refreshAchievements();
+    }, [refreshAchievements])
+  );
 
   const fetchStats = async () => {
     if (!token) return;
@@ -179,7 +192,7 @@ export default function UserStatsScreen() {
           ))}
         </View>
 
-        {/* Hero Section - Streak */}
+        {/* Hero Section - Streak (dual + nested) */}
         <View style={styles.heroSection}>
           <Text style={styles.heroLabel}>CONSISTENCY</Text>
           <View style={styles.heroValueRow}>
@@ -187,6 +200,28 @@ export default function UserStatsScreen() {
             <Text style={styles.heroUnit}>day active streak</Text>
           </View>
           <Text style={styles.heroDelta}>{getStreakDelta()}</Text>
+
+          {/* Nested workout streak — the earned one, drives badges. */}
+          <View style={styles.workoutStreakChip}>
+            <View style={styles.workoutStreakIcon}>
+              <Ionicons name="barbell" size={20} color="#FFD700" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.workoutStreakValue}>
+                {signals.workout_streak} workout streak
+              </Text>
+              <Text style={styles.workoutStreakSub}>
+                {signals.workout_streak > 0
+                  ? `Trained ${signals.workout_days_last_7} of your last 7 days`
+                  : 'Complete a workout to start it'}
+              </Text>
+            </View>
+            {signals.workout_streak_best > 0 && (
+              <Text style={styles.workoutStreakBest}>
+                best{'\n'}{signals.workout_streak_best}
+              </Text>
+            )}
+          </View>
         </View>
 
         {/* Training Volume Row */}
@@ -314,6 +349,40 @@ export default function UserStatsScreen() {
           </View>
         </View>
 
+        {/* Badges */}
+        <View style={styles.badgesSection}>
+          <View style={styles.badgesHeader}>
+            <Text style={styles.badgesLabel}>BADGES</Text>
+            <Text style={styles.badgesCount}>
+              {earnedSet.size} / {TOTAL_ACHIEVEMENTS}
+            </Text>
+          </View>
+          <View style={styles.badgesProgressTrack}>
+            <View
+              style={[
+                styles.badgesProgressFill,
+                { width: `${Math.round((earnedSet.size / TOTAL_ACHIEVEMENTS) * 100)}%` },
+              ]}
+            />
+          </View>
+          <View style={styles.badgesGrid}>
+            {ACHIEVEMENTS.map((a) => {
+              const earned = earnedSet.has(a.id);
+              return (
+                <View key={a.id} style={styles.badgeCell}>
+                  <AchievementMedallion icon={a.icon as any} size={58} locked={!earned} />
+                  <Text
+                    style={[styles.badgeCaption, !earned && styles.badgeCaptionLocked]}
+                    numberOfLines={1}
+                  >
+                    {a.label}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+
         <View style={styles.bottomPadding} />
       </ScrollView>
     </View>
@@ -412,6 +481,100 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     color: '#FFD700',
+  },
+  workoutStreakChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 20,
+    backgroundColor: 'rgba(255,255,255,0.035)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 15,
+    paddingHorizontal: 14,
+    paddingVertical: 13,
+  },
+  workoutStreakIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255,215,0,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.28)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  workoutStreakValue: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  workoutStreakSub: {
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: 12,
+    fontWeight: '400',
+    marginTop: 1,
+  },
+  workoutStreakBest: {
+    color: 'rgba(255,255,255,0.4)',
+    fontSize: 10,
+    textAlign: 'right',
+    letterSpacing: 0.3,
+  },
+
+  // Badges
+  badgesSection: {
+    marginBottom: 40,
+    paddingTop: 24,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  badgesHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  badgesLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: 'rgba(255, 255, 255, 0.4)',
+    letterSpacing: 1.5,
+  },
+  badgesCount: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: '#FFD700',
+  },
+  badgesProgressTrack: {
+    height: 6,
+    borderRadius: 6,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    overflow: 'hidden',
+    marginBottom: 22,
+  },
+  badgesProgressFill: {
+    height: '100%',
+    borderRadius: 6,
+    backgroundColor: '#FFA500',
+  },
+  badgesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  badgeCell: {
+    width: '33.33%',
+    alignItems: 'center',
+    marginBottom: 18,
+  },
+  badgeCaption: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.6)',
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  badgeCaptionLocked: {
+    color: 'rgba(255,255,255,0.35)',
   },
 
   // Metrics Row

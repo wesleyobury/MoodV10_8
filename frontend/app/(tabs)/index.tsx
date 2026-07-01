@@ -23,6 +23,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
 import Constants from 'expo-constants';
 import { useAuth } from '../../contexts/AuthContext';
+import { useAchievements } from '../../contexts/AchievementsContext';
 import { useHealth } from '../../contexts/HealthContext';
 import { Analytics } from '../../utils/analytics';
 import { hasSeenMoodIntro } from '../../utils/moodRoute';
@@ -1042,6 +1043,15 @@ export default function WorkoutsHome() {
       fetchUserStats();
       fetchHomeSummary();
     }, [fetchUserStats, fetchHomeSummary])
+  );
+
+  // v2 gamification — re-check achievement badges on home focus so a badge
+  // earned during a workout celebrates (a toast) on the next home visit.
+  const { refresh: refreshAchievements } = useAchievements();
+  useFocusEffect(
+    useCallback(() => {
+      refreshAchievements();
+    }, [refreshAchievements])
   );
 
   // HealthKit snapshot — silently returns nulls when permissions not granted

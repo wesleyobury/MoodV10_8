@@ -382,7 +382,23 @@ export const Analytics = {
     difficulty?: string;
     mood_category?: string;
     source?: string; // 'featured', 'custom', 'muscle_gainer', etc.
+    // When set (e.g. copying from a Live-feed snapshot), the server credits the
+    // original author with the `inspiring_others` badge.
+    workout_snapshot_id?: string;
   }) => trackEvent(token, 'try_workout_clicked', metadata),
+
+  /**
+   * v2 gamification — fired by AchievementsContext when a client-detected
+   * achievement badge is first earned. Populates the public Live feed
+   * (`type: "badge"` entries) and analytics. Server-authoritative badges
+   * (e.g. inspiring_others) are emitted by the server, NOT here.
+   */
+  badgeEarned: (token: string, metadata: {
+    badge_id: string;
+    badge_label: string;
+    badge_icon: string;
+    badge_category: string;
+  }) => trackEvent(token, 'badge_earned', metadata),
 
   // Workout Session Events
   workoutSessionCompleted: (token: string, metadata: {

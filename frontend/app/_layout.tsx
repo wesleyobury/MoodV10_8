@@ -12,6 +12,7 @@ import { BadgeProvider } from '../contexts/BadgeContext';
 import { OnboardingProvider } from '../contexts/OnboardingContext';
 import { OnboardingFunnelProvider } from '../contexts/OnboardingFunnelContext';
 import { SubscriptionProvider } from '../contexts/SubscriptionContext';
+import { AchievementsProvider } from '../contexts/AchievementsContext';
 import { DraftsProvider } from '../contexts/DraftsContext';
 import { HealthProvider } from '../contexts/HealthContext';
 import HealthOnboardingGate from '../components/HealthOnboardingGate';
@@ -219,7 +220,9 @@ function AppProviders({ children }: { children: React.ReactNode }) {
             <OnboardingProvider>
               <OnboardingFunnelProvider>
                 <SubscriptionProvider>
-                  <HealthProvider>{children}</HealthProvider>
+                  <HealthProvider>
+                    <AchievementsProvider>{children}</AchievementsProvider>
+                  </HealthProvider>
                 </SubscriptionProvider>
               </OnboardingFunnelProvider>
             </OnboardingProvider>

@@ -6,6 +6,26 @@
  * wordmark on the landing page (`app/index.tsx`).
  */
 
+/**
+ * ⛔ FORBIDDEN DESIGN RULES — never violate anywhere in the app.
+ *
+ * 1. BANNED COLORWAY: a flat, single-tone muted "mustard" yellow-gold (the
+ *    barbell reference icon Wes flagged). It reads cheap and off-brand. The
+ *    gold accent must ALWAYS be the vibrant gold→orange BRAND_GRADIENT below,
+ *    with depth (glow + inset highlight/shadow) — never a flat mustard fill.
+ *
+ * 2. NO GOLD-ON-GOLD: never place gold text + a gold emblem/icon on a
+ *    transparent or gold background. That low-contrast gold-on-gold combo is
+ *    banned everywhere. Gold emblems use dark ink (accentInk); gold text only
+ *    ever sits on dark (bg/surface) backgrounds.
+ *
+ * Approved gold = #FFD700 → #FFA500 (gradient, with depth)
+ * Banned        = flat mustard yellow-gold fill; gold-on-gold pairings
+ */
+export const FORBIDDEN_COLORS = {
+  flatMustardGold: 'DO_NOT_USE', // exact hex TBD — Wes: "that mustard yellow"
+} as const;
+
 export const COLORS = {
   bg: '#0A0A0A',
   surface: '#1A1A1A',
