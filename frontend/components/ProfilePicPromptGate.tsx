@@ -6,7 +6,8 @@
  *  • Waits until funnel + metrics are done — never blocks onboarding or the
  *    brief post-metrics workout handoff (mood-intro → workout picker).
  *  • Automatically dismisses when avatar is uploaded via any path.
- *  • "Maybe later" hides modal for current session; reappears on next home tab entry.
+ *  • "Maybe later" dismisses for the rest of this app session (until force-quit).
+ *  • Shown at most once per session even if the user navigates between home tabs.
  *  • Once avatar is set, modal never shows again.
  */
 import React, { useCallback, useEffect, useState } from 'react';
@@ -31,6 +32,9 @@ import {
   shouldDeferProfilePicPrompt,
 } from '../utils/onboardingFunnelDefer';
 
+/** In-memory only — resets on cold start / app kill. */
+let profilePicPromptShownThisSession = false;
+
 export default function ProfilePicPromptGate() {
   const { user, token, updateUser } = useAuth();
   const { pendingTrigger } = useSubscription();
@@ -52,6 +56,10 @@ export default function ProfilePicPromptGate() {
     }
     if (user?.avatar) return;
     if (pendingTrigger) return;
+    if (profilePicPromptShownThisSession) {
+      setShowModal(false);
+      return;
+    }
 
     if (!isOnAuthenticatedHomeTab(segments, pathname)) {
       setShowModal(false);
@@ -66,7 +74,12 @@ export default function ProfilePicPromptGate() {
         pathname,
       });
       if (cancelled) return;
-      setShowModal(!defer);
+      if (defer) {
+        setShowModal(false);
+        return;
+      }
+      profilePicPromptShownThisSession = true;
+      setShowModal(true);
     })();
 
     return () => {
@@ -142,6 +155,7 @@ export default function ProfilePicPromptGate() {
   }, [uploadAvatar]);
 
   const handleSkip = useCallback(() => {
+    profilePicPromptShownThisSession = true;
     setShowModal(false);
   }, []);
 
