@@ -2,6 +2,7 @@ import { Tabs, usePathname } from 'expo-router';
 import React, { useEffect, useRef } from 'react';
 import { Platform, View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import GradientIcon from '../../components/GradientIcon';
 import { useAuth } from '../../contexts/AuthContext';
 import { useBadges } from '../../contexts/BadgeContext';
 import { Analytics } from '../../utils/analytics';
@@ -65,11 +66,11 @@ export default function TabLayout() {
           title: 'Explore',
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconContainer}>
-              <Ionicons 
-                name={focused ? 'compass' : 'compass-outline'} 
-                size={24} 
-                color={color} 
-              />
+              {focused ? (
+                <GradientIcon name="compass" size={24} />
+              ) : (
+                <Ionicons name="compass-outline" size={24} color={color} />
+              )}
               {unreadNotifications > 0 && (
                 <View style={styles.notificationBadge}>
                   <Text style={styles.notificationBadgeText}>
@@ -88,11 +89,11 @@ export default function TabLayout() {
           title: 'Workouts',
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconContainer}>
-              <Ionicons 
-                name={focused ? 'fitness' : 'fitness-outline'} 
-                size={24} 
-                color={color} 
-              />
+              {focused ? (
+                <GradientIcon name="fitness" size={24} />
+              ) : (
+                <Ionicons name="fitness-outline" size={24} color={color} />
+              )}
             </View>
           ),
         }}
@@ -104,11 +105,11 @@ export default function TabLayout() {
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconContainer}>
-              <Ionicons 
-                name={focused ? 'person' : 'person-outline'} 
-                size={24} 
-                color={color} 
-              />
+              {focused ? (
+                <GradientIcon name="person" size={24} />
+              ) : (
+                <Ionicons name="person-outline" size={24} color={color} />
+              )}
               {unreadMessages > 0 && (
                 <View style={styles.notificationBadge}>
                   <Text style={styles.notificationBadgeText}>

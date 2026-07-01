@@ -245,8 +245,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Bicycle Crunches",
-                    "reps": "12",
+                    "name": "Bicycle Crunches",
+                    "reps": "12/side",
                     "tutorialSlug": "bicycle_crunches"
                   }
                 ],
@@ -772,8 +772,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Offset Rollouts",
-                    "reps": "8"
+                    "name": "Offset Rollouts",
+                    "reps": "8/side"
                   }
                 ],
                 "rounds": 4,
@@ -1411,8 +1411,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Alternating Knee Raises",
-                    "reps": "12"
+                    "name": "Alternating Knee Raises",
+                    "reps": "12/side"
                   }
                 ],
                 "rounds": 3,
@@ -1493,8 +1493,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Knee Raise Twist",
-                    "reps": "8"
+                    "name": "Knee Raise Twist",
+                    "reps": "8/side"
                   }
                 ],
                 "rounds": 3,
@@ -1703,8 +1703,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Side Bends",
-                    "reps": "10",
+                    "name": "Side Bends",
+                    "reps": "10/side",
                     "tutorialSlug": "roman_chair_side_bend"
                   }
                 ],
@@ -1827,8 +1827,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Weighted Bends",
-                    "reps": "8–10",
+                    "name": "Weighted Bends",
+                    "reps": "8–10/side",
                     "tutorialSlug": "roman_chair_side_bend"
                   }
                 ],
@@ -1868,8 +1868,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Twisting Sit Ups",
-                    "reps": "8",
+                    "name": "Twisting Sit Ups",
+                    "reps": "8/side",
                     "tutorialSlug": "sit_ups"
                   }
                 ],
@@ -1909,8 +1909,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Alternating Reaches",
-                    "reps": "8"
+                    "name": "Alternating Reaches",
+                    "reps": "8/side"
                   }
                 ],
                 "rounds": 4,
@@ -2034,7 +2034,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Weighted Anti-Rotation Hold",
-                    "reps": "20–30s"
+                    "reps": "20–30s/side"
                   }
                 ],
                 "rounds": 4,
@@ -2122,8 +2122,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Twists",
-                    "reps": "10"
+                    "name": "Twists",
+                    "reps": "10/side"
                   }
                 ],
                 "rounds": 3,
@@ -2162,8 +2162,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side MB Dead Bugs",
-                    "reps": "10"
+                    "name": "MB Dead Bugs",
+                    "reps": "10/side"
                   }
                 ],
                 "rounds": 3,
@@ -2334,7 +2334,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "MB V Sit Twist",
-                    "reps": "10",
+                    "reps": "10/side",
                     "tutorialSlug": "sit_ups"
                   }
                 ],
@@ -2633,8 +2633,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Twisting Sit Ups",
-                    "reps": "8",
+                    "name": "Twisting Sit Ups",
+                    "reps": "8/side",
                     "tutorialSlug": "sit_ups"
                   }
                 ],
@@ -2841,8 +2841,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Offset Sit-Ups",
-                    "reps": "8",
+                    "name": "Offset Sit-Ups",
+                    "reps": "8/side",
                     "tutorialSlug": "sit_ups"
                   }
                 ],
@@ -2930,8 +2930,8 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Alternating Assisted Knee Lifts",
-                    "reps": "6"
+                    "name": "Alternating Assisted Knee Lifts",
+                    "reps": "6/side"
                   }
                 ],
                 "rounds": 3,

@@ -132,6 +132,7 @@ from user_analytics import (
     EVENT_TYPES,
 )
 import retention as retention_engine
+import achievements as achievements_engine
 from admin_analytics import (
     get_funnel_analysis,
     get_retention_cohorts,
@@ -2313,7 +2314,29 @@ async def track_event(
     except Exception as _re:
         logger.error(f"retention hook error: {_re}")
 
+    # v2 gamification — "someone copied your workout" signal. When a user tries
+    # a workout hydrated from another athlete's snapshot, credit the original
+    # author with the `inspiring_others` badge (idempotent). Best-effort.
+    try:
+        if request.event_type == "try_workout_clicked":
+            snap_id = md.get("workout_snapshot_id") or md.get("snapshot_id")
+            if snap_id:
+                await achievements_engine.handle_workout_copied(
+                    db, current_user_id, snap_id
+                )
+    except Exception as _ae:
+        logger.error(f"achievements copy hook error: {_ae}")
+
     return {"message": "Event tracked successfully"}
+
+
+@api_router.get("/achievements/state")
+async def get_achievement_state_endpoint(
+    current_user_id: str = Depends(get_current_user),
+):
+    """Single source of truth for the client badge engine — every signal needed
+    to evaluate achievement badges, plus server-awarded badges."""
+    return await achievements_engine.get_achievement_state(db, current_user_id)
 
 @api_router.post("/analytics/track/guest")
 async def track_guest_event(request: GuestTrackEventRequest):
@@ -8968,6 +8991,57 @@ async def get_live_feed(
                 "timestamp": last_ts.isoformat(),
                 "ago_text": _format_relative_time(last_ts),
             })
+
+    # ---------- BADGE UNLOCKS (public) ----------
+    # v2 gamification — surface recent achievement badges on the Live feed,
+    # alongside completions and milestones. Deduped by (user, badge_id) keeping
+    # the newest. Both client-detected and server-awarded badges flow through
+    # the same `badge_earned` event, so this covers all of them.
+    badge_cutoff = now - timedelta(days=7)
+    badge_cursor = db.user_events.find({
+        "event_type": "badge_earned",
+        "timestamp": {"$gte": badge_cutoff},
+        "user_id": {"$ne": None},
+    }).sort("timestamp", -1).limit(limit * 3)
+    badge_events = await badge_cursor.to_list(length=limit * 3)
+    seen_badge: set = set()
+    for ev in badge_events:
+        uid = str(ev.get("user_id") or "")
+        meta = ev.get("metadata") or {}
+        badge_id = meta.get("badge_id")
+        if not uid or not badge_id:
+            continue
+        key = (uid, badge_id)
+        if key in seen_badge:
+            continue
+        seen_badge.add(key)
+        user_doc = await _get_user(uid)
+        if not user_doc:
+            continue
+        ts = ev["timestamp"]
+        if ts.tzinfo is None:
+            ts = ts.replace(tzinfo=timezone.utc)
+        raw_entries.append({
+            "id": f"badge-{ev['_id']}",
+            "type": "badge",
+            "user": {
+                "id": uid,
+                "username": user_doc.get("username") or "",
+                "name": user_doc.get("name") or user_doc.get("username") or "Someone",
+                "avatar": user_doc.get("avatar") or "",
+            },
+            "mood_bucket": "muscle",
+            "mood_label": _LIVE_BUCKET_LABELS["muscle"],
+            "workout_name": None,
+            "duration_minutes": None,
+            "milestone_count": None,
+            "badge_id": badge_id,
+            "badge_label": meta.get("badge_label") or "",
+            "badge_icon": meta.get("badge_icon") or "trophy",
+            "badge_category": meta.get("badge_category") or "",
+            "timestamp": ts.isoformat(),
+            "ago_text": _format_relative_time(ts),
+        })
 
     raw_entries.sort(key=lambda e: e["timestamp"], reverse=True)
 

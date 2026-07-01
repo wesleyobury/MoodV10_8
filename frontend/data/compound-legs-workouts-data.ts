@@ -146,8 +146,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Reverse Lunges",
-                    "reps": "8",
+                    "name": "Reverse Lunges",
+                    "reps": "8/leg",
                     "tutorialSlug": "barbell_reverse_lunge"
                   }
                 ],
@@ -326,7 +326,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Lateral Lunge",
-                    "reps": "8",
+                    "reps": "8/side",
                     "tutorialSlug": "db_side_lunge"
                   }
                 ],
@@ -366,8 +366,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Split Squats",
-                    "reps": "8",
+                    "name": "Split Squats",
+                    "reps": "8/leg",
                     "tutorialSlug": "db_bulgarian_split_squat"
                   }
                 ],
@@ -504,8 +504,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg + 3 pulses",
-                    "reps": "8"
+                    "name": "+ 3 pulses",
+                    "reps": "8/leg"
                   }
                 ],
                 "rounds": 3,
@@ -962,8 +962,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Reverse Lunges",
-                    "reps": "8",
+                    "name": "Reverse Lunges",
+                    "reps": "8/leg",
                     "tutorialSlug": "barbell_reverse_lunge"
                   }
                 ],
@@ -2218,8 +2218,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Single Leg Press",
-                    "reps": "8",
+                    "name": "Single Leg Press",
+                    "reps": "8/leg",
                     "tutorialSlug": "leg_press"
                   }
                 ],
@@ -3204,8 +3204,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Step Throughs",
-                    "reps": "8"
+                    "name": "Step Throughs",
+                    "reps": "8/side"
                   }
                 ],
                 "rounds": 3,
@@ -4838,8 +4838,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg + 3 pulses",
-                    "reps": "6"
+                    "name": "+ 3 pulses",
+                    "reps": "6/leg"
                   }
                 ],
                 "rounds": 4,
@@ -5861,8 +5861,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg → Drop → 10 → Drop → BW",
-                    "reps": "10"
+                    "name": "→ Drop → 10 → Drop → BW",
+                    "reps": "10/leg"
                   }
                 ],
                 "rounds": 3,

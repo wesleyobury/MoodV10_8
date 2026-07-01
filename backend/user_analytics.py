@@ -47,6 +47,7 @@ EVENT_TYPES = {
     
     # Social Events
     "post_created": "social",
+    "badge_earned": "social",  # v2 gamification — shown on the public Live feed
     "post_liked": "social",
     "post_commented": "social",
     "user_followed": "social",

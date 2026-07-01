@@ -16,6 +16,7 @@ import {
   NativeScrollEvent,
 } from 'react-native';
 import { Image } from 'expo-image';
+import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -23,6 +24,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
 import Constants from 'expo-constants';
 import { useAuth } from '../../contexts/AuthContext';
+import { useAchievements } from '../../contexts/AchievementsContext';
 import { useHealth } from '../../contexts/HealthContext';
 import { Analytics } from '../../utils/analytics';
 import { hasSeenMoodIntro } from '../../utils/moodRoute';
@@ -33,6 +35,8 @@ import { optimizedImageUrl, FEATURED_CARD_IMAGE_WIDTH } from '../../utils/cloudi
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import HealthSyncIndicator from '../../components/HealthSyncIndicator';
 import GlossyEmblem from '../../components/GlossyEmblem';
+import GradientIcon from '../../components/GradientIcon';
+import HomeBackground from '../../components/HomeBackground';
 
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
@@ -120,14 +124,19 @@ const AnimatedStat = ({
 
   return (
     <View style={styles.statWrapper}>
-      {/* Icon above the number — flat, no capsule per design */}
+      {/* Icon above the number — flat, no capsule per design. Streak uses the
+          brand gold→orange gradient; others stay neutral white. */}
       {icon && (
-        <Ionicons
-          name={icon}
-          size={20}
-          color={isStreak ? '#FFD700' : 'rgba(255,255,255,0.85)'}
-          style={styles.statIcon}
-        />
+        isStreak ? (
+          <GradientIcon name={icon} size={20} style={styles.statIcon} />
+        ) : (
+          <Ionicons
+            name={icon}
+            size={20}
+            color="rgba(255,255,255,0.85)"
+            style={styles.statIcon}
+          />
+        )
       )}
       {/* Text stack */}
       <View style={styles.statContent}>
@@ -442,37 +451,44 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
       onPress={() => onPress(mood)}
       activeOpacity={0.85}
     >
-      {/* Gradient edge — catches light at the corners instead of a flat border */}
-      <LinearGradient
-        colors={CARD_EDGE_COLORS}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.cardEdge}
-      >
-      {/* Premium layered card — charcoal/black base with a warm vivid gold glow */}
-      <LinearGradient
-        colors={mood.base}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        locations={[0, 0.5, 1]}
-        style={styles.visibleMoodCard}
-      >
-        {/* Soft top sheen — subtle gloss across the charcoal surface */}
+      {/* Premium iOS-style glass card — translucent dark material, blurred
+          background, glossy black tint, hairline highlight. */}
+      <View style={styles.visibleMoodCard}>
+        {/* Frosted-glass base — lets the backdrop show through, like iOS materials */}
+        <BlurView intensity={24} tint="dark" style={StyleSheet.absoluteFillObject} />
+        {/* Glossy black tint — translucent so the blur reads through it */}
         <LinearGradient
-          colors={['rgba(255,255,255,0.05)', 'rgba(255,255,255,0)']}
+          colors={['rgba(24,24,27,0.62)', 'rgba(14,14,16,0.68)', 'rgba(8,8,10,0.74)']}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
-          locations={[0, 0.22]}
+          locations={[0, 0.55, 1]}
           style={StyleSheet.absoluteFillObject}
         />
-        {/* Faint ambient-gold center glow — warmth without the old bright bloom */}
+        {/* Convex top sheen — bright top edge */}
         <LinearGradient
-          colors={['rgba(244,195,22,0)', 'rgba(244,195,22,0.035)', 'rgba(244,195,22,0)']}
-          start={{ x: 0, y: 0.5 }}
-          end={{ x: 1, y: 0.5 }}
-          locations={[0, 0.5, 1]}
+          colors={['rgba(255,255,255,0.10)', 'rgba(255,255,255,0)']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          locations={[0, 0.18]}
           style={StyleSheet.absoluteFillObject}
         />
+        {/* Diagonal shimmer — a soft band of reflected light for glassy depth */}
+        <LinearGradient
+          colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0)']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          locations={[0.18, 0.42, 0.62]}
+          style={StyleSheet.absoluteFillObject}
+        />
+        {/* Bottom shade — subtle darkening for a convex, elevated feel */}
+        <LinearGradient
+          colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.2)']}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 0, y: 1 }}
+          style={StyleSheet.absoluteFillObject}
+        />
+        {/* Hairline top highlight — the thin light separator iOS glass has */}
+        <View style={styles.glassHairline} pointerEvents="none" />
         <View style={styles.cardContent}>
           <Animated.View
             style={[
@@ -498,8 +514,7 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
             </View>
           )}
         </View>
-      </LinearGradient>
-      </LinearGradient>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -539,7 +554,7 @@ const WearablesSnapshot = ({
       <View style={styles.wearablesRow}>
         <View style={styles.wearableTile}>
           <View style={styles.wearableValueRow}>
-            <Ionicons name="flame-outline" size={15} color="#FFD700" style={styles.wearableIcon} />
+            <GradientIcon name="flame-outline" size={15} style={styles.wearableIcon} />
             <Text style={styles.wearableValue}>{fmtNum(calories)}</Text>
           </View>
           <Text style={styles.wearableLabel}>CALORIES</Text>
@@ -547,7 +562,7 @@ const WearablesSnapshot = ({
         </View>
         <View style={styles.wearableTile}>
           <View style={styles.wearableValueRow}>
-            <Ionicons name="footsteps-outline" size={15} color="#FFD700" style={styles.wearableIcon} />
+            <GradientIcon name="footsteps-outline" size={15} style={styles.wearableIcon} />
             <Text style={styles.wearableValue}>{fmtNum(steps)}</Text>
           </View>
           <Text style={styles.wearableLabel}>STEPS</Text>
@@ -555,7 +570,7 @@ const WearablesSnapshot = ({
         </View>
         <View style={styles.wearableTile}>
           <View style={styles.wearableValueRow}>
-            <Ionicons name="heart-outline" size={15} color="#FFD700" style={styles.wearableIcon} />
+            <GradientIcon name="heart-outline" size={15} style={styles.wearableIcon} />
             <Text style={styles.wearableValue}>{fmtNum(restingHr)}</Text>
           </View>
           <Text style={styles.wearableLabel}>RESTING HR</Text>
@@ -574,11 +589,6 @@ const WearablesSnapshot = ({
   );
 };
 
-// Non-uniform card edge: a warm rim that catches light at the top-left (soft
-// warm-white) and a gold glint at the bottom-right, dim through the middle —
-// so the 1px border reads as reflecting glimpses of light, not a flat outline.
-const CARD_EDGE_COLORS = ['rgba(255,238,210,0.32)', 'rgba(154,122,53,0.08)', 'rgba(244,195,22,0.26)'];
-
 const moodCards: MoodCard[] = [
   {
     id: 'sweat',
@@ -587,7 +597,7 @@ const moodCards: MoodCard[] = [
     icon: 'flame',
     gradient: ['#FF6B6B', '#FF8E53'],
     accent: '#FFC93C',
-    base: ['#101114', '#0C0C0D', '#0A0A0B'],
+    base: ['#4E4E54', '#43434A', '#3A3A40'],
   },
   {
     id: 'muscle',
@@ -596,7 +606,7 @@ const moodCards: MoodCard[] = [
     icon: 'barbell',
     gradient: ['#4ECDC4', '#44A08D'],
     accent: '#E6B94C',
-    base: ['#101114', '#0C0C0D', '#0A0A0B'],
+    base: ['#4E4E54', '#43434A', '#3A3A40'],
   },
   {
     id: 'explosive',
@@ -605,7 +615,7 @@ const moodCards: MoodCard[] = [
     icon: 'flash',
     gradient: ['#FFD93D', '#FF6B6B'],
     accent: '#FFB300',
-    base: ['#101114', '#0C0C0D', '#0A0A0B'],
+    base: ['#4E4E54', '#43434A', '#3A3A40'],
   },
   {
     id: 'lazy',
@@ -614,7 +624,7 @@ const moodCards: MoodCard[] = [
     icon: 'bed',
     gradient: ['#D299C2', '#FEF9D7'],
     accent: '#D9BA6B',
-    base: ['#101114', '#0C0C0D', '#0A0A0B'],
+    base: ['#4E4E54', '#43434A', '#3A3A40'],
   },
   {
     id: 'calisthenics',
@@ -623,7 +633,7 @@ const moodCards: MoodCard[] = [
     icon: 'body',
     gradient: ['#667eea', '#764ba2'],
     accent: '#EBC76A',
-    base: ['#101114', '#0C0C0D', '#0A0A0B'],
+    base: ['#4E4E54', '#43434A', '#3A3A40'],
   },
   {
     id: 'outdoor',
@@ -632,7 +642,7 @@ const moodCards: MoodCard[] = [
     icon: 'bicycle',
     gradient: ['#56ab2f', '#a8e6cf'],
     accent: '#C9A44C',
-    base: ['#101114', '#0C0C0D', '#0A0A0B'],
+    base: ['#4E4E54', '#43434A', '#3A3A40'],
   },
   // Hidden for now - will be enabled later
   // {
@@ -1044,6 +1054,15 @@ export default function WorkoutsHome() {
     }, [fetchUserStats, fetchHomeSummary])
   );
 
+  // v2 gamification — re-check achievement badges on home focus so a badge
+  // earned during a workout celebrates (a toast) on the next home visit.
+  const { refresh: refreshAchievements } = useAchievements();
+  useFocusEffect(
+    useCallback(() => {
+      refreshAchievements();
+    }, [refreshAchievements])
+  );
+
   // HealthKit snapshot — silently returns nulls when permissions not granted
   // or on Android/Expo Go builds; the wearables section handles that gracefully.
   const { snapshot: healthSnapshot, refresh: refreshHealth } = useHealth();
@@ -1142,7 +1161,12 @@ export default function WorkoutsHome() {
   return (
     <View style={styles.outerContainer}>
       <View style={styles.container}>
-        <ScrollView 
+        {/* Premium backdrop — charcoal radial lift + faint blueprint grid on
+            black. Fixed behind the scroll content. */}
+        <View style={styles.bgDepth} pointerEvents="none">
+          <HomeBackground />
+        </View>
+        <ScrollView
           ref={homeScrollRef}
           style={styles.fullScrollView}
           showsVerticalScrollIndicator={false}
@@ -1155,7 +1179,7 @@ export default function WorkoutsHome() {
           <View style={styles.pulseRow}>
             <View style={styles.pulseFlankLine} />
             <Animated.View style={{ transform: [{ scale: pulseScale }] }}>
-              <Ionicons name="pulse" size={26} color="#FFD700" style={styles.pulseIcon} />
+              <GradientIcon name="pulse" size={26} style={styles.pulseIcon} />
             </Animated.View>
             <View style={styles.pulseFlankLine} />
           </View>
@@ -1306,11 +1330,14 @@ const styles = StyleSheet.create({
   },
   fullScrollView: {
     flex: 1,
-    backgroundColor: '#000000', // Pure black background
+    backgroundColor: 'transparent', // let the depth gradient show through
   },
   scrollContentContainer: {
     paddingBottom: 16, // tightened — used to be 60
-    backgroundColor: '#000000', // Pure black background
+    backgroundColor: 'transparent',
+  },
+  bgDepth: {
+    ...StyleSheet.absoluteFillObject,
   },
   header: {
     flexDirection: 'row',
@@ -1703,6 +1730,13 @@ const styles = StyleSheet.create({
   },
   moodCardContainer: {
     marginBottom: 0,
+    // Soft lift lives on the (non-clipping) outer container so the drop
+    // shadow isn't cut off by the card's overflow:hidden clip.
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 6,
   },
   neonGlow: {
     borderRadius: 24,
@@ -1716,21 +1750,22 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 8,
   },
-  cardEdge: {
-    borderRadius: 16,
-    padding: 1, // 1px gradient rim that catches light at the corners
-  },
   visibleMoodCard: {
-    borderRadius: 15,
+    borderRadius: 20,
     padding: 0,
     minHeight: 80,
     justifyContent: 'center',
     overflow: 'hidden',
-    shadowColor: 'transparent',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    elevation: 0,
+    // Fallback tint if the blur can't render (e.g. Android/low-power mode).
+    backgroundColor: 'rgba(10,10,12,0.55)',
+  },
+  glassHairline: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255,255,255,0.14)',
   },
   cardContent: {
     flexDirection: 'row',

@@ -39,12 +39,24 @@ interface NativeModuleShape {
   startHeartRateStream(): Promise<boolean>;
   stopHeartRateStream(): Promise<boolean>;
   fetchSessionMetrics(startISO: string, endISO: string): Promise<SessionMetrics | null>;
+  fetchMostRecentWorkout(): Promise<RecentWorkout | null>;
   addListener(eventName: string, listener: (...args: any[]) => void): { remove: () => void };
 }
 
 export interface LiveHeartRateSample {
   bpm: number;
   timestamp: string;
+}
+
+/** The user's most recent HKWorkout (Watch or any Health source). */
+export interface RecentWorkout {
+  startISO: string;
+  endISO: string;
+  /** Workout duration in seconds. */
+  durationSec: number;
+  activeEnergyKcal: number | null;
+  avgHeartRate: number | null;
+  maxHeartRate: number | null;
 }
 
 /** Session-window aggregates returned by `fetchSessionMetrics`. */
@@ -111,6 +123,18 @@ export const fetchSessionMetrics = async (
   if (!native) return null;
   try {
     return await native.fetchSessionMetrics(startISO, endISO);
+  } catch {
+    return null;
+  }
+};
+
+/** Query the user's most recent HKWorkout (e.g. an Apple Watch workout) and its
+ *  actuals — real calories, duration, and avg/max heart rate. Lets past or
+ *  Watch-recorded workouts surface real numbers. Null on non-iOS / no data. */
+export const fetchMostRecentWorkout = async (): Promise<RecentWorkout | null> => {
+  if (!native) return null;
+  try {
+    return await native.fetchMostRecentWorkout();
   } catch {
     return null;
   }

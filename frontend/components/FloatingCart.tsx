@@ -8,11 +8,15 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { useCart } from '../contexts/CartContext';
-import { useRouter, useRootNavigationState } from 'expo-router';
+import { useRouter, useRootNavigationState, usePathname } from 'expo-router';
+
+// Screens where the floating cart stays out of the way (active workout flow).
+const HIDDEN_ROUTES = ['/workout-guidance', '/workout-session'];
 
 const FloatingCart: React.FC = () => {
   const { cartItems } = useCart();
   const rootNavigationState = useRootNavigationState();
+  const pathname = usePathname();
   const cartCount = cartItems.length;
 
   // Don't render until navigation is ready
@@ -27,6 +31,11 @@ const FloatingCart: React.FC = () => {
   };
 
   if (cartCount === 0) {
+    return null;
+  }
+
+  // Hidden during the workout session/guidance screens.
+  if (HIDDEN_ROUTES.includes(pathname)) {
     return null;
   }
 

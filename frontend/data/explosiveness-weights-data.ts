@@ -521,7 +521,7 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Landmine Split Jerk Pop",
-                    "reps": "4",
+                    "reps": "4/side",
                     "tutorialSlug": "landmine_split_jerk"
                   }
                 ],
@@ -599,8 +599,8 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Rotational Tosses",
-                    "reps": "6"
+                    "name": "Rotational Tosses",
+                    "reps": "6/side"
                   }
                 ],
                 "rounds": 3,
@@ -680,8 +680,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Rotation Punch",
-                    "reps": "5"
+                    "name": "Rotation Punch",
+                    "reps": "5/side",
+                    "tutorialSlug": "landmine_rotation_punch"
                   }
                 ],
                 "rounds": 4,
@@ -841,12 +842,13 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "per side Rotation Punch",
-                    "reps": "5"
+                    "name": "Rotation Punch",
+                    "reps": "5/side",
+                    "tutorialSlug": "landmine_rotation_punch"
                   },
                   {
-                    "name": "per side Skater Bounds",
-                    "reps": "3",
+                    "name": "Skater Bounds",
+                    "reps": "3/side",
                     "tutorialSlug": "skater_bounds"
                   }
                 ],
@@ -975,8 +977,9 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Split Jumps",
-                    "reps": "6"
+                    "name": "Split Jumps",
+                    "reps": "6/side",
+                    "tutorialSlug": "split_squat_jump"
                   }
                 ],
                 "rounds": 3,
@@ -1016,8 +1019,8 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Alternating Snatch",
-                    "reps": "6",
+                    "name": "Alternating Snatch",
+                    "reps": "6/side",
                     "tutorialSlug": "bb_snatch"
                   }
                 ],
@@ -1176,13 +1179,13 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "per side DB Snatch",
-                    "reps": "6",
+                    "name": "DB Snatch",
+                    "reps": "6/side",
                     "tutorialSlug": "bb_snatch"
                   },
                   {
-                    "name": "per side Skater Bounds",
-                    "reps": "3",
+                    "name": "Skater Bounds",
+                    "reps": "3/side",
                     "tutorialSlug": "skater_bounds"
                   }
                 ],
@@ -1308,8 +1311,8 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Dead-Start Cleans",
-                    "reps": "5",
+                    "name": "Dead-Start Cleans",
+                    "reps": "5/side",
                     "tutorialSlug": "kb_clean"
                   }
                 ],
@@ -1348,8 +1351,8 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Push Press",
-                    "reps": "6–8",
+                    "name": "Push Press",
+                    "reps": "6–8/side",
                     "tutorialSlug": "barbell_push_press"
                   }
                 ],
@@ -1428,8 +1431,8 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Clean → Jerk",
-                    "reps": "4",
+                    "name": "Clean → Jerk",
+                    "reps": "4/side",
                     "tutorialSlug": "kb_clean"
                   }
                 ],
@@ -1590,8 +1593,8 @@ export const explosivenessWeightsDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "per side Snatches",
-                    "reps": "8",
+                    "name": "Snatches",
+                    "reps": "8/side",
                     "tutorialSlug": "kettlebell_snatch"
                   },
                   {

@@ -71,22 +71,76 @@ export interface FeaturedConfig {
 const HARDCODED_FALLBACK: FeaturedWorkout[] = [
   {
     _id: 'fallback-1',
-    mood: 'Sweat / Burn Fat',
-    title: 'Cardio Based',
-    duration: '25–35 min',
-    badge: 'Top pick',
-    heroImageUrl: 'https://customer-assets.emergentagent.com/job_3f3e12c6-013b-4158-b2e9-29980fb2b4f9/artifacts/tfdiqbfo_download.png',
+    mood: "Sweat / Burn Fat",
+    title: "Sweat - HIIT Circuit",
+    duration: "~30 min",
+    badge: "Trending",
+    heroImageUrl: "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/sweat_hiit_circuit.jpg",
     exercises: []
   },
   {
     _id: 'fallback-2',
-    mood: 'Muscle Gainer',
-    title: 'Back & Bis Volume',
-    duration: '45–60 min',
-    badge: 'Trending',
-    heroImageUrl: 'https://customer-assets.emergentagent.com/job_0b65e409-b210-4730-af62-16b022c37685/artifacts/q6jestgn_download.png',
+    mood: "Muscle gainer",
+    title: "Muscle Gainer - Back & Bis Volume",
+    duration: "~50 min",
+    badge: "Top pick",
+    heroImageUrl: "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/muscle_gainer_back_and_bis_volume.jpg",
     exercises: []
   },
+  {
+    _id: 'fallback-3',
+    mood: "Sweat / Burn Fat",
+    title: "Sweat - Cardio Engine",
+    duration: "~35 min",
+    badge: "Popular",
+    heroImageUrl: "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/sweat_cardio_engine.jpg",
+    exercises: []
+  },
+  {
+    _id: 'fallback-4',
+    mood: "Muscle gainer",
+    title: "Muscle Gainer - Chest & Shoulders",
+    duration: "~50 min",
+    badge: "Trending",
+    heroImageUrl: "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/muscle_gainer_chest_and_shoulders.jpg",
+    exercises: []
+  },
+  {
+    _id: 'fallback-5',
+    mood: "Build Explosion",
+    title: "Build Explosion - Power Complex",
+    duration: "~30 min",
+    badge: "New",
+    heroImageUrl: "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/build_explosion_power_complex.jpg",
+    exercises: []
+  },
+  {
+    _id: 'fallback-6',
+    mood: "Muscle gainer",
+    title: "Muscle Gainer - Glute Day",
+    duration: "~45 min",
+    badge: "Popular",
+    heroImageUrl: "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/muscle_gainer_glute_day.jpg",
+    exercises: []
+  },
+  {
+    _id: 'fallback-7',
+    mood: "Get Outside",
+    title: "Outdoor - Hill Repeats",
+    duration: "~25 min",
+    badge: "New",
+    heroImageUrl: "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/outdoor_hill_repeats.jpg",
+    exercises: []
+  },
+  {
+    _id: 'fallback-8',
+    mood: "Get Outside",
+    title: "Outdoor - Park Circuit",
+    duration: "~25 min",
+    badge: "Classic",
+    heroImageUrl: "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/outdoor_park_circuit.jpg",
+    exercises: []
+  }
 ];
 
 /**

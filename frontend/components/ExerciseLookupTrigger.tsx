@@ -18,30 +18,29 @@ export default function ExerciseLookupTrigger({ onPress }: ExerciseLookupTrigger
       onPress={onPress}
       activeOpacity={0.7}
     >
-      <Ionicons name="videocam" size={18} color="#FFD700" />
-      <Text style={styles.text}>Find form tutorials</Text>
-      <Ionicons name="chevron-forward" size={16} color="rgba(255,255,255,0.4)" />
+      <Ionicons name="search" size={16} color="#8a8a92" />
+      <Text style={styles.text}>Search tutorials manually</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,215,0,0.08)',
-    borderRadius: 24,
-    paddingVertical: 13,
-    paddingHorizontal: 16,
-    gap: 10,
+    justifyContent: 'center',
+    backgroundColor: '#141417',
+    borderRadius: 999,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    gap: 8,
     borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.3)',
+    borderColor: 'rgba(255,255,255,0.07)',
   },
   text: {
-    flex: 1,
-    fontSize: 15,
-    color: '#ffffff',
-    fontWeight: '600',
+    fontSize: 14,
+    color: '#8a8a92',
+    fontWeight: '400',
   },
 });

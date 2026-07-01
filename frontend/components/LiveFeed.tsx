@@ -19,6 +19,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { API_URL } from '../utils/apiConfig';
 import { Analytics } from '../utils/analytics';
 import { useCart } from '../contexts/CartContext';
+import AchievementMedallion from './AchievementMedallion';
 
 // ===== Brand tokens =====
 const GOLD = '#F5C518';
@@ -51,13 +52,18 @@ const MOOD_NAV: Record<MoodBucket, { pathname: string; title: string }> = {
 
 interface LiveEntry {
   id: string;
-  type: 'live_now' | 'completion' | 'milestone';
+  type: 'live_now' | 'completion' | 'milestone' | 'badge';
   user: { id: string; username: string; name: string; avatar: string };
   mood_bucket: MoodBucket;
   mood_label: string;
   workout_name: string | null;
   duration_minutes: number | null;
   milestone_count: number | null;
+  // v2 gamification — set when type === 'badge'
+  badge_id?: string;
+  badge_label?: string;
+  badge_icon?: string;
+  badge_category?: string;
   timestamp: string;
   ago_text: string;
   // Phase 7 — surfaced from completion event metadata so Try-this-workout
@@ -107,7 +113,33 @@ const PulseDot: React.FC<{ size?: number; color?: string }> = ({ size = 6, color
 };
 
 // ===== Card for a single feed entry =====
+// ===== Badge unlock card (v2 gamification) — gold, premium, no gold-on-gold =====
+const BadgeCard: React.FC<{ entry: LiveEntry }> = ({ entry }) => {
+  const userName = entry.user.name || entry.user.username || 'Someone';
+  const icon = (entry.badge_icon as any) || 'trophy';
+  return (
+    <View style={[styles.card, styles.badgeCard]} data-testid={`live-feed-card-badge-${entry.id}`}>
+      <View style={styles.badgeRow}>
+        <AchievementMedallion icon={icon} size={48} />
+        <View style={styles.badgeTextCol}>
+          <Text style={styles.badgeEyebrow}>BADGE</Text>
+          <Text style={styles.badgeLabel} numberOfLines={1}>{entry.badge_label || 'New badge'}</Text>
+          <Text style={styles.sentence} numberOfLines={2}>
+            {userName} earned {entry.badge_label ? `“${entry.badge_label}”` : 'a new badge'}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.bottomRow}>
+        <Text style={[styles.timestamp, { color: 'rgba(255,215,0,0.5)' }]}>{entry.ago_text}</Text>
+      </View>
+    </View>
+  );
+};
+
 const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void }> = ({ entry, onPress }) => {
+  if (entry.type === 'badge') {
+    return <BadgeCard entry={entry} />;
+  }
   const palette = MOOD_STYLES[entry.mood_bucket] || MOOD_STYLES.muscle;
   // Semi-transparent: blend palette bg with #000 by lowering alpha
   const semiBg = withAlpha(palette.accent, 0.06); // very subtle accent wash on near-black
@@ -299,6 +331,8 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
 
   const handleCardPress = useCallback(
     async (entry: LiveEntry) => {
+      // Badge cards are informational — no "Try this workout" hydration.
+      if (entry.type === 'badge') return;
       const nav = MOOD_NAV[entry.mood_bucket] || MOOD_NAV.muscle;
 
       // Phase 7 — if the original completion event carried a snapshot ID,
@@ -358,6 +392,8 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
                   workout_name: entry.workout_name || entry.mood_label,
                   mood_category: nav.title,
                   source: 'live_feed_snapshot',
+                  // Credits the original athlete with the "inspiring others" badge.
+                  workout_snapshot_id: entry.workout_snapshot_id || undefined,
                 });
               }
               router.push('/cart');
@@ -578,6 +614,35 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  // Badge unlock card
+  badgeCard: {
+    backgroundColor: '#161310',
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.22)',
+  },
+  badgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    marginBottom: 12,
+  },
+  badgeTextCol: {
+    flex: 1,
+    minWidth: 0,
+  },
+  badgeEyebrow: {
+    color: '#FFD700',
+    fontSize: 10,
+    fontWeight: '600',
+    letterSpacing: 1.4,
+    marginBottom: 2,
+  },
+  badgeLabel: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 4,
   },
   // Top text column reserves space for the absolutely-positioned 44px avatar
   // (right:14 + width:44 + 10px breathing room = ~68px). Bottom row stays full

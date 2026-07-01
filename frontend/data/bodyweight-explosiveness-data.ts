@@ -407,7 +407,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Step-Up Pops",
-                    "reps": "6",
+                    "reps": "6/leg",
                     "tutorialSlug": "plyo_box_step_up_pops"
                   }
                 ],
@@ -569,7 +569,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Weighted Step-Up Pops",
-                    "reps": "5",
+                    "reps": "5/leg",
                     "tutorialSlug": "plyo_box_step_up_pops"
                   }
                 ],
@@ -856,8 +856,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Short Tosses",
-                    "reps": "6–8"
+                    "name": "Short Tosses",
+                    "reps": "6–8/side"
                   }
                 ],
                 "rounds": 3,
@@ -936,8 +936,9 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Rotational Throws",
-                    "reps": "6–8"
+                    "name": "Rotational Throws",
+                    "reps": "6–8/side",
+                    "tutorialSlug": "slam_ball_rotational_throw"
                   }
                 ],
                 "rounds": 4,
@@ -1021,8 +1022,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Heaves",
-                    "reps": "5–6"
+                    "name": "Heaves",
+                    "reps": "5–6/side"
                   }
                 ],
                 "rounds": 4,
@@ -1099,8 +1100,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Heave + Stick",
-                    "reps": "4–5"
+                    "name": "Heave + Stick",
+                    "reps": "4–5/side"
                   }
                 ],
                 "rounds": 5,
@@ -1592,8 +1593,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Cleans",
-                    "reps": "6",
+                    "name": "Cleans",
+                    "reps": "6/side",
                     "tutorialSlug": "kb_clean"
                   }
                 ],
@@ -1672,8 +1673,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Clean → Squat",
-                    "reps": "5",
+                    "name": "Clean → Squat",
+                    "reps": "5/side",
                     "tutorialSlug": "kb_squat"
                   }
                 ],
@@ -1712,8 +1713,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Snatches",
-                    "reps": "6",
+                    "name": "Snatches",
+                    "reps": "6/side",
                     "tutorialSlug": "kettlebell_snatch"
                   }
                 ],
@@ -1833,8 +1834,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "per side Snatches",
-                    "reps": "8",
+                    "name": "Snatches",
+                    "reps": "8/side",
                     "tutorialSlug": "kettlebell_snatch"
                   },
                   {
@@ -1885,8 +1886,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Shouldering",
-                    "reps": "5"
+                    "name": "Shouldering",
+                    "reps": "5/side"
                   }
                 ],
                 "rounds": 3,
@@ -2005,8 +2006,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Shouldering",
-                    "reps": "6"
+                    "name": "Shouldering",
+                    "reps": "6/side"
                   }
                 ],
                 "rounds": 4,
@@ -2089,8 +2090,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Tosses",
-                    "reps": "5"
+                    "name": "Tosses",
+                    "reps": "5/side"
                   }
                 ],
                 "rounds": 4,
@@ -2256,8 +2257,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Split Squat Jumps",
-                    "reps": "6–8",
+                    "name": "Split Jumps",
+                    "reps": "6–8/side",
                     "tutorialSlug": "split_squat_jump"
                   }
                 ],
@@ -2336,8 +2337,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Skater Bounds",
-                    "reps": "6–8",
+                    "name": "Skater Bounds",
+                    "reps": "6–8/side",
                     "tutorialSlug": "skater_bounds"
                   }
                 ],
@@ -2536,8 +2537,8 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Split Squat Jump Repeats",
-                    "reps": "10–12",
+                    "name": "Split Jumps",
+                    "reps": "10–12/side",
                     "tutorialSlug": "split_squat_jump"
                   }
                 ],

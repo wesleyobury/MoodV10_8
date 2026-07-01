@@ -23,6 +23,7 @@ public class MoodHealthKitModule: Module {
     if let t = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned) { types.insert(t) }
     if let t = HKObjectType.quantityType(forIdentifier: .stepCount) { types.insert(t) }
     if let t = HKObjectType.quantityType(forIdentifier: .heartRate) { types.insert(t) }
+    types.insert(HKObjectType.workoutType()) // read HKWorkout for last-workout stats
     return types
   }
 
@@ -186,6 +187,47 @@ public class MoodHealthKitModule: Module {
         ])
       }
     }
+
+    /// Fetch the user's MOST RECENT HKWorkout (recorded by the Apple Watch or
+    /// any Health source) and its actuals — so past / Watch-recorded workouts
+    /// can surface real calories, duration and heart rate. Never rejects;
+    /// resolves NSNull when there's no workout / no access.
+    ///
+    /// Resolves with:
+    ///   { startISO, endISO, durationSec, activeEnergyKcal?, avgHeartRate?, maxHeartRate? }
+    AsyncFunction("fetchMostRecentWorkout") { (promise: Promise) in
+      guard HKHealthStore.isHealthDataAvailable() else {
+        promise.resolve(NSNull())
+        return
+      }
+      let storeRef = self.store
+      let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+      let q = HKSampleQuery(sampleType: HKObjectType.workoutType(), predicate: nil, limit: 1, sortDescriptors: [sort]) { _, samples, _ in
+        guard let w = samples?.first as? HKWorkout else {
+          promise.resolve(NSNull())
+          return
+        }
+        let s = w.startDate
+        let e = w.endDate
+        let iso = ISO8601DateFormatter()
+        iso.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        Task {
+          async let kcal  = Self.sumQuantityInRange(store: storeRef, identifier: .activeEnergyBurned, unit: .kilocalorie(), start: s, end: e)
+          async let avgHr = Self.statHeartRate(store: storeRef, start: s, end: e, option: .discreteAverage)
+          async let maxHr = Self.statHeartRate(store: storeRef, start: s, end: e, option: .discreteMax)
+          let (kcalVal, avgVal, maxVal) = await (kcal, avgHr, maxHr)
+          promise.resolve([
+            "startISO":         iso.string(from: s),
+            "endISO":           iso.string(from: e),
+            "durationSec":      w.duration,
+            "activeEnergyKcal": kcalVal as Any,
+            "avgHeartRate":     avgVal as Any,
+            "maxHeartRate":     maxVal as Any,
+          ])
+        }
+      }
+      storeRef.execute(q)
+    }
   }
 
   // MARK: - Snapshot builder
@@ -242,6 +284,26 @@ public class MoodHealthKitModule: Module {
       let q = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, stats, _ in
         guard let sum = stats?.sumQuantity() else { cont.resume(returning: nil); return }
         cont.resume(returning: sum.doubleValue(for: unit))
+      }
+      store.execute(q)
+    }
+  }
+
+  /// Average or max heart rate (bpm) over a window — used for last-workout stats.
+  private static func statHeartRate(
+    store: HKHealthStore,
+    start: Date,
+    end: Date,
+    option: HKStatisticsOptions
+  ) async -> Double? {
+    guard let type = HKObjectType.quantityType(forIdentifier: .heartRate) else { return nil }
+    let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+    let unit = HKUnit.count().unitDivided(by: .minute())
+    return await withCheckedContinuation { (cont: CheckedContinuation<Double?, Never>) in
+      let q = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate, options: option) { _, stats, _ in
+        let qty = option.contains(.discreteMax) ? stats?.maximumQuantity() : stats?.averageQuantity()
+        guard let qv = qty else { cont.resume(returning: nil); return }
+        cont.resume(returning: qv.doubleValue(for: unit))
       }
       store.execute(q)
     }

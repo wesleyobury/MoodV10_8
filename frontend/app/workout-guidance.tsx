@@ -21,9 +21,11 @@ import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import Toast from '../components/Toast';
 import { Analytics, GuestAnalytics } from '../utils/analytics';
-import ExerciseLookupSheet from '../components/ExerciseLookupSheet';
+import ExerciseLookupSheet, { type Exercise } from '../components/ExerciseLookupSheet';
 import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
+import TutorialGrid from '../components/TutorialGrid';
 import { parseBattlePlan, tutorialThumbUrl } from '../utils/battlePlanFormat';
+import { SLUG_TO_NAME, TUTORIAL_CANDIDATES } from '../utils/tutorialMap';
 import type { Movement } from '../types/workout';
 import { TextWithTermLinks } from '../components/TermDefinitionPopup';
 import { API_URL } from '../utils/apiConfig';
@@ -280,6 +282,8 @@ export default function WorkoutGuidanceScreen() {
   const [toastMessage, setToastMessage] = useState('');
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
   const [lookupQuery, setLookupQuery] = useState<string | undefined>(undefined);
+  const [lookupSlug, setLookupSlug] = useState<string | undefined>(undefined);
+  const [lookupExercise, setLookupExercise] = useState<Exercise | null>(null);
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   
   const { token, isGuest, refreshEntitlement } = useAuth();
@@ -860,7 +864,7 @@ export default function WorkoutGuidanceScreen() {
           style={styles.backButton}
           onPress={handleGoBack}
         >
-          <Ionicons name="chevron-back" size={24} color="#FFD700" />
+          <Ionicons name="chevron-back" size={20} color="#FFD700" />
         </TouchableOpacity>
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>
@@ -882,6 +886,8 @@ export default function WorkoutGuidanceScreen() {
           exercises={sessionWorkouts}
           currentIndex={currentSessionIndex}
           workoutTitle={(params.featuredWorkoutTitle as string) || displayWorkoutType}
+          moodCard={moodTitle}
+          subPath={displayWorkoutType}
         />
       ) : (
       <View style={styles.extendedProgressContainer}>
@@ -941,36 +947,26 @@ export default function WorkoutGuidanceScreen() {
       </View>
       )}
 
-      {/* Timer Section - Compact */}
-      <View style={styles.timerContainer}>
-        <View style={styles.timerRow}>
-          <Text style={styles.timerLabel}>Timer:</Text>
-          <Text style={styles.timerDisplay}>{formatTime(elapsedTime)}</Text>
-          <TouchableOpacity 
-            style={styles.timerButton}
-            onPress={handleStartPauseTimer}
-            activeOpacity={0.8}
-          >
-            <View style={styles.timerButtonCharcoal}>
-              <Ionicons 
-                name={!isRunning ? "play" : isPaused ? "play" : "pause"} 
-                size={16} 
-                color="#ffffff" 
+      {/* Timer — elevated card */}
+      <View style={styles.tCardWrap}>
+        <View style={styles.tCard}>
+          <View>
+            <Text style={styles.tLabel}>REST TIMER</Text>
+            <Text style={styles.tTime}>{formatTime(elapsedTime)}</Text>
+          </View>
+          <View style={styles.tCtrls}>
+            <TouchableOpacity style={styles.tReset} onPress={handleResetTimer} activeOpacity={0.8}>
+              <Ionicons name="refresh" size={18} color="#9a9aa2" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.tPlay} onPress={handleStartPauseTimer} activeOpacity={0.8}>
+              <Ionicons
+                name={!isRunning ? 'play' : isPaused ? 'play' : 'pause'}
+                size={18}
+                color="#f4f4f5"
+                style={{ marginLeft: (!isRunning || isPaused) ? 1 : 0 }}
               />
-              <Text style={styles.timerButtonTextCharcoal}>
-                {!isRunning ? "Start" : isPaused ? "Resume" : "Pause"}
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.resetButtonCharcoal}
-            onPress={handleResetTimer}
-            activeOpacity={0.8}
-          >
-            <View style={styles.resetButtonInner}>
-              <Ionicons name="refresh" size={16} color='#ffffff' />
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
@@ -988,76 +984,109 @@ export default function WorkoutGuidanceScreen() {
                 </View>
               )}
             </View>
-            
-            {/* Battle Plan — structured tiles with per-movement form tutorials */}
+            {equipment ? (
+              <View style={styles.equipChipRow}>
+                <View style={styles.equipChip}>
+                  <Ionicons name="barbell-outline" size={13} color="#c2c2c9" />
+                  <Text style={styles.equipChipText}>{equipment}</Text>
+                </View>
+              </View>
+            ) : null}
+
+            {/* Battle Plan — hero for single movement, clear cards for circuits */}
             <View style={styles.stepsContainer}>
-              <Text style={styles.stepsHeader}>Battle Plan</Text>
+              <Text style={styles.stepsHeader}>BATTLE PLAN</Text>
               {(() => {
                 const plan = parseBattlePlan(battlePlan || description || '', workoutName);
-                const openTutorial = (query?: string) => {
-                  setLookupQuery(query);
-                  setExerciseLookupVisible(true);
+                const movements = plan.blocks.flatMap(b => b.movements);
+                const isSingle = movements.length === 1;
+                const nkey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+                const restShort = (r?: string) => r ? (String(r).match(/^\s*([\d:]+\s*(?:s|min)?)/i)?.[1]?.trim() || String(r)) : '';
+
+                const openExercise = (ex: Exercise) => {
+                  setLookupExercise(ex); setExerciseLookupVisible(true);
                 };
-                const formatPresc = (mv: Movement): string => {
-                  if (mv.sets && mv.reps) return `${mv.sets} × ${mv.reps}`;
-                  if (mv.duration) return mv.intensity ? `${mv.duration} · ${mv.intensity}` : mv.duration;
-                  return mv.reps || mv.intensity || '';
+                const openSearch = () => {
+                  setLookupQuery(undefined); setLookupSlug(undefined); setLookupExercise(null); setExerciseLookupVisible(true);
                 };
+
                 return (
                   <>
+                    {/* ── Section 1: the plan (all instructions together) ── */}
                     {plan.instructions ? (
                       <View style={styles.bpCueRow}>
-                        <Ionicons name="information-circle" size={16} color="#FFD700" />
+                        <Ionicons name="information-circle" size={15} color="#9a9aa2" />
                         <Text style={styles.bpCueText}>{plan.instructions}</Text>
                       </View>
                     ) : null}
-                    {plan.blocks.map((block, bi) => {
-                      const meta = [
-                        block.label,
-                        block.rounds ? `${block.rounds} rounds` : '',
-                        block.rest ? `Rest ${block.rest}` : '',
-                      ].filter(Boolean).join('  ·  ');
+
+                    {isSingle ? (() => {
+                      const mv = movements[0];
+                      const block = plan.blocks[0] || ({} as any);
+                      const rest = restShort(mv.rest || block.rest);
+                      const stats: [string, string][] = [];
+                      if (mv.sets != null) stats.push(['SETS', String(mv.sets)]);
+                      if (mv.reps) stats.push(['REPS', mv.reps]);
+                      if (mv.duration) stats.push(['TIME', mv.duration]);
+                      if (rest) stats.push(['REST', rest]);
+                      if (mv.intensity && stats.length < 4) stats.push(['RPE', mv.intensity.replace(/rpe\s*/i, '')]);
+                      const headSing = (mv.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(w => w.length >= 3).pop() || '').replace(/s$/, '');
+                      const showName = mv.name && mv.name !== workoutName && headSing && !nkey(workoutName).includes(headSing);
                       return (
-                        <View key={bi} style={styles.bpBlock}>
-                          {meta ? <Text style={styles.bpBlockMeta}>{meta}</Text> : null}
-                          {block.movements.map((mv, mi) => (
-                            <TouchableOpacity
-                              key={mi}
-                              style={styles.bpRow}
-                              activeOpacity={0.7}
-                              onPress={() => openTutorial(mv.name)}
-                            >
-                              <View style={styles.bpThumb}>
-                                {mv.tutorialSlug ? (
-                                  <Image source={{ uri: tutorialThumbUrl(mv.tutorialSlug) }} style={styles.bpThumbImg} />
-                                ) : (
-                                  <Ionicons name="play-circle" size={24} color="#FFD700" />
-                                )}
-                                {mv.tutorialSlug ? (
-                                  <View style={styles.bpPlayBadge}>
-                                    <Ionicons name="play" size={10} color="#000" />
-                                  </View>
-                                ) : null}
-                              </View>
-                              <View style={styles.bpInfo}>
-                                <Text style={styles.bpName}>{mv.name}</Text>
-                                {formatPresc(mv) ? <Text style={styles.bpPresc}>{formatPresc(mv)}</Text> : null}
-                                {mv.note ? <Text style={styles.bpNote}>{mv.note}</Text> : null}
-                              </View>
-                              <View style={styles.bpCta}>
-                                <Ionicons name="videocam" size={16} color="#FFD700" />
-                              </View>
-                            </TouchableOpacity>
-                          ))}
-                        </View>
+                        <>
+                          {showName ? <Text style={styles.bpMoveName}>{mv.name}</Text> : null}
+                          {stats.length ? (
+                            <View style={styles.statRow}>
+                              {stats.slice(0, 4).map(([k, v]) => (
+                                <View key={k} style={styles.statTile}>
+                                  <Text style={styles.statVal} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.6}>{v}</Text>
+                                  <Text style={styles.statKey}>{k}</Text>
+                                </View>
+                              ))}
+                            </View>
+                          ) : null}
+                          {mv.note ? <Text style={styles.bpNote}>{mv.note}</Text> : null}
+                        </>
                       );
-                    })}
-                    {plan.blocks.some(b => b.movements.some(m => m.tutorialSlug)) ? (
-                      <Text style={styles.bpDisclaimer}>
-                        *Tutorials show the closest matching demo and may not reflect the exact movement variation.
-                      </Text>
-                    ) : null}
-                    <ExerciseLookupTrigger onPress={() => openTutorial(undefined)} />
+                    })() : (
+                      plan.blocks.map((block, bi) => {
+                        const meta = [block.label, block.rounds ? `${block.rounds} rounds` : '', block.rest ? `${restShort(block.rest)} rest between` : '']
+                          .filter(Boolean).join('  ·  ');
+                        return (
+                          <View key={bi} style={styles.bpBlock}>
+                            {meta ? <Text style={styles.bpBlockMeta}>{meta}</Text> : null}
+                            {block.movements.map((mv, mi) => {
+                              const chips: string[] = [];
+                              if (mv.sets != null && mv.reps) chips.push(`${mv.sets} × ${mv.reps}`);
+                              else if (mv.reps) chips.push(mv.reps);
+                              if (mv.duration) chips.push(mv.duration);
+                              if (mv.intensity) chips.push(mv.intensity);
+                              if (mv.rest) chips.push(`${restShort(mv.rest)} rest`);
+                              return (
+                                <View key={mi} style={styles.bpItem}>
+                                  <View style={styles.bpNum}><Text style={styles.bpNumText}>{mi + 1}</Text></View>
+                                  <View style={styles.bpItemBody}>
+                                    <Text style={styles.bpItemName}>{mv.name}</Text>
+                                    {chips.length ? (
+                                      <View style={styles.bpChips}>
+                                        {chips.map((c, ci) => <Text key={ci} style={styles.bpChip}>{c}</Text>)}
+                                      </View>
+                                    ) : null}
+                                    {mv.note ? <Text style={styles.bpNote}>{mv.note}</Text> : null}
+                                  </View>
+                                </View>
+                              );
+                            })}
+                          </View>
+                        );
+                      })
+                    )}
+
+                    {/* ── Section 2: tutorials (live from the exercise library) ── */}
+                    <TutorialGrid movements={movements} single={isSingle} onOpen={openExercise} />
+
+                    {/* ── Section 3: manual search ── */}
+                    <ExerciseLookupTrigger onPress={openSearch} />
                   </>
                 );
               })()}
@@ -1116,8 +1145,8 @@ export default function WorkoutGuidanceScreen() {
             >
               <Ionicons name="checkmark-circle" size={24} color="#0c0c0c" />
               <Text style={styles.completedButtonText}>
-                {currentSessionIndex < sessionWorkouts.length - 1 
-                  ? "Next Workout" 
+                {currentSessionIndex < sessionWorkouts.length - 1
+                  ? "Continue"
                   : "Finish and share!"}
               </Text>
             </LinearGradient>
@@ -1159,7 +1188,9 @@ export default function WorkoutGuidanceScreen() {
       <ExerciseLookupSheet
         visible={exerciseLookupVisible}
         initialQuery={lookupQuery}
-        onClose={() => { setExerciseLookupVisible(false); setLookupQuery(undefined); }}
+        autoSelectSlug={lookupSlug}
+        initialExercise={lookupExercise}
+        onClose={() => { setExerciseLookupVisible(false); setLookupQuery(undefined); setLookupSlug(undefined); setLookupExercise(null); }}
       />
 
       {/* Guest gate — prompt account creation before starting a workout */}
@@ -1190,14 +1221,12 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(255, 215, 0, 0.2)',
   },
   backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#333333',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: 'rgba(255, 215, 0, 0.3)',
   },
   headerTextContainer: {
     flex: 1,
@@ -1257,7 +1286,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '500',
     maxWidth: 75,
-    numberOfLines: 2,
   },
   progressConnector: {
     width: 16,
@@ -1655,110 +1683,145 @@ const styles = StyleSheet.create({
   stepsContainer: {
     marginTop: 8,
   },
+  /* Timer — compact elevated card */
+  tCardWrap: { paddingHorizontal: 18, paddingTop: 16, paddingBottom: 10 },
+  tCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#141417',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.06)',
+    borderRadius: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+  },
+  tLabel: { fontSize: 9, letterSpacing: 1.3, color: '#7a7a82', fontWeight: '600' },
+  tTime: { fontSize: 22, fontWeight: '500', color: '#f4f4f5', fontVariant: ['tabular-nums'], marginTop: 1 },
+  tCtrls: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  tReset: {
+    width: 38, height: 38, borderRadius: 19, backgroundColor: '#1c1c21',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  tPlay: {
+    width: 38, height: 38, borderRadius: 19, backgroundColor: '#1c1c21',
+    alignItems: 'center', justifyContent: 'center',
+  },
+
+  /* Battle plan — restrained palette */
   bpCueRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 8,
-    backgroundColor: 'rgba(255, 215, 0, 0.08)',
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    marginTop: 12,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 12,
+    paddingVertical: 11,
+    paddingHorizontal: 13,
+    marginTop: 6,
     marginBottom: 12,
   },
-  bpCueText: {
-    flex: 1,
-    fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.9)',
-    lineHeight: 19,
+  bpCueText: { flex: 1, fontSize: 13, color: '#c2c2c9', lineHeight: 19 },
+
+  /* Circuit movement item (no thumbnail — tutorials live in their own section) */
+  bpItem: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, backgroundColor: '#141417', borderRadius: 14, padding: 12, marginBottom: 9 },
+  bpNum: { width: 24, height: 24, borderRadius: 12, backgroundColor: '#26262c', alignItems: 'center', justifyContent: 'center', marginTop: 1 },
+  bpNumText: { fontSize: 12, fontWeight: '600', color: '#c2c2c9' },
+  bpItemBody: { flex: 1, minWidth: 0 },
+  bpItemName: { fontSize: 15, fontWeight: '600', color: '#f4f4f5', marginBottom: 6 },
+
+  /* Tutorials section (2x2 grid) */
+  tutSection: { marginTop: 22 },
+  tutHeader: { fontSize: 15, fontWeight: '600', color: '#f4f4f5' },
+  tutSub: { fontSize: 12, color: '#7a7a82', marginTop: 3, marginBottom: 12 },
+  tutGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+  tutCard: { width: '48.5%', marginBottom: 14 },
+  tutThumbWrap: { position: 'relative', width: '100%', aspectRatio: 16 / 10, borderRadius: 12, overflow: 'hidden', backgroundColor: '#1a1a1f' },
+  tutThumb: { width: '100%', height: '100%' },
+  tutPlay: {
+    position: 'absolute', top: '50%', left: '50%', width: 40, height: 40, borderRadius: 20,
+    marginTop: -20, marginLeft: -20, backgroundColor: 'rgba(244,244,245,0.92)',
+    alignItems: 'center', justifyContent: 'center',
   },
-  bpBlock: {
-    marginBottom: 8,
+  tutTitle: { fontSize: 13, color: '#dcdce2', marginTop: 7, lineHeight: 17 },
+
+  /* Single-movement prescription (authoritative) */
+  bpMoveName: { fontSize: 16, fontWeight: '500', color: '#dcdce2', textAlign: 'center', marginTop: 0, marginBottom: 14 },
+
+  /* Reference video block */
+  refWrap: { marginTop: 20 },
+  refLabel: { fontSize: 11, color: '#7a7a82', fontWeight: '500', marginBottom: 8, letterSpacing: 0.3 },
+  hero: {
+    position: 'relative',
+    height: 200,
+    borderRadius: 18,
+    overflow: 'hidden',
+    backgroundColor: '#18181c',
   },
+  heroImg: { width: '100%', height: '100%' },
+  heroPlaceholder: { width: '100%', height: '100%', backgroundColor: '#1b1b20' },
+  heroShade: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 120, backgroundColor: 'rgba(0,0,0,0.6)' },
+  heroPlay: {
+    position: 'absolute', top: '36%', left: '50%', width: 54, height: 54, borderRadius: 27,
+    marginTop: -27, marginLeft: -27, backgroundColor: '#F5C518',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  heroBottom: { position: 'absolute', left: 0, right: 0, bottom: 0, padding: 12 },
+  heroVideoTitle: { fontSize: 14, fontWeight: '600', color: '#f4f4f5', marginBottom: 8 },
+  heroSearchBar: {
+    flexDirection: 'row', alignItems: 'center', gap: 8,
+    backgroundColor: 'rgba(0,0,0,0.5)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.14)',
+    borderRadius: 10, paddingVertical: 9, paddingHorizontal: 12,
+  },
+  heroSearchText: { fontSize: 13, color: '#c2c2c9', fontWeight: '500' },
+
+  /* Single-movement stat tiles */
+  statRow: { flexDirection: 'row', gap: 9, marginTop: 4 },
+  statTile: { flex: 1, backgroundColor: '#141417', borderRadius: 14, paddingVertical: 14, paddingHorizontal: 8, alignItems: 'center' },
+  statVal: { fontSize: 20, fontWeight: '600', color: '#f4f4f5', fontVariant: ['tabular-nums'] },
+  statKey: { fontSize: 10, letterSpacing: 1, color: '#7a7a82', marginTop: 4 },
+
+  /* Circuit (multi-movement) */
+  bpBlock: { marginTop: 12 },
   bpBlockMeta: {
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
-    color: '#FFD700',
-    marginBottom: 8,
-    marginTop: 4,
+    fontSize: 12, fontWeight: '600', color: '#c2c2c9', marginBottom: 10,
   },
   bpRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
-    borderRadius: 12,
-    padding: 10,
-    marginBottom: 8,
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    backgroundColor: '#141417', borderRadius: 14, padding: 10, marginBottom: 9,
   },
   bpThumb: {
-    width: 46,
-    height: 46,
-    borderRadius: 8,
-    backgroundColor: 'rgba(255, 215, 0, 0.08)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    width: 58, height: 58, borderRadius: 11, backgroundColor: '#1a1a1f',
+    justifyContent: 'center', alignItems: 'center', overflow: 'hidden',
   },
-  bpThumbImg: {
-    width: '100%',
-    height: '100%',
-  },
+  bpThumbImg: { width: '100%', height: '100%' },
   bpPlayBadge: {
-    position: 'absolute',
-    right: 3,
-    bottom: 3,
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: '#FFD700',
-    justifyContent: 'center',
-    alignItems: 'center',
+    position: 'absolute', top: '50%', left: '50%', width: 26, height: 26, borderRadius: 13,
+    marginTop: -13, marginLeft: -13, backgroundColor: '#F5C518',
+    alignItems: 'center', justifyContent: 'center',
   },
-  bpInfo: {
-    flex: 1,
+  bpInfo: { flex: 1, minWidth: 0 },
+  bpName: { fontSize: 15, fontWeight: '600', color: '#f4f4f5', marginBottom: 5 },
+  bpChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  bpChip: {
+    fontSize: 12, color: '#dcdce2', backgroundColor: '#26262c',
+    paddingVertical: 2, paddingHorizontal: 8, borderRadius: 6, overflow: 'hidden',
   },
-  bpName: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  bpPresc: {
-    fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.6)',
-    marginTop: 2,
-  },
-  bpNote: {
-    fontSize: 12,
-    color: 'rgba(255, 215, 0, 0.75)',
-    fontStyle: 'italic',
-    marginTop: 2,
-  },
-  bpCta: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: 'rgba(255, 215, 0, 0.12)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  bpDisclaimer: {
-    fontSize: 11,
-    color: 'rgba(255, 255, 255, 0.45)',
-    fontStyle: 'italic',
-    lineHeight: 15,
-    marginTop: 4,
-    marginBottom: 8,
-  },
+  bpNote: { fontSize: 12, color: '#9a9aa2', fontStyle: 'italic', marginTop: 5 },
+  bpDisclaimer: { fontSize: 11, color: '#6a6a72', fontStyle: 'italic', lineHeight: 15, marginTop: 12, marginBottom: 6 },
   stepsHeader: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginBottom: 16,
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 1.4,
+    color: '#7a7a82',
+    marginBottom: 14,
     textAlign: 'center',
   },
+  equipChipRow: { flexDirection: 'row', justifyContent: 'center', marginTop: 8 },
+  equipChip: {
+    flexDirection: 'row', alignItems: 'center', gap: 6,
+    backgroundColor: '#1c1c21', borderRadius: 20, paddingVertical: 5, paddingHorizontal: 12,
+  },
+  equipChipText: { fontSize: 12, color: '#c2c2c9', fontWeight: '500' },
   stepsList: {
     gap: 12,
   },

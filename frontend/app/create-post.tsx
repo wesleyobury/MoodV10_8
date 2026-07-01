@@ -26,7 +26,7 @@ import { Video, ResizeMode } from 'expo-av';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WorkoutStatsCard from '../components/WorkoutStatsCard';
-import { fetchSessionMetrics } from '../modules/mood-healthkit/src';
+import { fetchSessionMetrics, fetchMostRecentWorkout } from '../modules/mood-healthkit/src';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
@@ -132,6 +132,18 @@ export default function CreatePost() {
     return Math.max(1, Math.round((e - s) / 60000));
   }, [sessionStartISO, sessionEndISO]);
 
+  // Human-readable session time (e.g. "2:34 PM") — shown with the real-data
+  // indicator so the user knows which session the stats are pulled from.
+  const sessionLabel = useMemo(() => {
+    const e = Date.parse(sessionEndISO);
+    if (!Number.isFinite(e)) return '';
+    try {
+      return new Date(e).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    } catch {
+      return '';
+    }
+  }, [sessionEndISO]);
+
   // Values pulled by a manual/auto "resync" after the Apple Watch flushes to
   // HealthKit (active energy / steps / HRV can lag the end of a session by
   // 5–60s). Any resynced value wins over the one captured at completion.
@@ -189,19 +201,51 @@ export default function CreatePost() {
     }
   }, [actualMinutes, editedDuration]);
 
-  // Re-query HealthKit for the session window and merge in whatever has landed.
+  // Label for the workout the resynced numbers came from (fallback case).
+  const [lastWorkoutLabel, setLastWorkoutLabel] = useState<string>('');
+
+  // Re-query HealthKit. Prefer the exact session window (most accurate for a
+  // just-finished MOOD workout); if that has no active energy, fall back to the
+  // user's most recent HKWorkout (e.g. an Apple Watch workout recorded outside
+  // MOOD) so past workouts still surface real calories.
   const resync = useCallback(async () => {
-    if (!sessionStartISO || !sessionEndISO) return;
     setIsResyncing(true);
     try {
-      const m = await fetchSessionMetrics(sessionStartISO, sessionEndISO);
-      if (m) {
-        setResynced((prev) => ({
-          calories: m.activeEnergyKcal != null ? Math.round(m.activeEnergyKcal) : prev.calories,
-          steps: m.stepCount != null ? Math.round(m.stepCount) : prev.steps,
-          hrv: m.heartRateVariabilitySDNN != null ? Math.round(m.heartRateVariabilitySDNN) : prev.hrv,
-        }));
+      let cal: number | null = null;
+      let steps: number | null = null;
+      let hrv: number | null = null;
+
+      if (sessionStartISO && sessionEndISO) {
+        const m = await fetchSessionMetrics(sessionStartISO, sessionEndISO);
+        if (m) {
+          cal = m.activeEnergyKcal;
+          steps = m.stepCount;
+          hrv = m.heartRateVariabilitySDNN;
+        }
       }
+
+      if (cal == null || cal <= 0) {
+        const w = await fetchMostRecentWorkout();
+        if (w) {
+          if (w.activeEnergyKcal != null && w.activeEnergyKcal > 0) cal = Math.round(w.activeEnergyKcal);
+          if (w.durationSec && w.durationSec > 0) setEditedDuration(Math.max(1, Math.round(w.durationSec / 60)));
+          const t = Date.parse(w.endISO);
+          if (Number.isFinite(t)) {
+            try {
+              setLastWorkoutLabel(new Date(t).toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' }));
+            } catch {
+              setLastWorkoutLabel('');
+            }
+          }
+        }
+      }
+
+      setResynced((prev) => ({
+        calories: cal != null ? Math.round(cal) : prev.calories,
+        steps: steps != null ? Math.round(steps) : prev.steps,
+        hrv: hrv != null ? Math.round(hrv) : prev.hrv,
+      }));
+      if (cal != null && cal > 0) setEditedCalories(Math.round(cal));
     } catch {
       // ignore — the user can tap Resync again
     } finally {
@@ -1726,8 +1770,19 @@ export default function CreatePost() {
             <Text style={styles.attachmentsLabel}>Attachments</Text>
           </View>
 
-          {/* 1. Media Picker Section - FIRST */}
-          <View style={styles.attachmentCard} ref={mediaRowRef} collapsable={false}>
+          {/* Share-to-feed intro — frames media + caption as one action */}
+          <View style={styles.feedIntro}>
+            <View style={styles.feedIntroTitleRow}>
+              <Ionicons name="people" size={15} color="#F4C316" />
+              <Text style={styles.feedIntroTitle}>Post to the MOOD feed</Text>
+            </View>
+            <Text style={styles.feedIntroSub}>
+              Add a photo or video and a caption — others can see your workout and duplicate it in a tap.
+            </Text>
+          </View>
+
+          {/* 1. Media Picker Section — part of the feed post */}
+          <View style={[styles.attachmentCard, styles.feedMediaCard]} ref={mediaRowRef} collapsable={false}>
             <View style={styles.attachmentHeader}>
               <View style={styles.attachmentLabelContainer}>
                 <Ionicons name="images" size={14} color="rgba(255, 255, 255, 0.5)" />
@@ -1743,53 +1798,17 @@ export default function CreatePost() {
               style={styles.imageScroll}
               contentContainerStyle={styles.imageScrollContent}
             >
-              {/* Take Photo Button (Camera) */}
-              <TouchableOpacity 
-                style={styles.addImageButton}
-                onPress={takePhoto}
-                disabled={selectedMedia.length >= (hasStatsCard ? 4 : 5)}
-              >
-                <View style={styles.addImageIconContainer}>
-                  <Ionicons name="camera" size={18} color="rgba(255, 255, 255, 0.7)" />
-                </View>
-                <Text style={styles.addImageText}>Camera</Text>
-              </TouchableOpacity>
-
-              {/* Choose Photo Button */}
-              <TouchableOpacity 
-                style={styles.addImageButton}
-                onPress={pickImages}
-                disabled={selectedMedia.length >= (hasStatsCard ? 4 : 5)}
-              >
-                <View style={styles.addImageIconContainer}>
-                  <Ionicons name="image" size={18} color="rgba(255, 255, 255, 0.7)" />
-                </View>
-                <Text style={styles.addImageText}>Photo</Text>
-              </TouchableOpacity>
-
-              {/* Record Video Button (Camera) */}
-              <TouchableOpacity 
-                style={styles.addImageButton}
-                onPress={recordVideo}
-                disabled={selectedMedia.length >= (hasStatsCard ? 4 : 5)}
-              >
-                <View style={styles.addImageIconContainer}>
-                  <Ionicons name="videocam" size={18} color="rgba(255, 255, 255, 0.7)" />
-                </View>
-                <Text style={styles.addImageText}>Record</Text>
-              </TouchableOpacity>
-
-              {/* Choose Video Button */}
-              <TouchableOpacity 
-                style={styles.addImageButton}
-                onPress={pickVideo}
-                disabled={selectedMedia.length >= (hasStatsCard ? 4 : 5)}
-              >
-                <View style={styles.addImageIconContainer}>
-                  <Ionicons name="film" size={18} color='rgba(255, 255, 255, 0.7)' />
-                </View>
-                <Text style={styles.addImageText}>Video</Text>
-              </TouchableOpacity>
+              {/* Big add tile — one "+" that opens photo / video / camera */}
+              {selectedMedia.length < (hasStatsCard ? 4 : 5) && (
+                <TouchableOpacity
+                  style={styles.bigAddTile}
+                  onPress={() => setShowMediaPicker(true)}
+                  testID="feed-add-media"
+                >
+                  <Ionicons name="add" size={38} color="#F4C316" />
+                  <Text style={styles.bigAddText}>Add photo or video</Text>
+                </TouchableOpacity>
+              )}
 
               {selectedMedia.map((media, index) => (
                 <View key={index} style={styles.imagePreviewContainer}>
@@ -1858,26 +1877,16 @@ export default function CreatePost() {
                 </View>
               ))}
             </ScrollView>
-            
-            {selectedMedia.length === 0 && (
-              <Text style={styles.emptyText}>Optional: Add photos or videos (max 60s) to your post</Text>
-            )}
-          </View>
 
-          {/* 2. Caption Input - SECOND */}
-          <View style={styles.captionSection}>
-            <View style={styles.captionHeader}>
-              <Ionicons name="create-outline" size={20} color="#FFD700" />
-              <Text style={styles.captionLabel}>Caption</Text>
-            </View>
+            {/* Caption — prefilled, part of the same feed-post block */}
             <TextInput
-              style={styles.captionInput}
-              placeholder="Share your thoughts... (use #hashtags)"
+              style={styles.captionInline}
+              placeholder="Add a caption… (use #hashtags)"
               placeholderTextColor="#666"
               value={caption}
               onChangeText={setCaption}
               multiline
-              numberOfLines={4}
+              numberOfLines={3}
               maxLength={500}
             />
             <Text style={styles.captionCounter}>{caption.length}/500</Text>
@@ -2183,24 +2192,46 @@ export default function CreatePost() {
 
                 {/* Resync — re-pull HealthKit stats (Apple Watch → phone sync can
                     lag the end of a session by a few seconds to a minute). */}
-                {sessionStartISO && sessionEndISO ? (
+                <TouchableOpacity
+                  style={styles.resyncBtn}
+                  onPress={resync}
+                  disabled={isResyncing}
+                  activeOpacity={0.8}
+                  testID="achievement-resync"
+                >
+                  {isResyncing ? (
+                    <ActivityIndicator size="small" color="#FFD700" />
+                  ) : (
+                    <Ionicons name="refresh" size={15} color="#FFD700" />
+                  )}
+                  <Text style={styles.resyncText}>
+                    {isResyncing ? 'Syncing…' : 'Sync from Apple Health'}
+                  </Text>
+                </TouchableOpacity>
+
+                {/* Two-state data indicator — always shown on the achievement
+                    card. Green when Apple Health returned real calories; amber
+                    "estimated" otherwise. Calories-first (headline metric);
+                    session timestamp added when we have one. */}
+                {sessionCaloriesFromWearable != null ? (
+                  <View style={[styles.dataChip, styles.dataChipReal]}>
+                    <Ionicons name="checkmark-circle" size={13} color="#3CD070" />
+                    <Text style={styles.dataChipText}>
+                      Live calories from Apple Health{sessionLabel ? ` · ${sessionLabel} session` : (lastWorkoutLabel ? ` · ${lastWorkoutLabel}` : '')}
+                    </Text>
+                  </View>
+                ) : (
                   <TouchableOpacity
-                    style={styles.resyncBtn}
-                    onPress={resync}
-                    disabled={isResyncing}
+                    style={[styles.dataChip, styles.dataChipEst]}
+                    onPress={() => router.push('/wearable-data')}
                     activeOpacity={0.8}
-                    testID="achievement-resync"
                   >
-                    {isResyncing ? (
-                      <ActivityIndicator size="small" color="#FFD700" />
-                    ) : (
-                      <Ionicons name="refresh" size={15} color="#FFD700" />
-                    )}
-                    <Text style={styles.resyncText}>
-                      {isResyncing ? 'Syncing…' : 'Resync stats'}
+                    <Ionicons name="alert-circle-outline" size={13} color="#E0A03A" />
+                    <Text style={styles.dataChipTextEst}>
+                      Calories estimated{sessionLabel ? ` · ${sessionLabel} session` : ''} — connect Apple Health for real numbers
                     </Text>
                   </TouchableOpacity>
-                ) : null}
+                )}
 
                 {/* Variant dots indicator */}
                 <View style={styles.variantDotsRow} pointerEvents="none">
@@ -2276,7 +2307,7 @@ export default function CreatePost() {
                       See your real calories, heart rate, steps & HRV on workout cards
                     </Text>
                   </View>
-                  <Ionicons name="chevron-forward" size={18} color="rgba(255, 215, 0, 0.6)" />
+                  <Ionicons name="chevron-forward" size={18} color="rgba(255, 255, 255, 0.4)" />
                 </TouchableOpacity>
               )}
 
@@ -2385,6 +2416,39 @@ export default function CreatePost() {
           <View style={styles.bottomSpacer} />
         </ScrollView>
       </KeyboardAvoidingView>
+
+      {/* Media source picker — opened by the big "+" */}
+      <Modal
+        visible={showMediaPicker}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setShowMediaPicker(false)}
+      >
+        <TouchableOpacity
+          style={styles.mpBackdrop}
+          activeOpacity={1}
+          onPress={() => setShowMediaPicker(false)}
+        >
+          <View style={styles.mpSheet}>
+            <Text style={styles.mpTitle}>ADD TO YOUR POST</Text>
+            {([
+              { icon: 'image', label: 'Choose photo', fn: pickImages },
+              { icon: 'film', label: 'Choose video', fn: pickVideo },
+              { icon: 'camera', label: 'Take photo', fn: takePhoto },
+              { icon: 'videocam', label: 'Record video', fn: recordVideo },
+            ] as const).map((o) => (
+              <TouchableOpacity
+                key={o.label}
+                style={styles.mpRow}
+                onPress={() => { setShowMediaPicker(false); o.fn(); }}
+              >
+                <Ionicons name={o.icon} size={20} color="#F4C316" />
+                <Text style={styles.mpRowText}>{o.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </TouchableOpacity>
+      </Modal>
 
       {/* Full Screen Loading Overlay */}
       {uploading && (
@@ -2733,6 +2797,128 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.08)',
     padding: 14,
+  },
+  feedIntro: {
+    marginHorizontal: 16,
+    marginTop: 4,
+    marginBottom: 8,
+  },
+  feedIntroTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+  },
+  feedIntroTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#F3F3F3',
+    letterSpacing: 0.2,
+  },
+  feedIntroSub: {
+    fontSize: 12.5,
+    lineHeight: 17,
+    color: 'rgba(255,255,255,0.62)',
+    marginTop: 4,
+  },
+  feedMediaCard: {
+    marginBottom: 6, // sit tight to the caption below — one combined block
+  },
+  dataChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    alignSelf: 'center',
+    marginTop: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    borderWidth: 1,
+    maxWidth: '92%',
+  },
+  dataChipReal: {
+    backgroundColor: 'rgba(60,208,112,0.10)',
+    borderColor: 'rgba(60,208,112,0.35)',
+  },
+  dataChipEst: {
+    backgroundColor: 'rgba(224,160,58,0.10)',
+    borderColor: 'rgba(224,160,58,0.35)',
+  },
+  dataChipText: {
+    fontSize: 11.5,
+    color: 'rgba(255,255,255,0.85)',
+    fontWeight: '600',
+  },
+  dataChipTextEst: {
+    fontSize: 11.5,
+    color: '#E0A03A',
+    fontWeight: '600',
+  },
+  bigAddTile: {
+    width: 120,
+    height: 120,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: 'rgba(244,195,22,0.35)',
+    borderStyle: 'dashed',
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    marginRight: 10,
+  },
+  bigAddText: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.7)',
+    fontWeight: '600',
+    textAlign: 'center',
+    paddingHorizontal: 8,
+  },
+  captionInline: {
+    marginTop: 12,
+    minHeight: 64,
+    color: '#fff',
+    fontSize: 14,
+    lineHeight: 20,
+    textAlignVertical: 'top',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.08)',
+    paddingTop: 12,
+  },
+  mpBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'flex-end',
+  },
+  mpSheet: {
+    backgroundColor: '#161618',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingTop: 10,
+    paddingBottom: 28,
+    paddingHorizontal: 10,
+    borderTopWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
+  },
+  mpTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: 'rgba(255,255,255,0.6)',
+    letterSpacing: 0.5,
+    textAlign: 'center',
+    paddingVertical: 10,
+  },
+  mpRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    paddingVertical: 15,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+  },
+  mpRowText: {
+    fontSize: 16,
+    color: '#F3F3F3',
+    fontWeight: '500',
   },
   attachmentHeader: {
     flexDirection: 'row',
@@ -3645,9 +3831,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     paddingVertical: 12,
     paddingHorizontal: 14,
-    backgroundColor: 'rgba(255, 215, 0, 0.06)',
+    // NOTE: never gold-on-gold. Dark surface + light text, single gold icon accent.
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.18)',
+    borderColor: 'rgba(255, 255, 255, 0.10)',
     borderRadius: 14,
     gap: 12,
   },
@@ -3663,7 +3850,7 @@ const styles = StyleSheet.create({
   connectHealthTitle: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#FFD700',
+    color: '#F3F3F3',
     letterSpacing: 0.2,
   },
   connectHealthSubtitle: {

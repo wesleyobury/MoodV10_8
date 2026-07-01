@@ -3888,8 +3888,8 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
                     "tutorialSlug": "landmine_push_press"
                   },
                   {
-                    "name": "each side Landmine Rotational Press",
-                    "reps": "8",
+                    "name": "Landmine Rotational Press",
+                    "reps": "8/side",
                     "note": "standard reps; superset with"
                   }
                 ],

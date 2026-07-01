@@ -336,8 +336,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Kickbacks",
-                    "reps": "10–12"
+                    "name": "Kickbacks",
+                    "reps": "10–12/leg"
                   }
                 ],
                 "rounds": 3,
@@ -510,8 +510,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Step‑Back Lunges",
-                    "reps": "8–10"
+                    "name": "Step‑Back Lunges",
+                    "reps": "8–10/leg"
                   }
                 ],
                 "rounds": 4,
@@ -550,8 +550,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Kickbacks",
-                    "reps": "8–10"
+                    "name": "Kickbacks",
+                    "reps": "8–10/leg"
                   }
                 ],
                 "rounds": 3,
@@ -727,8 +727,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Kickbacks",
-                    "reps": "15–20"
+                    "name": "Kickbacks",
+                    "reps": "15–20/leg"
                   }
                 ],
                 "rounds": 3,
@@ -1083,8 +1083,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Single‑Leg Hip Thrusts",
-                    "reps": "8–10"
+                    "name": "Single‑Leg Hip Thrusts",
+                    "reps": "8–10/leg"
                   }
                 ],
                 "rounds": 3,
@@ -1403,8 +1403,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Kickbacks",
-                    "reps": "10–12"
+                    "name": "Kickbacks",
+                    "reps": "10–12/leg"
                   }
                 ],
                 "rounds": 3,
@@ -1443,8 +1443,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Seated Kickbacks",
-                    "reps": "12"
+                    "name": "Seated Kickbacks",
+                    "reps": "12/leg"
                   }
                 ],
                 "rounds": 3,
@@ -1615,8 +1615,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per leg Pause Kickbacks",
-                    "reps": "8"
+                    "name": "Pause Kickbacks",
+                    "reps": "8/leg"
                   }
                 ],
                 "rounds": 3,
@@ -2145,8 +2145,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Abductions",
-                    "reps": "8–10",
+                    "name": "Abductions",
+                    "reps": "8–10/side",
                     "tutorialSlug": "hip_abductor"
                   }
                 ],

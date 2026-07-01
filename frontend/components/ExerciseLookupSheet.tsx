@@ -44,6 +44,8 @@ interface ExerciseLookupSheetProps {
   visible: boolean;
   onClose: () => void;
   initialQuery?: string;
+  autoSelectSlug?: string; // when set, jump straight to this tutorial's video
+  initialExercise?: Exercise | null; // open directly to this exercise's detail
 }
 
 // Popular exercises (default chips)
@@ -59,7 +61,8 @@ const POPULAR_EXERCISES = [
 const RECENT_LOOKUPS_KEY = '@exercise_recent_lookups';
 const MAX_RECENT = 6;
 
-export default function ExerciseLookupSheet({ visible, onClose, initialQuery }: ExerciseLookupSheetProps) {
+export default function ExerciseLookupSheet({ visible, onClose, initialQuery, autoSelectSlug, initialExercise }: ExerciseLookupSheetProps) {
+  const autoSelectRef = useRef<string | undefined>(undefined);
   const insets = useSafeAreaInsets();
   const [searchQuery, setSearchQuery] = useState('');
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -80,6 +83,13 @@ export default function ExerciseLookupSheet({ visible, onClose, initialQuery }: 
   // Focus search input when sheet opens
   useEffect(() => {
     if (visible) {
+      autoSelectRef.current = autoSelectSlug; // jump to this tutorial once results arrive
+      if (initialExercise) {
+        // opened from a specific tutorial card — show it straight away
+        setSelectedExercise(initialExercise);
+        setVideoError(false);
+        return;
+      }
       if (initialQuery && initialQuery.trim()) {
         // Opened from a specific movement — jump straight to its results.
         setSearchQuery(initialQuery);
@@ -90,11 +100,24 @@ export default function ExerciseLookupSheet({ visible, onClose, initialQuery }: 
         }, 300);
       }
     } else {
+      autoSelectRef.current = undefined;
       setSearchQuery('');
       setExercises([]);
       setSelectedExercise(null);
     }
-  }, [visible, initialQuery]);
+  }, [visible, initialQuery, autoSelectSlug, initialExercise]);
+
+  // When opened from a tagged movement, auto-open the matching tutorial's video
+  // (match by slug in the video URL) instead of leaving the user on the list.
+  useEffect(() => {
+    const slug = autoSelectRef.current;
+    if (!slug || selectedExercise || exercises.length === 0) return;
+    const match = exercises.find(e => (e.video_url || '').includes(`/${slug}.`)) || exercises[0];
+    if (match) {
+      autoSelectRef.current = undefined;
+      handleExerciseSelect(match);
+    }
+  }, [exercises]);
 
   const loadRecentLookups = async () => {
     try {

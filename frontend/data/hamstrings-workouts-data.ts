@@ -193,8 +193,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "per side Staggered RDLs",
-                    "reps": "8",
+                    "name": "Staggered RDLs",
+                    "reps": "8/side",
                     "tutorialSlug": "db_rdl"
                   }
                 ],

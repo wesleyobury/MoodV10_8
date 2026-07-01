@@ -289,6 +289,24 @@ export default function WearableDataScreen() {
               )}
             </TouchableOpacity>
 
+            {/* Re-request permissions — surfaces the iOS Health sheet again for
+                any metric that's still "not determined" (e.g. Active Energy if
+                it was added after the first grant). If a metric stays blank, the
+                user was likely never prompted for it. */}
+            <TouchableOpacity
+              style={styles.regrantButton}
+              onPress={async () => {
+                await requestPermissions();
+                refresh({ silent: false });
+              }}
+              testID="wearable-data-regrant"
+            >
+              <Ionicons name="medkit-outline" size={15} color="rgba(255,255,255,0.7)" />
+              <Text style={styles.regrantText}>
+                Missing a metric (e.g. calories)? Re-check Health permissions
+              </Text>
+            </TouchableOpacity>
+
             <Text style={styles.privacyFootnote}>
               Read-only access — MOOD never writes, sells, or shares your
               health data.
@@ -433,6 +451,16 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,215,0,0.28)',
   },
   refreshText: { color: GOLD, fontSize: 13, fontWeight: '600' },
+  regrantButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 7,
+    marginTop: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  regrantText: { color: 'rgba(255,255,255,0.7)', fontSize: 12, fontWeight: '500' },
   privacyFootnote: {
     color: 'rgba(255,255,255,0.45)',
     fontSize: 11,

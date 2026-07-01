@@ -1253,7 +1253,8 @@ export default function CartScreen() {
               styles.flavorDropdownCard,
               badgeAnchor
                 ? {
-                    bottom: SCREEN_HEIGHT - badgeAnchor.y + 6,
+                    // Open BELOW the badge (top edge just under it), growing down.
+                    top: badgeAnchor.y + badgeAnchor.h + 6,
                     right: Math.max(8, SCREEN_WIDTH - (badgeAnchor.x + badgeAnchor.w)),
                   }
                 : { top: 120, right: 16 },

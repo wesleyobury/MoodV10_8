@@ -96,6 +96,13 @@ export function parseBattlePlan(raw: string, workoutName = ''): BattlePlan {
   }
 
   for (const mv of moves) {
+    const pl = mv.name && mv.name.match(/^(per (?:leg|side)|each (?:leg|side))\s+(.+)$/i);
+    if (pl) {
+      const unit = /leg/i.test(pl[1]) ? 'leg' : 'side';
+      mv.name = pl[2].trim();
+      if (mv.reps) mv.reps = `${mv.reps}/${unit}`;
+      else mv.note = [mv.note, pl[1]].filter(Boolean).join('; ');
+    }
     const hasReal = mv.name && canon(mv.name).some(t => !NONNAME.has(t));
     if (!hasReal && workoutName) mv.name = workoutName;
     if (!mv.tutorialSlug) {

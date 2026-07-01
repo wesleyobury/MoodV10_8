@@ -277,6 +277,14 @@ export default function WorkoutStatsCard({
   const calorieProgress = Math.min(estimatedCalories / calorieTarget, 1);
   const minuteProgress = Math.min(displayDuration / minuteTarget, 1);
   const intensityValue = calculateIntensity(workouts, moodCategory, displayDuration);
+  // Max heart rate for the session — real captured peak when available, else a
+  // plausible value from intensity. Replaces the old intensity score on the card.
+  const maxHr =
+    heartRateRealStats?.peak ??
+    (heartRateSamples && heartRateSamples.length >= 2
+      ? Math.max(...heartRateSamples)
+      : Math.round(120 + intensityValue * 70));
+  const maxHrProgress = Math.min(maxHr / 200, 1);
 
   const getDominantMoodCategory = (): string => {
     const categoryCounts: { [key: string]: number } = {};
@@ -387,7 +395,7 @@ export default function WorkoutStatsCard({
   const renderRings = (isTransparent: boolean = false) => {
     const calorieRing = getStrokeDasharray(calorieProgress, CALORIES_RING_RADIUS);
     const minuteRing = getStrokeDasharray(minuteProgress, MINUTES_RING_RADIUS);
-    const intensityRing = getStrokeDasharray(intensityValue, INTENSITY_RING_RADIUS);
+    const intensityRing = getStrokeDasharray(maxHrProgress, INTENSITY_RING_RADIUS);
     const trackColor = isTransparent ? COLORS.trackBgTransparent : COLORS.trackBg;
 
     return (
@@ -670,8 +678,8 @@ export default function WorkoutStatsCard({
           </View>
           <View style={styles.simpleStatDivider} />
           <View style={styles.simpleStatCell}>
-            <Text style={styles.simpleStatValue}>{Math.round(intensityValue * 100)}%</Text>
-            <Text style={styles.simpleStatLabel}>INTENSITY</Text>
+            <Text style={styles.simpleStatValue}>{maxHr}</Text>
+            <Text style={styles.simpleStatLabel}>MAX HR</Text>
           </View>
           <View style={styles.simpleStatDivider} />
           <View style={styles.simpleStatCell}>
@@ -821,8 +829,8 @@ export default function WorkoutStatsCard({
               </View>
               <View style={styles.transparentDataRow}>
                 <View style={[styles.transparentDataDot, { backgroundColor: COLORS.intensityStart }]} />
-                <Text style={styles.transparentDataValue}>{Math.round(intensityValue * 100)}%</Text>
-                <Text style={styles.transparentDataLabel}>intensity</Text>
+                <Text style={styles.transparentDataValue}>{maxHr}</Text>
+                <Text style={styles.transparentDataLabel}>max bpm</Text>
               </View>
             </View>
           </View>
@@ -939,8 +947,8 @@ export default function WorkoutStatsCard({
           </Animated.View>
           
           <View style={styles.intensityContainer}>
-            <Text style={styles.intensityValue}>{Math.round(intensityValue * 100)}%</Text>
-            <Text style={styles.intensityLabel}>intensity</Text>
+            <Text style={styles.intensityValue}>{maxHr}</Text>
+            <Text style={styles.intensityLabel}>max bpm</Text>
           </View>
         </View>
 
@@ -956,7 +964,7 @@ export default function WorkoutStatsCard({
           </View>
           <View style={styles.legendItem}>
             <View style={[styles.legendDot, { backgroundColor: COLORS.intensityStart }]} />
-            <Text style={styles.legendText}>Intensity</Text>
+            <Text style={styles.legendText}>Max HR</Text>
           </View>
         </View>
 

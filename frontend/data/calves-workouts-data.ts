@@ -149,7 +149,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Single‑Leg DB Calf Raise",
-                    "reps": "10–12",
+                    "reps": "10–12/leg",
                     "tutorialSlug": "calf_raise"
                   }
                 ],
@@ -950,7 +950,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Single‑Leg Press Calf Raise",
-                    "reps": "10–12",
+                    "reps": "10–12/leg",
                     "tutorialSlug": "calf_raise"
                   }
                 ],
@@ -1350,7 +1350,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Single‑Leg Calf Raise Machine",
-                    "reps": "10–12",
+                    "reps": "10–12/leg",
                     "tutorialSlug": "calf_raise"
                   }
                 ],

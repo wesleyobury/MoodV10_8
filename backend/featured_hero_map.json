@@ -1,8 +1,10 @@
 {
-  "https://customer-assets.emergentagent.com/job_4f45ac3b-1fbc-46b1-a10d-f29dd9934b1b/artifacts/1gg9hw4l_sweat%20engine%20builder.png": "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751406/mood_app/featured_heroes/sweat_engine_builder.png",
-  "https://customer-assets.emergentagent.com/job_4f45ac3b-1fbc-46b1-a10d-f29dd9934b1b/artifacts/zeyacn0v_outdoor%20park%20to%20peak2.png": "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751407/mood_app/featured_heroes/outdoor_park_to_peak.png",
-  "https://customer-assets.emergentagent.com/job_564800a5-3285-4d4c-9e5c-2555c39e42a1/artifacts/aye1zfgm_calisthenics%20bar%20to%20floor.png": "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751409/mood_app/featured_heroes/calisthenics_bar_to_floor.png",
-  "https://customer-assets.emergentagent.com/job_4f45ac3b-1fbc-46b1-a10d-f29dd9934b1b/artifacts/wydq0p69_mood%20mix%20air%20%26%20abs.png": "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751410/mood_app/featured_heroes/mood_mix_air_abs.png",
-  "https://customer-assets.emergentagent.com/job_4f45ac3b-1fbc-46b1-a10d-f29dd9934b1b/artifacts/oo82nr5t_build%20explosion%20triple%20threat.png": "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751411/mood_app/featured_heroes/build_explosion_triple_threat.png",
-  "https://customer-assets.emergentagent.com/job_4f45ac3b-1fbc-46b1-a10d-f29dd9934b1b/artifacts/vxbcwyg6_muscle%20gainer%20push%20day%20pump.png": "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751412/mood_app/featured_heroes/muscle_gainer_push_day_pump.png"
+  "Sweat - HIIT Circuit": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/sweat_hiit_circuit.jpg",
+  "Muscle Gainer - Back & Bis Volume": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/muscle_gainer_back_and_bis_volume.jpg",
+  "Sweat - Cardio Engine": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/sweat_cardio_engine.jpg",
+  "Muscle Gainer - Chest & Shoulders": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/muscle_gainer_chest_and_shoulders.jpg",
+  "Build Explosion - Power Complex": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/build_explosion_power_complex.jpg",
+  "Muscle Gainer - Glute Day": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/muscle_gainer_glute_day.jpg",
+  "Outdoor - Hill Repeats": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/outdoor_hill_repeats.jpg",
+  "Outdoor - Park Circuit": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/outdoor_park_circuit.jpg"
 }
