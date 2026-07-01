@@ -71,9 +71,15 @@ export default function UserStatsScreen() {
   );
 
   const fetchStats = async () => {
-    if (!token) return;
+    // Don't spin forever if the token isn't ready yet — the effect below
+    // re-runs once `token` populates.
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     try {
+      setLoading(true);
       const [activity, workout, social, userProfile] = await Promise.all([
         fetch(`${API_URL}/api/analytics/activity-summary?days=${selectedPeriod}`, {
           headers: { 'Authorization': `Bearer ${token}` }
@@ -105,7 +111,7 @@ export default function UserStatsScreen() {
 
   useEffect(() => {
     fetchStats();
-  }, [selectedPeriod]);
+  }, [selectedPeriod, token]);
 
   const onRefresh = () => {
     setRefreshing(true);
