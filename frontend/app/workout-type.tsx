@@ -178,8 +178,6 @@ export default function WorkoutTypeScreen() {
   };
 
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
-    setShowIntensityModal(false);
-    
     // Generate combined workout carts from cardio + light weights
     const { carts } = runTrackedGeneration(
       token,

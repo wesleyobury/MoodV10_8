@@ -196,7 +196,6 @@ export default function CalisthenicsEquipmentScreen() {
 
   // Handle intensity selection and generate workout
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
-    setShowIntensityModal(false);
     const { carts } = runTrackedGeneration(
       token,
       { mood: moodTitle, energy_level: intensity, equipment: workoutType },

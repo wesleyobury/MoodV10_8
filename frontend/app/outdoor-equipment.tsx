@@ -196,7 +196,6 @@ export default function OutdoorEquipmentScreen() {
 
   // Handle intensity selection and generate workout
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
-    setShowIntensityModal(false);
     const { carts } = runTrackedGeneration(
       token,
       { mood: moodTitle, energy_level: intensity, equipment: selectedEquipment.map(eq => eq.name).join(', ') },

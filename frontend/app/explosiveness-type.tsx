@@ -162,7 +162,6 @@ export default function ExplosivenessTypeScreen() {
   };
 
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
-    setShowIntensityModal(false);
     const { carts } = runTrackedGeneration(
       token,
       { mood: moodTitle, energy_level: intensity },

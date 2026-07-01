@@ -93,6 +93,7 @@ export function PaywallModal() {
   const { claimFounding } = useFoundingPurchase();
   const [plan, setPlan] = useState<Plan>('annual');
   const [foundingBusy, setFoundingBusy] = useState(false);
+  const [purchaseBusy, setPurchaseBusy] = useState(false);
   const visible = pendingTrigger !== null;
 
   // 1a — seconds_on_screen for paywall_dismissed.
@@ -213,26 +214,31 @@ export function PaywallModal() {
     try {
       const result = await storeKitPurchase(productID);
       if (result.status === 'success') {
-        // Server-side reconciliation: persists subscription, fires
-        // `subscription_purchased` with the original `trigger_source`
-        // pulled from the user record (set by `record-trigger` when this
-        // modal mounted).
-        let isTrial = false;
-        if (token) {
-          const validateRes = await validateSubscriptionTransaction(token, result);
-          isTrial = validateRes.data?.status === 'in_trial';
-          await refreshSubscriptionState();
+        setPurchaseBusy(true);
+        try {
+          // Server-side reconciliation: persists subscription, fires
+          // `subscription_purchased` with the original `trigger_source`
+          // pulled from the user record (set by `record-trigger` when this
+          // modal mounted).
+          let isTrial = false;
+          if (token) {
+            const validateRes = await validateSubscriptionTransaction(token, result);
+            isTrial = validateRes.data?.status === 'in_trial';
+            await refreshSubscriptionState();
+          }
+          Analytics.subscriptionPurchased(token, {
+            plan,
+            trigger_source: lastConversionTrigger ?? pendingTrigger ?? 'unknown',
+          });
+          Analytics.purchaseCompleted(token, { plan_id: result.productID, is_trial: isTrial });
+          clearConversionTrigger();
+          if (!token) {
+            setStatus('in_trial');
+          }
+          dismissPaywall();
+        } finally {
+          setPurchaseBusy(false);
         }
-        Analytics.subscriptionPurchased(token, {
-          plan,
-          trigger_source: lastConversionTrigger ?? pendingTrigger ?? 'unknown',
-        });
-        Analytics.purchaseCompleted(token, { plan_id: result.productID, is_trial: isTrial });
-        clearConversionTrigger();
-        if (!token) {
-          setStatus('in_trial');
-        }
-        dismissPaywall();
       } else if (result.status === 'cancelled') {
         // User dismissed Apple's sheet — leave the paywall up so they can
         // retry or close manually.
@@ -263,6 +269,7 @@ export function PaywallModal() {
     Analytics.subscriptionRestored(token, { source: 'paywall' });
     Analytics.restorePurchasesClicked(token, { source: 'paywall' });
     if (!isStoreKitAvailable()) return;
+    setPurchaseBusy(true);
     try {
       const entitlements = await storeKitRestore();
       if (entitlements.length > 0 && token) {
@@ -278,6 +285,8 @@ export function PaywallModal() {
       }
     } catch (err) {
       console.error('StoreKit restore failed', err);
+    } finally {
+      setPurchaseBusy(false);
     }
   };
 
@@ -327,11 +336,18 @@ export function PaywallModal() {
     >
       <View style={styles.overlay}>
         <View style={[styles.sheet, { paddingBottom: insets.bottom + 16 }]}>
+          {(purchaseBusy || foundingBusy) && (
+            <View style={styles.purchaseBusyOverlay}>
+              <ActivityIndicator size="large" color={COLORS.accent} />
+              <Text style={styles.purchaseBusyText}>Activating your subscription…</Text>
+            </View>
+          )}
           <TouchableOpacity
             style={styles.closeButton}
             onPress={() => handleDismiss('x_button')}
             testID="paywall-close"
             data-testid="paywall-close"
+            disabled={purchaseBusy || foundingBusy}
           >
             <Ionicons name="close" size={22} color={COLORS.textTertiary} />
           </TouchableOpacity>
@@ -547,6 +563,22 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 24,
     maxHeight: '92%',
+    overflow: 'hidden',
+  },
+  purchaseBusyOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.72)',
+    zIndex: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 14,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  purchaseBusyText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: COLORS.textPrimary,
   },
   closeButton: {
     position: 'absolute',

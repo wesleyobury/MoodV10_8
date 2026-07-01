@@ -158,8 +158,6 @@ export default function BodyPartsScreen() {
 
   // Handle intensity selection and generate workout
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
-    setShowIntensityModal(false);
-
     // Get selected muscle group names
     const selectedMuscleNames = getSelectedMuscleGroupNames();
 

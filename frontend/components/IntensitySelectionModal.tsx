@@ -5,7 +5,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Animated,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
@@ -48,7 +48,7 @@ const intensityOptions: IntensityOption[] = [
 interface IntensitySelectionModalProps {
   visible: boolean;
   onClose: () => void;
-  onSelectIntensity: (intensity: IntensityLevel) => void;
+  onSelectIntensity: (intensity: IntensityLevel) => void | Promise<void>;
   moodTitle?: string;
   remainingUses?: number;
 }
@@ -61,19 +61,35 @@ export default function IntensitySelectionModal({
   remainingUses = 3,
 }: IntensitySelectionModalProps) {
   const [selectedIntensity, setSelectedIntensity] = useState<IntensityLevel | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleSelect = (intensity: IntensityLevel) => {
+    if (isGenerating) return;
     setSelectedIntensity(intensity);
   };
 
-  const handleConfirm = () => {
-    if (selectedIntensity) {
-      onSelectIntensity(selectedIntensity);
-      setSelectedIntensity(null);
+  const handleConfirm = async () => {
+    if (!selectedIntensity || isGenerating) return;
+
+    const result = onSelectIntensity(selectedIntensity);
+    if (result && typeof (result as Promise<void>).then === 'function') {
+      setIsGenerating(true);
+      try {
+        await result;
+        setSelectedIntensity(null);
+        onClose();
+      } finally {
+        setIsGenerating(false);
+      }
+      return;
     }
+
+    setSelectedIntensity(null);
+    onClose();
   };
 
   const handleClose = () => {
+    if (isGenerating) return;
     setSelectedIntensity(null);
     onClose();
   };
@@ -87,6 +103,12 @@ export default function IntensitySelectionModal({
     >
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
+          {isGenerating && (
+            <View style={styles.generatingOverlay}>
+              <ActivityIndicator size="large" color="#FFD700" />
+              <Text style={styles.generatingText}>Building your workouts…</Text>
+            </View>
+          )}
           {/* Header */}
           <View style={styles.header}>
             <View style={styles.headerIcon}>
@@ -147,34 +169,41 @@ export default function IntensitySelectionModal({
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={handleClose}
+              disabled={isGenerating}
             >
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
                 styles.confirmButton,
-                !selectedIntensity && styles.confirmButtonDisabled,
+                (!selectedIntensity || isGenerating) && styles.confirmButtonDisabled,
               ]}
               onPress={handleConfirm}
-              disabled={!selectedIntensity}
+              disabled={!selectedIntensity || isGenerating}
             >
               <LinearGradient
-                colors={selectedIntensity ? ['#FFD700', '#FFA500'] : ['#333', '#222']}
+                colors={selectedIntensity && !isGenerating ? ['#FFD700', '#FFA500'] : ['#333', '#222']}
                 style={styles.confirmGradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
               >
-                <Text style={[
-                  styles.confirmText,
-                  !selectedIntensity && styles.confirmTextDisabled,
-                ]}>
-                  Generate Workouts
-                </Text>
-                <Ionicons
-                  name="arrow-forward"
-                  size={18}
-                  color={selectedIntensity ? '#000' : '#666'}
-                />
+                {isGenerating ? (
+                  <ActivityIndicator size="small" color="#000" />
+                ) : (
+                  <>
+                    <Text style={[
+                      styles.confirmText,
+                      !selectedIntensity && styles.confirmTextDisabled,
+                    ]}>
+                      Generate Workouts
+                    </Text>
+                    <Ionicons
+                      name="arrow-forward"
+                      size={18}
+                      color={selectedIntensity ? '#000' : '#666'}
+                    />
+                  </>
+                )}
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -200,6 +229,21 @@ const styles = StyleSheet.create({
     padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(255, 215, 0, 0.2)',
+    overflow: 'hidden',
+  },
+  generatingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.72)',
+    zIndex: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    gap: 14,
+  },
+  generatingText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#fff',
   },
   header: {
     alignItems: 'center',
