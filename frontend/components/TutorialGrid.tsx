@@ -10,12 +10,27 @@ interface TutorialGridProps {
   movements: { name: string }[];
   single: boolean;
   onOpen: (ex: Exercise) => void;
+  workoutTitle?: string;
+  equipment?: string;
 }
 
+// Words that don't identify the exercise (stripped so we key off real nouns).
+const STOP = new Set([
+  'the', 'and', 'with', 'a', 'to', 'x', 'per', 'each', 'rep', 'reps', 'set', 'sets', 'of', 'for', 'your', 'or',
+  'high', 'low', 'mid', 'tempo', 'control', 'controlled', 'slow', 'fast', 'paused', 'pause', 'eccentric',
+  'isometric', 'iso', 'hold', 'holds', 'strict', 'standing', 'seated', 'alternating', 'machine', 'weighted',
+  'light', 'heavy', 'burnout', 'drop', 'final', 'single', 'arm', 'side', 'leg', 'legs', 'partial', 'deep',
+  'assisted', 'explosive', 'bodyweight', 'max', 'min', 'sec', 'second', 'seconds', 'rounds', 'round',
+]);
+
+const tokens = (s: string): string[] =>
+  (s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(/\s+/).filter(Boolean);
+const nouns = (s: string): string[] => tokens(s).filter(t => t.length >= 3 && !STOP.has(t));
+
 async function searchExercises(q: string, limit: number): Promise<Exercise[]> {
-  if (!q || !q.trim()) return [];
+  if (!q || q.trim().length < 3) return [];
   try {
-    const res = await fetch(`${API_URL}/api/exercises/search?q=${encodeURIComponent(q)}&limit=${limit}`);
+    const res = await fetch(`${API_URL}/api/exercises/search?q=${encodeURIComponent(q.trim())}&limit=${limit}`);
     if (!res.ok) return [];
     const data = await res.json();
     return (data.exercises || []) as Exercise[];
@@ -24,40 +39,47 @@ async function searchExercises(q: string, limit: number): Promise<Exercise[]> {
   }
 }
 
-// Live tutorial suggestions from the exercise library API — sources the true,
-// current library (not a stale seed), so we surface a demo whenever one exists.
-export default function TutorialGrid({ movements, single, onOpen }: TutorialGridProps) {
+// Live tutorial suggestions: gather a candidate pool from the words across the
+// workout title + movement(s) + equipment, then show the 4 with the most name
+// overlap. Backend search is word-boundary, so single-word queries recall well.
+export default function TutorialGrid({ movements, single, onOpen, workoutTitle, equipment }: TutorialGridProps) {
   const [items, setItems] = useState<Exercise[] | null>(null);
-  const namesKey = movements.map(m => m.name).join('|');
+  const key = movements.map(m => m.name).join('|') + '::' + (workoutTitle || '') + '::' + (equipment || '');
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const seen = new Set<string>();
-      const out: Exercise[] = [];
-      const add = (ex?: Exercise) => {
-        if (ex && ex._id && !seen.has(ex._id) && out.length < 4) { seen.add(ex._id); out.push(ex); }
-      };
-      if (single && movements[0]) {
-        (await searchExercises(movements[0].name, 6)).forEach(add);
-      } else {
-        // best demo per movement first
-        for (const mv of movements.slice(0, 4)) {
-          const r = await searchExercises(mv.name, 2);
-          add(r[0]);
-        }
-        // pad so there are always at least two options when the library has them
-        if (out.length < 2) {
-          for (const mv of movements) {
-            (await searchExercises(mv.name, 4)).forEach(add);
-            if (out.length >= 4) break;
-          }
-        }
-      }
-      if (!cancelled) setItems(out);
+      // fields we rank overlap against — movement nouns weighted highest
+      const moveTokens = new Set(movements.flatMap(m => nouns(m.name)));
+      const fieldTokens = new Set<string>([
+        ...moveTokens,
+        ...nouns(workoutTitle || ''),
+        ...nouns(equipment || ''),
+      ]);
+
+      // candidate pool: query each field word (recall) + the full movement names
+      const terms = [
+        ...movements.map(m => m.name),
+        ...[...fieldTokens],
+        workoutTitle,
+      ].map(t => (t || '').trim().toLowerCase()).filter((t, i, a) => t.length >= 3 && a.indexOf(t) === i);
+
+      const lists = await Promise.all(terms.slice(0, 8).map(t => searchExercises(t, 8)));
+      const pool = new Map<string, Exercise>();
+      for (const list of lists) for (const ex of list) if (ex && ex._id && !pool.has(ex._id)) pool.set(ex._id, ex);
+
+      // rank by naming overlap across all fields (movement matches weighted 2x)
+      const scored = [...pool.values()].map((ex) => {
+        const exTokens = new Set([...nouns(ex.name), ...((ex.aliases || []).flatMap(nouns))]);
+        let score = 0;
+        exTokens.forEach((t) => { if (moveTokens.has(t)) score += 2; else if (fieldTokens.has(t)) score += 1; });
+        return { ex, score };
+      }).filter(x => x.score > 0).sort((a, b) => b.score - a.score);
+
+      if (!cancelled) setItems(scored.slice(0, 4).map(x => x.ex));
     })();
     return () => { cancelled = true; };
-  }, [namesKey, single]);
+  }, [key, single]);
 
   if (items === null) {
     return (

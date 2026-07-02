@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import * as Haptics from 'expo-haptics';
 import {
   View,
   Text,
@@ -278,6 +279,14 @@ export default function WorkoutGuidanceScreen() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  // Set tracker shown in the timer card — one checkable slot per prescribed
+  // set. Screen-local; resets naturally when the next exercise page mounts.
+  const [setsDone, setSetsDone] = useState(0);
+  const celebrateAnim = useRef(new Animated.Value(0)).current;
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+  }, []);
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [exerciseLookupVisible, setExerciseLookupVisible] = useState(false);
@@ -391,6 +400,57 @@ export default function WorkoutGuidanceScreen() {
     setPausedTime(0);
     setIsRunning(false);
     setIsPaused(false);
+  };
+
+  // Prescribed set count for this exercise, derived from the battle plan
+  // (rounds for circuits, "N ×" for strength work). Falls back to 3.
+  const totalSets = useMemo(() => {
+    try {
+      const plan = parseBattlePlan(battlePlan || description || '', workoutName);
+      const block = plan.blocks[0];
+      const moveSets = Math.max(0, ...block.movements.map((mv) => mv.sets ?? 0));
+      const total = block.rounds ?? (moveSets || 3);
+      return Math.max(1, Math.min(total, 6));
+    } catch {
+      return 3;
+    }
+  }, [battlePlan, description, workoutName]);
+
+  // Check off / undo a set. Checking a set restarts the rest count (fresh
+  // interval after the set); checking the LAST set fires a little celebration
+  // and, in session mode, auto-advances to the next exercise.
+  const handleToggleSet = (i: number) => {
+    if (i === setsDone && setsDone < totalSets) {
+      const next = setsDone + 1;
+      setSetsDone(next);
+      if (next < totalSets) {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+        if (isRunning && !isPaused) {
+          setStartTimestamp(Date.now());
+          setPausedTime(0);
+          setElapsedTime(0);
+        }
+      } else {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+        celebrateAnim.setValue(0);
+        Animated.spring(celebrateAnim, { toValue: 1, friction: 5, tension: 120, useNativeDriver: true }).start();
+        showToast(isSession ? 'All sets crushed — up next' : 'All sets crushed');
+        if (isSession) {
+          advanceTimerRef.current = setTimeout(() => {
+            advanceTimerRef.current = null;
+            handleCompletedWorkout();
+          }, 1500);
+        }
+      }
+    } else if (i === setsDone - 1) {
+      // Undo the most recent set (mis-tap) — also cancels a pending advance.
+      setSetsDone(setsDone - 1);
+      celebrateAnim.setValue(0);
+      if (advanceTimerRef.current) {
+        clearTimeout(advanceTimerRef.current);
+        advanceTimerRef.current = null;
+      }
+    }
   };
   
   const saveWorkoutCard = async (workouts: any[], totalDuration: number, completedAt: string) => {
@@ -954,6 +1014,65 @@ export default function WorkoutGuidanceScreen() {
             <Text style={styles.tLabel}>REST TIMER</Text>
             <Text style={styles.tTime}>{formatTime(elapsedTime)}</Text>
           </View>
+
+          {/* Set tracker — check sets off; finishing the last one celebrates
+              and (in session mode) auto-advances to the next exercise */}
+          <View style={styles.tSets}>
+            <Text style={styles.tLabel}>
+              SETS {setsDone}/{totalSets}
+            </Text>
+            <View style={styles.tSetsRow}>
+              {Array.from({ length: totalSets }).map((_, i) => {
+                const done = i < setsDone;
+                return (
+                  <TouchableOpacity
+                    key={i}
+                    style={[styles.tSetDot, done && styles.tSetDotDone]}
+                    onPress={() => handleToggleSet(i)}
+                    activeOpacity={0.8}
+                    hitSlop={{ top: 10, bottom: 10, left: 3, right: 3 }}
+                    testID={`set-dot-${i}`}
+                  >
+                    {done ? <Ionicons name="checkmark" size={12} color="#0c0c0c" /> : null}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            <Animated.View
+              pointerEvents="none"
+              style={[
+                styles.tCheersWrap,
+                {
+                  opacity: celebrateAnim,
+                  transform: [
+                    {
+                      scale: celebrateAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0.3, 1],
+                      }),
+                    },
+                    {
+                      translateY: celebrateAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [6, -2],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              <LinearGradient
+                colors={['#FFD700', '#FFA500']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.tCheersPill}
+              >
+                <Ionicons name="flash" size={9} color="#0c0c0c" />
+                <Text style={styles.tCheersText}>COMPLETE</Text>
+              </LinearGradient>
+            </Animated.View>
+          </View>
+
           <View style={styles.tCtrls}>
             <TouchableOpacity style={styles.tReset} onPress={handleResetTimer} activeOpacity={0.8}>
               <Ionicons name="refresh" size={18} color="#9a9aa2" />
@@ -1025,7 +1144,9 @@ export default function WorkoutGuidanceScreen() {
                       const block = plan.blocks[0] || ({} as any);
                       const rest = restShort(mv.rest || block.rest);
                       const stats: [string, string][] = [];
-                      if (mv.sets != null) stats.push(['SETS', String(mv.sets)]);
+                      // Always surface SETS — falls back to the block's rounds /
+                      // derived count (mirrors the timer-card set tracker).
+                      stats.push(['SETS', String(mv.sets ?? totalSets)]);
                       if (mv.reps) stats.push(['REPS', mv.reps]);
                       if (mv.duration) stats.push(['TIME', mv.duration]);
                       if (rest) stats.push(['REST', rest]);
@@ -1083,7 +1204,7 @@ export default function WorkoutGuidanceScreen() {
                     )}
 
                     {/* ── Section 2: tutorials (live from the exercise library) ── */}
-                    <TutorialGrid movements={movements} single={isSingle} onOpen={openExercise} />
+                    <TutorialGrid movements={movements} single={isSingle} onOpen={openExercise} workoutTitle={workoutName} equipment={equipment} />
 
                     {/* ── Section 3: manual search ── */}
                     <ExerciseLookupTrigger onPress={openSearch} />
@@ -1699,6 +1820,27 @@ const styles = StyleSheet.create({
   tLabel: { fontSize: 9, letterSpacing: 1.3, color: '#7a7a82', fontWeight: '600' },
   tTime: { fontSize: 22, fontWeight: '500', color: '#f4f4f5', fontVariant: ['tabular-nums'], marginTop: 1 },
   tCtrls: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  tSets: { alignItems: 'center' },
+  tSetsRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 5 },
+  tSetDot: {
+    width: 21, height: 21, borderRadius: 10.5,
+    borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.22)',
+    backgroundColor: '#1c1c21',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  tSetDotDone: { backgroundColor: '#FFD700', borderColor: '#FFD700' },
+  tCheersWrap: {
+    position: 'absolute', top: -24, alignSelf: 'center', borderRadius: 9,
+    shadowColor: '#FFD700', shadowOpacity: 0.55, shadowRadius: 10,
+    shadowOffset: { width: 0, height: 0 }, elevation: 6,
+  },
+  tCheersPill: {
+    flexDirection: 'row', alignItems: 'center', gap: 3,
+    paddingHorizontal: 8, paddingVertical: 3.5, borderRadius: 9,
+  },
+  tCheersText: {
+    fontSize: 8.5, fontWeight: '800', letterSpacing: 1.4, color: '#0c0c0c',
+  },
   tReset: {
     width: 38, height: 38, borderRadius: 19, backgroundColor: '#1c1c21',
     alignItems: 'center', justifyContent: 'center',
