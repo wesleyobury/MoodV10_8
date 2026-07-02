@@ -229,8 +229,26 @@ const MUSCLE_GROUP_NAMES = new Set([
   'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Abs',
   'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Legs',
 ]);
+const LEG_SUB_LABELS = new Set([
+  'Compound', 'Glutes', 'Hammies', 'Hamstrings', 'Quads', 'Calfs', 'Calves',
+]);
+
+/** Leg sub-group ("Quads", "Hammies", …) when workoutType carries one
+ *  (e.g. "Muscle Building - Legs - Quads"). */
+function getLegSubLabel(item: WorkoutItem): string | null {
+  if (!item?.workoutType) return null;
+  const parts = item.workoutType.split(' - ').map((p) => p.trim());
+  const legIdx = parts.findIndex((p) => p.toLowerCase() === 'legs');
+  if (legIdx !== -1 && parts.length > legIdx + 1 && LEG_SUB_LABELS.has(parts[legIdx + 1])) {
+    return parts[legIdx + 1];
+  }
+  return null;
+}
+
 function getMuscleGainerGroup(item: WorkoutItem): string | null {
   if (!item?.workoutType) return null;
+  // Legs render one parent LEGS divider; the sub-group renders separately.
+  if (getLegSubLabel(item)) return 'Legs';
   if (item.workoutType.startsWith('Muscle Building')) {
     const parts = item.workoutType.split(' - ');
     return parts.length > 1 ? parts[parts.length - 1].trim() : null;
@@ -245,6 +263,14 @@ const MuscleGroupDivider: React.FC<{ muscle: string }> = ({ muscle }) => (
     <View style={styles.muscleDividerLine} />
     <Text style={styles.muscleDividerLabel}>{muscle.toUpperCase()}</Text>
     <View style={styles.muscleDividerLine} />
+  </View>
+);
+
+// Smaller left-aligned sub-divider used inside the LEGS block (calves, hams…).
+const LegSubDivider: React.FC<{ label: string }> = ({ label }) => (
+  <View style={styles.legSubDivider} testID={`legsub-divider-${label.toLowerCase()}`}>
+    <Text style={styles.legSubDividerLabel}>{label.toUpperCase()}</Text>
+    <View style={styles.legSubDividerLine} />
   </View>
 );
 
@@ -448,9 +474,13 @@ export default function GeneratedWorkoutView({
             const muscle = getMuscleGainerGroup(workout);
             const prevMuscle = index > 0 ? getMuscleGainerGroup(currentCart.workouts[index - 1]) : null;
             const showDivider = muscle && muscle !== prevMuscle;
+            const legSub = getLegSubLabel(workout);
+            const prevLegSub = index > 0 ? getLegSubLabel(currentCart.workouts[index - 1]) : null;
+            const showLegSubDivider = legSub && (showDivider || legSub !== prevLegSub);
             return (
               <React.Fragment key={workout.id}>
                 {showDivider && <MuscleGroupDivider muscle={muscle!} />}
+                {showLegSubDivider && <LegSubDivider label={legSub!} />}
                 <ExerciseCard
                   item={workout}
                   index={index}
@@ -746,6 +776,25 @@ const styles = StyleSheet.create({
     flex: 1,
     height: StyleSheet.hairlineWidth,
     backgroundColor: 'rgba(255, 255, 255, 0.18)',
+  },
+  legSubDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 4,
+    marginTop: 6,
+    marginBottom: 6,
+  },
+  legSubDividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.10)',
+  },
+  legSubDividerLabel: {
+    fontSize: 9.5,
+    fontWeight: '700',
+    color: 'rgba(255, 255, 255, 0.38)',
+    letterSpacing: 1.2,
   },
   muscleDividerLabel: {
     fontSize: 11,

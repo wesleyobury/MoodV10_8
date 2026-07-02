@@ -16,6 +16,7 @@ const BARRIERS: { id: BiggestBarrier; label: string; description: string }[] = [
   { id: 'energy', label: 'Energy', description: "I'm wiped out by the time I get to it." },
   { id: 'motivation', label: 'Motivation', description: "I struggle to start." },
   { id: 'unsure', label: "Don't know what to do", description: "I freeze on the plan." },
+  { id: 'bored', label: 'Bored', description: 'Just need a routine switchup.' },
 ];
 
 const BARRIER_REACTIONS: Record<BiggestBarrier, string> = {
@@ -23,6 +24,7 @@ const BARRIER_REACTIONS: Record<BiggestBarrier, string> = {
   energy: "We'll read your recovery and ease off when you're spent.",
   motivation: 'One tap to a workout — no staring at a blank plan.',
   unsure: "You'll never wonder what to do — we pick, you press play.",
+  bored: 'Say less — no two sessions will feel the same.',
 };
 
 export default function Step5Barrier() {

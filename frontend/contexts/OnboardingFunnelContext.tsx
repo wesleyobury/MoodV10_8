@@ -30,13 +30,14 @@ export type PrimaryGoal =
   | 'feel_better'
   | 'build_strength'
   | 'improve_physique'
+  | 'improve_athleticism'
   | 'lose_weight'
   | 'stress_relief'
   | 'consistency';
 
 export type FitnessLevel = 'sedentary' | 'casual' | 'active' | 'athletic';
 
-export type BiggestBarrier = 'time' | 'energy' | 'motivation' | 'unsure';
+export type BiggestBarrier = 'time' | 'energy' | 'motivation' | 'unsure' | 'bored';
 
 export type WorkoutLength = 20 | 30 | 45 | 60 | 90;
 
@@ -269,6 +270,7 @@ export const GOAL_LABELS: Record<PrimaryGoal, string> = {
   feel_better: 'Feel better day to day',
   build_strength: 'Build strength / muscle',
   improve_physique: 'Improve physique',
+  improve_athleticism: 'Improve athleticism',
   lose_weight: 'Lose weight',
   stress_relief: 'Relieve stress',
   consistency: 'Just stay consistent',

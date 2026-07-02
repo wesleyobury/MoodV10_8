@@ -75,6 +75,7 @@ const GOAL_BLURB_WORD: Record<PrimaryGoal, string> = {
   feel_better: 'feel-better',
   build_strength: 'strength',
   improve_physique: 'physique',
+  improve_athleticism: 'athleticism',
   lose_weight: 'weight-loss',
   stress_relief: 'stress-relief',
   consistency: 'consistency',
@@ -129,7 +130,7 @@ export default function RevealPayoff() {
   const levelWord = answers.fitnessLevel
     ? LEVEL_LABELS[answers.fitnessLevel].toLowerCase()
     : 'current';
-  const blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} level, we've curated a library of workouts designed specifically for your preferences.`;
+  const blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} level, we've curated a library of workouts designed specifically for your preferences. Subscribe now to gain unlimited access.`;
 
   const isFoundingEligible =
     !!entitlement?.is_founding_member &&
@@ -538,8 +539,8 @@ const styles = StyleSheet.create({
   cCornerBL: { bottom: 10, left: 10, borderBottomWidth: 1.5, borderLeftWidth: 1.5, borderBottomLeftRadius: 4 },
   cCornerBR: { bottom: 10, right: 10, borderBottomWidth: 1.5, borderRightWidth: 1.5, borderBottomRightRadius: 4 },
   cIncWrap: { position: 'absolute', top: 12, left: 0, right: 0, alignItems: 'center' },
-  cIncPill: { backgroundColor: 'rgba(244,195,22,0.12)', borderWidth: 1, borderColor: 'rgba(244,195,22,0.4)', borderRadius: 10, paddingHorizontal: 9, paddingVertical: 2 },
-  cIncText: { fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: COLORS.accent },
+  cIncPill: { backgroundColor: 'rgba(255,255,255,0.10)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.35)', borderRadius: 10, paddingHorizontal: 9, paddingVertical: 2 },
+  cIncText: { fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: 'rgba(255,255,255,0.92)' },
   dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 8 },
   dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.2)' },
   dotActive: { width: 18, backgroundColor: COLORS.accent },

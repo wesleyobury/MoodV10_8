@@ -334,7 +334,7 @@ export function PaywallModal() {
       onRequestClose={() => handleDismiss('back_swipe')}
     >
       <View style={styles.overlay}>
-        <View style={[styles.sheet, { paddingBottom: insets.bottom + 16 }]}>
+        <View style={[styles.sheet, { paddingBottom: insets.bottom }]}>
           <TouchableOpacity
             style={styles.closeButton}
             onPress={() => handleDismiss('x_button')}
@@ -592,24 +592,24 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   scroll: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingTop: 4,
+    paddingBottom: 4,
   },
   footer: {
-    paddingTop: 8,
+    paddingTop: 6,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: 'rgba(255,255,255,0.06)',
   },
   header: {
     alignItems: 'center',
-    marginBottom: 14,
+    marginBottom: 8,
   },
   iconRing: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     overflow: 'hidden',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   iconRingGradient: {
     flex: 1,
@@ -639,13 +639,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   bullets: {
-    marginBottom: 14,
+    marginBottom: 4,
     paddingHorizontal: 4,
   },
   bulletRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 9,
+    marginBottom: 8,
   },
   bulletDot: {
     width: 5,
@@ -655,7 +655,10 @@ const styles = StyleSheet.create({
     marginRight: 14,
   },
   bulletText: {
+    // flex so long lines wrap instead of clipping off the right edge.
+    flex: 1,
     fontSize: 14,
+    lineHeight: 19,
     color: COLORS.textPrimary,
     fontWeight: '500',
   },
@@ -805,7 +808,7 @@ const styles = StyleSheet.create({
   orDivider: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
+    paddingVertical: 8,
   },
   orText: {
     fontSize: 12,
@@ -817,7 +820,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 48,
-    marginBottom: 10,
+    marginBottom: 6,
   },
   trialBtnLabel: {
     fontSize: 15,
@@ -829,20 +832,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.textTertiary,
     textAlign: 'center',
-    marginBottom: 18,
+    marginBottom: 10,
   },
   disclosure: {
     fontSize: 10,
     lineHeight: 15,
     color: COLORS.textTertiary,
-    marginBottom: 16,
+    marginBottom: 10,
   },
   linkRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    marginBottom: 6,
+    marginBottom: 2,
   },
   linkDivider: {
     color: COLORS.textTertiary,
@@ -854,7 +857,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   manageRow: {
-    paddingVertical: 10,
+    paddingTop: 4,
+    paddingBottom: 2,
     alignItems: 'center',
   },
   manageText: {

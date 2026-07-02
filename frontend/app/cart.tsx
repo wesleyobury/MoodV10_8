@@ -35,9 +35,13 @@ import { resolveCartHeroImage, isFeaturedHeroBroken } from '../utils/cartHero';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 import { API_URL } from '../utils/apiConfig';
 
-// Shared icon per muscle-gainer cart flavor (used by the badge + flavor dropdown).
-type CartFlavorIcon = 'barbell' | 'fitness' | 'flame' | 'construct' | 'body' | 'flash' | 'hourglass';
+// Shared icon per cart flavor — muscle-gainer flavors + sweat formats.
+// (used by the badge + flavor dropdown).
+type CartFlavorIcon =
+  | 'barbell' | 'fitness' | 'flame' | 'construct' | 'body' | 'flash' | 'hourglass'
+  | 'walk' | 'trending-up' | 'trending-down' | 'repeat' | 'pulse' | 'bicycle';
 const CART_FLAVOR_ICONS: Record<string, CartFlavorIcon> = {
+  // muscle-gainer flavors
   strength: 'barbell',
   hypertrophy: 'fitness',
   pump: 'flame',
@@ -46,6 +50,21 @@ const CART_FLAVOR_ICONS: Record<string, CartFlavorIcon> = {
   athletic_day: 'body',
   express: 'flash',
   eccentric_focus: 'hourglass',
+  // sweat flavors
+  cardio_only: 'bicycle',
+  weights_only: 'barbell',
+  steady_burn: 'walk',
+  intervals: 'flash',
+  cardio_ladder: 'trending-up',
+  burnout_cardio: 'trending-down',
+  machine_tour: 'repeat',
+  strength_circuit: 'barbell',
+  power_ladder: 'trending-up',
+  giant_set: 'barbell',
+  conditioning: 'fitness',
+  metcon: 'flame',
+  sprint_finisher: 'flash',
+  pyramid: 'pulse',
 };
 
 // Dynamic workout title pools by intensity category
@@ -156,9 +175,39 @@ const BODYWEIGHT_EQUIPMENT = new Set([
   'Bodyweight', 'No Equipment', 'Pull-up Bar', 'Parallel Bars', 'Bar',
 ]);
 
-function getCartSubPathLabel(item: WorkoutItem): string | null {
+// Leg sub-group labels — both the generator's canonical names and the manual
+// legs path's names (Hammies / Calfs) are recognized.
+const LEG_SUB_LABELS = new Set([
+  'Compound', 'Glutes', 'Hammies', 'Hamstrings', 'Quads', 'Calfs', 'Calves',
+]);
+
+/** Leg sub-group ("Quads", "Hammies", …) when the item's workoutType carries
+ *  one (e.g. "Muscle Building - Legs - Quads" or "Legs - Glutes"). */
+function getCartLegSubLabel(item: WorkoutItem): string | null {
   const wt = (item?.workoutType || '').trim();
   if (!wt) return null;
+  const parts = wt.split(' - ').map((p) => p.trim());
+  const legIdx = parts.findIndex((p) => p.toLowerCase() === 'legs');
+  if (legIdx !== -1 && parts.length > legIdx + 1 && LEG_SUB_LABELS.has(parts[legIdx + 1])) {
+    return parts[legIdx + 1];
+  }
+  return null;
+}
+
+function getCartSubPathLabel(item: WorkoutItem): string | null {
+  // Sweat / conditioning exercises carry a cardio|resistance modality tag
+  // (muscle-gainer and other paths do not) → split the cart into CARDIO and
+  // WEIGHTS sections with dividers.
+  const sweatMod = (item as any)?.modality;
+  if (sweatMod === 'cardio') return 'Cardio';
+  if (sweatMod === 'resistance') return 'Weights';
+
+  const wt = (item?.workoutType || '').trim();
+  if (!wt) return null;
+
+  // Legs render one parent LEGS divider; the sub-group (quads, hams, calves…)
+  // renders as a smaller sub-divider inside the block.
+  if (getCartLegSubLabel(item)) return 'Legs';
 
   const wtLower = wt.toLowerCase();
 
@@ -225,6 +274,14 @@ const MuscleGroupDivider: React.FC<{ label: string }> = ({ label }) => (
     <View style={styles.muscleDividerLine} />
     <Text style={styles.muscleDividerLabel}>{label.toUpperCase()}</Text>
     <View style={styles.muscleDividerLine} />
+  </View>
+);
+
+// Smaller left-aligned sub-divider used inside the LEGS block (calves, hams…).
+const LegSubDivider: React.FC<{ label: string }> = ({ label }) => (
+  <View style={styles.legSubDivider} testID={`cart-legsub-divider-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
+    <Text style={styles.legSubDividerLabel}>{label.toUpperCase()}</Text>
+    <View style={styles.legSubDividerLine} />
   </View>
 );
 
@@ -1163,9 +1220,13 @@ export default function CartScreen() {
             const subPath = getCartSubPathLabel(item);
             const prevSubPath = index > 0 ? getCartSubPathLabel(cartItems[index - 1]) : null;
             const showDivider = subPath && subPath !== prevSubPath;
+            const legSub = getCartLegSubLabel(item);
+            const prevLegSub = index > 0 ? getCartLegSubLabel(cartItems[index - 1]) : null;
+            const showLegSubDivider = legSub && (showDivider || legSub !== prevLegSub);
             return (
               <React.Fragment key={item.id}>
                 {showDivider && <MuscleGroupDivider label={subPath!} />}
+                {showLegSubDivider && <LegSubDivider label={legSub!} />}
                 <CartItemComponent
                   item={item}
                   index={index}
@@ -1664,6 +1725,25 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'rgba(255, 255, 255, 0.55)',
     letterSpacing: 1.4,
+  },
+  legSubDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 4,
+    marginTop: 6,
+    marginBottom: 6,
+  },
+  legSubDividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.10)',
+  },
+  legSubDividerLabel: {
+    fontSize: 9.5,
+    fontWeight: '700',
+    color: 'rgba(255, 255, 255, 0.38)',
+    letterSpacing: 1.2,
   },
   exerciseActions: {
     flexDirection: 'row',

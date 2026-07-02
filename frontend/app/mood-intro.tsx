@@ -16,6 +16,7 @@ import BackButton from '../components/BackButton';
 import { BRAND_GRADIENT, COLORS } from '../constants/brand';
 import { markMoodIntroSeen, readFunnelMoodId, routeForMood } from '../utils/moodRoute';
 import { moodIntroCopy } from '../utils/moodConfig';
+import { useOnboardingFunnel } from '../contexts/OnboardingFunnelContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
 import { clearWorkoutHandoffPending } from '../utils/onboardingFunnelDefer';
@@ -39,6 +40,11 @@ export default function MoodIntro() {
   // no params, so we fall back to the funnel-picked mood.
   const params = useLocalSearchParams<{ moodId?: string; mood?: string }>();
   const moodTitleParam = typeof params.mood === 'string' ? params.mood : undefined;
+  // In-memory funnel answers — survive the whole onboarding session and don't
+  // depend on AsyncStorage hydration timing, so they're the most reliable
+  // fallback when no explicit moodId param was passed.
+  const { answers: funnelAnswers } = useOnboardingFunnel();
+  const funnelMoodInMemory = funnelAnswers.mood ?? null;
   const [moodId, setMoodId] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
@@ -46,10 +52,14 @@ export default function MoodIntro() {
       setMoodId(params.moodId);
       return;
     }
+    if (funnelMoodInMemory) {
+      setMoodId(funnelMoodInMemory);
+      return;
+    }
     readFunnelMoodId(user?.id)
-      .then(setMoodId)
-      .catch(() => setMoodId(null));
-  }, [params.moodId, user?.id]);
+      .then((persisted) => setMoodId(persisted ?? funnelMoodInMemory))
+      .catch(() => setMoodId(funnelMoodInMemory));
+  }, [params.moodId, funnelMoodInMemory, user?.id]);
 
   useEffect(() => {
     if (moodId !== undefined) {
@@ -64,7 +74,17 @@ export default function MoodIntro() {
   const handleContinue = async () => {
     Analytics.moodIntroCtaTapped(token, { mood: moodId ?? 'unknown' });
     if (user?.id) await clearWorkoutHandoffPending(user.id);
-    const route = routeForMood(moodId, moodTitleParam);
+    // Resolve the mood again at press time — covers the race where the
+    // persisted read hadn't finished (or failed) when the screen mounted.
+    let resolvedMoodId = moodId ?? funnelMoodInMemory;
+    if (!resolvedMoodId) {
+      try {
+        resolvedMoodId = await readFunnelMoodId(user?.id);
+      } catch {
+        resolvedMoodId = null;
+      }
+    }
+    const route = routeForMood(resolvedMoodId, moodTitleParam);
     if (route) {
       router.replace({ pathname: route.pathname as any, params: route.params });
     } else {

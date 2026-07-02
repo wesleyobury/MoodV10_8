@@ -64,12 +64,12 @@ function computeProfile(answers: FunnelAnswers): number[] {
     length: answers.workoutLength ?? 30,
   };
   const mood: Record<string, number> = { sweat: 0.85, muscle: 0.65, explosive: 0.95, lazy: 0.25, calisthenics: 0.6, outdoor: 0.55 };
-  const goalStr: Record<string, number> = { build_strength: 0.95, improve_physique: 0.8, lose_weight: 0.4, feel_better: 0.4, stress_relief: 0.3, consistency: 0.45 };
+  const goalStr: Record<string, number> = { build_strength: 0.95, improve_physique: 0.8, improve_athleticism: 0.75, lose_weight: 0.4, feel_better: 0.4, stress_relief: 0.3, consistency: 0.45 };
   const level: Record<string, number> = { sedentary: 0.2, casual: 0.45, active: 0.65, athletic: 0.9 };
-  const barRec: Record<string, number> = { energy: 0.85, time: 0.55, motivation: 0.45, unsure: 0.5 };
+  const barRec: Record<string, number> = { energy: 0.85, time: 0.55, motivation: 0.45, unsure: 0.5, bored: 0.5 };
   const lenVol: Record<number, number> = { 20: 0.3, 30: 0.5, 45: 0.7, 60: 0.85, 90: 1.0 };
 
-  const Intensity = mood[a.mood] + (a.goal === 'build_strength' || a.goal === 'improve_physique' ? 0.05 : 0) + (a.level === 'athletic' ? 0.1 : 0) - (a.barrier === 'energy' ? 0.1 : 0);
+  const Intensity = mood[a.mood] + (a.goal === 'build_strength' || a.goal === 'improve_physique' || a.goal === 'improve_athleticism' ? 0.05 : 0) + (a.level === 'athletic' ? 0.1 : 0) - (a.barrier === 'energy' ? 0.1 : 0);
   const Strength = goalStr[a.goal] + (a.mood === 'muscle' ? 0.1 : 0) + (a.mood === 'explosive' ? 0.05 : 0);
   const Conditioning = level[a.level] + (a.mood === 'sweat' ? 0.15 : 0) + (a.mood === 'outdoor' ? 0.1 : 0) + (a.goal === 'lose_weight' ? 0.1 : 0);
   const Recovery = barRec[a.barrier] + (a.level === 'athletic' ? 0.1 : 0) + (a.length >= 60 ? 0.1 : 0) + (a.mood === 'lazy' ? 0.1 : 0);
@@ -109,16 +109,19 @@ function valueAt(segs: Seg[], el: number): { v: number; active: boolean } {
 
 const GOAL_SHORT: Record<string, string> = {
   feel_better: 'Feel better', build_strength: 'Build strength', improve_physique: 'Physique',
+  improve_athleticism: 'Athleticism',
   lose_weight: 'Lose weight', stress_relief: 'Stress relief', consistency: 'Consistency',
 };
 const BARRIER_SHORT: Record<string, string> = {
   time: 'Limited time', energy: 'Low energy', motivation: 'Motivation', unsure: 'Need a plan',
+  bored: 'Need variety',
 };
 const BARRIER_LINE: Record<string, string> = {
   time: 'Short on time — keeping sessions tight, decision-free',
   energy: 'Low energy — weighting recovery, easing intensity',
   motivation: 'Motivation dips — one tap to start, no blank plans',
   unsure: "Not sure what to do — we pick, you press play",
+  bored: 'Bored of the same routine — keeping every session fresh',
 };
 
 function buildThoughts(answers: FunnelAnswers): string[] {

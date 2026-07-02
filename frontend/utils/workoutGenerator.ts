@@ -464,6 +464,301 @@ export function generateSweatBurnFatCarts(
   return carts;
 }
 
+// ============================================================================
+// SWEAT — Build For Me v2 (coach-designed sessions, single flavor dropdown)
+// ----------------------------------------------------------------------------
+// Five fixed session flavors, surfaced (shuffled) via the single hero badge
+// dropdown — same UX as the muscle-gainer path:
+//   Cardio Only · Weights Only · Metcon · Machine Tour · Conditioning Circuit
+//
+// Each flavor is assembled by a COACH-STYLE session engine, not a naive slot
+// fill. Real-coach guardrails:
+//   • Duration budget  — total session minutes capped per tier, so we never
+//     stack several long cardio pieces (advanced cardio runs up to ~35 min).
+//   • Intensity budget — sum of intensity_cost capped per tier, plus a hard cap
+//     on how many "peak" (max-effort) blocks a session may contain.
+//   • Warm-up first    — the opener is the lowest-intensity block (prefers a
+//     'primer'); intensity then ramps; an optional 'finisher' closes.
+//   • Skill-appropriate — pools are tier-locked, so beginners never see
+//     advanced-only work, and the budgets scale down for lower tiers.
+//   • Graceful edge cases — if the pool can't fill a slot within budget the
+//     session simply ends early (respecting a per-tier minimum), infeasible
+//     flavors are dropped, and duplicates are never repeated within a cart.
+// Selection uses weighted scoring + recent-exercise memory so re-rolls stay
+// fresh, and equipment is varied within (and softly across) carts.
+// ============================================================================
+
+const SWEAT_MACHINE_CARDIO_EQUIP = new Set<string>([
+  'Treadmill', 'Elliptical', 'Arm bicycle', 'Stationary bike', 'Assault bike',
+  'Row machine', 'Stair master', 'Ski machine', 'Curve treadmill', 'Vertical Climber',
+]);
+
+type SweatPhase = 'warmup' | 'main' | 'finisher';
+interface SweatSlot { modality: Modality; phase: SweatPhase }
+type SweatPoolKind = 'cardio' | 'weights' | 'both' | 'machine_cardio';
+
+const cSlot = (phase: SweatPhase): SweatSlot => ({ modality: 'cardio', phase });
+const rSlot = (phase: SweatPhase): SweatSlot => ({ modality: 'resistance', phase });
+
+interface SweatFlavorDef {
+  id: string;
+  label: string;
+  badge: string;
+  subtitle: string;
+  poolKind: SweatPoolKind;
+  requiresBoth?: boolean;             // needs both modalities present at tier
+  plan: Record<IntensityLevel, SweatSlot[]>;  // ordered slot plan (engine trims to fit budgets)
+}
+
+export const SWEAT_FLAVORS: SweatFlavorDef[] = [
+  {
+    id: 'cardio_only', label: 'Cardio Only', badge: 'Conditioning',
+    subtitle: 'Pure cardio, smartly paced', poolKind: 'cardio',
+    plan: {
+      beginner:     [cSlot('warmup'), cSlot('main')],
+      intermediate: [cSlot('warmup'), cSlot('main'), cSlot('finisher')],
+      advanced:     [cSlot('warmup'), cSlot('main'), cSlot('main'), cSlot('finisher')],
+    },
+  },
+  {
+    id: 'weights_only', label: 'Weights Only', badge: 'Resistance',
+    subtitle: 'Light-weight strength circuit', poolKind: 'weights',
+    plan: {
+      beginner:     [rSlot('warmup'), rSlot('main')],
+      intermediate: [rSlot('warmup'), rSlot('main'), rSlot('finisher')],
+      advanced:     [rSlot('warmup'), rSlot('main'), rSlot('main'), rSlot('finisher')],
+    },
+  },
+  {
+    id: 'metcon', label: 'Metcon', badge: 'Mixed', requiresBoth: true,
+    subtitle: 'Alternating cardio + weights', poolKind: 'both',
+    plan: {
+      beginner:     [cSlot('warmup'), rSlot('main'), cSlot('main')],
+      intermediate: [cSlot('warmup'), rSlot('main'), cSlot('main'), rSlot('finisher')],
+      advanced:     [cSlot('warmup'), rSlot('main'), cSlot('main'), rSlot('main'), cSlot('finisher')],
+    },
+  },
+  {
+    id: 'machine_tour', label: 'Machine Tour', badge: 'Machines',
+    subtitle: 'A different machine each block', poolKind: 'machine_cardio',
+    plan: {
+      beginner:     [cSlot('warmup'), cSlot('main')],
+      intermediate: [cSlot('warmup'), cSlot('main'), cSlot('main')],
+      advanced:     [cSlot('warmup'), cSlot('main'), cSlot('main'), cSlot('finisher')],
+    },
+  },
+  {
+    id: 'conditioning', label: 'Conditioning Circuit', badge: 'Classic', requiresBoth: true,
+    subtitle: 'Cardio, weights, cardio', poolKind: 'both',
+    plan: {
+      beginner:     [cSlot('warmup'), rSlot('main')],
+      intermediate: [cSlot('warmup'), rSlot('main'), cSlot('finisher')],
+      advanced:     [cSlot('warmup'), rSlot('main'), rSlot('main'), cSlot('finisher')],
+    },
+  },
+];
+
+// Coach guardrails per tier. Derived from the real pools: cardio pieces run
+// ~10–20 min (beginner) up to ~15–35 min (advanced); light-weight pieces
+// ~11–29 min. Budgets keep total volume and hard-effort count defensible.
+interface SweatLimits {
+  maxMinutes: number;   // total session duration cap
+  costBudget: number;   // sum of intensity_cost cap
+  maxBlocks: number;
+  minBlocks: number;
+  peakCost: number;     // intensity_cost at/above which a block counts as "peak"
+  maxPeak: number;      // max peak blocks per session
+}
+const SWEAT_LIMITS: Record<IntensityLevel, SweatLimits> = {
+  beginner:     { maxMinutes: 34, costBudget: 8,  maxBlocks: 3, minBlocks: 2, peakCost: 4, maxPeak: 1 },
+  intermediate: { maxMinutes: 52, costBudget: 13, maxBlocks: 4, minBlocks: 2, peakCost: 4, maxPeak: 2 },
+  advanced:     { maxMinutes: 70, costBudget: 17, maxBlocks: 5, minBlocks: 2, peakCost: 5, maxPeak: 3 },
+};
+
+function sweatPoolByKind(kind: SweatPoolKind, tier: IntensityLevel): TaggedCandidate[] {
+  const all = buildSweatPool().filter(x => x.tier === tier && !!x.workout.modality);
+  switch (kind) {
+    case 'cardio':         return all.filter(x => x.workout.modality === 'cardio');
+    case 'weights':        return all.filter(x => x.workout.modality === 'resistance');
+    case 'machine_cardio': return all.filter(x => x.workout.modality === 'cardio' && SWEAT_MACHINE_CARDIO_EQUIP.has(x.equipment));
+    case 'both':
+    default:               return all;
+  }
+}
+
+const sweatDur = (c: TaggedCandidate) => parseDuration(c.workout.duration);
+const sweatCost = (c: TaggedCandidate) => c.workout.intensity_cost ?? 3;
+
+// Per-phase intensity preference (soft — nudges, never hard-filters cost).
+function sweatPhaseScore(cost: number, phase: SweatPhase): number {
+  if (phase === 'warmup')   return (5 - cost) * 0.6;              // ease in
+  if (phase === 'finisher') return (cost - 1) * 0.5;              // finish hot
+  return (3.5 - Math.abs(cost - 3.5)) * 0.4;                      // main: mid–high
+}
+
+interface SweatBuildState {
+  usedNames: Set<string>;
+  usedEquip: Set<string>;
+  minutes: number;
+  cost: number;
+  peaks: number;
+  count: number;
+}
+
+// Pick one block for a slot, honoring duration / intensity / peak budgets.
+function pickSweatBlock(
+  pool: TaggedCandidate[],
+  slot: SweatSlot,
+  limits: SweatLimits,
+  state: SweatBuildState,
+  recentNames: Set<string>,
+  usedXCart: Set<string>,
+): TaggedCandidate | null {
+  const cands = pool.filter(c =>
+    c.workout.modality === slot.modality && !state.usedNames.has(c.workout.name),
+  );
+  if (cands.length === 0) return null;
+
+  const belowMin = state.count < limits.minBlocks;
+
+  // Hard fit: keep the session inside its duration + intensity + peak budgets.
+  let fit = cands.filter(c =>
+    state.minutes + sweatDur(c) <= limits.maxMinutes &&
+    state.cost + sweatCost(c) <= limits.costBudget &&
+    !(sweatCost(c) >= limits.peakCost && state.peaks >= limits.maxPeak),
+  );
+  if (fit.length === 0) {
+    // Session is already full enough — stop adding blocks.
+    if (!belowMin) return null;
+    // Still under the minimum: we must place something. Take the lightest /
+    // shortest options so we stay as defensible as possible.
+    fit = [...cands]
+      .sort((a, b) => (sweatDur(a) + sweatCost(a) * 3) - (sweatDur(b) + sweatCost(b) * 3))
+      .slice(0, Math.min(4, cands.length));
+  }
+
+  const scored = fit.map(c => {
+    let s = 1.0;
+    s += sweatPhaseScore(sweatCost(c), slot.phase);
+    if (slot.phase === 'warmup'   && c.workout.role === 'primer')     s += 1.5;
+    if (slot.phase === 'main'     && c.workout.role === 'main_block') s += 0.6;
+    if (slot.phase === 'finisher' && c.workout.role === 'finisher')   s += 1.5;
+    s += state.usedEquip.has(c.equipment) ? -2.0 : 1.0;   // within-cart equipment variety
+    if (usedXCart.has(c.equipment)) s -= 0.5;             // soft cross-cart variety
+    if (recentNames.has(c.workout.name)) s -= 3.0;        // recent-exercise memory
+    return { c, score: s };
+  });
+
+  const maxS = Math.max(...scored.map(x => x.score));
+  const weights = scored.map(x => Math.exp((x.score - maxS) / 1.0));
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < scored.length; i++) { r -= weights[i]; if (r <= 0) return scored[i].c; }
+  return scored[scored.length - 1].c;
+}
+
+// Coach ordering: warm-up (easiest) first, ramp up, finisher last.
+function coachOrderSweat(picks: TaggedCandidate[], flavor: SweatFlavorDef): TaggedCandidate[] {
+  if (picks.length <= 1) return picks;
+  if (flavor.poolKind !== 'both') {
+    // Single-modality: a clean ascending ramp is the coach-sound structure.
+    return [...picks].sort((a, b) => sweatCost(a) - sweatCost(b));
+  }
+  // Mixed flavors keep their planned cardio→weights alternation (that IS the
+  // structure), but guarantee the opener is the lightest block as a warm-up.
+  const out = [...picks];
+  let minI = 0;
+  for (let i = 1; i < out.length; i++) if (sweatCost(out[i]) < sweatCost(out[minI])) minI = i;
+  if (minI !== 0) { const [b] = out.splice(minI, 1); out.unshift(b); }
+  return out;
+}
+
+export interface SweatCart extends GeneratedCart {
+  cartType: string;      // flavor id
+  flavor: string;        // flavor label
+  cartBadge: string;
+  cartSubtitle: string;
+}
+
+export function generateSweatCartsV2(
+  intensity: IntensityLevel,
+  moodCard: string = 'Sweat / burn fat',
+  recentExerciseNames: string[] = [],
+): SweatCart[] {
+  const limits = SWEAT_LIMITS[intensity];
+  const recentNames = new Set(recentExerciseNames);
+  const usedXCart = new Set<string>();
+
+  // Feasible flavors: pool exists and (mixed flavors) both modalities present.
+  const feasible = SWEAT_FLAVORS.filter(f => {
+    const pool = sweatPoolByKind(f.poolKind, intensity);
+    if (pool.length === 0) return false;
+    if (f.requiresBoth &&
+        !(pool.some(x => x.workout.modality === 'cardio') &&
+          pool.some(x => x.workout.modality === 'resistance'))) return false;
+    return true;
+  });
+  if (feasible.length === 0) return [];
+
+  // Shuffle so the opening cart + order change each generation.
+  const flavors = [...feasible];
+  for (let i = flavors.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [flavors[i], flavors[j]] = [flavors[j], flavors[i]];
+  }
+
+  const carts: SweatCart[] = [];
+
+  for (const flavor of flavors) {
+    const pool = sweatPoolByKind(flavor.poolKind, intensity);
+    const plan = flavor.plan[intensity];
+    const state: SweatBuildState = {
+      usedNames: new Set(), usedEquip: new Set(),
+      minutes: 0, cost: 0, peaks: 0, count: 0,
+    };
+    const picks: TaggedCandidate[] = [];
+
+    for (const slot of plan) {
+      if (state.count >= limits.maxBlocks) break;
+      const pick = pickSweatBlock(pool, slot, limits, state, recentNames, usedXCart);
+      if (!pick) continue;
+      picks.push(pick);
+      state.usedNames.add(pick.workout.name);
+      state.usedEquip.add(pick.equipment);
+      state.minutes += sweatDur(pick);
+      state.cost += sweatCost(pick);
+      if (sweatCost(pick) >= limits.peakCost) state.peaks++;
+      state.count++;
+    }
+    if (picks.length === 0) continue;
+
+    const ordered = coachOrderSweat(picks, flavor);
+    ordered.forEach(p => usedXCart.add(p.equipment));
+
+    const items: WorkoutItem[] = ordered.map((p, i) => {
+      const item = workoutToItem(p.workout, p.equipment, intensity, moodCard, flavor.label);
+      // Phase role for the cart UI (Warm-Up / Main / Finisher labelling).
+      item.role = i === 0 ? 'primer'
+        : (i === ordered.length - 1 && ordered.length > 2 ? 'finisher' : 'main_block');
+      return item;
+    });
+    const totalDuration = items.reduce((sum, it) => sum + parseDuration(it.duration), 0);
+
+    carts.push({
+      id: `sweat2-${flavor.id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      workouts: items,
+      totalDuration,
+      intensity,
+      cartType: flavor.id,
+      flavor: flavor.label,
+      cartBadge: flavor.badge,
+      cartSubtitle: flavor.subtitle,
+    });
+  }
+
+  return carts;
+}
+
 // Export for specific mood paths
 export function generateLightWeightsCarts(
   intensity: IntensityLevel,
@@ -2020,10 +2315,18 @@ export function generateMuscleGainerCarts(
 
     if (sections.length === 0) return;
 
-    const items = sections.map(s =>
-      workoutToItem(s.workout, s.equipment, intensity, moodCard,
-        `${workoutType} - ${s.muscleGroup}`)
-    );
+    const items = sections.map(s => {
+      // Legs carry their sub-group (Quads / Hamstrings / Glutes / Calves /
+      // Compound) so the cart & generated views can render sub-dividers
+      // within the LEGS block.
+      let groupLabel = s.muscleGroup;
+      if (s.muscleGroup === 'Legs') {
+        const sub = getLegSubGroup(s);
+        groupLabel = `Legs - ${sub === 'Other' ? 'Compound' : sub}`;
+      }
+      return workoutToItem(s.workout, s.equipment, intensity, moodCard,
+        `${workoutType} - ${groupLabel}`);
+    });
     const totalDuration = items.reduce(
       (sum, it) => sum + parseDuration(it.duration), 0
     );
