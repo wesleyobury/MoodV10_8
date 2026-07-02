@@ -73,7 +73,7 @@ interface AuthContextType {
   acceptTerms: () => Promise<void>;
   promptTermsAcceptance: () => void;
   /** Google/Apple sign-in — stamp login-screen consent, hydrate user, route target. */
-  completeSocialAuth: () => Promise<'/onboarding-funnel/step-1-mood' | '/(tabs)'>;
+  completeSocialAuth: () => Promise<'/onboarding-funnel/intro' | '/(tabs)'>;
 }
 
 const LOGIN_PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
@@ -576,7 +576,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
    * EULA modal, and send new users into the onboarding funnel.
    */
   const completeSocialAuth = useCallback(async (): Promise<
-    '/onboarding-funnel/step-1-mood' | '/(tabs)'
+    '/onboarding-funnel/intro' | '/(tabs)'
   > => {
     const storedToken = await secureStorage.get(AUTH_TOKEN_KEY);
     if (!storedToken) {
@@ -635,7 +635,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await AsyncStorage.removeItem('@mood_subscription_state_v1');
       await AsyncStorage.removeItem('@mood_post_first_workout_paywall_shown_v1');
       await AsyncStorage.removeItem('@mood_pulse_sync_played_v1');
-      return '/onboarding-funnel/step-1-mood';
+      // Land on the funnel INTRO (brand moment) — not directly on step 1.
+      return '/onboarding-funnel/intro';
     }
 
     return '/(tabs)';

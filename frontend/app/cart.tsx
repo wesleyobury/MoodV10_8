@@ -31,6 +31,7 @@ import { useDrafts } from '../contexts/DraftsContext';
 import { Analytics } from '../utils/analytics';
 import { tryBeginWorkoutSession } from '../utils/workoutStartGate';
 import { resolveCartHeroImage, isFeaturedHeroBroken } from '../utils/cartHero';
+import { regenerateBuildForMe } from '../utils/workoutGenerator';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 import { API_URL } from '../utils/apiConfig';
@@ -429,6 +430,8 @@ export default function CartScreen() {
   const badgeRef = useRef<View>(null);
   // When set, Skip stays within this cart flavor's variations. null = random (all).
   const [lockedFlavor, setLockedFlavor] = useState<string | null>(null);
+  // Descriptor to regenerate fresh carts on demand (infinite Skip top-up).
+  const bfmDescriptorRef = useRef<any | null>(null);
 
   // Shimmer sweep on the flavor badge to signal it's tappable.
   const shimmerAnim = useRef(new Animated.Value(0)).current;
@@ -447,6 +450,10 @@ export default function CartScreen() {
         setCurrentCartIndex(0);
         setIsGeneratedWorkout(true);
         setLockedFlavor(null); // fresh batch → start in random mode
+        if (params.bfmDescriptor) {
+          try { bfmDescriptorRef.current = JSON.parse(params.bfmDescriptor as string); }
+          catch (_) { bfmDescriptorRef.current = null; }
+        }
         if (params.moodCard) {
           setMoodCard(params.moodCard as string);
         }
@@ -576,10 +583,9 @@ export default function CartScreen() {
   }, [isGeneratedWorkout, generatedCarts.length, shimmerAnim]);
 
   // Swap the active cart to a specific index (shared by skip + flavor dropdown).
-  const goToCart = (nextIndex: number) => {
-    if (!isGeneratedWorkout || generatedCarts.length === 0) return;
-    if (nextIndex === currentCartIndex) return;
-    const nextCart = generatedCarts[nextIndex];
+  const goToCart = (nextIndex: number, cartsArr: any[] = generatedCarts) => {
+    if (!isGeneratedWorkout || cartsArr.length === 0) return;
+    const nextCart = cartsArr[nextIndex];
     if (!nextCart) return;
 
     setCurrentCartIndex(nextIndex);
@@ -589,7 +595,7 @@ export default function CartScreen() {
     Analytics.workoutRegenerated(token, {
       mood: moodCard,
       previous_workout_id:
-        generatedCarts[currentCartIndex]?.id || generatedCarts[currentCartIndex]?.cartType,
+        cartsArr[currentCartIndex]?.id || cartsArr[currentCartIndex]?.cartType,
       regeneration_count: regenCountRef.current,
     });
 
@@ -621,18 +627,34 @@ export default function CartScreen() {
       }
     }
 
-    // Load next cart. If locked to a flavor, cycle only that flavor's
-    // variations; otherwise cycle through everything (random mode).
-    let nextIndex = (currentCartIndex + 1) % generatedCarts.length;
-    if (lockedFlavor) {
-      const idxs = generatedCarts
-        .map((c: any, i: number) => (c?.cartType === lockedFlavor ? i : -1))
-        .filter((i: number) => i >= 0);
-      if (idxs.length > 0) {
-        const pos = idxs.indexOf(currentCartIndex);
-        nextIndex = idxs[(pos + 1) % idxs.length];
+    // Candidate index set: locked flavor's variations, or everything (random mode).
+    const idxs = lockedFlavor
+      ? generatedCarts.map((c: any, i: number) => (c?.cartType === lockedFlavor ? i : -1)).filter((i: number) => i >= 0)
+      : generatedCarts.map((_: any, i: number) => i);
+    const pos = idxs.indexOf(currentCartIndex);
+    const atEnd = pos === -1 || pos === idxs.length - 1;
+
+    // Infinite Skip: when we'd wrap, mint a FRESH batch for this selection
+    // (seeded with the exercises already seen this session) and append any new
+    // distinct carts, so the user keeps seeing new material without exiting.
+    const sig = (c: any) => c.workouts.map((w: any) => w.name).slice().sort().join('|');
+    if (atEnd && bfmDescriptorRef.current && generatedCarts.length < 120) {
+      const seen = new Set(generatedCarts.map(sig));
+      const recentNames = Array.from(new Set(generatedCarts.flatMap((c: any) => c.workouts.map((w: any) => w.name))));
+      let batch: any[] = [];
+      try { batch = regenerateBuildForMe(bfmDescriptorRef.current, recentNames) as any[]; } catch (_) { batch = []; }
+      if (lockedFlavor) batch = batch.filter((c: any) => c?.cartType === lockedFlavor);
+      const fresh = batch.filter((c: any) => !seen.has(sig(c)));
+      if (fresh.length > 0) {
+        const full = [...generatedCarts, ...fresh];
+        setGeneratedCarts(full);
+        goToCart(generatedCarts.length, full); // jump to first freshly-added cart
+        return;
       }
     }
+
+    // Otherwise cycle within the current set (wrap around).
+    const nextIndex = idxs.length > 0 ? idxs[(pos + 1) % idxs.length] : (currentCartIndex + 1) % generatedCarts.length;
     goToCart(nextIndex);
   };
 

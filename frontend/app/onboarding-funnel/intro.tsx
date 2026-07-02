@@ -26,13 +26,29 @@ import { useRouter } from 'expo-router';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
+import { useOnboardingFunnel } from '../../contexts/OnboardingFunnelContext';
 import { Analytics } from '../../utils/analytics';
 
 const BG_VIDEO_SOURCE = require('../../assets/videos/bg.mp4');
 
 export default function FunnelIntro() {
   const router = useRouter();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
+  const { answers, setFirstName } = useOnboardingFunnel();
+
+  // Carry the user's name through the whole funnel from the very start:
+  // Google gives us a real name; manual signups have a display name or
+  // username. Only Apple relay accounts (apple_user_*) have nothing — they
+  // get the dedicated name-capture screen later.
+  useEffect(() => {
+    if (answers.firstName?.trim()) return;
+    const uname =
+      user?.username && !user.username.toLowerCase().startsWith('apple_user')
+        ? user.username.trim()
+        : '';
+    const first = user?.name?.trim().split(' ')[0] || uname;
+    if (first) setFirstName(first);
+  }, [answers.firstName, user?.name, user?.username, setFirstName]);
   const [videoReady, setVideoReady] = useState(false);
 
   const videoOpacity = useRef(new Animated.Value(0)).current;

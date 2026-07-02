@@ -242,7 +242,11 @@ export default function BodyPartsScreen() {
       selectedCart.workouts.forEach(workout => addToCart(workout, { source: 'build_for_me', token }));
       router.push({
         pathname: '/cart',
-        params: { generatedCarts: JSON.stringify(carts), moodCard: moodTitle }
+        params: {
+          generatedCarts: JSON.stringify(carts),
+          moodCard: moodTitle,
+          bfmDescriptor: JSON.stringify({ mood: 'muscle', intensity, muscleGroups: selectedMuscleNames, moodCard: moodTitle }),
+        }
       });
     }
   };

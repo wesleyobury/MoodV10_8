@@ -891,9 +891,17 @@ export default function Settings() {
           </View>
         )}
 
-        {/* App Info */}
+        {/* App Info — real version/build + resolved backend host so any
+            build (TestFlight included) can be verified against the intended
+            production server at a glance. */}
         <View style={styles.appInfo}>
-          <Text style={styles.appVersion}>Version 1.0.0</Text>
+          <Text style={styles.appVersion}>
+            Version {Constants.expoConfig?.version ?? '1.0.0'} (
+            {Constants.expoConfig?.ios?.buildNumber ?? Constants.nativeBuildVersion ?? '\u2014'})
+          </Text>
+          <Text style={styles.appVersion}>
+            Server: {API_URL.replace(/^https?:\/\//, '')}
+          </Text>
         </View>
 
         {/* Admin Debug Info (temporary) */}

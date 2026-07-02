@@ -35,8 +35,14 @@ export interface BiometricSnapshot {
   restingHeartRate: number | null;
   /** Most recent HRV SDNN within last 7 days, in milliseconds. */
   heartRateVariabilitySDNN: number | null;
-  /** Total asleep duration for last night (6pm yesterday → 11am today), in minutes. */
+  /** Total asleep duration for the most recent night with data, in minutes. */
   asleepDurationMinutes: number | null;
+  /** Day the sleep value belongs to (ISO). Present on retrospective data. */
+  sleepDateISO?: string | null;
+  /** Day the active-energy value belongs to (ISO). */
+  activeEnergyDateISO?: string | null;
+  /** Day the step count belongs to (ISO). */
+  stepCountDateISO?: string | null;
   /** Yesterday's active energy burned, in kcal. */
   activeEnergyBurnedKcal: number | null;
   /** Yesterday's total step count. */

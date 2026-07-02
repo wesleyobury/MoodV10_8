@@ -22,6 +22,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useSegments, usePathname } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { useAuth } from '../contexts/AuthContext';
@@ -68,6 +69,14 @@ export default function ProfilePicPromptGate() {
 
     let cancelled = false;
     (async () => {
+      // Permanent per-user opt-out ("Never show again").
+      try {
+        const never = await AsyncStorage.getItem(`@mood_profile_pic_prompt_never_v1:${uid}`);
+        if (never === 'true') {
+          if (!cancelled) setShowModal(false);
+          return;
+        }
+      } catch { /* fall through — worst case the prompt shows */ }
       const defer = await shouldDeferProfilePicPrompt({
         userId: uid,
         segments,
@@ -78,6 +87,20 @@ export default function ProfilePicPromptGate() {
         setShowModal(false);
         return;
       }
+      // First-ever eligible session is a silent pass — the user's first
+      // exposure to this prompt is their SECOND app open. Keeps session #1
+      // (onboarding + first workout) interruption-free.
+      try {
+        const FIRST_KEY = `@mood_profile_pic_first_session_v1:${uid}`;
+        const seenFirstSession = await AsyncStorage.getItem(FIRST_KEY);
+        if (!seenFirstSession) {
+          await AsyncStorage.setItem(FIRST_KEY, 'true');
+          profilePicPromptShownThisSession = true;
+          if (!cancelled) setShowModal(false);
+          return;
+        }
+      } catch { /* fall through — worst case it shows a session early */ }
+      if (cancelled) return;
       profilePicPromptShownThisSession = true;
       setShowModal(true);
     })();
@@ -159,6 +182,15 @@ export default function ProfilePicPromptGate() {
     setShowModal(false);
   }, []);
 
+  const handleNeverShow = useCallback(() => {
+    profilePicPromptShownThisSession = true;
+    setShowModal(false);
+    const uid = user?.id;
+    if (uid) {
+      AsyncStorage.setItem(`@mood_profile_pic_prompt_never_v1:${uid}`, 'true').catch(() => {});
+    }
+  }, [user?.id]);
+
   if (!user?.id || user.avatar) return null;
 
   return (
@@ -215,7 +247,16 @@ export default function ProfilePicPromptGate() {
             disabled={uploading}
             data-testid="profile-pic-prompt-skip-btn"
           >
-            <Text style={styles.secondaryBtnText}>Maybe later</Text>
+            <Text style={styles.secondaryBtnText}>Not now</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.neverBtn}
+            onPress={handleNeverShow}
+            disabled={uploading}
+            data-testid="profile-pic-prompt-never-btn"
+          >
+            <Text style={styles.neverBtnText}>Never show again</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -224,6 +265,15 @@ export default function ProfilePicPromptGate() {
 }
 
 const styles = StyleSheet.create({
+  neverBtn: {
+    paddingVertical: 8,
+    alignItems: 'center',
+  },
+  neverBtnText: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.35)',
+    textDecorationLine: 'underline',
+  },
   backdrop: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.82)',

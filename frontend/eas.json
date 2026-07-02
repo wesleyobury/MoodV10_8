@@ -13,8 +13,8 @@
       "distribution": "store",
       "channel": "preview",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://mood-cutover-1.emergent.host",
-        "EXPO_PUBLIC_BACKEND_URL": "https://mood-cutover-1.emergent.host",
+        "EXPO_PUBLIC_API_URL": "https://bug-busters-13.emergent.host",
+        "EXPO_PUBLIC_BACKEND_URL": "https://bug-busters-13.emergent.host",
         "EXPO_PUBLIC_FORCE_SIGNUP_PAYWALL": "true"
       },
       "ios": {
@@ -29,6 +29,7 @@
       "channel": "production",
       "node": "20.19.4",
       "env": {
+        "EXPO_PUBLIC_API_URL": "https://bug-busters-13.emergent.host",
         "EXPO_PUBLIC_BACKEND_URL": "https://bug-busters-13.emergent.host"
       },
       "ios": {

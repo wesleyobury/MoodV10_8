@@ -251,7 +251,11 @@ export default function OutdoorEquipmentScreen() {
       selectedCart.workouts.forEach(workout => addToCart(workout));
       router.push({
         pathname: '/cart',
-        params: { generatedCarts: JSON.stringify(carts), moodCard: moodTitle }
+        params: {
+          generatedCarts: JSON.stringify(carts),
+          moodCard: moodTitle,
+          bfmDescriptor: JSON.stringify({ mood: 'outdoor', intensity, equipmentNames: equipNames, moodCard: moodTitle }),
+        }
       });
     }
   };

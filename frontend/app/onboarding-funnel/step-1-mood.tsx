@@ -45,6 +45,7 @@ const MOOD_ICON_GRADIENT: Record<MoodId, readonly [string, string]> = {
 export default function Step1Mood() {
   const router = useRouter();
   const { answers, setMood, markStepEntered, consumeStepDuration } = useOnboardingFunnel();
+  const firstName = answers.firstName?.trim();
   const { token } = useAuth();
   const [pending, setPending] = useState<MoodId | undefined>(answers.mood);
 
@@ -73,7 +74,7 @@ export default function Step1Mood() {
     <FunnelLayout
       step={1}
       eyebrow="Let's start with today"
-      title="How do you want to move today?"
+      title={firstName ? `${firstName}, how do you want to move today?` : 'How do you want to move today?'}
       subtitle="There's no wrong answer. MOOD builds around it."
       ctaLabel="Continue"
       ctaDisabled={!pending}
@@ -127,8 +128,10 @@ const styles = StyleSheet.create({
     minHeight: 120,
   },
   cardSelected: {
-    borderColor: 'rgba(255,255,255,0.10)',
-    backgroundColor: COLORS.surfaceElevated,
+    // Match the OptionPill selected state used on steps 2+ — gold border,
+    // soft gold glow fill.
+    borderColor: COLORS.accent,
+    backgroundColor: 'rgba(255,215,0,0.06)',
   },
   iconRing: {
     width: 40,

@@ -118,12 +118,18 @@ export default function RevealPayoff() {
   const screenH = windowHeight;
   const heroHeight = Math.max(screenH * HERO_HEIGHT_RATIO, HERO_MIN_HEIGHT);
 
-  // Prefer the name captured in the funnel (always present once the user fills
-  // it in), then any provider-supplied name, and finally a friendly default —
-  // never the raw username (which can be `apple_user_xxx` or a relay handle).
+  // Prefer the name captured in the funnel, then the provider-supplied name
+  // (Google), then the signup username (email/username accounts — their own
+  // typed info), and finally a friendly default. Apple relay handles
+  // (`apple_user_xxx`) are never shown.
+  const usernameFallback =
+    user?.username && !user.username.toLowerCase().startsWith('apple_user')
+      ? user.username
+      : '';
   const firstName =
     answers.firstName?.trim() ||
     (user?.name && user.name.split(' ')[0]) ||
+    usernameFallback ||
     'Athlete';
   const moodWord = answers.mood ?? 'chosen';
   const heroImage = HERO_IMAGES[answers.mood ?? 'sweat'] ?? HERO_IMAGES.sweat;

@@ -68,6 +68,12 @@ export async function recordWorkoutCompletionForRating(): Promise<{ count: numbe
   }
 }
 
+/** Public read of the persisted completed-workout counter (both paths use it:
+ *  the rating gate and the first-workout congrats in create-post). */
+export async function getCompletedWorkoutCount(): Promise<number> {
+  return getCompletedCount();
+}
+
 async function getCompletedCount(): Promise<number> {
   try {
     const n = Number.parseInt((await AsyncStorage.getItem(WORKOUT_COUNT_KEY)) ?? '0', 10);

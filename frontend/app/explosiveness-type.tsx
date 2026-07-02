@@ -219,7 +219,11 @@ export default function ExplosivenessTypeScreen() {
       selectedCart.workouts.forEach(workout => addToCart(workout));
       router.push({
         pathname: '/cart',
-        params: { generatedCarts: JSON.stringify(carts), moodCard: moodTitle }
+        params: {
+          generatedCarts: JSON.stringify(carts),
+          moodCard: moodTitle,
+          bfmDescriptor: JSON.stringify({ mood: 'explosive', intensity, moodCard: moodTitle }),
+        }
       });
     }
   };

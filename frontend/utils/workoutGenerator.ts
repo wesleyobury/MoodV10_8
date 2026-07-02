@@ -3025,3 +3025,47 @@ export function generateMuscleGainerCarts(
   return carts;
 }
 
+// ============================================================================
+// REGENERATE DISPATCHER — lets the cart screen mint a fresh batch of carts for
+// the SAME Build-For-Me selection on demand (so Skip can top up infinitely
+// instead of looping a fixed batch). The descriptor carries everything a mood's
+// generator needs; `recentNames` (the exercises already seen this session) is
+// passed through so the fresh batch avoids repeats.
+// ============================================================================
+export type BuildForMeMood =
+  | 'sweat' | 'explosive' | 'muscle' | 'calisthenics' | 'lazy' | 'outdoor';
+
+export interface BuildForMeDescriptor {
+  mood: BuildForMeMood;
+  intensity: IntensityLevel;
+  moodCard?: string;
+  muscleGroups?: string[];                    // muscle
+  trainingType?: 'bodyweight' | 'weights';    // lazy
+  equipmentNames?: string[];                  // outdoor
+}
+
+export function regenerateBuildForMe(
+  d: BuildForMeDescriptor,
+  recentNames: string[] = [],
+): GeneratedCart[] {
+  const mc = d.moodCard;
+  switch (d.mood) {
+    case 'sweat':
+      return generateSweatCartsV2(d.intensity, mc ?? 'Sweat / burn fat', recentNames);
+    case 'explosive':
+      return generateExplosiveCartsV2(d.intensity, mc ?? 'I want to build explosion', recentNames);
+    case 'muscle':
+      return generateMuscleGainerCarts(
+        d.intensity, d.muscleGroups ?? [], mc ?? 'I want to gain muscle',
+        'Muscle Building', [], recentNames);
+    case 'calisthenics':
+      return generateCalisthenicsCartsV2(d.intensity, mc ?? 'I want to do calisthenics', recentNames);
+    case 'lazy':
+      return generateLazyCartsV2(d.intensity, d.trainingType ?? 'bodyweight', mc ?? "I'm feeling lazy", recentNames);
+    case 'outdoor':
+      return generateOutdoorCartsV2(d.intensity, mc ?? 'Get outside', d.equipmentNames ?? [], recentNames);
+    default:
+      return [];
+  }
+}
+

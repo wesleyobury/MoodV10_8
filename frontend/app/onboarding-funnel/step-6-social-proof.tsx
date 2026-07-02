@@ -66,12 +66,17 @@ export default function Step6SocialProof() {
       question: 'social_proof',
       time_spent_ms: consumeStepDuration(6),
     });
-    // Only ask for a first name when we don't already have one. Google and
-    // username signups already carry a name, so they skip straight to the
-    // analyzer — the name screen exists mainly for Apple Sign-In, which often
-    // returns no name. Skipping loses nothing (the payoff falls back cleanly).
+    // The name-capture screen exists ONLY for Apple Sign-In (Apple often
+    // returns no name and mints a relay handle like `apple_user_xxx`).
+    // Google users carry a name from their account, and email/username
+    // signups already typed their info at registration — asking again is
+    // redundant, so both skip straight to the analyzer. The payoff greeting
+    // falls back to name → username.
     const hasName = !!user?.name?.trim();
-    router.push(hasName ? '/onboarding-funnel/reveal-loading' : '/onboarding-funnel/name');
+    const isAppleUser = (user?.username ?? '').toLowerCase().startsWith('apple_user');
+    router.push(
+      isAppleUser && !hasName ? '/onboarding-funnel/name' : '/onboarding-funnel/reveal-loading'
+    );
   };
 
   return (

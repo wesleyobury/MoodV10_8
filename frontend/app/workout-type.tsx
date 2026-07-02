@@ -265,6 +265,7 @@ export default function WorkoutTypeScreen() {
         params: {
           generatedCarts: JSON.stringify(carts),
           moodCard: moodTitle,
+          bfmDescriptor: JSON.stringify({ mood: 'sweat', intensity, moodCard: moodTitle }),
         }
       });
     }

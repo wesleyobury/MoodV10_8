@@ -232,23 +232,69 @@ public class MoodHealthKitModule: Module {
 
   // MARK: - Snapshot builder
 
+  /// A metric value plus the day it came from — lets the UI label
+  /// retrospective data honestly ("Tue" instead of "Yesterday").
+  private struct DatedValue {
+    let value: Double
+    let dateISO: String
+  }
+
   private static func buildSnapshot(store: HKHealthStore) async -> [String: Any] {
     async let rhr   = mostRecentQuantity(store: store, identifier: .restingHeartRate, unit: HKUnit.count().unitDivided(by: .minute()))
     async let hrv   = mostRecentQuantity(store: store, identifier: .heartRateVariabilitySDNN, unit: HKUnit.secondUnit(with: .milli))
-    async let sleep = sleepAsleepLastNightMinutes(store: store)
-    async let kcal  = sumQuantityYesterday(store: store, identifier: .activeEnergyBurned, unit: .kilocalorie())
-    async let steps = sumQuantityYesterday(store: store, identifier: .stepCount, unit: .count())
+    async let sleep = retrospectiveSleep(store: store)
+    async let kcal  = retrospectiveDailySum(store: store, identifier: .activeEnergyBurned, unit: .kilocalorie())
+    async let steps = retrospectiveDailySum(store: store, identifier: .stepCount, unit: .count())
 
     let (rhrVal, hrvVal, sleepVal, kcalVal, stepsVal) = await (rhr, hrv, sleep, kcal, steps)
 
     return [
       "restingHeartRate":         rhrVal as Any,
       "heartRateVariabilitySDNN": hrvVal as Any,
-      "asleepDurationMinutes":    sleepVal as Any,
-      "activeEnergyBurnedKcal":   kcalVal as Any,
-      "stepCount":                stepsVal as Any,
+      "asleepDurationMinutes":    sleepVal?.value as Any,
+      "sleepDateISO":             sleepVal?.dateISO as Any,
+      "activeEnergyBurnedKcal":   kcalVal?.value as Any,
+      "activeEnergyDateISO":      kcalVal?.dateISO as Any,
+      "stepCount":                stepsVal?.value as Any,
+      "stepCountDateISO":         stepsVal?.dateISO as Any,
       "lastSyncedAt":             ISO8601DateFormatter().string(from: Date())
     ]
+  }
+
+  /// Daily cumulative sum with retrospective fallback: yesterday first (the
+  /// classic window), then up to 14 days back, then today's partial total.
+  /// "Last known data" always beats an empty tile.
+  private static func retrospectiveDailySum(
+    store: HKHealthStore,
+    identifier: HKQuantityTypeIdentifier,
+    unit: HKUnit
+  ) async -> DatedValue? {
+    let cal = Calendar.current
+    let startOfToday = cal.startOfDay(for: Date())
+    var dayOffsets = Array(1...14)
+    dayOffsets.append(0) // today's partial total as the final fallback
+    for back in dayOffsets {
+      guard let dayStart = cal.date(byAdding: .day, value: -back, to: startOfToday) else { continue }
+      let dayEnd: Date = back == 0 ? Date() : (cal.date(byAdding: .day, value: 1, to: dayStart) ?? Date())
+      if let v = await sumQuantityInRange(store: store, identifier: identifier, unit: unit, start: dayStart, end: dayEnd), v > 0 {
+        return DatedValue(value: v, dateISO: ISO8601DateFormatter().string(from: dayStart))
+      }
+    }
+    return nil
+  }
+
+  /// Sleep with retrospective fallback: last night first, then up to 14
+  /// nights back — returns the most recent night that has sleep samples.
+  private static func retrospectiveSleep(store: HKHealthStore) async -> DatedValue? {
+    let cal = Calendar.current
+    let startOfToday = cal.startOfDay(for: Date())
+    for back in 0...13 {
+      guard let dayStart = cal.date(byAdding: .day, value: -back, to: startOfToday) else { continue }
+      if let mins = await sleepMinutesForNight(store: store, endingMorningOf: dayStart), mins > 0 {
+        return DatedValue(value: mins, dateISO: ISO8601DateFormatter().string(from: dayStart))
+      }
+    }
+    return nil
   }
 
   private static func mostRecentQuantity(
@@ -257,7 +303,7 @@ public class MoodHealthKitModule: Module {
     unit: HKUnit
   ) async -> Double? {
     guard let type = HKObjectType.quantityType(forIdentifier: identifier) else { return nil }
-    let start = Calendar.current.date(byAdding: .day, value: -7, to: Date())
+    let start = Calendar.current.date(byAdding: .day, value: -30, to: Date())
     let predicate = HKQuery.predicateForSamples(withStart: start, end: Date(), options: .strictEndDate)
     return await withCheckedContinuation { (cont: CheckedContinuation<Double?, Never>) in
       let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
@@ -329,33 +375,14 @@ public class MoodHealthKitModule: Module {
     }
   }
 
-  private static func sumQuantityYesterday(
-    store: HKHealthStore,
-    identifier: HKQuantityTypeIdentifier,
-    unit: HKUnit
-  ) async -> Double? {
-    guard let type = HKObjectType.quantityType(forIdentifier: identifier) else { return nil }
-    let cal = Calendar.current
-    let startOfToday = cal.startOfDay(for: Date())
-    guard let startOfYesterday = cal.date(byAdding: .day, value: -1, to: startOfToday) else { return nil }
-    let predicate = HKQuery.predicateForSamples(withStart: startOfYesterday, end: startOfToday, options: .strictStartDate)
-    return await withCheckedContinuation { (cont: CheckedContinuation<Double?, Never>) in
-      let q = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, stats, _ in
-        guard let sum = stats?.sumQuantity() else { cont.resume(returning: nil); return }
-        cont.resume(returning: sum.doubleValue(for: unit))
-      }
-      store.execute(q)
-    }
-  }
-
-  private static func sleepAsleepLastNightMinutes(store: HKHealthStore) async -> Double? {
+  /// Minutes asleep in the night ENDING on the morning of `dayStart`
+  /// (18:00 the prior evening → 11:00 that day).
+  private static func sleepMinutesForNight(store: HKHealthStore, endingMorningOf dayStart: Date) async -> Double? {
     guard let type = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else { return nil }
     let cal = Calendar.current
-    let startOfToday = cal.startOfDay(for: Date())
-    // 18:00 the day before → 11:00 today.
     guard
-      let sixPmYesterday = cal.date(byAdding: .hour, value: -6, to: startOfToday),
-      let elevenAmToday = cal.date(byAdding: .hour, value: 11, to: startOfToday)
+      let sixPmYesterday = cal.date(byAdding: .hour, value: -6, to: dayStart),
+      let elevenAmToday = cal.date(byAdding: .hour, value: 11, to: dayStart)
     else { return nil }
 
     let predicate = HKQuery.predicateForSamples(withStart: sixPmYesterday, end: elevenAmToday, options: .strictStartDate)

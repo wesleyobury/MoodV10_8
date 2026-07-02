@@ -10,6 +10,8 @@ import React, {
 } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 import {
+  fetchMostRecentWorkout,
+  fetchSessionMetrics,
   fetchSnapshot as nativeFetchSnapshot,
   getAuthorizationStatus as nativeGetStatus,
   isHealthKitAvailable,
@@ -17,6 +19,19 @@ import {
   type BiometricSnapshot,
   type HealthAuthorizationStatus,
 } from '../modules/mood-healthkit/src';
+
+/** Retrospective metrics from the user's most recent HKWorkout. Held in
+ *  context so a sync performed ANYWHERE (achievement card, wearable-data,
+ *  settings) is instantly reflected everywhere else. */
+export interface LastWorkoutMetrics {
+  calories: number | null;
+  minutes: number | null;
+  avgHr: number | null;
+  maxHr: number | null;
+  steps: number | null;
+  hrv: number | null;
+  endISO: string;
+}
 import {
   loadSnapshot,
   saveSnapshot,
@@ -39,6 +54,13 @@ interface HealthContextValue {
   requestPermissions: () => Promise<boolean>;
   /** Re-read all 5 metrics from HealthKit and persist. Fails silently. */
   refresh: (opts?: { silent?: boolean }) => Promise<void>;
+  /** Most recent HKWorkout metrics from the last `syncLastWorkout` call. */
+  lastWorkoutMetrics: LastWorkoutMetrics | null;
+  /** True while a last-workout sync is in flight. */
+  isSyncingWorkout: boolean;
+  /** Pull the most recent HKWorkout (any age) + steps/HRV over its window.
+   *  Also refreshes the daily snapshot so home/settings update together. */
+  syncLastWorkout: () => Promise<LastWorkoutMetrics | null>;
 }
 
 const HealthContext = createContext<HealthContextValue | undefined>(undefined);
@@ -105,6 +127,44 @@ export function HealthProvider({ children }: ProviderProps) {
     [available],
   );
 
+  const [lastWorkoutMetrics, setLastWorkoutMetrics] = useState<LastWorkoutMetrics | null>(null);
+  const [isSyncingWorkout, setIsSyncingWorkout] = useState(false);
+
+  const syncLastWorkout = useCallback(async (): Promise<LastWorkoutMetrics | null> => {
+    if (!available) return null;
+    setIsSyncingWorkout(true);
+    try {
+      const w = await fetchMostRecentWorkout();
+      if (!w) return null;
+      let steps: number | null = null;
+      let hrv: number | null = null;
+      try {
+        const wm = await fetchSessionMetrics(w.startISO, w.endISO);
+        if (wm) {
+          steps = wm.stepCount;
+          hrv = wm.heartRateVariabilitySDNN;
+        }
+      } catch { /* partial data is fine */ }
+      const m: LastWorkoutMetrics = {
+        calories: w.activeEnergyKcal != null && w.activeEnergyKcal > 0 ? Math.round(w.activeEnergyKcal) : null,
+        minutes: w.durationSec && w.durationSec > 0 ? Math.max(1, Math.round(w.durationSec / 60)) : null,
+        avgHr: w.avgHeartRate != null && w.avgHeartRate > 0 ? Math.round(w.avgHeartRate) : null,
+        maxHr: w.maxHeartRate != null && w.maxHeartRate > 0 ? Math.round(w.maxHeartRate) : null,
+        steps: steps != null ? Math.round(steps) : null,
+        hrv: hrv != null ? Math.round(hrv) : null,
+        endISO: w.endISO,
+      };
+      setLastWorkoutMetrics(m);
+      // Daily snapshot follows so home + settings tiles update in lockstep.
+      refresh({ silent: true });
+      return m;
+    } catch {
+      return null;
+    } finally {
+      setIsSyncingWorkout(false);
+    }
+  }, [available, refresh]);
+
   const requestPermissions = useCallback(async (): Promise<boolean> => {
     if (!available) return false;
     if (tokenRef.current) {
@@ -160,8 +220,11 @@ export function HealthProvider({ children }: ProviderProps) {
       isRefreshing,
       requestPermissions,
       refresh,
+      lastWorkoutMetrics,
+      isSyncingWorkout,
+      syncLastWorkout,
     }),
-    [available, status, snapshot, lastSyncedAt, isRefreshing, requestPermissions, refresh],
+    [available, status, snapshot, lastSyncedAt, isRefreshing, requestPermissions, refresh, lastWorkoutMetrics, isSyncingWorkout, syncLastWorkout],
   );
 
   return <HealthContext.Provider value={value}>{children}</HealthContext.Provider>;

@@ -208,7 +208,11 @@ export default function LazyTrainingTypeScreen() {
       selectedCart.workouts.forEach(workout => addToCart(workout));
       router.push({
         pathname: '/cart',
-        params: { generatedCarts: JSON.stringify(carts), moodCard: moodTitle }
+        params: {
+          generatedCarts: JSON.stringify(carts),
+          moodCard: moodTitle,
+          bfmDescriptor: JSON.stringify({ mood: 'lazy', intensity, trainingType, moodCard: moodTitle }),
+        }
       });
     }
   };

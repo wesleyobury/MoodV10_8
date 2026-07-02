@@ -142,7 +142,8 @@ export default function Register() {
         username.trim(),
         email.trim(),
         password,
-        name.trim() || undefined,
+        // No display name typed → default to the username they chose.
+        name.trim() || username.trim(),
       );
 
       // Spec §6 — the medical disclaimer is now folded into the signup

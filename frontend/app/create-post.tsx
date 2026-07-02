@@ -26,11 +26,13 @@ import { Video, ResizeMode } from 'expo-av';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WorkoutStatsCard from '../components/WorkoutStatsCard';
-import { fetchSessionMetrics, fetchMostRecentWorkout } from '../modules/mood-healthkit/src';
+import { fetchSessionMetrics } from '../modules/mood-healthkit/src';
+import { useHealth } from '../contexts/HealthContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import { maybeRequestReview } from '../utils/ratingPrompt';
+import Toast from '../components/Toast';
 import ImageCropModal from '../components/ImageCropModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import VideoFrameSelector from '../components/VideoFrameSelector';
@@ -93,12 +95,22 @@ export default function CreatePost() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { user, token, isLoading, isGuest, exitGuestMode } = useAuth();
+  const { lastWorkoutMetrics, syncLastWorkout } = useHealth();
   const { hasActiveAccess, hasUsedFreeSession, openPaywall, tryFirePostFirstWorkoutPaywall } = useSubscription();
   const [caption, setCaption] = useState('');
   const [selectedMedia, setSelectedMedia] = useState<MediaItem[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [workoutStats, setWorkoutStats] = useState<WorkoutStats | null>(null);
+
+  // Values pulled by a manual/auto "resync" after the Apple Watch flushes to
+  // HealthKit (active energy / steps / HRV can lag the end of a session by
+  // 5–60s). Any resynced value wins over the one captured at completion.
+  const [resynced, setResynced] = useState<{
+    calories?: number; steps?: number; hrv?: number;
+    avgHr?: number; maxHr?: number;
+  }>({});
+  const [isResyncing, setIsResyncing] = useState(false);
 
   // Optional live heart-rate payload forwarded by workout-session.tsx. When
   // present, the 'heartrate' variant renders these real samples instead of
@@ -119,8 +131,12 @@ export default function CreatePost() {
     const avg = parseInt((params.heartRateAvg as string) || '', 10);
     const peak = parseInt((params.heartRatePeak as string) || '', 10);
     if (Number.isFinite(avg) && Number.isFinite(peak)) return { avg, peak };
+    // Retrospective sync — HR pulled from the most recent HKWorkout.
+    if (resynced.avgHr != null && resynced.maxHr != null) {
+      return { avg: resynced.avgHr, peak: resynced.maxHr };
+    }
     return undefined;
-  }, [params.heartRateAvg, params.heartRatePeak]);
+  }, [params.heartRateAvg, params.heartRatePeak, resynced.avgHr, resynced.maxHr]);
 
   // Session window (start → end ISO) forwarded from workout-session — used to
   // re-query HealthKit (resync) and to show the REAL elapsed time.
@@ -145,11 +161,10 @@ export default function CreatePost() {
     }
   }, [sessionEndISO]);
 
-  // Values pulled by a manual/auto "resync" after the Apple Watch flushes to
-  // HealthKit (active energy / steps / HRV can lag the end of a session by
-  // 5–60s). Any resynced value wins over the one captured at completion.
-  const [resynced, setResynced] = useState<{ calories?: number; steps?: number; hrv?: number }>({});
-  const [isResyncing, setIsResyncing] = useState(false);
+
+  // True after a manual sync finished without finding real calories — used to
+  // surface the "connect Apple Health" hint only when it's actually relevant.
+  const [syncCameUpEmpty, setSyncCameUpEmpty] = useState(false);
 
   // Session-actual wearable metrics forwarded from workout-session.tsx.
   const sessionCaloriesFromWearable = useMemo<number | undefined>(() => {
@@ -225,11 +240,20 @@ export default function CreatePost() {
         }
       }
 
+      let avgHr: number | null = null;
+      let maxHr: number | null = null;
+
       if (cal == null || cal <= 0) {
-        const w = await fetchMostRecentWorkout();
+        // Shared retrospective sync — result lands in HealthContext so the
+        // wearable-data screen and home snapshot update in the same tap.
+        const w = await syncLastWorkout();
         if (w) {
-          if (w.activeEnergyKcal != null && w.activeEnergyKcal > 0) cal = Math.round(w.activeEnergyKcal);
-          if (w.durationSec && w.durationSec > 0) setEditedDuration(Math.max(1, Math.round(w.durationSec / 60)));
+          if (w.calories != null) cal = w.calories;
+          if (w.minutes != null) setEditedDuration(w.minutes);
+          if (w.avgHr != null) avgHr = w.avgHr;
+          if (w.maxHr != null) maxHr = w.maxHr;
+          if (steps == null) steps = w.steps;
+          if (hrv == null) hrv = w.hrv;
           const t = Date.parse(w.endISO);
           if (Number.isFinite(t)) {
             try {
@@ -245,14 +269,44 @@ export default function CreatePost() {
         calories: cal != null ? Math.round(cal) : prev.calories,
         steps: steps != null ? Math.round(steps) : prev.steps,
         hrv: hrv != null ? Math.round(hrv) : prev.hrv,
+        avgHr: avgHr != null ? avgHr : prev.avgHr,
+        maxHr: maxHr != null ? maxHr : prev.maxHr,
       }));
-      if (cal != null && cal > 0) setEditedCalories(Math.round(cal));
+      if (cal != null && cal > 0) {
+        setEditedCalories(Math.round(cal));
+        setSyncCameUpEmpty(false);
+      } else {
+        setSyncCameUpEmpty(true);
+      }
     } catch {
       // ignore — the user can tap Resync again
     } finally {
       setIsResyncing(false);
     }
-  }, [sessionStartISO, sessionEndISO]);
+  }, [sessionStartISO, sessionEndISO, syncLastWorkout]);
+
+  // A sync done elsewhere (wearable-data screen) pre-fills this card when the
+  // session itself has no wearable data.
+  const contextSeededRef = useRef(false);
+  useEffect(() => {
+    if (contextSeededRef.current) return;
+    if (!lastWorkoutMetrics) return;
+    if (sessionCaloriesFromWearable != null) return;
+    contextSeededRef.current = true;
+    setResynced((prev) => ({
+      calories: prev.calories ?? lastWorkoutMetrics.calories ?? undefined,
+      steps: prev.steps ?? lastWorkoutMetrics.steps ?? undefined,
+      hrv: prev.hrv ?? lastWorkoutMetrics.hrv ?? undefined,
+      avgHr: prev.avgHr ?? lastWorkoutMetrics.avgHr ?? undefined,
+      maxHr: prev.maxHr ?? lastWorkoutMetrics.maxHr ?? undefined,
+    }));
+    const t = Date.parse(lastWorkoutMetrics.endISO);
+    if (Number.isFinite(t)) {
+      try {
+        setLastWorkoutLabel(new Date(t).toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' }));
+      } catch { /* ignore */ }
+    }
+  }, [lastWorkoutMetrics, sessionCaloriesFromWearable]);
 
   // Silent auto-retries so numbers often fill in before the user even taps.
   useEffect(() => {
@@ -318,6 +372,7 @@ export default function CreatePost() {
   // Refs for measuring target positions so the overlay can align pointers accurately
   const mediaRowRef = useRef<View>(null);
   const editableStatsRowRef = useRef<View>(null);
+  const cardContainerRef = useRef<View>(null);
   const igButtonRef = useRef<View>(null);
   const [targetRects, setTargetRects] = useState<{
     media: { x: number; y: number; w: number; h: number } | null;
@@ -338,7 +393,7 @@ export default function CreatePost() {
           });
         };
         measure(mediaRowRef, 'media');
-        measure(editableStatsRowRef, 'stats');
+        measure(cardContainerRef, 'stats');
         measure(igButtonRef, 'ig');
 
         completionTipTriggeredRef.current = true;
@@ -543,6 +598,37 @@ export default function CreatePost() {
       }
     }
   }, [params.workoutStats]);
+
+  // First-workout congrats + completion toast.
+  // The very first completed workout gets a one-time congrats modal that
+  // explains this achievement screen; every completion after that gets a
+  // small toast instead. One-shot flag persisted per device.
+  const [congratsVisible, setCongratsVisible] = useState(false);
+  const [completionToastVisible, setCompletionToastVisible] = useState(false);
+  const congratsCheckedRef = useRef(false);
+  useEffect(() => {
+    if (!params.workoutStats || congratsCheckedRef.current) return;
+    congratsCheckedRef.current = true;
+    (async () => {
+      // Per-USER flag + the server-side workout count. The old device-wide
+      // counter was poisoned by prior test accounts on the same phone, which
+      // silently downgraded first-timers to the toast.
+      const FLAG = `@mood_first_workout_congrats_v1:${user?.id ?? 'anon'}`;
+      try {
+        const shown = await AsyncStorage.getItem(FLAG);
+        const serverCount = user?.workouts_count ?? 0;
+        if (!shown && serverCount <= 1) {
+          await AsyncStorage.setItem(FLAG, 'true');
+          setCongratsVisible(true);
+        } else {
+          if (!shown) await AsyncStorage.setItem(FLAG, 'true');
+          setCompletionToastVisible(true);
+        }
+      } catch {
+        // Never block the share screen on the congrats bookkeeping.
+      }
+    })();
+  }, [params.workoutStats, user?.id, user?.workouts_count]);
 
   // Auto-save: as soon as workout stats arrive on this screen (post-completion),
   // save the workout card to the user's profile silently. The visible "Save"
@@ -1884,7 +1970,7 @@ export default function CreatePost() {
               value={caption}
               onChangeText={setCaption}
               multiline
-              numberOfLines={3}
+              numberOfLines={2}
               maxLength={500}
             />
             <Text style={styles.captionCounter}>{caption.length}/500</Text>
@@ -2005,11 +2091,7 @@ export default function CreatePost() {
           {workoutStats && (
             <View style={styles.attachmentCard}>
               <View style={styles.attachmentHeader}>
-                <View style={styles.attachmentLabelContainer}>
-                  <Ionicons name="trophy" size={16} color="#FFD700" />
-                  <Text style={styles.attachmentType}>Achievement</Text>
-                </View>
-                <View style={styles.actionButtonsRow}>
+                <View style={[styles.actionButtonsRow, { flex: 1, justifyContent: 'flex-start' }]}>
                   {/* Instagram Share Button - Bold gold-bordered to stand out */}
                   <TouchableOpacity 
                     ref={igButtonRef}
@@ -2052,7 +2134,10 @@ export default function CreatePost() {
                       activeOpacity={0.7}
                     >
                       {cardSaved ? (
-                        <Text style={styles.savedText}>Saved</Text>
+                        <>
+                          <Ionicons name="checkmark" size={16} color="#FFD700" />
+                          <Text style={styles.saveButtonText}>Saved</Text>
+                        </>
                       ) : (
                         <>
                           <Ionicons name="bookmark-outline" size={18} color="#FFD700" />
@@ -2061,100 +2146,26 @@ export default function CreatePost() {
                       )}
                     </TouchableOpacity>
                   </Animated.View>
-                </View>
-              </View>
-              
-              {/* Editable Stats Row */}
-              <View style={styles.editableStatsHintRow}>
-                <Text style={styles.editableStatsHint}>Adjust values & targets </Text>
-                <Text style={styles.editableStatsOptional}>(optional, goals are saved)</Text>
-              </View>
-              <View style={styles.editableStatsRow} ref={editableStatsRowRef} collapsable={false}>
-                <View style={styles.editableStat}>
-                  <Text style={styles.editableStatLabel}>Min</Text>
-                  <TextInput
-                    style={styles.editableStatInput}
-                    value={editedDuration !== undefined ? String(editedDuration) : String(workoutStats.totalDuration)}
-                    onChangeText={(text) => {
-                      // Allow empty input while editing
-                      if (text === '') {
-                        setEditedDuration(0);
-                      } else {
-                        const num = parseInt(text, 10);
-                        if (!isNaN(num)) setEditedDuration(num);
-                      }
-                    }}
-                    keyboardType="numeric"
-                    maxLength={3}
-                    selectTextOnFocus
-                  />
-                </View>
-                <View style={styles.editableStat}>
-                  <Text style={styles.editableStatLabel}>Cal</Text>
-                  <TextInput
-                    style={styles.editableStatInput}
-                    value={editedCalories !== undefined ? String(editedCalories) : String(Math.round(workoutStats.totalDuration * 8))}
-                    onChangeText={(text) => {
-                      if (text === '') {
-                        setEditedCalories(0);
-                      } else {
-                        const num = parseInt(text, 10);
-                        if (!isNaN(num)) setEditedCalories(num);
-                      }
-                    }}
-                    keyboardType="numeric"
-                    maxLength={4}
-                    selectTextOnFocus
-                  />
-                </View>
-                <View style={styles.editableStat}>
-                  <Text style={styles.editableStatLabel}>Cal Goal</Text>
-                  <TextInput
-                    style={styles.editableStatInput}
-                    value={String(calorieTarget)}
-                    onChangeText={(text) => {
-                      if (text === '') {
-                        setCalorieTarget(0);
-                      } else {
-                        const num = parseInt(text, 10);
-                        if (!isNaN(num)) setCalorieTarget(num);
-                      }
-                    }}
-                    onBlur={() => {
-                      // Restore default if user left it empty
-                      if (calorieTarget === 0) setCalorieTarget(500);
-                    }}
-                    keyboardType="numeric"
-                    maxLength={4}
-                    selectTextOnFocus
-                  />
-                </View>
-                <View style={styles.editableStat}>
-                  <Text style={styles.editableStatLabel}>Min Goal</Text>
-                  <TextInput
-                    style={styles.editableStatInput}
-                    value={String(minuteTarget)}
-                    onChangeText={(text) => {
-                      if (text === '') {
-                        setMinuteTarget(0);
-                      } else {
-                        const num = parseInt(text, 10);
-                        if (!isNaN(num)) setMinuteTarget(num);
-                      }
-                    }}
-                    onBlur={() => {
-                      // Restore default if user left it empty
-                      if (minuteTarget === 0) setMinuteTarget(60);
-                    }}
-                    keyboardType="numeric"
-                    maxLength={3}
-                    selectTextOnFocus
-                  />
+
+                  {/* Equipment name on/off — same format as Save, with a
+                      radio bubble that fills when active */}
+                  <TouchableOpacity
+                    testID="equipment-toggle"
+                    onPress={() => setShowEquipment(prev => !prev)}
+                    style={[
+                      styles.saveCardButton,
+                      showEquipment && styles.saveCardButtonSaved,
+                    ]}
+                    activeOpacity={0.7}
+                  >
+                    <View style={[styles.equipBubble, showEquipment && styles.equipBubbleOn]} />
+                    <Text style={styles.saveButtonText}>Equip</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
               
               {/* Card + equipment toggle overlay */}
-              <View style={styles.cardWithToggleContainer}>
+              <View style={styles.cardWithToggleContainer} ref={cardContainerRef} collapsable={false}>
                 <ScrollView
                   horizontal
                   pagingEnabled
@@ -2202,18 +2213,157 @@ export default function CreatePost() {
                   ))}
                 </View>
 
-                {/* Resync — re-pull HealthKit stats (Apple Watch → phone sync
-                    can lag the end of a session by a minute). Only shown while
-                    Health IS connected but the session calories haven't landed
-                    yet. Once live calories are in there's nothing to sync, so
-                    the button disappears. When Health isn't connected at all,
-                    the "Connect Apple Health" banner below owns that CTA. */}
-                {sessionCaloriesFromWearable == null &&
-                  !!(heartRateRealStats ||
-                     sessionStepsFromWearable != null ||
-                     sessionHrvFromWearable != null) && (
+                {/* Sync status + actions live in the "Your numbers" panel
+                    above — nothing extra under the card. */}
+
+              </View>
+
+              {/* ── Your numbers — stats, targets & Apple Health in ONE panel ── */}
+              <View style={styles.statsPanel} ref={editableStatsRowRef} collapsable={false}>
+                <View style={styles.statsPanelHeader}>
+                  <Text style={styles.statsPanelTitle}>Your numbers</Text>
+                  {sessionCaloriesFromWearable != null ? (
+                    <View style={styles.statsPanelBadge}>
+                      <Ionicons name="checkmark-circle" size={13} color="#3CD070" />
+                      <Text style={styles.statsPanelBadgeLive}>
+                        Live · Apple Health
+                        {sessionLabel ? ` · ${sessionLabel}` : lastWorkoutLabel ? ` · ${lastWorkoutLabel}` : ''}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={styles.statsPanelBadge}>
+                      <Text style={styles.statsPanelBadgeEst}>* estimated</Text>
+                    </View>
+                  )}
+                </View>
+                <View style={styles.editableStatsRow}>
+                  <View style={styles.editableStat}>
+                    <Text style={styles.editableStatLabel}>MIN</Text>
+                    <TextInput
+                      style={styles.editableStatInput}
+                      value={editedDuration !== undefined ? String(editedDuration) : String(workoutStats.totalDuration)}
+                      onChangeText={(text) => {
+                        if (text === '') {
+                          setEditedDuration(0);
+                        } else {
+                          const num = parseInt(text, 10);
+                          if (!isNaN(num)) setEditedDuration(num);
+                        }
+                      }}
+                      keyboardType="numeric"
+                      maxLength={3}
+                      selectTextOnFocus
+                    />
+                  </View>
+                  <View style={styles.editableStat}>
+                    <Text style={styles.editableStatLabel}>MIN GOAL</Text>
+                    <TextInput
+                      style={styles.editableStatInput}
+                      value={String(minuteTarget)}
+                      onChangeText={(text) => {
+                        if (text === '') {
+                          setMinuteTarget(0);
+                        } else {
+                          const num = parseInt(text, 10);
+                          if (!isNaN(num)) setMinuteTarget(num);
+                        }
+                      }}
+                      onBlur={() => {
+                        if (minuteTarget === 0) setMinuteTarget(60);
+                      }}
+                      keyboardType="numeric"
+                      maxLength={3}
+                      selectTextOnFocus
+                    />
+                  </View>
+                  <View style={styles.editableStat}>
+                    <Text style={[styles.editableStatLabel, sessionCaloriesFromWearable == null && styles.editableStatLabelEst]}>
+                      {sessionCaloriesFromWearable == null ? 'CAL *' : 'CAL'}
+                    </Text>
+                    <TextInput
+                      style={[styles.editableStatInput, sessionCaloriesFromWearable == null && styles.editableStatInputEst]}
+                      value={editedCalories !== undefined ? String(editedCalories) : String(Math.round(workoutStats.totalDuration * 8))}
+                      onChangeText={(text) => {
+                        if (text === '') {
+                          setEditedCalories(0);
+                        } else {
+                          const num = parseInt(text, 10);
+                          if (!isNaN(num)) setEditedCalories(num);
+                        }
+                      }}
+                      keyboardType="numeric"
+                      maxLength={4}
+                      selectTextOnFocus
+                    />
+                  </View>
+                  <View style={styles.editableStat}>
+                    <Text style={styles.editableStatLabel}>CAL GOAL</Text>
+                    <TextInput
+                      style={styles.editableStatInput}
+                      value={String(calorieTarget)}
+                      onChangeText={(text) => {
+                        if (text === '') {
+                          setCalorieTarget(0);
+                        } else {
+                          const num = parseInt(text, 10);
+                          if (!isNaN(num)) setCalorieTarget(num);
+                        }
+                      }}
+                      onBlur={() => {
+                        if (calorieTarget === 0) setCalorieTarget(500);
+                      }}
+                      keyboardType="numeric"
+                      maxLength={4}
+                      selectTextOnFocus
+                    />
+                  </View>
+                </View>
+
+                {/* Synced metrics — read-only. Always visible so the block
+                    has a stable shape; unsynced values render as em-dashes. */}
+                <View style={styles.syncedMetricsRow}>
+                  <View style={styles.syncedMetric}>
+                    <Text style={[styles.syncedMetricVal, !heartRateRealStats && styles.syncedMetricValMuted]}>
+                      {heartRateRealStats ? heartRateRealStats.peak : '—'}
+                    </Text>
+                    <Text style={styles.syncedMetricKey}>MAX HR</Text>
+                  </View>
+                  <View style={styles.syncedMetric}>
+                    <Text style={[styles.syncedMetricVal, !heartRateRealStats && styles.syncedMetricValMuted]}>
+                      {heartRateRealStats ? heartRateRealStats.avg : '—'}
+                    </Text>
+                    <Text style={styles.syncedMetricKey}>AVG HR</Text>
+                  </View>
+                  <View style={styles.syncedMetric}>
+                    <Text style={[styles.syncedMetricVal, sessionStepsFromWearable == null && styles.syncedMetricValMuted]}>
+                      {sessionStepsFromWearable != null ? sessionStepsFromWearable : '—'}
+                    </Text>
+                    <Text style={styles.syncedMetricKey}>STEPS</Text>
+                  </View>
+                  <View style={styles.syncedMetric}>
+                    <Text style={[styles.syncedMetricVal, sessionHrvFromWearable == null && styles.syncedMetricValMuted]}>
+                      {sessionHrvFromWearable != null ? sessionHrvFromWearable : '—'}
+                    </Text>
+                    <Text style={styles.syncedMetricKey}>HRV</Text>
+                  </View>
+                </View>
+
+                <Text style={styles.statsPanelFootnote}>
+                  {sessionCaloriesFromWearable != null
+                    ? 'Calories are real Apple Health data'
+                    : '* estimated — sync Apple Health to replace with real numbers'}
+                </Text>
+                <Text style={styles.statsPanelFootnote}>
+                  Tap any number to fine-tune it — goals are saved.
+                </Text>
+
+                {/* Single Apple Health action — sync pulls the exact session
+                    window first, then falls back to the most recent Apple
+                    Watch workout (works even outside 24h). Hidden once live
+                    calories are in. */}
+                {sessionCaloriesFromWearable == null && (
                   <TouchableOpacity
-                    style={styles.resyncBtn}
+                    style={styles.statsPanelAction}
                     onPress={resync}
                     disabled={isResyncing}
                     activeOpacity={0.8}
@@ -2222,45 +2372,29 @@ export default function CreatePost() {
                     {isResyncing ? (
                       <ActivityIndicator size="small" color="#FFD700" />
                     ) : (
-                      <Ionicons name="refresh" size={15} color="#FFD700" />
+                      <Ionicons name="refresh" size={14} color="#FFD700" />
                     )}
-                    <Text style={styles.resyncText}>
-                      {isResyncing ? 'Syncing…' : 'Sync from Apple Health'}
+                    <Text style={styles.statsPanelActionText}>
+                      {isResyncing ? 'Syncing…' : 'Sync last workout from Apple Health'}
                     </Text>
                   </TouchableOpacity>
                 )}
 
-                {/* Two-state data indicator — plain status, not a button.
-                    Green check when Apple Health returned real calories;
-                    amber "estimated" otherwise. */}
-                {sessionCaloriesFromWearable != null ? (
-                  <View style={[styles.dataChip, styles.dataChipReal]}>
-                    <Ionicons name="checkmark-circle" size={13} color="#3CD070" />
-                    <Text style={styles.dataChipText}>
-                      Live calories from Apple Health{sessionLabel ? ` · ${sessionLabel} session` : (lastWorkoutLabel ? ` · ${lastWorkoutLabel}` : '')}
+                {/* Sync found nothing → the likely cause is Health isn't
+                    connected. One tap to fix, only shown when relevant. */}
+                {sessionCaloriesFromWearable == null && syncCameUpEmpty && (
+                  <TouchableOpacity
+                    style={styles.statsPanelConnectRow}
+                    onPress={() => router.push('/wearable-data')}
+                    activeOpacity={0.8}
+                  >
+                    <Ionicons name="heart-circle" size={13} color="#E0A03A" />
+                    <Text style={styles.statsPanelConnectText}>
+                      No data found — connect Apple Health
                     </Text>
-                  </View>
-                ) : (
-                  <View style={[styles.dataChip, styles.dataChipEst]}>
-                    <Ionicons name="alert-circle-outline" size={13} color="#E0A03A" />
-                    <Text style={styles.dataChipTextEst}>
-                      Calories estimated{sessionLabel ? ` · ${sessionLabel} session` : ''}
-                    </Text>
-                  </View>
+                    <Ionicons name="chevron-forward" size={13} color="#E0A03A" />
+                  </TouchableOpacity>
                 )}
-
-                {/* Equipment toggle — overlayed on bottom of card, share screen only */}
-                <TouchableOpacity
-                  testID="equipment-toggle"
-                  style={styles.equipmentToggleOverlay}
-                  onPress={() => setShowEquipment(prev => !prev)}
-                  activeOpacity={0.7}
-                >
-                  <View style={[styles.equipmentToggleTrack, showEquipment && styles.equipmentToggleTrackOn]}>
-                    <View style={[styles.equipmentToggleThumb, showEquipment && styles.equipmentToggleThumbOn]} />
-                  </View>
-                  <Text style={styles.equipmentToggleLabel}>include equipment name</Text>
-                </TouchableOpacity>
               </View>
 
               {/* Hidden opaque capture mirror — single active variant, used for in-post embed */}
@@ -2288,31 +2422,8 @@ export default function CreatePost() {
                 />
               </View>
 
-              {/* "Connect Apple Health" CTA — shown when no wearable data
-                  was captured for this session (no permissions / Android /
-                  Apple Watch not paired). Per design the rest of the card
-                  still renders the generic synthesized stats. */}
-              {!(heartRateRealStats ||
-                 sessionCaloriesFromWearable != null ||
-                 sessionStepsFromWearable != null ||
-                 sessionHrvFromWearable != null) && (
-                <TouchableOpacity
-                  style={styles.connectHealthBanner}
-                  activeOpacity={0.85}
-                  onPress={() => router.push('/wearable-data')}
-                >
-                  <View style={styles.connectHealthIcon}>
-                    <Ionicons name="heart-circle" size={24} color="#FFD700" />
-                  </View>
-                  <View style={styles.connectHealthBody}>
-                    <Text style={styles.connectHealthTitle}>Connect Apple Health</Text>
-                    <Text style={styles.connectHealthSubtitle}>
-                      See your real calories, heart rate, steps & HRV on workout cards
-                    </Text>
-                  </View>
-                  <Ionicons name="chevron-forward" size={18} color="rgba(255, 255, 255, 0.4)" />
-                </TouchableOpacity>
-              )}
+              {/* Apple Health connect entry now lives inside the "Your
+                  numbers" panel (shown after a sync finds no data). */}
 
               {/* Hidden transparent card for Instagram export */}
               <View style={styles.hiddenCardContainer} ref={transparentCardRef} collapsable={false}>
@@ -2338,15 +2449,6 @@ export default function CreatePost() {
                 />
               </View>
               
-              <View style={styles.saveExplanation}>
-                <Ionicons name="information-circle-outline" size={14} color="rgba(255, 215, 0, 0.7)" />
-                <Text style={styles.saveExplanationText}>
-                  Tap Save to keep this card in your Profile without posting
-                </Text>
-              </View>
-              <Text style={styles.attachmentHint}>
-                👆 This will appear as the last item in your post
-              </Text>
             </View>
           )}
 
@@ -2551,13 +2653,74 @@ export default function CreatePost() {
       )}
       
       {/* Guest Prompt Modal */}
-      <GuestPromptModal 
+      <GuestPromptModal
         visible={showGuestPrompt}
         onClose={() => {
           setShowGuestPrompt(false);
           router.back();
         }}
         action='create posts'
+      />
+
+      {/* First-workout congrats — one-time, explains the achievement card. */}
+      <Modal
+        visible={congratsVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setCongratsVisible(false)}
+      >
+        <View style={styles.congratsBackdrop}>
+          {/* Abstract backdrop — soft gold orbs + faint stars, no card chrome */}
+          <View pointerEvents="none" style={styles.congratsGlowOuter} />
+          <View pointerEvents="none" style={styles.congratsGlowInner} />
+          <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+            <View style={[styles.congratsStar, { top: '18%', left: '16%' }]} />
+            <View style={[styles.congratsStar, { top: '26%', right: '20%' }]} />
+            <View style={[styles.congratsStar, { top: '64%', left: '24%' }]} />
+            <View style={[styles.congratsStar, { top: '72%', right: '16%' }]} />
+            <View style={[styles.congratsStar, { top: '44%', left: '82%' }]} />
+          </View>
+
+          <View style={styles.congratsContent}>
+            <View style={styles.congratsHairline} />
+            <Text style={styles.congratsEyebrow}>FIRST WORKOUT COMPLETE</Text>
+            <Text style={styles.congratsTitle}>One down.</Text>
+            <Text style={styles.congratsBody}>
+              This card is your proof — tune the numbers, then share it.
+            </Text>
+
+            <View style={styles.congratsStreakRow}>
+              <Ionicons name="flame" size={14} color="#FFD700" />
+              <Text style={styles.congratsStreakText}>
+                Come back tomorrow to start your streak.
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              style={styles.congratsCta}
+              onPress={() => setCongratsVisible(false)}
+              activeOpacity={0.85}
+              testID="first-workout-congrats-cta"
+            >
+              <LinearGradient
+                colors={['#FFD700', '#FFA500']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.congratsCtaGradient}
+              >
+                <Text style={styles.congratsCtaLabel}>See my card</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Completion toast — every workout after the first. */}
+      <Toast
+        message="Workout complete — nice work"
+        visible={completionToastVisible}
+        onHide={() => setCompletionToastVisible(false)}
+        duration={2200}
       />
 
       {/* Instagram Hand-off Modal — replaces system Alert; has X to dismiss. */}
@@ -2709,18 +2872,11 @@ export default function CreatePost() {
             body: 'Tap here to upload a photo or video from your workout.',
           },
           {
-            rect: targetRects.ig,
-            placement: 'above',
-            icon: 'logo-instagram',
-            title: 'Share to IG Stories',
-            body: 'Saves the overlay to your photo album. Then open Instagram → new Story → sticker icon → pick the saved overlay.',
-          },
-          {
             rect: targetRects.stats,
-            placement: 'below',
-            icon: 'create-outline',
-            title: 'Adjust values & targets',
-            body: 'Tap any number — calories, minutes, sets — to fine-tune the stat card before you post.',
+            placement: 'above',
+            icon: 'trophy-outline',
+            title: 'Your achievement card',
+            body: 'Tappable in MOOD — friends can copy the workout. Shareable as a transparent overlay on IG & socials. Logs your time, calories & heart rate.',
           },
         ]}
       />
@@ -2826,6 +2982,208 @@ const styles = StyleSheet.create({
   feedMediaCard: {
     marginBottom: 6, // sit tight to the caption below — one combined block
   },
+  // ── "Your numbers" consolidated panel ──
+  statsPanel: {
+    backgroundColor: '#141417',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.07)',
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    marginBottom: 12,
+  },
+  statsPanelHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  statsPanelTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: 'rgba(255,255,255,0.85)',
+    letterSpacing: 0.3,
+  },
+  statsPanelBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  statsPanelBadgeLive: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.8)',
+  },
+  statsPanelBadgeEst: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#E0A03A',
+  },
+  syncedMetricsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginTop: 12,
+    paddingVertical: 8,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.04)',
+  },
+  syncedMetric: {
+    alignItems: 'center',
+    gap: 2,
+  },
+  syncedMetricVal: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#fff',
+    fontVariant: ['tabular-nums'],
+  },
+  syncedMetricValMuted: {
+    color: 'rgba(255,255,255,0.3)',
+  },
+  syncedMetricKey: {
+    fontSize: 8.5,
+    fontWeight: '700',
+    letterSpacing: 1,
+    color: 'rgba(255,255,255,0.45)',
+  },
+  statsPanelFootnote: {
+    fontSize: 10.5,
+    color: 'rgba(255,255,255,0.4)',
+    marginTop: 8,
+  },
+  statsPanelAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    marginTop: 10,
+    paddingVertical: 9,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.35)',
+  },
+  statsPanelActionText: {
+    fontSize: 12.5,
+    color: '#FFD700',
+    fontWeight: '600',
+  },
+  statsPanelConnectRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
+    marginTop: 8,
+    paddingVertical: 4,
+  },
+  statsPanelConnectText: {
+    fontSize: 11.5,
+    color: '#E0A03A',
+    fontWeight: '600',
+  },
+  editableStatLabelEst: {
+    color: '#E0A03A',
+  },
+  editableStatInputEst: {
+    color: '#E0A03A',
+    borderColor: 'rgba(224,160,58,0.45)',
+  },
+  congratsBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(4,4,5,0.97)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 36,
+  },
+  congratsGlowOuter: {
+    position: 'absolute',
+    top: '22%',
+    alignSelf: 'center',
+    width: 340,
+    height: 340,
+    borderRadius: 170,
+    backgroundColor: 'rgba(255,170,50,0.05)',
+  },
+  congratsGlowInner: {
+    position: 'absolute',
+    top: '30%',
+    alignSelf: 'center',
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    backgroundColor: 'rgba(255,195,60,0.08)',
+  },
+  congratsStar: {
+    position: 'absolute',
+    width: 2,
+    height: 2,
+    borderRadius: 1,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+  },
+  congratsContent: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+  },
+  congratsHairline: {
+    width: 36,
+    height: 2,
+    borderRadius: 1,
+    backgroundColor: '#FFD700',
+    marginBottom: 22,
+  },
+  congratsEyebrow: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 3.2,
+    color: 'rgba(255,215,0,0.9)',
+    marginBottom: 14,
+  },
+  congratsTitle: {
+    fontSize: 40,
+    fontWeight: '800',
+    color: '#fff',
+    letterSpacing: -1.2,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  congratsBody: {
+    fontSize: 14.5,
+    lineHeight: 21,
+    color: 'rgba(255,255,255,0.65)',
+    textAlign: 'center',
+    marginBottom: 22,
+  },
+  congratsStreakRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.28)',
+    marginBottom: 30,
+  },
+  congratsStreakText: {
+    fontSize: 12.5,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.85)',
+  },
+  congratsCta: {
+    borderRadius: 14,
+    overflow: 'hidden',
+    alignSelf: 'stretch',
+  },
+  congratsCtaGradient: {
+    paddingVertical: 15,
+    alignItems: 'center',
+  },
+  congratsCtaLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#0c0c0c',
+    letterSpacing: 0.2,
+  },
   dataChip: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -2878,15 +3236,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   captionInline: {
-    marginTop: 12,
-    minHeight: 64,
+    marginTop: 10,
+    minHeight: 34,
     color: '#fff',
     fontSize: 14,
     lineHeight: 20,
     textAlignVertical: 'top',
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.08)',
-    paddingTop: 12,
+    paddingTop: 10,
+    paddingBottom: 4,
   },
   mpBackdrop: {
     flex: 1,
@@ -2982,23 +3341,21 @@ const styles = StyleSheet.create({
   },
   editableStatsRow: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 16,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginBottom: 4,
+    flexWrap: 'wrap',
+    rowGap: 10,
+    paddingVertical: 4,
   },
   editableStat: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
+    width: '50%',
+    paddingRight: 10,
+    gap: 5,
   },
   editableStatLabel: {
     fontSize: 11,
     color: 'rgba(255, 255, 255, 0.4)',
   },
   editableStatInput: {
+    alignSelf: 'stretch',
     fontSize: 13,
     fontWeight: '500',
     color: '#fff',
@@ -3022,13 +3379,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    height: 36,
+    paddingHorizontal: 14,
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderRadius: 8,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.15)',
-    minWidth: 80,
+    minWidth: 76,
+  },
+  equipBubble: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: 'transparent',
+  },
+  equipBubbleOn: {
+    borderColor: '#FFD700',
+    backgroundColor: '#FFD700',
   },
   saveCardButtonSaved: {
     backgroundColor: 'rgba(255, 215, 0, 0.15)',
@@ -3081,6 +3450,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 6,
     marginTop: 10,
+    marginBottom: 14,
   },
   variantDot: {
     width: 6,
@@ -3308,10 +3678,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 215, 0, 0.2)',
     borderRadius: 12,
-    padding: 14,
+    padding: 10,
     color: '#fff',
     fontSize: 15,
-    minHeight: 100,
+    minHeight: 44,
     textAlignVertical: 'top',
   },
   captionCounter: {

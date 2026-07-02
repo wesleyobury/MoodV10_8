@@ -15,7 +15,7 @@
  * Settings flow already requests. Pure consumer of HealthContext.
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -54,8 +54,27 @@ type MetricKey = keyof Pick<
   'restingHeartRate' | 'heartRateVariabilitySDNN' | 'asleepDurationMinutes' | 'activeEnergyBurnedKcal' | 'stepCount'
 >;
 
+/** "Today" / "Yesterday" / weekday for retrospective metric labels. */
+function relativeDayLabel(iso: string | null | undefined, fallback: string): string {
+  if (!iso) return fallback;
+  const t = Date.parse(iso);
+  if (!Number.isFinite(t)) return fallback;
+  const day = new Date(t);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const diffDays = Math.round((today.getTime() - day.setHours(0, 0, 0, 0)) / 86400000);
+  if (diffDays <= 0) return 'Today';
+  if (diffDays === 1) return 'Yesterday';
+  try {
+    return day ? new Date(t).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 interface MetricDef {
   key: MetricKey;
+  /** Snapshot field carrying the day this metric's value belongs to. */
+  dateKey?: 'sleepDateISO' | 'activeEnergyDateISO' | 'stepCountDateISO';
   label: string;
   icon: keyof typeof Ionicons.glyphMap;
   unit: string;
@@ -82,7 +101,8 @@ const METRICS: MetricDef[] = [
   },
   {
     key: 'asleepDurationMinutes',
-    label: 'Sleep Last Night',
+    dateKey: 'sleepDateISO',
+    label: 'Sleep',
     icon: 'moon-outline',
     unit: '',
     format: (v) => {
@@ -94,6 +114,7 @@ const METRICS: MetricDef[] = [
   },
   {
     key: 'activeEnergyBurnedKcal',
+    dateKey: 'activeEnergyDateISO',
     label: 'Active Energy',
     icon: 'flame-outline',
     unit: 'kcal',
@@ -102,6 +123,7 @@ const METRICS: MetricDef[] = [
   },
   {
     key: 'stepCount',
+    dateKey: 'stepCountDateISO',
     label: 'Steps',
     icon: 'footsteps-outline',
     unit: '',
@@ -118,7 +140,31 @@ export default function WearableDataScreen() {
     isRefreshing,
     requestPermissions,
     refresh,
+    lastWorkoutMetrics,
+    isSyncingWorkout,
+    syncLastWorkout: syncLastWorkoutShared,
   } = useHealth();
+
+  // Last-workout retrospective sync — SHARED via HealthContext, so a sync
+  // done here (or on the achievement card) shows everywhere instantly.
+  const [workoutSyncAttempted, setWorkoutSyncAttempted] = useState(false);
+  const lastWorkout = useMemo(() => {
+    if (!lastWorkoutMetrics) return null;
+    let when = '';
+    const t = Date.parse(lastWorkoutMetrics.endISO);
+    if (Number.isFinite(t)) {
+      try {
+        when = new Date(t).toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' });
+      } catch { /* keep empty */ }
+    }
+    return { calories: lastWorkoutMetrics.calories, minutes: lastWorkoutMetrics.minutes, when };
+  }, [lastWorkoutMetrics]);
+
+  const syncLastWorkout = async () => {
+    if (isSyncingWorkout) return;
+    await syncLastWorkoutShared();
+    setWorkoutSyncAttempted(true);
+  };
 
   const hasAnyValue = useMemo(() => {
     if (!snapshot) return false;
@@ -267,10 +313,57 @@ export default function WearableDataScreen() {
                         <Text style={styles.unit}>{m.unit}</Text>
                       ) : null}
                     </View>
-                    <Text style={styles.cardHint}>{m.hint}</Text>
+                    <Text style={styles.cardHint}>
+                      {m.dateKey && hasValue
+                        ? relativeDayLabel(snapshot[m.dateKey] as string | null | undefined, m.hint)
+                        : m.hint}
+                    </Text>
                   </View>
                 );
               })}
+            </View>
+
+            {/* Last workout — retrospective sync with timestamp (works for
+                workouts well outside 24h, same as the achievement card). */}
+            <View style={styles.lastWorkoutCard} testID="wearable-last-workout">
+              <View style={styles.cardHead}>
+                <Ionicons name="barbell-outline" size={18} color={GOLD} />
+                <Text style={styles.cardLabel}>Last Workout</Text>
+                {lastWorkout?.when ? (
+                  <Text style={styles.lastWorkoutWhen}>{lastWorkout.when}</Text>
+                ) : null}
+              </View>
+              {lastWorkout ? (
+                <View style={styles.lastWorkoutRow}>
+                  <View style={styles.lastWorkoutCell}>
+                    <Text style={styles.value}>{lastWorkout.calories != null ? lastWorkout.calories : '—'}</Text>
+                    <Text style={styles.cardHint}>calories</Text>
+                  </View>
+                  <View style={styles.lastWorkoutDivider} />
+                  <View style={styles.lastWorkoutCell}>
+                    <Text style={styles.value}>{lastWorkout.minutes != null ? lastWorkout.minutes : '—'}</Text>
+                    <Text style={styles.cardHint}>minutes</Text>
+                  </View>
+                </View>
+              ) : (
+                <Text style={styles.emptyBodySmall}>
+                  {workoutSyncAttempted
+                    ? 'No workouts found in Apple Health yet.'
+                    : 'Pull your most recent Apple Watch workout — any time, not just today.'}
+                </Text>
+              )}
+              <TouchableOpacity
+                style={styles.cta}
+                onPress={syncLastWorkout}
+                disabled={isSyncingWorkout}
+                testID="wearable-sync-last-workout"
+              >
+                {isSyncingWorkout ? (
+                  <ActivityIndicator color="#0c0c0c" />
+                ) : (
+                  <Text style={styles.ctaText}>Sync last workout</Text>
+                )}
+              </TouchableOpacity>
             </View>
 
             <TouchableOpacity
@@ -325,6 +418,40 @@ export default function WearableDataScreen() {
 }
 
 const styles = StyleSheet.create({
+  lastWorkoutCard: {
+    backgroundColor: '#141417',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.07)',
+    padding: 16,
+    marginTop: 16,
+  },
+  lastWorkoutWhen: {
+    marginLeft: 'auto',
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.5)',
+  },
+  lastWorkoutRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginVertical: 12,
+  },
+  lastWorkoutCell: {
+    alignItems: 'center',
+    gap: 2,
+  },
+  lastWorkoutDivider: {
+    width: 1,
+    height: 30,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+  },
+  emptyBodySmall: {
+    fontSize: 13,
+    lineHeight: 19,
+    color: 'rgba(255,255,255,0.55)',
+    marginVertical: 10,
+  },
   container: { flex: 1, backgroundColor: '#000' },
   header: {
     flexDirection: 'row',
