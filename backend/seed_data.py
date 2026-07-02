@@ -9,12 +9,12 @@
 #   - hook is the TikTok-caption-style one-liner shown in carousel/admin.
 
 # Hero images (user-provided v3 — 2026-05-12)
-_HERO_SWEAT_ENGINE = "https://customer-assets.emergentagent.com/job_4f45ac3b-1fbc-46b1-a10d-f29dd9934b1b/artifacts/1gg9hw4l_sweat%20engine%20builder.png"
-_HERO_OUTDOOR_PARK = "https://customer-assets.emergentagent.com/job_4f45ac3b-1fbc-46b1-a10d-f29dd9934b1b/artifacts/zeyacn0v_outdoor%20park%20to%20peak2.png"
-_HERO_CALI_BAR = "https://customer-assets.emergentagent.com/job_564800a5-3285-4d4c-9e5c-2555c39e42a1/artifacts/aye1zfgm_calisthenics%20bar%20to%20floor.png"
-_HERO_MOOD_MIX = "https://customer-assets.emergentagent.com/job_4f45ac3b-1fbc-46b1-a10d-f29dd9934b1b/artifacts/wydq0p69_mood%20mix%20air%20%26%20abs.png"
-_HERO_BUILD_TRIPLE = "https://customer-assets.emergentagent.com/job_4f45ac3b-1fbc-46b1-a10d-f29dd9934b1b/artifacts/oo82nr5t_build%20explosion%20triple%20threat.png"
-_HERO_MG_PUSH = "https://customer-assets.emergentagent.com/job_4f45ac3b-1fbc-46b1-a10d-f29dd9934b1b/artifacts/vxbcwyg6_muscle%20gainer%20push%20day%20pump.png"
+_HERO_SWEAT_ENGINE = "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751406/mood_app/featured_heroes/sweat_engine_builder.png"
+_HERO_OUTDOOR_PARK = "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751407/mood_app/featured_heroes/outdoor_park_to_peak.png"
+_HERO_CALI_BAR = "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751409/mood_app/featured_heroes/calisthenics_bar_to_floor.png"
+_HERO_MOOD_MIX = "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751410/mood_app/featured_heroes/mood_mix_air_abs.png"
+_HERO_BUILD_TRIPLE = "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751411/mood_app/featured_heroes/build_explosion_triple_threat.png"
+_HERO_MG_PUSH = "https://res.cloudinary.com/dfsygar5c/image/upload/v1782751412/mood_app/featured_heroes/muscle_gainer_push_day_pump.png"
 
 
 PREVIEW_FEATURED_WORKOUTS = [

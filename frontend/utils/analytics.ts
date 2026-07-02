@@ -859,6 +859,18 @@ export const Analytics = {
 
   shareSheetOpened: (token: string, metadata: Record<string, any> = {}) =>
     trackEvent(token, 'share_sheet_opened', metadata),
+
+  // In-app rating prompt (3rd completed workout → soft pre-prompt → native
+  // StoreReview dialog). `outcome` is one of the RatingPromptOutcome values
+  // from utils/ratingPrompt.ts. Guest edge cases silently drop the event.
+  ratingPromptOutcome: (token: string | null, metadata: {
+    outcome: string;
+    workout_count?: number;
+    placement?: string;
+  }) => {
+    if (!token) return;
+    return trackEvent(token, 'rating_prompt_outcome', metadata);
+  },
 };
 
 // Guest Analytics - for tracking guest user activity
