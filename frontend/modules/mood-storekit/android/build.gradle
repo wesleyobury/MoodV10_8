@@ -1,0 +1,28 @@
+// Android build for the mood-storekit local Expo module.
+//
+// Mirrors the iOS MoodStoreKit target but backed by Google Play Billing
+// instead of StoreKit 2. Autolinked from source by Expo Modules (this dir
+// lives under frontend/modules), so no `publication` block is needed —
+// unlike published npm modules such as expo-haptics.
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'com.official.moodapp'
+version = '1.0.0'
+
+android {
+  namespace 'expo.modules.moodstorekit'
+  defaultConfig {
+    versionCode 1
+    versionName '1.0.0'
+  }
+}
+
+dependencies {
+  // Google Play Billing Library. Must be 8.x+ to satisfy Google's
+  // Aug 31 2026 version floor; pin to the latest 8.x (or 9.x) at build time.
+  // `-ktx` brings the suspend extensions (queryProductDetails / queryPurchasesAsync).
+  implementation 'com.android.billingclient:billing-ktx:8.0.0'
+}

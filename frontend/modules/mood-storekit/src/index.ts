@@ -63,7 +63,9 @@ interface NativeModuleShape {
 const native = requireOptionalNativeModule<NativeModuleShape>('MoodStoreKit');
 
 export function isStoreKitAvailable(): boolean {
-  if (Platform.OS !== 'ios') return false;
+  // iOS → StoreKit 2; Android → Google Play Billing. Both register the native
+  // module under the name "MoodStoreKit". Web / Expo Go have no native module.
+  if (Platform.OS !== 'ios' && Platform.OS !== 'android') return false;
   return !!native;
 }
 

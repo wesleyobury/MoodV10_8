@@ -18,8 +18,14 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 
 from apple_transaction_verifier import resolve_subscription_from_receipt
+from google_play_verifier import resolve_subscription_from_purchase_token
 
 logger = logging.getLogger(__name__)
+
+
+def _is_google_platform(platform: Optional[str]) -> bool:
+    """True when a validate/sync request originated on Android/Google Play."""
+    return (platform or "").strip().lower() in ("google", "android", "play")
 
 # ── App Store Connect product identifiers ───────────────────────────────────
 PRODUCT_ANNUAL = "com.mood.subscription.annual"
@@ -63,6 +69,10 @@ class SubscriptionValidateRequest(BaseModel):
     original_transaction_id: Optional[str] = None
     purchase_date: Optional[str] = None
     expiration_date: Optional[str] = None
+    # 'apple'/'ios' (default) or 'google'/'android'. On Android the client sends
+    # the opaque Play purchaseToken in `signed_payload`; the backend verifies it
+    # against the Play Developer API rather than an offline signature.
+    platform: Optional[str] = "apple"
 
 
 class SubscriptionSyncRequest(BaseModel):
@@ -78,6 +88,7 @@ class SubscriptionSyncRequest(BaseModel):
     original_transaction_id: Optional[str] = None
     purchase_date: Optional[str] = None
     expiration_date: Optional[str] = None
+    platform: Optional[str] = "apple"
 
 
 # ── Catalog helpers (exported for tests/scripts) ──────────────────────────
@@ -110,7 +121,18 @@ def subscription_status_for(expiration_iso: Optional[str]) -> str:
 
 
 def _reconcile_from_payload(payload) -> tuple[str, Dict[str, Optional[str]]]:
-    """Status + canonical fields from verified Apple JWS (SoT)."""
+    """Status + canonical fields from a verified receipt/token (source of truth).
+
+    Routes by `payload.platform`:
+      • Apple  → verify the StoreKit2 JWS offline.
+      • Google → verify the Play purchaseToken (carried in `signed_payload`)
+                 against the Play Developer API.
+    """
+    if _is_google_platform(getattr(payload, "platform", None)):
+        return resolve_subscription_from_purchase_token(
+            getattr(payload, "signed_payload", None),
+            fallback_product_id=getattr(payload, "product_id", None),
+        )
     return resolve_subscription_from_receipt(
         payload.signed_payload,
         fallback_product_id=getattr(payload, "product_id", None),
@@ -119,6 +141,11 @@ def _reconcile_from_payload(payload) -> tuple[str, Dict[str, Optional[str]]]:
         fallback_purchase_date=getattr(payload, "purchase_date", None),
         fallback_expiration_date=getattr(payload, "expiration_date", None),
     )
+
+
+def analytics_source_for(platform: Optional[str]) -> str:
+    """Analytics `source` tag for a validate/sync/webhook event."""
+    return "google" if _is_google_platform(platform) else "apple"
 
 
 def user_can_claim_founding(user: dict, window_open: bool) -> bool:
@@ -253,7 +280,7 @@ def build_subscriptions_router(
                     "plan_id": product_id,
                     "plan": plan,
                     "revenue_usd": PRODUCT_PRICE_USD.get(product_id),
-                    "source": "apple",
+                    "source": analytics_source_for(payload.platform),
                     "trigger_source": trigger_source,
                     "origin": "server_validate",
                     "is_comp": bool(flags_user.get("is_comp", False)),
@@ -481,6 +508,148 @@ def build_subscriptions_router(
 
         await track_user_event(db, user_id, event_type, metadata)
         logger.info(f"✅ Apple webhook emitted {event_type} for user {user_id}")
+        return {"ok": True, "verified": True, "event": event_type, "user_matched": True}
+
+    @router.post("/subscription/webhooks/google")
+    async def google_subscription_webhook(request: Request):
+        """Google Play Real-time Developer Notifications (RTDN) endpoint.
+
+        Google delivers subscription lifecycle changes (renewals, cancels,
+        expiries, refunds) via Cloud Pub/Sub push. This mirrors the Apple S2S
+        webhook: fail-closed, dedupe on messageId, re-fetch the authoritative
+        state from the Play Developer API (never trust the notification alone),
+        persist the user's subscription doc, and emit the SAME analytics events
+        the Apple path emits so the funnel is store-agnostic.
+        """
+        from google_play_verifier import (
+            parse_rtdn_message,
+            event_for_google,
+            resolve_subscription_from_purchase_token,
+            GooglePlayVerificationError,
+        )
+
+        try:
+            body = await request.json()
+        except Exception:
+            body = {}
+
+        now = datetime.now(timezone.utc)
+
+        try:
+            note = parse_rtdn_message(body)
+        except GooglePlayVerificationError as e:
+            logger.warning(f"🚫 Google RTDN DROPPED (unparseable): {e}")
+            try:
+                await db.google_rtdn_events.insert_one({
+                    "received_at": now,
+                    "verified": False,
+                    "drop_reason": str(e),
+                })
+            except Exception as persist_err:
+                logger.error(f"Google RTDN audit persistence failed: {persist_err}")
+            # 200 so Pub/Sub does not redeliver an un-actionable message.
+            return {"ok": True, "verified": False}
+
+        # A test publish from the Play Console carries no subscriptionNotification.
+        if note.get("is_test_notification"):
+            logger.info("📩 Google RTDN test notification received")
+            return {"ok": True, "verified": True, "test": True}
+
+        message_id = note.get("message_id")
+        purchase_token = note.get("purchase_token")
+        product_id = normalize_product_id(note.get("subscription_id"))
+        notification_type = note.get("notification_type")
+
+        # Dedupe on Pub/Sub messageId (at-least-once delivery).
+        already = None
+        if message_id:
+            already = await db.google_rtdn_events.find_one(
+                {"message_id": message_id, "verified": True}
+            )
+
+        # Re-fetch authoritative truth from Google (source of truth).
+        status_value, gfields = resolve_subscription_from_purchase_token(
+            purchase_token, fallback_product_id=product_id
+        )
+        resolved_product_id = normalize_product_id(gfields.get("product_id") or product_id)
+        plan = plan_for_product(resolved_product_id)
+
+        try:
+            await db.google_rtdn_events.update_one(
+                {"message_id": message_id} if message_id else {"_temp_id": str(now)},
+                {"$set": {
+                    "received_at": now,
+                    "verified": True,
+                    "notification_type": notification_type,
+                    "purchase_token": purchase_token,
+                    "product_id": resolved_product_id,
+                    "resolved_status": status_value,
+                }},
+                upsert=True,
+            )
+        except Exception as e:
+            logger.error(f"Google RTDN verified-audit persistence failed: {e}")
+
+        if already:
+            return {"ok": True, "verified": True, "duplicate": True}
+
+        # Match the user by the stable purchase token (stored as
+        # original_transaction_id on Android validate/sync).
+        user = None
+        if purchase_token:
+            user = await db.users.find_one(
+                {"subscription.original_transaction_id": purchase_token},
+                {"subscription": 1, "is_comp": 1, "is_internal": 1, "founding_member": 1},
+            )
+        if not user:
+            logger.warning(
+                "Google RTDN: verified but no user for purchaseToken; event skipped."
+            )
+            return {"ok": True, "verified": True, "user_matched": False}
+
+        user_id = str(user["_id"])
+
+        # Keep the persisted subscription doc in sync with Google's truth.
+        if plan:
+            await _persist_subscription_record(
+                db,
+                user_id,
+                product_id=resolved_product_id,
+                plan=plan,
+                status=status_value,
+                transaction_id=gfields.get("transaction_id"),
+                original_transaction_id=gfields.get("original_transaction_id") or purchase_token,
+                purchase_date=gfields.get("purchase_date"),
+                expiration_date=gfields.get("expiration_date"),
+                consume_trigger=False,
+            )
+
+        event_type = event_for_google(notification_type)
+        if not event_type:
+            return {"ok": True, "verified": True, "event": None}
+
+        metadata: Dict[str, Any] = {
+            "plan_id": resolved_product_id,
+            "plan": plan,
+            "source": "google",
+            "notification_type": notification_type,
+            "is_comp": bool(user.get("is_comp", False)),
+            "is_internal": bool(user.get("is_internal", False)),
+            "is_founding_member": bool(user.get("founding_member", False)),
+        }
+        if event_type in ("subscription_started", "subscription_renewed"):
+            metadata["revenue_usd"] = PRODUCT_PRICE_USD.get(resolved_product_id)
+        if event_type == "subscription_renewed":
+            prior = await db.user_events.count_documents(
+                {"user_id": user_id, "event_type": "subscription_renewed"}
+            )
+            metadata["renewal_count"] = prior + 1
+        if event_type == "subscription_refunded":
+            price = PRODUCT_PRICE_USD.get(resolved_product_id)
+            metadata["revenue_usd"] = (-price) if price is not None else None
+
+        await track_user_event(db, user_id, event_type, metadata)
+        logger.info(f"✅ Google RTDN emitted {event_type} for user {user_id}")
         return {"ok": True, "verified": True, "event": event_type, "user_matched": True}
 
     @router.post("/me/claim-founding")

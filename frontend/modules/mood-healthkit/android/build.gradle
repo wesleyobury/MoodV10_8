@@ -1,0 +1,27 @@
+// Android build for the mood-healthkit local Expo module.
+//
+// Android counterpart to the iOS MoodHealthKit target, backed by Health
+// Connect instead of HealthKit. Autolinked from source by Expo Modules
+// (lives under frontend/modules), so no `publication` block is needed.
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'com.official.moodapp'
+version = '1.0.0'
+
+android {
+  namespace 'expo.modules.moodhealthkit'
+  defaultConfig {
+    versionCode 1
+    versionName '1.0.0'
+  }
+}
+
+dependencies {
+  // Health Connect client. Pin to the latest stable at build time.
+  implementation 'androidx.health.connect:connect-client:1.1.0-rc03'
+  // Coroutine <-> ListenableFuture / permission-contract helpers.
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+}

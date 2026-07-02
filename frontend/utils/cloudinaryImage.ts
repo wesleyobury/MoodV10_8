@@ -15,8 +15,10 @@
  */
 
 /** Target pixel width for the featured-workout carousel card image.
- *  Sized for large phones at ~2.5x density; c_limit prevents upscaling. */
-export const FEATURED_CARD_IMAGE_WIDTH = 1080;
+ *  Sized for large high-density phones (near-full-width card at 3x); c_limit
+ *  prevents upscaling beyond the source. Bumped 1080 -> 1440 to keep hero
+ *  cards crisp on modern devices. */
+export const FEATURED_CARD_IMAGE_WIDTH = 1440;
 
 export function optimizedImageUrl(
   url: string | undefined | null,

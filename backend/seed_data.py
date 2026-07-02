@@ -676,6 +676,37 @@ PREVIEW_FEATURED_WORKOUTS = [
       {
         "exerciseId": "",
         "order": 0,
+        "name": "Glute-Biased Back Squat",
+        "equipment": "Barbell",
+        "description": "Wider stance squats emphasizing glute engagement and strength",
+        "battlePlan": "4 rounds\n• 8–10 reps\nRest 120s",
+        "duration": "14–16 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241394/mood_app/workout_images/gxoxkpbs_download_5_.jpg",
+        "intensityReason": "Wider stance emphasizes hip drive and glute recruitment",
+        "difficulty": "intermediate",
+        "workoutType": "Muscle Gainer - Compound",
+        "moodCard": "Muscle gainer",
+        "moodTips": [
+          {
+            "icon": "expand",
+            "title": "Push knees outward hard",
+            "description": "Creates better glute recruitment and hip stability."
+          },
+          {
+            "icon": "footsteps",
+            "title": "Drive through your heels",
+            "description": "You should feel glutes working before quads dominate."
+          },
+          {
+            "icon": "flame",
+            "title": "Tension should build each round",
+            "description": "If reps still feel easy late, increase load."
+          }
+        ]
+      },
+      {
+        "exerciseId": "",
+        "order": 1,
         "name": "Tempo Hip Thrust",
         "equipment": "Hip Thruster Equipment",
         "description": "Slow eccentrics increasing glute time under tension",
@@ -706,7 +737,7 @@ PREVIEW_FEATURED_WORKOUTS = [
       },
       {
         "exerciseId": "",
-        "order": 1,
+        "order": 2,
         "name": "Heavy Kickback",
         "equipment": "Glute Kick Machine",
         "description": "Progressive overload builds strength at extension",
@@ -732,7 +763,7 @@ PREVIEW_FEATURED_WORKOUTS = [
       },
       {
         "exerciseId": "",
-        "order": 2,
+        "order": 3,
         "name": "Cable High Kickback",
         "equipment": "Single Stack Cable Machine",
         "description": "Top‑end contraction isolates and strengthens glutes",
@@ -753,32 +784,6 @@ PREVIEW_FEATURED_WORKOUTS = [
             "icon": "timer",
             "title": "Kick upward + back, pause two seconds top",
             "description": "Pause at peak contraction maximizes muscle activation and control."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 3,
-        "name": "Banded Abduction",
-        "equipment": "Hip Abductor Machine",
-        "description": "Combo band+machine emphasizes hypertrophy work",
-        "battlePlan": "4 rounds\n• 12 Banded Abductions\nRest 90s",
-        "duration": "14–16 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241400/mood_app/workout_images/o6mep0pr_ha.jpg",
-        "intensityReason": "Band tension increases abductor contraction top end",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Glutes",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "resize",
-            "title": "Strap band above knees, press outward",
-            "description": "Band creates additional resistance throughout the range of motion."
-          },
-          {
-            "icon": "construct",
-            "title": "Keep knees wide, resist on way in",
-            "description": "Controlled return prevents band snap-back and maintains tension."
           }
         ]
       }

@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Required for Google Play Billing. The billing library also declares
+         this, but declaring it here makes the module self-contained. -->
+    <uses-permission android:name="com.android.vending.BILLING" />
+</manifest>

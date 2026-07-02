@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { apiFetch } from '../../utils/api';
 import type { StoreKitTransaction } from '../../modules/mood-storekit/src';
 import { markSubscriptionSynced } from './subscriptionVerifySchedule';
@@ -25,6 +26,9 @@ function buildTransactionPayload(
     original_transaction_id: txn.originalTransactionID,
     purchase_date: txn.purchaseDate,
     expiration_date: txn.expirationDate,
+    // Tells the backend which verifier to use: Apple JWS vs Play Developer API.
+    // On Android `signed_payload` carries the opaque Play purchaseToken.
+    platform: Platform.OS === 'android' ? 'google' : 'apple',
     ...(extra?.trigger_source ? { trigger_source: extra.trigger_source } : {}),
   };
 }

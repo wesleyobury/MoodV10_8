@@ -31,7 +31,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useHealth } from '../contexts/HealthContext';
 import type { BiometricSnapshot } from '../modules/mood-healthkit/src';
-import { getHealthKitDiagnostics } from '../modules/mood-healthkit/src';
+import { getHealthKitDiagnostics, HRV_METRIC } from '../modules/mood-healthkit/src';
 
 const GOLD = '#FFD700';
 
@@ -74,7 +74,7 @@ const METRICS: MetricDef[] = [
   },
   {
     key: 'heartRateVariabilitySDNN',
-    label: 'Heart Rate Variability',
+    label: `Heart Rate Variability (${HRV_METRIC})`,
     icon: 'pulse-outline',
     unit: 'ms',
     format: (v) => Math.round(v).toString(),

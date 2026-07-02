@@ -16,6 +16,20 @@ export type HealthAuthorizationStatus =
   | 'notDetermined'
   | 'determined';
 
+/**
+ * The heart-rate-variability metric this platform actually reports.
+ * iOS/HealthKit → SDNN. Android/Health Connect → RMSSD. These are DIFFERENT
+ * measures and are not numerically interchangeable, so any HRV number must be
+ * labelled with the right metric name. The value is still carried in the
+ * `heartRateVariabilitySDNN` field for API compatibility across platforms.
+ */
+export const HRV_METRIC: 'SDNN' | 'RMSSD' =
+  Platform.OS === 'android' ? 'RMSSD' : 'SDNN';
+
+/** User-facing name of the OS health data source, for UI copy. */
+export const HEALTH_SOURCE_NAME: string =
+  Platform.OS === 'android' ? 'Health Connect' : 'Apple Health';
+
 export interface BiometricSnapshot {
   /** Most recent resting heart rate within last 7 days, in BPM. */
   restingHeartRate: number | null;
@@ -80,9 +94,11 @@ export const getHealthKitDiagnostics = () => ({
   isHealthDataAvailable: native?.isHealthDataAvailable ?? null,
 });
 
-/** True if HealthKit is reachable from this build. False in Expo Go / non-iOS. */
+/** True if native health data is reachable from this build. False in Expo Go / web.
+ *  iOS → HealthKit; Android → Health Connect (isHealthDataAvailable is true only
+ *  when the Health Connect SDK reports SDK_AVAILABLE on the device). */
 export const isHealthKitAvailable = (): boolean => {
-  if (Platform.OS !== 'ios') return false;
+  if (Platform.OS !== 'ios' && Platform.OS !== 'android') return false;
   return !!native && native.isHealthDataAvailable === true;
 };
 

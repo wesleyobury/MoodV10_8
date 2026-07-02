@@ -1,6 +1,9 @@
 {
-  "platforms": ["ios"],
+  "platforms": ["ios", "android"],
   "ios": {
     "modules": ["MoodStoreKitModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.moodstorekit.MoodStoreKitModule"]
   }
 }

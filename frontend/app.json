@@ -71,6 +71,7 @@
       ],
       "./plugins/withCxx17Fix",
       "./plugins/withMoodHealthKit",
+      "./plugins/withMoodHealthKitAndroid",
       "expo-font",
       "expo-web-browser",
       [
