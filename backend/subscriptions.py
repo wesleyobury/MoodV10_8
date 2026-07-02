@@ -10,8 +10,11 @@ monolithic server import graph.
 from __future__ import annotations
 
 import logging
+import os
 from datetime import datetime, timezone
 from typing import Any, Awaitable, Callable, Dict, Optional
+
+import httpx
 
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -44,6 +47,69 @@ PRODUCT_PRICE_USD = {
     PRODUCT_MONTHLY: 9.99,
     PRODUCT_FOUNDING_ANNUAL: 39.0,
 }
+
+
+# ── New-subscription Discord alert ──────────────────────────────────────────
+# Set DISCORD_SUBS_WEBHOOK_URL in the backend env to a Discord channel webhook
+# (Server Settings → Integrations → Webhooks → Copy Webhook URL). When unset,
+# this is a no-op, so it is safe to deploy before the env var exists.
+DISCORD_SUBS_WEBHOOK_ENV = "DISCORD_SUBS_WEBHOOK_URL"
+
+
+def _fmt_usd(value: Optional[float]) -> str:
+    try:
+        return f"${float(value):,.2f}"
+    except (TypeError, ValueError):
+        return "n/a"
+
+
+async def notify_new_subscription_discord(
+    db,
+    *,
+    user_id: str,
+    product_id: Optional[str],
+    plan: Optional[str],
+    revenue_usd: Optional[float],
+    source: str,
+    txn_key: Optional[str],
+) -> None:
+    """Fire a one-time Discord ping for a NEW subscription. Never raises.
+
+    Deduped on the subscription's transaction identity (Apple
+    original_transaction_id / Google purchase token) via an atomic insert into
+    `sub_notify_log`, so the app-validate path (which re-fires on every launch)
+    and the Apple/Google server webhooks never double-notify the same sale.
+    """
+    webhook_url = os.environ.get(DISCORD_SUBS_WEBHOOK_ENV)
+    if not webhook_url:
+        return
+    try:
+        key = txn_key or f"{user_id}:{product_id}"
+        # Atomic dedupe: the first writer wins; a duplicate _id means we've
+        # already pinged for this subscription, so skip silently.
+        try:
+            await db.sub_notify_log.insert_one({
+                "_id": key,
+                "user_id": user_id,
+                "product_id": product_id,
+                "source": source,
+                "created_at": datetime.now(timezone.utc),
+            })
+        except Exception:
+            return
+
+        plan_label = plan or product_id or "subscription"
+        content = (
+            "💸 **New MOOD subscription**\n"
+            f"• Plan: **{plan_label}**\n"
+            f"• Revenue: **{_fmt_usd(revenue_usd)}**\n"
+            f"• Source: {source}\n"
+            f"• User: `{user_id}`"
+        )
+        async with httpx.AsyncClient(timeout=8.0) as client:
+            await client.post(webhook_url, json={"content": content})
+    except Exception as e:
+        logger.warning(f"Discord subscription notify failed: {e}")
 
 
 # ── Pydantic models ───────────────────────────────────────────────────────
@@ -291,6 +357,16 @@ def build_subscriptions_router(
         except Exception as e:
             logger.error(f"subscription_started analytics insert failed: {e}")
 
+        await notify_new_subscription_discord(
+            db,
+            user_id=current_user_id,
+            product_id=product_id,
+            plan=plan,
+            revenue_usd=PRODUCT_PRICE_USD.get(product_id),
+            source=analytics_source_for(payload.platform),
+            txn_key=apple_fields.get("original_transaction_id") or apple_fields.get("transaction_id"),
+        )
+
         return {
             "ok": True,
             "status": status_value,
@@ -508,6 +584,17 @@ def build_subscriptions_router(
 
         await track_user_event(db, user_id, event_type, metadata)
         logger.info(f"✅ Apple webhook emitted {event_type} for user {user_id}")
+
+        if event_type == "subscription_started":
+            await notify_new_subscription_discord(
+                db,
+                user_id=user_id,
+                product_id=webhook_product_id,
+                plan=metadata.get("plan"),
+                revenue_usd=metadata.get("revenue_usd"),
+                source="apple",
+                txn_key=original_transaction_id,
+            )
         return {"ok": True, "verified": True, "event": event_type, "user_matched": True}
 
     @router.post("/subscription/webhooks/google")
@@ -650,6 +737,17 @@ def build_subscriptions_router(
 
         await track_user_event(db, user_id, event_type, metadata)
         logger.info(f"✅ Google RTDN emitted {event_type} for user {user_id}")
+
+        if event_type == "subscription_started":
+            await notify_new_subscription_discord(
+                db,
+                user_id=user_id,
+                product_id=resolved_product_id,
+                plan=plan,
+                revenue_usd=metadata.get("revenue_usd"),
+                source="google",
+                txn_key=purchase_token,
+            )
         return {"ok": True, "verified": True, "event": event_type, "user_matched": True}
 
     @router.post("/me/claim-founding")
