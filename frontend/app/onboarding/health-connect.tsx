@@ -22,6 +22,7 @@ import { setHealthOnboardingComplete } from '../../utils/healthStorage';
 import { markWorkoutHandoffPending } from '../../utils/onboardingFunnelDefer';
 import { WearablesSuccessState } from '../../components/WearablesSuccessState';
 import { useAuth } from '../../contexts/AuthContext';
+import { Analytics } from '../../utils/analytics';
 
 const BULLETS = [
   'Resting heart rate',
@@ -33,10 +34,16 @@ const BULLETS = [
 
 export default function HealthConnectScreen() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { requestPermissions } = useHealth();
   const [busy, setBusy] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // Funnel step 8 — the wearables gate sits between the payoff paywall and
+  // the first-workout handoff; without this the drop-off there is invisible.
+  React.useEffect(() => {
+    Analytics.onboardingStepViewed(token, { step: 8, question: 'wearables_connect' });
+  }, [token]);
 
   // Phase 5.3 — after wearables, route to the mood interstitial (not home).
   // mood-intro then forwards to the first decision screen of the funnel mood.
@@ -44,6 +51,15 @@ export default function HealthConnectScreen() {
     await setHealthOnboardingComplete();
     if (user?.id) await markWorkoutHandoffPending(user.id);
     router.replace('/mood-intro');
+  };
+
+  const handleMaybeLater = async () => {
+    Analytics.onboardingStepCompleted(token, {
+      step: 8,
+      question: 'wearables_connect',
+      answer: 'maybe_later',
+    });
+    await goToMoodIntro();
   };
 
   const handleConnect = async () => {
@@ -55,6 +71,11 @@ export default function HealthConnectScreen() {
     } finally {
       setBusy(false);
     }
+    Analytics.onboardingStepCompleted(token, {
+      step: 8,
+      question: 'wearables_connect',
+      answer: granted ? 'connected' : 'denied',
+    });
     // Phase 5.2 — show the brief success state ONLY on an actual grant.
     // Denied/skipped → straight to mood-intro, no success state.
     if (granted) {
@@ -117,7 +138,7 @@ export default function HealthConnectScreen() {
 
         <TouchableOpacity
           style={styles.secondaryButton}
-          onPress={goToMoodIntro}
+          onPress={handleMaybeLater}
           disabled={busy}
           testID="health-connect-skip"
         >

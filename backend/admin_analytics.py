@@ -76,8 +76,22 @@ async def get_funnel_analysis(
         previous_users = None
         
         for i, step in enumerate(steps):
-            # Get unique users who completed this step
-            step_filter = {**base_filter, "event_type": step}
+            # Get unique users who completed this step.
+            # Tokens support an optional ":<n>" suffix to split events that
+            # share one event_type by metadata.step — e.g.
+            # "onboarding_step_completed:3" → onboarding funnel step 3.
+            event_type = step
+            meta_step = None
+            if ":" in step:
+                candidate, _, suffix = step.partition(":")
+                try:
+                    meta_step = int(suffix)
+                    event_type = candidate
+                except ValueError:
+                    meta_step = None
+            step_filter = {**base_filter, "event_type": event_type}
+            if meta_step is not None:
+                step_filter["metadata.step"] = meta_step
             
             # For registration, check users collection
             if step in ["user_registered", "signup"]:
