@@ -1097,7 +1097,7 @@ export default function AdminDashboard() {
             <Ionicons name="chevron-forward" size={18} color="#666" />
           </TouchableOpacity>
           
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.quickActionButton}
             onPress={() => router.push('/admin-exercise-library')}
           >
@@ -1105,6 +1105,17 @@ export default function AdminDashboard() {
               <Ionicons name="videocam" size={20} color="#FFD700" />
             </View>
             <Text style={styles.quickActionText}>Exercise Video Library</Text>
+            <Ionicons name="chevron-forward" size={18} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.quickActionButton}
+            onPress={() => router.push('/admin-comp' as any)}
+          >
+            <View style={styles.quickActionIcon}>
+              <Ionicons name="gift" size={20} color="#FFD700" />
+            </View>
+            <Text style={styles.quickActionText}>Comp Accounts (Creators)</Text>
             <Ionicons name="chevron-forward" size={18} color="#666" />
           </TouchableOpacity>
         </View>
