@@ -10,7 +10,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Row + Rear Fly',
           duration: '12–14 min',
           description: 'Rows for pulling power and rear flies for stability',
-          battlePlan: '3 rounds\n• 10 Single-Arm Dumbbell Row (each side, supported on bench)\nRest 60s after each side\n• 10 Prone Rear Delt Fly (lying face down)\nRest 60s after each set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Single-Arm Dumbbell Row (each side, supported on bench)\nRest 60s after each side\n• 10 Prone Rear Delt Fly (lying face down)\nRest 60s after each set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -56,7 +56,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Y-T Row Flow',
           duration: '12–14 min',
           description: 'Rows with Y + T raises for posture and shoulder health',
-          battlePlan: '3 rounds\n• 10 Single-Arm Row (each side)\n• 10 Incline Prone Y-Raise\n• 10 Incline Prone T-Raise\nRest 75s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Single-Arm Row (each side)\n• 10 Incline Prone Y-Raise\n• 10 Incline Prone T-Raise\nRest 75s after sequence',
           plan: {
             "format": "interval",
             "blocks": [
@@ -105,7 +105,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported One-Arm Rows',
           duration: '12–14 min',
           description: 'Bench-supported rows to learn clean pulling mechanics',
-          battlePlan: '3 rounds\n• 10 Single-Arm DB Rows (each side)\nRest 60s per side',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Single-Arm DB Rows (each side)\nRest 60s per side',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -151,7 +151,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chest-Supported Dumbbell Rows',
           duration: '12–14 min',
           description: 'Prone rows emphasizing mid-back control',
-          battlePlan: '3 rounds\n• 12 Chest-Supported DB Rows\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Chest-Supported DB Rows\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -199,7 +199,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chest-Support Row',
           duration: '14–16 min',
           description: 'Supported rows and flies promote strict contraction',
-          battlePlan: '4 rounds\n• 8 Chest-Supported Dumbbell Row\nRest 75–90s\n• 10 Incline Prone Reverse Fly\nRest 75–90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Chest-Supported Dumbbell Row\nRest 75–90s\n• 10 Incline Prone Reverse Fly\nRest 75–90s',
           plan: {
             "format": "interval",
             "blocks": [
@@ -245,7 +245,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'W-Rear Flow',
           duration: '14–16 min',
           description: 'Rows, W-raises, and flys refine mid-back strength',
-          battlePlan: '3 rounds\n• 8 Single-Arm Row (each side)\n• 8 Incline Prone W-Raise\n• 8 Incline Prone Reverse Fly\nRest 90s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Single-Arm Row (each side)\n• 8 Incline Prone W-Raise\n• 8 Incline Prone Reverse Fly\nRest 90s after sequence',
           plan: {
             "format": "interval",
             "blocks": [
@@ -295,7 +295,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Dumbbell Rows',
           duration: '14–16 min',
           description: 'One-arm rows with extended peak contraction',
-          battlePlan: '4 rounds\n• 8 DB Rows (2s pause, each side)\nRest 75–90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 DB Rows (2s pause, each side)\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -341,7 +341,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Row Drop Set',
           duration: '14–16 min',
           description: 'Heavy rows extended using fast weight drops',
-          battlePlan: '3 rounds\n• 8 DB Rows\n• Drop → 8\n• Drop → 8\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 DB Rows\n• Row drop → 8\n• Row drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -390,7 +390,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: '3-Way Pull Row',
           duration: '16–18 min',
           description: 'Supported row, reverse fly, and single-arm grind',
-          battlePlan: '4 rounds\n• 8 Chest-Supported Row\nRest 90s\n• 8 Incline Prone Reverse Fly\nRest 90s\n• 8 Single-Arm Row (each side)\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Chest-Supported Row\nRest 90s\n• 8 Incline Prone Reverse Fly\nRest 90s\n• 8 Single-Arm Row (each side)\nRest 90s',
           plan: {
             "format": "interval",
             "blocks": [
@@ -441,7 +441,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Y-T Row Blast',
           duration: '18–20 min',
           description: 'Rows plus Y/T raises for balanced shoulder growth',
-          battlePlan: '4 rounds\n• 8 Chest-Supported Row\n• 8 Incline Prone Y-Raise\n• 8 Incline Prone T-Raise\nRest 90–120s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Chest-Supported Row\n• 8 Incline Prone Y-Raise\n• 8 Incline Prone T-Raise\nRest 90–120s after sequence',
           plan: {
             "format": "interval",
             "blocks": [
@@ -490,7 +490,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Dumbbell Rows',
           duration: '16–18 min',
           description: 'Heavy unilateral rows for maximal lat loading',
-          battlePlan: '4 rounds\n• 6 Heavy DB Rows (each side)\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 Heavy DB Rows (each side)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -536,7 +536,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Dumbbell Rows',
           duration: '18–20 min',
           description: 'Extended drop sets to fully exhaust back',
-          battlePlan: '3 rounds\n• 6 Rows\n• Drop → 6\n• Drop → 6\n• Drop → 6\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Rows\n• Rows drop → 6\n• Rows drop → 6\n• Rows drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -590,7 +590,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Row & Deadlift',
           duration: '14–16 min',
           description: 'Rows and deadlifts develop base power and muscle control.',
-          battlePlan: '3 rounds:\n• 10 Barbell Bent-Over Row\nRest 60–75s after each set\n• 10 Barbell Deadlift\nRest 60–75s after each set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds:\n• 10 Barbell Bent-Over Row\nRest 60–75s after each set\n• 10 Barbell Deadlift\nRest 60–75s after each set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -637,7 +637,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Row Flow Combo',
           duration: '12–14 min',
           description: 'Combines row grips and good mornings for total back work.',
-          battlePlan: '3 rounds:\n• 10 Bent-Over Row\n• 10 Underhand Grip Row\n• 10 Barbell Good Morning\nRest 60–75s after completing the full sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds:\n• 10 Bent-Over Row\n• 10 Underhand Grip Row\n• 10 Barbell Good Morning\nRest 60–75s after completing the full sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -687,7 +687,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Bent-Over Rows',
           duration: '12–14 min',
           description: 'Controlled barbell rows emphasizing strict tempo',
-          battlePlan: '3 rounds\n• 10 Bent-Over Rows (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 10 Bent-Over Rows (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -733,7 +733,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Rows',
           duration: '12–14 min',
           description: 'Barbell rows with pauses at contraction',
-          battlePlan: '3 rounds\n• 8 Paused Bent-Over Rows\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8 Paused Bent-Over Rows\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -781,7 +781,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendlay + RDL',
           duration: '16–18 min',
           description: 'Pendlay rows and RDLs balance power with hamstring load.',
-          battlePlan: '4 rounds:\n• 8 Pendlay Row\nRest 75–90s after each set\n• 10 Romanian Deadlift\nRest 75–90s after each set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds:\n• 8 Pendlay Row\nRest 75–90s after each set\n• 10 Romanian Deadlift\nRest 75–90s after each set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -827,7 +827,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Row Shrug Flow',
           duration: '16–18 min',
           description: 'Multi-grip rows, shrugs, deads build traps and mid-back.',
-          battlePlan: '3 rounds:\n• 8 Bent-Over Row\n• 8 Reverse-Grip Row\n• 8 Barbell Shrugs\n• 8 Deadlift\nRest 90s after finishing the full circuit',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds:\n• 8 Bent-Over Row\n• 8 Reverse-Grip Row\n• 8 Barbell Shrugs\n• 8 Deadlift\nRest 90s after finishing the full circuit',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -881,7 +881,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Row Drop Set',
           duration: '16–18 min',
           description: 'Heavy rows extended using plate reductions',
-          battlePlan: '3 rounds\n• 6 Rows\n• Drop → 6\n• Drop → 6\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Rows\n• Row drop → 6\n• Row drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -928,7 +928,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso-Finish Rows',
           duration: '16–18 min',
           description: 'Rows finished with static bar holds',
-          battlePlan: '4 rounds\n• 8 Rows\n• Finish with 10s hold\nRest 120s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• 8 Rows\n• Finish with 10s hold\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -976,7 +976,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Barbell',
           duration: '20–22 min',
           description: 'Rows, deads, shrugs overload traps and spinal erectors.',
-          battlePlan: '4 rounds:\n• 8 Barbell Bent-Over Row\nRest 90–120s after each set\n• 8 Barbell Deadlift\nRest 90–120s after each set\n• 8 Barbell Shrug\nRest 90–120s after each set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds:\n• 8 Barbell Bent-Over Row\nRest 90–120s after each set\n• 8 Barbell Deadlift\nRest 90–120s after each set\n• 8 Barbell Shrug\nRest 90–120s after each set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1026,7 +1026,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Power Complex',
           duration: '20–22 min',
           description: 'Row, high pull, and clean complex maximizes back output.',
-          battlePlan: '4 rounds:\n• 8 Barbell Row\n• 8 Barbell High Pull\n• 8 Barbell Power Clean\nRest 90–120s after completing the full sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds:\n• 8 Barbell Row\n• 8 Barbell High Pull\n• 8 Barbell Power Clean\nRest 90–120s after completing the full sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1077,7 +1077,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Tempo Rows',
           duration: '18–20 min',
           description: 'Heavy barbell rows with long controlled eccentrics',
-          battlePlan: '4 rounds\n• 6 Rows (5s eccentric)\nRest 150s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6 Rows (5s eccentric)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1122,7 +1122,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Row Mechanical Drop',
           duration: '20–22 min',
           description: 'Grip-width changes to extend heavy sets',
-          battlePlan: '3 rounds\n• 6 Wide-Grip Rows\n• Immediately 6 Standard Rows\n• Immediately 6 Underhand Rows\nRest 150s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n3 rounds\n• 6 Wide-Grip Rows\n• 6 Standard Rows — immediately, no rest\n• 6 Underhand Rows — immediately, no rest\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1177,7 +1177,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Row & Deadlift KB',
           duration: '12–14 min',
           description: 'Rows and deadlifts with kettlebells build back base',
-          battlePlan: '3 rounds\n• 10 Single-Arm KB Row (each side)\nRest 60–75s after each set\n• 10 KB Deadlift\nRest 60–75s after each set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Single-Arm KB Row (each side)\nRest 60–75s after each set\n• 10 KB Deadlift\nRest 60–75s after each set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1222,7 +1222,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Row Swing Flow',
           duration: '14–15 min',
           description: 'Grip and back strength with flow style movements',
-          battlePlan: '3 rounds\n• 10 KB Single-Arm Row (each side)\n• 10 KB Suitcase Deadlift (each side)\n• 10 KB Swing\nRest 60–75s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 KB Single-Arm Row (each side)\n• 10 KB Suitcase Deadlift (each side)\n• 10 KB Swing\nRest 60–75s after sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1273,7 +1273,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported Kettlebell Rows',
           duration: '12–14 min',
           description: 'Single-arm rows emphasizing control and balance',
-          battlePlan: '3 rounds\n• 10 KB Rows (each side)\nRest 60s per side',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 KB Rows (each side)\nRest 60s per side',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1318,7 +1318,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Suitcase Kettlebell Rows',
           duration: '12–14 min',
           description: 'Offset rows building stability and back control',
-          battlePlan: '3 rounds\n• 8 Suitcase KB Rows (each side)\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Suitcase KB Rows (each side)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1365,7 +1365,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Double Row + Suitcase',
           duration: '16–18 min',
           description: 'Double rows with suitcase pulls train grip/core',
-          battlePlan: '4 rounds\n• 8 Double KB Row\nRest 75–90s after each set\n• 10 KB Suitcase Deadlift\nRest 75–90s after each set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Double KB Row\nRest 75–90s after each set\n• 10 KB Suitcase Deadlift\nRest 75–90s after each set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1411,7 +1411,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Gorilla Row Flow',
           duration: '16–18 min',
           description: 'Renegade, gorilla, high pulls for dense volume',
-          battlePlan: '3 rounds\n• 8 Renegade Row (each side)\n• 8 Gorilla Row (each side)\n• 8 KB High Pull (each side)\nRest 90s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Renegade Row (each side)\n• 8 Gorilla Row (each side)\n• 8 KB High Pull (each side)\nRest 90s after sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1462,7 +1462,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Double Kettlebell Rows',
           duration: '14–16 min',
           description: 'Bilateral rows for increased loading',
-          battlePlan: '4 rounds\n• 8 Double KB Rows\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Double KB Rows\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1508,7 +1508,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Gorilla Rows',
           duration: '14–16 min',
           description: 'Alternating rows with constant tension',
-          battlePlan: '3 rounds\n• 10 Gorilla Rows (each side)\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Gorilla Rows (each side)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1556,7 +1556,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Row Swing Dead',
           duration: '18–20 min',
           description: 'Balanced rotational pulls and hip hinge strength',
-          battlePlan: '4 rounds\n• 8 Single-Arm Row (each side)\nRest 90s after set\n• 8 KB Swing\nRest 90s after set\n• 8 KB Deadlift\nRest 90s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Single-Arm Row (each side)\nRest 90s after set\n• 8 KB Swing\nRest 90s after set\n• 8 KB Deadlift\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1606,7 +1606,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Snatch Clean Flow',
           duration: '20–22 min',
           description: 'Combo snatch, renegade, clean flow builds power',
-          battlePlan: '4 rounds\n• 8 Renegade Row (alternating sides)\n• 8 KB Snatch (each side)\n• 8 KB Clean and Pull\nRest 90–120s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Renegade Row (alternating sides)\n• 8 KB Snatch (each side)\n• 8 KB Clean and Pull\nRest 90–120s after sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1657,7 +1657,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Double Kettlebell Rows',
           duration: '16–18 min',
           description: 'Heavy bilateral rows for maximal overload',
-          battlePlan: '4 rounds\n• 6 Double KB Rows\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 Double KB Rows\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1703,7 +1703,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Kettlebell Row Triple Drop',
           duration: '18–20 min',
           description: 'Extended triple-drop sets for deep fatigue',
-          battlePlan: '3 rounds\n• 6 Rows\n• Drop → 6\n• Drop → 6\n• Drop → 6\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Rows\n• Row drop → 6\n• Row drop → 6\n• Row drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1757,7 +1757,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Extensions + Hold',
           duration: '10–12 min',
           description: 'Bodyweight extensions paired with short static holds',
-          battlePlan: '3 rounds\n• 12 Back Extensions\nRest 45–60s\n• 2 Roman Chair Holds (20s each)\nRest 60s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Back Extensions\nRest 45–60s\n• 2 Roman Chair Holds (20s each)\nRest 60s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1802,7 +1802,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Twist & Hold Flow',
           duration: '12–14 min',
           description: 'Extension, twist, and short hold combo for endurance',
-          battlePlan: '3 rounds\n• 10 Back Extensions\n• 10 Side-to-Side Twists (at top of extension)\n• 1 Roman Chair Hold (30s)\nRest 60–75s after sequence',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 10 Back Extensions\n• 10 Side-to-Side Twists (at top of extension)\n• 1 Roman Chair Hold (30s)\nRest 60–75s after sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1851,7 +1851,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Extensions',
           duration: '10–12 min',
           description: 'Slow tempo extensions emphasizing controlled spinal motion',
-          battlePlan: '3 rounds\n• 10 Back Extensions (3s eccentric)\nRest 60s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 10 Back Extensions (3s eccentric)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1897,7 +1897,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Partial Extension Burn',
           duration: '10–12 min',
           description: 'Short-range extensions to build endurance safely',
-          battlePlan: '3 rounds\n• 20 Partial Back Extensions\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 20 Partial Back Extensions\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1945,7 +1945,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Ext',
           duration: '14–16 min',
           description: 'Weighted extensions and basic hyperextensions for mass',
-          battlePlan: '4 rounds\n• 10 Weighted Back Extensions\nRest 75s after set\n• 10 Roman Chair Hyperextensions\nRest 75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Weighted Back Extensions\nRest 75s after set\n• 10 Roman Chair Hyperextensions\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1990,7 +1990,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Extension Circuit',
           duration: '14–16 min',
           description: 'Blends extension, superman, side bends for variety',
-          battlePlan: '3 rounds\n• 8 Back Extensions\n• 8 Alternating Superman (1 arm + opposite leg)\n• 8 Side Bends (each side)\nRest 90s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Back Extensions\n• 8 Alternating Superman (1 arm + opposite leg)\n• 8 Side Bends (each side)\nRest 90s after sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2040,7 +2040,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Extensions',
           duration: '14–16 min',
           description: 'Paused reps reinforce control and mid-range strength',
-          battlePlan: '4 rounds\n• 8 Back Extensions (2s pause)\nRest 75–90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 Back Extensions (2s pause)\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2086,7 +2086,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Extension Drop Set',
           duration: '14–16 min',
           description: 'Mechanical fatigue using fast load reductions',
-          battlePlan: '3 rounds\n• 8 Weighted Extensions\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Weighted Extensions\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2135,7 +2135,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Twist',
           duration: '16–18 min',
           description: 'Weighted extensions with twist patterns for obliques',
-          battlePlan: '4 rounds\n• 10 Weighted Back Extensions\nRest 90s after set\n• 10 Roman Chair Hyperextensions\nRest 90s after set\n• 10 Roman Chair Twists\nRest 90s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Weighted Back Extensions\nRest 90s after set\n• 10 Roman Chair Hyperextensions\nRest 90s after set\n• 10 Roman Chair Twists\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2184,7 +2184,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Superman + Iso Hold',
           duration: '18–20 min',
           description: 'Superman lifts plus holds improve stability capacity',
-          battlePlan: '4 rounds\n• 8 Weighted Back Extensions\n• 8 Alternating Supermans\n• 1 Roman Chair Hold (20–30s)\nRest 90–120s after sequence',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• 8 Weighted Back Extensions\n• 8 Alternating Supermans\n• 1 Roman Chair Hold (20–30s)\nRest 90–120s after sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2233,7 +2233,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Eccentric Extensions',
           duration: '18–20 min',
           description: 'Overloaded eccentrics to build posterior strength',
-          battlePlan: '4 rounds\n• 6 Weighted Extensions (4s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6 Weighted Extensions (4s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2279,7 +2279,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Extension Iso Burnout',
           duration: '18–20 min',
           description: 'Dynamic reps finished with a long isometric hold',
-          battlePlan: '3 rounds\n• 10 Weighted Extensions\n• Immediately 30s Roman Chair Hold\nRest 120s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. holds are strict: locked position, no drifting.\n3 rounds\n• 10 Weighted Extensions\n• Immediately 30s Roman Chair Hold\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2334,7 +2334,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Grip Row',
           duration: '10–12 min',
           description: 'Simple neutral rowing pattern for beginners to build back thickness.',
-          battlePlan: '3 rounds\n• 12 Neutral Grip T-Bar Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Neutral Grip T-Bar Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2375,7 +2375,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Grip Row',
           duration: '10–12 min',
           description: 'Wide row variation for upper-back foundation',
-          battlePlan: '3 rounds\n• 10 Wide Grip T-Bar Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Wide Grip T-Bar Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2416,7 +2416,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo T-Bar Rows',
           duration: '10–12 min',
           description: 'Controlled T-bar rows emphasizing slow negatives',
-          battlePlan: '3 rounds\n• 12 Neutral Grip T-Bar Rows (3s eccentric)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 12 Neutral Grip T-Bar Rows (3s eccentric)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2462,7 +2462,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Peak Pause Rows',
           duration: '10–12 min',
           description: 'Paused rows reinforcing contraction awareness',
-          battlePlan: '3 rounds\n• 10 Wide Grip T-Bar Rows (2s pause)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 10 Wide Grip T-Bar Rows (2s pause)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2510,7 +2510,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Close Grip Row',
           duration: '12–14 min',
           description: 'Simple close grip with moderate-to-heavy focus',
-          battlePlan: '4 rounds\n• 10 Close Grip T-Bar Row\nRest 75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Close Grip T-Bar Row\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2550,7 +2550,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Neg Row',
           duration: '12–14 min',
           description: 'Time-under-tension row progression provides a challenging switchup',
-          battlePlan: '4 rounds\n• 8 Neutral Grip Row (3–4s eccentric)\nRest 90s after set',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 Neutral Grip Row (3–4s eccentric)\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2591,7 +2591,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'T-Bar Drop Set',
           duration: '14–16 min',
           description: 'Heavy rows extended with rapid load reductions',
-          battlePlan: '3 rounds\n• 8 T-Bar Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 T-Bar Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2638,7 +2638,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso-Finish Rows',
           duration: '14–16 min',
           description: 'Standard rows finished with long isometric holds',
-          battlePlan: '4 rounds\n• 8 T-Bar Rows\n• Finish with 10s hold\nRest 120s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• 8 T-Bar Rows\n• Finish with 10s hold\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2687,7 +2687,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Wide Rows',
           duration: '14–16 min',
           description: 'Wide grip rows with static squeeze finish to bring muscles to full fatigue',
-          battlePlan: '4 rounds\n• 8 Wide Grip T-Bar Row\nEnd each set with 10s static hold at full contraction\nRest 90–120s after set',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• 8 Wide Grip T-Bar Row\nThen end each set with 10s static hold at full contraction\nRest 90–120s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2731,7 +2731,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Combo Superset',
           duration: '16–18 min',
           description: 'Wide-to-underhand superset with scap squeezes',
-          battlePlan: '4 rounds\n• 8 Wide Grip Row\n• Immediately 8 Underhand Grip Row\n• Finish with 10 Back Squeezes (bodyweight, no load)\nRest 120s after full superset',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n4 rounds\n• 8 Wide Grip Row\n• 8 Underhand Grip Row — immediately, no rest\n• Finish with 10 Back Squeezes (bodyweight, no load)\nRest 120s after full superset',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2773,7 +2773,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Tempo Rows',
           duration: '16–18 min',
           description: 'Heavy T-bar rows with long controlled eccentrics',
-          battlePlan: '4 rounds\n• 6 T-Bar Rows (4s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6 T-Bar Rows (4s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2819,7 +2819,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Grinder',
           duration: '18–20 min',
           description: 'Extended triple-drop sets for maximal fatigue',
-          battlePlan: '3 rounds\n• 6 Rows\n• Drop → 6\n• Drop → 6\n• Drop → 6\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Rows\n• Grinder drop → 6\n• Grinder drop → 6\n• Grinder drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2873,7 +2873,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dead + Row',
           duration: '14–16 min',
           description: 'Deadlifts and rows for beginner back foundation',
-          battlePlan: '3 rounds\n• 10 Barbell Deadlift\nRest 60–75s\n• 10 Barbell Bent-Over Row\nRest 60–75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Barbell Deadlift\nRest 60–75s\n• 10 Barbell Bent-Over Row\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2919,7 +2919,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dead Row Shrug',
           duration: '14–16 min',
           description: 'Deads, rows, shrugs train erectors and upper traps',
-          battlePlan: '3 rounds\n• 10 Barbell Deadlift\n• 10 Barbell Bent-Over Row\n• 10 Barbell Power Shrug\nRest 75s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Barbell Deadlift\n• 10 Barbell Bent-Over Row\n• 10 Barbell Power Shrug\nRest 75s after sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2971,7 +2971,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'RDL + Pendlay',
           duration: '16–18 min',
           description: 'Romanian deadlifts with Pendlay rows for balance',
-          battlePlan: '4 rounds\n• 8 Romanian Deadlift\nRest 75–90s\n• 10 Pendlay Row\nRest 75–90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Romanian Deadlift\nRest 75–90s\n• 10 Pendlay Row\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3017,7 +3017,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pull Combo',
           duration: '16–18 min',
           description: 'Deadlifts plus Olympic pulls for hybrid training',
-          battlePlan: '3 rounds\n• 8 Barbell Deadlift\n• 8 Barbell High Pull\n• 8 Barbell Clean Pull\nRest 90s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Barbell Deadlift\n• 8 Barbell High Pull\n• 8 Barbell Clean Pull\nRest 90s after sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3070,7 +3070,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dead Row Shrug',
           duration: '18–20 min',
           description: 'Heavy hinge, row, shrug focus for dense back work',
-          battlePlan: '4 rounds\n• 8 Barbell Deadlift\nRest 90s\n• 8 Barbell Bent-Over Row\nRest 90s\n• 8 Power Shrug\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Barbell Deadlift\nRest 90s\n• 8 Barbell Bent-Over Row\nRest 90s\n• 8 Power Shrug\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3120,7 +3120,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dead Clean Flow',
           duration: '20–22 min',
           description: 'Heavy compound pulls with clean finish',
-          battlePlan: '4 rounds\n• 8 Barbell Deadlift\n• 8 Barbell High Pull\n• 8 Barbell Power Clean\nRest 90–120s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Barbell Deadlift\n• 8 Barbell High Pull\n• 8 Barbell Power Clean\nRest 90–120s after sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3179,7 +3179,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Row Start',
           duration: '10–12 min',
           description: 'Single movement to master seated row mechanics',
-          battlePlan: '3 rounds\n• 12 Neutral Grip Cable Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Neutral Grip Cable Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3219,7 +3219,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Row Intro',
           duration: '10–12 min',
           description: 'Focuses on wide row control & back width for beginners',
-          battlePlan: '3 rounds\n• 10 Wide Grip Cable Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Wide Grip Cable Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3259,7 +3259,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Neutral Rows',
           duration: '10–12 min',
           description: 'Neutral cable rows emphasizing smooth control',
-          battlePlan: '3 rounds\n• 12 Neutral Grip Cable Rows (3s eccentric)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 12 Neutral Grip Cable Rows (3s eccentric)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3305,7 +3305,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause & Squeeze Rows',
           duration: '10–12 min',
           description: 'Paused rows to reinforce contraction',
-          battlePlan: '3 rounds\n• 10 Wide Grip Cable Rows (2s pause)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 10 Wide Grip Cable Rows (2s pause)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3352,7 +3352,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Underhand Row',
           duration: '12–14 min',
           description: 'Control-focused row variation with palms up to target lower lats and scaps.',
-          battlePlan: '4 rounds\n• 10 Underhand Grip Cable Row\nRest 75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Underhand Grip Cable Row\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3392,7 +3392,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Negatives',
           duration: '12–14 min',
           description: 'Single movement with emphasized negative control',
-          battlePlan: '4 rounds\n• 8 Neutral Grip Cable Row (3–4s eccentric each rep)\nRest 90s after set',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 Neutral Grip Cable Row (3–4s eccentric each rep)\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3432,7 +3432,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Row Drop Set',
           duration: '14–16 min',
           description: 'Mechanical fatigue using quick pin drops',
-          battlePlan: '3 rounds\n• 8 Cable Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Cable Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3479,7 +3479,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso-Hold Cable Rows',
           duration: '14–16 min',
           description: 'Rows with extended static holds',
-          battlePlan: '4 rounds\n• 8 Cable Rows\n• Finish with 12s hold\nRest 120s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• 8 Cable Rows\n• Finish with 12s hold\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3528,7 +3528,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Hold Rows',
           duration: '14–16 min',
           description: 'Rows with a final long hold at contraction to fully fatigue muscles.',
-          battlePlan: '4 rounds\n• 8 Wide Grip Row\nEnd each set with 10s hold at contraction\nRest 90–120s after set',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• 8 Wide Grip Row\nThen end each set with 10s hold at contraction\nRest 90–120s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3572,7 +3572,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Superset Grind',
           duration: '16–18 min',
           description: 'Wide-to-underhand superset with post-set squeezes',
-          battlePlan: '4 rounds\n• 8 Wide Grip Row (controlled)\n• Immediately 8 Underhand Grip Row\n• Finish with 10 Standing Back Squeezes (bodyweight scapular retractions, no load)\nRest 120s after full superset',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n4 rounds\n• 8 Wide Grip Row (controlled)\n• 8 Underhand Grip Row — immediately, no rest\n• Finish with 10 Standing Back Squeezes (bodyweight scapular retractions, no load)\nRest 120s after full superset',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3614,7 +3614,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Long Eccentric Rows',
           duration: '16–18 min',
           description: 'Cable rows using extended negative tempo',
-          battlePlan: '4 rounds\n• 6 Cable Rows (5s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6 Cable Rows (5s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3660,7 +3660,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Cable Burn',
           duration: '18–20 min',
           description: 'Extended drop sets to fully exhaust lats',
-          battlePlan: '3 rounds\n• 6 Rows\n• Drop → 6\n• Drop → 6\n• Drop → 6\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Rows\n• Burn drop → 6\n• Burn drop → 6\n• Burn drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3714,7 +3714,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Pulldown',
           duration: '10–12 min',
           description: 'Wide grip basis for learning lat engagement to build pull-up strength',
-          battlePlan: '3 rounds\n• 10–12 Wide Grip Pulldown\nRest 60–75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Wide Grip Pulldown\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3754,7 +3754,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Underhand Pulldown',
           duration: '10–12 min',
           description: 'Easier grip variation supports early progression',
-          battlePlan: '3 rounds\n• 10–12 Underhand Pulldown\nRest 60–75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Underhand Pulldown\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3794,7 +3794,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Tempo Pulldown',
           duration: '10–12 min',
           description: 'Slow pulldowns building lat control and discipline',
-          battlePlan: '3 rounds\n• 12 Pulldowns (3s eccentric)\nRest 60–75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 12 Pulldowns (3s eccentric)\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3839,7 +3839,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bottom-Half Pulldowns',
           duration: '10–12 min',
           description: 'Short-range reps focused on peak lat contraction',
-          battlePlan: '3 rounds\n• 15 Partial Pulldowns\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Partial Pulldowns\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3886,7 +3886,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Pulldown',
           duration: '12–14 min',
           description: 'Stronger setup for progressive overload recruiting a wider variety of muscles',
-          battlePlan: '4 rounds\n• 8–10 Neutral Grip Pulldown (moderate to heavy)\nRest 75–90s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Neutral Grip Pulldown (moderate to heavy)\nRest 75–90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3927,7 +3927,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pulldown + Hold',
           duration: '12–14 min',
           description: 'Controlled reps followed by static contraction',
-          battlePlan: '3 rounds\n• 8–10 Pulldown (neutral or wide, consistent grip choice)\nEnd each set with 5s hold at bottom\nRest 90s after set',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 8–10 Pulldown (neutral or wide, consistent grip choice)\nThen end each set with 5s hold at bottom\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3970,7 +3970,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pulldown Drop Set',
           duration: '14–16 min',
           description: 'Rapid drops to extend sets past fatigue',
-          battlePlan: '3 rounds\n• 8 Pulldowns\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Pulldowns\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4016,7 +4016,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pulse Rep Pulldowns',
           duration: '14–16 min',
           description: 'Full reps followed by pulses in the contraction zone',
-          battlePlan: '3 rounds\n• 12 Pulldowns\n• Immediately 10 Pulse Reps\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n3 rounds\n• 12 Pulldowns\n• 10 Pulse Reps — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4064,7 +4064,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide + Close',
           duration: '14–16 min',
           description: 'Mix of wide and close grips for full lat work and development',
-          battlePlan: '4 rounds\n• 8 Wide Grip Pulldown\nRest 90s\n• 8 Close Grip Pulldown\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Wide Grip Pulldown\nRest 90s\n• 8 Close Grip Pulldown\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4108,7 +4108,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pulldown Superset',
           duration: '16–18 min',
           description: 'Wide-to-underhand with controlled lowering for mastery of movement.',
-          battlePlan: '4 rounds\n• 8 Wide Grip Pulldown\n• Immediately 8 Underhand Pulldown (3s eccentric each)\nRest 120s after superset',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. control the lowering — the tempo is the point.\n4 rounds\n• 8 Wide Grip Pulldown\n• 8 Underhand Pulldown — 3s eccentric each — immediately, no rest\nRest 120s after superset',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4149,7 +4149,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Long Eccentric Pulldowns',
           duration: '16–18 min',
           description: 'Full ROM pulldowns with extended 5s negatives',
-          battlePlan: '4 rounds\n• 6 Pulldowns (5s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6 Pulldowns (5s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4194,7 +4194,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso-Hold Drop Burn',
           duration: '18–20 min',
           description: 'Holds plus drops to build extreme lat fatigue',
-          battlePlan: '3 rounds\n• 8 Pulldowns + 10s Hold\n• Drop → 8 reps\nRest 120s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 8 Pulldowns + 10s Hold\n• Drop → 8 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4248,7 +4248,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Pull-Ups',
           duration: '10–12 min',
           description: 'Focuses on mastering the basic pull-up movement pattern',
-          battlePlan: '3 rounds\n• 5 Pull-Ups (use band or assisted machine if needed)\nRest 60–75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 5 Pull-Ups (use band or assisted machine if needed)\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4289,7 +4289,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pull-Up Negatives',
           duration: '10–12 min',
           description: 'Focuses on controlled lowering to build pulling power',
-          battlePlan: '3 rounds\n• 5 Negative Pull-Ups (jump to top, 3-5s lower)\nRest 75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 5 Negative Pull-Ups (jump to top, 3-5s lower)\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4330,7 +4330,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Full-Range Pull-Ups',
           duration: '10–12 min',
           description: 'Assisted pull-ups reinforcing clean full-range mechanics',
-          battlePlan: '3 rounds\n• 6 Assisted Pull-Ups\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Assisted Pull-Ups\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4376,7 +4376,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Pause Pull-Ups',
           duration: '10–12 min',
           description: 'Assisted pull-ups with controlled pauses at the top',
-          battlePlan: '3 rounds\n• 5 Assisted Pull-Ups (1–2s top pause)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 5 Assisted Pull-Ups (1–2s top pause)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4424,7 +4424,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chin-Up Strength',
           duration: '12–14 min',
           description: 'Builds pulling power with a slightly easier grip variation',
-          battlePlan: '4 rounds\n• 6 Chin-Ups\nRest 75–90s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 Chin-Ups\nRest 75–90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4465,7 +4465,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pull-Up + Hold',
           duration: '12–14 min',
           description: 'Combines pull-ups with a static hold for enhanced strength',
-          battlePlan: '3 rounds\n• 6 Pull-Ups\nEnd each set with a 3s hold at the top\nRest 90s after set',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 6 Pull-Ups\nThen end each set with a 3s hold at the top\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4509,7 +4509,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Pull-Ups',
           duration: '12–14 min',
           description: 'Strict pull-ups emphasizing slow controlled eccentrics',
-          battlePlan: '4 rounds\n• 6 Pull-Ups (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6 Pull-Ups (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4555,7 +4555,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pull-Ups + Iso Finisher',
           duration: '12–14 min',
           description: 'Full pull-ups finished with a static top hold',
-          battlePlan: '3 rounds\n• 6 Pull-Ups\n• Finish with 10s chin-over-bar hold\nRest 90s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 6 Pull-Ups\n• Finish with 10s chin-over-bar hold\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4604,7 +4604,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide + Neutral Pull',
           duration: '14–16 min',
           description: 'Two key pull-up variations for comprehensive back development',
-          battlePlan: '4 rounds\n• 8 Wide Grip Pull-Ups\nRest 90s\n• 8 Neutral Grip Pull-Ups\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Wide Grip Pull-Ups\nRest 90s\n• 8 Neutral Grip Pull-Ups\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4650,7 +4650,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chest-to-Bar Flow',
           duration: '16–18 min',
           description: 'Advanced pull-ups with deep range and controlled lowering',
-          battlePlan: '4 rounds\n• 6 Chest-to-Bar Pull-Ups\n• 6 Negative Pull-Ups (3–5s lower)\nRest 90–120s after sequence',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 Chest-to-Bar Pull-Ups\n• 6 Negative Pull-Ups (3–5s lower)\nRest 90–120s after sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4696,7 +4696,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Pull-Ups',
           duration: '14–16 min',
           description: 'Loaded pull-ups to overload back strength',
-          battlePlan: '4 rounds\n• 5 Weighted Pull-Ups\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5 Weighted Pull-Ups\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4742,7 +4742,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Eccentric Pull-Ups',
           duration: '14–16 min',
           description: 'Pull-ups emphasizing long controlled negatives',
-          battlePlan: '3 rounds\n• 5 Pull-Ups (5s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 5 Pull-Ups (5s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4788,7 +4788,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Burnout Pull-Up Ladder',
           duration: '16–18 min',
           description: 'Descending-rep ladder taken near strict failure',
-          battlePlan: 'Ladder format\n• 8 Pull-Ups\n• 6 Pull-Ups\n• 4 Pull-Ups\n• 2 Pull-Ups\nRest 30–45s between rungs',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLadder format\n• 8 Pull-Ups\n• 6 Pull-Ups\n• 4 Pull-Ups\n• 2 Pull-Ups\nRest 30–45s between rungs',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4847,7 +4847,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Muscle-Up Skill Sets',
           duration: '18–20 min',
           description: 'Explosive pull-to-transition muscle-up practice',
-          battlePlan: '4 rounds\n• 3–5 Muscle-Ups\n(strict, band-assisted, or low-kip)\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 3–5 Muscle-Ups\n(strict, band-assisted, or low-kip)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4901,7 +4901,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Neutral',
           duration: '10–12 min',
           description: 'Focuses on the neutral grip pull-up with support',
-          battlePlan: '3 rounds\n• 5 Neutral Grip Pull-Ups (use band or assisted machine if needed)\nRest 60–75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 5 Neutral Grip Pull-Ups (use band or assisted machine if needed)\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4942,7 +4942,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Chin-Ups',
           duration: '10–12 min',
           description: 'Builds pulling strength using an underhand grip with assistance',
-          battlePlan: '3 rounds\n• 5 Chin-Ups (use band or assisted machine if needed)\nRest 75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 5 Chin-Ups (use band or assisted machine if needed)\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4983,7 +4983,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Grip Scap Pulls',
           duration: '10–12 min',
           description: 'Scapular pulls using neutral grip for control',
-          battlePlan: '3 rounds\n• 8–10 Neutral Grip Scap Pulls\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Neutral Grip Scap Pulls\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5029,7 +5029,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Neutral Pull-Ups (Tempo)',
           duration: '10–12 min',
           description: 'Assisted reps with slower lowering phase',
-          battlePlan: '3 rounds\n• 5 Assisted Neutral Pull-Ups (3s eccentric)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 5 Assisted Neutral Pull-Ups (3s eccentric)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5077,7 +5077,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Mixed Grip Pulls',
           duration: '12–14 min',
           description: 'Alternating grip for balanced strength development',
-          battlePlan: '4 rounds\n• 6 Mixed Grip Pull-Ups (swap grip each set)\nRest 75–90s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 Mixed Grip Pull-Ups (swap grip each set)\nRest 75–90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5118,7 +5118,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Commando Pulls',
           duration: '12–14 min',
           description: 'Dynamic pull-up variation for core and back engagement',
-          battlePlan: '3 rounds\n• 6 Commando Pull-Ups (chest to each side)\nRest 90s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Commando Pull-Ups (chest to each side)\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5159,7 +5159,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Grip Switch Pull-Ups',
           duration: '12–14 min',
           description: 'Switching grips between sets for balanced loading',
-          battlePlan: '4 rounds\n• 6 Neutral Grip Pull-Ups\n• Next set: 6 Chin-Ups\nAlternate each round\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 Neutral Grip Pull-Ups\n• 6 Chin-Ups — alternate sets\nThen alternate each round\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5209,7 +5209,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Commando Pause Pulls',
           duration: '12–14 min',
           description: 'Side-to-side pulls with controlled pauses',
-          battlePlan: '3 rounds\n• 6 Commando Pull-Ups (with 1s pause each side)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 6 Commando Pull-Ups (with 1s pause each side)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5257,7 +5257,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide + Neutral',
           duration: '14–16 min',
           description: 'Targets both back width and overall pulling power',
-          battlePlan: '4 rounds\n• 8 Wide Grip Pull-Ups\nRest 90s\n• 8 Neutral Grip Pull-Ups\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Wide Grip Pull-Ups\nRest 90s\n• 8 Neutral Grip Pull-Ups\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5303,7 +5303,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Archer Pulls',
           duration: '16–18 min',
           description: 'Highly challenging pull-up variation for extreme strength',
-          battlePlan: '4 rounds\n• 6 Archer Pull-Ups (each side)\nRest 90–120s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 Archer Pull-Ups (each side)\nRest 90–120s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5344,7 +5344,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Neutral Pull-Ups',
           duration: '14–16 min',
           description: 'Heavy neutral-grip pulls for lat thickness',
-          battlePlan: '4 rounds\n• 5 Weighted Neutral Pull-Ups\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5 Weighted Neutral Pull-Ups\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5390,7 +5390,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Archer Eccentrics',
           duration: '16–18 min',
           description: 'Archer pull-ups with slow unilateral negatives',
-          battlePlan: '3 rounds\n• 4 Archer Pull-Ups (slow eccentric each side)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 4 Archer Pull-Ups (slow eccentric each side)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5444,7 +5444,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Row',
           duration: '10–12 min',
           description: 'Builds pulling strength with a natural elbow path',
-          battlePlan: '3 rounds\n• 10–12 Neutral Grip Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Neutral Grip Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5485,7 +5485,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Row',
           duration: '10–12 min',
           description: 'Engages rhomboids and traps with safer alignment',
-          battlePlan: '3 rounds\n• 10–12 Wide Grip Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Wide Grip Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5526,7 +5526,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Rows',
           duration: '10–12 min',
           description: 'Controlled rows emphasizing peak contraction and posture',
-          battlePlan: '3 rounds\n• 12 Rows (2s pause)\nRest 60–75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 12 Rows (2s pause)\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5571,7 +5571,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Partial Row Burn',
           duration: '10–12 min',
           description: 'Short-range rows for endurance without form breakdown',
-          battlePlan: '3 rounds\n• 20 Partial Rows\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 20 Partial Rows\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5618,7 +5618,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Underhand Row',
           duration: '12–14 min',
           description: 'Stronger pull variation for controlled overload',
-          battlePlan: '4 rounds\n• 8–10 Underhand Grip Row (moderate to heavy)\nRest 75s after set',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Underhand Grip Row (moderate to heavy)\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5658,7 +5658,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Negatives',
           duration: '12–14 min',
           description: 'Focuses on lat control with longer lowering phase',
-          battlePlan: '3 rounds\n• 8 Neutral Grip Row (3s eccentric each rep)\nRest 90s after set',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8 Neutral Grip Row (3s eccentric each rep)\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5699,7 +5699,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Row Drop Set',
           duration: '14–16 min',
           description: 'Heavy rows extended using fast load reductions',
-          battlePlan: '3 rounds\n• 8 Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5745,7 +5745,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Negative Rows',
           duration: '14–16 min',
           description: 'Time-under-tension rows using long eccentrics',
-          battlePlan: '4 rounds\n• 8 Rows (4s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 Rows (4s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5792,7 +5792,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral + Wide',
           duration: '14–16 min',
           description: 'Neutral rows + wide rows maximize pulling volume',
-          battlePlan: '4 rounds\n• 8 Neutral Grip Row\nRest 90s\n• 8 Wide Grip Row\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Neutral Grip Row\nRest 90s\n• 8 Wide Grip Row\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5838,7 +5838,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Row Superset + Iso',
           duration: '16–18 min',
           description: 'Neutral-to-underhand rows plus isometric finisher',
-          battlePlan: '4 rounds\n• 8 Neutral Grip Row\n• Immediately 8 Underhand Grip Row\n• Finish with 10s Hold at peak contraction\nRest 120s after full sequence',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. holds are strict: locked position, no drifting.\n4 rounds\n• 8 Neutral Grip Row\n• 8 Underhand Grip Row — immediately, no rest\n• Finish with 10s Hold at peak contraction\nRest 120s after full sequence',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5880,7 +5880,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Squeeze Rows',
           duration: '16–18 min',
           description: 'Heavy rows finished with long isometric contractions',
-          battlePlan: '4 rounds\n• 8 Rows + 10s Hold\nRest 120s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• 8 Rows + 10s Hold\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5925,7 +5925,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Row',
           duration: '18–20 min',
           description: 'Extended drop set to drive maximum pulling fatigue',
-          battlePlan: '3 rounds\n• 6 Rows\n• Drop → 6\n• Drop → 6\n• Drop → 6\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Rows\n• Row drop → 6\n• Row drop → 6\n• Row drop → 6\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [

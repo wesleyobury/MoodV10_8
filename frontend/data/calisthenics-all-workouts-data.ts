@@ -11,7 +11,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Ring Start',
           duration: '16–22 min',
           description: 'Support hold low, ring rows high, kneeling pushups.',
-          battlePlan: 'Ring Support Lean (feet down)\n• 3 × 15–25s (RPE 4), 60s rest\nHigh Ring Row (knees bent)\n• 3 × 8–10 (RPE 4), 60s rest\nKneeling Ring Pushup\n• 3 × 8–12 (RPE 4), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nRing Support Lean (feet down)\n• 3 × 15–25s (RPE 4), 60s rest\nHigh Ring Row (knees bent)\n• 3 × 8–10 (RPE 4), 60s rest\nKneeling Ring Pushup\n• 3 × 8–12 (RPE 4), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -64,7 +64,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Scap Lines',
           duration: '16–22 min',
           description: 'Scap rows, scap pushups, dead bug for core control.',
-          battlePlan: 'Ring Scap Rows\n• 3 × 10–12 (RPE 4), 60s rest\nRing Scap Pushups\n• 3 × 10–12 (RPE 4), 60s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nRing Scap Rows\n• 3 × 10–12 (RPE 4), 60s rest\nRing Scap Pushups\n• 3 × 10–12 (RPE 4), 60s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -117,7 +117,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Angle Mix',
           duration: '16–22 min',
           description: 'Ring rows, ring pushups, hollow hold finisher for light challenge.',
-          battlePlan: 'Ring Row (medium angle)\n• 3 × 8–10 (RPE 4), 60s rest\nRing Pushup (incline)\n• 3 × 8–12 (RPE 4), 60s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nRing Row (medium angle)\n• 3 × 8–10 (RPE 4), 60s rest\nRing Pushup (incline)\n• 3 × 8–12 (RPE 4), 60s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -173,7 +173,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Stable Lines',
           duration: '22–28 min',
           description: 'Mid-angle rows, pushups, knee tucks for core finish.',
-          battlePlan: 'Ring Row (mid angle)\n• 4 × 8–10 (RPE 5), 75s rest\nRing Pushup (horizontal)\n• 4 × 8–12 (RPE 5), 75s rest\nRing Knee Tucks (support)\n• 3 × 10–12 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nRing Row (mid angle)\n• 4 × 8–10 (RPE 5), 75s rest\nRing Pushup (horizontal)\n• 4 × 8–12 (RPE 5), 75s rest\nRing Knee Tucks (support)\n• 3 × 10–12 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -226,7 +226,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Archer Starts',
           duration: '22–28 min',
           description: 'Archer rows beginners, narrow pushups, hollow rocks.',
-          battlePlan: 'Ring Archer Row (assisted)\n• 4 × 6–8/side (RPE 5–6), 90s rest\nRing Pushup (narrow)\n• 4 × 8–10 (RPE 5), 75s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nRing Archer Row (assisted)\n• 4 × 6–8/side (RPE 5–6), 90s rest\nRing Pushup (narrow)\n• 4 × 8–10 (RPE 5), 75s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -279,7 +279,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Volume Build',
           duration: '22–28 min',
           description: 'Straight rows and pushups, modest volume increase for strength gains.',
-          battlePlan: 'Ring Row (neutral)\n• 4 × 8–12 (RPE 5), 75s rest\nRing Pushup (horizontal)\n• 4 × 10–12 (RPE 5), 75s rest\nFront Plank\n• 3 × 30–40s (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nRing Row (neutral)\n• 4 × 8–12 (RPE 5), 75s rest\nRing Pushup (horizontal)\n• 4 × 10–12 (RPE 5), 75s rest\nFront Plank\n• 3 × 30–40s (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -335,7 +335,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Archer Plus',
           duration: '24–32 min',
           description: 'Full archer rows and pushups, pistol assists for leg balance.',
-          battlePlan: 'Ring Archer Row (full)\n• 5 × 4–6/side (RPE 6–7), 90–120s rest\nRing Archer Pushup\n• 4 × 4–6/side (RPE 6), 90s rest\nRing-Assisted Pistol\n• 3 × 6–8/side (RPE 6), 75s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nRing Archer Row (full)\n• 5 × 4–6/side (RPE 6–7), 90–120s rest\nRing Archer Pushup\n• 4 × 4–6/side (RPE 6), 90s rest\nRing-Assisted Pistol\n• 3 × 6–8/side (RPE 6), 75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -388,7 +388,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Ring Muscle-Up Prep',
           duration: '24–32 min',
           description: 'False-grip rows, explosive transition drills, ring dips.',
-          battlePlan: 'False-Grip Ring Row\n• 5 × 6–8 (RPE 6), 90s rest\nRing Muscle-Up Transition Practice (assisted)\n• 4 × 3–4 (RPE 6–7), 120s rest\nRing Dip\n• 4 × 6–8 (RPE 6), 90s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nFalse-Grip Ring Row\n• 5 × 6–8 (RPE 6), 90s rest\nRing Muscle-Up Transition Practice (assisted)\n• 4 × 3–4 (RPE 6–7), 120s rest\nRing Dip\n• 4 × 6–8 (RPE 6), 90s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -443,7 +443,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'High-Volume Endurance',
           duration: '24–32 min',
           description: 'High-rep rows and pushups, ring planks for total stability.',
-          battlePlan: 'Ring Row (neutral)\n• 5 × 10–15 (RPE 6), 75s rest\nRing Pushup (horizontal)\n• 5 × 12–16 (RPE 6), 75s rest\nRing Front Plank\n• 4 × 30–50s (RPE 6), 60–75s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nRing Row (neutral)\n• 5 × 10–15 (RPE 6), 75s rest\nRing Pushup (horizontal)\n• 5 × 12–16 (RPE 6), 75s rest\nRing Front Plank\n• 4 × 30–50s (RPE 6), 60–75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -505,7 +505,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wheel Intro',
           duration: '12–16 min',
           description: 'Kneeling short-rolls, dead bug, plank bracing closer.',
-          battlePlan: 'Kneeling Ab Wheel (short ROM)\n• 3 × 6–8 (RPE 4), 75s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest\nFront Plank\n• 3 × 20–30s (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nKneeling Ab Wheel (short ROM)\n• 3 × 6–8 (RPE 4), 75s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest\nFront Plank\n• 3 × 20–30s (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -560,7 +560,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Eccentric Teach',
           duration: '12–16 min',
           description: 'Eccentric kneeling rolls, hollow hold, bird dog for total ab development.',
-          battlePlan: 'Kneeling Ab Wheel Eccentric (stand up after)\n• 3 × 4–6 (RPE 4), 90s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest\nBird Dog\n• 3 × 8–10/side (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point. holds are strict: locked position, no drifting.\nKneeling Ab Wheel Eccentric (stand up after)\n• 3 × 4–6 (RPE 4), 90s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest\nBird Dog\n• 3 × 8–10/side (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -616,7 +616,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Range Build',
           duration: '12–16 min',
           description: 'Kneeling rolls mid-range, side planks for stability development.',
-          battlePlan: 'Kneeling Ab Wheel (moderate ROM)\n• 3 × 6–8 (RPE 4), 75s rest\nSide Plank\n• 3 × 20–30s/side (RPE 4), 45–60s rest\nFront Plank\n• 3 × 20–30s (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nKneeling Ab Wheel (moderate ROM)\n• 3 × 6–8 (RPE 4), 75s rest\nSide Plank\n• 3 × 20–30s/side (RPE 4), 45–60s rest\nFront Plank\n• 3 × 20–30s (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -674,7 +674,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wheel Lines',
           duration: '14–18 min',
           description: 'Kneeling rolls fuller range, hollow rocks to polish.',
-          battlePlan: 'Kneeling Ab Wheel (fuller ROM)\n• 4 × 6–8 (RPE 5), 90s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest\nSide Plank with Hip Tap\n• 3 × 8–10/side (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nKneeling Ab Wheel (fuller ROM)\n• 4 × 6–8 (RPE 5), 90s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest\nSide Plank with Hip Tap\n• 3 × 8–10/side (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -729,7 +729,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Eccentric Plus',
           duration: '14–18 min',
           description: '4–5s eccentrics, pause, return; then dead bugs.',
-          battlePlan: 'Kneeling Ab Wheel Eccentric (4–5s down)\n• 4 × 4–6 (RPE 5–6), 90s rest\nDead Bug\n• 3 × 12–14/side (RPE 5), 60s rest\nFront Plank\n• 3 × 25–35s (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nKneeling Ab Wheel Eccentric (4–5s down)\n• 4 × 4–6 (RPE 5–6), 90s rest\nDead Bug\n• 3 × 12–14/side (RPE 5), 60s rest\nFront Plank\n• 3 × 25–35s (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -784,7 +784,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Angle Mix (Ab Wheel)',
           duration: '14–18 min',
           description: 'Kneeling diagonals, side planks, hollow holds finish.',
-          battlePlan: 'Kneeling Ab Wheel Diagonal Rolls\n• 4 × 5–6/side (RPE 5), 90s rest\nSide Plank\n• 3 × 25–35s/side (RPE 5), 45–60s rest\nHollow Hold\n• 3 × 25–35s (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nKneeling Ab Wheel Diagonal Rolls\n• 4 × 5–6/side (RPE 5), 90s rest\nSide Plank\n• 3 × 25–35s/side (RPE 5), 45–60s rest\nHollow Hold\n• 3 × 25–35s (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -842,7 +842,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Long Lines',
           duration: '16–22 min',
           description: 'Full kneeling rolls, hollow rocks, side plank reach.',
-          battlePlan: 'Kneeling Ab Wheel (full ROM)\n• 5 × 6–8 (RPE 6), 90s rest\nHollow Rock\n• 4 × 12–16 (RPE 6), 60s rest\nSide Plank with Reach\n• 3 × 10–12/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nKneeling Ab Wheel (full ROM)\n• 5 × 6–8 (RPE 6), 90s rest\nHollow Rock\n• 4 × 12–16 (RPE 6), 60s rest\nSide Plank with Reach\n• 3 × 10–12/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -897,7 +897,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Eccentric Heavy',
           duration: '16–22 min',
           description: '5–6s eccentrics, micro-pauses, strict plank holds.',
-          battlePlan: 'Kneeling Ab Wheel Eccentric (5–6s down)\n• 5 × 3–5 (RPE 6–7), 120s rest\nFront Plank (hard)\n• 4 × 30–45s (RPE 6), 60–75s rest\nHollow Hold\n• 3 × 30–40s (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point. holds are strict: locked position, no drifting.\nKneeling Ab Wheel Eccentric (5–6s down)\n• 5 × 3–5 (RPE 6–7), 120s rest\nFront Plank (hard)\n• 4 × 30–45s (RPE 6), 60–75s rest\nHollow Hold\n• 3 × 30–40s (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -953,7 +953,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Midrange Control (Ab Wheel)',
           duration: '16–22 min',
           description: 'Wheel outs with 1.5 reps, diagonal rolls light, side planks for core development.',
-          battlePlan: 'Kneeling Ab Wheel (1.5 reps)\n• 4 × 5–6 (RPE 6), 90s rest\nKneeling Diagonal Rolls (short)\n• 3 × 5–6/side (RPE 6), 90s rest\nSide Plank\n• 3 × 30–40s/side (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nKneeling Ab Wheel (1.5 reps)\n• 4 × 5–6 (RPE 6), 90s rest\nKneeling Diagonal Rolls (short)\n• 3 × 5–6/side (RPE 6), 90s rest\nSide Plank\n• 3 × 30–40s/side (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1016,7 +1016,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bar Start (Parallettes)',
           duration: '16–22 min',
           description: 'Incline pushups, row regressions, dead bug finish.',
-          battlePlan: 'Incline Pushup on Parallettes\n• 3 × 8–12 (RPE 4), 60s rest\nTable Row or Band Row (if available)\n• 3 × 10–12 (RPE 4), 60s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nIncline Pushup on Parallettes\n• 3 × 8–12 (RPE 4), 60s rest\nTable Row or Band Row (if available)\n• 3 × 10–12 (RPE 4), 60s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1069,7 +1069,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Depth Intro',
           duration: '16–22 min',
           description: 'Deficit pushups, scap pushups, side planks finish.',
-          battlePlan: 'Deficit Pushup (small blocks)\n• 3 × 8–10 (RPE 4), 60s rest\nScapular Pushups on Bars\n• 3 × 10–12 (RPE 4), 60s rest\nSide Plank\n• 3 × 20–30s/side (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nDeficit Pushup (small blocks)\n• 3 × 8–10 (RPE 4), 60s rest\nScapular Pushups on Bars\n• 3 × 10–12 (RPE 4), 60s rest\nSide Plank\n• 3 × 20–30s/side (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1123,7 +1123,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lean Prep',
           duration: '16–22 min',
           description: 'Pseudo planche lean, pushups, hollow holds finish.',
-          battlePlan: 'Parallette Lean Hold (pseudo planche)\n• 3 × 15–25s (RPE 4), 60s rest\nParallette Pushup (neutral wrists)\n• 3 × 8–12 (RPE 4), 60s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nParallette Lean Hold (pseudo planche)\n• 3 × 15–25s (RPE 4), 60s rest\nParallette Pushup (neutral wrists)\n• 3 × 8–12 (RPE 4), 60s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1180,7 +1180,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Depth Lines',
           duration: '22–28 min',
           description: 'Deep pushups, ring/table rows, knee tucks finisher.',
-          battlePlan: 'Deep Parallette Pushup\n• 4 × 8–12 (RPE 5), 75s rest\nInverted Row (table/rings)\n• 4 × 8–10 (RPE 5), 75s rest\nParallette Knee Tucks (L-sit prep)\n• 3 × 10–12 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nDeep Parallette Pushup\n• 4 × 8–12 (RPE 5), 75s rest\nInverted Row (table/rings)\n• 4 × 8–10 (RPE 5), 75s rest\nParallette Knee Tucks (L-sit prep)\n• 3 × 10–12 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1234,7 +1234,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lean Lines',
           duration: '22–28 min',
           description: 'Pseudo planche pushups, dips light, hollow rocks.',
-          battlePlan: 'Pseudo Planche Pushup (on bars)\n• 4 × 6–8 (RPE 5–6), 90s rest\nBox/Bench Dips (light)\n• 3 × 8–10 (RPE 5), 60–75s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nPseudo Planche Pushup (on bars)\n• 4 × 6–8 (RPE 5–6), 90s rest\nBox/Bench Dips (light)\n• 3 × 8–10 (RPE 5), 60–75s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1288,7 +1288,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Mixed Angle (Parallettes)',
           duration: '22–28 min',
           description: 'Wide pushups, neutral pushups, side plank reaches.',
-          battlePlan: 'Wide Parallette Pushup\n• 4 × 8–12 (RPE 5), 75s rest\nNeutral Parallette Pushup\n• 3 × 8–12 (RPE 5), 60–75s rest\nSide Plank with Reach\n• 3 × 8–10/side (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nWide Parallette Pushup\n• 4 × 8–12 (RPE 5), 75s rest\nNeutral Parallette Pushup\n• 3 × 8–12 (RPE 5), 60–75s rest\nSide Plank with Reach\n• 3 × 8–10/side (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1344,7 +1344,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'HSPU Prep',
           duration: '26–34 min',
           description: 'Pike pushups feet-high, pseudo planche holds, L-sit.',
-          battlePlan: 'Feet-Elevated Pike Pushup (on bars)\n• 5 × 6–8 (RPE 6), 90s rest\nParallette Lean Hold (harder angle)\n• 4 × 20–30s (RPE 6), 75s rest\nParallette Tuck L-Sit\n• 4 × 10–15s (RPE 6), 60–75s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nFeet-Elevated Pike Pushup (on bars)\n• 5 × 6–8 (RPE 6), 90s rest\nParallette Lean Hold (harder angle)\n• 4 × 20–30s (RPE 6), 75s rest\nParallette Tuck L-Sit\n• 4 × 10–15s (RPE 6), 60–75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1398,7 +1398,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Deficit Power',
           duration: '26–34 min',
           description: 'Deep deficit pushups, rows feet-high, hollow rocks.',
-          battlePlan: 'Deep Deficit Parallette Pushup\n• 5 × 6–10 (RPE 6), 90s rest\nFeet-Elevated Inverted Row\n• 4 × 8–10 (RPE 6), 75s rest\nHollow Rock\n• 4 × 12–16 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nDeep Deficit Parallette Pushup\n• 5 × 6–10 (RPE 6), 90s rest\nFeet-Elevated Inverted Row\n• 4 × 8–10 (RPE 6), 75s rest\nHollow Rock\n• 4 × 12–16 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1451,7 +1451,7 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Midrange Control (Parallettes)',
           duration: '26–34 min',
           description: 'Pushup 1.5s, pseudo planche pushups, L-sit holds.',
-          battlePlan: 'Parallette Pushup (1.5 reps)\n• 4 × 6–8 (RPE 6), 90s rest\nPseudo Planche Pushup\n• 4 × 6–8 (RPE 6), 90s rest\nParallette L-Sit (tuck or one leg)\n• 4 × 10–15s (RPE 6), 60–75s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nParallette Pushup (1.5 reps)\n• 4 × 6–8 (RPE 6), 90s rest\nPseudo Planche Pushup\n• 4 × 6–8 (RPE 6), 90s rest\nParallette L-Sit (tuck or one leg)\n• 4 × 10–15s (RPE 6), 60–75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1518,7 +1518,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Body Start',
           duration: '16–20 min',
           description: 'Squats and incline pushups, dead bugs for core stability.',
-          battlePlan: 'Bodyweight Squat\n• 3 × 12–15 (RPE 4), 60s rest\nIncline Pushup (hands on bench/wall)\n• 3 × 8–12 (RPE 4), 60s rest\nDead Bug\n• 3 × 8–10/side (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBodyweight Squat\n• 3 × 12–15 (RPE 4), 60s rest\nIncline Pushup (hands on bench/wall)\n• 3 × 8–12 (RPE 4), 60s rest\nDead Bug\n• 3 × 8–10/side (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1572,7 +1572,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hinge Intro',
           duration: '16–20 min',
           description: 'Hip hinge, step-back lunges, plank hold for midline.',
-          battlePlan: 'Hip Hinge (bodyweight RDL pattern)\n• 3 × 12 (RPE 4), 60s rest\nReverse Lunge\n• 3 × 8/side (RPE 4), 60s rest\nFront Plank\n• 3 × 20–40s (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHip Hinge (bodyweight RDL pattern)\n• 3 × 12 (RPE 4), 60s rest\nReverse Lunge\n• 3 × 8/side (RPE 4), 60s rest\nFront Plank\n• 3 × 20–40s (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1627,7 +1627,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Intro',
           duration: '16–20 min',
           description: 'Doorframe rows, incline pushups, hollow holds finish.',
-          battlePlan: 'Towel/Doorframe Row (light angle)\n• 3 × 10–12 (RPE 4), 60s rest\nIncline Pushup\n• 3 × 8–12 (RPE 4), 60s rest\nHollow Hold\n• 3 × 15–25s (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nTowel/Doorframe Row (light angle)\n• 3 × 10–12 (RPE 4), 60s rest\nIncline Pushup\n• 3 × 8–12 (RPE 4), 60s rest\nHollow Hold\n• 3 × 15–25s (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1681,7 +1681,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Flow Basics',
           duration: '18–22 min',
           description: 'Squats, wall sits, pushups from knees, side planks.',
-          battlePlan: 'Bodyweight Squat\n• 3 × 12–15 (RPE 4), 60s rest\nWall Sit\n• 3 × 30–45s (RPE 4), 45–60s rest\nKnee Pushup\n• 3 × 8–12 (RPE 4), 60s rest\nSide Plank\n• 3 × 15–25s/side (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBodyweight Squat\n• 3 × 12–15 (RPE 4), 60s rest\nWall Sit\n• 3 × 30–45s (RPE 4), 45–60s rest\nKnee Pushup\n• 3 × 8–12 (RPE 4), 60s rest\nSide Plank\n• 3 × 15–25s/side (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1746,7 +1746,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Body Lines',
           duration: '22–28 min',
           description: 'Split squats, pushups, hip lifts, hollow rocks for bodyweight challenge.',
-          battlePlan: 'Rear-Foot Flat Split Squat\n• 4 × 8/side (RPE 5), 60–75s rest\nPushup (standard)\n• 4 × 8–12 (RPE 5), 60–75s rest\nGlute Bridge\n• 3 × 12–15 (RPE 5), 60s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nRear-Foot Flat Split Squat\n• 4 × 8/side (RPE 5), 60–75s rest\nPushup (standard)\n• 4 × 8–12 (RPE 5), 60–75s rest\nGlute Bridge\n• 3 × 12–15 (RPE 5), 60s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1808,7 +1808,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Single-Leg Start',
           duration: '22–28 min',
           description: 'Step-downs, skater squats, pushups, dead bugs.',
-          battlePlan: 'Heel Tap Step-Down (low step)\n• 4 × 6–8/side (RPE 5), 60–75s rest\nSkater Squat (assisted)\n• 3 × 6–8/side (RPE 5), 60–75s rest\nPushup\n• 3 × 8–12 (RPE 5), 60s rest\nDead Bug\n• 3 × 10–12/side (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHeel Tap Step-Down (low step)\n• 4 × 6–8/side (RPE 5), 60–75s rest\nSkater Squat (assisted)\n• 3 × 6–8/side (RPE 5), 60–75s rest\nPushup\n• 3 × 8–12 (RPE 5), 60s rest\nDead Bug\n• 3 × 10–12/side (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1869,7 +1869,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hinge + Pull',
           duration: '22–28 min',
           description: 'Good mornings, table rows, pushups, side planks.',
-          battlePlan: 'Bodyweight Good Morning\n• 4 × 12 (RPE 5), 60s rest\nTable/Ring Row Regression (feet bent)\n• 4 × 8–10 (RPE 5), 60–75s rest\nPushup\n• 3 × 8–12 (RPE 5), 60s rest\nSide Plank\n• 3 × 25–35s/side (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBodyweight Good Morning\n• 4 × 12 (RPE 5), 60s rest\nTable/Ring Row Regression (feet bent)\n• 4 × 8–10 (RPE 5), 60–75s rest\nPushup\n• 3 × 8–12 (RPE 5), 60s rest\nSide Plank\n• 3 × 25–35s/side (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1931,7 +1931,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Flow Builder',
           duration: '22–28 min',
           description: 'Squat to lunge flow, pushups, hollow hold finisher.',
-          battlePlan: 'Squat → Reverse Lunge (alt sides)\n• 4 × 6/side (RPE 5), 60–75s rest\nPushup\n• 4 × 8–12 (RPE 5), 60–75s rest\nHollow Hold\n• 3 × 25–35s (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nSquat → Reverse Lunge (alt sides)\n• 4 × 6/side (RPE 5), 60–75s rest\nPushup\n• 4 × 8–12 (RPE 5), 60–75s rest\nHollow Hold\n• 3 × 25–35s (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1988,7 +1988,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Power Lines',
           duration: '26–34 min',
           description: 'Pistol regressions, decline pushups, hollow rocks.',
-          battlePlan: 'Pistol Box Squat (to box/bench)\n• 4 × 5–7/side (RPE 6), 75s rest\nDecline Pushup (feet elevated)\n• 4 × 8–12 (RPE 6), 60–75s rest\nHollow Rock\n• 4 × 10–15 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nPistol Box Squat (to box/bench)\n• 4 × 5–7/side (RPE 6), 75s rest\nDecline Pushup (feet elevated)\n• 4 × 8–12 (RPE 6), 60–75s rest\nHollow Rock\n• 4 × 10–15 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2042,7 +2042,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hinge Power',
           duration: '26–34 min',
           description: 'Single-leg RDL reach, hard rows, side plank holds.',
-          battlePlan: 'Single-Leg RDL Reach (unloaded)\n• 4 × 6–8/side (RPE 6), 75s rest\nTable/Ring Row (feet forward)\n• 4 × 8–10 (RPE 6), 60–75s rest\nSide Plank\n• 3 × 35–45s/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSingle-Leg RDL Reach (unloaded)\n• 4 × 6–8/side (RPE 6), 75s rest\nTable/Ring Row (feet forward)\n• 4 × 8–10 (RPE 6), 60–75s rest\nSide Plank\n• 3 × 35–45s/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2097,7 +2097,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Volume Push–Pull',
           duration: '26–34 min',
           description: 'Pushups, rows, squat jumps light, hollow hold closer.',
-          battlePlan: 'Pushup\n• 5 × 8–12 (RPE 6), 60–75s rest\nInverted Row (low table or rail)\n• 4 × 8–10 (RPE 6), 60–75s rest\nSquat Jump (small height)\n• 3 × 8 (RPE 6), 60s rest\nHollow Hold\n• 3 × 30–40s (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nPushup\n• 5 × 8–12 (RPE 6), 60–75s rest\nInverted Row (low table or rail)\n• 4 × 8–10 (RPE 6), 60–75s rest\nSquat Jump (small height)\n• 3 × 8 (RPE 6), 60s rest\nHollow Hold\n• 3 × 30–40s (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2159,7 +2159,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Midrange Core',
           duration: '26–34 min',
           description: '1.5 tempo adds time under tension for safe progress.',
-          battlePlan: 'Bodyweight Squat (1.5 reps)\n• 4 × 8–10 (RPE 6), 60–75s rest\nPushup (1.5 reps)\n• 4 × 6–8 (RPE 6), 60–75s rest\nSide Plank with Top-Arm Reach\n• 3 × 8–10/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBodyweight Squat (1.5 reps)\n• 4 × 8–10 (RPE 6), 60–75s rest\nPushup (1.5 reps)\n• 4 × 6–8 (RPE 6), 60–75s rest\nSide Plank with Top-Arm Reach\n• 3 × 8–10/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2222,7 +2222,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Bar Start',
           duration: '16–22 min',
           description: 'Dead hangs, band-assisted pulls, incline inverted rows.',
-          battlePlan: 'Dead Hang (feet supported if needed)\n• 3 × 20–30s (RPE 4), 60s rest\nBand-Assisted Pullup (light angle)\n• 3 × 4–6 (RPE 4), 75s rest\nInverted Row (high bar, feet bent)\n• 3 × 8–10 (RPE 4), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nDead Hang (feet supported if needed)\n• 3 × 20–30s (RPE 4), 60s rest\nBand-Assisted Pullup (light angle)\n• 3 × 4–6 (RPE 4), 75s rest\nInverted Row (high bar, feet bent)\n• 3 × 8–10 (RPE 4), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2275,7 +2275,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Scap Basics',
           duration: '16–22 min',
           description: 'Scap pullups, eccentric lowers, hollow hold for core.',
-          battlePlan: 'Scapular Pullups (top to bottom)\n• 3 × 8–10 (RPE 4), 60s rest\nEccentric Pullup (3–4s lowers, band if needed)\n• 3 × 3–5 (RPE 4), 75s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point. holds are strict: locked position, no drifting.\nScapular Pullups (top to bottom)\n• 3 × 8–10 (RPE 4), 60s rest\nEccentric Pullup (3–4s lowers, band if needed)\n• 3 × 3–5 (RPE 4), 75s rest\nHollow Hold\n• 3 × 20–30s (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2330,7 +2330,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Mixed Angle',
           duration: '16–22 min',
           description: 'Neutral band pulls, chin-up eccentrics, rows to close.',
-          battlePlan: 'Neutral-Grip Band-Assisted Pullup\n• 3 × 5–7 (RPE 4), 75s rest\nEccentric Chin-Up (4s down)\n• 3 × 3–4 (RPE 4), 75s rest\nInverted Row (bar chest height)\n• 3 × 8–10 (RPE 4), 60s rest',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nNeutral-Grip Band-Assisted Pullup\n• 3 × 5–7 (RPE 4), 75s rest\nEccentric Chin-Up (4s down)\n• 3 × 3–4 (RPE 4), 75s rest\nInverted Row (bar chest height)\n• 3 × 8–10 (RPE 4), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2386,7 +2386,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Volume Pull',
           duration: '22–28 min',
           description: 'Assisted pullups, inverted rows, hollow rocks finish.',
-          battlePlan: 'Band-Assisted Pullup\n• 4 × 6–8 (RPE 5), 90s rest\nInverted Row (feet flat)\n• 4 × 8–10 (RPE 5), 75s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBand-Assisted Pullup\n• 4 × 6–8 (RPE 5), 90s rest\nInverted Row (feet flat)\n• 4 × 8–10 (RPE 5), 75s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2439,7 +2439,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Eccentric Lines',
           duration: '22–28 min',
           description: 'Chin-up eccentrics, isometric holds, knee raises.',
-          battlePlan: 'Eccentric Chin-Up\n• 4 × 3–4 (RPE 5–6), 90s rest\nTop Isometric Pullup Hold (chin over bar)\n• 3 × 10–15s (RPE 5), 75s rest\nHanging Knee Raise\n• 3 × 10–12 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point. holds are strict: locked position, no drifting.\nEccentric Chin-Up\n• 4 × 3–4 (RPE 5–6), 90s rest\nTop Isometric Pullup Hold (chin over bar)\n• 3 × 10–15s (RPE 5), 75s rest\nHanging Knee Raise\n• 3 × 10–12 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2495,7 +2495,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Mixed Grips',
           duration: '22–28 min',
           description: 'Neutral pullups, pronated rows, dead hangs for grip.',
-          battlePlan: 'Neutral-Grip Pullup (light band if needed)\n• 4 × 5–7 (RPE 5–6), 90s rest\nPronated Inverted Row (feet bent)\n• 4 × 8–10 (RPE 5), 75s rest\nDead Hang\n• 3 × 30–40s (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nNeutral-Grip Pullup (light band if needed)\n• 4 × 5–7 (RPE 5–6), 90s rest\nPronated Inverted Row (feet bent)\n• 4 × 8–10 (RPE 5), 75s rest\nDead Hang\n• 3 × 30–40s (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2551,7 +2551,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Strict Pull',
           duration: '26–34 min',
           description: 'Pullups strict, chest-to-bar rows, hanging leg raises.',
-          battlePlan: 'Strict Pullup (bodyweight)\n• 5 × 4–6 (RPE 6), 90s rest\nChest-to-Bar Inverted Row (feet extended)\n• 4 × 8–10 (RPE 6), 75s rest\nHanging Leg Raise\n• 3 × 8–12 (RPE 6), 60–75s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nStrict Pullup (bodyweight)\n• 5 × 4–6 (RPE 6), 90s rest\nChest-to-Bar Inverted Row (feet extended)\n• 4 × 8–10 (RPE 6), 75s rest\nHanging Leg Raise\n• 3 × 8–12 (RPE 6), 60–75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2606,7 +2606,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Eccentric Power',
           duration: '26–34 min',
           description: 'Eccentric pullups weighted, hollow rocks, grip holds.',
-          battlePlan: 'Weighted Eccentric Pullup (dip belt/DB)\n• 5 × 2–3 (RPE 6–7), 120s rest\nHollow Rock\n• 4 × 12–16 (RPE 6), 60–75s rest\nBar Hang (thick grip/towel)\n• 3 × 30–40s (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nWeighted Eccentric Pullup (dip belt/DB)\n• 5 × 2–3 (RPE 6–7), 120s rest\nHollow Rock\n• 4 × 12–16 (RPE 6), 60–75s rest\nBar Hang (thick grip/towel)\n• 3 × 30–40s (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2660,7 +2660,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Volume Mix',
           duration: '26–34 min',
           description: 'Neutral pullups, pronated pullups, chin hold finisher.',
-          battlePlan: 'Neutral-Grip Pullup\n• 4 × 5–7 (RPE 6), 90s rest\nPronated Pullup\n• 3 × 4–6 (RPE 6), 90s rest\nTop Isometric Chin-Up Hold\n• 3 × 10–15s (RPE 6), 75s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nNeutral-Grip Pullup\n• 4 × 5–7 (RPE 6), 90s rest\nPronated Pullup\n• 3 × 4–6 (RPE 6), 90s rest\nTop Isometric Chin-Up Hold\n• 3 × 10–15s (RPE 6), 75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2724,7 +2724,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Knee Raise',
           duration: '8–10 min',
           description: 'Hanging knee raises building core control and lower ab strength',
-          battlePlan: '3 rounds\n• 10–12 reps\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 reps\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2756,7 +2756,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Alternating Hanging Knee Raise',
           duration: '8–10 min',
           description: 'Alternating knee raises improving coordination and core control',
-          battlePlan: '3 rounds\n• 12 total reps\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 total reps\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2788,7 +2788,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Knee Raise Hold',
           duration: '8–10 min',
           description: 'Knee raises with pauses increasing abdominal tension and control',
-          battlePlan: '3 rounds\n• 8 reps (2s hold)\nRest 60s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 8 reps (2s hold)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2820,7 +2820,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Slow Hanging Knee Raise',
           duration: '8–10 min',
           description: 'Slow-tempo knee raises increasing lower ab tension and control',
-          battlePlan: '3 rounds\n• 8–10 reps (3s eccentric)\nRest 60s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8–10 reps (3s eccentric)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2854,7 +2854,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Leg Raise',
           duration: '10–12 min',
           description: 'Straight-leg raises increasing lower ab strength and tension',
-          battlePlan: '4 rounds\n• 10–12 reps\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10–12 reps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2886,7 +2886,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Toes-to-Bar Progression',
           duration: '10–12 min',
           description: 'Controlled toe raises improving compression and abdominal strength',
-          battlePlan: '4 rounds\n• 8–10 reps\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 reps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2917,7 +2917,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Leg Raise Pulses',
           duration: '10–12 min',
           description: 'Leg raises extended with pulses increasing abdominal tension',
-          battlePlan: '4 rounds\n• 8 reps + 4 pulses\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 reps + 4 pulses\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2948,7 +2948,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Windshield Wiper Intro',
           duration: '10–12 min',
           description: 'Rotational hanging raises building oblique strength and control',
-          battlePlan: '4 rounds\n• 6 per side\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 per side\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2981,7 +2981,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Toes-to-Bar',
           duration: '12–14 min',
           description: 'Full toes-to-bar reps demanding advanced core compression strength',
-          battlePlan: '4 rounds\n• 10–12 reps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10–12 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3013,7 +3013,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging L-Sit Raise',
           duration: '12–14 min',
           description: 'L-sit raises combining compression strength with core endurance',
-          battlePlan: '4 rounds\n• 8–10 reps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3045,7 +3045,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Windshield Wipers',
           duration: '12–14 min',
           description: 'Full rotational raises building advanced oblique and core strength',
-          battlePlan: '4 rounds\n• 8 per side\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per side\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3076,7 +3076,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Toes-to-Bar Burnout',
           duration: '12–14 min',
           description: 'High-rep toes-to-bar sets pushing abdominal endurance and grip',
-          battlePlan: '3 rounds\n• 15–20 reps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15–20 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3115,7 +3115,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Dip Prep',
           duration: '16–22 min',
           description: 'Support holds, band-assisted dips, knee tucks closer.',
-          battlePlan: 'Parallel Bar Support Hold\n• 3 × 15–25s (RPE 4), 60s rest\nBand-Assisted Dips\n• 3 × 5–7 (RPE 4), 75s rest\nParallel Bar Knee Tucks\n• 3 × 10–12 (RPE 4), 60s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nParallel Bar Support Hold\n• 3 × 15–25s (RPE 4), 60s rest\nBand-Assisted Dips\n• 3 × 5–7 (RPE 4), 75s rest\nParallel Bar Knee Tucks\n• 3 × 10–12 (RPE 4), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3169,7 +3169,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Angle Rows',
           duration: '16–22 min',
           description: 'Bar rows, band dips light, dead bug finish for light challenge.',
-          battlePlan: 'Parallel Bar Inverted Row (knees bent)\n• 3 × 8–10 (RPE 4), 60s rest\nBand-Assisted Dips\n• 3 × 5–7 (RPE 4), 75s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nParallel Bar Inverted Row (knees bent)\n• 3 × 8–10 (RPE 4), 60s rest\nBand-Assisted Dips\n• 3 × 5–7 (RPE 4), 75s rest\nDead Bug\n• 3 × 10–12/side (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3223,7 +3223,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Support + Core',
           duration: '16–22 min',
           description: 'Support holds, assisted dip eccentrics, knee raises.',
-          battlePlan: 'Parallel Bar Support Hold\n• 3 × 20–30s (RPE 4), 60s rest\nAssisted Dip Eccentric (3–4s down)\n• 3 × 3–5 (RPE 4), 75s rest\nHanging Knee Raise (on bars)\n• 3 × 8–10 (RPE 4), 60s rest',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point. holds are strict: locked position, no drifting.\nParallel Bar Support Hold\n• 3 × 20–30s (RPE 4), 60s rest\nAssisted Dip Eccentric (3–4s down)\n• 3 × 3–5 (RPE 4), 75s rest\nHanging Knee Raise (on bars)\n• 3 × 8–10 (RPE 4), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3280,7 +3280,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Dip Lines',
           duration: '22–28 min',
           description: 'Dips banded, bar rows, knee raise strict to finish.',
-          battlePlan: 'Band-Assisted Dips\n• 4 × 6–8 (RPE 5), 90s rest\nParallel Bar Inverted Row (feet flat)\n• 4 × 8–10 (RPE 5), 75s rest\nParallel Bar Knee Raise\n• 3 × 10–12 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBand-Assisted Dips\n• 4 × 6–8 (RPE 5), 90s rest\nParallel Bar Inverted Row (feet flat)\n• 4 × 8–10 (RPE 5), 75s rest\nParallel Bar Knee Raise\n• 3 × 10–12 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3334,7 +3334,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Support Strength',
           duration: '22–28 min',
           description: 'Support holds, tempo dips, dead bugs for brace.',
-          battlePlan: 'Parallel Bar Support Hold\n• 4 × 25–35s (RPE 5), 60–75s rest\nTempo Dips (3s down) with Band\n• 4 × 5–7 (RPE 5–6), 90s rest\nDead Bug\n• 3 × 12–14/side (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point. holds are strict: locked position, no drifting.\nParallel Bar Support Hold\n• 4 × 25–35s (RPE 5), 60–75s rest\nTempo Dips (3s down) with Band\n• 4 × 5–7 (RPE 5–6), 90s rest\nDead Bug\n• 3 × 12–14/side (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3388,7 +3388,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Mixed Angle (Parallel Bars)',
           duration: '22–28 min',
           description: 'Pronated bar rows, dips, knee tucks controlled.',
-          battlePlan: 'Parallel Bar Row (pronated, feet bent)\n• 4 × 8–10 (RPE 5), 75s rest\nBand-Assisted Dips\n• 4 × 6–8 (RPE 5–6), 90s rest\nParallel Bar Knee Tucks\n• 3 × 10–12 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nParallel Bar Row (pronated, feet bent)\n• 4 × 8–10 (RPE 5), 75s rest\nBand-Assisted Dips\n• 4 × 6–8 (RPE 5–6), 90s rest\nParallel Bar Knee Tucks\n• 3 × 10–12 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3444,7 +3444,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Strict Dips',
           duration: '26–34 min',
           description: 'Strict dips, feet-elevated rows, L-sit tuck holds.',
-          battlePlan: 'Strict Parallel Bar Dips\n• 5 × 5–7 (RPE 6), 90s rest\nFeet-Elevated Parallel Bar Row\n• 4 × 8–10 (RPE 6), 75s rest\nParallel Bar Tuck L-Sit Hold\n• 4 × 10–15s (RPE 6), 60–75s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nStrict Parallel Bar Dips\n• 5 × 5–7 (RPE 6), 90s rest\nFeet-Elevated Parallel Bar Row\n• 4 × 8–10 (RPE 6), 75s rest\nParallel Bar Tuck L-Sit Hold\n• 4 × 10–15s (RPE 6), 60–75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3499,7 +3499,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Eccentric Power (Parallel Bars)',
           duration: '26–34 min',
           description: 'Dip negatives weighted, hard rows, strict knee raises.',
-          battlePlan: 'Weighted Eccentric Dip\n• 5 × 2–3 (RPE 6–7), 120s rest\nParallel Bar Row (feet extended)\n• 4 × 8–10 (RPE 6), 75s rest\nParallel Bar Knee Raise\n• 4 × 10–12 (RPE 6), 60–75s rest',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nWeighted Eccentric Dip\n• 5 × 2–3 (RPE 6–7), 120s rest\nParallel Bar Row (feet extended)\n• 4 × 8–10 (RPE 6), 75s rest\nParallel Bar Knee Raise\n• 4 × 10–12 (RPE 6), 60–75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3553,7 +3553,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Midrange Control (Parallel Bars)',
           duration: '26–34 min',
           description: 'Dip 1.5 reps, chest-to-bar rows, tuck L-sit holds for advanced challenge.',
-          battlePlan: 'Dips (1.5 reps: half up, down, full press)\n• 4 × 4–6 (RPE 6), 120s rest\nChest-to-Bar Parallel Bar Row\n• 4 × 8–10 (RPE 6), 75s rest\nTuck L-Sit Hold\n• 4 × 12–18s (RPE 6), 60–75s rest',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nDips (1.5 reps: half up, down, full press)\n• 4 × 4–6 (RPE 6), 120s rest\nChest-to-Bar Parallel Bar Row\n• 4 × 8–10 (RPE 6), 75s rest\nTuck L-Sit Hold\n• 4 × 12–18s (RPE 6), 60–75s rest',
           plan: {
             "format": "strength",
             "blocks": [

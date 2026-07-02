@@ -10,7 +10,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated DB Overhead Extension',
           duration: '12–14 min',
           description: 'Standard overhead extension workout emphasizing long-head triceps stretch.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Seated DB Overhead Extensions — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Seated DB Overhead Extensions — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -57,7 +57,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lying DB Skullcrushers',
           duration: '12–14 min',
           description: 'Standard horizontal extension workout with stable positioning.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 DB Skullcrushers — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 DB Skullcrushers — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -105,7 +105,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Kickback Builder',
           duration: '12–14 min',
           description: 'Beginner-only isolation workout emphasizing peak contraction.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×15 DB Kickbacks — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×15 DB Kickbacks — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -154,7 +154,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Overhead DB Extension',
           duration: '14–16 min',
           description: 'Pause-rep overhead extension workout removing momentum.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Overhead DB Extensions — pause reps (1s bottom)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Overhead DB Extensions — pause reps (1s bottom)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -202,7 +202,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Skullcrusher Burn Builder',
           duration: '15–17 min',
           description: 'Burnout-style skullcrusher workout extending time under tension.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 Skullcrushers — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15 Skullcrushers — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -249,7 +249,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Extension + Skullcrusher Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing long-head stretch with horizontal extension.',
-          battlePlan: 'Battle Plan — Superset\n• 4×10 DB Overhead Extensions — standard reps\nsuperset with\n• 10 DB Skullcrushers\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 DB Overhead Extensions — standard reps\nsuperset with\n• 10 DB Skullcrushers\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -305,7 +305,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy DB Overhead Extension',
           duration: '18–20 min',
           description: 'Standard heavy overhead extension workout for advanced loading.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×8 DB Overhead Extensions — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 DB Overhead Extensions — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -353,7 +353,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Extension Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop overhead extension workout driving mechanical fatigue.',
-          battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps\n• Set 2: drop set — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6. On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -393,7 +393,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Skullcrusher Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric skullcrusher workout emphasizing peak extension.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×12 DB Skullcrushers — burnout reps\n• Final set: squeeze to finish — hold full elbow extension 12–15s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×12 DB Skullcrushers — burnout reps\n• Final set, squeeze to finish, hold full elbow extension 12–15s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -449,7 +449,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated KB Overhead Extension (90°)',
           duration: '12–14 min',
           description: 'Foundational overhead KB workout introducing long-head loading.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Seated KB Overhead Extensions — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Seated KB Overhead Extensions — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -496,7 +496,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Flat KB Floor Skullcrushers',
           duration: '12–14 min',
           description: 'Flat-angle triceps extension workout using floor support.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 KB Floor Skullcrushers — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 KB Floor Skullcrushers — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -543,7 +543,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Extension + Iso Finish (45°)',
           duration: '12–14 min',
           description: 'Inclined KB extension workout with squeeze-to-finish.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Incline KB Tricep Extensions — standard reps\n• Final set: squeeze to finish — hold lockout 10s\nRest 60s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Incline KB Tricep Extensions — standard reps\n• Final set, squeeze to finish, hold lockout 10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -592,7 +592,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused KB Overhead Extensions (90°)',
           duration: '14–16 min',
           description: 'Pause-rep overhead KB workout removing momentum.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×10 KB Overhead Extensions — pause reps (1s bottom)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 KB Overhead Extensions — pause reps (1s bottom)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -640,7 +640,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Incline KB Skullcrushers (45°)',
           duration: '15–17 min',
           description: 'Angle-shifted skullcrusher workout altering resistance curve.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Incline KB Skullcrushers — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Incline KB Skullcrushers — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -687,7 +687,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Burn Builder (Flat)',
           duration: '15–17 min',
           description: 'Burnout-style flat KB workout extending time under tension.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 KB Floor Extensions — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15 KB Floor Extensions — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -736,7 +736,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy KB Overhead Extension (90°)',
           duration: '18–20 min',
           description: 'Heavy overhead KB workout emphasizing strict extension.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×8 KB Overhead Extensions — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 KB Overhead Extensions — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -784,7 +784,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Extension Drop Cluster (45°)',
           duration: '18–20 min',
           description: 'Multi-drop incline KB workout driving mechanical fatigue.',
-          battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps\n• Set 2: drop — 10 → lighter bell → 8\n• Set 3: triple drop — 8 → lighter → 6 → lighter → 6\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop — 10 → lighter bell → 8. Set 3 — triple drop — 8 → lighter → 6 → lighter → 6. Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -824,7 +824,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Burnout Hold (Flat)',
           duration: '18–20 min',
           description: 'Burnout + isometric KB workout emphasizing peak extension.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×12 KB Extensions — burnout reps\n• Final set: squeeze to finish — hold full extension 12–15s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×12 KB Extensions — burnout reps\n• Final set, squeeze to finish, hold full extension 12–15s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -879,7 +879,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Skullcrusher Builder',
           duration: '12–14 min',
           description: 'Standard EZ-bar skullcrusher workout for joint-friendly loading.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 EZ Skullcrushers — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 EZ Skullcrushers — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -927,7 +927,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Close-Grip EZ Press',
           duration: '12–14 min',
           description: 'Standard compound triceps press using elbow-dominant grip.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Close-Grip EZ Press — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 Close-Grip EZ Press — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -975,7 +975,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Extension + Iso Finish',
           duration: '12–14 min',
           description: 'Standard EZ extension workout with squeeze-to-finish.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 EZ Extensions — standard reps\n• Final set: squeeze to finish — hold lockout 10s\nRest 60s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 EZ Extensions — standard reps\n• Final set, squeeze to finish, hold lockout 10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1024,7 +1024,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused EZ Skullcrushers',
           duration: '14–16 min',
           description: 'Pause-rep EZ skullcrusher workout removing momentum.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Skullcrushers — pause reps (1s bottom)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Skullcrushers — pause reps (1s bottom)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1072,7 +1072,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Burn Builder',
           duration: '15–17 min',
           description: 'Burnout-style EZ extension workout extending time under tension.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 EZ Extensions — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15 EZ Extensions — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1119,7 +1119,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Skullcrusher + Close-Grip Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing isolation and compound extension.',
-          battlePlan: 'Battle Plan — Superset\n• 4×10 EZ Skullcrushers\nsuperset with\n• 8 Close-Grip EZ Press\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 EZ Skullcrushers\nsuperset with\n• 8 Close-Grip EZ Press\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1174,7 +1174,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy EZ Skullcrusher',
           duration: '18–20 min',
           description: 'Standard heavy EZ skullcrusher workout emphasizing strict form.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×8 EZ Skullcrushers\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 EZ Skullcrushers\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1221,7 +1221,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Extension Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop EZ extension workout driving fatigue.',
-          battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps\n• Set 2: drop — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6. On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1261,7 +1261,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric EZ extension workout.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×12 EZ Extensions\n• Final set: squeeze to finish — hold lockout 12–15s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×12 EZ Extensions\n• Final set, squeeze to finish, hold lockout 12–15s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1316,7 +1316,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Rope Tricep Extension',
           duration: '12–14 min',
           description: 'Foundational overhead cable workout emphasizing long-head stretch.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Overhead Rope Extensions — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Overhead Rope Extensions — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1363,7 +1363,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Straight-Bar Cable Pushdowns',
           duration: '12–14 min',
           description: 'Standard cable pushdown workout introducing fixed-path elbow extension.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Straight-Bar Pushdowns — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Straight-Bar Pushdowns — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1410,7 +1410,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Cable Extension + Iso Finish',
           duration: '12–14 min',
           description: 'Overhead cable workout with squeeze-to-finish at peak extension.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Overhead Cable Extensions (short bar) — standard reps\n• Final set: squeeze to finish — hold full extension overhead 10s\nRest 60s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Overhead Cable Extensions (short bar) — standard reps\n• Final set, squeeze to finish, hold full extension overhead 10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1460,7 +1460,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Overhead Rope Extensions',
           duration: '14–16 min',
           description: 'Pause-rep overhead cable workout removing momentum.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Overhead Rope Extensions — pause reps (1s in stretch)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Overhead Rope Extensions — pause reps (1s in stretch)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1507,7 +1507,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'High-to-Low Rope Extensions',
           duration: '15–17 min',
           description: 'Angle-adjusted cable workout changing resistance through ROM.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 High-to-Low Rope Extensions — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 High-to-Low Rope Extensions — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1554,7 +1554,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Burn Builder',
           duration: '15–17 min',
           description: 'Burnout-style cable workout maximizing time under tension.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×15–20 Cable Extensions (straight bar) — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15–20 Cable Extensions (straight bar) — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1604,7 +1604,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Overhead Cable Extension Builder',
           duration: '18–20 min',
           description: 'Heavy overhead cable workout emphasizing strict long-head loading.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Overhead Cable Extensions (short bar) — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 Overhead Cable Extensions (short bar) — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1652,7 +1652,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Cable Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop overhead cable workout driving mechanical fatigue.',
-          battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps\n• Set 2: drop — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6. On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1692,7 +1692,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rope Pushdown Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric cable workout finishing in a shortened position.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×12 Rope Pushdowns — burnout reps\n• Final set: squeeze to finish — hold full extension 12–15s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×12 Rope Pushdowns — burnout reps\n• Final set, squeeze to finish, hold full extension 12–15s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1748,7 +1748,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rope Pushdown',
           duration: '10–12 min',
           description: 'Rope attachment builds triceps with simple tension',
-          battlePlan: '3 rounds\n• 10–12 Rope Pushdowns\nRest 60–75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Rope Pushdowns\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1789,7 +1789,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Rope Ext',
           duration: '10–12 min',
           description: 'Cable overhead isolates stretch for stronger arms',
-          battlePlan: '3 rounds\n• 10–12 Overhead Rope Extensions\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Overhead Rope Extensions\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1831,7 +1831,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Bar Ext',
           duration: '12–14 min',
           description: 'Straight bar hits triceps with longer stretch angle',
-          battlePlan: '4 rounds\n• 8–10 Overhead Bar Extensions\nRest 75–90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Overhead Bar Extensions\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1871,7 +1871,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Negative Rope Ext',
           duration: '12–14 min',
           description: 'Slow eccentric rope reps increase hypertrophy load',
-          battlePlan: '3 rounds\n• 8 Rope Overhead Extensions (3s eccentric)\nRest 75–90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8 Rope Overhead Extensions (3s eccentric)\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1914,7 +1914,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rope + Bar Combo',
           duration: '14–16 min',
           description: 'Superset strategy hits triceps with extra volume',
-          battlePlan: '4 rounds\n• 8 Rope Overhead Extensions\n• 8 Bar Overhead Extensions\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Rope Overhead Extensions\n• 8 Bar Overhead Extensions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1959,7 +1959,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead 21s',
           duration: '16–18 min',
           description: 'Overhead 21 style burns fibers through completion',
-          battlePlan: '3 rounds\n• 7 Bottom Half Reps\n• 7 Top Half Reps\n• 7 Full Range Reps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 7 Bottom Half Reps\n• 7 Top Half Reps\n• 7 Full Range Reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2015,7 +2015,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pushdown Builder',
           duration: '12–14 min',
           description: 'Standard pushdown workout building foundational triceps strength using a fixed handle.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Tricep Pushdowns — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Tricep Pushdowns — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2063,7 +2063,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Pushdown Control',
           duration: '12–14 min',
           description: 'Eccentric-focused pushdown workout emphasizing control on a fixed path.',
-          battlePlan: 'Battle Plan — Eccentric Sets\n• 4×10 Pushdowns — eccentric reps (3s return)\nRest 60s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×10 Pushdowns — eccentric reps (3s return)\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2110,7 +2110,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pushdown + Iso Finish',
           duration: '12–14 min',
           description: 'Standard pushdown workout with squeeze-to-finish at peak elbow extension.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Pushdowns — standard reps\n• Final set: squeeze to finish — hold full extension 10s\nRest 60s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Pushdowns — standard reps\n• Final set, squeeze to finish, hold full extension 10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2159,7 +2159,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Pushdowns',
           duration: '14–16 min',
           description: 'Pause-rep pushdown workout removing momentum on a fixed track.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Pushdowns — pause reps (1s at full extension)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Pushdowns — pause reps (1s at full extension)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2206,7 +2206,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pushdown Burn Builder',
           duration: '15–17 min',
           description: 'Burnout-style pushdown workout extending time under tension.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×15–20 Pushdowns — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15–20 Pushdowns — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2253,7 +2253,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Density Pushdowns',
           duration: '15–17 min',
           description: 'High-density pushdown workout with shortened rest.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×10 Pushdowns — standard reps\nRest 45–60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×10 Pushdowns — standard reps\nRest 45–60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2302,7 +2302,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Pushdown Builder',
           duration: '18–20 min',
           description: 'Standard heavy pushdown workout emphasizing strict elbow control.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Pushdowns — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 Pushdowns — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2349,7 +2349,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pushdown Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop pushdown workout driving mechanical fatigue on a fixed handle.',
-          battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps\n• Set 2: drop set — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6. On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2389,7 +2389,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pushdown Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric pushdown workout for maximal triceps fatigue.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×12 Pushdowns — burnout reps\n• Final set: squeeze to finish — hold full extension 12–15s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×12 Pushdowns — burnout reps\n• Final set, squeeze to finish, hold full extension 12–15s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2444,7 +2444,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Dip Builder',
           duration: '12–14 min',
           description: 'Standard assisted dip workout emphasizing elbow extension.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×8–10 Assisted Dips\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×8–10 Assisted Dips\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2491,7 +2491,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bench Dip Control',
           duration: '12–14 min',
           description: 'Regression-based dip workout for controlled loading.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Bench Dips\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Bench Dips\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2538,7 +2538,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip + Iso Finish',
           duration: '12–14 min',
           description: 'Standard dip workout with squeeze-to-finish.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×8 Dips\n• Final set: squeeze to finish — hold top support 10s\nRest 75s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×8 Dips\n• Final set, squeeze to finish, hold top support 10s\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2588,7 +2588,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Dips',
           duration: '14–16 min',
           description: 'Eccentric-focused dip workout increasing time under tension.',
-          battlePlan: 'Battle Plan — Eccentric Sets\n• 4×8 Dips — 3s down\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×8 Dips — 3s down\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2636,7 +2636,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip Burn Builder',
           duration: '15–17 min',
           description: 'Burnout-style dip workout extending fatigue.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×AMRAP Dips\nRest 75s',
+          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• Dips — 4 × (AMRAP)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2681,7 +2681,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip + Pushdown Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing bodyweight and machine isolation.',
-          battlePlan: 'Battle Plan — Superset\n• 4×8 Dips\nsuperset with\n• 12 Pushdowns\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×8 Dips\nsuperset with\n• 12 Pushdowns\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2735,7 +2735,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Dip Builder',
           duration: '18–20 min',
           description: 'Standard weighted dip workout for advanced loading.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×6 Weighted Dips\nRest 120s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×6 Weighted Dips\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2782,7 +2782,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip Drop Ladder',
           duration: '18–20 min',
           description: 'Bodyweight drop workout using assistance changes.',
-          battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  6 weighted → bodyweight AMRAP → assisted AMRAP\nRest 120s',
+          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  6 weighted → bodyweight AMRAP → assisted AMRAP\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2829,7 +2829,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric dip workout.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×AMRAP Dips\n• Final set: squeeze to finish — hold top 15s\nRest 120s',
+          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Burnout + Isometric\n• Dips — 4 × (AMRAP)\n• Final set, squeeze to finish, hold top 15s\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2883,7 +2883,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'TRX Tricep Extension Builder',
           duration: '12–14 min',
           description: 'Standard TRX extension workout introducing bodyweight triceps loading.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×10 TRX Tricep Extensions — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 TRX Tricep Extensions — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2930,7 +2930,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Incline TRX Extensions',
           duration: '12–14 min',
           description: 'Regression-based TRX workout using a more upright body angle.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 TRX Extensions (more upright) — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 TRX Extensions (more upright) — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2977,7 +2977,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'TRX Extension + Iso Finish',
           duration: '12–14 min',
           description: 'Standard TRX workout with squeeze-to-finish at full elbow extension.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×8 TRX Extensions — standard reps\n• Final set: squeeze to finish — hold arms fully straight 10s\nRest 60s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×8 TRX Extensions — standard reps\n• Final set, squeeze to finish, hold arms fully straight 10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3026,7 +3026,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo TRX Extensions',
           duration: '14–16 min',
           description: 'Eccentric-focused TRX workout increasing time under tension.',
-          battlePlan: 'Battle Plan — Eccentric Sets\n• 4×8 TRX Extensions — eccentric reps (4s lower)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×8 TRX Extensions — eccentric reps (4s lower)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3073,7 +3073,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused TRX Extensions',
           duration: '14–16 min',
           description: 'Pause-rep TRX workout eliminating momentum.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×8 TRX Extensions — pause reps (1s bottom)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×8 TRX Extensions — pause reps (1s bottom)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3120,7 +3120,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'TRX Burn Builder',
           duration: '15–17 min',
           description: 'Burnout-style TRX workout extending fatigue through volume.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×AMRAP TRX Extensions — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• TRX Extensions — 4 × (AMRAP)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3167,7 +3167,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Decline TRX Extensions',
           duration: '18–20 min',
           description: 'Advanced TRX extension workout using feet elevation to increase load.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×6 TRX Extensions (feet elevated) — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×6 TRX Extensions (feet elevated) — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3214,7 +3214,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'TRX Extension Drop-Angle Ladder',
           duration: '18–20 min',
           description: 'Angle-based drop workout using body position instead of weight.',
-          battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  8 reps (feet elevated) → step forward → 8 reps → step forward → AMRAP\nRest 90s',
+          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  8 reps (feet elevated) → step forward → 8 reps → step forward → AMRAP\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3260,7 +3260,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'TRX Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric TRX workout for maximal triceps fatigue.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×AMRAP TRX Extensions — burnout reps\n• Final set: squeeze to finish — hold full extension 15s\nRest 90s',
+          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Burnout + Isometric\n• TRX Extensions — 4 × (AMRAP)\n• Final set, squeeze to finish, hold full extension 15s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [

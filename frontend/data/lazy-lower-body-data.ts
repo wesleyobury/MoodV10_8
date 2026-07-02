@@ -10,7 +10,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Quad Starter',
           duration: '15–18 min',
           description: 'Leg press base, knee extensions next, calves finish smoothly.',
-          battlePlan: 'Leg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 4), 45–60s rest\nSeated Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLeg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 4), 45–60s rest\nSeated Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -64,7 +64,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Chair Line',
           duration: '15–18 min',
           description: 'Extensions first, press for volume, calves for finish.',
-          battlePlan: 'Leg Extension (machine)\n• 3 × 10–12 (RPE 4), 45–60s rest\nLeg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLeg Extension (machine)\n• 3 × 10–12 (RPE 4), 45–60s rest\nLeg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -118,7 +118,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Hack Ease',
           duration: '15–18 min',
           description: 'Light hack squats, knee extensions, gentle calf raises.',
-          battlePlan: 'Hack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -174,7 +174,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Sled Flow',
           duration: '20–25 min',
           description: 'Leg press sets, extensions next, calves polish the finish.',
-          battlePlan: 'Leg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nSeated Calf Raise (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLeg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nSeated Calf Raise (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -228,7 +228,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Hack Line',
           duration: '20–25 min',
           description: 'Hack squats first, extensions second, calves to close.',
-          battlePlan: 'Hack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -282,7 +282,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Smith Front',
           duration: '20–25 min',
           description: 'Smith front squats, extensions next, calves to finish.',
-          battlePlan: 'Smith Front Squat\n• 4 × 8 (RPE 5–6), 75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSmith Front Squat\n• 4 × 8 (RPE 5–6), 75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -338,7 +338,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Press Drop',
           duration: '25–30 min',
           description: 'Heavy press drops, precise extensions, high-rep calves.',
-          battlePlan: 'Leg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 3 total series\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nSeated Calf Raise (machine)\n• 3 × 15–20 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nLeg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 3 total series\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nSeated Calf Raise (machine)\n• 3 × 15–20 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -392,7 +392,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Hack Cluster',
           duration: '25–30 min',
           description: 'Hack squat clusters, extensions next, standing calves.',
-          battlePlan: 'Hack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -443,7 +443,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Smith Split',
           duration: '25–30 min',
           description: 'Smith split squats, machine extensions, calves to close.',
-          battlePlan: 'Smith Split Squat\n• 3 × 8–10/side (RPE 6), 60–75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSmith Split Squat\n• 3 × 8–10/side (RPE 6), 60–75s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -505,7 +505,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Hinge Starter',
           duration: '15–18 min',
           description: 'Seated curls, RDL machine or Smith, glute machine finish.',
-          battlePlan: 'Seated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSmith RDL or Plate-Loaded RDL Machine\n• 3 × 8–10 (RPE 4), 60s rest\nGlute Drive / Hip Thrust Machine\n• 3 × 10–12 (RPE 4), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSmith RDL or Plate-Loaded RDL Machine\n• 3 × 8–10 (RPE 4), 60s rest\nGlute Drive / Hip Thrust Machine\n• 3 × 10–12 (RPE 4), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -557,7 +557,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Curl Line',
           duration: '15–18 min',
           description: 'Seated curls, hip thrusts next, ham-biased calf finish.',
-          battlePlan: 'Seated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Calf Raise (toes in slightly)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Calf Raise (toes in slightly)\n• 3 × 12–15 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -609,7 +609,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Back Line',
           duration: '15–18 min',
           description: '45° back extension machine, curls, cable pull-throughs.',
-          battlePlan: '45° Back Extension (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nCable Pull-Through\n• 3 × 10–12 (RPE 4), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBack Extension (45°, machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nCable Pull-Through\n• 3 × 10–12 (RPE 4), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -663,7 +663,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Curl Stack',
           duration: '20–25 min',
           description: 'Seated curls, lying curls, hip thrusts for glute support.',
-          battlePlan: 'Seated Leg Curl (machine)\n• 4 × 8–10 (RPE 5), 60–75s rest\nLying Leg Curl (machine)\n• 3 × 10 (RPE 5), 60s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSeated Leg Curl (machine)\n• 4 × 8–10 (RPE 5), 60–75s rest\nLying Leg Curl (machine)\n• 3 × 10 (RPE 5), 60s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -714,7 +714,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Smith Hinge',
           duration: '20–25 min',
           description: 'Smith RDLs, seated curls, back extension machine.',
-          battlePlan: 'Smith RDL\n• 4 × 8 (RPE 5–6), 75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nBack Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSmith RDL\n• 4 × 8 (RPE 5–6), 75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nBack Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -767,7 +767,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cable Hip',
           duration: '20–25 min',
           description: 'Pull-throughs first, curls next, hip abduction finisher.',
-          battlePlan: 'Cable Pull-Through\n• 4 × 10 (RPE 5), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Pull-Through\n• 4 × 10 (RPE 5), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -822,7 +822,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Curl Drop',
           duration: '25–30 min',
           description: 'Heavy seated curl drops, RDLs after, thrust finish.',
-          battlePlan: 'Seated Leg Curl (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSmith RDL\n• 3 × 8–10 (RPE 6), 60–75s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 6), 60–75s rest',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nSeated Leg Curl (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSmith RDL\n• 3 × 8–10 (RPE 6), 60–75s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 6), 60–75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -874,7 +874,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cluster Hinge',
           duration: '25–30 min',
           description: 'RDL clusters, lying curls next, abduction finisher.',
-          battlePlan: 'Smith RDL\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nLying Leg Curl (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSmith RDL\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nLying Leg Curl (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -924,7 +924,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Midrange Hinge',
           duration: '25–30 min',
           description: 'Seated curl 1.5s, pull-throughs next, back extensions.',
-          battlePlan: 'Seated Leg Curl (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Pull-Through\n• 3 × 10–12 (RPE 6), 60–75s rest\nBack Extension (machine)\n• 3 × 10–12 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSeated Leg Curl (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Pull-Through\n• 3 × 10–12 (RPE 6), 60–75s rest\nBack Extension (machine)\n• 3 × 10–12 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -985,7 +985,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Simple Lines',
           duration: '18–22 min',
           description: 'Leg press, seated curl, extensions, seated calves finish.',
-          battlePlan: 'Leg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLeg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1046,7 +1046,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Guided Flow',
           duration: '18–22 min',
           description: 'Hack squat, hip thrust, leg curl, standing calves lineup.',
-          battlePlan: 'Hack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1106,7 +1106,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cable Mix',
           duration: '18–22 min',
           description: 'Pull-throughs, cable squats, curls, abduction closer.',
-          battlePlan: 'Cable Pull-Through\n• 3 × 10–12 (RPE 4), 60s rest\nCable Goblet Squat (low cable)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Pull-Through\n• 3 × 10–12 (RPE 4), 60s rest\nCable Goblet Squat (low cable)\n• 3 × 10–12 (RPE 4), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1169,7 +1169,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Balanced Load',
           duration: '22–28 min',
           description: 'Leg press, curls, extensions, calf press; steady flow.',
-          battlePlan: 'Leg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLeg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nLeg Extension (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nCalf Press (on leg press)\n• 3 × 12–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1230,7 +1230,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Guide',
           duration: '22–28 min',
           description: 'Hack squats, hip thrusts, curls, standing calves finish.',
-          battlePlan: 'Hack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 5), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nHip Thrust Machine\n• 3 × 10–12 (RPE 5), 60s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1290,7 +1290,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Smith Lines',
           duration: '22–28 min',
           description: 'Smith squats, RDLs, curls, hip abduction machine close.',
-          battlePlan: 'Smith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith RDL\n• 3 × 8–10 (RPE 5), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSmith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith RDL\n• 3 × 8–10 (RPE 5), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 5), 60s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1353,7 +1353,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Drop Lines',
           duration: '28–35 min',
           description: 'Press drop, curl drop, extensions, calf volume finish.',
-          battlePlan: 'Leg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSeated Leg Curl (machine)\n• 1 × 10 heavy (RPE 7) → drop 15% → 1 × 10 (RPE 6)\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nSeated Calf Raise (machine)\n• 3 × 15–20 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nLeg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSeated Leg Curl (machine)\n• 1 × 10 heavy (RPE 7) → drop 15% → 1 × 10 (RPE 6)\nLeg Extension (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nSeated Calf Raise (machine)\n• 3 × 15–20 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1414,7 +1414,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cluster Lines',
           duration: '28–35 min',
           description: 'Hack clusters, RDL clusters, curls, abduction closer.',
-          battlePlan: 'Hack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSmith RDL\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSmith RDL\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 6), 60–75s rest\nHip Abduction (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1469,7 +1469,7 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cable Finish (Lower)',
           duration: '28–35 min',
           description: 'Pull-throughs, cable goblets, curls, standing calves.',
-          battlePlan: 'Cable Pull-Through\n• 4 × 10 (RPE 6), 60–75s rest\nCable Goblet Squat (low cable)\n• 4 × 8–10 (RPE 6), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 6), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Pull-Through\n• 4 × 10 (RPE 6), 60–75s rest\nCable Goblet Squat (low cable)\n• 4 × 8–10 (RPE 6), 60–75s rest\nSeated Leg Curl (machine)\n• 3 × 10–12 (RPE 6), 60s rest\nStanding Calf Raise (machine)\n• 3 × 12–15 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [

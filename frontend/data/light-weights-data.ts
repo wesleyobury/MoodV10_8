@@ -11,7 +11,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Cardio Circuit',
           duration: '16–18 min',
           description: 'Four 4‑min rounds: squats, lunges, push press, programmed rest.',
-          battlePlan: 'Perform 4 rounds (4 min each):\n• 30s Goblet Squat\n• 30s Alternating Reverse Lunge\n• 30s Push Press\n• 30s Rest',
+          battlePlan: 'Instructions: 4 min each. rest 30s between moves. One round = every move in order; rest between rounds, not between moves.\n• 4 rounds:\n• 30s Goblet Squat\n• 30s Alternating Reverse Lunge\n• 30s Push Press',
           plan: {
             "format": "interval",
             "blocks": [
@@ -64,7 +64,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Flow',
           duration: '15–18 min',
           description: 'Three rounds: squat‑to‑press, light snatch, rows, steady rest.',
-          battlePlan: 'Perform 3 rounds:\n• 8 Squat to Press\n• 8 Alternating Snatch (light)\n• 8 Bent-Over Row\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 8 Squat to Press\n• 8 Alternating Snatch (light)\n• 8 Bent-Over Row\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -116,7 +116,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Complex',
           duration: '28–30 min',
           description: 'Four rounds of sixes: hinge, clean, squat, press, lunge, rest.',
-          battlePlan: 'Perform 4 rounds (no rest between moves):\n• 6 Deadlifts\n• 6 Hang Cleans\n• 6 Front Squats\n• 6 Push Presses\n• 6 Reverse Lunges\n• Rest 1 min',
+          battlePlan: 'Instructions: No rest between moves. One round = every move in order; rest between rounds, not between moves.\n• 4 rounds:\n• 6 Deadlifts\n• 6 Hang Cleans\n• 6 Front Squats\n• 6 Push Presses\n• 6 Reverse Lunges\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -176,7 +176,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'EMOM 12',
           duration: '12 min',
           description: 'Odd: thrusters; Even: renegade rows; sustain steady pace.',
-          battlePlan: 'For 12 minutes (alternating each minute):\n• Odd min: 10 Dumbbell Thrusters\n• Even min: 12 Alternating Renegade Rows',
+          battlePlan: 'Instructions: Work for 12 minutes, alternating each minute. Leave 1–2 clean reps in the tank on every set.\n• Odd min, 10 Dumbbell Thrusters\n• Even min, 12 Alternating Renegade Rows',
           plan: {
             "format": "interval",
             "blocks": [
@@ -221,7 +221,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Ladder',
           duration: '20–24 min',
           description: 'Five sets 10–2: squat clean, push press, burpee over DB.',
-          battlePlan: 'Perform ladder 10–8–6–4–2 reps:\n• Squat Clean\n• Push Press\n• Burpee Over Dumbbell\n• Rest as needed to finish',
+          battlePlan: 'Instructions: Ladder 10–8–6–4–2: do that many reps of EVERY move, then start the next rung. Leave 1–2 clean reps in the tank on every set.\n• Squat Clean\n• Push Press\n• Burpee Over Dumbbell\n• Rest as needed to finish',
           plan: {
             "format": "strength",
             "blocks": [
@@ -267,7 +267,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'AMRAP 15',
           duration: '15 min',
           description: 'Loop snatches, jump squats, push‑up rows, reverse lunges.',
-          battlePlan: 'As many rounds as possible in 15 min:\n• 10 Alternating Snatches\n• 10 Goblet Jump Squats\n• 10 Push-Up to Row (5/side)\n• 10 Alternating Reverse Lunges (holding DBs)',
+          battlePlan: 'Instructions: AMRAP 15 min — as many rounds as possible, rest only as needed. One round = every move in order; rest between rounds, not between moves.\n• 10 Alternating Snatches\n• 10 Goblet Jump Squats\n• 10 Push-Up to Row (5/side)\n• 10 Alternating Reverse Lunges (holding DBs)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -330,7 +330,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Swing And Carry',
           duration: '15–18 min',
           description: 'Five rounds: short swings, longer carries, planned recovery.',
-          battlePlan: 'Perform 5 rounds:\n• 20s Kettlebell Swings\n• 40s Farmer\'s Carry\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 5 rounds:\n• 20s Kettlebell Swings\n• 40s Farmer\'s Carry\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -374,7 +374,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Cardio Flow',
           duration: '12–15 min',
           description: 'Three rounds: goblet squats, swings, presses, one‑minute rest.',
-          battlePlan: 'Perform 3 rounds:\n• 8 Goblet Squats\n• 8 Single-Arm Swings (each side)\n• 8 Overhead Presses (each side)\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 8 Goblet Squats\n• 8 Single-Arm Swings (each side)\n• 8 Overhead Presses (each side)\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -426,7 +426,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Ladder (KB)',
           duration: '20–24 min',
           description: 'Four rounds: swings, cleans, snatches, squats, push presses.',
-          battlePlan: 'Perform 4 rounds:\n• 10 Swings\n• 8 Cleans (4/side)\n• 6 Snatches (3/side)\n• 4 Goblet Squats\n• 2 Push Presses (each side)\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 10 Swings\n• 8 Cleans (4/side)\n• 6 Snatches (3/side)\n• 4 Goblet Squats\n• 2 Push Presses (each side)\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -485,7 +485,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Tabata',
           duration: '16 min',
           description: 'Four moves cycled Tabata‑style for sixteen total intervals.',
-          battlePlan: '20s work / 10s rest, cycle through:\n• Swings\n• Goblet Squats\n• Alternating Lunges\n• High Pulls\nRepeat 4 rounds (16 intervals total).',
+          battlePlan: 'Instructions: 20s all-out work, 10s rest — move straight to the next exercise each interval. One round = every move in order; rest between rounds, not between moves.\n• Swings — 20s\n• Goblet Squats — 20s\n• Alternating Lunges — 20s\n• High Pulls — 20s\n• 4 rounds:',
           plan: {
             "format": "strength",
             "blocks": [
@@ -539,7 +539,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Complex (KB)',
           duration: '25–26 min',
           description: 'Five rounds, six per side: swing, clean, squat, press, snatch.',
-          battlePlan: 'Perform 5 rounds (6 reps each, per side, no rest between moves):\n• Swing\n• Clean\n• Front Squat\n• Push Press\n• Snatch\n• Rest 1 min between rounds',
+          battlePlan: 'Instructions: 6 reps each, per side, no rest between moves. One round = every move in order; rest between rounds, not between moves.\n• 5 rounds:\n• Swing\n• Clean\n• Front Squat\n• Push Press\n• Snatch\n• Rest 1 min between rounds',
           plan: {
             "format": "interval",
             "blocks": [
@@ -593,7 +593,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'AMRAP 15 (KB)',
           duration: '15 min',
           description: 'Double swings, alternating snatches, jump squats, TGUs.',
-          battlePlan: 'As many rounds as possible in 15 min:\n• 10 Double Swings\n• 8 Alternating Snatches\n• 6 Goblet Squat Jumps\n• 4 Turkish Get-Ups (2/side)',
+          battlePlan: 'Instructions: AMRAP 15 min — as many rounds as possible, rest only as needed. One round = every move in order; rest between rounds, not between moves.\n• 10 Double Swings\n• 8 Alternating Snatches\n• 6 Goblet Squat Jumps\n• 4 Turkish Get-Ups (2/side)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -656,7 +656,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Metcon',
           duration: '12–15 min',
           description: 'Three rounds: deadlifts, front squats, push press, rest.',
-          battlePlan: 'Perform 3 rounds (light weight):\n• 8 Deadlifts\n• 8 Front Squats\n• 8 Push Presses\n• Rest 1 min',
+          battlePlan: 'Instructions: Light weight. One round = every move in order; rest between rounds, not between moves.\n• 3 rounds:\n• 8 Deadlifts\n• 8 Front Squats\n• 8 Push Presses\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -706,7 +706,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Cardio Flow (BB)',
           duration: '14–16 min',
           description: 'Three rounds: cleans, presses, back squats, rows, rest.',
-          battlePlan: 'Perform 3 rounds:\n• 6 Hang Cleans\n• 6 Push Presses\n• 6 Back Squats\n• 6 Bent-Over Rows\n• Rest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 6 Hang Cleans\n• 6 Push Presses\n• 6 Back Squats\n• 6 Bent-Over Rows\n• Rest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -763,7 +763,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Complex (BB)',
           duration: '28–30 min',
           description: 'Four rounds of fives across six classic barbell patterns.',
-          battlePlan: 'Perform 4 rounds (no rest between moves):\n• 5 Deadlifts\n• 5 Hang Power Cleans\n• 5 Front Squats\n• 5 Push Presses\n• 5 Back Squats\n• 5 Bent-Over Rows\n• Rest 1 min',
+          battlePlan: 'Instructions: No rest between moves. One round = every move in order; rest between rounds, not between moves.\n• 4 rounds:\n• 5 Deadlifts\n• 5 Hang Power Cleans\n• 5 Front Squats\n• 5 Push Presses\n• 5 Back Squats\n• 5 Bent-Over Rows\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -828,7 +828,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'EMOM 12 (BB)',
           duration: '12 min',
           description: 'Odd minutes thrusters; even minutes sumo high pulls.',
-          battlePlan: 'For 12 minutes (alternating each minute):\n• Odd min: 8 Thrusters\n• Even min: 10 Sumo Deadlift High Pulls',
+          battlePlan: 'Instructions: Work for 12 minutes, alternating each minute. Leave 1–2 clean reps in the tank on every set.\n• Odd min, 8 Thrusters\n• Even min, 10 Sumo Deadlift High Pulls',
           plan: {
             "format": "interval",
             "blocks": [
@@ -873,7 +873,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Ladder (BB)',
           duration: '20–24 min',
           description: '10–2 reps: power clean, push jerk, front squat, burpees.',
-          battlePlan: 'Perform 10–8–6–4–2 reps:\n• Power Clean\n• Push Jerk\n• Front Squat\n• Burpee Over Bar\n• Rest as needed to finish',
+          battlePlan: 'Instructions: Ladder 10–8–6–4–2: do that many reps of EVERY move, then start the next rung. Leave 1–2 clean reps in the tank on every set.\n• Power Clean\n• Push Jerk\n• Front Squat\n• Burpee Over Bar\n• Rest as needed to finish',
           plan: {
             "format": "strength",
             "blocks": [
@@ -922,7 +922,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'AMRAP 15 (BB)',
           duration: '15 min',
           description: 'Continuous sixes of deads, cleans, presses, squats, burpees.',
-          battlePlan: 'As many rounds as possible in 15 min:\n• 6 Deadlifts\n• 6 Hang Cleans\n• 6 Push Presses\n• 6 Back Squats\n• 6 Bar-Facing Burpees',
+          battlePlan: 'Instructions: AMRAP 15 min — as many rounds as possible, rest only as needed. One round = every move in order; rest between rounds, not between moves.\n• 6 Deadlifts\n• 6 Hang Cleans\n• 6 Push Presses\n• 6 Back Squats\n• 6 Bar-Facing Burpees',
           plan: {
             "format": "interval",
             "blocks": [
@@ -990,7 +990,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Cardio Circuit (Med Ball)',
           duration: '12–16 min',
           description: 'Three rounds: wall balls, slams, twists, one‑minute rest.',
-          battlePlan: 'Perform 3 rounds:\n• 10 Wall Balls\n• 10 Slams\n• 10 Russian Twists (each side)\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 10 Wall Balls\n• 10 Slams\n• 10 Russian Twists (each side)\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1038,7 +1038,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Flow (Med Ball)',
           duration: '12–15 min',
           description: 'Three rounds: chest pass, overhead throw, squat press.',
-          battlePlan: 'Perform 3 rounds:\n• 8 Chest Passes (against wall)\n• 8 Overhead Throws\n• 8 Squat-to-Press\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 8 Chest Passes (against wall)\n• 8 Overhead Throws\n• 8 Squat-to-Press\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1089,7 +1089,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'AMRAP 10',
           duration: '10–12 min',
           description: 'Ten‑minute loop: wall balls, slams, overhead lunges.',
-          battlePlan: 'As many rounds as possible in 10 min:\n• 10 Wall Balls\n• 10 Ball Slams\n• 10 Lunges (ball overhead)',
+          battlePlan: 'Instructions: AMRAP 10 min — as many rounds as possible, rest only as needed. One round = every move in order; rest between rounds, not between moves.\n• 10 Wall Balls\n• 10 Ball Slams\n• 10 Lunges (ball overhead)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1138,7 +1138,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Tabata (Med Ball)',
           duration: '16 min',
           description: 'Four‑movement Tabata repeated for sixteen total intervals.',
-          battlePlan: '20s work / 10s rest:\n• Wall Balls\n• Slams\n• Rotational Throws\n• Squat-to-Press\nRepeat 4 rounds (16 intervals total).',
+          battlePlan: 'Instructions: 20s all-out work, 10s rest — move straight to the next exercise each interval. One round = every move in order; rest between rounds, not between moves.\n• Wall Balls — 20s\n• Slams — 20s\n• Rotational Throws — 20s\n• Squat-to-Press — 20s\n• 4 rounds:',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1192,7 +1192,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Complex (Med Ball)',
           duration: '16–20 min',
           description: 'Four rounds 12‑10‑8‑6 with one‑minute rests between sets.',
-          battlePlan: 'Perform 4 rounds:\n• 12 Wall Balls\n• 10 Slams\n• 8 Rotations (per side)\n• 6 Burpee Slams\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 12 Wall Balls\n• 10 Slams\n• 8 Rotations (per side)\n• 6 Burpee Slams\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1243,7 +1243,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Sprint Circuit',
           duration: '20–25 min',
           description: 'Five rounds: wall balls, sprint, slams, sprint, recover.',
-          battlePlan: 'Perform 5 rounds:\n• 10 Wall Balls\n• 20 m Sprint (with ball)\n• 10 Slams\n• 20 m Sprint (with ball)\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 5 rounds:\n• 10 Wall Balls\n• Sprint — ~20m, with ball\n• 10 Slams\n• Sprint — ~20m, with ball\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1304,7 +1304,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Basics',
           duration: '12–16 min',
           description: 'Three rounds: slams, squat‑to‑press, lunges, one‑minute rest.',
-          battlePlan: 'Perform 3 rounds:\n• 10 Slams\n• 10 Squat-to-Press\n• 10 Reverse Lunges (ball at chest)\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 10 Slams\n• 10 Squat-to-Press\n• 10 Reverse Lunges (ball at chest)\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1353,7 +1353,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Flow (Slam Ball)',
           duration: '12–15 min',
           description: 'Three rounds: slams, overhead throws, twists, recover.',
-          battlePlan: 'Perform 3 rounds:\n• 8 Slams\n• 8 Overhead Throws\n• 8 Russian Twists (per side)\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 8 Slams\n• 8 Overhead Throws\n• 8 Russian Twists (per side)\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1403,7 +1403,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'AMRAP 10 (Slam Ball)',
           duration: '10–12 min',
           description: 'Ten‑minute loop: slams, lateral slams, squat jumps.',
-          battlePlan: 'As many rounds as possible in 10 min:\n• 10 Slams\n• 10 Lateral Slams (5/side)\n• 10 Squat Jumps (ball at chest)',
+          battlePlan: 'Instructions: AMRAP 10 min — as many rounds as possible, rest only as needed. One round = every move in order; rest between rounds, not between moves.\n• 10 Slams\n• 10 Lateral Slams (5/side)\n• 10 Squat Jumps (ball at chest)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1452,7 +1452,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Tabata (Slam Ball)',
           duration: '16 min',
           description: 'Four‑move Tabata repeated to total sixteen intervals.',
-          battlePlan: '20s work / 10s rest with:\n• Slams\n• Squat-to-Press\n• Lateral Slams\n• Burpee Slams\nRepeat 4 rounds (16 intervals total).',
+          battlePlan: 'Instructions: 20s all-out work, 10s rest — move straight to the next exercise each interval. One round = every move in order; rest between rounds, not between moves.\n• Slams — 20s\n• Squat-to-Press — 20s\n• Lateral Slams — 20s\n• Burpee Slams — 20s\n• 4 rounds:',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1505,7 +1505,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Complex (Slam Ball)',
           duration: '20–24 min',
           description: 'Four rounds 12‑10‑8‑6 with one‑minute rests between sets.',
-          battlePlan: 'Perform 4 rounds:\n• 12 Slams\n• 10 Lateral Slams\n• 8 Burpee Slams\n• 6 Overhead Throws\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 12 Slams\n• 10 Lateral Slams\n• 8 Burpee Slams\n• 6 Overhead Throws\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1556,7 +1556,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Sprint Circuit (Slam Ball)',
           duration: '20–25 min',
           description: 'Five rounds: slams, sprint, lateral slams, sprint, rest.',
-          battlePlan: 'Perform 5 rounds:\n• 10 Slams\n• 20 m Sprint (with ball)\n• 10 Lateral Slams\n• 20 m Sprint (with ball)\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 5 rounds:\n• 10 Slams\n• Sprint — ~20m, with ball\n• 10 Lateral Slams\n• Sprint — ~20m, with ball\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1617,7 +1617,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Waves And Slams',
           duration: '12–14 min',
           description: 'Five rounds alternating waves and double slams with rest.',
-          battlePlan: 'Perform 5 rounds:\n• 20s Alternating Waves\n• 20s Rest\n• 20s Double Slams\n• 20s Rest',
+          battlePlan: 'Instructions: Rest 20s between moves. rest 20s between moves. One round = every move in order; rest between rounds, not between moves.\nPerform 5 rounds:\n• 20s Alternating Waves\n• 20s Double Slams',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1660,7 +1660,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Rope Circuit',
           duration: '12–15 min',
           description: 'Four rounds: waves, side‑to‑side waves, slams, programmed rest.',
-          battlePlan: 'Perform 4 rounds:\n• 20s Waves\n• 20s Side-to-Side Waves\n• 20s Slams\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 20s Waves\n• 20s Side-to-Side Waves\n• 20s Slams\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1710,7 +1710,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Tabata (Ropes)',
           duration: '16 min',
           description: 'Waves, slams, circles, jacks rotated for sixteen intervals.',
-          battlePlan: '20s work / 10s rest alternating:\n• Waves\n• Slams\n• Circles\n• Jumping Jacks\nRepeat 4 rounds (16 intervals).',
+          battlePlan: 'Instructions: 20s all-out work, 10s rest — move straight to the next exercise each interval. One round = every move in order; rest between rounds, not between moves.\n• Waves — 20s\n• Slams — 20s\n• Circles — 20s\n• Jumping Jacks — 20s\n• 4 rounds:',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1760,7 +1760,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Rope And Burpee Combo',
           duration: '20–22 min',
           description: 'Four rounds: waves, burpees, slams, burpees, timed rest.',
-          battlePlan: 'Perform 4 rounds:\n• 30s Waves\n• 5 Burpees\n• 30s Slams\n• 5 Burpees\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 30s Waves\n• 5 Burpees\n• 30s Slams\n• 5 Burpees\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1813,7 +1813,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Gauntlet',
           duration: '24–26 min',
           description: 'Four rounds: waves, slams, sides, jacks, circles, rest.',
-          battlePlan: 'Perform 4 rounds:\n• 30s Waves\n• 30s Slams\n• 30s Side-to-Sides\n• 30s Jacks\n• 30s Circles\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 30s Waves\n• 30s Slams\n• 30s Side-to-Sides\n• 30s Jacks\n• 30s Circles\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1868,7 +1868,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Rope And Sprint Circuit',
           duration: '20–25 min',
           description: 'Five rounds: waves, sprint, slams, sprint, planned rest.',
-          battlePlan: 'Perform 5 rounds:\n• 20s Waves\n• 20 m Sprint\n• 20s Slams\n• 20 m Sprint\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 5 rounds:\n• 20s Waves\n• Sprint — ~20m\n• 20s Slams\n• Sprint — ~20m\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1927,7 +1927,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Push And Pull',
           duration: '12–15 min',
           description: 'Five rounds: 10 m push, 10 m backward pull, one‑minute rest.',
-          battlePlan: 'Perform 5 rounds:\n• 10 m Push (light)\n• 10 m Backward Pull\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 5 rounds:\n• Push — ~10m, light\n• Backward Pull — ~10m\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1972,7 +1972,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Sled March',
           duration: '12–16 min',
           description: 'Four rounds: 15 m slow push, 15 m slow pull, timed rest.',
-          battlePlan: 'Perform 4 rounds:\n• 15 m Slow Push\n• 15 m Slow Pull\n• Rest 1 min',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nPerform 4 rounds:\n• Slow Push — ~15m\n• Slow Pull — ~15m\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2018,7 +2018,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Sprint Intervals',
           duration: '20 min',
           description: 'Ten rounds: 10 m sprint push, walk back recovery pacing.',
-          battlePlan: 'Perform 10 rounds:\n• 10 m Sprint Push\n• Walk back slow (rest)',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nPerform 10 rounds:\n• Sprint Push — ~10m\nRest: walk back slow',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2059,7 +2059,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Push And Drag Circuit',
           duration: '20–22 min',
           description: 'Four rounds: push, backward drag, lateral push, rest.',
-          battlePlan: 'Perform 4 rounds:\n• 10 m Push (moderate)\n• 10 m Backward Drag\n• 10 m Lateral Push (sideways)\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• Push — ~10m, moderate\n• Backward Drag — ~10m\n• Lateral Push — ~10m, sideways\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2110,7 +2110,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Gauntlet (Sled)',
           duration: '24–28 min',
           description: 'Five rounds: heavy push, sprint push, drag, lateral, rest.',
-          battlePlan: 'Perform 5 rounds:\n• 10 m Heavy Push\n• 10 m Sprint Push (light)\n• 10 m Backward Drag\n• 10 m Lateral Push\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 5 rounds:\n• Heavy Push — ~10m\n• Sprint Push — ~10m, light\n• Backward Drag — ~10m\n• Lateral Push — ~10m\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2162,7 +2162,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Sled And Burpee Circuit',
           duration: '24–26 min',
           description: 'Four rounds: heavy push, burpees, drag, burpees, rest.',
-          battlePlan: 'Perform 4 rounds:\n• 10 m Heavy Push\n• 10 Burpees\n• 10 m Backward Drag\n• 10 Burpees\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• Heavy Push — ~10m\n• 10 Burpees\n• Backward Drag — ~10m\n• 10 Burpees\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2221,7 +2221,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Hammer Basics',
           duration: '12–15 min',
           description: 'Three rounds: strikes each side, tire step‑ups, rest block.',
-          battlePlan: 'Perform 3 rounds:\n• 10 Hammer Strikes (each side)\n• 10 Tire Step-Ups\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 10 Hammer Strikes (each side)\n• 10 Tire Step-Ups\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2264,7 +2264,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Hammer And March',
           duration: '12–16 min',
           description: 'Four rounds: strikes each side, toe taps on tire, recover.',
-          battlePlan: 'Perform 4 rounds:\n• 8 Strikes (each side)\n• 8 Tire Toe Taps\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 8 Strikes (each side)\n• 8 Tire Toe Taps\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2309,7 +2309,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Hammer And Burpee Circuit',
           duration: '18–20 min',
           description: 'Four rounds: strikes, burpees, tire jumps, one‑minute rest.',
-          battlePlan: 'Perform 4 rounds:\n• 10 Strikes (each side)\n• 8 Burpees\n• 10 Tire Jumps\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 10 Strikes (each side)\n• 8 Burpees\n• 10 Tire Jumps\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2356,7 +2356,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Hammer Tabata',
           duration: '16–18 min',
           description: 'Repeated sprints of strikes build power under fatigue.',
-          battlePlan: '20s strikes (switch side halfway) / 10s rest\n8 rounds = 4 min\nRest 1 min\nRepeat for 3 cycles (~16–18 min)',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n20s strikes (switch side halfway) / 10s rest\n8 rounds = 4 min\nRest 1 min\nRepeat for 3 cycles (~16–18 min)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2399,7 +2399,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Hammer Gauntlet',
           duration: '20–24 min',
           description: 'Four rounds: strikes, jumps, burpees, tire flips, recover.',
-          battlePlan: 'Perform 4 rounds:\n• 12 Strikes (each side)\n• 10 Tire Jumps\n• 8 Burpees\n• 6 Tire Flips\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 12 Strikes (each side)\n• 10 Tire Jumps\n• 8 Burpees\n• 6 Tire Flips\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2451,7 +2451,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Hammer And Sprint Circuit',
           duration: '20–25 min',
           description: 'Five rounds: strikes, sprint, jumps, sprint, planned rest.',
-          battlePlan: 'Perform 5 rounds:\n• 10 Strikes (each side)\n• 20 m Sprint\n• 10 Tire Jumps\n• 20 m Sprint\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 5 rounds:\n• 10 Strikes (each side)\n• Sprint — ~20m\n• 10 Tire Jumps\n• Sprint — ~20m\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2510,7 +2510,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Tire Flip And Step',
           duration: '12–15 min',
           description: 'Three rounds: flips, step‑ups to tire, consistent recovery.',
-          battlePlan: 'Perform 3 rounds:\n• 5 Flips\n• 10 Tire Step-Ups\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 5 Flips\n• 10 Tire Step-Ups\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2553,7 +2553,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Tire Flip And Tap',
           duration: '12–16 min',
           description: 'Four rounds: flips, fast toe taps on tire, minute rest.',
-          battlePlan: 'Perform 4 rounds:\n• 4 Flips\n• 20 Toe Taps on Tire\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 4 Flips\n• 20 Toe Taps on Tire\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2598,7 +2598,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Tire Flip And Jump',
           duration: '14–16 min',
           description: 'Four rounds: flips, tire jumps, one‑minute recoveries.',
-          battlePlan: 'Perform 4 rounds:\n• 6 Flips\n• 8 Tire Jumps\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 6 Flips\n• 8 Tire Jumps\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2641,7 +2641,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Tire Flip Circuit',
           duration: '14–18 min',
           description: 'Three rounds: flips, tire push‑ups, lateral jumps, rest.',
-          battlePlan: 'Perform 3 rounds:\n• 5 Flips\n• 10 Tire Push-Ups\n• 10 Lateral Jumps\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 5 Flips\n• 10 Tire Push-Ups\n• 10 Lateral Jumps\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2690,7 +2690,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Tire Flip Gauntlet',
           duration: '20–22 min',
           description: 'Four rounds: flips, burpees, jumps, push‑ups, programmed rest.',
-          battlePlan: 'Perform 4 rounds:\n• 8 Flips\n• 8 Burpees\n• 8 Tire Jumps\n• 8 Tire Push-Ups\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 8 Flips\n• 8 Burpees\n• 8 Tire Jumps\n• 8 Tire Push-Ups\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2741,7 +2741,7 @@ export const lightWeightsDatabase: EquipmentWorkouts[] = [
           name: 'Tire Flip And Sprint',
           duration: '20–22 min',
           description: 'Four rounds: flips, sprint, flips, sprint, one‑minute rest.',
-          battlePlan: 'Perform 4 rounds:\n• 6 Flips\n• 20 m Sprint\n• 6 Flips\n• 20 m Sprint\n• Rest 1 min',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 6 Flips\n• Sprint — ~20m\n• 6 Flips\n• Sprint — ~20m\n• Rest 1 min',
           plan: {
             "format": "interval",
             "blocks": [

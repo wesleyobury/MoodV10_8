@@ -10,7 +10,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Press Builder',
           duration: '12–14 min',
           description: 'Standard machine press workout for joint-friendly delt activation.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Shoulder Press Machine — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Shoulder Press Machine — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -57,7 +57,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Control Press',
           duration: '12–14 min',
           description: 'Eccentric-focused machine workout emphasizing control.',
-          battlePlan: 'Battle Plan — Eccentric Sets\n• 4×10 Shoulder Press — eccentric reps (3s down)\nRest 60s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×10 Shoulder Press — eccentric reps (3s down)\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -105,7 +105,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral-Grip Pump Builder',
           duration: '12–14 min',
           description: 'Standard neutral-grip workout biasing delts over triceps.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×15 Neutral-Grip Press — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×15 Neutral-Grip Press — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -152,7 +152,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press w/ Early Drop Cluster',
           duration: '12–14 min',
           description: 'Drop-set press workout using early fatigue to drive volume.',
-          battlePlan: 'Battle Plan — Drop Set (mid-workout)\n• Set 1–2: 10 reps — standard\n• Set 3: triple drop set — 10 reps → drop → 8 → drop → 6 (no rest)\nRest 75s',
+          battlePlan: 'Instructions: Set 3 — triple drop set — 10 reps → drop → 8 → drop → 6 (no rest). On drops, reduce the load and continue without resting.\nBattle Plan — Drop Set (mid-workout)\n• Set 1–2: 10 reps — standard\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -194,7 +194,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single-Arm Machine Press',
           duration: '14–16 min',
           description: 'Standard unilateral press workout for balance and stability.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 5×10 Single-Arm Shoulder Press — standard reps\nRest 75s per side',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×10 Single-Arm Shoulder Press — standard reps\nRest 75s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -241,7 +241,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Depth Press',
           duration: '14–16 min',
           description: 'Paused-rep press workout emphasizing bottom-end strength.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×8 Shoulder Press — pause reps (1s bottom)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×8 Shoulder Press — pause reps (1s bottom)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -289,7 +289,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press Burn Builder',
           duration: '15–17 min',
           description: 'Burnout press workout emphasizing time under tension.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 Shoulder Press — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15 Shoulder Press — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -337,7 +337,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press + Pushup Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing machine pressing with bodyweight fatigue.',
-          battlePlan: 'Battle Plan — Superset\n• 4×10 Shoulder Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 Shoulder Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -392,7 +392,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Machine Press Builder',
           duration: '18–20 min',
           description: 'Standard heavy press workout for advanced overload.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Shoulder Press — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 Shoulder Press — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -440,7 +440,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Extended Drop Ladder Press',
           duration: '18–20 min',
           description: 'Multi-drop press workout pushing mechanical fatigue.',
-          battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  8 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s between rounds',
+          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  8 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s between rounds',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -486,7 +486,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Partial-Range Burnout Press',
           duration: '18–20 min',
           description: 'Burnout workout using shortened range for constant tension.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 Top-half presses — burnout reps\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×20 Top-half presses — burnout reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -533,7 +533,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Strength Test',
           duration: '18–20 min',
           description: 'Paused-rep machine workout exposing true strength.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 5×6 Shoulder Press — pause reps (2s bottom)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 5×6 Shoulder Press — pause reps (2s bottom)\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -589,7 +589,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Shoulder Press Builder',
           duration: '12–14 min',
           description: 'Standard Smith press workout with fixed-path stability.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Smith Shoulder Press — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Smith Shoulder Press — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -636,7 +636,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Smith Press',
           duration: '12–14 min',
           description: 'Eccentric-focused Smith workout reinforcing control.',
-          battlePlan: 'Battle Plan — Eccentric Sets\n• 4×10 Smith Shoulder Press — eccentric reps (3s down)\nRest 60s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×10 Smith Shoulder Press — eccentric reps (3s down)\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -683,7 +683,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Upright Row Builder',
           duration: '12–14 min',
           description: 'Standard pull workout targeting delts and traps.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Smith Upright Row — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Smith Upright Row — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -730,7 +730,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press + Iso Hold',
           duration: '12–14 min',
           description: 'Standard press workout with isometric finish.',
-          battlePlan: 'Battle Plan — Standard + Isometric\n• 4×10 Smith Shoulder Press — standard reps\n• Final set: squeeze to finish — hold top 10s\nRest 60s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric\n• 4×10 Smith Shoulder Press — standard reps\n• Final set, squeeze to finish, hold top 10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -779,7 +779,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Smith Press',
           duration: '14–16 min',
           description: 'Paused-rep Smith workout removing momentum.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×8 Smith Shoulder Press — pause reps (1s bottom)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×8 Smith Shoulder Press — pause reps (1s bottom)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -826,7 +826,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Upright Row Control',
           duration: '14–16 min',
           description: 'Pause-rep pull workout emphasizing contraction.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Smith Upright Row — pause reps (1s top)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Smith Upright Row — pause reps (1s top)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -873,7 +873,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Press Burn Builder',
           duration: '15–17 min',
           description: 'Burnout press workout emphasizing time under tension.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×15 Smith Shoulder Press — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15 Smith Shoulder Press — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -920,7 +920,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Press + Pushup Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing fixed-path pressing with bodyweight fatigue.',
-          battlePlan: 'Battle Plan — Superset\n• 4×10 Smith Shoulder Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 Smith Shoulder Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -974,7 +974,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Smith Press Builder',
           duration: '18–20 min',
           description: 'Standard heavy Smith workout for controlled overload.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Smith Shoulder Press — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 Smith Shoulder Press — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1021,7 +1021,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Press Triple Drop Cluster',
           duration: '18–20 min',
           description: 'Extended drop-set workout for mechanical fatigue.',
-          battlePlan: 'Battle Plan — Drop Cluster\n• 3 rounds:\n  10 reps → drop ~15% → 8 reps → drop ~15% → 6 reps\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\n• 3 rounds:\n  10 reps → drop ~15% → 8 reps → drop ~15% → 6 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1067,7 +1067,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Press Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric workout finishing with static tension.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×15 Smith Shoulder Press — burnout reps\n• Final set: squeeze to finish — hold top 10s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×15 Smith Shoulder Press — burnout reps\n• Final set, squeeze to finish, hold top 10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1114,7 +1114,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Strength Test',
           duration: '18–20 min',
           description: 'Paused-rep Smith workout exposing true shoulder capacity.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 5×6 Smith Shoulder Press — pause reps (2s bottom)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 5×6 Smith Shoulder Press — pause reps (2s bottom)\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1169,7 +1169,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rear Delt Fly Builder',
           duration: '12–14 min',
           description: 'Standard isolation workout targeting rear delts.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×15 Rear Delt Fly — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×15 Rear Delt Fly — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1217,7 +1217,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Rear Delt Fly',
           duration: '12–14 min',
           description: 'Eccentric-focused isolation workout emphasizing control.',
-          battlePlan: 'Battle Plan — Eccentric Sets\n• 4×12 Rear Delt Fly — eccentric reps (3s return)\nRest 60s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×12 Rear Delt Fly — eccentric reps (3s return)\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1265,7 +1265,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Rear Delt Fly',
           duration: '12–14 min',
           description: 'Pause-rep isolation workout locking in contraction.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×12 Rear Delt Fly — pause reps (1s back)\nRest 60s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×12 Rear Delt Fly — pause reps (1s back)\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1313,7 +1313,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Burnout Rear Delt Fly',
           duration: '12–14 min',
           description: 'Burnout isolation workout for rear-delt endurance.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 Rear Delt Fly — burnout reps\nRest 60s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×20 Rear Delt Fly — burnout reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1363,7 +1363,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single-Arm Rear Delt Focus',
           duration: '14–16 min',
           description: 'Standard unilateral isolation workout for balance.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 5×12 Single-Arm Rear Delt Fly — standard reps\nRest 75s per side',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×12 Single-Arm Rear Delt Fly — standard reps\nRest 75s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1411,7 +1411,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rear Delt Pause + Burn',
           duration: '14–16 min',
           description: 'Extended pause-rep isolation workout emphasizing contraction.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Rear Delt Fly — pause reps (2s back)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Rear Delt Fly — pause reps (2s back)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1459,7 +1459,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rear Delt Density Builder',
           duration: '15–17 min',
           description: 'High-density isolation workout with moderate reps.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×10 Rear Delt Fly — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×10 Rear Delt Fly — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1507,7 +1507,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rear Delt Fly + Face Pull Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing machine isolation with cable stability.',
-          battlePlan: 'Battle Plan — Superset\n• 4×12 Rear Delt Fly — standard reps\nsuperset with\n• 12–15 Face Pulls\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×12 Rear Delt Fly — standard reps\nsuperset with\n• 12–15 Face Pulls\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1563,7 +1563,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Rear Delt Builder',
           duration: '18–20 min',
           description: 'Standard isolation workout using heavier loads.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×10 Rear Delt Fly — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×10 Rear Delt Fly — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1611,7 +1611,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rear Delt Triple Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop isolation workout driving mechanical fatigue.',
-          battlePlan: 'Battle Plan — Drop Cluster\n• 3 rounds:\n  12 reps → drop ~20% → 10 reps → drop ~15% → AMRAP\nRest 90s',
+          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\n• 3 rounds:\n  12 reps → drop ~20% → 10 reps → drop ~15% → AMRAP\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1657,7 +1657,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rear Delt Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric workout finishing with static tension.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×15 Rear Delt Fly — burnout reps\n• Final set: squeeze to finish — hold back 10s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×15 Rear Delt Fly — burnout reps\n• Final set, squeeze to finish, hold back 10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1705,7 +1705,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Strength Test',
           duration: '18–20 min',
           description: 'Paused-rep isolation workout exposing true rear-delt control.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 5×10 Rear Delt Fly — pause reps (2s back)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 5×10 Rear Delt Fly — pause reps (2s back)\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1761,7 +1761,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Low-to-High Cable Lateral Raise',
           duration: '12–14 min',
           description: 'Standard isolation workout using low-to-high cable laterals for constant delt tension.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Cable Lateral Raise (low → high) — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Cable Lateral Raise (low → high) — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1809,7 +1809,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single-Arm Cable Lateral Control',
           duration: '12–14 min',
           description: 'Pause-rep single-arm isolation workout to clean up imbalances.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×12 Single-Arm Cable Lateral Raise — pause reps (1s top)\nRest 60s per side',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×12 Single-Arm Cable Lateral Raise — pause reps (1s top)\nRest 60s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1857,7 +1857,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Rear Delt Fly Builder',
           duration: '12–14 min',
           description: 'Standard rear-delt isolation workout using constant cable tension.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×15 Cable Rear Delt Fly — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×15 Cable Rear Delt Fly — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1905,7 +1905,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Front Raise Pull-Through',
           duration: '12–14 min',
           description: 'Standard anterior-delt workout using a pull-through cable path.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Cable Front Raise\n(facing away, handle pulled through legs) — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Cable Front Raise\n(facing away, handle pulled through legs) — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1954,7 +1954,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Face Pull Strength Builder',
           duration: '14–16 min',
           description: 'Pause-rep rear-delt and upper-back workout for shoulder balance.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×12 Face Pull — pause reps (1s squeeze)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×12 Face Pull — pause reps (1s squeeze)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2002,7 +2002,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single-Arm Cable Press',
           duration: '14–16 min',
           description: 'Standard unilateral press workout emphasizing shoulder stability.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 5×10 Single-Arm Cable Shoulder Press — standard reps\nRest 75s per side',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×10 Single-Arm Cable Shoulder Press — standard reps\nRest 75s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2049,7 +2049,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Lateral Raise Fatigue Builder',
           duration: '15–17 min',
           description: 'Pulse-rep isolation workout for extended time under tension.',
-          battlePlan: 'Battle Plan — Pulse Sets\n• 4×15 Cable Lateral Raise — pulse reps (top ⅓)\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Pulse Sets\n• 4×15 Cable Lateral Raise — pulse reps (top ⅓)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2097,7 +2097,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Raise + Face Pull Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing lateral raises with rear-delt stability work.',
-          battlePlan: 'Battle Plan — Superset\n• 4×12 Cable Lateral Raise (low → high) — standard reps\nsuperset with\n• 12–15 Face Pulls\nRest 90s between rounds',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×12 Cable Lateral Raise (low → high) — standard reps\nsuperset with\n• 12–15 Face Pulls\nRest 90s between rounds',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2153,7 +2153,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single-Arm Delt Fly Density Builder',
           duration: '18–20 min',
           description: 'High-density unilateral isolation workout for side-delt overload.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×10 Single-Arm Cable Delt Fly — standard reps\nRest 75s per side',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×10 Single-Arm Cable Delt Fly — standard reps\nRest 75s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2201,7 +2201,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Lateral Raise Drop Assault',
           duration: '18–20 min',
           description: 'Single-exercise drop-set workout driving mechanical fatigue.',
-          battlePlan: 'Battle Plan — Drop Set\n• 4×12 Cable Lateral Raise — standard reps\n• Final set: drop set — 2 drops, no rest\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Drop Set\n• 4×12 Cable Lateral Raise — standard reps\n• Final set, drop set, 2 drops, no rest\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2249,7 +2249,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rear-Delt Burnout Fly',
           duration: '18–20 min',
           description: 'Burnout isolation workout for rear-delt hypertrophy.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 Cable Rear Delt Fly — burnout reps\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×20 Cable Rear Delt Fly — burnout reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2297,7 +2297,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front-Raise Pull-Through Burn + Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric workout targeting anterior delts.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×15 Cable Front Raise (pull-through) — burnout reps\n• Final set: squeeze to finish — hold at eye level 8–10s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×15 Cable Front Raise (pull-through) — burnout reps\n• Final set, squeeze to finish, hold at eye level 8–10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2353,7 +2353,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Shoulder Press Builder',
           duration: '12–14 min',
           description: 'Standard set workout building foundational shoulder strength.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Seated Dumbbell Shoulder Press — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Seated Dumbbell Shoulder Press — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2401,7 +2401,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Shoulder Press',
           duration: '12–14 min',
           description: 'Eccentric-focused workout using slow negatives to build strength safely.',
-          battlePlan: 'Battle Plan — Eccentric Sets\n• 4×10 Seated Dumbbell Shoulder Press — eccentric reps (3s down)\nRest 60s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×10 Seated Dumbbell Shoulder Press — eccentric reps (3s down)\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2449,7 +2449,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lateral Raise Control Builder',
           duration: '12–14 min',
           description: 'Pause-rep isolation workout targeting side delts.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×15 Dumbbell Lateral Raise — pause reps (1s top)\nRest 60s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×15 Dumbbell Lateral Raise — pause reps (1s top)\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2497,7 +2497,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standing Press + Iso Finish',
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish hold.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Standing Dumbbell Shoulder Press — standard reps\n• Final set: squeeze to finish — hold last rep overhead 8–10s\nRest 60s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Standing Dumbbell Shoulder Press — standard reps\n• Final set, squeeze to finish, hold last rep overhead 8–10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2547,7 +2547,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Arnold Press Builder',
           duration: '14–16 min',
           description: 'Standard rotational press workout for full delt recruitment.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 5×10 Arnold Press — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×10 Arnold Press — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2595,7 +2595,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Push Press Overload',
           duration: '14–16 min',
           description: 'Standard power-press workout increasing load tolerance.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 5×8 Push Press — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×8 Push Press — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2643,7 +2643,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lateral Raise Fatigue Builder',
           duration: '15–17 min',
           description: 'Pulse-rep isolation workout for accumulated delt fatigue.',
-          battlePlan: 'Battle Plan — Pulse Sets\n• 4×15 Dumbbell Lateral Raise — pulse reps (top ⅓)\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Pulse Sets\n• 4×15 Dumbbell Lateral Raise — pulse reps (top ⅓)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2691,7 +2691,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press + Pushup Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing shoulder pressing with bodyweight fatigue.',
-          battlePlan: 'Battle Plan — Superset\n• 4×10 Standing Dumbbell Shoulder Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 75s between rounds',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 Standing Dumbbell Shoulder Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 75s between rounds',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2746,7 +2746,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Push Press Builder',
           duration: '18–20 min',
           description: 'Standard heavy press workout for advanced overhead strength.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×5 Push Press — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×5 Push Press — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2794,7 +2794,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Arnold Drop Set Assault',
           duration: '18–20 min',
           description: 'Single-exercise drop-set workout driving mechanical fatigue.',
-          battlePlan: 'Battle Plan — Drop Set\n• 4×10 Arnold Press — standard reps\n• Final set: drop set — 2 drops, no rest\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Drop Set\n• 4×10 Arnold Press — standard reps\n• Final set, drop set, 2 drops, no rest\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2842,7 +2842,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lateral Raise Burnout',
           duration: '18–20 min',
           description: 'Burnout isolation workout finished with isometric hold.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×20 Lateral Raise — burnout reps\n• Final set: squeeze to finish — hold top 10s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×20 Lateral Raise — burnout reps\n• Final set, squeeze to finish, hold top 10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2890,7 +2890,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Press Strength Test',
           duration: '18–20 min',
           description: 'Paused-rep strength workout removing all momentum.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 5×8 Standing Dumbbell Shoulder Press — pause reps (1s bottom)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 5×8 Standing Dumbbell Shoulder Press — pause reps (1s bottom)\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2946,7 +2946,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Overhead Press Builder',
           duration: '12–14 min',
           description: 'Standard set workout building foundational vertical pressing strength.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Standing Barbell Overhead Press — standard reps\nRest 60–75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 Standing Barbell Overhead Press — standard reps\nRest 60–75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2993,7 +2993,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Overhead Press',
           duration: '12–14 min',
           description: 'Eccentric-focused press workout reinforcing control.',
-          battlePlan: 'Battle Plan — Eccentric Sets\n• 4×8 Overhead Press — eccentric reps (3s down)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×8 Overhead Press — eccentric reps (3s down)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3041,7 +3041,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Press Control',
           duration: '12–14 min',
           description: 'Paused-rep press workout eliminating momentum.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×8 Overhead Press — pause reps (1s bottom)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×8 Overhead Press — pause reps (1s bottom)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3089,7 +3089,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press + Iso Finish',
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish hold.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×8 Overhead Press — standard reps\n• Final set: squeeze to finish — hold overhead 8–10s\nRest 75s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×8 Overhead Press — standard reps\n• Final set, squeeze to finish, hold overhead 8–10s\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3139,7 +3139,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Push Press Builder',
           duration: '14–16 min',
           description: 'Standard power-press workout increasing load tolerance.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 5×6 Push Press — standard reps\nRest 75–90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×6 Push Press — standard reps\nRest 75–90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3187,7 +3187,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Upright Row Control Builder',
           duration: '14–16 min',
           description: 'Pause-rep pull workout targeting delts and traps.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×10 Upright Row — pause reps (1s top)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Upright Row — pause reps (1s top)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3234,7 +3234,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Density Press',
           duration: '15–17 min',
           description: 'High-density standard press workout using moderate loads.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×6 Overhead Press — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×6 Overhead Press — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3282,7 +3282,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Push Press + Pushup Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing heavy barbell presses with bodyweight fatigue.',
-          battlePlan: 'Battle Plan — Superset\n• 4×6 Push Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s between rounds',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×6 Push Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s between rounds',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3337,7 +3337,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Push Jerk Builder',
           duration: '18–20 min',
           description: 'Standard heavy power workout emphasizing max overhead output.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×4 Push Jerk — standard reps\nRest 90–120s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×4 Push Jerk — standard reps\nRest 90–120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3384,7 +3384,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Strict Press Drop Assault',
           duration: '18–20 min',
           description: 'Single-exercise drop-set workout using strict presses.',
-          battlePlan: 'Battle Plan — Drop Set\n• 4×6 Strict Press — standard reps\n• Final set: drop set — 2 drops, no rest\nRest 120s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Drop Set\n• 4×6 Strict Press — standard reps\n• Final set, drop set, 2 drops, no rest\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3432,7 +3432,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Press Burnout',
           duration: '18–20 min',
           description: 'Burnout press workout to exhaust remaining fibers.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×12 Overhead Press — burnout reps\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×12 Overhead Press — burnout reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3480,7 +3480,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Strength Test',
           duration: '18–20 min',
           description: 'Paused-rep strength workout exposing true shoulder capacity.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 5×5 Overhead Press — pause reps (2s bottom)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 5×5 Overhead Press — pause reps (2s bottom)\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3536,7 +3536,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single-Arm Landmine Press Builder',
           duration: '12–14 min',
           description: 'Standard landmine press workout using the arc path to build shoulder strength safely.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Single-Arm Landmine Press — standard reps\nRest 60s per side',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 Single-Arm Landmine Press — standard reps\nRest 60s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3584,7 +3584,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Two-Arm Landmine Press Builder',
           duration: '12–14 min',
           description: 'Standard two-arm press workout for stable, repeatable reps.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Two-Arm Landmine Press — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Two-Arm Landmine Press — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3631,7 +3631,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Landmine Press',
           duration: '12–14 min',
           description: 'Eccentric-focused landmine workout to build control and tendon tolerance.',
-          battlePlan: 'Battle Plan — Eccentric Sets\n• 4×8 Single-Arm Landmine Press — eccentric reps (3s down)\nRest 60–75s per side',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×8 Single-Arm Landmine Press — eccentric reps (3s down)\nRest 60–75s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3679,7 +3679,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Landmine Press + Iso Finish',
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish in the contracted range.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Single-Arm Landmine Press — standard reps\n• Final set: squeeze to finish — hold the bar just short of lockout (peak delt contraction) for 8–10s\nRest 60s per side',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Single-Arm Landmine Press — standard reps\n• Final set, squeeze to finish, hold the bar just short of lockout (peak delt contraction) for 8–10s\nRest 60s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3729,7 +3729,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Landmine Press',
           duration: '14–16 min',
           description: 'Paused-rep landmine workout removing momentum for true shoulder strength.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 5×8 Single-Arm Landmine Press — pause reps (1s bottom)\nRest 75s per side',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 5×8 Single-Arm Landmine Press — pause reps (1s bottom)\nRest 75s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3777,7 +3777,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Landmine Pulse Press',
           duration: '14–16 min',
           description: 'Pulse-rep landmine workout keeping tension in the strongest range.',
-          battlePlan: 'Battle Plan — Pulse Sets\n• 4×12 Single-Arm Landmine Press — pulse reps (top ⅓ of arc)\nRest 75s per side',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Pulse Sets\n• 4×12 Single-Arm Landmine Press — pulse reps (top ⅓ of arc)\nRest 75s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3825,7 +3825,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Landmine Push Press Builder',
           duration: '15–17 min',
           description: 'Standard power-press landmine workout allowing heavier overload.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×6 Single-Arm Landmine Push Press — standard reps\nRest 75–90s per side',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×6 Single-Arm Landmine Push Press — standard reps\nRest 75–90s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3873,7 +3873,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press + Rotational Press Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing strict pressing with rotational pressing.',
-          battlePlan: 'Battle Plan — Superset\n• 4×10 Single-Arm Landmine Press — standard reps\nsuperset with\n• 8 each side Landmine Rotational Press — standard reps\nRest 90s between rounds',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 Single-Arm Landmine Press — standard reps\nsuperset with\n• 8 each side Landmine Rotational Press — standard reps\nRest 90s between rounds',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3928,7 +3928,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Landmine Press Builder',
           duration: '18–20 min',
           description: 'Standard heavy landmine workout for advanced overload.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×8 Single-Arm Landmine Press — standard reps\nRest 90s per side',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 Single-Arm Landmine Press — standard reps\nRest 90s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3976,7 +3976,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Landmine Press Drop Ladder',
           duration: '18–20 min',
           description: 'Multi-drop press workout driving mechanical fatigue.',
-          battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  8 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s',
+          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  8 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4022,7 +4022,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Landmine Press Burnout',
           duration: '18–20 min',
           description: 'Burnout landmine workout for nonstop shoulder tension.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 Two-Arm Landmine Press — burnout reps\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×20 Two-Arm Landmine Press — burnout reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4069,7 +4069,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cluster Drop Set Press',
           duration: '18–20 min',
           description: 'Drop-set cluster workout with multiple drop-based sets.',
-          battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps — standard\n• Set 2: drop set — 10 → drop ~15% → 6\n• Set 3: triple drop set — 8 → drop ~20% → 6 → drop ~15% → 6\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 10 reps — standard. Set 2 — drop set — 10 → drop ~15% → 6. Set 3 — triple drop set — 8 → drop ~20% → 6 → drop ~15% → 6. On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4117,7 +4117,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Shoulder Press Builder',
           duration: '12–14 min',
           description: 'Standard seated press workout using bench support for clean shoulder loading.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Seated Dumbbell Shoulder Press (bench ~80–85°) — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Seated Dumbbell Shoulder Press (bench ~80–85°) — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4165,7 +4165,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Incline Lateral Raise Builder',
           duration: '12–14 min',
           description: 'Standard isolation workout using bench angle to bias side delts.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×15 Incline Dumbbell Lateral Raise (bench ~30°) — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×15 Incline Dumbbell Lateral Raise (bench ~30°) — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4213,7 +4213,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bench-Supported Front Raise',
           duration: '12–14 min',
           description: 'Standard anterior-delt workout with bench support to control swing.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Seated Front Raise (bench ~70°) — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Seated Front Raise (bench ~70°) — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4261,7 +4261,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Press + Iso Finish',
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish in the contracted range.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Seated Shoulder Press — standard reps\n• Final set: squeeze to finish — hold just before lockout (peak delt contraction) 8–10s\nRest 60s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Seated Shoulder Press — standard reps\n• Final set, squeeze to finish, hold just before lockout (peak delt contraction) 8–10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4310,7 +4310,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Arnold Press Builder',
           duration: '14–16 min',
           description: 'Standard rotational press workout for full-delt recruitment.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 5×10 Seated Arnold Press — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×10 Seated Arnold Press — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4358,7 +4358,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Low-Incline Delt Fly',
           duration: '14–16 min',
           description: 'Standard isolation workout targeting front-to-side delt fibers.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Low-Incline Dumbbell Delt Fly (bench ~20–30°) — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Low-Incline Dumbbell Delt Fly (bench ~20–30°) — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4406,7 +4406,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Seated Lateral Raise',
           duration: '15–17 min',
           description: 'Pause-rep isolation workout emphasizing top-end control.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×12 Seated Dumbbell Lateral Raise — pause reps (1s top)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×12 Seated Dumbbell Lateral Raise — pause reps (1s top)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4454,7 +4454,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press + Raise Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing heavy pressing with isolation fatigue.',
-          battlePlan: 'Battle Plan — Superset\n• 4×10 Seated Dumbbell Shoulder Press — standard reps\nsuperset with\n• 12–15 Seated Lateral Raises\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 Seated Dumbbell Shoulder Press — standard reps\nsuperset with\n• 12–15 Seated Lateral Raises\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4509,7 +4509,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Angle Progression Press',
           duration: '18–20 min',
           description: 'Standard press workout progressing through multiple bench angles.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 3 rounds:\n  8 reps @ 85° → 8 reps @ 70° → 8 reps @ 60°\nRest 90s between rounds',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nBattle Plan — Standard Sets\n• 3 rounds:\n  8 reps @ 85° → 8 reps @ 70° → 8 reps @ 60°\nRest 90s between rounds',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4555,7 +4555,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Arnold Press Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop rotational press workout driving mechanical fatigue.',
-          battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 10 reps — standard\n• Set 2: drop set — 10 → drop ~15% → 8\n• Set 3: triple drop set — 8 → drop ~20% → 6 → drop ~15% → 6\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 10 reps — standard. Set 2 — drop set — 10 → drop ~15% → 8. Set 3 — triple drop set — 8 → drop ~20% → 6 → drop ~15% → 6. On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4595,7 +4595,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Lateral Raise Burnout',
           duration: '18–20 min',
           description: 'Burnout isolation workout for nonstop side-delt tension.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 Seated Dumbbell Lateral Raise — burnout reps\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×20 Seated Dumbbell Lateral Raise — burnout reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4643,7 +4643,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Incline Fly + Iso Burn',
           duration: '18–20 min',
           description: 'Burnout + isometric workout emphasizing stretched-to-contracted control.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×15 Incline Dumbbell Delt Fly — burnout reps\n• Final set: squeeze to finish — hold arms wide and slightly raised (peak delt contraction) 10s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×15 Incline Dumbbell Delt Fly — burnout reps\n• Final set, squeeze to finish, hold arms wide and slightly raised (peak delt contraction) 10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4699,7 +4699,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single-Arm KB Press Builder',
           duration: '12–14 min',
           description: 'Standard unilateral press workout using kettlebell instability for delt activation.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Single-Arm Kettlebell Press — standard reps\nRest 60s per side',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 Single-Arm Kettlebell Press — standard reps\nRest 60s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4746,7 +4746,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Front Raise Control',
           duration: '12–14 min',
           description: 'Standard isolation workout targeting anterior delts with offset load.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Kettlebell Front Raise — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Kettlebell Front Raise — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4794,7 +4794,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Lateral Raise Builder',
           duration: '12–14 min',
           description: 'Standard isolation workout emphasizing side delts and grip control.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×15 Kettlebell Lateral Raise — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×15 Kettlebell Lateral Raise — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4841,7 +4841,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press + Iso Finish',
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish in the contracted range.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×10 Single-Arm KB Press — standard reps\n• Final set: squeeze to finish — hold just before lockout (peak delt contraction) 8–10s\nRest 60s per side',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Single-Arm KB Press — standard reps\n• Final set, squeeze to finish, hold just before lockout (peak delt contraction) 8–10s\nRest 60s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4890,7 +4890,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Arnold Press Builder',
           duration: '14–16 min',
           description: 'Standard rotational press workout for full-delt recruitment.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 5×8 Kettlebell Arnold Press — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×8 Kettlebell Arnold Press — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4938,7 +4938,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Upright Row Control',
           duration: '14–16 min',
           description: 'Standard pull-focused shoulder workout biasing delts over traps.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×12 Kettlebell Upright Row — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Kettlebell Upright Row — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4985,7 +4985,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused KB Press',
           duration: '14–16 min',
           description: 'Paused-rep press workout removing momentum.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×8 Single-Arm KB Press — pause reps (1s bottom)\nRest 75s per side',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×8 Single-Arm KB Press — pause reps (1s bottom)\nRest 75s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5032,7 +5032,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press + Halo Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing pressing with controlled shoulder mobility.',
-          battlePlan: 'Battle Plan — Superset\n• 4×10 Single-Arm KB Press — standard reps\nsuperset with\n• 8–10 KB Halos (each direction)\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 Single-Arm KB Press — standard reps\nsuperset with\n• 8–10 KB Halos (each direction)\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5086,7 +5086,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy KB Push Press',
           duration: '18–20 min',
           description: 'Standard power-press workout allowing heavier loading.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×6 Single-Arm KB Push Press — standard reps\nRest 90s per side',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×6 Single-Arm KB Push Press — standard reps\nRest 90s per side',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5134,7 +5134,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Upright Row Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop pull workout driving shoulder fatigue safely.',
-          battlePlan: 'Battle Plan — Drop Cluster\n• Set 1: 12 reps — standard\n• Set 2: drop set — 12 → drop ~20% → 8\n• Set 3: triple drop set — 10 → drop ~15% → 8 → drop ~10% → 8\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 12 reps — standard. Set 2 — drop set — 12 → drop ~20% → 8. Set 3 — triple drop set — 10 → drop ~15% → 8 → drop ~10% → 8. On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5174,7 +5174,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Lateral Raise Burnout',
           duration: '18–20 min',
           description: 'Burnout isolation workout for side-delt saturation.',
-          battlePlan: 'Battle Plan — Burnout Sets\n• 4×20 KB Lateral Raise — burnout reps\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×20 KB Lateral Raise — burnout reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5222,7 +5222,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Offset Rack Hold + Press Burn',
           duration: '18–20 min',
           description: 'Burnout + isometric workout combining instability and contraction.',
-          battlePlan: 'Battle Plan — Burnout + Isometric\n• 4×12 KB Press — burnout reps\n• Final set: squeeze to finish — hold bell in front-rack, elbow forward (peak delt contraction) 10s\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×12 KB Press — burnout reps\n• Final set, squeeze to finish, hold bell in front-rack, elbow forward (peak delt contraction) 10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5277,7 +5277,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Strict Overhead Press Builder',
           duration: '12–14 min',
           description: 'Standard barbell press workout building foundational shoulder strength.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×10 Standing Barbell Overhead Press — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 Standing Barbell Overhead Press — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5324,7 +5324,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo OHP Control',
           duration: '12–14 min',
           description: 'Eccentric-focused press workout emphasizing bar control.',
-          battlePlan: 'Battle Plan — Eccentric Sets\n• 4×8 Overhead Press — eccentric reps (3s down)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×8 Overhead Press — eccentric reps (3s down)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5372,7 +5372,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause OHP Builder',
           duration: '12–14 min',
           description: 'Paused-rep press workout removing momentum.',
-          battlePlan: 'Battle Plan — Pause Sets\n• 4×8 Overhead Press — pause reps (1s bottom)\nRest 75s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×8 Overhead Press — pause reps (1s bottom)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5420,7 +5420,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'OHP + Iso Finish',
           duration: '12–14 min',
           description: 'Standard press workout with squeeze-to-finish in the contracted range.',
-          battlePlan: 'Battle Plan — Standard + Isometric Finish\n• 4×8 Overhead Press — standard reps\n• Final set: squeeze to finish — hold bar just short of lockout (peak delt contraction) 8–10s\nRest 75s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×8 Overhead Press — standard reps\n• Final set, squeeze to finish, hold bar just short of lockout (peak delt contraction) 8–10s\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5470,7 +5470,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Push Press Builder',
           duration: '14–16 min',
           description: 'Standard power-press workout increasing load tolerance.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 5×6 Push Press — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×6 Push Press — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5518,7 +5518,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'High Pull Control',
           duration: '14–16 min',
           description: 'Standard explosive pull workout targeting delts and traps.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 4×6 Barbell High Pull — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×6 Barbell High Pull — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5566,7 +5566,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Density Push Press',
           duration: '15–17 min',
           description: 'High-density power press workout using moderate loads.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×5 Push Press — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×5 Push Press — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5614,7 +5614,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Push Press + Pushup Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing barbell power with bodyweight fatigue.',
-          battlePlan: 'Battle Plan — Superset\n• 4×6 Push Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×6 Push Press — standard reps\nsuperset with\n• 12–15 Pushups\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5669,7 +5669,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Strict Press Builder',
           duration: '18–20 min',
           description: 'Standard heavy press workout for advanced strength.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×5 Strict Overhead Press — standard reps\nRest 120s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×5 Strict Overhead Press — standard reps\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5717,7 +5717,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Split Jerk Builder',
           duration: '18–20 min',
           description: 'Standard Olympic power movement emphasizing speed and coordination.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 6×3 Split Jerk — standard reps\nRest 120s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×3 Split Jerk — standard reps\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5765,7 +5765,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Push Jerk Drop Ladder',
           duration: '18–20 min',
           description: 'Multi-drop power workout combining speed and fatigue.',
-          battlePlan: 'Battle Plan — Drop Ladder\n• 3 rounds:\n  4 reps → drop ~15% → 4 reps → drop ~10% → AMRAP\nRest 120s',
+          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  4 reps → drop ~15% → 4 reps → drop ~10% → AMRAP\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5811,7 +5811,7 @@ export const shouldersWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Snatch-Grip Push Press',
           duration: '18–20 min',
           description: 'Wide-grip power press workout to switch up the range and path of motion.',
-          battlePlan: 'Battle Plan — Standard Sets\n• 5×5 Snatch-Grip Push Press — standard reps\nRest 120s',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×5 Snatch-Grip Push Press — standard reps\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [

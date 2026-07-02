@@ -14,7 +14,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Short all-out bursts build crisp explosive intent and fast resets',
-          battlePlan: '3 rounds\n• 3 × 8s Max Slams (15s between efforts)\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 3 × 8s Max Slams (15s between efforts)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -55,7 +55,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Fast alternating arms with high knees build efficient elastic rhythm',
-          battlePlan: '4 rounds\n• 15s Alternating Waves\n• 10s In-place High Knees\nRest 45–60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 15s Alternating Waves\n• 10s In-place High Knees\nRest 45–60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -99,7 +99,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Hip shifts drive crisp lateral hits without excessive trunk twist',
-          battlePlan: '3 rounds\n• 12s Side-to-Side Waves\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12s Side-to-Side Waves\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -141,7 +141,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'Quick catches teach fast elastic rebound control with rapid transitions',
-          battlePlan: '4 rounds\n• 10 Hard Slams\n• 4 Reactive Drop Squats (stick 1s, then pop)\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Hard Slams\n• 4 Reactive Drop Squats (stick 1s, then pop)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -185,7 +185,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'Light bounce steps maintain high cadence while keeping waves crisp',
-          battlePlan: '4 rounds\n• 20s Alternating Waves + Bounce Steps\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 20s Alternating Waves + Bounce Steps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -224,7 +224,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'Low stance with quick re-grips maintaining constant sled tension',
-          battlePlan: '3 rounds\n• 1 × 20–25m Weighted Rope Pull (hand-over-hand)\n• 10s Easy Waves reset\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• Weighted Rope Pull — ~20–25m, hand-over-hand\n• 10s Easy Waves reset\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -269,7 +269,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Repeat maximum slams while preserving consistent height and tempo',
-          battlePlan: '5 rounds\n• 12s Max Slams\nRest 18s\nRepeat 2 efforts per round (total 10 max efforts)',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 12s Max Slams\nRest 18s\nRepeat 2 efforts per round (total 10 max efforts)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -309,7 +309,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Crisp lateral hits maintained across short cluster intervals',
-          battlePlan: '4 rounds\n• Cluster: 10s Side-to-Side Waves, 10s rest, 10s Waves\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• Cluster, 10s Side-to-Side Waves, 10s rest, 10s Waves\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -348,7 +348,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Load the movement pattern, then sprint tall with explosive knee drive',
-          battlePlan: '5 rounds\n• 1 × 20m HEAVY Rope Pull (hand-over-hand to sled)\n• 20m Acceleration Sprint\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• HEAVY Rope Pull — ~20m, hand-over-hand to sled\n• Acceleration Sprint — ~20m\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -398,7 +398,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 3,
           description: 'Fast step drive, brief float phase, and soft balanced landing',
-          battlePlan: '3 rounds\n• 6 per leg Step-Up Pops (low box)\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 per leg Step-Up Pops (low box)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -438,7 +438,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 3,
           description: 'Jump up confidently, hold two seconds, train calm deceleration',
-          battlePlan: '3 rounds\n• 5 Box Jumps (stick 2s)\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 5 Box Jumps (stick 2s)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -478,7 +478,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 3,
           description: 'Step off 6-8 inches, pop to box with minimal ground contact',
-          battlePlan: '3 rounds\n• 3 Depth Step → Rebound to Box (low)\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 3 Depth Step → Rebound to Box (low)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -520,7 +520,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 4,
           description: 'Crisp consecutive jumps with short resets to preserve power output',
-          battlePlan: '4 rounds\n• 6–8 Box Jumps\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 Box Jumps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -560,7 +560,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 4,
           description: 'Hold dumbbells at sides; drive up quick; land soft on box top',
-          battlePlan: '4 rounds\n• 5 per leg Weighted Step-Up Pops\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5 per leg Weighted Step-Up Pops\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -600,7 +600,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 4,
           description: 'Drop down, stick one second hold, then rebound to box immediately',
-          battlePlan: '4 rounds\n• 3 Depth Drop (stick 1s) → Rebound to Box\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 3 Depth Drop (stick 1s) → Rebound to Box\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -641,7 +641,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 5,
           description: 'Light dumbbells or vest; jump explosively to moderate-high box',
-          battlePlan: '5 rounds\n• 6–8 Weighted Box Jumps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 6–8 Weighted Box Jumps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -681,7 +681,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 5,
           description: 'Drop down, rebound on floor, then jump to box with quick rhythm',
-          battlePlan: '5 rounds\n• Triplet: 1 Depth Drop → 1 Floor Rebound → 1 Box Jump\n• Repeat 2 triplets/round (6 jumps)\nRest 120s',
+          battlePlan: 'Instructions: Triplet — 1 Depth Drop → 1 Floor Rebound → 1 Box Jump. One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• Repeat 2 triplets/round (6 jumps)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -720,7 +720,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 5,
           description: 'Continuous box bounds followed immediately by crisp weighted steps',
-          battlePlan: '4 rounds\n• 8–10 Continuous Box Bounds (no full reset)\n• Immediately 6 Weighted Step-Up Pops (3/leg)\nRest 120s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n4 rounds\n• 8–10 Continuous Box Bounds (no full reset)\n• 6 Weighted Step-Up Pops — 3/leg — immediately, no rest\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -768,7 +768,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Step forward, snap wrists through, receive softly, repeat quickly',
-          battlePlan: '4 rounds\n• 8–10 Chest Passes (medium ball)\nRest 45–60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Chest Passes (medium ball)\nRest 45–60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -808,7 +808,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Tall reach overhead, neutral spine, direct powerful slam motion',
-          battlePlan: '3 rounds\n• 8–10 Overhead Slams\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Overhead Slams\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -848,7 +848,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Quick hip lead rotation into wall with controlled ball rebound',
-          battlePlan: '3 rounds\n• 6–8 per side Short Tosses\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6–8 per side Short Tosses\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -889,7 +889,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'Hinge load deep, tall finish, toss high, catch safely overhead',
-          battlePlan: '4 rounds\n• 6–8 Vertical Scoop Tosses\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 Vertical Scoop Tosses\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -928,7 +928,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'Load back hip deeply, rotate through core, snap into wall target',
-          battlePlan: '4 rounds\n• 6–8 per side Rotational Throws\nRest 75–90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 per side Rotational Throws\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -968,7 +968,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'Hard slam down, instant scoop up, repeat at consistent steady height',
-          battlePlan: '4 rounds\n• 8–10 Overhead Slams\n• 8–10 Fast Scoop Resets\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Overhead Slams\n• 8–10 Fast Scoop Resets\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1014,7 +1014,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Stretch away from target, unwind explosively, heave far with stick landing',
-          battlePlan: '4 rounds\n• 5–6 per side Heaves (mark distance)\nRest 90–120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5–6 per side Heaves (mark distance)\nRest 90–120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1053,7 +1053,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Short explosive bursts separated by micro-rests to maintain crisp quality',
-          battlePlan: '4 rounds\n• Cluster: 4 Slams, 12s rest, 4 Slams\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• Cluster, 4 Slams, 12s rest, 4 Slams\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1092,7 +1092,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Big rotational heave for distance; freeze posture on finish position',
-          battlePlan: '5 rounds\n• 4–5 per side Heave + Stick (mark best)\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 4–5 per side Heave + Stick (mark best)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1139,7 +1139,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Short 8-10 meter drives with stacked, rigid core positioning',
-          battlePlan: '4 rounds\n• 8–10m Sled Push (light)\nRest 60–75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• Sled Push — ~8–10m, light\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1178,7 +1178,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Quick small backward steps maintaining tall upright posture',
-          battlePlan: '3 rounds\n• 12–15m Backward Drag (light)\nRest 60–75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• Backward Drag — ~12–15m, light\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1216,7 +1216,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Smooth 180-degree turn, re-set lean angle, continue powerful steps',
-          battlePlan: '3 rounds\n• 10m Push → 10m Pull (harness or rope)\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• Push → 10m Pull — ~10m, harness or rope\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1257,7 +1257,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'High-quality explosive drives with measured recovery between efforts',
-          battlePlan: '5 rounds\n• 12–15m Sprint Push (light-moderate)\nRest 75–90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• Sprint Push — ~12–15m, light-moderate\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1295,7 +1295,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'Long ground pushes, steady forward lean, rope tension constant',
-          battlePlan: '4 rounds\n• 20–25m Harness Pull\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• Harness Pull — ~20–25m\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1334,7 +1334,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'Forward explosive push then backward drag with smooth direction turn',
-          battlePlan: '4 rounds\n• 15m Sprint Push\n• 15m Backward Drag\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• Sprint Push — ~15m\n• Backward Drag — ~15m\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1377,7 +1377,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Micro-efforts with micro-rest intervals to maintain explosive quality',
-          battlePlan: '4 rounds\n• Cluster: 4 × 5m Sled Push, 15s between efforts\nRest 120s between clusters',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• Cluster, 4 × 5m Sled Push, 15s between efforts\nRest 120s between clusters',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1416,7 +1416,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Direction shuttle changes with quick re-acceleration timing control',
-          battlePlan: '5 rounds\n• 10m Push → 10m Pull → 10m Push\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• Push → 10m Pull → 10m Push — ~10m\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1455,7 +1455,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Smooth sled push followed immediately by tall, fast free sprint',
-          battlePlan: '5 rounds\n• 15m Sled Push (light)\n• 20–25m Free Sprint\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• Sled Push — ~15m, light\n• Free Sprint — ~20–25m\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1505,7 +1505,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Hips drive explosively; bell floats; arms stay relaxed as hooks',
-          battlePlan: '4 rounds\n• 12–15 Swings\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 12–15 Swings\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1545,7 +1545,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Deep hike pass, tall explosive stand, crisp stop at chest line',
-          battlePlan: '3 rounds\n• 6 × 2 Dead-Start Swings\nRest 60–75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 × 2 Dead-Start Swings\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1585,7 +1585,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 3,
           description: 'Close zip path, explosive hip pop, quiet catch in front rack',
-          battlePlan: '3 rounds\n• 6 per side Cleans\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 per side Cleans\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1627,7 +1627,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'Short consistent bursts every minute maintain explosive quality outputs',
-          battlePlan: 'EMOM 10 min\n• 12 Swings each minute',
+          battlePlan: 'Instructions: EMOM for 10 minutes. EMOM: start fresh at the top of every minute, rest whatever time is left.\n• 12 Swings each minute',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1665,7 +1665,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 4,
           description: 'Explosive pop to rack, fast drop squat, explosive stand tall finish',
-          battlePlan: '4 rounds\n• 5 per side Clean → Squat (alt)\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5 per side Clean → Squat (alt)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1705,7 +1705,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 4,
           description: 'High explosive pull, punch through fast, crisp overhead lockout',
-          battlePlan: '4 rounds\n• 6 per side Snatches\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 per side Snatches\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1747,7 +1747,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Big explosive hip snap; stable ribs; float bell to chest height',
-          battlePlan: '5 rounds\n• 12 Heavy Swings\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 12 Heavy Swings\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1787,7 +1787,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 5,
           description: 'Tight rack position, strict press up, alternate sides cleanly',
-          battlePlan: '4 rounds\n• Ladder per side: 3-2-1 Clean + Press\nRest 120s',
+          battlePlan: 'Instructions: Ladder per side — 3-2-1 Clean + Press. One round = every move in order; rest between rounds, not between moves.\n4 rounds\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1826,7 +1826,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 5,
           description: 'Explosive snatch reps then stick broad jumps for max distance',
-          battlePlan: '4 rounds\n• 8 per side Snatches\n• 3 Broad Jumps (stick 2s)\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per side Snatches\n• 3 Broad Jumps (stick 2s)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1878,7 +1878,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 3,
           description: 'Scoop bag close to body, drive hips tall for controlled shoulder positioning',
-          battlePlan: '3 rounds\n• 5 per side Shouldering (alt)\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 5 per side Shouldering (alt)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1917,7 +1917,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 3,
           description: 'Drive hips explosively to front rack position with quick high elbow turnover',
-          battlePlan: '3 rounds\n• 6–8 Cleans\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6–8 Cleans\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1957,7 +1957,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 3,
           description: 'Load with deep hinge, launch bag 2-4 meters, chase and reset stance safely',
-          battlePlan: '4 rounds\n• 4 Heaves (mark distance)\nRest 60–75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 4 Heaves (mark distance)\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1998,7 +1998,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 4,
           description: 'Switch shoulders each rep maintaining snug, stable holds throughout movement',
-          battlePlan: '4 rounds\n• 6 per side Shouldering (alt)\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 per side Shouldering (alt)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2037,7 +2037,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 4,
           description: 'Clean bag, safely drop to ground, then perform quick soft bodyweight jumps',
-          battlePlan: '4 rounds\n• 5 Cleans\n• 4 Jump Squats\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5 Cleans\n• 4 Jump Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2082,7 +2082,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 4,
           description: 'Pivot feet explosively, drive hips forcefully, release bag across the body',
-          battlePlan: '4 rounds\n• 5 per side Tosses (mark distance)\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5 per side Tosses (mark distance)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2123,7 +2123,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 5,
           description: 'Front rack drop position, explosive leg drive, crisp overhead lockout finish',
-          battlePlan: '5 rounds\n• 4 Clean → Thrusters\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 4 Clean → Thrusters\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2163,7 +2163,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'loaded',
           intensity_cost: 5,
           description: 'Hug bag tight against torso; perform quick low-amplitude reactive jumps safely',
-          battlePlan: '5 rounds\n• 6–8 Loaded Jumps\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 6–8 Loaded Jumps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2202,7 +2202,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'dynamic',
           intensity_cost: 5,
           description: 'Deep hinge preload, tall explosive snap, launch bag near optimal 45 degrees',
-          battlePlan: '5 rounds\n• 3–4 Heaves (measure best)\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 3–4 Heaves (measure best)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2249,7 +2249,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 3,
           description: 'Small amplitude leg switches with quiet, aligned soft landings',
-          battlePlan: '3 rounds\n• 6–8 per side Split Jumps\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6–8 per side Split Jumps\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2289,7 +2289,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 3,
           description: 'Pop jump up, two-second hold position, repeat crisp landings',
-          battlePlan: '3 rounds\n• 6–8 Squat Pops (stick 2s)\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6–8 Squat Pops (stick 2s)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2329,7 +2329,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 3,
           description: 'Lateral side hops with controlled stick landing and knee tracking',
-          battlePlan: '3 rounds\n• 6–8 per side Skater Bounds (stick 1–2s)\nRest 60–75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6–8 per side Skater Bounds (stick 1–2s)\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2371,7 +2371,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 4,
           description: 'Clean plank position, snap feet in, tall jump with soft landing',
-          battlePlan: '4 rounds\n• 10–12 Burpees\nRest 75–90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10–12 Burpees\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2410,7 +2410,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 4,
           description: 'Big explosive arm swing, hinge load deep, stick stable landings',
-          battlePlan: '4 rounds\n• 5–6 Broad Jumps (stick 2s)\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5–6 Broad Jumps (stick 2s)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2449,7 +2449,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 4,
           description: 'Minimal ground contact rebounds with quiet mid-foot spring action',
-          battlePlan: '4 rounds\n• 20s Pogos\nRest 60–75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 20s Pogos\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2490,7 +2490,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 5,
           description: 'Quick reactive floor contact into long, stuck broad jump distance',
-          battlePlan: '5 rounds\n• Cluster: 1 Depth Jump → 1 Broad Jump, 20s rest, repeat once (2 pairings)\nRest 120s between clusters',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• Cluster, 1 Depth Jump → 1 Broad Jump, 20s rest, repeat once (2 pairings)\nRest 120s between clusters',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2529,7 +2529,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 5,
           description: 'High tempo jumps with consistent height and quiet landing control',
-          battlePlan: '5 rounds\n• 10–12 per side Split Jumps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 10–12 per side Split Jumps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2569,7 +2569,7 @@ export const bodyweightExplosivenessDatabase: EquipmentWorkouts[] = [
           cart_flavor: 'plyo',
           intensity_cost: 5,
           description: 'Complete burpee into long broad jump with decisive explosive burst',
-          battlePlan: '5 rounds\n• 5 Burpee → Broad Jump\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 5 Burpee → Broad Jump\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [

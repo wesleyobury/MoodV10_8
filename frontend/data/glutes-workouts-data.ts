@@ -10,7 +10,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Back Squat',
           duration: '12–14 min',
           description: 'Back squats building glute strength through controlled movement',
-          battlePlan: '3 rounds\n• 8–10 reps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -44,7 +44,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Box Back Squat',
           duration: '12–14 min',
           description: 'Box-guided squats reinforcing glute loading and depth control',
-          battlePlan: '3 rounds\n• 8 reps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -78,7 +78,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Back Squat',
           duration: '12–14 min',
           description: 'Slow eccentric squats increasing glute tension and positioning',
-          battlePlan: '3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -114,7 +114,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Glute-Biased Back Squat',
           duration: '14–16 min',
           description: 'Wider stance squats emphasizing glute engagement and strength',
-          battlePlan: '4 rounds\n• 8–10 reps\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -148,7 +148,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat Pulses',
           duration: '14–16 min',
           description: 'Squats extended with bottom pulses increasing glute tension',
-          battlePlan: '4 rounds\n• 8 reps + 4 pulses\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 reps + 4 pulses\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -182,7 +182,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat Pause Reps',
           duration: '14–16 min',
           description: 'Paused squats building glute strength from the bottom position',
-          battlePlan: '4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -218,7 +218,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Glute Back Squat',
           duration: '16–18 min',
           description: 'Heavy squats emphasizing maximal glute strength and output',
-          battlePlan: '5 rounds\n• 5–6 reps\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 5–6 reps\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -252,7 +252,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat 1.5 Reps',
           duration: '16–18 min',
           description: 'Extended-rep squats increasing glute tension and fatigue output',
-          battlePlan: '4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -286,7 +286,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep squats driving deep glute fatigue and endurance',
-          battlePlan: '3 rounds\n• 15–20 reps\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15–20 reps\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -328,7 +328,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Ankle Kickback',
           duration: '10–12 min',
           description: 'Ankle‑strapped motion builds activation through glutes',
-          battlePlan: '3 rounds\n• 10–12 per leg Kickbacks\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 per leg Kickbacks\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -368,7 +368,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Pull‑Through',
           duration: '10–12 min',
           description: 'Great hip hinge builder for posterior chain activation',
-          battlePlan: '3 rounds\n• 10–12 Pull‑Throughs\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Pull‑Throughs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -409,7 +409,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Hip Extension',
           duration: '10–12 min',
           description: 'Standing extensions reinforcing glute firing',
-          battlePlan: '3 rounds\n• 12–15 Extensions per leg\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Extensions per leg\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -454,7 +454,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Assisted Squat Hold',
           duration: '10–12 min',
           description: 'Static squat holds emphasizing glute tension',
-          battlePlan: '3 rounds\n• 20–30s Holds\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 20–30s Holds\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -502,7 +502,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Step‑Back Lunge',
           duration: '14–16 min',
           description: 'Cable anchor increases balance and constant tension',
-          battlePlan: '4 rounds\n• 8–10 per leg Step‑Back Lunges\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 per leg Step‑Back Lunges\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -542,7 +542,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable High Kickback',
           duration: '14–16 min',
           description: 'Top‑end contraction isolates and strengthens glutes',
-          battlePlan: '3 rounds\n• 8–10 per leg Kickbacks (2s pause top)\nRest 75–90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8–10 per leg Kickbacks (2s pause top)\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -582,7 +582,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Step-Up Drive',
           duration: '14–16 min',
           description: 'Elevated step-ups emphasizing glute drive',
-          battlePlan: '4 rounds\n• 8 Step-Ups per leg\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Step-Ups per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -627,7 +627,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Reverse Lunge Pause',
           duration: '14–16 min',
           description: 'Reverse lunges with bottom-position pauses',
-          battlePlan: '4 rounds\n• 8 Lunges per leg (2s pause)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 Lunges per leg (2s pause)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -674,7 +674,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pull‑Through + Squat Combo',
           duration: '16–18 min',
           description: 'Constant tension pairing ensures strong hypertrophy',
-          battlePlan: '4 rounds\n• 8 Pull‑Throughs\n• 8 Cable Squats\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Pull‑Throughs\n• 8 Cable Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -719,7 +719,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Kickback Burnout',
           duration: '16–18 min',
           description: 'Ankle‑cuff movement torches glutes with total volume',
-          battlePlan: '3 rounds\n• 15–20 per leg Kickbacks\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15–20 per leg Kickbacks\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -759,7 +759,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep squats under constant glute tension',
-          battlePlan: '3 rounds\n• 20 Squats\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 20 Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -805,7 +805,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable RDL Drop Series',
           duration: '18–20 min',
           description: 'Hinges extended with multiple fast drops',
-          battlePlan: '3 rounds\n• 8 RDLs\n• Drop → 6\n• Drop → 6\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 RDLs\n• Series drop → 6\n• Series drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -860,7 +860,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bodyweight Hip Thrust',
           duration: '10–12 min',
           description: 'Teaches thrust basics before loading with bar weight',
-          battlePlan: '3 rounds\n• 12–15 Bodyweight Hip Thrusts\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Bodyweight Hip Thrusts\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -901,7 +901,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Light Bar Hip Thrust',
           duration: '10–12 min',
           description: 'Adds external weight to strengthen glute hip drive',
-          battlePlan: '3 rounds\n• 10–12 Light Bar Hip Thrusts\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Light Bar Hip Thrusts\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -941,7 +941,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Elevated Hip Thrust',
           duration: '10–12 min',
           description: 'Bench-elevated thrusts emphasizing full glute lockout',
-          battlePlan: '3 rounds\n• 12 Hip Thrusts\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Hip Thrusts\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -987,7 +987,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hip Thrust Pulse Reps',
           duration: '10–12 min',
           description: 'Short-range pulses maintaining constant glute tension',
-          battlePlan: '3 rounds\n• 15 Pulse Thrusts\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Pulse Thrusts\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1035,7 +1035,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Banded Hip Thrust',
           duration: '14–16 min',
           description: 'Builds glute lockout with band top range tension',
-          battlePlan: '4 rounds\n• 10 Banded Hip Thrusts\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Banded Hip Thrusts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1075,7 +1075,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single‑Leg Hip Thrust',
           duration: '14–16 min',
           description: 'Unilateral load prevents imbalance and aids stability',
-          battlePlan: '3 rounds\n• 8–10 per leg Single‑Leg Hip Thrusts\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 per leg Single‑Leg Hip Thrusts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1115,7 +1115,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Hip Thrust',
           duration: '14–16 min',
           description: 'Slow eccentrics increasing glute time under tension',
-          battlePlan: '4 rounds\n• 8–10 Thrusts (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8–10 Thrusts (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1161,7 +1161,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hip Thrust Drop Set',
           duration: '14–16 min',
           description: 'Extended thrust sets using fast load reductions',
-          battlePlan: '3 rounds\n• 8 Thrusts\n• Drop → 8\n• Drop → 8\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Thrusts\n• Thrust drop → 8\n• Thrust drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1210,7 +1210,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Bar Hip Thrust',
           duration: '16–18 min',
           description: 'Barbell lift grows strength and posterior hip power',
-          battlePlan: '4 rounds\n• 6–8 Heavy Hip Thrusts\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 Heavy Hip Thrusts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1252,7 +1252,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hip Thrust + Iso Hold',
           duration: '16–18 min',
           description: 'Finisher combo challenges endurance and contraction',
-          battlePlan: '3 rounds\n• 8–10 Hip Thrusts\nFinish with 10s Iso Hold at top\nRest 90s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 8–10 Hip Thrusts\nFinish with 10s Iso Hold at top\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1294,7 +1294,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Hip Thrust Pause',
           duration: '18–20 min',
           description: 'Heavy thrusts with long lockout pauses',
-          battlePlan: '4 rounds\n• 5–6 Thrusts (2s pause)\nRest 150s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 5–6 Thrusts (2s pause)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1340,7 +1340,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hip Thrust Burnout Ladder',
           duration: '18–20 min',
           description: 'Descending ladder maximizing glute fatigue',
-          battlePlan: '2–3 ladders\n• 12 → 10 → 8 → 6 Thrusts\nRest 150s',
+          battlePlan: 'Instructions: Aim for 2–3 ladders — stop when quality drops. Leave 1–2 clean reps in the tank on every set.\n3 rounds\n• 12 → 10 → 8 → 6 Thrusts\nRest 150s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1395,7 +1395,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Kickback',
           duration: '10–12 min',
           description: 'Pad press hip drive builds foundation safely first',
-          battlePlan: '3 rounds\n• 10–12 per leg Kickbacks\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 per leg Kickbacks\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1435,7 +1435,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Kickback',
           duration: '10–12 min',
           description: 'Seated pad drive provides beginner stability focus',
-          battlePlan: '3 rounds\n• 12 per leg Seated Kickbacks\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 per leg Seated Kickbacks\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1475,7 +1475,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single-Leg Kickback',
           duration: '10–12 min',
           description: 'Straight-path kickbacks building glute control',
-          battlePlan: '3 rounds\n• 12 Kickbacks per leg\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Kickbacks per leg\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1520,7 +1520,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Kickback Pulse Reps',
           duration: '10–12 min',
           description: 'Short-range pulses keeping glutes loaded',
-          battlePlan: '3 rounds\n• 15 Pulses per leg\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Pulses per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1567,7 +1567,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Kickback',
           duration: '14–16 min',
           description: 'Progressive overload builds strength at extension',
-          battlePlan: '4 rounds\n• 8–10 Heavy Kickbacks per leg\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Heavy Kickbacks per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1607,7 +1607,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Kickback',
           duration: '14–16 min',
           description: 'Strict tempo isolates stronger contraction at end',
-          battlePlan: '3 rounds\n• 8 per leg Pause Kickbacks\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8 per leg Pause Kickbacks\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1647,7 +1647,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Kickback',
           duration: '14–16 min',
           description: 'Slow eccentrics extending glute fatigue',
-          battlePlan: '4 rounds\n• 10 Reps per leg (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 10 Reps per leg (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1692,7 +1692,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Kickback Drop Set',
           duration: '14–16 min',
           description: 'Extended kickbacks with rapid load reductions',
-          battlePlan: '3 rounds\n• 10 Reps\n• Drop → 8\n• Drop → 8\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Reps\n• Kickback drop → 8\n• Kickback drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1740,7 +1740,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop‑Set Kickback',
           duration: '16–18 min',
           description: 'Sequential weight drops demand non‑stop contraction',
-          battlePlan: '3 rounds\n• 8 Heavy Kickbacks per leg\n• Drop 15% weight → 6–8 reps\n• Drop 15% again → 6–8 reps\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• 8 Heavy Kickbacks per leg\n• Drop 15% weight → 6–8 reps\n• Drop 15% again → 6–8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1781,7 +1781,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Kickback Hold Burner',
           duration: '16–18 min',
           description: 'Static‑dynamic combo adds brutal finishing stimulus',
-          battlePlan: '4 rounds\n• 8 Kickbacks each leg\nFinish with 10s Iso Hold on last rep\nRest 90s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• 8 Kickbacks each leg\nFinish with 10s Iso Hold on last rep\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1822,7 +1822,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Kickback Pause',
           duration: '18–20 min',
           description: 'Loaded kickbacks with long peak holds',
-          battlePlan: '4 rounds\n• 8 Reps per leg (2s hold)\nRest 150s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• 8 Reps per leg (2s hold)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1867,7 +1867,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Kickback Burnout Ladder',
           duration: '18–20 min',
           description: 'Descending ladder maximizing glute exhaustion',
-          battlePlan: '2–3 ladders\n• 15 → 12 → 10 Reps\nRest 150s',
+          battlePlan: 'Instructions: Aim for 2–3 ladders — stop when quality drops. Leave 1–2 clean reps in the tank on every set.\n3 rounds\n• 15 → 12 → 10 Reps\nRest 150s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1922,7 +1922,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standard Abduction',
           duration: '10–12 min',
           description: 'Intro machine work builds stability in outer hips',
-          battlePlan: '3 rounds\n• 12–15 Abductions\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Abductions\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1963,7 +1963,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lean Forward Abduction',
           duration: '10–12 min',
           description: 'Shifts emphasis effectively into upper glute tissues',
-          battlePlan: '3 rounds\n• 12–15 Lean Abductions\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Lean Abductions\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2003,7 +2003,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Abduction',
           duration: '10–12 min',
           description: 'Controlled abductions targeting outer glutes',
-          battlePlan: '3 rounds\n• 15 Abductions\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Abductions\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2049,7 +2049,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Abduction Hold Reps',
           duration: '10–12 min',
           description: 'Abductions with extended peak contractions',
-          battlePlan: '3 rounds\n• 12 Reps (2s hold)\nRest 75s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 12 Reps (2s hold)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2097,7 +2097,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Banded Abduction',
           duration: '14–16 min',
           description: 'Combo band+machine emphasizes hypertrophy work',
-          battlePlan: '4 rounds\n• 12 Banded Abductions\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 12 Banded Abductions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2137,7 +2137,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Unilateral Abduction',
           duration: '14–16 min',
           description: 'Asymmetry training balances strength between hips',
-          battlePlan: '4 rounds\n• 8–10 per side Abductions\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 per side Abductions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2178,7 +2178,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Abduction',
           duration: '14–16 min',
           description: 'Slower eccentrics increasing glute med load',
-          battlePlan: '4 rounds\n• 12 Reps (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 12 Reps (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2224,7 +2224,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Abduction Drop Set',
           duration: '14–16 min',
           description: 'Extended sets using rapid load reductions',
-          battlePlan: '3 rounds\n• 12 Reps\n• Drop → 10\n• Drop → 10\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Reps\n• Abduction drop → 10\n• Abduction drop → 10\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2273,7 +2273,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop‑Set Abduction',
           duration: '16–18 min',
           description: 'Stacked reps crush glute medius with high overload',
-          battlePlan: '3 rounds\n• 12 Heavy Abductions\n• Drop 20% → 10 reps\n• Drop 20% again → 10 reps\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• 12 Heavy Abductions\n• Drop 20% → 10 reps\n• Drop 20% again → 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2315,7 +2315,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hold + Rep Abduction',
           duration: '16–18 min',
           description: 'Brutal pairing fully activates and fatigues hips',
-          battlePlan: '3 rounds\n• 10s Iso Hold wide\n• 10–12 Full Reps immediately after\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. holds are strict: locked position, no drifting.\n3 rounds\n• 10s Iso Hold wide\n• 10–12 Full Reps immediately after\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2359,7 +2359,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Abduction Burnout Holds',
           duration: '18–20 min',
           description: 'High-tension abductions finished with long holds',
-          battlePlan: '3 rounds\n• 15 Reps + 20s Hold\nRest 150s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 15 Reps + 20s Hold\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2404,7 +2404,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Abduction',
           duration: '18–20 min',
           description: 'Multi-drop abductions for full exhaustion',
-          battlePlan: '2–3 rounds\n• 12 → 10 → 8 → 8\nRest 150s',
+          battlePlan: 'Instructions: Aim for 2–3 rounds — stop when quality drops. One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• Abduction 12 → 10 → 8 → 8\nRest 150s',
           plan: {
             "format": "strength",
             "blocks": [

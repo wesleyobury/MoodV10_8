@@ -10,7 +10,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Sissy Squat',
           duration: '10–12 min',
           description: 'Front held bar guides posture as quads take full load',
-          battlePlan: '3 rounds\n• 10–12 Light Barbell Sissy Squats\nRest 75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Light Barbell Sissy Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -51,7 +51,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Sissy Squat Hold',
           duration: '10–12 min',
           description: 'Static hold reinforces posture and leg strength',
-          battlePlan: '3 rounds\n• 6–8 Sissy Squats\n• Add 10s Hold each set\nRest 75s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 6–8 Sissy Squats\n• Add 10s Hold each set\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -93,7 +93,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Barbell Reverse Lunge',
           duration: '12–14 min',
           description: 'Reverse lunges building quad strength with stable controlled reps',
-          battlePlan: '3 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -127,7 +127,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported Barbell Step-Up',
           duration: '12–14 min',
           description: 'Step-ups building quad strength while improving balance control',
-          battlePlan: '3 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -160,7 +160,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Front Squat',
           duration: '12–14 min',
           description: 'Slow eccentric front squats building quad control and posture',
-          battlePlan: '3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -196,7 +196,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Sissy Squat',
           duration: '14–16 min',
           description: 'Adds weight to sissy squat for deeper hypertrophy',
-          battlePlan: '4 rounds\n• 8–10 Weighted Sissy Squats\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Weighted Sissy Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -237,7 +237,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Sissy Squat 1½ Reps',
           duration: '14–16 min',
           description: 'High tension squatting style grows endurance fast',
-          battlePlan: '3 rounds\n• 8 Combo Reps (half + full = 1)\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Combo Reps (half + full = 1)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -278,7 +278,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Foot Elevated Barbell Lunge',
           duration: '14–16 min',
           description: 'Elevated lunges increasing quad tension and range of motion',
-          battlePlan: '4 rounds\n• 8 per leg (3s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 per leg (3s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -312,7 +312,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Rack Knee Drive Step-Up',
           duration: '14–16 min',
           description: 'Front-loaded step-ups increasing quad tension and balance demand',
-          battlePlan: '4 rounds\n• 8 per leg\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -345,7 +345,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heel-Elevated Front Squat Pause',
           duration: '14–16 min',
           description: 'Paused front squats increasing quad loading and tension buildup',
-          battlePlan: '4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -381,7 +381,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Hack Squat',
           duration: '16–18 min',
           description: 'Upright torso hack squat builds quads with tension',
-          battlePlan: '4 rounds\n• 8–10 Hack Squats\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Hack Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -422,7 +422,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Sissy + Hack Squat Combo',
           duration: '16–18 min',
           description: 'Dual movement combo overloads quads with fatigue',
-          battlePlan: '3 rounds\n• 6 Front Hold Sissy Squats\n• 6 Barbell Hack Squats\nRest 120s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 6 Front Hold Sissy Squats\n• 6 Barbell Hack Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -468,7 +468,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Walking Lunge Drop Set',
           duration: '16–18 min',
           description: 'Walking lunges extended with drops pushing quads near failure',
-          battlePlan: '3 rounds\n• 10 per leg\n• Drop → 10\n• Drop → BW walking lunges\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 per leg\n• Lunge drop → 10\n• Drop → BW walking lunges\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -503,7 +503,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Deficit Barbell Step-Up',
           duration: '16–18 min',
           description: 'Deficit step-ups increasing range, tension, and quad fatigue',
-          battlePlan: '4 rounds\n• 6–8 per leg\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 per leg\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -536,7 +536,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Squat 1.5 Reps',
           duration: '16–18 min',
           description: 'Extended-rep front squats driving relentless quad tension',
-          battlePlan: '4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -578,7 +578,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standard Leg Extension',
           duration: '10–12 min',
           description: 'Perfect intro for building controlled quad strength',
-          battlePlan: '3 rounds\n• 12–15 Leg Extensions\nRest 60s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Leg Extensions\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -619,7 +619,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Extension Hold',
           duration: '10–12 min',
           description: 'Builds mind muscle connection through iso tension',
-          battlePlan: '3 rounds\n• 8–10 Iso Hold Extensions (3s hold)\nRest 75s',
+          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 8–10 Iso Hold Extensions (3s hold)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -659,7 +659,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Leg Extension',
           duration: '10–12 min',
           description: 'Smooth extensions building basic quad control',
-          battlePlan: '3 rounds\n• 12–15 Leg Extensions\nRest 60–75s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Leg Extensions\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -707,7 +707,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Extensions',
           duration: '14–16 min',
           description: 'Machine allows safe overload using strict form',
-          battlePlan: '4 rounds\n• 8–10 Heavy Extensions\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Heavy Extensions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -747,7 +747,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep Leg Extensions',
           duration: '14–16 min',
           description: 'Longer muscle strain increases hypertrophy response',
-          battlePlan: '3 rounds\n• 8–10 Total Combo Reps\nRest 90s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Total Combo Reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -787,7 +787,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Leg Extension',
           duration: '12–14 min',
           description: 'Paused reps reinforcing peak quad contraction',
-          battlePlan: '4 rounds\n• 10 Extensions (2s pause at top)\nRest 90s',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 10 Extensions (2s pause at top)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -835,7 +835,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop Set Leg Extensions',
           duration: '16–18 min',
           description: 'Stripping load forces fibers to contract under fatigue',
-          battlePlan: '3 rounds\n• 10 Heavy Extensions\n• Drop 15–20% → 8 reps\n• Drop 15–20% → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• 10 Heavy Extensions\n• Drop 15–20% → 8 reps\n• Drop 15–20% → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -876,7 +876,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Extension Iso Burnout',
           duration: '16–18 min',
           description: 'Pairing holds with reps completely crushes quads',
-          battlePlan: '3 rounds\n• 10s Iso Hold at Extension\n• Immediately 10–12 Full Reps\nRest 90s',
+          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. holds are strict: locked position, no drifting.\n3 rounds\n• 10s Iso Hold at Extension\n• 10–12 Full Reps — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -917,7 +917,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop Set Leg Extension',
           duration: '16–18 min',
           description: 'Extended quad isolation using fast weight drops',
-          battlePlan: '3 rounds\n• 8 Heavy Extensions\n• Drop → 10\n• Drop → 10\nRest 120s',
+          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Heavy Extensions\n• Extension drop → 10\n• Extension drop → 10\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [

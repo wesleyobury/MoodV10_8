@@ -2958,7 +2958,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Foundations',
           duration: '12–15 min',
           description: 'Chest press machine reps for controlled chest work.',
-          battlePlan: 'Sets: 4\n\n• Chest Press Machine — 4 × 12',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Chest Press Machine — 4 × 12',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3002,7 +3002,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Control',
           duration: '12–16 min',
           description: 'Paused machine pressing for chest engagement.',
-          battlePlan: 'Sets: 4\n\n• Paused Chest Press — 4 × 10',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nSets: 4\n\n• Paused Chest Press — 4 × 10',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3046,7 +3046,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Machine Press',
           duration: '12–15 min',
           description: 'Slow negatives on chest press machine.',
-          battlePlan: 'Sets: 3\n\n• Chest Press — 3 × 10 (4s eccentric)',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nSets: 3\n\n• Chest Press — 3 × 10 (4s eccentric)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3091,7 +3091,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Burn',
           duration: '10–14 min',
           description: 'High-rep machine pressing for chest endurance.',
-          battlePlan: 'Sets: 3\n\n• Chest Press — 3 × 15–20',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 3\n\n• Chest Press — 3 × 15–20',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3137,7 +3137,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Clusters',
           duration: '14–18 min',
           description: 'Machine clusters to maintain pressing output.',
-          battlePlan: 'Sets: 4\n\n• Chest Press — 4 × (6 / 6 / 6)',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Chest Press — 4 × (6 / 6 / 6)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3181,7 +3181,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Working Machine',
           duration: '14–18 min',
           description: 'Traditional machine pressing with meaningful load.',
-          battlePlan: 'Sets: 5\n\n• Chest Press — 5 × 10',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 5\n\n• Chest Press — 5 × 10',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3225,7 +3225,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Holds',
           duration: '14–18 min',
           description: 'Paused machine pressing with contraction finish.',
-          battlePlan: 'Sets: 4\n\n• Paused Chest Press — 4 × 8\nFinal rep: 6–8s squeeze',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nSets: 4\n\n• Paused Chest Press — 4 × 8\nFinal rep: 6–8s squeeze',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3270,7 +3270,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press & Burn',
           duration: '15–18 min',
           description: 'Machine pressing paired with push-ups for volume.',
-          battlePlan: 'Sets: 4\n\n• Chest Press — 4 × 10\n• Push-Ups — 4 × 15–25',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Chest Press — 4 × 10\n• Push-Ups — 4 × 15–25',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3321,7 +3321,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Machine Clusters',
           duration: '16–20 min',
           description: 'Heavy machine clusters to maximize chest output.',
-          battlePlan: 'Sets: 5\n\n• Chest Press — 5 × (5 / 5 / 5)',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 5\n\n• Chest Press — 5 × (5 / 5 / 5)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3365,7 +3365,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Machine',
           duration: '16–20 min',
           description: 'Heavy machine pressing for chest strength focus.',
-          battlePlan: 'Sets: 5\n\n• Chest Press — 5 × 8',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 5\n\n• Chest Press — 5 × 8',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3409,7 +3409,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Drop Cascade',
           duration: '15–20 min',
           description: 'Four-stage machine drop set for chest overload.',
-          battlePlan: 'Sets: 3\n\n• Chest Press (Heavy) — max reps\n• Drop 1 (Medium) — max reps\n• Drop 2 (Light) — 12–15\n• Drop 3 (Very Light) — burnout',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nSets: 3\n\n• Chest Press (Heavy) — max reps\n• Drop 1 (Medium) — max reps\n• Drop 2 (Light) — 12–15\n• Drop 3 (Very Light) — burnout',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3453,7 +3453,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Press & Explode',
           duration: '15–20 min',
           description: 'Heavy machine pressing paired with explosive push-ups.',
-          battlePlan: 'Sets: 4\n\n• Chest Press — 4 × 8\n• Clap Push-Ups — 4 × 6–10',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Chest Press — 4 × 8\n• Clap Push-Ups — 4 × 6–10',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3510,7 +3510,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Fly Foundations',
           duration: '12–15 min',
           description: 'Pec deck flyes to build chest awareness.',
-          battlePlan: 'Sets: 4\n\n• Pec Deck Fly — 4 × 12',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Pec Deck Fly — 4 × 12',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3555,7 +3555,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Fly Control',
           duration: '12–16 min',
           description: 'Paused flyes to reinforce chest control.',
-          battlePlan: 'Sets: 4\n\n• Paused Pec Deck — 4 × 10',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nSets: 4\n\n• Paused Pec Deck — 4 × 10',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3600,7 +3600,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Fly',
           duration: '12–15 min',
           description: 'Slow eccentrics on pec deck for chest tension.',
-          battlePlan: 'Sets: 3\n\n• Pec Deck Fly — 3 × 10 (4s eccentric)',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nSets: 3\n\n• Pec Deck Fly — 3 × 10 (4s eccentric)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3646,7 +3646,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Fly Burn',
           duration: '10–14 min',
           description: 'High-rep pec deck flyes for chest endurance.',
-          battlePlan: 'Sets: 3\n\n• Pec Deck Fly — 3 × 15–25',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 3\n\n• Pec Deck Fly — 3 × 15–25',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3693,7 +3693,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Fly Clusters',
           duration: '14–18 min',
           description: 'Pec deck clusters to maintain chest tension.',
-          battlePlan: 'Sets: 4\n\n• Pec Deck Fly — 4 × (6 / 6 / 6)',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Pec Deck Fly — 4 × (6 / 6 / 6)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3738,7 +3738,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Working Flyes',
           duration: '14–18 min',
           description: 'Traditional pec deck flyes with meaningful load.',
-          battlePlan: 'Sets: 5\n\n• Pec Deck Fly — 5 × 12',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 5\n\n• Pec Deck Fly — 5 × 12',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3783,7 +3783,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Fly Holds',
           duration: '14–18 min',
           description: 'Paused pec deck flyes with contraction finish.',
-          battlePlan: 'Sets: 4\n\n• Paused Pec Deck — 4 × 10\nFinal rep: 6–8s squeeze',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nSets: 4\n\n• Paused Pec Deck — 4 × 10\nFinal rep: 6–8s squeeze',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3829,7 +3829,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Fly & Push',
           duration: '15–18 min',
           description: 'Pec deck flyes paired with push-ups.',
-          battlePlan: 'Sets: 4\n\n• Pec Deck Fly — 4 × 12\n• Push-Ups — 4 × 15–25',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Pec Deck Fly — 4 × 12\n• Push-Ups — 4 × 15–25',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3881,7 +3881,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Fly Clusters',
           duration: '16–20 min',
           description: 'Heavy pec deck clusters for deep chest fatigue.',
-          battlePlan: 'Sets: 5\n\n• Pec Deck Fly — 5 × (5 / 5 / 5)',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 5\n\n• Pec Deck Fly — 5 × (5 / 5 / 5)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3926,7 +3926,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Flyes',
           duration: '16–20 min',
           description: 'Heavy pec deck flyes for chest overload.',
-          battlePlan: 'Sets: 5\n\n• Pec Deck Fly — 5 × 10',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 5\n\n• Pec Deck Fly — 5 × 10',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3971,7 +3971,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Fly Drop Cascade',
           duration: '15–20 min',
           description: 'Four-stage pec deck drop set for chest overload.',
-          battlePlan: 'Sets: 3\n\n• Pec Deck (Heavy) — max reps\n• Drop 1 — max reps\n• Drop 2 — 12–15\n• Drop 3 — burnout',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nSets: 3\n\n• Pec Deck (Heavy) — max reps\n• Drop 1 — max reps\n• Cascade drop 2 — 12–15\n• Drop 3 — burnout',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4016,7 +4016,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Fly & Explode',
           duration: '15–20 min',
           description: 'Pec deck flyes paired with plyometric push-ups.',
-          battlePlan: 'Sets: 4\n\n• Pec Deck Fly — 4 × 10\n• Clap Push-Ups — 4 × 6–10',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Pec Deck Fly — 4 × 10\n• Clap Push-Ups — 4 × 6–10',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4555,7 +4555,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Drop Cascade',
           duration: '15–20 min',
           description: 'Four-stage cable drop set for chest overload.',
-          battlePlan: 'Instructions: Strip weight immediately.\nSets: 3\n\n• Cable Fly (Heavy) — max reps\n• Drop 1 — max reps\n• Drop 2 — 12–15\n• Drop 3 — burnout',
+          battlePlan: 'Instructions: Strip weight immediately.\nSets: 3\n\n• Cable Fly (Heavy) — max reps\n• Drop 1 — max reps\n• Cascade drop 2 — 12–15\n• Drop 3 — burnout',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4660,7 +4660,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip Foundations',
           duration: '12–15 min',
           description: 'Chest-focused dips to build pressing confidence.',
-          battlePlan: 'Sets: 4\n\n• Assisted / Bodyweight Dips — 4 × 6–10',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Assisted / Bodyweight Dips — 4 × 6–10',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4705,7 +4705,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip Control',
           duration: '12–16 min',
           description: 'Paused dips to reinforce chest engagement.',
-          battlePlan: 'Sets: 4\n\n• Paused Dips — 4 × 6–8',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nSets: 4\n\n• Paused Dips — 4 × 6–8',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4750,7 +4750,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Dips',
           duration: '12–15 min',
           description: 'Slow eccentrics on dips for chest control.',
-          battlePlan: 'Sets: 3\n\n• Dips — 3 × 6 (4s eccentric)',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nSets: 3\n\n• Dips — 3 × 6 (4s eccentric)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4796,7 +4796,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip Burn',
           duration: '10–14 min',
           description: 'High-rep dips to build chest endurance.',
-          battlePlan: 'Sets: 3\n\n• Assisted Dips — 3 × 12–20',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 3\n\n• Assisted Dips — 3 × 12–20',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4843,7 +4843,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip Clusters',
           duration: '14–18 min',
           description: 'Dip clusters to maintain chest output.',
-          battlePlan: 'Sets: 4\n\n• Dips — 4 × (5 / 5 / 5)',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Dips — 4 × (5 / 5 / 5)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4888,7 +4888,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Working Dips',
           duration: '14–18 min',
           description: 'Traditional dips with meaningful volume.',
-          battlePlan: 'Sets: 5\n\n• Dips — 5 × 8–10',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 5\n\n• Dips — 5 × 8–10',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4933,7 +4933,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip Holds',
           duration: '14–18 min',
           description: 'Paused dips with contraction finish.',
-          battlePlan: 'Sets: 4\n\n• Paused Dips — 4 × 6\nFinal rep: 6–8s squeeze',
+          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nSets: 4\n\n• Paused Dips — 4 × 6\nFinal rep: 6–8s squeeze',
           plan: {
             "format": "strength",
             "blocks": [
@@ -4979,7 +4979,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip & Push',
           duration: '15–18 min',
           description: 'Dips paired with push-ups for chest volume.',
-          battlePlan: 'Sets: 4\n\n• Dips — 4 × 8\n• Push-Ups — 4 × 15–25',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Dips — 4 × 8\n• Push-Ups — 4 × 15–25',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5031,7 +5031,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Dip Clusters',
           duration: '16–20 min',
           description: 'Heavy dip clusters for chest overload.',
-          battlePlan: 'Sets: 5\n\n• Weighted Dips — 5 × (4 / 4 / 4)',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 5\n\n• Weighted Dips — 5 × (4 / 4 / 4)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5076,7 +5076,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Dips',
           duration: '16–20 min',
           description: 'Heavy dips focused on chest strength.',
-          battlePlan: 'Sets: 5\n\n• Weighted Dips — 5 × 6–8',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 5\n\n• Weighted Dips — 5 × 6–8',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5121,7 +5121,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip Drop Cascade',
           duration: '15–20 min',
           description: 'Cascading dip drops for deep chest fatigue.',
-          battlePlan: 'Sets: 3\n\n• Weighted Dips — max reps\n• Bodyweight Dips — max reps\n• Assisted Dips — burnout',
+          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nSets: 3\n\n• Weighted Dips — max reps\n• Bodyweight Dips — max reps\n• Assisted Dips — burnout',
           plan: {
             "format": "strength",
             "blocks": [
@@ -5175,7 +5175,7 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip & Explode',
           duration: '15–20 min',
           description: 'Heavy dips paired with plyometric push-ups.',
-          battlePlan: 'Sets: 4\n\n• Weighted Dips — 4 × 6\n• Clap Push-Ups — 4 × 6–10',
+          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSets: 4\n\n• Weighted Dips — 4 × 6\n• Clap Push-Ups — 4 × 6–10',
           plan: {
             "format": "strength",
             "blocks": [
