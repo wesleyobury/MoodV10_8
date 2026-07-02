@@ -501,14 +501,14 @@ async def auto_seed_exercises():
 CURRENT_TERMS_VERSION = "2025-01-19"
 
 # Phase D — Paid Launch Founding Member cutoff (Part 9 of the v1.0 spec).
-# Updated 2026-05-26: cutoff moved forward to 2026-05-26 00:00 UTC per product
-# decision (previously 2026-05-14). Every account whose `created_at <
-# 2026-05-26 UTC` is treated as a Founding Member with lifetime Premium access.
+# Updated 2026-07-02: cutoff moved forward to 2026-07-02 00:00 UTC per product
+# decision (previously 2026-05-26). Every account whose `created_at <
+# 2026-07-02 UTC` is treated as a Founding Member with lifetime Premium access.
 # Anyone signing up on/after the cutoff is on the paid tier. Migration runs on
 # every startup and is idempotent (only flips False→True, never demotes
 # existing founders), so bumping the cutoff forward additively flips any
 # accounts created between the old and new cutoffs into Founding Members.
-FOUNDING_MEMBER_CUTOFF = datetime(2026, 5, 26, 0, 0, 0, tzinfo=timezone.utc)
+FOUNDING_MEMBER_CUTOFF = datetime(2026, 7, 2, 0, 0, 0, tzinfo=timezone.utc)
 
 # Cloudinary Configuration
 cloudinary.config(

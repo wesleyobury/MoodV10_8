@@ -295,7 +295,7 @@ PREVIEW_FEATURED_WORKOUTS = [
     "badge": "Popular",
     "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/sweat_cardio_engine.jpg",
     "difficulty": "Intermediate",
-    "hook": "Bike, row, climb. Build the engine, torch the tank.",
+    "hook": "Bike hard, then lift light. Build the engine, torch the tank.",
     "exercises": [
       {
         "exerciseId": "",
@@ -326,52 +326,26 @@ PREVIEW_FEATURED_WORKOUTS = [
       {
         "exerciseId": "",
         "order": 1,
-        "name": "Power Intervals",
-        "equipment": "Row machine",
-        "description": "Power intervals alternating hard, moderate,\nand recovery strokes. 4 complete rounds.\n ",
-        "battlePlan": "• 4 rounds:\n• 1 min hard (28 SPM)\n• 2 min moderate (24 SPM)\n• 1 min easy (20 SPM)",
-        "duration": "20 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240957/mood_app/workout_images/sfylsueu_download_copy_4.jpg",
-        "intensityReason": "Alternates power strokes and recovery for strength.",
-        "difficulty": "intermediate",
-        "workoutType": "Sweat - Cardio Based",
-        "moodCard": "Sweat / Burn Fat",
-        "moodTips": [
-          {
-            "icon": "barbell",
-            "title": "Explosive Drive",
-            "description": "Drive explosively from heels (60% legs, 30% core, 10% arms)."
-          },
-          {
-            "icon": "settings",
-            "title": "Form Drills",
-            "description": "Use slower segments for perfect form drills."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 2,
-        "name": "Interval Climb",
-        "equipment": "Stair master",
-        "description": "Fast intervals with moderate recovery\nand side step challenges. 4 rounds total.\n ",
-        "battlePlan": "• 4 rounds:\n• 1 min fast\n• 2 min moderate\n• 1 min side step (face sideways)",
-        "duration": "20 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240943/mood_app/workout_images/clikf991_download.jpg",
-        "intensityReason": "Mixed patterns challenge intermediate speed and coordination.",
+        "name": "DB Cardio Circuit",
+        "equipment": "Dumbbells",
+        "description": "Four 4‑min rounds of squats, lunges, and\npush press with programmed rest. Light load.\n ",
+        "battlePlan": "• 4 rounds (4 min each):\n• 30s Goblet Squat\n• 30s Alternating Reverse Lunge\n• 30s Push Press\n• 30s Rest",
+        "duration": "16–18 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240916/mood_app/workout_images/xgk4blng_download_2_.jpg",
+        "intensityReason": "Intervals raise HR while preserving form and control.",
         "difficulty": "intermediate",
         "workoutType": "Sweat - Cardio Based",
         "moodCard": "Sweat / Burn Fat",
         "moodTips": [
           {
             "icon": "body",
-            "title": "Side Step Form",
-            "description": "Side steps: keep knees soft, engage outer glutes."
+            "title": "Chest tall; knees track toes",
+            "description": "Maintain upright posture and proper knee alignment over feet."
           },
           {
-            "icon": "flash",
-            "title": "Arm Swing",
-            "description": "Strong arm swing aids rhythm and balance."
+            "icon": "fitness",
+            "title": "Exhale hard on push press",
+            "description": "Use a forceful exhale to brace core during the pressing motion."
           }
         ]
       }
@@ -738,26 +712,26 @@ PREVIEW_FEATURED_WORKOUTS = [
       {
         "exerciseId": "",
         "order": 2,
-        "name": "Heavy Kickback",
-        "equipment": "Glute Kick Machine",
-        "description": "Progressive overload builds strength at extension",
-        "battlePlan": "4 rounds\n• 8–10 per leg Heavy Kickbacks\nRest 90s",
+        "name": "Heavy Abduction",
+        "equipment": "Hip Abductor Machine",
+        "description": "Progressive overload builds strength through hip abduction",
+        "battlePlan": "4 rounds\n• 12–15 Heavy Abductions (1s pause at peak)\nRest 90s",
         "duration": "14–16 min",
         "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241405/mood_app/workout_images/u602jvhu_download_9_.jpg",
-        "intensityReason": "Increased load pushes hypertrophy for glutes",
+        "intensityReason": "Increased load pushes hypertrophy for the glute medius",
         "difficulty": "intermediate",
         "workoutType": "Muscle Gainer - Glutes",
         "moodCard": "Muscle gainer",
         "moodTips": [
           {
             "icon": "construct",
-            "title": "Keep back steady, hips square to pad",
-            "description": "Hip stability prevents compensations under heavier loads."
+            "title": "Sit tall, lean slightly forward to bias glutes",
+            "description": "A slight forward lean shifts tension onto the glute medius."
           },
           {
             "icon": "shield",
-            "title": "Push controlled, bar no sudden drops",
-            "description": "Controlled movement maintains form and prevents injury."
+            "title": "Push knees out controlled, no sudden snaps",
+            "description": "Controlled movement maintains tension and protects the hips."
           }
         ]
       },
@@ -824,68 +798,42 @@ PREVIEW_FEATURED_WORKOUTS = [
             "description": "Land on midfoot with quick turnover for uphill efficiency"
           }
         ]
-      },
-      {
-        "exerciseId": "",
-        "order": 1,
-        "name": "Sprint-Only 20s",
-        "equipment": "Hills",
-        "description": "Six all-out 20-second uphill sprints. Full recovery.",
-        "battlePlan": "• Instructions: Sprint hard uphill for 20 seconds, then walk back down slowly. Fully recover before the next rep.\n• Uphill sprints — 6 × 20s\n• Rest: 2 min walk-down",
-        "duration": "14–18 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240831/mood_app/workout_images/8d9vosf3_download_12_.jpg",
-        "intensityReason": "Capped at 20 seconds — maximal power, no grind.",
-        "difficulty": "intermediate",
-        "workoutType": "Outdoor - Hills",
-        "moodCard": "Get Outside",
-        "moodTips": [
-          {
-            "icon": "trending-up",
-            "title": "Drive arms; chin level; tall posture; quick ground contacts",
-            "description": "Pump arms powerfully with head neutral and fast foot turnover"
-          },
-          {
-            "icon": "body",
-            "title": "If hamstrings tighten, reduce volume to protect from strain",
-            "description": "Cut reps short if back of legs feel tight to prevent injury"
-          }
-        ]
       }
     ]
   },
   {
     "_id": "6a7c70ea6a76d293b68a1708",
-    "title": "Outdoor - Park Circuit",
+    "title": "Outdoor - Run & Rep",
     "mood": "Get Outside",
     "duration": "~25 min",
     "badge": "Classic",
     "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/outdoor_park_circuit.jpg",
     "difficulty": "Intermediate",
-    "hook": "A bench, a bar, and a lap. That's the whole gym.",
+    "hook": "Run to the park, earn the EMOM. Legs then lungs.",
     "exercises": [
       {
         "exerciseId": "",
         "order": 0,
-        "name": "Park Push-Pull-Run",
-        "equipment": "Park workout",
-        "description": "Rows, push-ups, dips, step-ups, runs build endurance.",
-        "battlePlan": "• 4 rounds:\n• Bench rows — 10 reps\n• Push-ups — 10 reps\n• Dips — 10–12 reps\n• Step-ups — 10/side\n• Run — ~200 m\n• Rest 60–90s between rounds",
-        "duration": "22–26 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240854/mood_app/workout_images/xmpcsqgf_download_22_.jpg",
-        "intensityReason": "Balanced upper/lower work with runs sustains output.",
+        "name": "Outdoor Run",
+        "equipment": "Open road or trail",
+        "description": "Steady warm-up run to the park. Build a light sweat before the EMOM.",
+        "battlePlan": "• Instructions: Run at a conversational pace — you should be able to talk. Treat it as the warm-up that gets you to your park spot.\n• Run — 1–1.5 miles (~10–12 min)\n• Finish with 3 × 20s stride-outs to prime the legs",
+        "duration": "10–12 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240831/mood_app/workout_images/8d9vosf3_download_12_.jpg",
+        "intensityReason": "An easy aerobic run warms the body and sets up quality strength work.",
         "difficulty": "intermediate",
-        "workoutType": "Outdoor - Park",
+        "workoutType": "Outdoor - Run",
         "moodCard": "Get Outside",
         "moodTips": [
           {
-            "icon": "body",
-            "title": "Rows: ribs down; avoid flaring; elbows track for shoulder safety",
-            "description": "Keep ribs pulled in with elbows moving along your sides"
+            "icon": "walk",
+            "title": "Keep it conversational; save the effort for the EMOM",
+            "description": "Run easy enough to hold a conversation so you arrive fresh."
           },
           {
-            "icon": "leaf",
-            "title": "Dips: slight forward lean; keep elbows near body; full control",
-            "description": "Tilt forward slightly with elbows close and smooth movement"
+            "icon": "flash",
+            "title": "Stride-outs: relax, lengthen, quick turnover",
+            "description": "Stay loose and tall while picking up leg speed on each stride-out."
           }
         ]
       },
@@ -914,32 +862,6 @@ PREVIEW_FEATURED_WORKOUTS = [
             "description": "Keep elbows at moderate angle with smooth scapular movement"
           }
         ]
-      },
-      {
-        "exerciseId": "",
-        "order": 2,
-        "name": "Circuit With Runs",
-        "equipment": "Park workout",
-        "description": "Dips, squats, rows, runs create balanced stress safely.",
-        "battlePlan": "• 4 rounds:\n• Bench dips — 12 reps\n• Air squats — 15 reps\n• Bench rows — 10 reps\n• Run — ~200 m\n• Rest 60–90s between rounds",
-        "duration": "22–26 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240819/mood_app/workout_images/0aaca0zk_download_16_.jpg",
-        "intensityReason": "Mixed calisthenics and light runs train steady output.",
-        "difficulty": "intermediate",
-        "workoutType": "Outdoor - Park",
-        "moodCard": "Get Outside",
-        "moodTips": [
-          {
-            "icon": "body",
-            "title": "Squats: tripod foot; knees track; maintain even depth each rep",
-            "description": "Distribute weight across foot with consistent squat depth"
-          },
-          {
-            "icon": "leaf",
-            "title": "Rows: neutral neck; engage lats first; avoid shrugging tension",
-            "description": "Keep head aligned and initiate pull with back muscles"
-          }
-        ]
       }
     ]
   }
@@ -955,5 +877,5 @@ FEATURED_WORKOUT_IDS = [
     "6a7c70ea6a76d293b68a1705",  # Build Explosion - Power Complex
     "6a7c70ea6a76d293b68a1706",  # Muscle Gainer - Glute Day
     "6a7c70ea6a76d293b68a1707",  # Outdoor - Hill Repeats
-    "6a7c70ea6a76d293b68a1708",  # Outdoor - Park Circuit
+    "6a7c70ea6a76d293b68a1708",  # Outdoor - Run & Rep
 ]

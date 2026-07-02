@@ -2125,22 +2125,22 @@ export default function CreatePost() {
                   {/* Save Button */}
                   <Animated.View style={{ transform: [{ scale: saveScaleAnim }] }}>
                     <TouchableOpacity 
-                      onPress={handleSaveCard} 
+                      onPress={handleSaveCard}
                       disabled={cardSaved}
                       style={[
                         styles.saveCardButton,
-                        cardSaved && styles.saveCardButtonSaved
+                        cardSaved && styles.saveCardButtonSavedNeutral
                       ]}
                       activeOpacity={0.7}
                     >
                       {cardSaved ? (
                         <>
-                          <Ionicons name="checkmark" size={16} color="#FFD700" />
+                          <Ionicons name="checkmark" size={16} color="#FFFFFF" />
                           <Text style={styles.saveButtonText}>Saved</Text>
                         </>
                       ) : (
                         <>
-                          <Ionicons name="bookmark-outline" size={18} color="#FFD700" />
+                          <Ionicons name="bookmark-outline" size={18} color="rgba(255, 255, 255, 0.7)" />
                           <Text style={styles.saveButtonText}>Save</Text>
                         </>
                       )}
@@ -3402,6 +3402,12 @@ const styles = StyleSheet.create({
   saveCardButtonSaved: {
     backgroundColor: 'rgba(255, 215, 0, 0.15)',
     borderColor: 'rgba(255, 215, 0, 0.4)',
+  },
+  // Neutral white/gray saved state for the completion-card Save button
+  // (kept separate so the shared Equip toggle retains its gold active state).
+  saveCardButtonSavedNeutral: {
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderColor: 'rgba(255, 255, 255, 0.35)',
   },
   saveButtonText: {
     fontSize: 12,

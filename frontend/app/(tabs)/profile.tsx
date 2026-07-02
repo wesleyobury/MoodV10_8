@@ -34,6 +34,8 @@ import { useScreenTime } from '../../hooks/useScreenTime';
 import { GridItemSkeleton, ProfileHeaderSkeleton } from '../../components/Skeleton';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import { FoundingMemberBadge } from '../../components/FoundingMemberBadge';
+import MaskedView from '@react-native-masked-view/masked-view';
+import { BRAND_GRADIENT } from '../../constants/brand';
 
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
@@ -850,14 +852,24 @@ export default function Profile() {
               {user.isVerified && (
                 <Ionicons name="checkmark-circle" size={16} color="#FFD700" />
               )}
+              {/* Phase D — Founding Member marker: name (badge) gradient label.
+                  Permanent lifetime-Premium identity marker. */}
+              {authUser?.founding_member ? (
+                <View style={styles.foundingWrap} testID="profile-founding-member-badge">
+                  <FoundingMemberBadge size="sm" />
+                  <MaskedView maskElement={<Text style={styles.foundingLabel}>Founding Member</Text>}>
+                    <LinearGradient
+                      colors={[...BRAND_GRADIENT]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                    >
+                      <Text style={[styles.foundingLabel, { opacity: 0 }]}>Founding Member</Text>
+                    </LinearGradient>
+                  </MaskedView>
+                </View>
+              ) : null}
             </View>
             <Text style={styles.bio}>{user.bio}</Text>
-            {/* Phase D — Founding Member badge surfaces lifetime-Premium status. */}
-            {authUser?.founding_member ? (
-              <View style={{ marginTop: 10 }}>
-                <FoundingMemberBadge testID="profile-founding-member-badge" />
-              </View>
-            ) : null}
           </View>
 
           <View style={styles.buttonRow}>
@@ -1570,13 +1582,23 @@ const styles = StyleSheet.create({
   nameContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 4,
+    gap: 6,
+    marginBottom: 2,
   },
   displayName: {
     fontSize: 16,
     fontWeight: '600',
     color: '#fff',
-    marginRight: 4,
+  },
+  foundingWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  foundingLabel: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#FFA500',
   },
   bio: {
     fontSize: 14,
