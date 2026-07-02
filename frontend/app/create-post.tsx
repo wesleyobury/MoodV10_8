@@ -2190,50 +2190,8 @@ export default function CreatePost() {
                   ))}
                 </ScrollView>
 
-                {/* Resync — re-pull HealthKit stats (Apple Watch → phone sync can
-                    lag the end of a session by a few seconds to a minute). */}
-                <TouchableOpacity
-                  style={styles.resyncBtn}
-                  onPress={resync}
-                  disabled={isResyncing}
-                  activeOpacity={0.8}
-                  testID="achievement-resync"
-                >
-                  {isResyncing ? (
-                    <ActivityIndicator size="small" color="#FFD700" />
-                  ) : (
-                    <Ionicons name="refresh" size={15} color="#FFD700" />
-                  )}
-                  <Text style={styles.resyncText}>
-                    {isResyncing ? 'Syncing…' : 'Sync from Apple Health'}
-                  </Text>
-                </TouchableOpacity>
-
-                {/* Two-state data indicator — always shown on the achievement
-                    card. Green when Apple Health returned real calories; amber
-                    "estimated" otherwise. Calories-first (headline metric);
-                    session timestamp added when we have one. */}
-                {sessionCaloriesFromWearable != null ? (
-                  <View style={[styles.dataChip, styles.dataChipReal]}>
-                    <Ionicons name="checkmark-circle" size={13} color="#3CD070" />
-                    <Text style={styles.dataChipText}>
-                      Live calories from Apple Health{sessionLabel ? ` · ${sessionLabel} session` : (lastWorkoutLabel ? ` · ${lastWorkoutLabel}` : '')}
-                    </Text>
-                  </View>
-                ) : (
-                  <TouchableOpacity
-                    style={[styles.dataChip, styles.dataChipEst]}
-                    onPress={() => router.push('/wearable-data')}
-                    activeOpacity={0.8}
-                  >
-                    <Ionicons name="alert-circle-outline" size={13} color="#E0A03A" />
-                    <Text style={styles.dataChipTextEst}>
-                      Calories estimated{sessionLabel ? ` · ${sessionLabel} session` : ''} — connect Apple Health for real numbers
-                    </Text>
-                  </TouchableOpacity>
-                )}
-
-                {/* Variant dots indicator */}
+                {/* Variant dots indicator — in normal flow directly under the
+                    card so it can never overlap the sync row / status chip. */}
                 <View style={styles.variantDotsRow} pointerEvents="none">
                   {CARD_VARIANTS.map((v) => (
                     <View
@@ -2245,6 +2203,53 @@ export default function CreatePost() {
                     />
                   ))}
                 </View>
+
+                {/* Resync — re-pull HealthKit stats (Apple Watch → phone sync
+                    can lag the end of a session by a minute). Only shown while
+                    Health IS connected but the session calories haven't landed
+                    yet. Once live calories are in there's nothing to sync, so
+                    the button disappears. When Health isn't connected at all,
+                    the "Connect Apple Health" banner below owns that CTA. */}
+                {sessionCaloriesFromWearable == null &&
+                  !!(heartRateRealStats ||
+                     sessionStepsFromWearable != null ||
+                     sessionHrvFromWearable != null) && (
+                  <TouchableOpacity
+                    style={styles.resyncBtn}
+                    onPress={resync}
+                    disabled={isResyncing}
+                    activeOpacity={0.8}
+                    testID="achievement-resync"
+                  >
+                    {isResyncing ? (
+                      <ActivityIndicator size="small" color="#FFD700" />
+                    ) : (
+                      <Ionicons name="refresh" size={15} color="#FFD700" />
+                    )}
+                    <Text style={styles.resyncText}>
+                      {isResyncing ? 'Syncing…' : 'Sync from Apple Health'}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+
+                {/* Two-state data indicator — plain status, not a button.
+                    Green check when Apple Health returned real calories;
+                    amber "estimated" otherwise. */}
+                {sessionCaloriesFromWearable != null ? (
+                  <View style={[styles.dataChip, styles.dataChipReal]}>
+                    <Ionicons name="checkmark-circle" size={13} color="#3CD070" />
+                    <Text style={styles.dataChipText}>
+                      Live calories from Apple Health{sessionLabel ? ` · ${sessionLabel} session` : (lastWorkoutLabel ? ` · ${lastWorkoutLabel}` : '')}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={[styles.dataChip, styles.dataChipEst]}>
+                    <Ionicons name="alert-circle-outline" size={13} color="#E0A03A" />
+                    <Text style={styles.dataChipTextEst}>
+                      Calories estimated{sessionLabel ? ` · ${sessionLabel} session` : ''}
+                    </Text>
+                  </View>
+                )}
 
                 {/* Equipment toggle — overlayed on bottom of card, share screen only */}
                 <TouchableOpacity
@@ -2836,8 +2841,9 @@ const styles = StyleSheet.create({
     maxWidth: '92%',
   },
   dataChipReal: {
-    backgroundColor: 'rgba(60,208,112,0.10)',
-    borderColor: 'rgba(60,208,112,0.35)',
+    // Green check carries the state — no green shading behind it.
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
   },
   dataChipEst: {
     backgroundColor: 'rgba(224,160,58,0.10)',
@@ -3073,14 +3079,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   variantDotsRow: {
-    position: 'absolute',
-    bottom: 12,
-    left: 0,
-    right: 0,
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 6,
-    zIndex: 10,
+    marginTop: 10,
   },
   variantDot: {
     width: 6,
