@@ -381,7 +381,7 @@ function Disclosure({ trial }: { trial: boolean }) {
   return (
     <Text style={styles.disclosure}>
       {trial
-        ? '7 days free, then $9.99/mo. Cancel anytime. Auto-renews unless cancelled at least 24 hours before the trial ends. '
+        ? '7 days free, then $79/year or $9.99/month — your choice on the next screen. Auto-renews unless cancelled at least 24 hours before the trial ends. '
         : '$39.00/year, auto-renews unless cancelled at least 24 hours before renewal. '}
       <Text style={styles.link} onPress={() => Linking.openURL(MANAGE_SUBS_URL)}>Manage subscription</Text>
       <Text> · </Text>

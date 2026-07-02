@@ -452,7 +452,9 @@ export function PaywallModal() {
                   testID="paywall-start-trial"
                   data-testid="paywall-start-trial"
                 >
-                  <Text style={styles.trialBtnLabel}>Start 7-day free trial</Text>
+                  <Text style={styles.trialBtnLabel}>
+                    Start 7 days free — then {plan === 'annual' ? ANNUAL_PRICE_LABEL : MONTHLY_PRICE_LABEL}
+                  </Text>
                 </TouchableOpacity>
 
                 <Text style={styles.foundingSubtext}>
@@ -494,11 +496,13 @@ export function PaywallModal() {
                     end={{ x: 1, y: 0 }}
                     style={styles.ctaGradient}
                   >
-                    <Text style={styles.ctaLabel}>Start 7-day free trial</Text>
+                    <Text style={styles.ctaLabel}>
+                      Start 7 days free — then {plan === 'annual' ? ANNUAL_PRICE_LABEL : MONTHLY_PRICE_LABEL}
+                    </Text>
                   </LinearGradient>
                 </TouchableOpacity>
                 <Text style={styles.ctaCaption}>
-                  Then {plan === 'annual' ? ANNUAL_PRICE_LABEL : MONTHLY_PRICE_LABEL}. Cancel anytime in Settings.
+                  {plan === 'annual' ? `${ANNUAL_MONTHLY_BREAKDOWN} equivalent · ` : ''}Cancel anytime in Settings.
                 </Text>
               </>
             )}
