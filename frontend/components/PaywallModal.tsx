@@ -192,10 +192,10 @@ export function PaywallModal() {
     }
   }, [pendingTrigger]);
 
-  const handleStartTrial = async () => {
+  const handleStartTrial = async (ctaName: 'start_free_trial' | 'subscribe_now' = 'start_free_trial') => {
     // Launch-critical: which CTA was tapped (the single biggest funnel gap).
     Analytics.paywallCtaTapped(token, {
-      cta: 'start_free_trial',
+      cta: ctaName,
       trigger_source: pendingTrigger ?? 'unknown',
       variant: isFoundingWindow ? 'founding' : 'standard',
     });
@@ -446,7 +446,7 @@ export function PaywallModal() {
 
                 <TouchableOpacity
                   style={styles.trialBtn}
-                  onPress={handleStartTrial}
+                  onPress={() => handleStartTrial()}
                   disabled={foundingBusy}
                   activeOpacity={0.8}
                   testID="paywall-start-trial"
@@ -484,11 +484,12 @@ export function PaywallModal() {
 
             {!isFoundingOffer && (
               <>
+                {/* Primary — clean subscribe, price lives in the plan picker above */}
                 <TouchableOpacity
                   style={styles.cta}
-                  onPress={handleStartTrial}
-                  testID="paywall-start-trial"
-                  data-testid="paywall-start-trial"
+                  onPress={() => handleStartTrial('subscribe_now')}
+                  testID="paywall-subscribe-now"
+                  data-testid="paywall-subscribe-now"
                 >
                   <LinearGradient
                     colors={[...BRAND_GRADIENT]}
@@ -496,11 +497,27 @@ export function PaywallModal() {
                     end={{ x: 1, y: 0 }}
                     style={styles.ctaGradient}
                   >
-                    <Text style={styles.ctaLabel}>
-                      Start 7 days free — then {plan === 'annual' ? ANNUAL_PRICE_LABEL : MONTHLY_PRICE_LABEL}
-                    </Text>
+                    <Text style={styles.ctaLabel}>Subscribe Now</Text>
                   </LinearGradient>
                 </TouchableOpacity>
+
+                <View style={styles.orDivider}>
+                  <Text style={styles.orText}>or</Text>
+                </View>
+
+                {/* Secondary — trial path, post-trial price disclosed inline */}
+                <TouchableOpacity
+                  style={styles.trialBtn}
+                  onPress={() => handleStartTrial('start_free_trial')}
+                  activeOpacity={0.8}
+                  testID="paywall-start-trial"
+                  data-testid="paywall-start-trial"
+                >
+                  <Text style={styles.trialBtnLabel}>
+                    Start 7 days free — then {plan === 'annual' ? ANNUAL_PRICE_LABEL : MONTHLY_PRICE_LABEL}
+                  </Text>
+                </TouchableOpacity>
+
                 <Text style={styles.ctaCaption}>
                   {plan === 'annual' ? `${ANNUAL_MONTHLY_BREAKDOWN} equivalent · ` : ''}Cancel anytime in Settings.
                 </Text>
