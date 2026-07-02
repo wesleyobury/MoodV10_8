@@ -159,7 +159,6 @@ export default function LazyTrainingTypeScreen() {
   };
 
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
-    setShowIntensityModal(false);
     
     if (!selectedOption) return;
     

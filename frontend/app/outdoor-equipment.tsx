@@ -197,7 +197,6 @@ export default function OutdoorEquipmentScreen() {
 
   // Handle intensity selection and generate workout
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
-    setShowIntensityModal(false);
 
     // Recent-exercise memory (last 2 generations) → fresh workouts surface first.
     let recentGens: string[][] = [];

@@ -27,7 +27,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import { router } from 'expo-router';
+import { router, useSegments } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../contexts/AuthContext';
@@ -67,6 +67,7 @@ async function postAcceptTerms(token: string): Promise<boolean> {
 
 export function LegalReacceptGate() {
   const { token, isGuest, isLoading: authLoading } = useAuth();
+  const segments = useSegments();
   const [visible, setVisible] = useState(false);
   const [currentVersion, setCurrentVersion] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -82,6 +83,11 @@ export function LegalReacceptGate() {
   useEffect(() => {
     if (authLoading) return;
     if (isGuest || !token) return;
+
+    const root = segments[0];
+    if (root === 'auth' || root === 'onboarding-funnel' || root === 'onboarding') {
+      return;
+    }
 
     let cancelled = false;
     const timer = setTimeout(() => {
@@ -108,7 +114,7 @@ export function LegalReacceptGate() {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [token, isGuest, authLoading]);
+  }, [token, isGuest, authLoading, segments]);
 
   const handleSnooze = useCallback(async () => {
     if (currentVersion) {

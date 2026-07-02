@@ -76,7 +76,7 @@ export default function Login() {
   const tapCountRef = useRef(0);
   const lastTapRef = useRef(0);
 
-  const { login, refreshAuth, continueAsGuest } = useAuth();
+  const { login, refreshAuth, continueAsGuest, completeSocialAuth } = useAuth();
   
   // Handle hidden diagnostics trigger
   const handleHeaderTap = () => {
@@ -201,11 +201,8 @@ export default function Login() {
       await secureStorage.set('auth_token_stored_at', _oauthNow);
       await secureStorage.set('auth_token_last_validated_at', _oauthNow);
       
-      // Refresh auth context to load the new user
-      await refreshAuth();
-      
-      // Navigate to main app
-      router.replace('/(tabs)');
+      const nextRoute = await completeSocialAuth();
+      router.replace(nextRoute);
     } catch (error: any) {
       console.error('OAuth error:', error);
       Alert.alert('Authentication Failed', error.message || 'Please try again');
@@ -215,6 +212,12 @@ export default function Login() {
   };
 
   const handleGoogleLogin = async () => {
+    const privacyAccepted = await AsyncStorage.getItem(PRIVACY_ACCEPTED_KEY);
+    if (privacyAccepted !== 'true') {
+      setShowPrivacyModal(true);
+      return;
+    }
+
     try {
       setIsLoading(true);
       
@@ -280,6 +283,12 @@ export default function Login() {
   };
 
   const handleAppleLogin = async () => {
+    const privacyAccepted = await AsyncStorage.getItem(PRIVACY_ACCEPTED_KEY);
+    if (privacyAccepted !== 'true') {
+      setShowPrivacyModal(true);
+      return;
+    }
+
     try {
       setIsLoading(true);
       console.log('Starting Apple Sign-In...');
@@ -333,11 +342,8 @@ export default function Login() {
       await secureStorage.set('auth_token_stored_at', _appleNow);
       await secureStorage.set('auth_token_last_validated_at', _appleNow);
 
-      // Refresh auth context to load the new user
-      await refreshAuth();
-
-      // Navigate to main app
-      router.replace('/(tabs)');
+      const nextRoute = await completeSocialAuth();
+      router.replace(nextRoute);
     } catch (error: any) {
       if (error.code === 'ERR_REQUEST_CANCELED') {
         console.log('User cancelled Apple Sign-In');

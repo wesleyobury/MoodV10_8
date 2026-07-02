@@ -179,7 +179,6 @@ export default function WorkoutTypeScreen() {
   };
 
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
-    setShowIntensityModal(false);
 
     // Recent-exercise memory (last 2 generations) so re-rolls feel fresh.
     let recentExerciseGens: string[][] = [];

@@ -40,8 +40,8 @@ import {
   useOnboardingFunnel,
 } from '../../contexts/OnboardingFunnelContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { useSubscription } from '../../contexts/SubscriptionContext';
 import { Analytics } from '../../utils/analytics';
-import { useTrialPurchase } from '../../hooks/useTrialPurchase';
 import { useFoundingPurchase } from '../../hooks/useFoundingPurchase';
 import { foundingDaysRemaining } from '../../utils/founding';
 import { isStoreKitAvailable, restorePurchases } from '../../modules/mood-storekit/src';
@@ -109,10 +109,11 @@ export default function RevealPayoff() {
   const insets = useSafeAreaInsets();
   const { answers } = useOnboardingFunnel();
   const { user, token, entitlement, refreshEntitlement } = useAuth();
-  const { startTrial } = useTrialPurchase();
+  const { openPaywall, pendingTrigger, hasActiveAccess } = useSubscription();
   const { claimFounding } = useFoundingPurchase();
-  const [busy, setBusy] = useState<null | 'trial' | 'founding'>(null);
+  const [busy, setBusy] = useState<null | 'founding'>(null);
   const completedRef = useRef(false);
+  const paywallOpenedRef = useRef(false);
   const { height: windowHeight } = useWindowDimensions();
   const screenH = windowHeight;
   const heroHeight = Math.max(screenH * HERO_HEIGHT_RATIO, HERO_MIN_HEIGHT);
@@ -160,15 +161,20 @@ export default function RevealPayoff() {
 
   const goWearables = () => router.replace(WEARABLES_ROUTE);
 
-  // Direct StoreKit MONTHLY trial (NOT the PaywallModal).
-  const handleStartTrial = async () => {
-    if (busy) return;
-    Analytics.revealCtaTapped(token, { cta: 'start_free_trial' });
+  // After Soft Paywall #1 closes with an active subscription, continue the funnel.
+  useEffect(() => {
+    if (!paywallOpenedRef.current || pendingTrigger) return;
+    if (!hasActiveAccess) return;
     fireCompleted();
-    setBusy('trial');
-    const result = await startTrial('post_onboarding_soft');
-    setBusy(null);
-    if (result === 'success') goWearables();
+    goWearables();
+  }, [pendingTrigger, hasActiveAccess]);
+
+  // Soft Paywall #1 — same styled PaywallModal as Stage 2/3 (monthly + annual).
+  const handleOpenPaywall = (cta: 'subscribe' | 'start_free_trial') => {
+    if (busy) return;
+    Analytics.revealCtaTapped(token, { cta });
+    paywallOpenedRef.current = true;
+    openPaywall('post_onboarding_soft');
   };
 
   const handleRestore = async () => {
@@ -204,8 +210,10 @@ export default function RevealPayoff() {
   };
 
   // === The ONLY two per-variant differences ===
-  const onPrimary = isFoundingEligible ? handleClaimFounding : handleStartTrial;
-  const primaryBusy = isFoundingEligible ? busy === 'founding' : busy === 'trial';
+  const onPrimary = isFoundingEligible
+    ? handleClaimFounding
+    : () => handleOpenPaywall('subscribe');
+  const primaryBusy = isFoundingEligible ? busy === 'founding' : false;
   const primaryLabel = isFoundingEligible ? 'Claim Founding Price — $39/year' : 'Subscribe Now';
   const primaryTestID = isFoundingEligible ? 'reveal-founding-cta' : 'reveal-subscribe-cta';
 
@@ -310,7 +318,7 @@ export default function RevealPayoff() {
           {/* 10 Start free trial — SHARED */}
           <TouchableOpacity
             style={styles.trialBtn}
-            onPress={handleStartTrial}
+            onPress={() => handleOpenPaywall('start_free_trial')}
             disabled={!!busy}
             activeOpacity={0.8}
             testID="reveal-start-cta"

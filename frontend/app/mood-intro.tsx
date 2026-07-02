@@ -8,7 +8,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, BackHandler, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGradient';
@@ -71,6 +71,13 @@ export default function MoodIntro() {
     }
   }, [moodId, token]);
 
+  // Forward-only during first-session handoff — login/register stay in the
+  // stack below; hardware back must not walk into auth screens.
+  useEffect(() => {
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => true);
+    return () => sub.remove();
+  }, []);
+
   const handleContinue = async () => {
     Analytics.moodIntroCtaTapped(token, { mood: moodId ?? 'unknown' });
     if (user?.id) await clearWorkoutHandoffPending(user.id);
@@ -86,7 +93,9 @@ export default function MoodIntro() {
     }
     const route = routeForMood(resolvedMoodId, moodTitleParam);
     if (route) {
-      router.replace({ pathname: route.pathname as any, params: route.params });
+      // Push (not replace) so back from the first workout screen returns here
+      // instead of unwinding to login/register in the stack.
+      router.push({ pathname: route.pathname as any, params: route.params });
     } else {
       router.replace('/(tabs)');
     }

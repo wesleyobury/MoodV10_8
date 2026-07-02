@@ -9,6 +9,7 @@ import { apiFetch, AuthTokenResponse } from '../utils/api';
 import { secureStorage, AUTH_TOKEN_KEY, AUTH_REFRESH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY, AUTH_TOKEN_LAST_VALIDATED_KEY } from '../utils/secureStorage';
 import { DEV_MOCKS_ENABLED, getDevMockEntitlement } from '../utils/devMocks';
 import { refreshSubscriptionFromServer } from '../hooks/subscription/subscriptionState';
+import { readHasCompletedFunnel } from './OnboardingFunnelContext';
 
 // Terms version must match backend CURRENT_TERMS_VERSION
 // Update this when terms change to force re-acceptance for all users
@@ -71,7 +72,11 @@ interface AuthContextType {
   exitGuestMode: () => void;
   acceptTerms: () => Promise<void>;
   promptTermsAcceptance: () => void;
+  /** Google/Apple sign-in — stamp login-screen consent, hydrate user, route target. */
+  completeSocialAuth: () => Promise<'/onboarding-funnel/step-1-mood' | '/(tabs)'>;
 }
+
+const LOGIN_PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
 
 // MOOD V2 Phase 1 — server-authoritative entitlement. The client READS this;
 // the backend ENFORCES it. SubscriptionContext derives hasActiveAccess from it.
@@ -270,7 +275,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const fetchCurrentUser = async (authToken: string) => {
+  const fetchCurrentUser = async (authToken: string): Promise<User | null> => {
     try {
       const response = await fetch(`${API_URL}/api/users/me`, {
         headers: {
@@ -295,6 +300,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           console.log('  Current version:', CURRENT_TERMS_VERSION);
           setShowTermsModal(true);
         }
+        return userData;
       } else if (response.status === 401 || response.status === 403) {
         // Backend explicitly says the token is invalid → log out
         console.warn(`🔐 Auth token rejected (${response.status}), logging out`);
@@ -310,6 +316,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // Only the explicit logout() function should clear auth
       console.log('📱 Network error fetching user, keeping session alive');
     }
+    return null;
   };
 
   const login = async (username: string, password: string) => {
@@ -563,6 +570,77 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  /**
+   * Finish Google/Apple sign-in the same way as email registration:
+   * stamp server-side terms from the login-screen consent, skip the second
+   * EULA modal, and send new users into the onboarding funnel.
+   */
+  const completeSocialAuth = useCallback(async (): Promise<
+    '/onboarding-funnel/step-1-mood' | '/(tabs)'
+  > => {
+    const storedToken = await secureStorage.get(AUTH_TOKEN_KEY);
+    if (!storedToken) {
+      throw new Error('No session token after social sign-in');
+    }
+
+    setToken(storedToken);
+    await resetNotificationSession();
+
+    const wasGuest = await AsyncStorage.getItem('is_guest');
+    if (wasGuest === 'true') {
+      await AsyncStorage.removeItem('is_guest');
+      setIsGuest(false);
+      try {
+        const mergedCount = await aliasGuestToUser(storedToken);
+        console.log(`✅ Merged ${mergedCount} guest events to user account`);
+      } catch {
+        // non-fatal
+      }
+    }
+
+    // Login-screen Terms & Privacy modal is the single consent surface for
+    // social auth — mirror register.tsx by stamping accept-terms server-side.
+    try {
+      const privacyAccepted = await AsyncStorage.getItem(LOGIN_PRIVACY_ACCEPTED_KEY);
+      if (privacyAccepted === 'true') {
+        const res = await fetch(`${API_URL}/api/users/me/accept-terms`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${storedToken}` },
+        });
+        if (res.ok) {
+          setShowTermsModal(false);
+        }
+        try {
+          const { setMedicalDisclaimerAcknowledged } = await import('../utils/healthStorage');
+          await setMedicalDisclaimerAcknowledged();
+        } catch {
+          // non-fatal
+        }
+      }
+    } catch (e) {
+      console.warn('Social sign-in terms stamp failed', e);
+    }
+
+    const userData = await fetchCurrentUser(storedToken);
+    if (
+      userData?.terms_accepted_at &&
+      userData.terms_accepted_version === CURRENT_TERMS_VERSION
+    ) {
+      setShowTermsModal(false);
+    }
+
+    const userId = userData?.id;
+    if (userId && !(await readHasCompletedFunnel(userId))) {
+      await AsyncStorage.removeItem('@mood_funnel_answers_v1');
+      await AsyncStorage.removeItem('@mood_subscription_state_v1');
+      await AsyncStorage.removeItem('@mood_post_first_workout_paywall_shown_v1');
+      await AsyncStorage.removeItem('@mood_pulse_sync_played_v1');
+      return '/onboarding-funnel/step-1-mood';
+    }
+
+    return '/(tabs)';
+  }, []);
+
   const refreshUser = useCallback(async () => {
     const storedToken = token || (await secureStorage.get(AUTH_TOKEN_KEY));
     if (storedToken) {
@@ -643,6 +721,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     exitGuestMode,
     acceptTerms,
     promptTermsAcceptance,
+    completeSocialAuth,
   };
 
   return (
