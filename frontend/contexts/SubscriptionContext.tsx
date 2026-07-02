@@ -84,7 +84,10 @@ interface SubscriptionContextValue extends SubscriptionState {
   /** Mark the user's free live session as consumed. Idempotent. */
   recordStartFreeWorkout: () => void;
   /** Open the paywall modal with an optional trigger tag. */
-  openPaywall: (trigger?: PaywallTrigger) => void;
+  openPaywall: (trigger?: PaywallTrigger, opts?: { preferredCta?: 'subscribe_now' | 'start_free_trial' }) => void;
+  /** Which single CTA the paywall should show, when the opener specified one
+   *  (e.g. reveal screen's Subscribe Now vs trial button). Null = show both. */
+  preferredPaywallCta: 'subscribe_now' | 'start_free_trial' | null;
   /**
    * Spec §3 Stage 2 — fire Soft Paywall #2 once across both trigger
    * sources (achievement-close + post-share). Returns true if shown,
@@ -214,6 +217,7 @@ const Ctx = createContext<SubscriptionContextValue | undefined>(undefined);
 export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<SubscriptionState>(DEFAULT_STATE);
   const [pendingTrigger, setPendingTrigger] = useState<PaywallTrigger | null>(null);
+  const [preferredPaywallCta, setPreferredPaywallCta] = useState<'subscribe_now' | 'start_free_trial' | null>(null);
   const [devStatusOverride, setDevStatusOverride] = useState<SubscriptionStatus | null>(null);
   const prevUserIdRef = useRef<string | null>(null);
 
@@ -307,8 +311,9 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     });
   }, [persistState]);
 
-  const openPaywall = useCallback((trigger?: PaywallTrigger) => {
+  const openPaywall = useCallback((trigger?: PaywallTrigger, opts?: { preferredCta?: 'subscribe_now' | 'start_free_trial' }) => {
     const resolved = trigger ?? 'unknown';
+    setPreferredPaywallCta(opts?.preferredCta ?? null);
     setPendingTrigger(resolved);
     // Persist as the active conversion trigger so downstream `trial_started`
     // and `subscription_purchased` events can attribute correctly.
@@ -331,6 +336,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
 
   const dismissPaywall = useCallback(() => {
     setPendingTrigger(null);
+    setPreferredPaywallCta(null);
   }, []);
 
   /**
@@ -393,6 +399,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       recordGeneration,
       recordStartFreeWorkout,
       openPaywall,
+      preferredPaywallCta,
       tryFirePostFirstWorkoutPaywall,
       pendingTrigger,
       dismissPaywall,
@@ -409,6 +416,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       recordGeneration,
       recordStartFreeWorkout,
       openPaywall,
+      preferredPaywallCta,
       tryFirePostFirstWorkoutPaywall,
       pendingTrigger,
       dismissPaywall,

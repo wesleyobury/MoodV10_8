@@ -180,7 +180,11 @@ export default function RevealPayoff() {
     if (busy) return;
     Analytics.revealCtaTapped(token, { cta });
     paywallOpenedRef.current = true;
-    openPaywall('post_onboarding_soft');
+    // The modal mirrors the button the user just tapped — one CTA, no
+    // redundant subscribe/trial pair.
+    openPaywall('post_onboarding_soft', {
+      preferredCta: cta === 'subscribe' ? 'subscribe_now' : 'start_free_trial',
+    });
   };
 
   const handleRestore = async () => {
