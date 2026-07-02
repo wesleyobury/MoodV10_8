@@ -82,6 +82,48 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
+// ---------------------------------------------------------------------------
+// Variety expansion (for the simpler moods with no flavor dropdown: Lazy,
+// Calisthenics, Outdoor). Runs a cart generator many times and keeps the
+// DISTINCT results, so a single Build-For-Me offers far more than 3 carts to
+// skip through — and because selection is random over the whole pool, every
+// exercise has a real chance to appear. `recentNames` (persisted across the
+// last couple of generations) is used to sort fresh workouts to the front, so
+// skipping keeps surfacing new material and, over a few generations, the whole
+// library gets seen.
+// ---------------------------------------------------------------------------
+export function expandCartVariety(
+  gen: () => GeneratedCart[],
+  targetCount: number,
+  recentNames: string[] = [],
+): GeneratedCart[] {
+  const seen = new Set<string>();
+  const out: GeneratedCart[] = [];
+  let attempts = 0;
+  const cap = targetCount * 10;
+  while (out.length < targetCount && attempts < cap) {
+    attempts++;
+    for (const cart of gen()) {
+      const s = cart.workouts.map(w => w.name).slice().sort().join('|');
+      if (seen.has(s)) continue;   // skip exact-duplicate exercise sets
+      seen.add(s);
+      out.push(cart);
+      if (out.length >= targetCount) break;
+    }
+  }
+  // Freshness first: carts with the fewest recently-seen exercises lead, so the
+  // opening options (and early skips) feel new.
+  const recent = new Set(recentNames);
+  if (recent.size > 0) {
+    out.sort((a, b) => {
+      const ra = a.workouts.filter(w => recent.has(w.name)).length;
+      const rb = b.workouts.filter(w => recent.has(w.name)).length;
+      return ra - rb;
+    });
+  }
+  return out;
+}
+
 // Generate unique ID for workout item
 function generateWorkoutId(workout: Workout, equipment: string, intensity: string): string {
   return `generated-${workout.name}-${equipment}-${intensity}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -613,6 +655,7 @@ function pickSweatBlock(
   state: SweatBuildState,
   recentNames: Set<string>,
   usedXCart: Set<string>,
+  sessionUsed: Set<string>,
 ): TaggedCandidate | null {
   const cands = pool.filter(c =>
     c.workout.modality === slot.modality && !state.usedNames.has(c.workout.name),
@@ -644,8 +687,9 @@ function pickSweatBlock(
     if (slot.phase === 'main'     && c.workout.role === 'main_block') s += 0.6;
     if (slot.phase === 'finisher' && c.workout.role === 'finisher')   s += 1.5;
     s += state.usedEquip.has(c.equipment) ? -2.0 : 1.0;   // within-cart equipment variety
-    if (usedXCart.has(c.equipment)) s -= 0.5;             // soft cross-cart variety
-    if (recentNames.has(c.workout.name)) s -= 3.0;        // recent-exercise memory
+    if (usedXCart.has(c.equipment)) s -= 0.5;             // soft cross-cart equipment variety
+    if (sessionUsed.has(c.workout.name)) s -= 1.8;        // used by another cart this session
+    if (recentNames.has(c.workout.name)) s -= 3.0;        // recent-exercise memory (prior sessions)
     return { c, score: s };
   });
 
@@ -680,14 +724,80 @@ export interface SweatCart extends GeneratedCart {
   cartSubtitle: string;
 }
 
+// Build ONE session cart for a flavor (or null if nothing fits).
+function buildSweatCart(
+  flavor: SweatFlavorDef,
+  intensity: IntensityLevel,
+  moodCard: string,
+  limits: SweatLimits,
+  recentNames: Set<string>,
+  usedXCart: Set<string>,
+  sessionUsed: Set<string>,
+): SweatCart | null {
+  const pool = sweatPoolByKind(flavor.poolKind, intensity);
+  const plan = flavor.plan[intensity];
+  const state: SweatBuildState = {
+    usedNames: new Set(), usedEquip: new Set(),
+    minutes: 0, cost: 0, peaks: 0, count: 0,
+  };
+  const picks: TaggedCandidate[] = [];
+
+  // Structural variety: some variations run one block shorter, so the number of
+  // exercises (and the format) changes between variations of the same flavor.
+  const loB = Math.max(limits.minBlocks, plan.length - 1);
+  const hiB = Math.min(limits.maxBlocks, plan.length);
+  const targetBlocks = randInt(Math.min(loB, hiB), hiB);
+
+  for (const slot of plan) {
+    if (state.count >= targetBlocks) break;
+    const pick = pickSweatBlock(pool, slot, limits, state, recentNames, usedXCart, sessionUsed);
+    if (!pick) continue;
+    picks.push(pick);
+    state.usedNames.add(pick.workout.name);
+    state.usedEquip.add(pick.equipment);
+    state.minutes += sweatDur(pick);
+    state.cost += sweatCost(pick);
+    if (sweatCost(pick) >= limits.peakCost) state.peaks++;
+    state.count++;
+  }
+  if (picks.length === 0) return null;
+
+  const ordered = coachOrderSweat(picks, flavor);
+
+  const items: WorkoutItem[] = ordered.map((p, i) => {
+    const item = workoutToItem(p.workout, p.equipment, intensity, moodCard, flavor.label);
+    // Phase role for the cart UI (Warm-Up / Main / Finisher labelling).
+    item.role = i === 0 ? 'primer'
+      : (i === ordered.length - 1 && ordered.length > 2 ? 'finisher' : 'main_block');
+    return item;
+  });
+  const totalDuration = items.reduce((sum, it) => sum + parseDuration(it.duration), 0);
+
+  return {
+    id: `sweat2-${flavor.id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    workouts: items,
+    totalDuration,
+    intensity,
+    cartType: flavor.id,
+    flavor: flavor.label,
+    cartBadge: flavor.badge,
+    cartSubtitle: flavor.subtitle,
+  };
+}
+
 export function generateSweatCartsV2(
   intensity: IntensityLevel,
   moodCard: string = 'Sweat / burn fat',
   recentExerciseNames: string[] = [],
+  // Distinct variations to build PER flavor. Skipping cycles through all of
+  // them (each flavor has plenty of exercise combinations), so a single session
+  // offers many more than one cart per flavor to swipe through.
+  variationsPerFlavor: number = 3,
 ): SweatCart[] {
   const limits = SWEAT_LIMITS[intensity];
   const recentNames = new Set(recentExerciseNames);
-  const usedXCart = new Set<string>();
+  const usedXCart = new Set<string>();   // soft cross-cart equipment variety
+  const sessionUsed = new Set<string>(); // names already used this session (soft)
 
   // Feasible flavors: pool exists and (mixed flavors) both modalities present.
   const feasible = SWEAT_FLAVORS.filter(f => {
@@ -700,60 +810,44 @@ export function generateSweatCartsV2(
   });
   if (feasible.length === 0) return [];
 
-  // Shuffle so the opening cart + order change each generation.
-  const flavors = [...feasible];
-  for (let i = flavors.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [flavors[i], flavors[j]] = [flavors[j], flavors[i]];
-  }
+  const sig = (c: SweatCart) => c.workouts.map(w => w.name).sort().join('|');
 
-  const carts: SweatCart[] = [];
-
-  for (const flavor of flavors) {
+  // Build N distinct variations per flavor.
+  const byFlavor: SweatCart[][] = feasible.map(flavor => {
+    const variants: SweatCart[] = [];
+    const seen = new Set<string>();
     const pool = sweatPoolByKind(flavor.poolKind, intensity);
-    const plan = flavor.plan[intensity];
-    const state: SweatBuildState = {
-      usedNames: new Set(), usedEquip: new Set(),
-      minutes: 0, cost: 0, peaks: 0, count: 0,
-    };
-    const picks: TaggedCandidate[] = [];
-
-    for (const slot of plan) {
-      if (state.count >= limits.maxBlocks) break;
-      const pick = pickSweatBlock(pool, slot, limits, state, recentNames, usedXCart);
-      if (!pick) continue;
-      picks.push(pick);
-      state.usedNames.add(pick.workout.name);
-      state.usedEquip.add(pick.equipment);
-      state.minutes += sweatDur(pick);
-      state.cost += sweatCost(pick);
-      if (sweatCost(pick) >= limits.peakCost) state.peaks++;
-      state.count++;
+    // Cap variations by how much the pool can realistically differentiate.
+    const target = Math.min(variationsPerFlavor, Math.max(1, Math.floor(pool.length / 2)));
+    let attempts = 0;
+    while (variants.length < target && attempts < target * 4) {
+      attempts++;
+      const cart = buildSweatCart(flavor, intensity, moodCard, limits, recentNames, usedXCart, sessionUsed);
+      if (!cart) break;
+      const s = sig(cart);
+      if (seen.has(s)) continue;          // skip exact-duplicate exercise sets
+      seen.add(s);
+      variants.push(cart);
+      cart.workouts.forEach(w => sessionUsed.add(w.name));
+      cart.workouts.forEach(w => usedXCart.add(w.equipment));
     }
-    if (picks.length === 0) continue;
+    return variants;
+  });
 
-    const ordered = coachOrderSweat(picks, flavor);
-    ordered.forEach(p => usedXCart.add(p.equipment));
-
-    const items: WorkoutItem[] = ordered.map((p, i) => {
-      const item = workoutToItem(p.workout, p.equipment, intensity, moodCard, flavor.label);
-      // Phase role for the cart UI (Warm-Up / Main / Finisher labelling).
-      item.role = i === 0 ? 'primer'
-        : (i === ordered.length - 1 && ordered.length > 2 ? 'finisher' : 'main_block');
-      return item;
-    });
-    const totalDuration = items.reduce((sum, it) => sum + parseDuration(it.duration), 0);
-
-    carts.push({
-      id: `sweat2-${flavor.id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-      workouts: items,
-      totalDuration,
-      intensity,
-      cartType: flavor.id,
-      flavor: flavor.label,
-      cartBadge: flavor.badge,
-      cartSubtitle: flavor.subtitle,
-    });
+  // Interleave variations across flavors (round-robin) so skipping alternates
+  // flavor rather than showing all of one flavor back-to-back, then this whole
+  // order is shuffled per flavor-group start for freshness.
+  const order = [...byFlavor];
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  const carts: SweatCart[] = [];
+  const maxLen = Math.max(0, ...order.map(v => v.length));
+  for (let round = 0; round < maxLen; round++) {
+    for (const group of order) {
+      if (group[round]) carts.push(group[round]);
+    }
   }
 
   return carts;
@@ -778,15 +872,13 @@ export function generateCardioCarts(
 }
 
 // ============================================================================
-// I'M FEELING EXPLOSIVE — Build For Me v3
-// 3 carts, each tagged with a flavor: plyo / loaded / dynamic.
-// Beginner = 2 slots (1 BW + 1 LW); Int/Adv = 3 slots (1 BW + 1 LW + 1 flex).
-// Hard rules:
-//   • each cart contains exactly 1 BW and 1 LW workout (slots 1-2 mandatory)
-//   • no equipment value appears in more than one cart in a single generation
-//   • each cart's workouts share the same cart_flavor
-//   • sequencing: lowest intensity_cost first; for 3-slot carts → low, high, mid
-// Returned in canonical display order: plyo → loaded → dynamic.
+// I WANT TO BUILD EXPLOSION — Build For Me v4 (mirrors the Sweat chip format)
+// ----------------------------------------------------------------------------
+// Single hero flavor chip + dropdown, several coach-designed session flavors,
+// multiple variations per flavor (Skip rotates through them, and can lock to a
+// single flavor), recent-exercise memory, and BODY WEIGHT vs WEIGHT BASED
+// section dividers. Explosive work is fatiguing, so the coach guardrails keep
+// volume low: few high-quality efforts and a short total session time.
 // ============================================================================
 
 interface ExplosiveCandidate {
@@ -796,8 +888,6 @@ interface ExplosiveCandidate {
   flavor: CartFlavor;
   cost: number;
 }
-
-const EXPLOSIVE_FLAVORS: CartFlavor[] = ['plyo', 'loaded', 'dynamic'];
 
 function buildExplosivePool(
   database: EquipmentWorkouts[],
@@ -820,110 +910,254 @@ function buildExplosivePool(
   return out;
 }
 
-function pickFromFlavoredPool(
-  pool: ExplosiveCandidate[],
-  flavor: CartFlavor,
-  excludeNames: Set<string>,
-  excludeEquipment: Set<string>,
-  pathFilter?: ExplosivePath,
-): ExplosiveCandidate | null {
-  const candidates = pool.filter(c =>
-    c.flavor === flavor &&
-    !excludeNames.has(c.workout.name) &&
-    !excludeEquipment.has(c.equipment) &&
-    (pathFilter ? c.path === pathFilter : true)
-  );
-  if (candidates.length === 0) return null;
-  return candidates[Math.floor(Math.random() * candidates.length)];
+// --- v4 flavor library + coach engine ---------------------------------------
+type ExpPhase = 'activation' | 'power' | 'contrast';
+type ExpPathReq = 'bodyweight' | 'weights' | 'any';
+interface ExpSlot { path: ExpPathReq; phase: ExpPhase }
+const bwS = (phase: ExpPhase): ExpSlot => ({ path: 'bodyweight', phase });
+const lwS = (phase: ExpPhase): ExpSlot => ({ path: 'weights', phase });
+
+interface ExplosiveFlavorDef {
+  id: string;
+  label: string;
+  badge: string;
+  subtitle: string;
+  flavorTag?: CartFlavor;        // restrict pool to this cart_flavor
+  pathLock?: ExplosivePath;      // restrict pool to this path
+  plan: Record<IntensityLevel, ExpSlot[]>;
 }
 
-// Slot labels for each cart slot, in fixed slot order: BW → LW → Flex.
-const EXPLOSIVE_SLOT_LABELS = ['Activation', 'Power', 'Bonus'] as const;
+const EXPLOSIVE_FLAVOR_LIB: ExplosiveFlavorDef[] = [
+  {
+    id: 'plyometric', label: 'Plyometric', badge: 'Jump & Bound',
+    subtitle: 'Reactive, spring-loaded power', flavorTag: 'plyo',
+    plan: {
+      beginner:     [bwS('activation'), lwS('power')],
+      intermediate: [bwS('activation'), lwS('power'), bwS('contrast')],
+      advanced:     [bwS('activation'), lwS('power'), bwS('contrast')],
+    },
+  },
+  {
+    id: 'loaded_power', label: 'Loaded Power', badge: 'Weighted',
+    subtitle: 'Explosive strength under load', flavorTag: 'loaded',
+    plan: {
+      beginner:     [lwS('activation'), lwS('power')],
+      intermediate: [lwS('activation'), lwS('power'), bwS('contrast')],
+      advanced:     [lwS('activation'), lwS('power'), bwS('contrast')],
+    },
+  },
+  {
+    id: 'dynamic', label: 'Dynamic', badge: 'Athletic',
+    subtitle: 'Ballistic, full-body speed', flavorTag: 'dynamic',
+    plan: {
+      beginner:     [bwS('activation'), bwS('power')],
+      intermediate: [bwS('activation'), bwS('power'), lwS('contrast')],
+      advanced:     [bwS('activation'), bwS('power'), lwS('contrast')],
+    },
+  },
+  {
+    id: 'total_power', label: 'Total Power', badge: 'Mixed',
+    subtitle: 'Bodyweight + loaded contrast',
+    plan: {
+      beginner:     [bwS('activation'), lwS('power')],
+      intermediate: [bwS('activation'), lwS('power'), bwS('contrast')],
+      advanced:     [bwS('activation'), lwS('power'), bwS('contrast'), lwS('contrast')],
+    },
+  },
+  {
+    id: 'bodyweight_blast', label: 'Bodyweight Blast', badge: 'Bodyweight',
+    subtitle: 'Bodyweight-driven explosive work', pathLock: 'bodyweight',
+    plan: {
+      beginner:     [bwS('activation'), bwS('power')],
+      intermediate: [bwS('activation'), bwS('power'), bwS('contrast')],
+      advanced:     [bwS('activation'), bwS('power'), bwS('contrast')],
+    },
+  },
+];
 
-export function generateExplosivenessCarts(
-  intensity: IntensityLevel,
-  moodCard: string = 'I want to build explosion',
-  workoutType: string = 'Mixed Explosive',
-): GeneratedCart[] {
-  const bwPool = buildExplosivePool(bodyweightExplosivenessDatabase, intensity, 'bodyweight');
-  const lwPool = buildExplosivePool(explosivenessWeightsDatabase, intensity, 'weights');
-  const fullPool = [...bwPool, ...lwPool];
+// Explosive volume stays low — short pieces (~9–14 min) and few blocks.
+interface ExpLimits { maxMinutes: number; maxBlocks: number; minBlocks: number }
+const EXP_LIMITS: Record<IntensityLevel, ExpLimits> = {
+  beginner:     { maxMinutes: 26, maxBlocks: 2, minBlocks: 2 },
+  intermediate: { maxMinutes: 36, maxBlocks: 3, minBlocks: 2 },
+  advanced:     { maxMinutes: 46, maxBlocks: 4, minBlocks: 3 },
+};
 
-  const cartSize = intensity === 'beginner' ? 2 : 3;
+function explosivePoolForFlavor(f: ExplosiveFlavorDef, tier: IntensityLevel): ExplosiveCandidate[] {
+  const bw = buildExplosivePool(bodyweightExplosivenessDatabase, tier, 'bodyweight');
+  const lw = buildExplosivePool(explosivenessWeightsDatabase, tier, 'weights');
+  let pool = [...bw, ...lw];
+  if (f.pathLock) pool = pool.filter(c => c.path === f.pathLock);
+  if (f.flavorTag) pool = pool.filter(c => c.flavor === f.flavorTag);
+  return pool;
+}
 
-  // Process tightest flavor first. Tightness is the SMALLEST DISTINCT EQUIPMENT count
-  // across the BW and LW slots for that flavor — that's the slot most likely to be
-  // blocked by other flavors' picks.
-  const distinctEq = (pool: ExplosiveCandidate[], flavor: CartFlavor): number =>
-    new Set(pool.filter(c => c.flavor === flavor).map(c => c.equipment)).size;
+const expDur = (c: ExplosiveCandidate) => parseDuration(c.workout.duration);
 
-  const flavorTightness = EXPLOSIVE_FLAVORS.map(f => ({
-    flavor: f,
-    tightness: Math.min(distinctEq(bwPool, f), distinctEq(lwPool, f)),
-  }));
+interface ExpBuildState {
+  usedNames: Set<string>;
+  usedEquip: Set<string>;
+  minutes: number;
+  count: number;
+}
 
-  // Retry the whole generation a bounded number of times. Even with smart sort,
-  // shared-equipment conflicts (e.g. KB appearing in both loaded BW and dynamic LW)
-  // can require a do-over for a small fraction of seeds.
-  const MAX_ATTEMPTS = 25;
-  let cartsByFlavor = new Map<CartFlavor, ExplosiveCandidate[]>();
+function pickExplosiveBlock(
+  pool: ExplosiveCandidate[],
+  slot: ExpSlot,
+  limits: ExpLimits,
+  state: ExpBuildState,
+  recentNames: Set<string>,
+  usedXCart: Set<string>,
+  sessionUsed: Set<string>,
+): ExplosiveCandidate | null {
+  // Honor the slot's path; relax it only if we still need to hit the minimum.
+  let cands = pool.filter(c =>
+    !state.usedNames.has(c.workout.name) &&
+    (slot.path === 'any' || c.path === slot.path),
+  );
+  if (cands.length === 0 && state.count < limits.minBlocks) {
+    cands = pool.filter(c => !state.usedNames.has(c.workout.name));
+  }
+  if (cands.length === 0) return null;
 
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-    cartsByFlavor = new Map<CartFlavor, ExplosiveCandidate[]>();
-    const flavorsByDepth = [...flavorTightness].sort((a, b) => a.tightness - b.tightness).map(x => x.flavor);
-    const usedEquipment = new Set<string>();
-    const usedNames = new Set<string>();
-    let allFlavorsFilled = true;
-
-    for (const flavor of flavorsByDepth) {
-      const cart: ExplosiveCandidate[] = [];
-
-      const bwPick = pickFromFlavoredPool(bwPool, flavor, usedNames, usedEquipment);
-      if (!bwPick) { allFlavorsFilled = false; break; }
-      cart.push(bwPick);
-      usedEquipment.add(bwPick.equipment);
-      usedNames.add(bwPick.workout.name);
-
-      const lwPick = pickFromFlavoredPool(lwPool, flavor, usedNames, usedEquipment);
-      if (!lwPick) { allFlavorsFilled = false; break; }
-      cart.push(lwPick);
-      usedEquipment.add(lwPick.equipment);
-      usedNames.add(lwPick.workout.name);
-
-      if (cartSize === 3) {
-        const flexPick = pickFromFlavoredPool(fullPool, flavor, usedNames, usedEquipment);
-        if (flexPick) {
-          cart.push(flexPick);
-          usedEquipment.add(flexPick.equipment);
-          usedNames.add(flexPick.workout.name);
-        }
-        // Flex slot is best-effort; not having one isn't fatal but shouldn't really happen.
-      }
-
-      cartsByFlavor.set(flavor, cart);
-    }
-    if (allFlavorsFilled && cartsByFlavor.size === 3) break;
+  const belowMin = state.count < limits.minBlocks;
+  let fit = cands.filter(c => state.minutes + expDur(c) <= limits.maxMinutes);
+  if (fit.length === 0) {
+    if (!belowMin) return null;   // volume full — stop adding
+    fit = cands;
   }
 
-  // Reorder to canonical display: plyo → loaded → dynamic.
-  // Slot order within a cart is fixed: BW (Activation) → LW (Power) → flex (Bonus).
-  const carts: GeneratedCart[] = [];
-  EXPLOSIVE_FLAVORS.forEach((flavor, idx) => {
-    const cart = cartsByFlavor.get(flavor);
-    if (!cart || cart.length === 0) return;
-    const items: WorkoutItem[] = cart.map((c, slotIdx) => {
-      const item = workoutToItem(c.workout, c.equipment, intensity, moodCard, workoutType);
-      item.slot_label = EXPLOSIVE_SLOT_LABELS[slotIdx] || undefined;
-      return item;
-    });
-    const totalDuration = items.reduce((sum, it) => sum + parseDuration(it.duration), 0);
-    carts.push({
-      id: `cart-${idx + 1}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      workouts: items,
-      totalDuration,
-      intensity,
-    });
+  const scored = fit.map(c => {
+    let s = 1.0;
+    s += state.usedEquip.has(c.equipment) ? -2.0 : 1.2;  // vary equipment within cart
+    if (usedXCart.has(c.equipment)) s -= 0.5;            // soft cross-cart variety
+    if (sessionUsed.has(c.workout.name)) s -= 1.8;       // used by another cart this session
+    if (recentNames.has(c.workout.name)) s -= 3.0;       // recent-exercise memory
+    return { c, score: s };
   });
+  const maxS = Math.max(...scored.map(x => x.score));
+  const weights = scored.map(x => Math.exp((x.score - maxS) / 1.0));
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < scored.length; i++) { r -= weights[i]; if (r <= 0) return scored[i].c; }
+  return scored[scored.length - 1].c;
+}
+
+export interface ExplosiveCart extends GeneratedCart {
+  cartType: string;
+  flavor: string;
+  cartBadge: string;
+  cartSubtitle: string;
+}
+
+function buildExplosiveCart(
+  flavor: ExplosiveFlavorDef,
+  intensity: IntensityLevel,
+  moodCard: string,
+  limits: ExpLimits,
+  recentNames: Set<string>,
+  usedXCart: Set<string>,
+  sessionUsed: Set<string>,
+): ExplosiveCart | null {
+  const pool = explosivePoolForFlavor(flavor, intensity);
+  const plan = flavor.plan[intensity];
+  const state: ExpBuildState = { usedNames: new Set(), usedEquip: new Set(), minutes: 0, count: 0 };
+  const picks: ExplosiveCandidate[] = [];
+
+  // Structural variety: some variations run one block shorter.
+  const loB = Math.max(limits.minBlocks, plan.length - 1);
+  const hiB = Math.min(limits.maxBlocks, plan.length);
+  const targetBlocks = randInt(Math.min(loB, hiB), hiB);
+
+  for (const slot of plan) {
+    if (state.count >= targetBlocks) break;
+    const pick = pickExplosiveBlock(pool, slot, limits, state, recentNames, usedXCart, sessionUsed);
+    if (!pick) continue;
+    picks.push(pick);
+    state.usedNames.add(pick.workout.name);
+    state.usedEquip.add(pick.equipment);
+    state.minutes += expDur(pick);
+    state.count++;
+  }
+  if (picks.length === 0) return null;
+
+  const items: WorkoutItem[] = picks.map((p, i) => {
+    // Encode path into workoutType so the cart renders BODY WEIGHT / WEIGHT
+    // BASED section dividers (getCartSubPathLabel's Build Explosion branch).
+    const wt = p.path === 'bodyweight'
+      ? 'Build Explosion - Body Weight'
+      : 'Build Explosion - Weight Based';
+    const item = workoutToItem(p.workout, p.equipment, intensity, moodCard, wt);
+    item.slot_label = i === 0 ? 'Activation'
+      : (i === picks.length - 1 && picks.length > 1 ? 'Finisher' : 'Power');
+    return item;
+  });
+  const totalDuration = items.reduce((sum, it) => sum + parseDuration(it.duration), 0);
+
+  return {
+    id: `explosive-${flavor.id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    workouts: items,
+    totalDuration,
+    intensity,
+    cartType: flavor.id,
+    flavor: flavor.label,
+    cartBadge: flavor.badge,
+    cartSubtitle: flavor.subtitle,
+  };
+}
+
+export function generateExplosiveCartsV2(
+  intensity: IntensityLevel,
+  moodCard: string = 'I want to build explosion',
+  recentExerciseNames: string[] = [],
+  variationsPerFlavor: number = 3,
+): ExplosiveCart[] {
+  const limits = EXP_LIMITS[intensity];
+  const recentNames = new Set(recentExerciseNames);
+  const usedXCart = new Set<string>();
+  const sessionUsed = new Set<string>();
+
+  // Feasible flavors: pool exists and every path the plan requires is available.
+  const feasible = EXPLOSIVE_FLAVOR_LIB.filter(f => {
+    const pool = explosivePoolForFlavor(f, intensity);
+    if (pool.length === 0) return false;
+    const paths = new Set(f.plan[intensity].map(s => s.path).filter(p => p !== 'any'));
+    for (const p of paths) {
+      if (!pool.some(c => c.path === p)) return false;
+    }
+    return true;
+  });
+  if (feasible.length === 0) return [];
+
+  const sig = (c: ExplosiveCart) => c.workouts.map(w => w.name).slice().sort().join('|');
+
+  // Build N distinct variations per flavor.
+  const byFlavor: ExplosiveCart[][] = feasible.map(flavor => {
+    const variants: ExplosiveCart[] = [];
+    const seen = new Set<string>();
+    const pool = explosivePoolForFlavor(flavor, intensity);
+    const target = Math.min(variationsPerFlavor, Math.max(1, Math.floor(pool.length / 3)));
+    let attempts = 0;
+    while (variants.length < target && attempts < target * 4) {
+      attempts++;
+      const cart = buildExplosiveCart(flavor, intensity, moodCard, limits, recentNames, usedXCart, sessionUsed);
+      if (!cart) break;
+      const s = sig(cart);
+      if (seen.has(s)) continue;
+      seen.add(s);
+      variants.push(cart);
+      cart.workouts.forEach(w => sessionUsed.add(w.name));
+      cart.workouts.forEach(w => usedXCart.add(w.equipment));
+    }
+    return variants;
+  });
+
+  // Interleave variations across flavors so Skip alternates flavor in random mode.
+  const carts: ExplosiveCart[] = [];
+  const maxLen = Math.max(0, ...byFlavor.map(v => v.length));
+  for (let round = 0; round < maxLen; round++) {
+    for (const group of byFlavor) if (group[round]) carts.push(group[round]);
+  }
   return carts;
 }
 
@@ -1631,6 +1865,420 @@ export function generateOutdoorCarts(
   return carts;
 }
 
+// ============================================================================
+// FLAVORED SESSION FRAMEWORK — shared by the simpler moods (Calisthenics, Lazy,
+// Outdoor) so they get the same flavor-chip UX as Sweat/Explosion: a single
+// hero chip + dropdown, several coach-designed flavors, MULTIPLE variations per
+// flavor (Skip rotates through them, can lock to one), STRUCTURAL variety within
+// a flavor (block count / format changes between variations), recent-exercise
+// memory, and full pool reachability.
+// ============================================================================
+
+export interface FlavoredCart extends GeneratedCart {
+  cartType: string;
+  flavor: string;
+  cartBadge: string;
+  cartSubtitle: string;
+}
+
+// Unified candidate shape; tag fields are optional per path.
+interface FCand {
+  workout: Workout;
+  equipment: string;      // uniqueness key within a cart
+  display: string;        // equipment label shown on the item
+  focus?: MovementFocus;
+  region?: LiftWeightsBodyRegion;
+  sub?: string;
+  modality?: LazyModality;
+  sessionType?: SessionType;
+  absEligible?: boolean;
+  cost?: number;
+}
+
+function randInt(min: number, max: number): number {
+  return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+// Weighted (softmax) pick with within-cart equipment variety + session/recent memory.
+function flavSoftmax(
+  cands: FCand[],
+  usedNames: Set<string>,
+  usedEquip: Set<string>,
+  sessionUsed: Set<string>,
+  recent: Set<string>,
+): FCand | null {
+  const pool = cands.filter(c => !usedNames.has(c.workout.name));
+  if (pool.length === 0) return null;
+  const scored = pool.map(c => {
+    let s = 1.0;
+    s += usedEquip.has(c.equipment) ? -2.0 : 1.0;   // vary equipment within cart
+    if (sessionUsed.has(c.workout.name)) s -= 1.8;  // used by another cart this session
+    if (recent.has(c.workout.name)) s -= 3.0;       // recent-exercise memory
+    return { c, score: s };
+  });
+  const mx = Math.max(...scored.map(x => x.score));
+  const w = scored.map(x => Math.exp(x.score - mx));
+  const tot = w.reduce((a, b) => a + b, 0);
+  let r = Math.random() * tot;
+  for (let i = 0; i < w.length; i++) { r -= w[i]; if (r <= 0) return scored[i].c; }
+  return scored[scored.length - 1].c;
+}
+
+function picksToFlavoredCart(
+  picks: FCand[],
+  flavor: { id: string; label: string; badge: string; subtitle: string },
+  workoutType: string,
+  intensity: IntensityLevel,
+  moodCard: string,
+  roleMode: 'phase' | 'main_fin',
+): FlavoredCart {
+  const items: WorkoutItem[] = picks.map((p, i) => {
+    const item = workoutToItem(p.workout, p.display, intensity, moodCard, workoutType);
+    if (roleMode === 'main_fin') {
+      item.role = (i === picks.length - 1 && picks.length > 1) ? 'finisher' : 'main_block';
+    } else {
+      item.role = i === 0 ? 'primer'
+        : (i === picks.length - 1 && picks.length > 1 ? 'finisher' : 'main_block');
+    }
+    return item;
+  });
+  return {
+    id: `${flavor.id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    workouts: items,
+    totalDuration: items.reduce((s, it) => s + parseDuration(it.duration), 0),
+    intensity,
+    cartType: flavor.id,
+    flavor: flavor.label,
+    cartBadge: flavor.badge,
+    cartSubtitle: flavor.subtitle,
+  };
+}
+
+// Generic variations + interleave (mirrors Sweat/Explosion).
+function assembleFlavored<F extends { id: string }>(
+  feasible: F[],
+  variationsPerFlavor: number,
+  poolSizeFor: (f: F) => number,
+  buildOne: (f: F, sessionUsed: Set<string>, usedX: Set<string>) => FlavoredCart | null,
+): FlavoredCart[] {
+  const sessionUsed = new Set<string>();
+  const usedX = new Set<string>();
+  const sig = (c: FlavoredCart) => c.workouts.map(w => w.name).slice().sort().join('|');
+  const byFlavor: FlavoredCart[][] = feasible.map(f => {
+    const variants: FlavoredCart[] = [];
+    const seen = new Set<string>();
+    const target = Math.min(variationsPerFlavor, Math.max(1, Math.floor(poolSizeFor(f) / 2)));
+    let attempts = 0;
+    while (variants.length < target && attempts < target * 6) {
+      attempts++;
+      const c = buildOne(f, sessionUsed, usedX);
+      if (!c) break;
+      const s = sig(c);
+      if (seen.has(s)) continue;
+      seen.add(s);
+      variants.push(c);
+      c.workouts.forEach(w => sessionUsed.add(w.name));
+      c.workouts.forEach(w => usedX.add(w.equipment));
+    }
+    return variants;
+  });
+  const carts: FlavoredCart[] = [];
+  const maxLen = Math.max(0, ...byFlavor.map(v => v.length));
+  for (let round = 0; round < maxLen; round++) {
+    for (const group of byFlavor) if (group[round]) carts.push(group[round]);
+  }
+  return carts;
+}
+
+// --- CALISTHENICS flavors (movement_focus + abs finisher) -------------------
+interface CalFlavorDef {
+  id: string; label: string; badge: string; subtitle: string;
+  focus: Set<MovementFocus>;
+  blocks: Record<IntensityLevel, [number, number]>;
+  coreMode?: boolean;   // allow abs-only equipment as MAIN work (Core flavor)
+}
+const CAL_FLAVORS: CalFlavorDef[] = [
+  { id: 'cal_push', label: 'Push Power', badge: 'Push', subtitle: 'Pressing & dips + core',
+    focus: new Set<MovementFocus>(['upper_push', 'mixed_upper']),
+    blocks: { beginner: [2, 2], intermediate: [2, 3], advanced: [3, 4] } },
+  { id: 'cal_pull', label: 'Pull Strength', badge: 'Pull', subtitle: 'Pull-ups, rows + core',
+    focus: new Set<MovementFocus>(['upper_pull', 'hinge_pull', 'mixed_upper']),
+    blocks: { beginner: [2, 2], intermediate: [2, 3], advanced: [3, 4] } },
+  { id: 'cal_core', label: 'Core Crusher', badge: 'Core', subtitle: 'Midline & abs focus',
+    focus: new Set<MovementFocus>(['core']), coreMode: true,
+    blocks: { beginner: [2, 3], intermediate: [3, 3], advanced: [3, 4] } },
+  { id: 'cal_full', label: 'Full Body Flow', badge: 'Full Body', subtitle: 'Total-body skills + core',
+    focus: new Set<MovementFocus>(['full_body', 'mixed_upper', 'unilateral', 'lower']),
+    blocks: { beginner: [2, 3], intermediate: [3, 3], advanced: [3, 4] } },
+];
+
+function calFCands(intensity: IntensityLevel): FCand[] {
+  return buildCalisthenicsPool(intensity).map(c => ({
+    workout: c.workout, equipment: c.equipment, display: c.displayEquipment,
+    focus: c.movement_focus, absEligible: c.abs_eligible,
+  }));
+}
+
+function buildCalFlavorCart(
+  f: CalFlavorDef, intensity: IntensityLevel, moodCard: string,
+  recent: Set<string>, sessionUsed: Set<string>, _usedX: Set<string>,
+): FlavoredCart | null {
+  const all = calFCands(intensity);
+  const mains = all.filter(c => c.focus && f.focus.has(c.focus) &&
+    (f.coreMode || !CAL_FINISHER_ONLY.has(c.equipment as CalisthenicsEquipment)));
+  const absPool = all.filter(c => c.absEligible);
+  if (mains.length === 0) return null;
+
+  const [mn, mx] = f.blocks[intensity];
+  const total = randInt(mn, mx);
+  // Structural variety: include an abs finisher most of the time (always for Core).
+  const includeAbs = absPool.length > 0 && (f.id === 'cal_core' ? true : (total >= 2 && Math.random() < 0.8));
+  const nMain = includeAbs ? Math.max(1, total - 1) : total;
+
+  const usedNames = new Set<string>();
+  const usedEquip = new Set<string>();
+  const picks: FCand[] = [];
+  for (let i = 0; i < nMain; i++) {
+    const p = flavSoftmax(mains, usedNames, usedEquip, sessionUsed, recent);
+    if (!p) break;
+    picks.push(p); usedNames.add(p.workout.name); usedEquip.add(p.equipment);
+  }
+  if (includeAbs) {
+    const abs = flavSoftmax(absPool, usedNames, usedEquip, sessionUsed, recent);
+    if (abs) { picks.push(abs); usedNames.add(abs.workout.name); }
+  }
+  if (picks.length === 0) return null;
+  return picksToFlavoredCart(picks, f, 'Calisthenics', intensity, moodCard, 'main_fin');
+}
+
+export function generateCalisthenicsCartsV2(
+  intensity: IntensityLevel,
+  moodCard: string = 'I want to do calisthenics',
+  recentExerciseNames: string[] = [],
+): FlavoredCart[] {
+  const recent = new Set(recentExerciseNames);
+  const all = calFCands(intensity);
+  const feasible = CAL_FLAVORS.filter(f =>
+    all.some(c => c.focus && f.focus.has(c.focus) &&
+      (f.coreMode || !CAL_FINISHER_ONLY.has(c.equipment as CalisthenicsEquipment))));
+  return assembleFlavored(
+    feasible, 4,
+    f => all.filter(c => c.focus && f.focus.has(c.focus)).length,
+    (f, su, ux) => buildCalFlavorCart(f, intensity, moodCard, recent, su, ux),
+  );
+}
+
+// --- LAZY: Move Your Body flavors (cardio machines + optional core) ----------
+interface MBFlavorDef {
+  id: string; label: string; badge: string; subtitle: string;
+  kind: 'cardio' | 'cardio_core';
+  blocks: Record<IntensityLevel, [number, number]>;
+}
+const MB_FLAVORS: MBFlavorDef[] = [
+  { id: 'lazy_cruise', label: 'Easy Cruise', badge: 'Steady', subtitle: 'One or two steady machines',
+    kind: 'cardio', blocks: { beginner: [1, 2], intermediate: [1, 2], advanced: [2, 2] } },
+  { id: 'lazy_mix', label: 'Machine Mix', badge: 'Variety', subtitle: 'A tour of different machines',
+    kind: 'cardio', blocks: { beginner: [2, 2], intermediate: [2, 3], advanced: [2, 3] } },
+  { id: 'lazy_core', label: 'Cardio + Core', badge: 'Finisher', subtitle: 'Cardio, then a bodyweight burn',
+    kind: 'cardio_core', blocks: { beginner: [2, 2], intermediate: [2, 3], advanced: [2, 3] } },
+];
+
+function mbFCands(intensity: IntensityLevel): FCand[] {
+  return buildMoveYourBodyPool(intensity).map(c => ({
+    workout: c.workout, equipment: c.equipment, display: c.displayEquipment, modality: c.modality,
+  }));
+}
+
+function buildMBFlavorCart(
+  f: MBFlavorDef, intensity: IntensityLevel, moodCard: string,
+  recent: Set<string>, sessionUsed: Set<string>, _usedX: Set<string>,
+): FlavoredCart | null {
+  const all = mbFCands(intensity);
+  const cardio = all.filter(c => c.modality === 'cardio');
+  const bw = all.filter(c => c.modality === 'bodyweight');
+  if (cardio.length === 0) return null;
+
+  const [mn, mx] = f.blocks[intensity];
+  const total = randInt(mn, mx);
+  const wantCore = f.kind === 'cardio_core' && bw.length > 0;
+  const nCardio = wantCore ? Math.max(1, total - 1) : total;
+
+  const usedNames = new Set<string>();
+  const usedEquip = new Set<string>();
+  const picks: FCand[] = [];
+  for (let i = 0; i < nCardio; i++) {
+    const p = flavSoftmax(cardio, usedNames, usedEquip, sessionUsed, recent);
+    if (!p) break;
+    picks.push(p); usedNames.add(p.workout.name); usedEquip.add(p.equipment);
+  }
+  if (wantCore) {
+    const p = flavSoftmax(bw, usedNames, usedEquip, sessionUsed, recent);
+    if (p) { picks.push(p); }
+  }
+  if (picks.length === 0) return null;
+  return picksToFlavoredCart(picks, f, 'Move Your Body', intensity, moodCard, 'phase');
+}
+
+// --- LAZY: Lift Weights flavors (upper / lower / full regions) ---------------
+// Each Lift Weights entry is already a COMPLETE workout, so a cart never stacks
+// two of them. Beginner carts are the single lift; intermediate/advanced add a
+// bodyweight movement (advanced may add two) as a light finisher.
+interface LWFlavorDef {
+  id: string; label: string; badge: string; subtitle: string;
+  regions: LiftWeightsBodyRegion[];
+}
+const LW_FLAVORS: LWFlavorDef[] = [
+  { id: 'lw_upper', label: 'Upper Body', badge: 'Upper', subtitle: 'An upper-body lift + bodyweight finisher', regions: ['upper'] },
+  { id: 'lw_lower', label: 'Lower Body', badge: 'Lower', subtitle: 'A lower-body lift + bodyweight finisher', regions: ['lower'] },
+  { id: 'lw_full', label: 'Full Body', badge: 'Full Body', subtitle: 'A full-body lift + bodyweight finisher', regions: ['full_body'] },
+];
+
+function lwFCands(intensity: IntensityLevel): FCand[] {
+  const out: FCand[] = [];
+  const regions: [LiftWeightsBodyRegion, EquipmentWorkouts[]][] = [
+    ['upper', lazyUpperBodyDatabase], ['lower', lazyLowerBodyDatabase], ['full_body', lazyFullBodyDatabase],
+  ];
+  for (const [region, db] of regions) {
+    for (const eq of db) {
+      for (const w of eq.workouts[intensity] || []) {
+        out.push({ workout: w, equipment: `${region}:${eq.equipment}`, display: eq.equipment, region, sub: eq.equipment });
+      }
+    }
+  }
+  return out;
+}
+
+function buildLWFlavorCart(
+  f: LWFlavorDef, intensity: IntensityLevel, moodCard: string,
+  recent: Set<string>, sessionUsed: Set<string>, _usedX: Set<string>,
+): FlavoredCart | null {
+  const lifts = lwFCands(intensity).filter(c => c.region && f.regions.includes(c.region));
+  if (lifts.length === 0) return null;
+
+  const usedNames = new Set<string>();
+  const usedEquip = new Set<string>();
+  const picks: FCand[] = [];
+
+  // Exactly ONE lift workout (it's already a full session).
+  const lift = flavSoftmax(lifts, usedNames, usedEquip, sessionUsed, recent);
+  if (!lift) return null;
+  picks.push(lift); usedNames.add(lift.workout.name); usedEquip.add(lift.equipment);
+
+  // Intermediate/advanced: add a bodyweight movement as a light finisher
+  // (advanced may add two — a bit of structural variety).
+  if (intensity !== 'beginner') {
+    const bwPool = mbFCands(intensity).filter(c => c.modality === 'bodyweight');
+    if (bwPool.length > 0) {
+      const bwCount = intensity === 'advanced' ? randInt(1, 2) : 1;
+      for (let i = 0; i < bwCount; i++) {
+        const bw = flavSoftmax(bwPool, usedNames, usedEquip, sessionUsed, recent);
+        if (!bw) break;
+        picks.push(bw); usedNames.add(bw.workout.name); usedEquip.add(bw.equipment);
+      }
+    }
+  }
+  return picksToFlavoredCart(picks, f, 'Lift Weights', intensity, moodCard, 'main_fin');
+}
+
+export function generateLazyCartsV2(
+  intensity: IntensityLevel,
+  trainingType: 'bodyweight' | 'weights',
+  moodCard: string = "I'm feeling lazy",
+  recentExerciseNames: string[] = [],
+): FlavoredCart[] {
+  const recent = new Set(recentExerciseNames);
+  if (trainingType === 'bodyweight') {
+    const all = mbFCands(intensity);
+    if (all.filter(c => c.modality === 'cardio').length === 0) return [];
+    return assembleFlavored(
+      MB_FLAVORS, 4,
+      () => all.length,
+      (f, su, ux) => buildMBFlavorCart(f, intensity, moodCard, recent, su, ux),
+    );
+  }
+  const all = lwFCands(intensity);
+  const feasible = LW_FLAVORS.filter(f => all.some(c => c.region && f.regions.includes(c.region)));
+  return assembleFlavored(
+    feasible, 4,
+    f => all.filter(c => c.region && f.regions.includes(c.region)).length,
+    (f, su, ux) => buildLWFlavorCart(f, intensity, moodCard, recent, su, ux),
+  );
+}
+
+// --- OUTDOOR flavors (session_type groups, within selected environments) -----
+interface OutFlavorDef {
+  id: string; label: string; badge: string; subtitle: string;
+  types: Set<SessionType>;
+  blocks: Record<IntensityLevel, [number, number]>;
+}
+const OUT_FLAVORS: OutFlavorDef[] = [
+  { id: 'out_endurance', label: 'Endurance', badge: 'Steady', subtitle: 'Sustained aerobic effort',
+    types: new Set<SessionType>(['continuous', 'tempo', 'threshold', 'fartlek']),
+    blocks: { beginner: [1, 2], intermediate: [1, 2], advanced: [1, 2] } },
+  { id: 'out_intervals', label: 'Intervals', badge: 'Intervals', subtitle: 'Work / rest repeats',
+    types: new Set<SessionType>(['interval', 'fartlek', 'hybrid']),
+    blocks: { beginner: [1, 2], intermediate: [1, 2], advanced: [1, 2] } },
+  { id: 'out_speed', label: 'Speed & Power', badge: 'Explosive', subtitle: 'Sprints & power work',
+    types: new Set<SessionType>(['sprint', 'plyo', 'strength_circuit']),
+    blocks: { beginner: [1, 2], intermediate: [1, 2], advanced: [1, 2] } },
+  { id: 'out_skills', label: 'Skills & Drills', badge: 'Technique', subtitle: 'Form & movement drills',
+    types: new Set<SessionType>(['drill', 'technique']),
+    blocks: { beginner: [1, 2], intermediate: [1, 2], advanced: [1, 2] } },
+];
+
+function outFCands(intensity: IntensityLevel, envs: OutdoorEnvironment[]): FCand[] {
+  return buildOutdoorPool(envs).filter(c => c.tier === intensity).map(c => ({
+    workout: c.workout, equipment: c.environment, display: c.equipment,
+    sessionType: c.workout.session_type, cost: c.workout.intensity_cost ?? 3,
+  }));
+}
+
+function buildOutFlavorCart(
+  f: OutFlavorDef, intensity: IntensityLevel, moodCard: string, envs: OutdoorEnvironment[],
+  recent: Set<string>, sessionUsed: Set<string>, _usedX: Set<string>,
+): FlavoredCart | null {
+  const all = outFCands(intensity, envs).filter(c => c.sessionType && f.types.has(c.sessionType));
+  if (all.length === 0) return null;
+
+  const [mn, mx] = f.blocks[intensity];
+  const total = Math.min(randInt(mn, mx), all.length);
+
+  const usedNames = new Set<string>();
+  const usedEquip = new Set<string>();
+  const picks: FCand[] = [];
+  for (let i = 0; i < total; i++) {
+    const usedEnv = new Set(picks.map(p => p.equipment));
+    let pool = all.filter(c => !usedEnv.has(c.equipment));  // 2nd block prefers a different environment
+    if (pool.length === 0) pool = all;
+    const p = flavSoftmax(pool, usedNames, usedEquip, sessionUsed, recent);
+    if (!p) break;
+    picks.push(p); usedNames.add(p.workout.name); usedEquip.add(p.equipment);
+  }
+  if (picks.length === 0) return null;
+  // Order easier → harder (warm into the session).
+  picks.sort((a, b) => (a.cost ?? 3) - (b.cost ?? 3));
+  return picksToFlavoredCart(picks, f, 'Outdoor', intensity, moodCard, 'phase');
+}
+
+export function generateOutdoorCartsV2(
+  intensity: IntensityLevel,
+  moodCard: string = 'Get outside',
+  selectedEquipmentNames: string[] = [],
+  recentExerciseNames: string[] = [],
+): FlavoredCart[] {
+  const envs: OutdoorEnvironment[] = selectedEquipmentNames.length > 0
+    ? Array.from(new Set(selectedEquipmentNames.map(n => OUTDOOR_EQUIPMENT_TO_ENV[n]).filter((e): e is OutdoorEnvironment => !!e)))
+    : ['run', 'bike', 'swim', 'hills', 'park', 'track'];
+  const recent = new Set(recentExerciseNames);
+  const feasible = OUT_FLAVORS.filter(f =>
+    outFCands(intensity, envs).some(c => c.sessionType && f.types.has(c.sessionType)));
+  return assembleFlavored(
+    feasible, 4,
+    f => outFCands(intensity, envs).filter(c => c.sessionType && f.types.has(c.sessionType)).length,
+    (f, su, ux) => buildOutFlavorCart(f, intensity, moodCard, envs, recent, su, ux),
+  );
+}
+
 // Mapping of muscle group names to their databases
 const muscleGroupDatabases: Record<string, EquipmentWorkouts[]> = {
   'Chest': chestWorkoutDatabase,
@@ -2289,6 +2937,9 @@ export function generateMuscleGainerCarts(
    *  so re-rolling the same selection surfaces visibly fresh exercises. Flat list
    *  across muscles; exercise names are globally unique so no per-muscle keying. */
   recentExerciseNames: string[] = [],
+  /** Distinct variations to build PER cart flavor, so skipping can stay within a
+   *  chosen flavor and still rotate through several different workouts. */
+  variationsPerType: number = 3,
 ): MuscleGainerCart[] {
   if (selectedMuscleGroups.length === 0) return [];
 
@@ -2297,28 +2948,29 @@ export function generateMuscleGainerCarts(
   const cartTypes = selectCartTypes(orderedMuscles, intensity, recentlySeenCartTypes);
   const recentNames = new Set(recentExerciseNames);
 
-  const carts: MuscleGainerCart[] = [];
+  // Names used by earlier carts this session — soft-penalized so each variation
+  // (and each flavor) surfaces different exercises.
+  const sessionUsed = new Set<string>();
 
-  cartTypes.forEach((cartType, cartIdx) => {
+  const buildOneCart = (cartType: CartTypeId, typeIdx: number, varIdx: number): MuscleGainerCart | null => {
+    // Structural jitter re-runs per variation, so block counts vary too.
     const targetCounts = computeTargetCountsV3(orderedMuscles, roles, intensity, cartType);
+    const scoringRecent = new Set<string>([...recentNames, ...sessionUsed]);
     const sections: FlavorWorkout[] = [];
     const excludeIds = new Set<string>();
-    // (C) One off-theme equipment pick allowed per cart, shared across muscles.
     const offThemeBudget: OffThemeBudget = { remaining: 1 };
 
     for (const muscle of orderedMuscles) {
       const tgt = targetCounts[muscle];
       if (tgt <= 0) continue;
-      const section = pickMuscleSection(muscle, intensity, tgt, cartType, excludeIds, recentNames, offThemeBudget);
+      const section = pickMuscleSection(muscle, intensity, tgt, cartType, excludeIds, scoringRecent, offThemeBudget);
       sections.push(...section);
     }
-
-    if (sections.length === 0) return;
+    if (sections.length === 0) return null;
 
     const items = sections.map(s => {
       // Legs carry their sub-group (Quads / Hamstrings / Glutes / Calves /
-      // Compound) so the cart & generated views can render sub-dividers
-      // within the LEGS block.
+      // Compound) so the cart & generated views can render sub-dividers.
       let groupLabel = s.muscleGroup;
       if (s.muscleGroup === 'Legs') {
         const sub = getLegSubGroup(s);
@@ -2327,13 +2979,11 @@ export function generateMuscleGainerCarts(
       return workoutToItem(s.workout, s.equipment, intensity, moodCard,
         `${workoutType} - ${groupLabel}`);
     });
-    const totalDuration = items.reduce(
-      (sum, it) => sum + parseDuration(it.duration), 0
-    );
+    const totalDuration = items.reduce((sum, it) => sum + parseDuration(it.duration), 0);
     const display = MUSCLE_GAINER_CART_DISPLAY[cartType];
 
-    carts.push({
-      id: `cart-mg-${cartIdx + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+    return {
+      id: `cart-mg-${typeIdx + 1}-${varIdx + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
       cartType,
       workouts: items,
       totalDuration,
@@ -2341,8 +2991,36 @@ export function generateMuscleGainerCarts(
       flavor: display.title,
       cartBadge: display.badge,
       cartSubtitle: display.subtitle,
-    });
+    };
+  };
+
+  const sig = (c: MuscleGainerCart) => c.workouts.map(w => w.name).slice().sort().join('|');
+
+  // Build N distinct variations per flavor.
+  const byType: MuscleGainerCart[][] = cartTypes.map((cartType, typeIdx) => {
+    const variants: MuscleGainerCart[] = [];
+    const seenSigs = new Set<string>();
+    let attempts = 0;
+    while (variants.length < variationsPerType && attempts < variationsPerType * 4) {
+      attempts++;
+      const cart = buildOneCart(cartType, typeIdx, variants.length);
+      if (!cart) break;
+      const s = sig(cart);
+      if (seenSigs.has(s)) continue;          // skip exact-duplicate exercise sets
+      seenSigs.add(s);
+      variants.push(cart);
+      cart.workouts.forEach(w => sessionUsed.add(w.name));
+    }
+    return variants;
   });
+
+  // Interleave variations across flavors (round-robin) so skipping in RANDOM
+  // mode alternates flavor rather than showing all of one flavor back-to-back.
+  const carts: MuscleGainerCart[] = [];
+  const maxLen = Math.max(0, ...byType.map(v => v.length));
+  for (let round = 0; round < maxLen; round++) {
+    for (const group of byType) if (group[round]) carts.push(group[round]);
+  }
 
   return carts;
 }

@@ -18,10 +18,11 @@ import HomeButton from '../components/HomeButton';
 import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
-import { generateExplosivenessCarts } from '../utils/workoutGenerator';
+import { generateExplosiveCartsV2 } from '../utils/workoutGenerator';
 import { runTrackedGeneration } from '../utils/generationTracking';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { API_URL } from '../utils/apiConfig';
 
@@ -163,12 +164,32 @@ export default function ExplosivenessTypeScreen() {
 
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
     setShowIntensityModal(false);
+
+    // Recent-exercise memory (last 2 generations) so re-rolls feel fresh.
+    let recentExerciseGens: string[][] = [];
+    try {
+      const raw = await AsyncStorage.getItem('explosive_recent_exercises_v1');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) recentExerciseGens = parsed.slice(0, 2);
+      }
+    } catch (_) { /* ignore */ }
+
     const { carts } = runTrackedGeneration(
       token,
       { mood: moodTitle, energy_level: intensity },
-      () => generateExplosivenessCarts(intensity, moodTitle, 'Mixed Explosive')
+      () => generateExplosiveCartsV2(intensity, moodTitle, recentExerciseGens.flat())
     );
-    
+
+    // Persist this generation's exercise names (keep last 2 gens).
+    if (carts.length > 0) {
+      try {
+        const thisGen = Array.from(new Set(carts.flatMap(c => c.workouts.map(w => w.name))));
+        const updated = [thisGen, ...recentExerciseGens].slice(0, 2);
+        await AsyncStorage.setItem('explosive_recent_exercises_v1', JSON.stringify(updated));
+      } catch (_) { /* ignore */ }
+    }
+
     if (carts.length > 0) {
       if (!isGuest && token) {
         try {

@@ -19,10 +19,11 @@ import BackButton from '../components/BackButton';
 import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
-import { generateSweatBurnFatCarts } from '../utils/workoutGenerator';
+import { generateSweatCartsV2 } from '../utils/workoutGenerator';
 import { runTrackedGeneration } from '../utils/generationTracking';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { API_URL } from '../utils/apiConfig';
 
@@ -179,13 +180,32 @@ export default function WorkoutTypeScreen() {
 
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
     setShowIntensityModal(false);
-    
-    // Generate combined workout carts from cardio + light weights
+
+    // Recent-exercise memory (last 2 generations) so re-rolls feel fresh.
+    let recentExerciseGens: string[][] = [];
+    try {
+      const raw = await AsyncStorage.getItem('sweat_recent_exercises_v1');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) recentExerciseGens = parsed.slice(0, 2);
+      }
+    } catch (_) { /* ignore */ }
+
+    // Generate all 5 coach-designed session flavors (shuffled).
     const { carts } = runTrackedGeneration(
       token,
       { mood: moodTitle, energy_level: intensity },
-      () => generateSweatBurnFatCarts(intensity, moodTitle, 'Mixed Workout')
+      () => generateSweatCartsV2(intensity, moodTitle, recentExerciseGens.flat())
     );
+
+    // Persist this generation's exercise names (keep last 2 gens).
+    if (carts.length > 0) {
+      try {
+        const thisGen = Array.from(new Set(carts.flatMap(c => c.workouts.map(w => w.name))));
+        const updated = [thisGen, ...recentExerciseGens].slice(0, 2);
+        await AsyncStorage.setItem('sweat_recent_exercises_v1', JSON.stringify(updated));
+      } catch (_) { /* ignore */ }
+    }
     
     if (carts.length > 0) {
       // Save to backend

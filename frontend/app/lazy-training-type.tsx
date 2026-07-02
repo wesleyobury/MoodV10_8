@@ -18,7 +18,8 @@ import HomeButton from '../components/HomeButton';
 import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
-import { generateLazyCartsWithType } from '../utils/workoutGenerator';
+import { generateLazyCartsV2 } from '../utils/workoutGenerator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { runTrackedGeneration } from '../utils/generationTracking';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -165,12 +166,30 @@ export default function LazyTrainingTypeScreen() {
     // Use the new function with training type
     const trainingType = selectedOption.id as 'bodyweight' | 'weights';
     const workoutType = trainingType === 'bodyweight' ? 'Move Your Body' : 'Lift Weights';
+
+    // Recent-exercise memory (last 2 generations, keyed by training type) → fresh
+    // workouts surface first.
+    const memKey = `lazy_recent_exercises_${trainingType}_v1`;
+    let recentGens: string[][] = [];
+    try {
+      const raw = await AsyncStorage.getItem(memKey);
+      if (raw) { const p = JSON.parse(raw); if (Array.isArray(p)) recentGens = p.slice(0, 2); }
+    } catch (_) { /* ignore */ }
+
+    // Many distinct carts so skipping shows wide variety and reaches the pool.
     const { carts } = runTrackedGeneration(
       token,
       { mood: moodTitle, energy_level: intensity, equipment: trainingType },
-      () => generateLazyCartsWithType(intensity, trainingType, moodTitle)
+      () => generateLazyCartsV2(intensity, trainingType, moodTitle, recentGens.flat())
     );
-    
+
+    if (carts.length > 0) {
+      try {
+        const thisGen = Array.from(new Set(carts.flatMap(c => c.workouts.map(w => w.name))));
+        await AsyncStorage.setItem(memKey, JSON.stringify([thisGen, ...recentGens].slice(0, 2)));
+      } catch (_) { /* ignore */ }
+    }
+
     if (carts.length > 0) {
       if (!isGuest && token) {
         try {

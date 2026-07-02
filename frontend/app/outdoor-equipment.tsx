@@ -17,7 +17,8 @@ import HomeButton from '../components/HomeButton';
 import ChooseForMeButton from '../components/ChooseForMeButton';
 import IntensitySelectionModal, { IntensityLevel } from '../components/IntensitySelectionModal';
 import GuestPromptModal from '../components/GuestPromptModal';
-import { generateOutdoorCarts } from '../utils/workoutGenerator';
+import { generateOutdoorCartsV2 } from '../utils/workoutGenerator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { runTrackedGeneration } from '../utils/generationTracking';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -197,12 +198,29 @@ export default function OutdoorEquipmentScreen() {
   // Handle intensity selection and generate workout
   const handleIntensitySelect = async (intensity: IntensityLevel) => {
     setShowIntensityModal(false);
+
+    // Recent-exercise memory (last 2 generations) → fresh workouts surface first.
+    let recentGens: string[][] = [];
+    try {
+      const raw = await AsyncStorage.getItem('outdoor_recent_exercises_v1');
+      if (raw) { const p = JSON.parse(raw); if (Array.isArray(p)) recentGens = p.slice(0, 2); }
+    } catch (_) { /* ignore */ }
+
+    const equipNames = selectedEquipment.map(eq => eq.name);
+    // Many distinct carts so skipping shows wide variety and reaches the pool.
     const { carts } = runTrackedGeneration(
       token,
-      { mood: moodTitle, energy_level: intensity, equipment: selectedEquipment.map(eq => eq.name).join(', ') },
-      () => generateOutdoorCarts(intensity, moodTitle, workoutType, selectedEquipment.map(eq => eq.name))
+      { mood: moodTitle, energy_level: intensity, equipment: equipNames.join(', ') },
+      () => generateOutdoorCartsV2(intensity, moodTitle, equipNames, recentGens.flat())
     );
-    
+
+    if (carts.length > 0) {
+      try {
+        const thisGen = Array.from(new Set(carts.flatMap(c => c.workouts.map(w => w.name))));
+        await AsyncStorage.setItem('outdoor_recent_exercises_v1', JSON.stringify([thisGen, ...recentGens].slice(0, 2)));
+      } catch (_) { /* ignore */ }
+    }
+
     if (carts.length > 0) {
       if (!isGuest && token) {
         try {

@@ -117,7 +117,7 @@ export default function IntensitySelectionModal({
                     <Ionicons
                       name={option.icon}
                       size={20}
-                      color={isSelected ? '#FFD700' : '#888'}
+                      color={isSelected ? '#FFFFFF' : '#888'}
                     />
                   </View>
                   <View style={styles.optionContent}>
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 24,
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.2)',
+    borderColor: 'rgba(255, 255, 255, 0.12)',
   },
   header: {
     alignItems: 'center',
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   optionCardSelected: {
-    backgroundColor: 'rgba(255, 215, 0, 0.05)',
+    // Gold border only — no gold fill (matches selected equipment buttons).
     borderColor: '#FFD700',
   },
   optionIcon: {
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   optionIconSelected: {
-    backgroundColor: 'rgba(255, 215, 0, 0.15)',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
   },
   optionContent: {
     flex: 1,
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   optionTitleSelected: {
-    color: '#FFD700',
+    color: '#FFFFFF',
   },
   optionSubtitle: {
     fontSize: 12,
