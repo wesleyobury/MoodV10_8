@@ -91,6 +91,7 @@ def verify_and_decode_transaction(signed_payload: str) -> Dict[str, Any]:
         "offer_discount_type": _as_str(getattr(tx, "offerDiscountType", None)),
         "price": price,
         "environment": _as_str(getattr(tx, "environment", None)),
+        "app_account_token": _as_str(getattr(tx, "appAccountToken", None)),
     }
 
 
@@ -121,6 +122,7 @@ def resolve_subscription_from_receipt(
                 ),
                 "purchase_date": apple.get("purchase_date") or fallback_purchase_date,
                 "expiration_date": apple.get("expiration_date") or fallback_expiration_date,
+                "app_account_token": apple.get("app_account_token"),
             }
             return status, fields
         except (TransactionVerificationError, VerificationException) as e:
@@ -136,4 +138,5 @@ def resolve_subscription_from_receipt(
         "original_transaction_id": fallback_original_transaction_id,
         "purchase_date": fallback_purchase_date,
         "expiration_date": fallback_expiration_date,
+        "app_account_token": None,
     }

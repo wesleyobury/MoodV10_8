@@ -134,7 +134,10 @@ def _as_str(value: Any) -> Optional[str]:
     """Coerce enum/str to its string value."""
     if value is None:
         return None
-    return getattr(value, "value", value) if not isinstance(value, str) else value
+    if isinstance(value, str):
+        return value
+    coerced = getattr(value, "value", value)
+    return coerced if isinstance(coerced, str) else str(coerced)
 
 
 def event_for(notification_type: Optional[str], subtype: Optional[str]) -> Optional[str]:

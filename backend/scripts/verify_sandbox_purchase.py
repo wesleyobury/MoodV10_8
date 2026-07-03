@@ -8,8 +8,8 @@ SAME database the backend uses to confirm the user document + user_events landed
 in the expected state with the NEW reverse-DNS SKUs.
 
 The 4 sandbox scenarios and what to expect:
-  1. monthly         -> subscription.product_id == com.mood.subscription.monthly,         plan == monthly
-  2. annual          -> subscription.product_id == com.mood.subscription.annual,          plan == annual
+  1. monthly         -> subscription.product_id is monthly trial or paid SKU, plan == monthly
+  2. annual          -> subscription.product_id is annual trial or paid SKU, plan == annual
   3. founding_annual -> subscription.product_id == com.mood.subscription.founding_annual, plan == founding_annual,
                         founding_pricing_claimed == True
   4. restore         -> same state as the originally purchased SKU is re-applied (idempotent);
@@ -39,12 +39,20 @@ load_dotenv()
 # Canonical, post-cutover reverse-DNS SKUs (must mirror backend/server.py).
 PRODUCT_ANNUAL = "com.mood.subscription.annual"
 PRODUCT_MONTHLY = "com.mood.subscription.monthly"
+PRODUCT_ANNUAL_PAID = "com.mood.subscription.annual.paid"
+PRODUCT_MONTHLY_PAID = "com.mood.subscription.monthly.paid"
 PRODUCT_FOUNDING_ANNUAL = "com.mood.subscription.founding_annual"
 
 PLAN_TO_SKU = {
     "monthly": PRODUCT_MONTHLY,
     "annual": PRODUCT_ANNUAL,
     "founding_annual": PRODUCT_FOUNDING_ANNUAL,
+}
+
+PLAN_TO_ALLOWED_SKUS = {
+    "monthly": {PRODUCT_MONTHLY, PRODUCT_MONTHLY_PAID},
+    "annual": {PRODUCT_ANNUAL, PRODUCT_ANNUAL_PAID},
+    "founding_annual": {PRODUCT_FOUNDING_ANNUAL},
 }
 
 # Old strings that MUST never appear post-cutover.
@@ -146,12 +154,12 @@ async def main() -> int:
                    not legacy_present, extra=str(sub_sku) if legacy_present else "")
 
     if args.expect:
-        expected_sku = PLAN_TO_SKU[args.expect]
-        print(f"\nAsserting expected plan = '{args.expect}'  (SKU '{expected_sku}'):")
+        expected_skus = PLAN_TO_ALLOWED_SKUS[args.expect]
+        print(f"\nAsserting expected plan = '{args.expect}'  (SKUs {sorted(expected_skus)}):")
         all_pass &= ok("subscription.plan matches", sub.get("plan") == args.expect,
                        extra=f"got '{sub.get('plan')}'")
-        all_pass &= ok("subscription.product_id matches new SKU",
-                       sub.get("product_id") == expected_sku,
+        all_pass &= ok("subscription.product_id matches allowed SKU",
+                       sub.get("product_id") in expected_skus,
                        extra=f"got '{sub.get('product_id')}'")
         all_pass &= ok("subscription.status is active/in_trial",
                        sub.get("status") in ("active", "in_trial"),
@@ -163,7 +171,7 @@ async def main() -> int:
             all_pass &= ok("founding_pricing_claimed == True",
                            user.get("founding_pricing_claimed") is True)
         # A subscription_started event should exist with the matching SKU.
-        match_evt = any((e.get("metadata", {}) or {}).get("plan_id") == expected_sku
+        match_evt = any((e.get("metadata", {}) or {}).get("plan_id") in expected_skus
                         for e in events)
         all_pass &= ok("subscription_started event with matching plan_id exists",
                        match_evt)

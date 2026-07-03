@@ -138,7 +138,7 @@ class MoodStoreKitModule : Module() {
     /** Launch the Play purchase sheet for a subscription. Resolves through the
      *  PurchasesUpdatedListener with a StoreKitTransaction-shaped success map,
      *  or { status: "cancelled" | "pending" | "unknown" }. */
-    AsyncFunction("purchase") { productID: String, promise: Promise ->
+    AsyncFunction("purchase") { productID: String, appAccountToken: String?, promise: Promise ->
       scope.launch {
         try {
           ensureConnected()
@@ -168,7 +168,7 @@ class MoodStoreKitModule : Module() {
           // Stash the promise; PurchasesUpdatedListener resolves it.
           pendingPurchases[productID] = promise
 
-          val flowParams = BillingFlowParams.newBuilder()
+          val flowBuilder = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(
               listOf(
                 BillingFlowParams.ProductDetailsParams.newBuilder()
@@ -177,7 +177,10 @@ class MoodStoreKitModule : Module() {
                   .build()
               )
             )
-            .build()
+          if (!appAccountToken.isNullOrBlank()) {
+            flowBuilder.setObfuscatedAccountId(appAccountToken)
+          }
+          val flowParams = flowBuilder.build()
 
           val launch = billingClient!!.launchBillingFlow(activity, flowParams)
           if (launch.responseCode != BillingClient.BillingResponseCode.OK) {
@@ -331,7 +334,8 @@ class MoodStoreKitModule : Module() {
       "expirationDate" to null,
       "isUpgraded" to false,
       // The opaque Play purchase token. Backend verifies THIS, not a signature.
-      "signedPayload" to purchase.purchaseToken
+      "signedPayload" to purchase.purchaseToken,
+      "appAccountToken" to purchase.accountIdentifiers?.obfuscatedAccountId
     )
   }
 

@@ -40,9 +40,11 @@ import { apiFetch } from '../utils/api';
 import { validateSubscriptionTransaction } from '../hooks/subscription/subscriptionApi';
 import { getLatestSubscriptionEntitlement } from '../hooks/subscription/subscriptionSync';
 import {
-  MONTHLY_PRODUCT_ID,
-  YEARLY_PRODUCT_ID,
+  MONTHLY_TRIAL_PRODUCT_ID,
+  YEARLY_TRIAL_PRODUCT_ID,
+  appAccountTokenForUserId,
   isStoreKitAvailable,
+  productIDForPlan,
   purchase as storeKitPurchase,
   restorePurchases as storeKitRestore,
 } from '../modules/mood-storekit/src';
@@ -114,7 +116,7 @@ export function PaywallModal() {
     !!entitlement?.is_founding_member &&
     !entitlement?.founding_pricing_claimed &&
     !!entitlement?.founding_window_active;
-  const planProductId = plan === 'annual' ? YEARLY_PRODUCT_ID : MONTHLY_PRODUCT_ID;
+  const planForStore = plan === 'annual' ? 'yearly' : 'monthly';
 
   // Live prices from the store (falls back to pinned labels off-device / pre-load)
   // so the UI never shows a price that differs from Apple's purchase sheet.
@@ -215,7 +217,8 @@ export function PaywallModal() {
     // `lastConversionTrigger` + server-side `subscription.last_trigger_source`.
     Analytics.trialStarted(token, { plan, trigger_source: pendingTrigger ?? 'unknown' });
 
-    const productID = plan === 'annual' ? YEARLY_PRODUCT_ID : MONTHLY_PRODUCT_ID;
+    const productID = productIDForPlan(planForStore, ctaName);
+    const appAccountToken = appAccountTokenForUserId(user?.id);
 
     // 1a — StoreKit/Play purchase sheet about to open.
     Analytics.purchaseInitiated(token, { plan_id: productID, stage });
@@ -241,7 +244,7 @@ export function PaywallModal() {
     }
 
     try {
-      const result = await storeKitPurchase(productID);
+      const result = await storeKitPurchase(productID, appAccountToken);
       if (result.status === 'success') {
         setPurchaseBusy(true);
         try {
@@ -343,7 +346,7 @@ export function PaywallModal() {
   /** 1a — plan card tapped. */
   const handlePlanSelect = (next: Plan) => {
     setPlan(next);
-    const pid = next === 'annual' ? YEARLY_PRODUCT_ID : MONTHLY_PRODUCT_ID;
+    const pid = next === 'annual' ? YEARLY_TRIAL_PRODUCT_ID : MONTHLY_TRIAL_PRODUCT_ID;
     Analytics.planSelected(token, { plan_id: pid, stage });
   };
 

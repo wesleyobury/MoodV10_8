@@ -5,26 +5,39 @@
  * native, with safe defaults so callers never crash when the native
  * module is missing (Expo Go, web preview, Android).
  *
- * Product IDs are pinned here as the single source of truth. The native
- * layer accepts arbitrary ids so testers can swap to sandbox sku without
- * a rebuild.
+ * Product IDs are pinned here as the single source of truth.
  */
 
 import { requireOptionalNativeModule } from 'expo-modules-core';
 import { Platform } from 'react-native';
 
 /**
- * Pinned product IDs — must match the App Store Connect entries. Phase C
- * v1.0 launch:
- *   • com.mood.subscription.monthly  — $9.99/mo, auto-renewing, 7-day intro trial
- *   • com.mood.subscription.annual   — $79.99/yr, auto-renewing, 7-day intro trial
+ * Pinned product IDs — must match the App Store Connect entries.
+ *
+ * Trial SKUs carry the 7-day introductory offer in App Store Connect.
+ * Paid SKUs are equivalent plans with NO introductory offer, used by the
+ * "Subscribe Now" CTA when we want Apple's sheet to charge immediately.
  */
-export const MONTHLY_PRODUCT_ID = 'com.mood.subscription.monthly';
-export const YEARLY_PRODUCT_ID = 'com.mood.subscription.annual';
+export const MONTHLY_TRIAL_PRODUCT_ID = 'com.mood.subscription.monthly';
+export const YEARLY_TRIAL_PRODUCT_ID = 'com.mood.subscription.annual';
+export const MONTHLY_PAID_PRODUCT_ID = 'com.mood.subscription.monthly.paid';
+export const YEARLY_PAID_PRODUCT_ID = 'com.mood.subscription.annual.paid';
 export const FOUNDING_PRODUCT_ID = 'com.mood.subscription.founding_annual';
-export const ALL_PRODUCT_IDS = [MONTHLY_PRODUCT_ID, YEARLY_PRODUCT_ID, FOUNDING_PRODUCT_ID] as const;
+
+// Legacy aliases: existing trial-enabled SKUs.
+export const MONTHLY_PRODUCT_ID = MONTHLY_TRIAL_PRODUCT_ID;
+export const YEARLY_PRODUCT_ID = YEARLY_TRIAL_PRODUCT_ID;
+
+export const ALL_PRODUCT_IDS = [
+  MONTHLY_TRIAL_PRODUCT_ID,
+  YEARLY_TRIAL_PRODUCT_ID,
+  MONTHLY_PAID_PRODUCT_ID,
+  YEARLY_PAID_PRODUCT_ID,
+  FOUNDING_PRODUCT_ID,
+] as const;
 
 export type ProductPlan = 'monthly' | 'yearly';
+export type PurchaseIntent = 'subscribe_now' | 'start_free_trial';
 
 export interface StoreKitProduct {
   productID: string;
@@ -44,6 +57,7 @@ export interface StoreKitTransaction {
   expirationDate: string | null;
   isUpgraded: boolean;
   signedPayload: string;
+  appAccountToken?: string | null;
 }
 
 export type PurchaseResult =
@@ -54,7 +68,7 @@ export type PurchaseResult =
 
 interface NativeModuleShape {
   getProducts(productIDs: string[]): Promise<StoreKitProduct[]>;
-  purchase(productID: string): Promise<PurchaseResult>;
+  purchase(productID: string, appAccountToken?: string | null): Promise<PurchaseResult>;
   restorePurchases(): Promise<StoreKitTransaction[]>;
   currentEntitlements(): Promise<StoreKitTransaction[]>;
   addListener(eventName: string, listener: (...args: any[]) => void): { remove: () => void };
@@ -78,9 +92,35 @@ export async function getProducts(productIDs: readonly string[] = ALL_PRODUCT_ID
   }
 }
 
-export async function purchase(productID: string): Promise<PurchaseResult> {
+export function productIDForPlan(plan: ProductPlan, intent: PurchaseIntent): string {
+  if (intent === 'subscribe_now') {
+    return plan === 'yearly' ? YEARLY_PAID_PRODUCT_ID : MONTHLY_PAID_PRODUCT_ID;
+  }
+  return plan === 'yearly' ? YEARLY_TRIAL_PRODUCT_ID : MONTHLY_TRIAL_PRODUCT_ID;
+}
+
+/**
+ * Deterministic Apple appAccountToken for the current MOOD user.
+ *
+ * Apple requires a UUID. Our authenticated user ids are Mongo ObjectIds
+ * (24 hex chars), so we embed them in a UUID-shaped value and set standard
+ * version/variant nibbles. The backend mirrors this helper before granting
+ * access from a StoreKit transaction.
+ */
+export function appAccountTokenForUserId(userId?: string | null): string | null {
+  const hex = (userId ?? '').trim().toLowerCase();
+  if (!/^[0-9a-f]{24}$/.test(hex)) return null;
+  const chars = `00000000${hex}`.split('');
+  chars[12] = '5';
+  const variant = (parseInt(chars[16], 16) & 0x3) | 0x8;
+  chars[16] = variant.toString(16);
+  const raw = chars.join('');
+  return `${raw.slice(0, 8)}-${raw.slice(8, 12)}-${raw.slice(12, 16)}-${raw.slice(16, 20)}-${raw.slice(20, 32)}`;
+}
+
+export async function purchase(productID: string, appAccountToken?: string | null): Promise<PurchaseResult> {
   if (!native) return { status: 'cancelled' };
-  return native.purchase(productID);
+  return native.purchase(productID, appAccountToken ?? null);
 }
 
 export async function restorePurchases(): Promise<StoreKitTransaction[]> {
@@ -118,7 +158,7 @@ export function onTransactionUpdate(
 }
 
 export function planFromProductID(productID: string): ProductPlan | null {
-  if (productID === MONTHLY_PRODUCT_ID) return 'monthly';
-  if (productID === YEARLY_PRODUCT_ID) return 'yearly';
+  if (productID === MONTHLY_TRIAL_PRODUCT_ID || productID === MONTHLY_PAID_PRODUCT_ID) return 'monthly';
+  if (productID === YEARLY_TRIAL_PRODUCT_ID || productID === YEARLY_PAID_PRODUCT_ID) return 'yearly';
   return null;
 }

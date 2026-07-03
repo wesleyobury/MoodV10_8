@@ -33,11 +33,15 @@ def _is_google_platform(platform: Optional[str]) -> bool:
 # ── App Store Connect product identifiers ───────────────────────────────────
 PRODUCT_ANNUAL = "com.mood.subscription.annual"
 PRODUCT_MONTHLY = "com.mood.subscription.monthly"
+PRODUCT_ANNUAL_PAID = "com.mood.subscription.annual.paid"
+PRODUCT_MONTHLY_PAID = "com.mood.subscription.monthly.paid"
 PRODUCT_FOUNDING_ANNUAL = "com.mood.subscription.founding_annual"
 
 ALL_PRODUCT_IDS = (
     PRODUCT_ANNUAL,
     PRODUCT_MONTHLY,
+    PRODUCT_ANNUAL_PAID,
+    PRODUCT_MONTHLY_PAID,
     PRODUCT_FOUNDING_ANNUAL,
 )
 
@@ -45,6 +49,8 @@ ALL_PRODUCT_IDS = (
 PRODUCT_PRICE_USD = {
     PRODUCT_ANNUAL: 79.0,
     PRODUCT_MONTHLY: 9.99,
+    PRODUCT_ANNUAL_PAID: 79.0,
+    PRODUCT_MONTHLY_PAID: 9.99,
     PRODUCT_FOUNDING_ANNUAL: 39.0,
 }
 
@@ -135,6 +141,7 @@ class SubscriptionValidateRequest(BaseModel):
     original_transaction_id: Optional[str] = None
     purchase_date: Optional[str] = None
     expiration_date: Optional[str] = None
+    app_account_token: Optional[str] = None
     # 'apple'/'ios' (default) or 'google'/'android'. On Android the client sends
     # the opaque Play purchaseToken in `signed_payload`; the backend verifies it
     # against the Play Developer API rather than an offline signature.
@@ -154,6 +161,7 @@ class SubscriptionSyncRequest(BaseModel):
     original_transaction_id: Optional[str] = None
     purchase_date: Optional[str] = None
     expiration_date: Optional[str] = None
+    app_account_token: Optional[str] = None
     platform: Optional[str] = "apple"
 
 
@@ -164,9 +172,9 @@ def normalize_product_id(product_id: Optional[str]) -> str:
 
 def plan_for_product(product_id: str) -> Optional[str]:
     normalized = normalize_product_id(product_id)
-    if normalized == PRODUCT_ANNUAL:
+    if normalized in (PRODUCT_ANNUAL, PRODUCT_ANNUAL_PAID):
         return "annual"
-    if normalized == PRODUCT_MONTHLY:
+    if normalized in (PRODUCT_MONTHLY, PRODUCT_MONTHLY_PAID):
         return "monthly"
     if normalized == PRODUCT_FOUNDING_ANNUAL:
         return "founding_annual"
@@ -199,7 +207,7 @@ def _reconcile_from_payload(payload) -> tuple[str, Dict[str, Optional[str]]]:
             getattr(payload, "signed_payload", None),
             fallback_product_id=getattr(payload, "product_id", None),
         )
-    return resolve_subscription_from_receipt(
+    status, fields = resolve_subscription_from_receipt(
         payload.signed_payload,
         fallback_product_id=getattr(payload, "product_id", None),
         fallback_transaction_id=getattr(payload, "transaction_id", None),
@@ -207,6 +215,10 @@ def _reconcile_from_payload(payload) -> tuple[str, Dict[str, Optional[str]]]:
         fallback_purchase_date=getattr(payload, "purchase_date", None),
         fallback_expiration_date=getattr(payload, "expiration_date", None),
     )
+    fields["app_account_token"] = (
+        fields.get("app_account_token") or getattr(payload, "app_account_token", None)
+    )
+    return status, fields
 
 
 def analytics_source_for(platform: Optional[str]) -> str:
@@ -221,6 +233,65 @@ def user_can_claim_founding(user: dict, window_open: bool) -> bool:
     if user.get("founding_pricing_claimed"):
         return False
     return bool(window_open)
+
+
+def app_account_token_for_user_id(user_id: str) -> Optional[str]:
+    """Mirror frontend appAccountToken generation for Mongo ObjectId user ids."""
+    hex_id = (user_id or "").strip().lower()
+    if len(hex_id) != 24 or any(c not in "0123456789abcdef" for c in hex_id):
+        return None
+    chars = list(f"00000000{hex_id}")
+    chars[12] = "5"
+    chars[16] = format((int(chars[16], 16) & 0x3) | 0x8, "x")
+    raw = "".join(chars)
+    return f"{raw[0:8]}-{raw[8:12]}-{raw[12:16]}-{raw[16:20]}-{raw[20:32]}"
+
+
+async def assert_apple_transaction_account_allowed(
+    db,
+    current_user_id: str,
+    payload,
+    apple_fields: Dict[str, Optional[str]],
+) -> None:
+    """Prevent one Apple subscription from silently unlocking another profile."""
+    if _is_google_platform(getattr(payload, "platform", None)):
+        return
+
+    incoming_token = (
+        apple_fields.get("app_account_token") or getattr(payload, "app_account_token", None)
+    )
+    expected_token = app_account_token_for_user_id(current_user_id)
+    if incoming_token and expected_token and incoming_token.lower() != expected_token.lower():
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "error": "subscription_belongs_to_different_account",
+                "message": "This Apple subscription is linked to a different MOOD profile.",
+            },
+        )
+
+    original_transaction_id = (
+        apple_fields.get("original_transaction_id")
+        or getattr(payload, "original_transaction_id", None)
+    )
+    if not original_transaction_id:
+        return
+
+    existing = await db.users.find_one(
+        {
+            "subscription.original_transaction_id": original_transaction_id,
+            "_id": {"$ne": ObjectId(current_user_id)},
+        },
+        {"_id": 1},
+    )
+    if existing:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "error": "subscription_already_linked",
+                "message": "This Apple subscription is already linked to another MOOD profile.",
+            },
+        )
 
 
 # Backward-compatible aliases used by existing tests.
@@ -240,6 +311,7 @@ async def _persist_subscription_record(
     original_transaction_id: Optional[str],
     purchase_date: Optional[str],
     expiration_date: Optional[str],
+    app_account_token: Optional[str],
     consume_trigger: bool,
 ) -> Optional[str]:
     user = await db.users.find_one({"_id": ObjectId(user_id)}, {"subscription": 1})
@@ -258,6 +330,8 @@ async def _persist_subscription_record(
         update_doc["subscription.purchase_date"] = purchase_date
     if expiration_date:
         update_doc["subscription.expiration_date"] = expiration_date
+    if app_account_token:
+        update_doc["subscription.app_account_token"] = app_account_token
 
     update_ops: Dict[str, Any] = {"$set": update_doc}
     if consume_trigger:
@@ -310,6 +384,7 @@ def build_subscriptions_router(
         current_user_id: str = Depends(get_current_user),
     ):
         status_value, apple_fields = _reconcile_from_payload(payload)
+        await assert_apple_transaction_account_allowed(db, current_user_id, payload, apple_fields)
         product_id = normalize_product_id(apple_fields.get("product_id") or payload.product_id)
         plan = plan_for_product(product_id)
         if not plan:
@@ -330,6 +405,7 @@ def build_subscriptions_router(
             original_transaction_id=apple_fields.get("original_transaction_id"),
             purchase_date=apple_fields.get("purchase_date"),
             expiration_date=apple_fields.get("expiration_date"),
+            app_account_token=apple_fields.get("app_account_token"),
             consume_trigger=True,
         )
 
@@ -427,6 +503,7 @@ def build_subscriptions_router(
             )
 
         status_value, apple_fields = _reconcile_from_payload(payload)
+        await assert_apple_transaction_account_allowed(db, current_user_id, payload, apple_fields)
         product_id = normalize_product_id(apple_fields.get("product_id") or payload.product_id)
         plan = plan_for_product(product_id)
         if not plan:
@@ -447,6 +524,7 @@ def build_subscriptions_router(
             original_transaction_id=apple_fields.get("original_transaction_id"),
             purchase_date=apple_fields.get("purchase_date"),
             expiration_date=apple_fields.get("expiration_date"),
+            app_account_token=apple_fields.get("app_account_token"),
             consume_trigger=False,
         )
 
@@ -708,6 +786,7 @@ def build_subscriptions_router(
                 original_transaction_id=gfields.get("original_transaction_id") or purchase_token,
                 purchase_date=gfields.get("purchase_date"),
                 expiration_date=gfields.get("expiration_date"),
+                app_account_token=None,
                 consume_trigger=False,
             )
 

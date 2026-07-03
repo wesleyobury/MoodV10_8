@@ -13,8 +13,10 @@
  */
 import { useEffect, useState } from 'react';
 import {
-  MONTHLY_PRODUCT_ID,
-  YEARLY_PRODUCT_ID,
+  MONTHLY_PAID_PRODUCT_ID,
+  MONTHLY_TRIAL_PRODUCT_ID,
+  YEARLY_PAID_PRODUCT_ID,
+  YEARLY_TRIAL_PRODUCT_ID,
   getProducts,
   isStoreKitAvailable,
 } from '../modules/mood-storekit/src';
@@ -57,11 +59,20 @@ export function useStorePrices(): StorePrices {
 
     (async () => {
       try {
-        const products = await getProducts([MONTHLY_PRODUCT_ID, YEARLY_PRODUCT_ID]);
+        const products = await getProducts([
+          MONTHLY_PAID_PRODUCT_ID,
+          YEARLY_PAID_PRODUCT_ID,
+          MONTHLY_TRIAL_PRODUCT_ID,
+          YEARLY_TRIAL_PRODUCT_ID,
+        ]);
         if (cancelled || products.length === 0) return;
 
-        const monthly = products.find((p) => p.productID === MONTHLY_PRODUCT_ID);
-        const annual = products.find((p) => p.productID === YEARLY_PRODUCT_ID);
+        const monthly =
+          products.find((p) => p.productID === MONTHLY_PAID_PRODUCT_ID) ??
+          products.find((p) => p.productID === MONTHLY_TRIAL_PRODUCT_ID);
+        const annual =
+          products.find((p) => p.productID === YEARLY_PAID_PRODUCT_ID) ??
+          products.find((p) => p.productID === YEARLY_TRIAL_PRODUCT_ID);
 
         const next: StorePrices = {
           loaded: true,

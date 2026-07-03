@@ -9,6 +9,7 @@ import { apiFetch } from '../utils/api';
 import { Analytics } from '../utils/analytics';
 import {
   FOUNDING_PRODUCT_ID,
+  appAccountTokenForUserId,
   isStoreKitAvailable,
   purchase as storeKitPurchase,
 } from '../modules/mood-storekit/src';
@@ -16,7 +17,7 @@ import {
 export type FoundingClaimResult = 'success' | 'cancelled' | 'error' | 'ineligible';
 
 export function useFoundingPurchase() {
-  const { token, refreshSubscriptionState } = useAuth();
+  const { token, user, refreshSubscriptionState } = useAuth();
   const { setStatus } = useSubscription();
 
   const claimFounding = useCallback(
@@ -53,7 +54,7 @@ export function useFoundingPurchase() {
       }
 
       try {
-        const result = await storeKitPurchase(sku);
+        const result = await storeKitPurchase(sku, appAccountTokenForUserId(user?.id));
         if (result.status === 'success') {
           if (token) {
             await validateSubscriptionTransaction(token, result, {
@@ -87,7 +88,7 @@ export function useFoundingPurchase() {
         return 'error';
       }
     },
-    [token, refreshSubscriptionState, setStatus]
+    [token, user?.id, refreshSubscriptionState, setStatus]
   );
 
   return { claimFounding };

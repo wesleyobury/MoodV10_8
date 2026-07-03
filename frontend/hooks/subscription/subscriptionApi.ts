@@ -26,6 +26,7 @@ function buildTransactionPayload(
     original_transaction_id: txn.originalTransactionID,
     purchase_date: txn.purchaseDate,
     expiration_date: txn.expirationDate,
+    app_account_token: txn.appAccountToken ?? null,
     // Tells the backend which verifier to use: Apple JWS vs Play Developer API.
     // On Android `signed_payload` carries the opaque Play purchaseToken.
     platform: Platform.OS === 'android' ? 'google' : 'apple',

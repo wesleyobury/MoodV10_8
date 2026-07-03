@@ -1,4 +1,5 @@
 import ExpoModulesCore
+import Foundation
 import StoreKit
 
 /// MOOD StoreKit 2 bridge.
@@ -74,7 +75,7 @@ public class MoodStoreKitModule: Module {
     /// On success, resolves with the verified transaction's signed JWS so
     /// the backend can validate independently. On cancel or pending state,
     /// resolves with `{ status: "cancelled" | "pending" }`.
-    AsyncFunction("purchase") { (productID: String, promise: Promise) in
+    AsyncFunction("purchase") { (productID: String, appAccountToken: String?, promise: Promise) in
       Task {
         do {
           let products = try await Product.products(for: [productID])
@@ -82,7 +83,11 @@ public class MoodStoreKitModule: Module {
             promise.reject("E_STOREKIT_NO_PRODUCT", "Product \(productID) not found")
             return
           }
-          let result = try await product.purchase()
+          var options = Set<Product.PurchaseOption>()
+          if let token = appAccountToken, let uuid = UUID(uuidString: token) {
+            options.insert(.appAccountToken(uuid))
+          }
+          let result = try await product.purchase(options: options)
           switch result {
           case .success(let verification):
             switch verification {
@@ -101,7 +106,8 @@ public class MoodStoreKitModule: Module {
                 "purchaseDate": ISO8601DateFormatter().string(from: transaction.purchaseDate),
                 "expirationDate": transaction.expirationDate.map { ISO8601DateFormatter().string(from: $0) } as Any,
                 "isUpgraded": transaction.isUpgraded,
-                "signedPayload": verification.jwsRepresentation
+                "signedPayload": verification.jwsRepresentation,
+                "appAccountToken": transaction.appAccountToken?.uuidString as Any
               ])
             case .unverified(_, let error):
               promise.reject("E_STOREKIT_UNVERIFIED", error.localizedDescription)
@@ -158,7 +164,8 @@ public class MoodStoreKitModule: Module {
           "purchaseDate": ISO8601DateFormatter().string(from: t.purchaseDate),
           "expirationDate": t.expirationDate.map { ISO8601DateFormatter().string(from: $0) } as Any,
           "isUpgraded": t.isUpgraded,
-          "signedPayload": result.jwsRepresentation
+          "signedPayload": result.jwsRepresentation,
+          "appAccountToken": t.appAccountToken?.uuidString as Any
         ])
       }
     }
@@ -182,7 +189,8 @@ public class MoodStoreKitModule: Module {
             "purchaseDate": ISO8601DateFormatter().string(from: t.purchaseDate),
             "expirationDate": t.expirationDate.map { ISO8601DateFormatter().string(from: $0) } as Any,
             "isUpgraded": t.isUpgraded,
-            "signedPayload": result.jwsRepresentation
+            "signedPayload": result.jwsRepresentation,
+            "appAccountToken": t.appAccountToken?.uuidString as Any
           ])
           await t.finish()
         }

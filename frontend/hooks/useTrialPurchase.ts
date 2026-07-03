@@ -14,7 +14,8 @@ import { useSubscription } from '../contexts/SubscriptionContext';
 import { validateSubscriptionTransaction } from './subscription/subscriptionApi';
 import { Analytics } from '../utils/analytics';
 import {
-  MONTHLY_PRODUCT_ID,
+  MONTHLY_TRIAL_PRODUCT_ID,
+  appAccountTokenForUserId,
   isStoreKitAvailable,
   purchase as storeKitPurchase,
 } from '../modules/mood-storekit/src';
@@ -22,7 +23,7 @@ import {
 export type TrialResult = 'success' | 'cancelled' | 'error';
 
 export function useTrialPurchase() {
-  const { token, refreshSubscriptionState } = useAuth();
+  const { token, user, refreshSubscriptionState } = useAuth();
   const { setStatus } = useSubscription();
 
   const startTrial = useCallback(
@@ -42,7 +43,10 @@ export function useTrialPurchase() {
       }
 
       try {
-        const result = await storeKitPurchase(MONTHLY_PRODUCT_ID);
+        const result = await storeKitPurchase(
+          MONTHLY_TRIAL_PRODUCT_ID,
+          appAccountTokenForUserId(user?.id),
+        );
         if (result.status === 'success') {
           if (token) {
             await validateSubscriptionTransaction(token, result, {
@@ -62,7 +66,7 @@ export function useTrialPurchase() {
         return 'error';
       }
     },
-    [token, refreshSubscriptionState, setStatus]
+    [token, user?.id, refreshSubscriptionState, setStatus]
   );
 
   return { startTrial };
