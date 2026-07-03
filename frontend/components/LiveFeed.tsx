@@ -29,6 +29,10 @@ const TEXT_TERTIARY = '#6B6B6B';
 const SURFACE = '#141414';
 const BORDER = '#1F1F1F';
 
+// Shared fixed height so every feed card matches the first "sessions today"
+// stat card — keeps the feed compact and uniform.
+const FEED_CARD_HEIGHT = 104;
+
 // ===== Mood palettes (dark, desaturated) =====
 type MoodBucket = 'sweat' | 'muscle' | 'explosive' | 'lazy' | 'calisthenics' | 'outdoor';
 
@@ -124,7 +128,7 @@ const BadgeCard: React.FC<{ entry: LiveEntry }> = ({ entry }) => {
         <View style={styles.badgeTextCol}>
           <Text style={styles.badgeEyebrow}>BADGE</Text>
           <Text style={styles.badgeLabel} numberOfLines={1}>{entry.badge_label || 'New badge'}</Text>
-          <Text style={styles.sentence} numberOfLines={2}>
+          <Text style={styles.sentence} numberOfLines={1}>
             {userName} earned {entry.badge_label ? `“${entry.badge_label}”` : 'a new badge'}
           </Text>
         </View>
@@ -218,16 +222,16 @@ const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void
         )}
 
         {entry.type === 'milestone' ? (
-          <Text style={styles.milestoneNumber} data-testid={`live-milestone-count-${entry.id}`}>
+          <Text style={styles.milestoneNumber} numberOfLines={1} data-testid={`live-milestone-count-${entry.id}`}>
             {entry.milestone_count} workouts
           </Text>
         ) : (
-          <Text style={[styles.moodWord, { color: palette.accent }]} data-testid={`live-mood-${entry.mood_bucket}-${entry.id}`}>
+          <Text style={[styles.moodWord, { color: palette.accent }]} numberOfLines={1} data-testid={`live-mood-${entry.mood_bucket}-${entry.id}`}>
             {entry.mood_label}
           </Text>
         )}
 
-        <Text style={styles.sentence}>{sentence}</Text>
+        <Text style={styles.sentence} numberOfLines={1}>{sentence}</Text>
       </View>
 
       <View style={styles.bottomRow}>
@@ -541,6 +545,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingVertical: 16,
     position: 'relative',
+    height: FEED_CARD_HEIGHT,
+    justifyContent: 'center',
   },
   statHeaderDot: {
     position: 'absolute',
@@ -603,10 +609,12 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 16,
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 12,
     marginBottom: 10,
     overflow: 'hidden',
     position: 'relative',
+    height: FEED_CARD_HEIGHT,
+    justifyContent: 'space-between',
   },
   cardAccentWash: {
     position: 'absolute',
@@ -625,7 +633,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
-    marginBottom: 12,
+    marginBottom: 6,
   },
   badgeTextCol: {
     flex: 1,
@@ -636,13 +644,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '600',
     letterSpacing: 1.4,
-    marginBottom: 2,
+    marginBottom: 1,
   },
   badgeLabel: {
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   // Top text column reserves space for the absolutely-positioned 44px avatar
   // (right:14 + width:44 + 10px breathing room = ~68px). Bottom row stays full
@@ -653,7 +661,7 @@ const styles = StyleSheet.create({
   labelRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 3,
   },
   labelText: {
     fontSize: 10,
@@ -661,24 +669,23 @@ const styles = StyleSheet.create({
     letterSpacing: 1.4,
   },
   moodWord: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '500',
-    lineHeight: 26,
-    marginBottom: 6,
+    lineHeight: 22,
+    marginBottom: 2,
   },
   milestoneNumber: {
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: '700',
     color: TEXT_PRIMARY,
-    lineHeight: 34,
-    marginBottom: 6,
+    lineHeight: 22,
+    marginBottom: 0,
     letterSpacing: -0.5,
   },
   sentence: {
     color: '#C9C9C9',
     fontSize: 13,
-    lineHeight: 20, // 1.5+ line height
-    marginBottom: 12,
+    lineHeight: 17,
   },
   bottomRow: {
     flexDirection: 'row',
@@ -692,7 +699,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingVertical: 4,
     borderRadius: 999,
     borderWidth: 1,
   },

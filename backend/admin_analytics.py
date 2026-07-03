@@ -175,6 +175,224 @@ async def get_funnel_analysis(
         }
 
 
+# ── Onboarding funnel ────────────────────────────────────────────────────────
+# Onboarding runs BEFORE signup, so most events are guest events keyed by
+# device_id (no user_id). A participant is de-duplicated across the guest→auth
+# boundary by coalescing user_id → merged_to_user_id → device_id.
+_ONB_PARTICIPANT = {
+    "$ifNull": ["$user_id", {"$ifNull": ["$merged_to_user_id", "$device_id"]}]
+}
+
+# Ordered funnel. Each entry: (event_type, meta_field, meta_value, label).
+# meta_field disambiguates multi-purpose events (step number / reveal stage).
+_ONB_STEPS = [
+    ("onboarding_step_viewed", "metadata.step", 0, "Intro"),
+    ("onboarding_step_viewed", "metadata.step", 1, "Mood"),
+    ("onboarding_step_viewed", "metadata.step", 2, "Primary goal"),
+    ("onboarding_step_viewed", "metadata.step", 3, "Fitness level"),
+    ("onboarding_step_viewed", "metadata.step", 4, "Biggest barrier"),
+    ("onboarding_step_viewed", "metadata.step", 5, "Workout length"),
+    ("onboarding_step_viewed", "metadata.step", 6, "Social proof"),
+    ("onboarding_step_viewed", "metadata.step", 7, "Name"),
+    ("reveal_screen_viewed", "metadata.stage", "loading", "Reveal — building"),
+    ("reveal_screen_viewed", "metadata.stage", "payoff", "Reveal — payoff"),
+    ("onboarding_completed", None, None, "Onboarding complete"),
+]
+
+# Question steps that carry a breakdownable `answer`.
+_ONB_QUESTIONS = [
+    (1, "Mood"),
+    (2, "Primary goal"),
+    (3, "Fitness level"),
+    (4, "Biggest barrier"),
+    (5, "Workout length"),
+]
+
+_ONB_STEP_LABELS = {
+    0: "Intro", 1: "Mood", 2: "Primary goal", 3: "Fitness level",
+    4: "Biggest barrier", 5: "Workout length", 6: "Social proof", 7: "Name",
+}
+
+
+async def _onb_participants(db, base_match, event_type, meta_field=None, meta_value=None):
+    """Distinct participant keys who fired `event_type` (with optional metadata)."""
+    match = {**base_match, "event_type": event_type}
+    if meta_field is not None:
+        match[meta_field] = meta_value
+    pipeline = [
+        {"$match": match},
+        {"$group": {"_id": _ONB_PARTICIPANT}},
+    ]
+    docs = await db.user_events.aggregate(pipeline).to_list(length=200000)
+    return {d["_id"] for d in docs if d["_id"] is not None}
+
+
+async def get_onboarding_analytics(
+    db: AsyncIOMotorDatabase,
+    start_date: datetime,
+    end_date: datetime,
+    include_internal: bool = False,
+) -> Dict[str, Any]:
+    """Full-transparency onboarding funnel: step-by-step conversion + dropoff,
+    time per step, per-question answer distributions, reveal CTA engagement,
+    abandonment, and guest-vs-auth split. Counts guests (pre-login) correctly."""
+    try:
+        excluded = set()
+        if not include_internal:
+            excluded = await get_internal_user_ids(db)
+
+        base_match: Dict[str, Any] = {"timestamp": {"$gte": start_date, "$lte": end_date}}
+        if excluded:
+            # Guest events have no user_id → `$nin` still matches them (null).
+            base_match["user_id"] = {"$nin": list(excluded)}
+
+        # 1) Step funnel — unique participants per step + step→step conversion.
+        step_sets = []
+        for event_type, meta_field, meta_value, label in _ONB_STEPS:
+            ppl = await _onb_participants(db, base_match, event_type, meta_field, meta_value)
+            step_sets.append((label, event_type, meta_value, ppl))
+
+        # "Entered onboarding" = anyone who saw intro OR the first question.
+        entry_set: set = set()
+        if step_sets:
+            entry_set |= step_sets[0][3]
+            if len(step_sets) > 1:
+                entry_set |= step_sets[1][3]
+        entry_count = len(entry_set)
+
+        funnel = []
+        prev = None
+        for i, (label, event_type, meta_value, ppl) in enumerate(step_sets):
+            n = len(ppl)
+            if i == 0 or not prev:
+                converted, dropped, step_conv, step_drop = n, 0, 100.0, 0.0
+            else:
+                converted = len(ppl & prev)
+                dropped = len(prev - ppl)
+                step_conv = round(converted / len(prev) * 100, 1) if prev else 0.0
+                step_drop = round(100 - step_conv, 1)
+            funnel.append({
+                "step": f"{event_type}:{meta_value}" if meta_value is not None else event_type,
+                "step_index": i,
+                "label": label,
+                "unique": n,
+                "converted": converted,
+                "dropped": dropped,
+                "step_conversion": step_conv,
+                "step_dropoff": step_drop,
+                "pct_of_entry": round(n / entry_count * 100, 1) if entry_count else 0.0,
+            })
+            prev = ppl
+
+        completed_count = len(step_sets[-1][3]) if step_sets else 0
+        overall_completion = round(completed_count / entry_count * 100, 1) if entry_count else 0.0
+
+        # 2) Median + average time per step (onboarding_step_completed.time_spent_ms).
+        time_docs = await db.user_events.aggregate([
+            {"$match": {**base_match, "event_type": "onboarding_step_completed",
+                        "metadata.time_spent_ms": {"$gt": 0}}},
+            {"$group": {"_id": "$metadata.step",
+                        "times": {"$push": "$metadata.time_spent_ms"},
+                        "count": {"$sum": 1}}},
+        ]).to_list(length=100)
+        timing = []
+        for d in time_docs:
+            times = sorted(t for t in d.get("times", []) if isinstance(t, (int, float)) and t > 0)
+            if not times:
+                continue
+            mid = len(times) // 2
+            median = times[mid] if len(times) % 2 else (times[mid - 1] + times[mid]) / 2
+            timing.append({
+                "step": d["_id"],
+                "label": _ONB_STEP_LABELS.get(d["_id"], f"Step {d['_id']}"),
+                "median_ms": round(median),
+                "avg_ms": round(sum(times) / len(times)),
+                "samples": d["count"],
+            })
+        timing.sort(key=lambda x: (x["step"] is None, x["step"]))
+
+        # 3) Answer distribution per question step.
+        answers = []
+        for step_num, q_label in _ONB_QUESTIONS:
+            docs = await db.user_events.aggregate([
+                {"$match": {**base_match, "event_type": "onboarding_step_completed",
+                            "metadata.step": step_num,
+                            "metadata.answer": {"$exists": True, "$ne": None}}},
+                {"$group": {"_id": "$metadata.answer", "ppl": {"$addToSet": _ONB_PARTICIPANT}}},
+            ]).to_list(length=300)
+            options = [{"answer": str(d["_id"]),
+                        "count": len([p for p in d["ppl"] if p is not None])} for d in docs]
+            options.sort(key=lambda x: -x["count"])
+            total = sum(o["count"] for o in options)
+            for o in options:
+                o["pct"] = round(o["count"] / total * 100, 1) if total else 0.0
+            answers.append({"step": step_num, "question": q_label, "total": total, "options": options})
+
+        # 4) Reveal CTA engagement (the conversion action on the payoff screen).
+        cta_docs = await db.user_events.aggregate([
+            {"$match": {**base_match, "event_type": "reveal_cta_tapped"}},
+            {"$group": {"_id": "$metadata.cta", "count": {"$sum": 1}}},
+        ]).to_list(length=50)
+        reveal_ctas = [{"cta": str(d["_id"] or "unknown"), "count": d["count"]} for d in cta_docs]
+        reveal_ctas.sort(key=lambda x: -x["count"])
+
+        # 5) Explicit abandonment by step.
+        ab_docs = await db.user_events.aggregate([
+            {"$match": {**base_match, "event_type": "onboarding_abandoned"}},
+            {"$group": {"_id": "$metadata.step", "ppl": {"$addToSet": _ONB_PARTICIPANT}}},
+        ]).to_list(length=100)
+        abandonment = [{"step": d["_id"], "label": _ONB_STEP_LABELS.get(d["_id"], f"Step {d['_id']}"),
+                        "count": len([p for p in d["ppl"] if p is not None])} for d in ab_docs]
+        abandonment.sort(key=lambda x: (x["step"] is None, x["step"]))
+
+        # 6) Guest vs auth at entry (auth = already logged in on entry; rare pre-signup).
+        first_event, first_field, first_value = _ONB_STEPS[0][0], _ONB_STEPS[0][1], _ONB_STEPS[0][2]
+        auth_match: Dict[str, Any] = {
+            "timestamp": {"$gte": start_date, "$lte": end_date},
+            "event_type": first_event,
+            "user_id": {"$exists": True, "$ne": None},
+        }
+        if first_field:
+            auth_match[first_field] = first_value
+        auth_ids = await db.user_events.distinct("user_id", auth_match)
+        auth_entries = len([u for u in auth_ids if u and u not in excluded])
+        # entry_set already includes step 1; recompute auth against the same union
+        # is overkill — report entry-screen auth vs the rest as guest.
+        guest_entries = max(0, entry_count - auth_entries)
+
+        return {
+            "start_date": start_date.isoformat(),
+            "end_date": end_date.isoformat(),
+            "entry_participants": entry_count,
+            "completed_participants": completed_count,
+            "overall_completion_rate": overall_completion,
+            "guest_entries": guest_entries,
+            "auth_entries": auth_entries,
+            "funnel": funnel,
+            "timing": timing,
+            "answers": answers,
+            "reveal_ctas": reveal_ctas,
+            "abandonment": abandonment,
+        }
+    except Exception as e:
+        logger.error(f"Error getting onboarding analytics: {e}")
+        return {
+            "start_date": start_date.isoformat() if start_date else None,
+            "end_date": end_date.isoformat() if end_date else None,
+            "entry_participants": 0,
+            "completed_participants": 0,
+            "overall_completion_rate": 0,
+            "guest_entries": 0,
+            "auth_entries": 0,
+            "funnel": [],
+            "timing": [],
+            "answers": [],
+            "reveal_ctas": [],
+            "abandonment": [],
+            "error": str(e),
+        }
+
+
 def _get_step_label(step: str) -> str:
     """Get human-readable label for funnel step"""
     labels = {

@@ -16,7 +16,6 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Analytics } from '../../utils/analytics';
 
 const GOALS: PrimaryGoal[] = [
-  'feel_better',
   'build_strength',
   'improve_physique',
   'improve_athleticism',

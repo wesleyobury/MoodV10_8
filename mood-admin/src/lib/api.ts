@@ -204,6 +204,18 @@ class ApiClient {
     return this.get<FunnelData>(`/analytics/admin/funnel?${params}`);
   }
 
+  async getOnboarding(
+    start?: string,
+    end?: string,
+    includeInternal: boolean = false
+  ) {
+    const params = new URLSearchParams();
+    if (start) params.append("start", start);
+    if (end) params.append("end", end);
+    if (includeInternal) params.append("include_internal", "true");
+    return this.get<OnboardingData>(`/analytics/admin/onboarding?${params}`);
+  }
+
   async getRetention(
     start?: string,
     end?: string,
@@ -477,6 +489,67 @@ export interface FunnelStep {
   dropoff_rate: number;
   converted_user_ids?: string[];
   dropped_user_ids?: string[];
+}
+
+// ── Onboarding funnel ──
+export interface OnboardingFunnelStep {
+  step: string;
+  step_index: number;
+  label: string;
+  unique: number;
+  converted: number;
+  dropped: number;
+  step_conversion: number; // vs previous step
+  step_dropoff: number;
+  pct_of_entry: number; // vs funnel entry
+}
+
+export interface OnboardingTiming {
+  step: number;
+  label: string;
+  median_ms: number;
+  avg_ms: number;
+  samples: number;
+}
+
+export interface OnboardingAnswerOption {
+  answer: string;
+  count: number;
+  pct: number;
+}
+
+export interface OnboardingAnswers {
+  step: number;
+  question: string;
+  total: number;
+  options: OnboardingAnswerOption[];
+}
+
+export interface OnboardingCta {
+  cta: string;
+  count: number;
+}
+
+export interface OnboardingAbandon {
+  step: number | null;
+  label: string;
+  count: number;
+}
+
+export interface OnboardingData {
+  start_date: string;
+  end_date: string;
+  entry_participants: number;
+  completed_participants: number;
+  overall_completion_rate: number;
+  guest_entries: number;
+  auth_entries: number;
+  funnel: OnboardingFunnelStep[];
+  timing: OnboardingTiming[];
+  answers: OnboardingAnswers[];
+  reveal_ctas: OnboardingCta[];
+  abandonment: OnboardingAbandon[];
+  error?: string;
 }
 
 export interface RetentionData {

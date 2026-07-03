@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { useFilters } from "@/lib/filter-context";
-import { api, PlatformStats, ComparisonData, TimeSeriesData, EngagementData, SavedViewConfig } from "@/lib/api";
+import { api, PlatformStats, ComparisonData, TimeSeriesData, EngagementData, SavedViewConfig, OnboardingData } from "@/lib/api";
 import { KPICard } from "@/components/KPICard";
 import { TimeSeriesChart } from "@/components/charts/TimeSeriesChart";
 import { GlobalFilterBar } from "@/components/GlobalFilterBar";
@@ -22,8 +22,9 @@ import {
   Heart,
   Bell,
   Activity,
+  Rocket,
 } from "lucide-react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 // Metric labels for the drilldown drawer
 const METRIC_LABELS: Record<string, string> = {
@@ -53,7 +54,9 @@ export default function OverviewPage() {
   const [newUsersData, setNewUsersData] = useState<TimeSeriesData | null>(null);
   const [workoutsData, setWorkoutsData] = useState<TimeSeriesData | null>(null);
   const [postsData, setPostsData] = useState<TimeSeriesData | null>(null);
+  const [onboarding, setOnboarding] = useState<OnboardingData | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   // Chart settings state (per-chart customization)
   const [dauSettings, setDauSettings] = useState<ChartSettings>({ ...defaultChartSettings });
@@ -82,7 +85,7 @@ export default function OverviewPage() {
       const includeInternal = filters.includeInternal;
       const period = filters.granularity;
       
-      const [statsRes, compRes, engRes, dauRes, usersRes, workoutsRes, postsRes] = await Promise.all([
+      const [statsRes, compRes, engRes, dauRes, usersRes, workoutsRes, postsRes, onboardingRes] = await Promise.all([
         api.getPlatformStats(days, includeInternal),
         api.getComparison(startStr, endStr),
         api.getEngagement(includeInternal),
@@ -90,6 +93,7 @@ export default function OverviewPage() {
         api.getTimeSeries("new_users", period, days, includeInternal),
         api.getTimeSeries("workouts_completed", period, days, includeInternal),
         api.getTimeSeries("posts_created", period, days, includeInternal),
+        api.getOnboarding(startStr, endStr, includeInternal),
       ]);
 
       if (statsRes.data) setStats(statsRes.data);
@@ -99,6 +103,7 @@ export default function OverviewPage() {
       if (usersRes.data) setNewUsersData(usersRes.data);
       if (workoutsRes.data) setWorkoutsData(workoutsRes.data);
       if (postsRes.data) setPostsData(postsRes.data);
+      if (onboardingRes.data) setOnboarding(onboardingRes.data);
       
       setLoading(false);
     };
@@ -344,6 +349,32 @@ export default function OverviewPage() {
           trend={getMetric("notification_clicks")?.trend}
           icon={<Bell className="h-4 w-4" />}
           tooltip={METRIC_TOOLTIPS.notificationClicks}
+        />
+      </div>
+
+      {/* Onboarding snapshot — click through for the full step funnel */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <KPICard
+          title="Onboarding Completion"
+          value={onboarding?.overall_completion_rate || 0}
+          format="percentage"
+          icon={<Rocket className="h-4 w-4" />}
+          tooltip="Share of users who finish onboarding (intro → reveal). Click for the full step-by-step funnel."
+          onClick={() => router.push("/onboarding")}
+        />
+        <KPICard
+          title="Entered Onboarding"
+          value={onboarding?.entry_participants || 0}
+          icon={<Rocket className="h-4 w-4" />}
+          tooltip="Unique users who started the onboarding funnel in this range."
+          onClick={() => router.push("/onboarding")}
+        />
+        <KPICard
+          title="Completed Onboarding"
+          value={onboarding?.completed_participants || 0}
+          icon={<CheckCircle className="h-4 w-4" />}
+          tooltip="Unique users who reached the end of onboarding."
+          onClick={() => router.push("/onboarding")}
         />
       </div>
 

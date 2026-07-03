@@ -380,7 +380,16 @@ const WeeklyTrendIndicator = ({ count }: { count: number }) => {
       >
         <Ionicons name="trending-up" size={18} color="#FFD700" />
       </Animated.View>
-      <Text style={styles.trendCount}>{count}</Text>
+      <Text
+        style={[
+          styles.trendCount,
+          // Shrink as the number grows: -1px single digit, -2px double,
+          // -3px triple+ — keeps it from crowding the card.
+          { fontSize: 20 - Math.min(3, String(count).length) },
+        ]}
+      >
+        {count}
+      </Text>
       <Text style={styles.trendLabel}>this week</Text>
     </View>
   );
@@ -442,8 +451,8 @@ const AnimatedMoodCard = ({ mood, index, onPress, weeklyCount }: {
   });
 
   // Show the "this week" trend badge once a mood has been picked at least
-  // twice in the last 7 days (was >5, which almost never triggered).
-  const showTrend = (weeklyCount ?? 0) >= 2;
+  // 10 times in the last 7 days.
+  const showTrend = (weeklyCount ?? 0) >= 10;
 
   return (
     <TouchableOpacity

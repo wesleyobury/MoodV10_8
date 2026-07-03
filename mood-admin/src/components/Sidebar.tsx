@@ -14,11 +14,13 @@ import {
   LogOut,
   Lightbulb,
   KeyRound,
+  Rocket,
 } from "lucide-react";
 
 const navItems = [
   { href: "/overview", label: "Overview", icon: LayoutDashboard },
   { href: "/insights", label: "Insights", icon: Lightbulb },
+  { href: "/onboarding", label: "Onboarding", icon: Rocket },
   { href: "/funnels", label: "Funnels", icon: GitBranch },
   { href: "/retention", label: "Retention", icon: BarChart3 },
   { href: "/features", label: "Features", icon: BarChart3 },

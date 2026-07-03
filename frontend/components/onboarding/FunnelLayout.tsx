@@ -20,6 +20,7 @@
 import React, { useEffect, useRef } from 'react';
 import {
   Animated,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -99,7 +100,14 @@ export function FunnelLayout({
         <Text style={styles.title}>{title}</Text>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
 
-        <View style={styles.children}>{children}</View>
+        <ScrollView
+          style={styles.children}
+          contentContainerStyle={styles.childrenContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          {children}
+        </ScrollView>
       </View>
 
       {ctaLabel ? (
@@ -189,6 +197,9 @@ const styles = StyleSheet.create({
   children: {
     flex: 1,
     marginTop: 20,
+  },
+  childrenContent: {
+    paddingBottom: 12,
   },
   footer: {
     paddingBottom: 8,

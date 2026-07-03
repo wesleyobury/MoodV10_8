@@ -312,6 +312,8 @@ export default function AdminDashboard() {
   } | null>(null);
   
   // Debug Panel state - shows API base URL and meta info
+  // Collapsed by default so it doesn't crowd the dashboard; tap to expand.
+  const [debugExpanded, setDebugExpanded] = useState(false);
   const [debugMeta, setDebugMeta] = useState<{
     env?: string;
     seed_version_applied?: string;
@@ -925,10 +927,21 @@ export default function AdminDashboard() {
         </TouchableOpacity>
       </View>
 
-      {/* Debug Panel - Shows API configuration and Admin Auth Status */}
+      {/* Debug Panel - Shows API configuration and Admin Auth Status.
+          Collapsible so it can be tucked away to see the rest of the dash. */}
       <View style={styles.debugPanel}>
-        <Text style={styles.debugTitle}>🔧 Debug Info</Text>
-        <Text style={styles.debugText}>
+        <TouchableOpacity
+          style={styles.debugHeaderRow}
+          onPress={() => setDebugExpanded((v) => !v)}
+          activeOpacity={0.7}
+          testID="admin-debug-toggle"
+        >
+          <Text style={[styles.debugTitle, { marginBottom: 0 }]}>🔧 Debug Info</Text>
+          <Ionicons name={debugExpanded ? 'chevron-up' : 'chevron-down'} size={16} color="#4a90d9" />
+        </TouchableOpacity>
+        {debugExpanded && (
+        <>
+        <Text style={[styles.debugText, { marginTop: 8 }]}>
           <Text style={styles.debugLabel}>Backend: </Text>
           <Text style={styles.debugValue}>{API_URL || 'NOT SET'}</Text>
         </Text>
@@ -1011,18 +1024,9 @@ export default function AdminDashboard() {
             </Text>
           </>
         )}
+        </>
+        )}
       </View>
-
-      {/* Add Workout (Admin Tools) */}
-      <TouchableOpacity
-        style={styles.addWorkoutCta}
-        onPress={() => router.push('/admin-add-workout' as any)}
-        testID="admin-go-add-workout"
-      >
-        <Ionicons name="add-circle" size={20} color="#0c0c0c" />
-        <Text style={styles.addWorkoutCtaText}>Add Workout</Text>
-        <Ionicons name="chevron-forward" size={18} color="#0c0c0c" />
-      </TouchableOpacity>
 
       {/* Time Period Selector */}
       <View style={styles.periodSelector}>
@@ -1116,6 +1120,18 @@ export default function AdminDashboard() {
               <Ionicons name="gift" size={20} color="#FFD700" />
             </View>
             <Text style={styles.quickActionText}>Comp Accounts (Creators)</Text>
+            <Ionicons name="chevron-forward" size={18} color="#666" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.quickActionButton}
+            onPress={() => router.push('/admin-add-workout' as any)}
+            testID="admin-go-add-workout"
+          >
+            <View style={styles.quickActionIcon}>
+              <Ionicons name="add-circle" size={20} color="#FFD700" />
+            </View>
+            <Text style={styles.quickActionText}>Add Workout</Text>
             <Ionicons name="chevron-forward" size={18} color="#666" />
           </TouchableOpacity>
         </View>
@@ -2816,6 +2832,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 8,
     marginBottom: 8,
+  },
+  debugHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   debugTitle: {
     color: '#4a90d9',

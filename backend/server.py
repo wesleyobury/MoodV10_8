@@ -135,6 +135,7 @@ import retention as retention_engine
 import achievements as achievements_engine
 from admin_analytics import (
     get_funnel_analysis,
+    get_onboarding_analytics,
     get_retention_cohorts,
     search_users,
     get_user_timeline,
@@ -3582,6 +3583,41 @@ async def get_funnel_endpoint(
         )
     except Exception as e:
         logger.error(f"Funnel endpoint error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/analytics/admin/onboarding")
+async def get_onboarding_endpoint(
+    start: Optional[str] = None,
+    end: Optional[str] = None,
+    include_internal: bool = False,
+    current_user_id: str = Depends(require_admin)
+):
+    """
+    Full onboarding funnel analytics (pre-login guests are counted correctly).
+
+    Returns: step-by-step funnel (viewed → completed) with conversion + dropoff,
+    median/avg time per step, per-question answer distributions, reveal-screen
+    CTA engagement, explicit abandonment by step, and a guest-vs-auth split.
+
+    Query params:
+    - start: ISO date string (default: 30 days ago)
+    - end: ISO date string (default: now)
+    - include_internal: Include internal/staff users (default: false)
+    """
+    try:
+        if end:
+            end_date = datetime.fromisoformat(end.replace('Z', '+00:00'))
+        else:
+            end_date = datetime.now(timezone.utc)
+        if start:
+            start_date = datetime.fromisoformat(start.replace('Z', '+00:00'))
+        else:
+            start_date = end_date - timedelta(days=30)
+
+        return await get_onboarding_analytics(db, start_date, end_date, include_internal)
+    except Exception as e:
+        logger.error(f"Onboarding endpoint error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -8125,8 +8161,11 @@ async def log_workout_completion(workout_data: UserWorkoutCreate, current_user_i
     }
     
     result = await db.user_workouts.insert_one(workout_log)
-    
-    # Update user's workout count
+
+    # Single source of truth for workouts_count — one increment per completion.
+    # Do NOT also increment this on /workout-cards (that double-counted every
+    # workout). Each completion logs exactly one row here across all paths
+    # (guidance single/multi + workout-session).
     await db.users.update_one(
         {"_id": ObjectId(current_user_id)},
         {"$inc": {"workouts_count": 1}}
@@ -10082,13 +10121,15 @@ async def save_workout_card(
     }
     
     result = await db.workout_cards.insert_one(card_doc)
-    
-    # Update user's workouts count
-    await db.users.update_one(
-        {"_id": ObjectId(current_user_id)},
-        {"$inc": {"workouts_count": 1}}
-    )
-    
+
+    # NOTE: workouts_count is intentionally NOT incremented here. Every workout
+    # completion already logs exactly one /user-workouts row (see
+    # log_workout_completion), which is the single source of truth for the
+    # count. Saving the shareable card is a downstream artifact of the same
+    # completion, so incrementing here as well double-counted every workout
+    # (profile showed 2× the real number and badges unlocked at half the
+    # required workouts).
+
     logger.info(f"✅ Workout card saved: {result.inserted_id}")
     
     return {

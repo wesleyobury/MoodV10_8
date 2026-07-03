@@ -84,6 +84,7 @@ export default function TutorialGrid({ movements, single, onOpen, workoutTitle, 
   if (items === null) {
     return (
       <View style={styles.section}>
+        <View style={styles.divider} />
         <Text style={styles.header}>Closest matching tutorials</Text>
         <View style={styles.grid}>
           <View style={[styles.card, styles.skeleton]} />
@@ -96,6 +97,7 @@ export default function TutorialGrid({ movements, single, onOpen, workoutTitle, 
 
   return (
     <View style={styles.section}>
+      <View style={styles.divider} />
       <Text style={styles.header}>Closest matching tutorials</Text>
       <Text style={styles.sub}>Reference demos — they may differ from the exact movement.</Text>
       <View style={styles.grid}>
@@ -118,6 +120,11 @@ export default function TutorialGrid({ movements, single, onOpen, workoutTitle, 
 
 const styles = StyleSheet.create({
   section: { marginTop: 22 },
+  divider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    marginBottom: 18,
+  },
   header: { fontSize: 15, fontWeight: '600', color: '#f4f4f5' },
   sub: { fontSize: 12, color: '#7a7a82', marginTop: 3, marginBottom: 12 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },

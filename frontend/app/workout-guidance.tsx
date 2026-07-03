@@ -42,9 +42,25 @@ interface MOODTip {
 }
 
 const formatTime = (seconds: number): string => {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
+  const safe = Math.max(0, Math.floor(seconds));
+  const mins = Math.floor(safe / 60);
+  const secs = safe % 60;
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+};
+
+/** Parse a rest string (e.g. "90s", "1:30", "2 min", "45") into seconds. */
+const parseRestSeconds = (rest?: string): number => {
+  if (!rest) return 0;
+  const str = String(rest).trim().toLowerCase();
+  const colon = str.match(/(\d+):(\d{1,2})/);
+  if (colon) return parseInt(colon[1], 10) * 60 + parseInt(colon[2], 10);
+  const min = str.match(/([\d.]+)\s*m(?:in)?/);
+  if (min) return Math.round(parseFloat(min[1]) * 60);
+  const sec = str.match(/([\d.]+)\s*s/);
+  if (sec) return Math.round(parseFloat(sec[1]));
+  const bare = str.match(/^([\d.]+)$/);
+  if (bare) return Math.round(parseFloat(bare[1]));
+  return 0;
 };
 
 const parseWorkoutDescription = (description: string): string[] => {
@@ -273,15 +289,19 @@ export default function WorkoutGuidanceScreen() {
     moodTitle = 'Outside';
   }
   
-  // Timer state - uses start timestamp for background persistence
-  const [startTimestamp, setStartTimestamp] = useState<number | null>(null);
-  const [pausedTime, setPausedTime] = useState(0); // Time accumulated before pause
-  const [elapsedTime, setElapsedTime] = useState(0);
+  // Rest-countdown timer. Starts at the exercise's scheduled rest time and
+  // counts DOWN. Tapping Start marks set 1 as complete and begins the first
+  // rest; each time the countdown reaches zero the next set fills and the rest
+  // resets — repeating until every set is done.
+  const [remaining, setRemaining] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  // Set tracker shown in the timer card — one checkable slot per prescribed
-  // set. Screen-local; resets naturally when the next exercise page mounts.
+  // Set tracker shown in the timer card — one slot per prescribed set.
+  // Screen-local; resets naturally when the next exercise page mounts.
   const [setsDone, setSetsDone] = useState(0);
+  // Wall-clock of the first Start tap — used only to report the real workout
+  // duration to analytics on completion (the visible timer is a rest counter).
+  const workoutStartTsRef = useRef<number | null>(null);
   const celebrateAnim = useRef(new Animated.Value(0)).current;
   const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => {
@@ -298,30 +318,83 @@ export default function WorkoutGuidanceScreen() {
   const { token, isGuest, refreshEntitlement } = useAuth();
   const { canStartWorkout, openPaywall, recordStartFreeWorkout } = useSubscription();
   
-  // Timer that calculates elapsed time from start timestamp
-  // This ensures timer continues even when app is in background
-  useEffect(() => {
-    let interval: number | null = null;
-    
-    if (isRunning && !isPaused && startTimestamp) {
-      // Update elapsed time every second based on actual timestamp difference
-      const updateElapsed = () => {
-        const now = Date.now();
-        const elapsed = Math.floor((now - startTimestamp) / 1000) + pausedTime;
-        setElapsedTime(elapsed);
-      };
-      
-      // Update immediately
-      updateElapsed();
-      
-      // Then update every second
-      interval = setInterval(updateElapsed, 1000);
+  // Scheduled rest (seconds) for THIS exercise, pulled from the battle plan.
+  const restSeconds = useMemo(() => {
+    try {
+      const plan = parseBattlePlan(battlePlan || description || '', workoutName);
+      const block = plan.blocks[0];
+      const mv = block?.movements?.[0];
+      const parsed = parseRestSeconds(mv?.rest || block?.rest || '');
+      const s = parsed > 0 ? parsed : 60;
+      return Math.max(5, Math.min(s, 600));
+    } catch {
+      return 60;
     }
-    
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isRunning, isPaused, startTimestamp, pausedTime]);
+  }, [battlePlan, description, workoutName]);
+
+  // Prescribed set count for this exercise (rounds for circuits, "N ×" for
+  // strength work). Falls back to 3.
+  const totalSets = useMemo(() => {
+    try {
+      const plan = parseBattlePlan(battlePlan || description || '', workoutName);
+      const block = plan.blocks[0];
+      const moveSets = Math.max(0, ...block.movements.map((mv) => mv.sets ?? 0));
+      const total = block.rounds ?? (moveSets || 3);
+      return Math.max(1, Math.min(total, 6));
+    } catch {
+      return 3;
+    }
+  }, [battlePlan, description, workoutName]);
+
+  // Last set done → celebrate and (in session mode) auto-advance to the next
+  // exercise. Shared by the countdown-hit-zero path and manual taps.
+  const finishAllSets = () => {
+    setIsRunning(false);
+    setIsPaused(false);
+    setRemaining(0);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+    celebrateAnim.setValue(0);
+    Animated.spring(celebrateAnim, { toValue: 1, friction: 5, tension: 120, useNativeDriver: true }).start();
+    showToast(isSession ? 'All sets crushed — up next' : 'All sets crushed');
+    if (isSession) {
+      if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = setTimeout(() => {
+        advanceTimerRef.current = null;
+        handleCompletedWorkout();
+      }, 1500);
+    }
+  };
+
+  // Seed the visible countdown with the scheduled rest whenever the timer is
+  // fully idle (before the first Start, and after a reset).
+  useEffect(() => {
+    if (!isRunning && setsDone === 0) setRemaining(restSeconds);
+  }, [restSeconds, isRunning, setsDone]);
+
+  // Tick the rest countdown down once per second while running.
+  useEffect(() => {
+    if (!isRunning || isPaused) return;
+    const id = setInterval(() => {
+      setRemaining((prev) => (prev <= 0 ? 0 : prev - 1));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [isRunning, isPaused]);
+
+  // Countdown reached zero: fill the next set bubble and restart the rest, or
+  // finish the exercise once the final set's rest is done.
+  useEffect(() => {
+    if (!isRunning || isPaused || remaining > 0) return;
+    const next = setsDone + 1;
+    if (next >= totalSets) {
+      setSetsDone(totalSets);
+      finishAllSets();
+    } else {
+      setSetsDone(next);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+      setRemaining(restSeconds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [remaining, isRunning, isPaused, setsDone, totalSets, restSeconds]);
 
   const logCompletedWorkoutToServer = async (
     workoutId: string,
@@ -360,6 +433,10 @@ export default function WorkoutGuidanceScreen() {
     await logCompletedWorkoutToServer(workoutId, totalDuration, moodCategory);
   };
 
+  // Real elapsed workout time (first Start → completion), for analytics only.
+  const getSessionElapsedSeconds = () =>
+    workoutStartTsRef.current ? Math.floor((Date.now() - workoutStartTsRef.current) / 1000) : 0;
+
   const handleStartPauseTimer = () => {
     if (!isRunning) {
       // Guest gate: unauthenticated guests cannot start a workout session.
@@ -378,68 +455,61 @@ export default function WorkoutGuidanceScreen() {
       Analytics.startWorkoutTapped(token, { allowed: true });
       // Spec §3 Stage 3 — free-session consumption fires on workout COMPLETION
       // (see `consumeFreeWorkoutAllowance` below), not on start tap.
-      setStartTimestamp(Date.now());
-      setPausedTime(0);
+      if (workoutStartTsRef.current == null) workoutStartTsRef.current = Date.now();
+      // Starting = "I just finished set 1, now resting." Fill the first bubble
+      // and begin the first rest countdown.
+      setSetsDone(1);
+      if (totalSets <= 1) {
+        // Single-set exercise — no rest to run; celebrate immediately.
+        finishAllSets();
+        return;
+      }
+      setRemaining(restSeconds);
       setIsRunning(true);
       setIsPaused(false);
     } else if (isPaused) {
-      // Resuming from pause - set new start timestamp and keep accumulated time
-      setStartTimestamp(Date.now());
-      setIsPaused(false);
+      setIsPaused(false); // resume — remaining is preserved
     } else {
-      // Pausing - save current elapsed time and clear start timestamp
-      setPausedTime(elapsedTime);
-      setStartTimestamp(null);
-      setIsPaused(true);
+      setIsPaused(true); // pause — freeze the countdown
     }
   };
 
   const handleResetTimer = () => {
-    setElapsedTime(0);
-    setStartTimestamp(null);
-    setPausedTime(0);
+    setSetsDone(0);
+    setRemaining(restSeconds);
     setIsRunning(false);
     setIsPaused(false);
+    celebrateAnim.setValue(0);
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
   };
 
-  // Prescribed set count for this exercise, derived from the battle plan
-  // (rounds for circuits, "N ×" for strength work). Falls back to 3.
-  const totalSets = useMemo(() => {
-    try {
-      const plan = parseBattlePlan(battlePlan || description || '', workoutName);
-      const block = plan.blocks[0];
-      const moveSets = Math.max(0, ...block.movements.map((mv) => mv.sets ?? 0));
-      const total = block.rounds ?? (moveSets || 3);
-      return Math.max(1, Math.min(total, 6));
-    } catch {
-      return 3;
-    }
-  }, [battlePlan, description, workoutName]);
-
-  // Check off / undo a set. Checking a set restarts the rest count (fresh
-  // interval after the set); checking the LAST set fires a little celebration
-  // and, in session mode, auto-advances to the next exercise.
+  // Manual override on the set bubbles. Tapping the current (next) empty bubble
+  // ends the rest early and advances; tapping the just-filled bubble undoes it.
+  // The initial start must go through the Start button so the guest/paywall
+  // gates run, so taps are ignored until the session has begun.
   const handleToggleSet = (i: number) => {
+    // Not started yet: tapping the first bubble starts the timer, exactly like
+    // the Start button (runs the guest/paywall gates, fills set 1, begins the
+    // rest countdown). Taps on later bubbles are ignored until it's running.
+    if (setsDone === 0 && !isRunning) {
+      if (i === 0) handleStartPauseTimer();
+      return;
+    }
     if (i === setsDone && setsDone < totalSets) {
       const next = setsDone + 1;
-      setSetsDone(next);
-      if (next < totalSets) {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-        if (isRunning && !isPaused) {
-          setStartTimestamp(Date.now());
-          setPausedTime(0);
-          setElapsedTime(0);
-        }
+      if (next >= totalSets) {
+        setSetsDone(totalSets);
+        finishAllSets();
       } else {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
-        celebrateAnim.setValue(0);
-        Animated.spring(celebrateAnim, { toValue: 1, friction: 5, tension: 120, useNativeDriver: true }).start();
-        showToast(isSession ? 'All sets crushed — up next' : 'All sets crushed');
-        if (isSession) {
-          advanceTimerRef.current = setTimeout(() => {
-            advanceTimerRef.current = null;
-            handleCompletedWorkout();
-          }, 1500);
+        setSetsDone(next);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+        setRemaining(restSeconds);
+        if (!isRunning || isPaused) {
+          setIsRunning(true);
+          setIsPaused(false);
         }
       }
     } else if (i === setsDone - 1) {
@@ -450,6 +520,7 @@ export default function WorkoutGuidanceScreen() {
         clearTimeout(advanceTimerRef.current);
         advanceTimerRef.current = null;
       }
+      if (isRunning && !isPaused) setRemaining(restSeconds);
     }
   };
   
@@ -756,7 +827,7 @@ export default function WorkoutGuidanceScreen() {
               equipment: firstWorkout?.equipment,
               difficulty: firstWorkout?.difficulty,
               mood_category: overallMoodCategory,
-              duration_seconds: elapsedTime,
+              duration_seconds: getSessionElapsedSeconds(),
               source: featuredWorkoutId ? 'featured' : 'custom',
             });
             console.log('📊 Tracked workout session completed');
@@ -767,7 +838,7 @@ export default function WorkoutGuidanceScreen() {
               equipment: firstWorkout?.equipment,
               difficulty: firstWorkout?.difficulty,
               mood_category: overallMoodCategory,
-              duration_seconds: elapsedTime,
+              duration_seconds: getSessionElapsedSeconds(),
               source: params.featuredWorkoutId ? 'featured' : 'custom',
             });
             console.log('📊 Tracked guest workout session completed');
@@ -1011,8 +1082,10 @@ export default function WorkoutGuidanceScreen() {
       <View style={styles.tCardWrap}>
         <View style={styles.tCard}>
           <View>
-            <Text style={styles.tLabel}>REST TIMER</Text>
-            <Text style={styles.tTime}>{formatTime(elapsedTime)}</Text>
+            <Text style={styles.tLabel}>
+              {!isRunning ? 'REST TIMER' : isPaused ? 'PAUSED' : 'RESTING'}
+            </Text>
+            <Text style={styles.tTime}>{formatTime(remaining)}</Text>
           </View>
 
           {/* Set tracker — check sets off; finishing the last one celebrates
@@ -1094,6 +1167,10 @@ export default function WorkoutGuidanceScreen() {
         {/* Workout Instructions - Simplified */}
         <View style={styles.instructionsContainer}>
           <View style={styles.workoutCard}>
+            {/* Battle Plan eyebrow — sits at the top of the card, above the
+                title, inside the border with its own breathing room. */}
+            <Text style={styles.bpEyebrow}>BATTLE PLAN</Text>
+
             {/* Centered Workout Title with Custom Badge */}
             <View style={styles.workoutTitleRow}>
               <Text style={styles.centeredWorkoutTitle}>{workoutName}</Text>
@@ -1106,7 +1183,7 @@ export default function WorkoutGuidanceScreen() {
             {equipment ? (
               <View style={styles.equipChipRow}>
                 <View style={styles.equipChip}>
-                  <Ionicons name="barbell-outline" size={13} color="#c2c2c9" />
+                  <Ionicons name="barbell" size={15} color="#F4C316" />
                   <Text style={styles.equipChipText}>{equipment}</Text>
                 </View>
               </View>
@@ -1114,7 +1191,6 @@ export default function WorkoutGuidanceScreen() {
 
             {/* Battle Plan — hero for single movement, clear cards for circuits */}
             <View style={styles.stepsContainer}>
-              <Text style={styles.stepsHeader}>BATTLE PLAN</Text>
               {(() => {
                 const plan = parseBattlePlan(battlePlan || description || '', workoutName);
                 const movements = plan.blocks.flatMap(b => b.movements);
@@ -1775,6 +1851,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   // New styles for simplified workout instructions
+  bpEyebrow: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 2,
+    color: '#F4C316',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    marginBottom: 16,
+  },
   centeredWorkoutTitle: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -1786,7 +1871,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    marginBottom: 24,
+    marginBottom: 14,
   },
   customBadgeGuidance: {
     backgroundColor: '#4a4a4a',
@@ -1802,7 +1887,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   stepsContainer: {
-    marginTop: 8,
+    marginTop: 20,
   },
   /* Timer — compact elevated card */
   tCardWrap: { paddingHorizontal: 18, paddingTop: 16, paddingBottom: 10 },
@@ -1958,12 +2043,14 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     textAlign: 'center',
   },
-  equipChipRow: { flexDirection: 'row', justifyContent: 'center', marginTop: 8 },
+  equipChipRow: { flexDirection: 'row', justifyContent: 'center', marginTop: 2 },
   equipChip: {
-    flexDirection: 'row', alignItems: 'center', gap: 6,
-    backgroundColor: '#1c1c21', borderRadius: 20, paddingVertical: 5, paddingHorizontal: 12,
+    flexDirection: 'row', alignItems: 'center', gap: 7,
+    backgroundColor: '#1c1c21',
+    borderWidth: 1, borderColor: 'rgba(244,195,22,0.45)',
+    borderRadius: 22, paddingVertical: 8, paddingHorizontal: 16,
   },
-  equipChipText: { fontSize: 12, color: '#c2c2c9', fontWeight: '500' },
+  equipChipText: { fontSize: 13.5, color: '#F3F3F3', fontWeight: '700', letterSpacing: 0.3 },
   stepsList: {
     gap: 12,
   },

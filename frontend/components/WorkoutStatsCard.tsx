@@ -709,16 +709,29 @@ export default function WorkoutStatsCard({
     const chartW = CARD_WIDTH - 56;
     const chartH = 110;
     const usingReal = !!(heartRateSamples && heartRateSamples.length >= 2);
+    // A retrospective Apple Health sync gives us avg/peak WITHOUT a full sample
+    // series. Treat those synced numbers as real too, so this card reflects the
+    // actual heart rate instead of the synthesized fallback.
+    const hasRealStats = !!(
+      heartRateRealStats &&
+      (heartRateRealStats.avg ?? 0) > 0 &&
+      (heartRateRealStats.peak ?? 0) > 0
+    );
+    const isReal = usingReal || hasRealStats;
     const points = usingReal ? heartRateSamples! : heartRate.points;
-    const avg = usingReal ? (heartRateRealStats?.avg ?? Math.round(points.reduce((a, b) => a + b, 0) / points.length)) : heartRate.avg;
-    const peak = usingReal ? (heartRateRealStats?.peak ?? Math.max(...points)) : heartRate.peak;
+    const avg =
+      heartRateRealStats?.avg ??
+      (usingReal ? Math.round(points.reduce((a, b) => a + b, 0) / points.length) : heartRate.avg);
+    const peak =
+      heartRateRealStats?.peak ??
+      (usingReal ? Math.max(...points) : heartRate.peak);
     const { line, area } = buildHeartRatePath(points, chartW, chartH);
 
     // Show the wearables strip only when at least one HealthKit-derived
-    // metric is present (HR samples / session steps / HRV). For the IG
+    // metric is present (real HR / session steps / HRV). For the IG
     // share export we don't want fake/empty rows.
     const showWearablesStrip =
-      hasWearableData || usingReal || sessionSteps != null || sessionHrvSdnn != null;
+      hasWearableData || isReal || sessionSteps != null || sessionHrvSdnn != null;
 
     return wrapInFrame(
       <View style={styles.altCardInner}>
@@ -729,7 +742,7 @@ export default function WorkoutStatsCard({
             <View style={styles.hrHeaderLeft}>
               <Ionicons name="heart" size={11} color="#FFD700" />
               <Text style={[styles.hrLabel, transparent && styles.altTextShadow]}>HEART RATE</Text>
-              {usingReal && (
+              {isReal && (
                 <View style={styles.liveBadge}>
                   <View style={styles.liveBadgeDot} />
                   <Text style={styles.liveBadgeText}>LIVE</Text>
@@ -773,7 +786,7 @@ export default function WorkoutStatsCard({
                   <Text style={[styles.wearablesStripLabel, transparent && styles.altTextShadow]}>HRV</Text>
                 </View>
               )}
-              {usingReal && (
+              {isReal && (
                 <View style={styles.wearablesStripCell}>
                   <Ionicons name="heart-outline" size={11} color="rgba(255,255,255,0.7)" />
                   <Text style={[styles.wearablesStripValue, transparent && styles.altTextShadow]}>
