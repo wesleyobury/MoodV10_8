@@ -10,7 +10,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell RDL',
           duration: '10–12 min',
           description: 'Teaches safe mechanics and stretch for hypertrophy',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Dumbbell RDLs\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 Dumbbell RDLs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -26,7 +26,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241342/mood_app/workout_images/d1gxk1c1_download_18_.jpg',
           intensityReason: 'Starter hinge builds hamstring stretch and control',
@@ -51,7 +52,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Good Morning (Chest Hold)',
           duration: '10–12 min',
           description: 'Difficult lift, always start light and progress slowly',
-          battlePlan: 'Instructions: 3 sets of 8–10 — rest 75–90s between sets, take all of it.\n3 rounds\n• 8–10 DB Good Mornings\nRest 75–90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 75–90s between sets, take all of it.\n3 sets\n• 8–10 DB Good Mornings\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -67,7 +68,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8–10 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241363/mood_app/workout_images/vgioydhr_dbgm.jpg',
           intensityReason: 'Upright hinge challenges hamstrings + posture',
@@ -92,7 +94,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Suitcase RDL',
           duration: '10–12 min',
           description: 'Single-side RDLs reinforcing hamstring control',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s between sets, take all of it.\n3 rounds\n• 10 RDLs per side\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s between sets, take all of it.\n3 sets\n• 10 RDLs per side\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -108,7 +110,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240669/mood_app/workout_images/e4tblt9j_download_18_.jpg',
           intensityReason: 'Unilateral loading builds balanced hamstring strength',
@@ -138,7 +141,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Hamstring Walkouts',
           duration: '10–12 min',
           description: 'Floor walkouts emphasizing eccentric hamstring control',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 6–8 — rest 75s between sets, take all of it.\n3 rounds\n• 6–8 Walkouts\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 6–8 — rest 75s between sets, take all of it.\n3 sets\n• 6–8 Walkouts\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -153,7 +156,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 6–8 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240690/mood_app/workout_images/wd5yzviz_db_hamstring_walkout.jpg',
           intensityReason: 'Walkouts challenge hamstring control through full range',
@@ -185,7 +189,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Staggered‑Stance DB RDL',
           duration: '14–16 min',
           description: 'Single‑leg hinge balances strength across sides',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per side Staggered RDLs\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• 8 per side Staggered RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -201,7 +205,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241360/mood_app/workout_images/skovrpoc_image.jpg',
           intensityReason: 'Split stance emphasizes deeper hamstring load',
@@ -226,7 +231,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Deficit RDL',
           duration: '14–16 min',
           description: 'Elevation increases hypertrophy by extended ROM',
-          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Deficit DB RDLs\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Deficit DB RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -242,7 +247,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241322/mood_app/workout_images/4qp237ff_download_3_.jpg',
           intensityReason: 'Deficit stance adds longer hamstring stretch load',
@@ -267,7 +273,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Staggered-Stance RDL',
           duration: '14–16 min',
           description: 'Rear-foot-light RDL emphasizing lead hamstring',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 rounds\n• 8 RDLs per leg\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 sets\n• 8 RDLs per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -283,7 +289,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240668/mood_app/workout_images/djo9uunp_db_rdl_2.jpg',
           intensityReason: 'Staggered stance isolates front leg hamstring',
@@ -315,7 +322,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused DB RDL',
           duration: '16–18 min',
           description: 'Burns hamstrings with static stress and strict tempo',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 rounds\n• 6–8 Paused DB RDLs\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 sets\n• 6–8 Paused DB RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -331,7 +338,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241323/mood_app/workout_images/5v2oyit3_dbrdl.jpg',
           intensityReason: 'Pausing mid‑shin removes momentum, builds control',
@@ -356,7 +364,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep DB RDL Combo',
           duration: '16–18 min',
           description: 'Complex set multiplies time under hamstring tension',
-          battlePlan: 'Instructions: Every rep = one full rep plus a half rep in the hardest range before you finish. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Combo Reps (full + half = 1 rep)\nRest 90s',
+          battlePlan: 'Instructions: Every rep = one full rep plus a half rep in the hardest range before you finish. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Combo Reps (full + half = 1 rep)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -364,15 +372,15 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "1½ Rep DB RDL Combo",
-                    "reps": "8",
-                    "tutorialSlug": "db_rdl"
+                    "name": "Combo Reps",
+                    "reps": "8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep = one full rep plus a half rep in the hardest range before you finish. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240651/mood_app/workout_images/vj5eokcy_download_17_.jpg',
           intensityReason: 'Adds half reps between full reps for constant stress',
@@ -397,7 +405,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell RDL Triple Drop',
           duration: '18–20 min',
           description: 'Extended RDL sets using three rapid drops',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 4 moves in order, then rest 150s.\n3 rounds\n• 8 RDLs\n• RDL drop → 6\n• RDL drop → 6\n• RDL drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 150s.\n3 sets\n• 8 RDLs\n• RDL drop → 6\n• RDL drop → 6\n• RDL drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -407,14 +415,26 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "RDLs",
                     "reps": "8",
-                    "tutorialSlug": "smith_machine_rdl",
-                    "note": "Drop → 6; Drop → 6; Drop → 6"
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "RDL drop → 6",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "RDL drop → 6",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "RDL drop → 6",
+                    "tutorialSlug": "smith_machine_rdl"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 150s."
           },
           imageUrl: '',
           intensityReason: 'Triple drops maximize hamstring fatigue and hypertrophy',
@@ -444,7 +464,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Long-Pause RDL',
           duration: '18–20 min',
           description: 'Paused RDLs strengthening stretched hamstrings',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 150s between sets, take all of it.\n4 rounds\n• 6 RDLs (3s pause)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 150s between sets, take all of it.\n4 sets\n• 6 RDLs (3s pause)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -460,7 +480,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 150s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Long pauses build strength in lengthened position',
@@ -498,7 +519,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell RDL',
           duration: '10–12 min',
           description: 'Fundamental builder, strengthen hinge with light loads',
-          battlePlan: 'Instructions: 3 sets of 10 — rest 75s between sets, take all of it.\n3 rounds\n• 10 Barbell RDLs\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10 — rest 75s between sets, take all of it.\n3 sets\n• 10 Barbell RDLs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -514,7 +535,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240638/mood_app/workout_images/46ki5rsl_download_15_.jpg',
           intensityReason: 'Basic hinge develops hamstrings under straight bar',
@@ -539,7 +561,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Good Morning (Light!)',
           duration: '10–12 min',
           description: 'Hard lift, best done light for controlled practice',
-          battlePlan: 'Instructions: 3 sets of 8 — rest 75–90s between sets, take all of it.\n3 rounds\n• 8 Good Mornings\nRest 75–90s',
+          battlePlan: 'Instructions: 3 sets of 8 — rest 75–90s between sets, take all of it.\n3 sets\n• 8 Good Mornings\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -555,7 +577,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240653/mood_app/workout_images/vysbxwqg_download_16_.jpg',
           intensityReason: 'Bar on back hinge is effective but very demanding',
@@ -580,7 +603,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Hip Hinge Good Morning',
           duration: '10–12 min',
           description: 'Light bar good mornings emphasizing hamstring stretch',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Good Mornings\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 sets\n• 12 Good Mornings\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -596,7 +619,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240665/mood_app/workout_images/9wufahvm_bb_goodmorning.jpg',
           intensityReason: 'Good mornings teach proper hip hinge mechanics',
@@ -626,7 +650,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Stiff-Leg Iso Hold',
           duration: '10–12 min',
           description: 'Isometric hinge holds reinforcing hamstring tension',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 20–30s — rest 75s between sets, take all of it.\n3 rounds\n• 20–30s Stiff-Leg Hold\nRest 75s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 20–30s — rest 75s between sets, take all of it.\n3 sets\n• 20–30s Stiff-Leg Hold\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -641,7 +665,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 20–30s — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240685/mood_app/workout_images/ry5w35jl_image.jpg',
           intensityReason: 'Isometric holds build hamstring endurance and control',
@@ -673,7 +698,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Sumo Deadlift',
           duration: '14–16 min',
           description: 'Wide stance deadlift emphasizes inner hamstrings and glutes',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Sumo Deadlifts\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 sets\n• 8–10 Sumo Deadlifts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -689,7 +714,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240638/mood_app/workout_images/46ki5rsl_download_15_.jpg',
           videoUrl: 'https://res.cloudinary.com/dfsygar5c/video/upload/v1770240483/mood_app/workout_videos/BB_sumo_deadlift.mov',
@@ -715,7 +741,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Pause RDL',
           duration: '14–16 min',
           description: 'Strict hold eliminates momentum, builds hamstring size',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 RDLs (2s pause at shin)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 90s between sets, take all of it.\n4 sets\n• 8 RDLs (2s pause at shin)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -731,7 +757,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240638/mood_app/workout_images/46ki5rsl_download_15_.jpg',
           intensityReason: 'Mid‑hinge pause increases hamstring strength time',
@@ -756,7 +783,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Deficit RDL',
           duration: '14–16 min',
           description: 'Creates extra tension through hamstring length ROM',
-          battlePlan: 'Instructions: 3 sets of 6–8 — rest 90s between sets, take all of it.\n3 rounds\n• 6–8 Deficit Barbell RDLs\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 6–8 — rest 90s between sets, take all of it.\n3 sets\n• 6–8 Deficit Barbell RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -772,7 +799,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 6–8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241340/mood_app/workout_images/chdxu3vk_deficit_rdl.jpg',
           intensityReason: 'Standing elevated extends hinge stretch fully',
@@ -797,7 +825,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Tempo Good Morning',
           duration: '14–16 min',
           description: 'Slow-eccentric good mornings for time under tension',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 120s between sets, take all of it.\n4 rounds\n• 8 Good Mornings (3s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 120s between sets, take all of it.\n4 sets\n• 8 Good Mornings (3s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -813,7 +841,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Tempo work maximizes hamstring time under tension',
@@ -845,7 +874,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Tempo RDL',
           duration: '16–18 min',
           description: 'Strict controlled pace maximizes hypertrophy stimulus',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 90s between sets, take all of it.\n4 rounds\n• 6 Tempo RDLs (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 90s between sets, take all of it.\n4 sets\n• 6 Tempo RDLs (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -861,7 +890,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240638/mood_app/workout_images/46ki5rsl_download_15_.jpg',
           intensityReason: '3s eccentric raises time under tension dramatically',
@@ -907,7 +937,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 2 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240642/mood_app/workout_images/joz0sngb_download_14_.jpg',
           intensityReason: 'Heavy rack pulls pair with RDL for full overload',
@@ -932,7 +963,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell RDL Drop Series',
           duration: '18–20 min',
           description: 'Extended RDL sets using multiple rapid drops',
-          battlePlan: 'Instructions: 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 6 RDLs\n• Series drop → 6\n• Series drop → 6\nRest 150s',
+          battlePlan: 'Instructions: 3 sets — all 3 moves in order, then rest 150s.\n3 sets\n• 6 RDLs\n• Series drop → 6\n• Series drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -942,14 +973,22 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "RDLs",
                     "reps": "6",
-                    "tutorialSlug": "smith_machine_rdl",
-                    "note": "Drop → 6; Drop → 6"
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Series drop → 6",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Series drop → 6",
+                    "tutorialSlug": "smith_machine_rdl"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "3 sets — all 3 moves in order, then rest 150s."
           },
           imageUrl: '',
           intensityReason: 'Drop series extends hamstring fatigue for hypertrophy',
@@ -979,7 +1018,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Lengthened-Pause RDL',
           duration: '18–20 min',
           description: 'Paused RDLs emphasizing stretched hamstring strength',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 RDLs (2s pause)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 sets\n• 5–6 RDLs (2s pause)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -995,7 +1034,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Paused stretches build strength in lengthened position',
@@ -1033,7 +1073,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Roman Chair Back Extension',
           duration: '10–12 min',
           description: 'Establish hinge mechanics for beginner lifters',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Back Extensions\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 sets\n• 12–15 Back Extensions\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1049,7 +1089,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240648/mood_app/workout_images/srezw23f_rc.jpg',
           intensityReason: 'Bodyweight hinge builds hamstring control safely',
@@ -1074,7 +1115,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Roman Chair Good Morning',
           duration: '10–12 min',
           description: 'Strengthens core as hamstrings extend repeatedly',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 60s between sets, take all of it.\n3 rounds\n• 12 Good Morning Reps (bodyweight)\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 60s between sets, take all of it.\n3 sets\n• 12 Good Morning Reps (bodyweight)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1090,7 +1131,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240647/mood_app/workout_images/p2gogdp0_download_20_.jpg',
           intensityReason: 'Torso hinge without load builds basic stability',
@@ -1115,7 +1157,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hamstring-Bias Extension',
           duration: '10–12 min',
           description: 'Short-range extensions emphasizing hamstring stretch',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Extensions\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 sets\n• 12 Extensions\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1130,7 +1172,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240684/mood_app/workout_images/qscgkw62_back_ext.jpg',
           intensityReason: 'Hamstring-focused movement builds posterior chain control',
@@ -1160,7 +1203,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Hinge Hold',
           duration: '10–12 min',
           description: 'Static hinge holds reinforcing hamstring endurance',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 20–30s — rest 75s between sets, take all of it.\n3 rounds\n• 20–30s Hold\nRest 75s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 20–30s — rest 75s between sets, take all of it.\n3 sets\n• 20–30s Hold\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1175,7 +1218,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 20–30s — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240682/mood_app/workout_images/oixv12p3_rc_back_ext_3.jpg',
           intensityReason: 'Isometric holds build hamstring endurance',
@@ -1207,7 +1251,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Back Extension',
           duration: '14–16 min',
           description: 'Resistance progression builds hypertrophy effectively',
-          battlePlan: 'Instructions: 4 sets of 10 — rest 75–90s between sets, take all of it.\n4 rounds\n• 10 Weighted Back Extensions\nRest 75–90s',
+          battlePlan: 'Instructions: 4 sets of 10 — rest 75–90s between sets, take all of it.\n4 sets\n• 10 Weighted Back Extensions\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1223,7 +1267,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 10 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240648/mood_app/workout_images/srezw23f_rc.jpg',
           intensityReason: 'Hug plate to overload hamstring hinge movement',
@@ -1248,7 +1293,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single‑Leg Extension',
           duration: '14–16 min',
           description: 'Forces balance and greater range for each limb',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 per side\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 90s between sets, take all of it.\n3 sets\n• 8–10 per side\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1263,7 +1308,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241362/mood_app/workout_images/v9w417gg_slrcext.jpg',
           intensityReason: 'Single leg increases unilateral hamstring stress',
@@ -1288,7 +1334,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Extension + Pause',
           duration: '14–16 min',
           description: 'Extensions with pauses at stretched position',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 120s between sets, take all of it.\n4 rounds\n• 8 Extensions (2s pause)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 120s between sets, take all of it.\n4 sets\n• 8 Extensions (2s pause)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1303,7 +1349,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Paused stretches strengthen hamstrings in lengthened position',
@@ -1335,7 +1382,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Back Extension',
           duration: '16–18 min',
           description: 'Eliminates swing, prolongs posterior chain tension',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Paused Extensions\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Paused Extensions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1343,15 +1390,15 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Pause Back Extension",
-                    "reps": "8",
-                    "tutorialSlug": "roman_chair_back_extension"
+                    "name": "Paused Extensions",
+                    "reps": "8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240648/mood_app/workout_images/srezw23f_rc.jpg',
           intensityReason: 'Static hold at hinge builds hamstring isometric work',
@@ -1376,7 +1423,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Alternating Half + Full Extensions',
           duration: '16–18 min',
           description: 'Alternating range burns hamstrings under long tension',
-          battlePlan: 'Instructions: 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Alternating Half + Full Extensions\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Alternating Half + Full Extensions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1391,7 +1438,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240647/mood_app/workout_images/p2gogdp0_download_20_.jpg',
           intensityReason: 'Half + full reps cycle extend muscle set time fully',
@@ -1416,7 +1464,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Extension Drop Set',
           duration: '18–20 min',
           description: 'Extended posterior work using rapid drops',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 8 Extensions\n• Extension drop → 8\n• Extension drop → 8\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s.\n3 sets\n• 8 Extensions\n• Extension drop → 8\n• Extension drop → 8\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1425,14 +1473,20 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Extensions",
-                    "reps": "8",
-                    "note": "Drop → 8; Drop → 8"
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Extension drop → 8"
+                  },
+                  {
+                    "name": "Extension drop → 8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s."
           },
           imageUrl: '',
           intensityReason: 'Drop sets maximize hamstring and posterior chain fatigue',
@@ -1462,7 +1516,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Long-Hold Extension Finisher',
           duration: '18–20 min',
           description: 'Isometric holds under heavy fatigue',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 30–40s — rest 150s between sets, take all of it.\n3 rounds\n• 30–40s Hold\nRest 150s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 30–40s — rest 150s between sets, take all of it.\n3 sets\n• 30–40s Hold\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1477,7 +1531,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 30–40s — rest 150s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Extended isometric holds maximize hamstring endurance',
@@ -1515,7 +1570,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Leg Curl',
           duration: '10–12 min',
           description: 'Best beginner machine for full hamstring engagement',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Seated Leg Curls\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 sets\n• 12–15 Seated Leg Curls\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1530,7 +1585,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240637/mood_app/workout_images/3vkyuj1o_download_19_.jpg',
           intensityReason: 'Isolated seat curl strengthens flexion carefully',
@@ -1555,7 +1611,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lying Leg Curl',
           duration: '10–12 min',
           description: 'Fixed setup ensures strict hypertrophy contraction',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Lying Curls\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 sets\n• 12–15 Lying Curls\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1570,7 +1626,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240645/mood_app/workout_images/o9f5gltv_Screenshot_2025-12-02_at_10_29_39_PM.jpg',
           intensityReason: 'Lying pad curl isolates hamstring contraction',
@@ -1595,7 +1652,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Curl Slow Return',
           duration: '10–12 min',
           description: 'Controlled curls emphasizing eccentric tension',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Curls\nRest 60s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 sets\n• 12–15 Curls\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1610,7 +1667,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12–15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240683/mood_app/workout_images/pokwsf2m_leg_curl.jpg',
           intensityReason: 'Slow eccentrics build hamstring strength and control',
@@ -1640,7 +1698,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Iso Hold',
           duration: '10–12 min',
           description: 'Standard curls finished with static contraction',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 75s between sets, take all of it.\n3 rounds\n• 10 Curls + 10s Hold\nRest 75s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 75s between sets, take all of it.\n3 sets\n• 10 Curls + 10s Hold\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1655,7 +1713,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240677/mood_app/workout_images/jhs811y7_leg_curl.jpg',
           intensityReason: 'Isometric holds maximize hamstring activation',
@@ -1687,7 +1746,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Leg Curl',
           duration: '14–16 min',
           description: 'Increased weight overload boosts hypertrophy',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Heavy Curls\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 sets\n• 8–10 Heavy Curls\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1702,7 +1761,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240637/mood_app/workout_images/3vkyuj1o_download_19_.jpg',
           intensityReason: 'Progressive loading builds hamstrings thickness',
@@ -1727,7 +1787,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Leg Curl',
           duration: '14–16 min',
           description: 'Pausing at top peaks hamstring contraction force',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Pause Reps\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Pause Reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1742,7 +1802,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240645/mood_app/workout_images/o9f5gltv_Screenshot_2025-12-02_at_10_29_39_PM.jpg',
           intensityReason: 'Isometric hold raises muscular control demand',
@@ -1767,7 +1828,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep Leg Curl',
           duration: '14–16 min',
           description: 'Partial-plus-full reps extending hamstring time',
-          battlePlan: 'Instructions: Curl to the top, lower halfway, curl back up, then lower fully — that\'s ONE rep. 4 sets — rest 90s between sets, take all of it.\n4 rounds\n• 10 1½-rep Curls\nRest 90s',
+          battlePlan: 'Instructions: Curl to the top, lower halfway, curl back up, then lower fully — that\'s ONE rep. 4 sets — rest 90s between sets, take all of it.\n4 sets\n• 10 1½-rep Curls\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1775,13 +1836,14 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "10 Curls"
+                    "name": "10 1½-rep Curls"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Curl to the top, lower halfway, curl back up, then lower fully — that's ONE rep. 4 sets — rest 90s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Extra half rep increases time under tension',
@@ -1811,7 +1873,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Curl Drop Set',
           duration: '14–16 min',
           description: 'Extended curl sets using rapid load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 10 Curls\n• Curl drop → 8\n• Curl drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• 10 Curls\n• Curl drop → 8\n• Curl drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1820,14 +1882,20 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Curls",
-                    "reps": "10",
-                    "note": "Drop → 8; Drop → 8"
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Curl drop → 8"
+                  },
+                  {
+                    "name": "Curl drop → 8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: '',
           intensityReason: 'Drop sets extend fatigue for hypertrophy',
@@ -1859,7 +1927,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop‑Set Curl',
           duration: '16–18 min',
           description: 'Hamstrings stay under work far beyond normal set',
-          battlePlan: 'Instructions: 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Heavy Curls\n• Drop 15–20% → 8 reps\n• Drop 15–20% → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Heavy Curls\n• Drop 15–20% → 8 reps\n• Drop 15–20% → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1868,14 +1936,15 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Heavy Curls",
-                    "reps": "8",
-                    "note": "Drop 15–20% → 8 reps; Drop 15–20% → 8 reps"
+                    "note": "Drop 15–20% → 8 reps; Drop 15–20% → 8 reps",
+                    "reps": "8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240637/mood_app/workout_images/3vkyuj1o_download_19_.jpg',
           intensityReason: 'Drop weights prolong contraction by overload reps',
@@ -1900,23 +1969,27 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Iso Hold',
           duration: '16–18 min',
           description: 'Endurance builder combining iso with normal reps',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Leg Curls\nFinish 10s Iso Hold @ top\nRest 90s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Leg Curls\nFinish 10s Iso Hold @ top\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Leg Curls",
-                    "reps": "8–10",
-                    "note": "Finish 10s Iso Hold @ top"
+                    "reps": "8–10"
+                  },
+                  {
+                    "name": "Iso Hold @ top",
+                    "reps": "10s"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240645/mood_app/workout_images/o9f5gltv_Screenshot_2025-12-02_at_10_29_39_PM.jpg',
           intensityReason: 'Finish set with hold for longer contraction stress',
@@ -1941,7 +2014,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Long-Eccentric Leg Curl',
           duration: '18–20 min',
           description: 'Slow eccentrics overloading hamstring length',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 150s between sets, take all of it.\n4 rounds\n• 8 Curls (5s eccentric)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 150s between sets, take all of it.\n4 sets\n• 8 Curls (5s eccentric)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1956,7 +2029,8 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 150s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Extended eccentrics maximize muscle damage and growth',
@@ -1986,7 +2060,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Curl Burnout',
           duration: '18–20 min',
           description: 'High-fatigue curls using three fast drops',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — rest 150s between sets, take all of it.\n3 rounds\n• Curl 10 → 8 → 8 → 8\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — rest 150s between sets, take all of it.\n3 sets\n• Curl 10 → 8 → 8 → 8\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1994,13 +2068,14 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "10 → 8 → 8 → 8"
+                    "name": "Curl 10 → 8 → 8 → 8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — rest 150s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Triple drops exhaust all muscle fibers',

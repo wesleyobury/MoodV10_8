@@ -31,7 +31,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s after each side"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — all 2 moves in order, then rest 60s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240554/mood_app/workout_images/q6jestgn_download.jpg',
           intensityReason: 'Targets lats + rear delts with simple supported lifts',
@@ -80,7 +81,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s after sequence"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240869/mood_app/workout_images/928yql53_download_22_.jpg',
           intensityReason: 'Basic scapular + rear delt balance with angles',
@@ -105,7 +107,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported One-Arm Rows',
           duration: '12–14 min',
           description: 'Bench-supported rows to learn clean pulling mechanics',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s per side between sets, take all of it.\n3 rounds\n• 10 Single-Arm DB Rows (each side)\nRest 60s per side',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s per side between sets, take all of it.\n3 sets\n• 10 Single-Arm DB Rows (each side)\nRest 60s per side',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -121,7 +123,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s per side"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s per side between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240692/mood_app/workout_images/2ctzlc7l_SA_db_row.jpg',
           intensityReason: 'Supported setup teaches proper mechanics',
@@ -151,7 +154,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chest-Supported Dumbbell Rows',
           duration: '12–14 min',
           description: 'Prone rows emphasizing mid-back control',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Chest-Supported DB Rows\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 sets\n• 12 Chest-Supported DB Rows\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -167,7 +170,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240748/mood_app/workout_images/rw2y880d_chest_supported_db_row.jpg',
           intensityReason: 'Chest support isolates mid-back muscles',
@@ -220,7 +224,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "4 rounds — follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240554/mood_app/workout_images/q6jestgn_download.jpg',
           intensityReason: 'Neutral spine from support isolates lats + traps',
@@ -270,7 +275,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s after sequence"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240895/mood_app/workout_images/k5agvaci_download_23_.jpg',
           intensityReason: 'W-raises + flys emphasize scapular control within a circuit',
@@ -295,7 +301,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Dumbbell Rows',
           duration: '14–16 min',
           description: 'One-arm rows with extended peak contraction',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 75–90s between sets, take all of it.\n4 rounds\n• 8 DB Rows (2s pause, each side)\nRest 75–90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 75–90s between sets, take all of it.\n4 sets\n• 8 DB Rows (2s pause, each side)\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -311,7 +317,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240692/mood_app/workout_images/2ctzlc7l_SA_db_row.jpg',
           intensityReason: 'Paused reps maximize peak contraction time',
@@ -341,7 +348,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Row Drop Set',
           duration: '14–16 min',
           description: 'Heavy rows extended using fast weight drops',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 8 DB Rows\n• Row drop → 8\n• Row drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• 8 DB Rows\n• Row drop → 8\n• Row drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -351,14 +358,22 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "DB Rows",
                     "reps": "8",
-                    "tutorialSlug": "db_single_arm_row",
-                    "note": "Drop → 8; Drop → 8"
+                    "tutorialSlug": "db_single_arm_row"
+                  },
+                  {
+                    "name": "Row drop → 8",
+                    "tutorialSlug": "db_single_arm_row"
+                  },
+                  {
+                    "name": "Row drop → 8",
+                    "tutorialSlug": "db_single_arm_row"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240748/mood_app/workout_images/rw2y880d_chest_supported_db_row.jpg',
           intensityReason: 'Drop sets extend time under tension beyond failure',
@@ -416,7 +431,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 rounds — follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240554/mood_app/workout_images/q6jestgn_download.jpg',
           intensityReason: 'Multiple row/rear delt moves for depth of fatigue',
@@ -465,7 +481,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90–120s after sequence"
               }
-            ]
+            ],
+            "instructions": "4 rounds — follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240549/mood_app/workout_images/e00z2xt6_download_1_.jpg',
           intensityReason: 'Multi-angle raises + row overload scapular support',
@@ -490,7 +507,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Dumbbell Rows',
           duration: '16–18 min',
           description: 'Heavy unilateral rows for maximal lat loading',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 — rest 120s between sets, take all of it.\n4 rounds\n• 6 Heavy DB Rows (each side)\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 — rest 120s between sets, take all of it.\n4 sets\n• 6 Heavy DB Rows (each side)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -506,7 +523,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240692/mood_app/workout_images/2ctzlc7l_SA_db_row.jpg',
           intensityReason: 'Heavy loads maximize strength development',
@@ -536,7 +554,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Dumbbell Rows',
           duration: '18–20 min',
           description: 'Extended drop sets to fully exhaust back',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 4 moves in order, then rest 150s.\n3 rounds\n• 6 Rows\n• Rows drop → 6\n• Rows drop → 6\n• Rows drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 150s.\n3 sets\n• 6 Rows\n• Rows drop → 6\n• Rows drop → 6\n• Rows drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -546,13 +564,26 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Rows",
                     "reps": "6",
-                    "note": "Drop → 6; Drop → 6; Drop → 6"
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Rows drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Rows drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Rows drop → 6",
+                    "tutorialSlug": "barbell_row"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240748/mood_app/workout_images/rw2y880d_chest_supported_db_row.jpg',
           intensityReason: 'Triple drops maximize muscle fatigue and pump',
@@ -611,7 +642,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after each set"
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 2 moves in order, then rest 60–75s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240560/mood_app/workout_images/x2wxwvpl_download_2_.jpg',
           videoUrl: 'https://res.cloudinary.com/dfsygar5c/video/upload/v1770240452/mood_app/workout_videos/BB_deadlift.mov',
@@ -662,7 +694,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after completing the full sequence"
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 3 moves in order, then rest 60–75s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240868/mood_app/workout_images/8q41tii0_download_1_.jpg',
           intensityReason: 'Varied grip rowing boosts muscular activation volume.',
@@ -687,7 +720,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Bent-Over Rows',
           duration: '12–14 min',
           description: 'Controlled barbell rows emphasizing strict tempo',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Bent-Over Rows (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 sets\n• 10 Bent-Over Rows (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -703,7 +736,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240699/mood_app/workout_images/8imeatpq_bb_row_2.jpg',
           intensityReason: 'Tempo work builds control and strength foundation',
@@ -733,7 +767,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Rows',
           duration: '12–14 min',
           description: 'Barbell rows with pauses at contraction',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Paused Bent-Over Rows\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Paused Bent-Over Rows\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -742,14 +776,14 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Bent-Over Rows",
-                    "reps": "8",
-                    "tutorialSlug": "barbell_row"
+                    "reps": "8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240714/mood_app/workout_images/eubpjqb9_bb_row.jpg',
           intensityReason: 'Paused reps reinforce form and peak contraction',
@@ -802,7 +836,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s after each set"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 2 moves in order, then rest 75–90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240743/mood_app/workout_images/rh9264vy_pendlay_row.jpg',
           intensityReason: 'Explosive pulls and slow RDLs strengthen full posterior.',
@@ -856,7 +891,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s after finishing the full circuit"
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 4 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240874/mood_app/workout_images/a5y4znby_download_2_.jpg',
           intensityReason: 'Combo of rows, shrugs, and deads creates dense fatigue.',
@@ -881,7 +917,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Row Drop Set',
           duration: '16–18 min',
           description: 'Heavy rows extended using plate reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 6 Rows\n• Row drop → 6\n• Row drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s.\n3 sets\n• 6 Rows\n• Row drop → 6\n• Row drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -889,16 +925,24 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Barbell Row Drop Set",
+                    "name": "Rows",
                     "reps": "6",
-                    "tutorialSlug": "barbell_row",
-                    "note": "Drop → 6; Drop → 6"
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Row drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Row drop → 6",
+                    "tutorialSlug": "barbell_row"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240863/mood_app/workout_images/5s4czjs3_download_3_.jpg',
           intensityReason: 'Drop sets extend time under tension beyond failure',
@@ -933,18 +977,23 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Rows",
                     "reps": "8",
-                    "note": "Finish with 10s hold"
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Iso-Finish Rows",
+                    "reps": "10s"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Cap every set with the finisher: 10s hold — it counts, don't skip it. The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240714/mood_app/workout_images/eubpjqb9_bb_row.jpg',
           intensityReason: 'Isometric finisher maximizes time under tension',
@@ -1001,7 +1050,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90–120s after each set"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 3 moves in order, then rest 90–120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240560/mood_app/workout_images/x2wxwvpl_download_2_.jpg',
           intensityReason: 'Higher volume heavy lifts establish raw size and mass.',
@@ -1052,7 +1102,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90–120s after completing the full sequence"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 3 moves in order, then rest 90–120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240892/mood_app/workout_images/hnesh89k_download.jpg',
           intensityReason: 'Explosive high pulls and cleans target power capacity.',
@@ -1077,7 +1128,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Tempo Rows',
           duration: '18–20 min',
           description: 'Heavy barbell rows with long controlled eccentrics',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 150s between sets, take all of it.\n4 rounds\n• 6 Rows (5s eccentric)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 150s between sets, take all of it.\n4 sets\n• 6 Rows (5s eccentric)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1086,13 +1137,15 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Rows",
-                    "reps": "6"
+                    "reps": "6",
+                    "tutorialSlug": "barbell_row"
                   }
                 ],
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240699/mood_app/workout_images/8imeatpq_bb_row_2.jpg',
           intensityReason: 'Extended eccentrics maximize strength and hypertrophy',
@@ -1127,19 +1180,29 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Wide-Grip Rows",
                     "reps": "6",
-                    "tutorialSlug": "wide_grip_t_bar_chest_supported_row",
-                    "note": "Immediately 6 Standard Rows; Immediately 6 Underhand Rows"
+                    "tutorialSlug": "wide_grip_t_bar_chest_supported_row"
+                  },
+                  {
+                    "name": "Standard Rows",
+                    "note": "immediately, no rest",
+                    "reps": "6"
+                  },
+                  {
+                    "name": "Underhand Rows",
+                    "note": "immediately, no rest",
+                    "reps": "6"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 3 rounds — all 3 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240714/mood_app/workout_images/eubpjqb9_bb_row.jpg',
           intensityReason: 'Mechanical drops maximize volume and muscle fatigue',
@@ -1197,7 +1260,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after each set"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — all 2 moves in order, then rest 60–75s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240556/mood_app/workout_images/s9jbh6k2_download_6_.jpg',
           intensityReason: 'Simple pull + hinge strengthen grip and core and with modest intensity',
@@ -1248,7 +1312,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after sequence"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — all 3 moves in order, then rest 60–75s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240555/mood_app/workout_images/s1nbakqw_download_7_.jpg',
           intensityReason: 'Combines rows, deadlifts, swings for endurance',
@@ -1273,7 +1338,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported Kettlebell Rows',
           duration: '12–14 min',
           description: 'Single-arm rows emphasizing control and balance',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s per side between sets, take all of it.\n3 rounds\n• 10 KB Rows (each side)\nRest 60s per side',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s per side between sets, take all of it.\n3 sets\n• 10 KB Rows (each side)\nRest 60s per side',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1288,7 +1353,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s per side"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s per side between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240725/mood_app/workout_images/h1hdn33y_kb_cs_row.jpg',
           intensityReason: 'Supported setup builds foundation for heavier work',
@@ -1318,7 +1384,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Suitcase Kettlebell Rows',
           duration: '12–14 min',
           description: 'Offset rows building stability and back control',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 — rest 75s between sets, take all of it.\n3 rounds\n• 8 Suitcase KB Rows (each side)\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 — rest 75s between sets, take all of it.\n3 sets\n• 8 Suitcase KB Rows (each side)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1333,7 +1399,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240702/mood_app/workout_images/9hjdvg6i_kb_suitcase_row.jpg',
           intensityReason: 'Offset load builds core stability alongside back strength',
@@ -1386,7 +1453,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s after each set"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 2 moves in order, then rest 75–90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240882/mood_app/workout_images/e9kn8lqs_download_5_.jpg',
           intensityReason: 'Heavier bilateral pulls build lats and posture within a circuit format',
@@ -1437,7 +1505,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s after sequence"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — all 3 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240731/mood_app/workout_images/kc1es3oi_kb_gorilla_row.jpg',
           intensityReason: 'Combo flow hits lats, core, and traps together',
@@ -1462,7 +1531,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Double Kettlebell Rows',
           duration: '14–16 min',
           description: 'Bilateral rows for increased loading',
-          battlePlan: 'Instructions: 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 Double KB Rows\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8 — rest 90s between sets, take all of it.\n4 sets\n• 8 Double KB Rows\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1478,7 +1547,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240702/mood_app/workout_images/9hjdvg6i_kb_suitcase_row.jpg',
           intensityReason: 'Double bells increase loading capacity',
@@ -1508,7 +1578,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Gorilla Rows',
           duration: '14–16 min',
           description: 'Alternating rows with constant tension',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Gorilla Rows (each side)\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 — rest 90s between sets, take all of it.\n3 sets\n• 10 Gorilla Rows (each side)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1524,7 +1594,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240731/mood_app/workout_images/kc1es3oi_kb_gorilla_row.jpg',
           intensityReason: 'Alternating pattern maintains constant tension',
@@ -1581,7 +1652,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s after set"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 rounds — all 3 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240556/mood_app/workout_images/s9jbh6k2_download_6_.jpg',
           intensityReason: 'Loaded volume builds strength and conditioning',
@@ -1632,7 +1704,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90–120s after sequence"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 rounds — all 3 moves in order, then rest 90–120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240904/mood_app/workout_images/qcfdfm3u_download_4_.jpg',
           intensityReason: 'Explosive circuit of pulls, cleans, and snatches',
@@ -1657,7 +1730,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Double Kettlebell Rows',
           duration: '16–18 min',
           description: 'Heavy bilateral rows for maximal overload',
-          battlePlan: 'Instructions: 4 sets of 6 — rest 120s between sets, take all of it.\n4 rounds\n• 6 Double KB Rows\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 6 — rest 120s between sets, take all of it.\n4 sets\n• 6 Double KB Rows\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1673,7 +1746,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240702/mood_app/workout_images/9hjdvg6i_kb_suitcase_row.jpg',
           intensityReason: 'Heavy loads maximize strength development',
@@ -1703,7 +1777,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Kettlebell Row Triple Drop',
           duration: '18–20 min',
           description: 'Extended triple-drop sets for deep fatigue',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 4 moves in order, then rest 150s.\n3 rounds\n• 6 Rows\n• Row drop → 6\n• Row drop → 6\n• Row drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 150s.\n3 sets\n• 6 Rows\n• Row drop → 6\n• Row drop → 6\n• Row drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1713,13 +1787,26 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Rows",
                     "reps": "6",
-                    "note": "Drop → 6; Drop → 6; Drop → 6"
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Row drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Row drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Row drop → 6",
+                    "tutorialSlug": "barbell_row"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240725/mood_app/workout_images/h1hdn33y_kb_cs_row.jpg',
           intensityReason: 'Triple drops maximize muscle fatigue and pump',
@@ -1777,7 +1864,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "45–60s"
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 2 moves in order, then rest 45–60s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240712/mood_app/workout_images/ck79gna3_back_ext.jpg',
           intensityReason: 'Introduces endurance and stability to lower back',
@@ -1826,7 +1914,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after sequence"
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 3 moves in order, then rest 60–75s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240559/mood_app/workout_images/uud5nxsk_download_11_.jpg',
           intensityReason: 'Adds light rotation and isometrics for core demands',
@@ -1851,7 +1940,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Extensions',
           duration: '10–12 min',
           description: 'Slow tempo extensions emphasizing controlled spinal motion',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 60s between sets, take all of it.\n3 rounds\n• 10 Back Extensions (3s eccentric)\nRest 60s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 60s between sets, take all of it.\n3 sets\n• 10 Back Extensions (3s eccentric)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1867,7 +1956,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240723/mood_app/workout_images/gafcn4c8_rc_back_ext_3.jpg',
           intensityReason: 'Controlled tempo builds strength without excessive load',
@@ -1897,7 +1987,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Partial Extension Burn',
           duration: '10–12 min',
           description: 'Short-range extensions to build endurance safely',
-          battlePlan: 'Instructions: 3 sets of 20 — rest 60s between sets, take all of it.\n3 rounds\n• 20 Partial Back Extensions\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 20 — rest 60s between sets, take all of it.\n3 sets\n• 20 Partial Back Extensions\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1913,7 +2003,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 20 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240712/mood_app/workout_images/ck79gna3_back_ext.jpg',
           intensityReason: 'Partial range builds endurance without overextension',
@@ -1965,7 +2056,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75s after set"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 2 moves in order, then rest 75s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240546/mood_app/workout_images/8tyq8yxs_download_10_.jpg',
           intensityReason: 'External load strengthens spinal erectors safely',
@@ -2015,7 +2107,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s after sequence"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — all 3 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240559/mood_app/workout_images/uud5nxsk_download_11_.jpg',
           intensityReason: 'Mix of dynamic posterior moves challenges control',
@@ -2040,7 +2133,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Extensions',
           duration: '14–16 min',
           description: 'Paused reps reinforce control and mid-range strength',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 75–90s between sets, take all of it.\n4 rounds\n• 8 Back Extensions (2s pause)\nRest 75–90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 75–90s between sets, take all of it.\n4 sets\n• 8 Back Extensions (2s pause)\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2056,7 +2149,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240723/mood_app/workout_images/gafcn4c8_rc_back_ext_3.jpg',
           intensityReason: 'Paused reps eliminate momentum and build control',
@@ -2086,7 +2180,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Extension Drop Set',
           duration: '14–16 min',
           description: 'Mechanical fatigue using fast load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Weighted Extensions\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Weighted Extensions\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2095,15 +2189,16 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Weighted Extensions",
+                    "note": "Drop → 8 reps; Drop → 8 reps",
                     "reps": "8",
-                    "tutorialSlug": "roman_chair_weighted_back_extension",
-                    "note": "Drop → 8 reps; Drop → 8 reps"
+                    "tutorialSlug": "roman_chair_weighted_back_extension"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240559/mood_app/workout_images/uud5nxsk_download_11_.jpg',
           intensityReason: 'Drop sets extend time under tension past failure',
@@ -2159,7 +2254,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s after set"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 3 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240546/mood_app/workout_images/8tyq8yxs_download_10_.jpg',
           intensityReason: 'Adds load and rotation for advanced spinal strength',
@@ -2208,7 +2304,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90–120s after sequence"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 rounds — all 3 moves in order, then rest 90–120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240559/mood_app/workout_images/uud5nxsk_download_11_.jpg',
           intensityReason: 'Extended isometrics + dynamic raises build max control',
@@ -2233,7 +2330,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Eccentric Extensions',
           duration: '18–20 min',
           description: 'Overloaded eccentrics to build posterior strength',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it.\n4 rounds\n• 6 Weighted Extensions (4s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it.\n4 sets\n• 6 Weighted Extensions (4s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2249,7 +2346,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240695/mood_app/workout_images/3z6b1lhy_roman_chair_weighted_ext.jpg',
           intensityReason: 'Extended eccentrics maximize strength development',
@@ -2279,7 +2377,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Extension Iso Burnout',
           duration: '18–20 min',
           description: 'Dynamic reps finished with a long isometric hold',
-          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 120s between sets, take all of it.\n3 rounds\n• 10 Weighted Extensions\n• Immediately 30s Roman Chair Hold\nRest 120s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 120s between sets, take all of it.\n3 sets\n• 10 Weighted Extensions\n• Immediately 30s Roman Chair Hold\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2288,15 +2386,16 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Weighted Extensions",
+                    "note": "Immediately 30s Roman Chair Hold",
                     "reps": "10",
-                    "tutorialSlug": "roman_chair_weighted_back_extension",
-                    "note": "Immediately 30s Roman Chair Hold"
+                    "tutorialSlug": "roman_chair_weighted_back_extension"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240723/mood_app/workout_images/gafcn4c8_rc_back_ext_3.jpg',
           intensityReason: 'Combines dynamic movement with isometric endurance',
@@ -2334,7 +2433,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Grip Row',
           duration: '10–12 min',
           description: 'Simple neutral rowing pattern for beginners to build back thickness.',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 60–75s between sets, take all of it.\n3 rounds\n• 12 Neutral Grip T-Bar Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 60–75s between sets, take all of it.\n3 sets\n• 12 Neutral Grip T-Bar Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2350,7 +2449,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240550/mood_app/workout_images/figwdo7y_download_17_.jpg',
           intensityReason: 'Neutral grip builds confidence & lat line strength',
@@ -2375,7 +2475,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Grip Row',
           duration: '10–12 min',
           description: 'Wide row variation for upper-back foundation',
-          battlePlan: 'Instructions: 3 sets of 10 — rest 60–75s between sets, take all of it.\n3 rounds\n• 10 Wide Grip T-Bar Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: 3 sets of 10 — rest 60–75s between sets, take all of it.\n3 sets\n• 10 Wide Grip T-Bar Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2391,7 +2491,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240561/mood_app/workout_images/xdrugsxs_tr.jpg',
           intensityReason: 'Wide grip shifts load to traps/rhomboids for posture',
@@ -2416,7 +2517,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo T-Bar Rows',
           duration: '10–12 min',
           description: 'Controlled T-bar rows emphasizing slow negatives',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Neutral Grip T-Bar Rows (3s eccentric)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 75s between sets, take all of it.\n3 sets\n• 12 Neutral Grip T-Bar Rows (3s eccentric)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2432,7 +2533,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240755/mood_app/workout_images/zwx4bge7_t_bar_row_2.jpg',
           intensityReason: 'Tempo work builds control and mind-muscle connection',
@@ -2462,7 +2564,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Peak Pause Rows',
           duration: '10–12 min',
           description: 'Paused rows reinforcing contraction awareness',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 10 — rest 75s between sets, take all of it.\n3 rounds\n• 10 Wide Grip T-Bar Rows (2s pause)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 10 — rest 75s between sets, take all of it.\n3 sets\n• 10 Wide Grip T-Bar Rows (2s pause)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2478,7 +2580,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240696/mood_app/workout_images/64wlxchh_t_bar_row.jpg',
           intensityReason: 'Paused reps reinforce peak contraction',
@@ -2510,7 +2613,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Close Grip Row',
           duration: '12–14 min',
           description: 'Simple close grip with moderate-to-heavy focus',
-          battlePlan: 'Instructions: 4 sets of 10 — rest 75s between sets, take all of it.\n4 rounds\n• 10 Close Grip T-Bar Row\nRest 75s after set',
+          battlePlan: 'Instructions: 4 sets of 10 — rest 75s between sets, take all of it.\n4 sets\n• 10 Close Grip T-Bar Row\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2525,7 +2628,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75s after set"
               }
-            ]
+            ],
+            "instructions": "4 sets of 10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240550/mood_app/workout_images/figwdo7y_download_17_.jpg',
           intensityReason: 'Close grip overloads lats with higher load capacity',
@@ -2550,7 +2654,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Neg Row',
           duration: '12–14 min',
           description: 'Time-under-tension row progression provides a challenging switchup',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 Neutral Grip Row (3–4s eccentric)\nRest 90s after set',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 90s between sets, take all of it.\n4 sets\n• 8 Neutral Grip Row (3–4s eccentric)\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2566,7 +2670,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s after set"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240561/mood_app/workout_images/xdrugsxs_tr.jpg',
           intensityReason: '3–4s eccentric tempo increases hypertrophy effect',
@@ -2591,7 +2696,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'T-Bar Drop Set',
           duration: '14–16 min',
           description: 'Heavy rows extended with rapid load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 120s between sets, take all of it.\n3 rounds\n• 8 T-Bar Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 120s between sets, take all of it.\n3 sets\n• 8 T-Bar Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2600,15 +2705,16 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "T-Bar Rows",
+                    "note": "Drop → 8 reps; Drop → 8 reps",
                     "reps": "8",
-                    "tutorialSlug": "t-bar_row_machine",
-                    "note": "Drop → 8 reps; Drop → 8 reps"
+                    "tutorialSlug": "t-bar_row_machine"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240755/mood_app/workout_images/zwx4bge7_t_bar_row_2.jpg',
           intensityReason: 'Drop sets extend time under tension beyond failure',
@@ -2643,19 +2749,23 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "T-Bar Rows",
                     "reps": "8",
-                    "tutorialSlug": "t-bar_row_machine",
-                    "note": "Finish with 10s hold"
+                    "tutorialSlug": "t-bar_row_machine"
+                  },
+                  {
+                    "name": "Iso-Finish Rows",
+                    "reps": "10s"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Cap every set with the finisher: 10s hold — it counts, don't skip it. The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240696/mood_app/workout_images/64wlxchh_t_bar_row.jpg',
           intensityReason: 'Isometric finisher maximizes time under tension',
@@ -2687,26 +2797,25 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Wide Rows',
           duration: '14–16 min',
           description: 'Wide grip rows with static squeeze finish to bring muscles to full fatigue',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 90–120s between sets, take all of it.\n4 rounds\n• 8 Wide Grip T-Bar Row\nThen end each set with 10s static hold at full contraction\nRest 90–120s after set',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 90–120s between sets, take all of it.\n4 sets\n• 8 Wide Grip T-Bar Row\nThen end each set with 10s static hold at full contraction\nRest 90–120s after set',
           plan: {
             "format": "circuit",
             "blocks": [
               {
-                "type": "circuit",
+                "type": "straight",
                 "movements": [
                   {
                     "name": "Wide Grip T-Bar Row",
+                    "note": "Then end each set with 10s static hold at full contraction",
                     "reps": "8",
                     "tutorialSlug": "wide_grip_t_bar_chest_supported_row"
-                  },
-                  {
-                    "name": "End each set with 10s static hold at full contraction"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90–120s after set"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 90–120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240550/mood_app/workout_images/figwdo7y_download_17_.jpg',
           intensityReason: 'Isometric holds create intense contraction stress',
@@ -2736,19 +2845,28 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Wide Grip Row",
                     "reps": "8",
-                    "tutorialSlug": "wide_grip_t_bar_chest_supported_row",
-                    "note": "Immediately 8 Underhand Grip Row; Finish with 10 Back Squeezes (bodyweight, no load)"
+                    "tutorialSlug": "wide_grip_t_bar_chest_supported_row"
+                  },
+                  {
+                    "name": "Underhand Grip Row",
+                    "note": "immediately, no rest",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Back Squeezes",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s after full superset"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10 Back Squeezes (bodyweight, no load) — it counts, don't skip it. 4 rounds — all 2 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240561/mood_app/workout_images/xdrugsxs_tr.jpg',
           intensityReason: 'Pairing grips + post-set contractions maximizes fatigue',
@@ -2773,7 +2891,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Tempo Rows',
           duration: '16–18 min',
           description: 'Heavy T-bar rows with long controlled eccentrics',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it.\n4 rounds\n• 6 T-Bar Rows (4s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it.\n4 sets\n• 6 T-Bar Rows (4s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2789,7 +2907,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240755/mood_app/workout_images/zwx4bge7_t_bar_row_2.jpg',
           intensityReason: 'Extended eccentrics maximize strength and hypertrophy',
@@ -2819,7 +2938,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Grinder',
           duration: '18–20 min',
           description: 'Extended triple-drop sets for maximal fatigue',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 4 moves in order, then rest 150s.\n3 rounds\n• 6 Rows\n• Grinder drop → 6\n• Grinder drop → 6\n• Grinder drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 150s.\n3 sets\n• 6 Rows\n• Grinder drop → 6\n• Grinder drop → 6\n• Grinder drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2829,13 +2948,26 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Rows",
                     "reps": "6",
-                    "note": "Drop → 6; Drop → 6; Drop → 6"
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Grinder drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Grinder drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Grinder drop → 6",
+                    "tutorialSlug": "barbell_row"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240696/mood_app/workout_images/64wlxchh_t_bar_row.jpg',
           intensityReason: 'Triple drops maximize muscle fatigue and pump',
@@ -2894,7 +3026,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s"
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 2 moves in order, then rest 60–75s."
           },
           imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHwxfHxlbGxpcHRpY2FsJTIwd29ya291dHxlbnwxfHx8fDE3NTY4ODMyMjN8MA&ixlib=rb-4.1.0&q=85',
           intensityReason: 'Intro hinge + pull to teach proper barbell basics',
@@ -2944,7 +3077,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s after sequence"
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 3 moves in order, then rest 75s."
           },
           imageUrl: 'https://images.unsplash.com/photo-1590847330116-ea94fb93eac3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDJ8MHwxfHNlYXJjaHw0fHxydW5uaW5nJTIwZXhlcmNpc2V8ZW58MHx8fHwxNzU2ODgzMjMxfDA&ixlib=rb-4.1.0&q=85',
           intensityReason: 'Adds shrug finish for trap-dominant overload',
@@ -2992,7 +3126,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 2 moves in order, then rest 75–90s."
           },
           imageUrl: 'https://images.pexels.com/photos/6551174/pexels-photo-6551174.jpeg',
           intensityReason: 'Posterior strength + explosive pull development',
@@ -3043,7 +3178,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s after sequence"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 3 rounds — all 3 moves in order, then rest 90s."
           },
           imageUrl: 'https://images.unsplash.com/photo-1599058917212-d750089bc07e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwyfHxmaXRuZXNzJTIwdHJhaW5pbmc&ZW54MHx8fHwxNzU2ODgzMjM3fDA&ixlib=rb-4.1.0&q=85',
           intensityReason: 'Add high pulls + clean pulls to boost explosiveness',
@@ -3095,7 +3231,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 3 moves in order, then rest 90s."
           },
           imageUrl: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHw0fHxjYXJkaW8lMjB3b3Jrb3V0fGVufDF8fHx8MVc1Nijg4MzIyM3ww&ixlib=rb-4.1.0&q=85',
           intensityReason: 'Adds volume with heavy compound barbell pulls',
@@ -3146,7 +3283,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90–120s after sequence"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 3 moves in order, then rest 90–120s."
           },
           imageUrl: 'https://images.unsplash.com/photo-1571019613242-c5c5dee9f50b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDJ8MHwxfHNlYXJjaHw5fHxyaW5nfGVufDB8fHx8TVc1MzA5MTY0M3ww&ixlib=rb-4.1.0&q=85',
           intensityReason: 'Olympic-style lifts tie power explosiveness to back',
@@ -3179,7 +3317,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Row Start',
           duration: '10–12 min',
           description: 'Single movement to master seated row mechanics',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 60–75s between sets, take all of it.\n3 rounds\n• 12 Neutral Grip Cable Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 60–75s between sets, take all of it.\n3 sets\n• 12 Neutral Grip Cable Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3194,7 +3332,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240705/mood_app/workout_images/9zff190v_scr.jpg',
           intensityReason: 'Neutral grip anchor builds confidence + control',
@@ -3219,7 +3358,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Row Intro',
           duration: '10–12 min',
           description: 'Focuses on wide row control & back width for beginners',
-          battlePlan: 'Instructions: 3 sets of 10 — rest 60–75s between sets, take all of it.\n3 rounds\n• 10 Wide Grip Cable Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: 3 sets of 10 — rest 60–75s between sets, take all of it.\n3 sets\n• 10 Wide Grip Cable Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3234,7 +3373,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240889/mood_app/workout_images/gdb1l44p_wgr.jpg',
           intensityReason: 'Wide grip recruits upper back posture muscles',
@@ -3259,7 +3399,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Neutral Rows',
           duration: '10–12 min',
           description: 'Neutral cable rows emphasizing smooth control',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Neutral Grip Cable Rows (3s eccentric)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 75s between sets, take all of it.\n3 sets\n• 12 Neutral Grip Cable Rows (3s eccentric)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3267,15 +3407,15 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Tempo Neutral Rows",
-                    "reps": "12",
-                    "tutorialSlug": "neutral_grip_t_bar_chest_supported_row"
+                    "name": "Neutral Grip Cable Rows",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240544/mood_app/workout_images/7hcpy4r7_download_12_.jpg',
           intensityReason: 'Tempo work builds control and mind-muscle connection',
@@ -3305,7 +3445,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause & Squeeze Rows',
           duration: '10–12 min',
           description: 'Paused rows to reinforce contraction',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 10 — rest 75s between sets, take all of it.\n3 rounds\n• 10 Wide Grip Cable Rows (2s pause)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 10 — rest 75s between sets, take all of it.\n3 sets\n• 10 Wide Grip Cable Rows (2s pause)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3320,7 +3460,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240751/mood_app/workout_images/y3q3wbcv_seated_cable_row.jpg',
           intensityReason: 'Paused reps reinforce peak contraction awareness',
@@ -3352,7 +3493,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Underhand Row',
           duration: '12–14 min',
           description: 'Control-focused row variation with palms up to target lower lats and scaps.',
-          battlePlan: 'Instructions: 4 sets of 10 — rest 75s between sets, take all of it.\n4 rounds\n• 10 Underhand Grip Cable Row\nRest 75s after set',
+          battlePlan: 'Instructions: 4 sets of 10 — rest 75s between sets, take all of it.\n4 sets\n• 10 Underhand Grip Cable Row\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3367,7 +3508,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75s after set"
               }
-            ]
+            ],
+            "instructions": "4 sets of 10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240860/mood_app/workout_images/4jf014no_rgr.jpg',
           intensityReason: 'Underhand row shifts focus to lower lats & biceps',
@@ -3392,7 +3534,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Negatives',
           duration: '12–14 min',
           description: 'Single movement with emphasized negative control',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 Neutral Grip Cable Row (3–4s eccentric each rep)\nRest 90s after set',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 90s between sets, take all of it.\n4 sets\n• 8 Neutral Grip Cable Row (3–4s eccentric each rep)\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3407,7 +3549,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s after set"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240545/mood_app/workout_images/83ut7zg6_download_13_.jpg',
           intensityReason: 'Extended 3–4s eccentrics boost hypertrophy',
@@ -3432,7 +3575,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Row Drop Set',
           duration: '14–16 min',
           description: 'Mechanical fatigue using quick pin drops',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 120s between sets, take all of it.\n3 rounds\n• 8 Cable Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 120s between sets, take all of it.\n3 sets\n• 8 Cable Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3441,15 +3584,16 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Cable Rows",
+                    "note": "Drop → 8 reps; Drop → 8 reps",
                     "reps": "8",
-                    "tutorialSlug": "cable_rope_row",
-                    "note": "Drop → 8 reps; Drop → 8 reps"
+                    "tutorialSlug": "cable_rope_row"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240705/mood_app/workout_images/9zff190v_scr.jpg',
           intensityReason: 'Drop sets extend time under tension beyond failure',
@@ -3484,19 +3628,23 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Cable Rows",
                     "reps": "8",
-                    "tutorialSlug": "cable_rope_row",
-                    "note": "Finish with 12s hold"
+                    "tutorialSlug": "cable_rope_row"
+                  },
+                  {
+                    "name": "Iso-Hold Cable Rows",
+                    "reps": "12s"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Cap every set with the finisher: 12s hold — it counts, don't skip it. The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240751/mood_app/workout_images/y3q3wbcv_seated_cable_row.jpg',
           intensityReason: 'Isometric finisher maximizes time under tension',
@@ -3528,26 +3676,25 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Hold Rows',
           duration: '14–16 min',
           description: 'Rows with a final long hold at contraction to fully fatigue muscles.',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 90–120s between sets, take all of it.\n4 rounds\n• 8 Wide Grip Row\nThen end each set with 10s hold at contraction\nRest 90–120s after set',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 90–120s between sets, take all of it.\n4 sets\n• 8 Wide Grip Row\nThen end each set with 10s hold at contraction\nRest 90–120s after set',
           plan: {
             "format": "circuit",
             "blocks": [
               {
-                "type": "circuit",
+                "type": "straight",
                 "movements": [
                   {
                     "name": "Wide Grip Row",
+                    "note": "Then end each set with 10s hold at contraction",
                     "reps": "8",
                     "tutorialSlug": "wide_grip_t_bar_chest_supported_row"
-                  },
-                  {
-                    "name": "End each set with 10s hold at contraction"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90–120s after set"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 90–120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240544/mood_app/workout_images/7hcpy4r7_download_12_.jpg',
           intensityReason: 'Isometric finish after working sets increases time under tension',
@@ -3577,19 +3724,28 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Wide Grip Row",
                     "reps": "8",
-                    "tutorialSlug": "wide_grip_t_bar_chest_supported_row",
-                    "note": "Immediately 8 Underhand Grip Row; Finish with 10 Standing Back Squeezes (bodyweight scapular retractions, no load)"
+                    "tutorialSlug": "wide_grip_t_bar_chest_supported_row"
+                  },
+                  {
+                    "name": "Underhand Grip Row",
+                    "note": "immediately, no rest",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Standing Back Squeezes",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s after full superset"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10 Standing Back Squeezes (bodyweight scapular retractions, no load) — it counts, don't skip it. 4 rounds — all 2 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240889/mood_app/workout_images/gdb1l44p_wgr.jpg',
           intensityReason: 'Combo of two grips + contractions maximizes fatigue',
@@ -3614,7 +3770,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Long Eccentric Rows',
           duration: '16–18 min',
           description: 'Cable rows using extended negative tempo',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it.\n4 rounds\n• 6 Cable Rows (5s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it.\n4 sets\n• 6 Cable Rows (5s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3630,7 +3786,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240751/mood_app/workout_images/y3q3wbcv_seated_cable_row.jpg',
           intensityReason: 'Extended eccentrics maximize strength and hypertrophy',
@@ -3660,7 +3817,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Cable Burn',
           duration: '18–20 min',
           description: 'Extended drop sets to fully exhaust lats',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 4 moves in order, then rest 150s.\n3 rounds\n• 6 Rows\n• Burn drop → 6\n• Burn drop → 6\n• Burn drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 150s.\n3 sets\n• 6 Rows\n• Burn drop → 6\n• Burn drop → 6\n• Burn drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3670,13 +3827,26 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Rows",
                     "reps": "6",
-                    "note": "Drop → 6; Drop → 6; Drop → 6"
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Burn drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Burn drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Burn drop → 6",
+                    "tutorialSlug": "barbell_row"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240705/mood_app/workout_images/9zff190v_scr.jpg',
           intensityReason: 'Triple drops maximize muscle fatigue and pump',
@@ -3714,7 +3884,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Pulldown',
           duration: '10–12 min',
           description: 'Wide grip basis for learning lat engagement to build pull-up strength',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60–75s between sets, take all of it.\n3 rounds\n• 10–12 Wide Grip Pulldown\nRest 60–75s after set',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60–75s between sets, take all of it.\n3 sets\n• 10–12 Wide Grip Pulldown\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3729,7 +3899,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240548/mood_app/workout_images/diugpoq6_download_8_.jpg',
           intensityReason: 'Wide grip teaches lat activation and form control',
@@ -3754,7 +3925,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Underhand Pulldown',
           duration: '10–12 min',
           description: 'Easier grip variation supports early progression',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60–75s between sets, take all of it.\n3 rounds\n• 10–12 Underhand Pulldown\nRest 60–75s after set',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60–75s between sets, take all of it.\n3 sets\n• 10–12 Underhand Pulldown\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3769,7 +3940,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240885/mood_app/workout_images/fkpr9mxh_lprg.jpg',
           intensityReason: 'Underhand grip recruits arms to aid pulling work',
@@ -3794,7 +3966,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Tempo Pulldown',
           duration: '10–12 min',
           description: 'Slow pulldowns building lat control and discipline',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 60–75s between sets, take all of it.\n3 rounds\n• 12 Pulldowns (3s eccentric)\nRest 60–75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 60–75s between sets, take all of it.\n3 sets\n• 12 Pulldowns (3s eccentric)\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3809,7 +3981,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240739/mood_app/workout_images/puai6ytk_lat_pull.jpg',
           intensityReason: 'Controlled tempo builds lat activation and mind-muscle connection',
@@ -3839,7 +4012,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bottom-Half Pulldowns',
           duration: '10–12 min',
           description: 'Short-range reps focused on peak lat contraction',
-          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 rounds\n• 15 Partial Pulldowns\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 sets\n• 15 Partial Pulldowns\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3854,7 +4027,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240694/mood_app/workout_images/3kbrum0a_lat_pull_down.jpg',
           intensityReason: 'Partial range maximizes peak contraction time',
@@ -3886,7 +4060,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Pulldown',
           duration: '12–14 min',
           description: 'Stronger setup for progressive overload recruiting a wider variety of muscles',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 75–90s between sets, take all of it.\n4 rounds\n• 8–10 Neutral Grip Pulldown (moderate to heavy)\nRest 75–90s after set',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 75–90s between sets, take all of it.\n4 sets\n• 8–10 Neutral Grip Pulldown (moderate to heavy)\nRest 75–90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3902,7 +4076,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s after set"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240912/mood_app/workout_images/vydcatjw_nglp.jpg',
           intensityReason: 'Neutral grip enables heavier lat loading safely',
@@ -3927,25 +4102,24 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pulldown + Hold',
           duration: '12–14 min',
           description: 'Controlled reps followed by static contraction',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Pulldown (neutral or wide, consistent grip choice)\nThen end each set with 5s hold at bottom\nRest 90s after set',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Pulldown (neutral or wide, consistent grip choice)\nThen end each set with 5s hold at bottom\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
               {
-                "type": "circuit",
+                "type": "straight",
                 "movements": [
                   {
                     "name": "Pulldown",
+                    "note": "Then end each set with 5s hold at bottom",
                     "reps": "8–10"
-                  },
-                  {
-                    "name": "End each set with 5s hold at bottom"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s after set"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240551/mood_app/workout_images/j967e9c7_download_9_.jpg',
           intensityReason: 'Isometric hold boosts tension and endurance',
@@ -3970,7 +4144,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pulldown Drop Set',
           duration: '14–16 min',
           description: 'Rapid drops to extend sets past fatigue',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Pulldowns\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Pulldowns\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3979,14 +4153,15 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pulldowns",
-                    "reps": "8",
-                    "note": "Drop → 8 reps; Drop → 8 reps"
+                    "note": "Drop → 8 reps; Drop → 8 reps",
+                    "reps": "8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240739/mood_app/workout_images/puai6ytk_lat_pull.jpg',
           intensityReason: 'Drop sets extend time under tension beyond failure',
@@ -4021,18 +4196,23 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Pulldowns",
-                    "reps": "12",
-                    "note": "Immediately 10 Pulse Reps"
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Pulse Reps",
+                    "note": "immediately, no rest",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 3 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240694/mood_app/workout_images/3kbrum0a_lat_pull_down.jpg',
           intensityReason: 'Pulses extend peak contraction for maximum pump',
@@ -4083,7 +4263,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240548/mood_app/workout_images/diugpoq6_download_8_.jpg',
           intensityReason: 'Grip pairing develops width and back thickness',
@@ -4113,18 +4294,23 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Wide Grip Pulldown",
-                    "reps": "8",
-                    "note": "Immediately 8 Underhand Pulldown (3s eccentric each)"
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Underhand Pulldown",
+                    "note": "3s eccentric each — immediately, no rest",
+                    "reps": "8"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s after superset"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 4 rounds — all 2 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240551/mood_app/workout_images/j967e9c7_download_9_.jpg',
           intensityReason: 'Superset + eccentrics maximize hypertrophy stress',
@@ -4149,7 +4335,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Long Eccentric Pulldowns',
           duration: '16–18 min',
           description: 'Full ROM pulldowns with extended 5s negatives',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it.\n4 rounds\n• 6 Pulldowns (5s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it.\n4 sets\n• 6 Pulldowns (5s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4164,7 +4350,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240739/mood_app/workout_images/puai6ytk_lat_pull.jpg',
           intensityReason: 'Extended eccentrics maximize strength and hypertrophy',
@@ -4194,7 +4381,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso-Hold Drop Burn',
           duration: '18–20 min',
           description: 'Holds plus drops to build extreme lat fatigue',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8 — rest 120s between sets, take all of it.\n3 rounds\n• 8 Pulldowns + 10s Hold\n• Drop → 8 reps\nRest 120s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8 — rest 120s between sets, take all of it.\n3 sets\n• 8 Pulldowns + 10s Hold\n• Drop → 8 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4203,14 +4390,15 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pulldowns + 10s Hold",
-                    "reps": "8",
-                    "note": "Drop → 8 reps"
+                    "note": "Drop → 8 reps",
+                    "reps": "8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240694/mood_app/workout_images/3kbrum0a_lat_pull_down.jpg',
           intensityReason: 'Combines isometric fatigue with mechanical drop sets',
@@ -4248,7 +4436,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Pull-Ups',
           duration: '10–12 min',
           description: 'Focuses on mastering the basic pull-up movement pattern',
-          battlePlan: 'Instructions: 3 sets of 5 — rest 60–75s between sets, take all of it.\n3 rounds\n• 5 Pull-Ups (use band or assisted machine if needed)\nRest 60–75s after set',
+          battlePlan: 'Instructions: 3 sets of 5 — rest 60–75s between sets, take all of it.\n3 sets\n• 5 Pull-Ups (use band or assisted machine if needed)\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4264,7 +4452,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 5 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240562/mood_app/workout_images/zpcds83n_download_15_.jpg',
           intensityReason: 'Builds foundational pulling strength with necessary support',
@@ -4289,7 +4478,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pull-Up Negatives',
           duration: '10–12 min',
           description: 'Focuses on controlled lowering to build pulling power',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 5 — rest 75s between sets, take all of it.\n3 rounds\n• 5 Negative Pull-Ups (jump to top, 3-5s lower)\nRest 75s after set',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 5 — rest 75s between sets, take all of it.\n3 sets\n• 5 Negative Pull-Ups (jump to top, 3-5s lower)\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4305,7 +4494,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s after set"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 5 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_fit-outdoor-views/artifacts/toza6up4_pu.avif',
           intensityReason: 'Eccentric training builds strength for full pull-ups',
@@ -4330,7 +4520,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Full-Range Pull-Ups',
           duration: '10–12 min',
           description: 'Assisted pull-ups reinforcing clean full-range mechanics',
-          battlePlan: 'Instructions: 3 sets of 6 — rest 75s between sets, take all of it.\n3 rounds\n• 6 Assisted Pull-Ups\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 6 — rest 75s between sets, take all of it.\n3 sets\n• 6 Assisted Pull-Ups\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4346,7 +4536,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 6 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240693/mood_app/workout_images/3aciwkyi_assisted_pull_ups.jpg',
           intensityReason: 'Full-range assistance builds proper movement patterns',
@@ -4376,7 +4567,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Pause Pull-Ups',
           duration: '10–12 min',
           description: 'Assisted pull-ups with controlled pauses at the top',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 5 — rest 75s between sets, take all of it.\n3 rounds\n• 5 Assisted Pull-Ups (1–2s top pause)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 5 — rest 75s between sets, take all of it.\n3 sets\n• 5 Assisted Pull-Ups (1–2s top pause)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4392,7 +4583,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 5 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240736/mood_app/workout_images/ntsbiqfh_assisted_pull_ups_1.jpg',
           intensityReason: 'Pauses at peak contraction build control and strength',
@@ -4424,7 +4616,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chin-Up Strength',
           duration: '12–14 min',
           description: 'Builds pulling power with a slightly easier grip variation',
-          battlePlan: 'Instructions: 4 sets of 6 — rest 75–90s between sets, take all of it.\n4 rounds\n• 6 Chin-Ups\nRest 75–90s after set',
+          battlePlan: 'Instructions: 4 sets of 6 — rest 75–90s between sets, take all of it.\n4 sets\n• 6 Chin-Ups\nRest 75–90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4440,7 +4632,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s after set"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240887/mood_app/workout_images/fox3rjq4_chu.jpg',
           intensityReason: 'Chin-ups engage biceps more, aiding overall pull strength',
@@ -4465,26 +4658,25 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pull-Up + Hold',
           duration: '12–14 min',
           description: 'Combines pull-ups with a static hold for enhanced strength',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 6 — rest 90s between sets, take all of it.\n3 rounds\n• 6 Pull-Ups\nThen end each set with a 3s hold at the top\nRest 90s after set',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 6 — rest 90s between sets, take all of it.\n3 sets\n• 6 Pull-Ups\nThen end each set with a 3s hold at the top\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
               {
-                "type": "circuit",
+                "type": "straight",
                 "movements": [
                   {
                     "name": "Pull-Ups",
+                    "note": "Then end each set with a 3s hold at the top",
                     "reps": "6",
                     "tutorialSlug": "pull_ups"
-                  },
-                  {
-                    "name": "End each set with a 3s hold at the top"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s after set"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 6 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_fit-outdoor-views/artifacts/toza6up4_pu.avif',
           intensityReason: 'Adds isometric hold to increase time under tension for growth',
@@ -4509,7 +4701,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Pull-Ups',
           duration: '12–14 min',
           description: 'Strict pull-ups emphasizing slow controlled eccentrics',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 90s between sets, take all of it.\n4 rounds\n• 6 Pull-Ups (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 90s between sets, take all of it.\n4 sets\n• 6 Pull-Ups (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4525,7 +4717,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ba98ecac-d9ff-4da8-8b26-c72f04702bfb/artifacts/67090cjn_pull%20up%202.avif',
           intensityReason: 'Extended eccentrics maximize strength and control',
@@ -4560,19 +4753,23 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Pull-Ups",
                     "reps": "6",
-                    "tutorialSlug": "pull_ups",
-                    "note": "Finish with 10s chin-over-bar hold"
+                    "tutorialSlug": "pull_ups"
+                  },
+                  {
+                    "name": "Chin-over-bar Hold",
+                    "reps": "10s"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Cap every set with the finisher: 10s chin-over-bar hold — it counts, don't skip it. The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 6 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240736/mood_app/workout_images/ntsbiqfh_assisted_pull_ups_1.jpg',
           intensityReason: 'Isometric finisher extends time under tension',
@@ -4625,7 +4822,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240562/mood_app/workout_images/zpcds83n_download_15_.jpg',
           intensityReason: 'Targets outer lats and overall back width with varied grips',
@@ -4671,7 +4869,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90–120s after sequence"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 rounds — all 2 moves in order, then rest 90–120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240906/mood_app/workout_images/r3n8muv4_cbpu.jpg',
           intensityReason: 'Higher pull range and negatives build extreme strength',
@@ -4696,7 +4895,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Pull-Ups',
           duration: '14–16 min',
           description: 'Loaded pull-ups to overload back strength',
-          battlePlan: 'Instructions: 4 sets of 5 — rest 120s between sets, take all of it.\n4 rounds\n• 5 Weighted Pull-Ups\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 5 — rest 120s between sets, take all of it.\n4 sets\n• 5 Weighted Pull-Ups\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4712,7 +4911,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 5 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240752/mood_app/workout_images/z868brwr_wighted_pull_up.jpg',
           intensityReason: 'External load maximizes strength development',
@@ -4742,7 +4942,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Eccentric Pull-Ups',
           duration: '14–16 min',
           description: 'Pull-ups emphasizing long controlled negatives',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 5 — rest 120s between sets, take all of it.\n3 rounds\n• 5 Pull-Ups (5s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 5 — rest 120s between sets, take all of it.\n3 sets\n• 5 Pull-Ups (5s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4758,7 +4958,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 5 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ba98ecac-d9ff-4da8-8b26-c72f04702bfb/artifacts/67090cjn_pull%20up%202.avif',
           intensityReason: 'Extended eccentrics maximize strength adaptation',
@@ -4793,7 +4994,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "strength",
             "blocks": [
               {
-                "type": "superset",
+                "type": "straight",
                 "movements": [
                   {
                     "name": "Ladder format",
@@ -4817,7 +5018,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 ],
                 "rest": "30–45s between rungs"
               }
-            ]
+            ],
+            "instructions": "Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom — rest 30–45s between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240729/mood_app/workout_images/iyoz9m2p_pull_up.jpg',
           intensityReason: 'Ladder format maximizes volume and fatigue',
@@ -4847,7 +5049,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Muscle-Up Skill Sets',
           duration: '18–20 min',
           description: 'Explosive pull-to-transition muscle-up practice',
-          battlePlan: 'Instructions: 4 sets of 3–5 — rest 120s between sets, take all of it.\n4 rounds\n• 3–5 Muscle-Ups\n(strict, band-assisted, or low-kip)\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 3–5 — rest 120s between sets, take all of it.\n4 sets\n• 3–5 Muscle-Ups\n(strict, band-assisted, or low-kip)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4863,7 +5065,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 3–5 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240710/mood_app/workout_images/bcw1iy96_Muscle_ups.jpg',
           intensityReason: 'Explosive pulling develops power and skill',
@@ -4901,7 +5104,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Neutral',
           duration: '10–12 min',
           description: 'Focuses on the neutral grip pull-up with support',
-          battlePlan: 'Instructions: 3 sets of 5 — rest 60–75s between sets, take all of it.\n3 rounds\n• 5 Neutral Grip Pull-Ups (use band or assisted machine if needed)\nRest 60–75s after set',
+          battlePlan: 'Instructions: 3 sets of 5 — rest 60–75s between sets, take all of it.\n3 sets\n• 5 Neutral Grip Pull-Ups (use band or assisted machine if needed)\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4917,7 +5120,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 5 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240721/mood_app/workout_images/g4mpj66m_assisted_neutral_grip_pullups.jpg',
           intensityReason: 'Neutral grip is often easiest, building initial pulling strength',
@@ -4942,7 +5146,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Chin-Ups',
           duration: '10–12 min',
           description: 'Builds pulling strength using an underhand grip with assistance',
-          battlePlan: 'Instructions: 3 sets of 5 — rest 75s between sets, take all of it.\n3 rounds\n• 5 Chin-Ups (use band or assisted machine if needed)\nRest 75s after set',
+          battlePlan: 'Instructions: 3 sets of 5 — rest 75s between sets, take all of it.\n3 sets\n• 5 Chin-Ups (use band or assisted machine if needed)\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4958,7 +5162,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 5 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240870/mood_app/workout_images/9ie9z8cd_chu.jpg',
           intensityReason: 'Chin-ups recruit biceps, making them slightly easier to learn',
@@ -4983,7 +5188,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Grip Scap Pulls',
           duration: '10–12 min',
           description: 'Scapular pulls using neutral grip for control',
-          battlePlan: 'Instructions: 3 sets of 8–10 — rest 60s between sets, take all of it.\n3 rounds\n• 8–10 Neutral Grip Scap Pulls\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 60s between sets, take all of it.\n3 sets\n• 8–10 Neutral Grip Scap Pulls\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4999,7 +5204,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8–10 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ba98ecac-d9ff-4da8-8b26-c72f04702bfb/artifacts/tmmvwgrx_neutral%20grip%20pull%20ups.avif',
           intensityReason: 'Scap pulls teach fundamental lat activation',
@@ -5029,7 +5235,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Neutral Pull-Ups (Tempo)',
           duration: '10–12 min',
           description: 'Assisted reps with slower lowering phase',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 5 — rest 75s between sets, take all of it.\n3 rounds\n• 5 Assisted Neutral Pull-Ups (3s eccentric)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 5 — rest 75s between sets, take all of it.\n3 sets\n• 5 Assisted Neutral Pull-Ups (3s eccentric)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5045,7 +5251,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 5 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240870/mood_app/workout_images/9ie9z8cd_chu.jpg',
           intensityReason: 'Tempo work builds control and strength',
@@ -5077,7 +5284,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Mixed Grip Pulls',
           duration: '12–14 min',
           description: 'Alternating grip for balanced strength development',
-          battlePlan: 'Instructions: 4 sets of 6 — rest 75–90s between sets, take all of it.\n4 rounds\n• 6 Mixed Grip Pull-Ups (swap grip each set)\nRest 75–90s after set',
+          battlePlan: 'Instructions: 4 sets of 6 — rest 75–90s between sets, take all of it.\n4 sets\n• 6 Mixed Grip Pull-Ups (swap grip each set)\nRest 75–90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5093,7 +5300,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s after set"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240552/mood_app/workout_images/knkswnzw_download_4_.jpg',
           intensityReason: 'Mixed grip helps overcome sticking points, building unilateral strength',
@@ -5118,7 +5326,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Commando Pulls',
           duration: '12–14 min',
           description: 'Dynamic pull-up variation for core and back engagement',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 6 — rest 90s between sets, take all of it.\n3 rounds\n• 6 Commando Pull-Ups (chest to each side)\nRest 90s after set',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 6 — rest 90s between sets, take all of it.\n3 sets\n• 6 Commando Pull-Ups (chest to each side)\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5134,7 +5342,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s after set"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 6 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240909/mood_app/workout_images/v94peb1z_Screenshot_2025-12-05_at_11_08_43_PM.jpg',
           intensityReason: 'Commando pulls challenge stability and unilateral strength',
@@ -5172,14 +5381,17 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                     "tutorialSlug": "neutral_grip_assisted_pull_up"
                   },
                   {
-                    "name": "Next set: 6 Chin-Ups",
+                    "name": "Chin-Ups",
+                    "note": "alternate sets; Then alternate each round",
+                    "reps": "6",
                     "tutorialSlug": "chin_ups"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ba98ecac-d9ff-4da8-8b26-c72f04702bfb/artifacts/tmmvwgrx_neutral%20grip%20pull%20ups.avif',
           intensityReason: 'Grip switching targets different lat fibers',
@@ -5209,7 +5421,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Commando Pause Pulls',
           duration: '12–14 min',
           description: 'Side-to-side pulls with controlled pauses',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 6 — rest 90s between sets, take all of it.\n3 rounds\n• 6 Commando Pull-Ups (with 1s pause each side)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 6 — rest 90s between sets, take all of it.\n3 sets\n• 6 Commando Pull-Ups (with 1s pause each side)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5225,7 +5437,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 6 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240727/mood_app/workout_images/haxbdjj0_commando_pull.jpg',
           intensityReason: 'Pauses increase time under tension unilaterally',
@@ -5278,7 +5491,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240552/mood_app/workout_images/knkswnzw_download_4_.jpg',
           intensityReason: 'Combines two primary grips for comprehensive back development',
@@ -5303,7 +5517,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Archer Pulls',
           duration: '16–18 min',
           description: 'Highly challenging pull-up variation for extreme strength',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 — rest 90–120s between sets, take all of it.\n4 rounds\n• 6 Archer Pull-Ups (each side)\nRest 90–120s after set',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 — rest 90–120s between sets, take all of it.\n4 sets\n• 6 Archer Pull-Ups (each side)\nRest 90–120s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5319,7 +5533,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90–120s after set"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 — rest 90–120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240917/mood_app/workout_images/yk99v1xl_archpu.jpg',
           intensityReason: 'Unilateral strength builder, progressing towards one-arm pull-ups',
@@ -5344,7 +5559,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Neutral Pull-Ups',
           duration: '14–16 min',
           description: 'Heavy neutral-grip pulls for lat thickness',
-          battlePlan: 'Instructions: 4 sets of 5 — rest 120s between sets, take all of it.\n4 rounds\n• 5 Weighted Neutral Pull-Ups\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 5 — rest 120s between sets, take all of it.\n4 sets\n• 5 Weighted Neutral Pull-Ups\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5360,7 +5575,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 5 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240717/mood_app/workout_images/f7ym9pmr_weighted_neutral_grip_pull_ups.jpg',
           intensityReason: 'Weighted work maximizes strength development',
@@ -5390,7 +5606,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Archer Eccentrics',
           duration: '16–18 min',
           description: 'Archer pull-ups with slow unilateral negatives',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 4 — rest 120s between sets, take all of it.\n3 rounds\n• 4 Archer Pull-Ups (slow eccentric each side)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 4 — rest 120s between sets, take all of it.\n3 sets\n• 4 Archer Pull-Ups (slow eccentric each side)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5406,7 +5622,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 4 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240917/mood_app/workout_images/yk99v1xl_archpu.jpg',
           intensityReason: 'Extended eccentrics maximize unilateral strength',
@@ -5444,7 +5661,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Row',
           duration: '10–12 min',
           description: 'Builds pulling strength with a natural elbow path',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60–75s between sets, take all of it.\n3 rounds\n• 10–12 Neutral Grip Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60–75s between sets, take all of it.\n3 sets\n• 10–12 Neutral Grip Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5460,7 +5677,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240896/mood_app/workout_images/lmxixaaf_scsngr.jpg',
           intensityReason: 'Neutral grip row teaches form with stable setup',
@@ -5485,7 +5703,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Row',
           duration: '10–12 min',
           description: 'Engages rhomboids and traps with safer alignment',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60–75s between sets, take all of it.\n3 rounds\n• 10–12 Wide Grip Row\nRest 60–75s after set',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60–75s between sets, take all of it.\n3 sets\n• 10–12 Wide Grip Row\nRest 60–75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5501,7 +5719,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s after set"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240875/mood_app/workout_images/aod60178_scswgr.jpg',
           intensityReason: 'Wide row variation builds posture and width with added support.',
@@ -5526,7 +5745,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Rows',
           duration: '10–12 min',
           description: 'Controlled rows emphasizing peak contraction and posture',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 12 — rest 60–75s between sets, take all of it.\n3 rounds\n• 12 Rows (2s pause)\nRest 60–75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 12 — rest 60–75s between sets, take all of it.\n3 sets\n• 12 Rows (2s pause)\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5535,13 +5754,15 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Rows",
-                    "reps": "12"
+                    "reps": "12",
+                    "tutorialSlug": "barbell_row"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60–75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 12 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241290/mood_app/workout_images/m556b5a2_scsr_1.jpg',
           intensityReason: 'Paused reps reinforce form and mind-muscle connection',
@@ -5571,7 +5792,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Partial Row Burn',
           duration: '10–12 min',
           description: 'Short-range rows for endurance without form breakdown',
-          battlePlan: 'Instructions: 3 sets of 20 — rest 60s between sets, take all of it.\n3 rounds\n• 20 Partial Rows\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 20 — rest 60s between sets, take all of it.\n3 sets\n• 20 Partial Rows\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5586,7 +5807,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 20 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241275/mood_app/workout_images/511hj5j8_scsr.jpg',
           intensityReason: 'Partial range builds endurance while maintaining strict form',
@@ -5618,7 +5840,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Underhand Row',
           duration: '12–14 min',
           description: 'Stronger pull variation for controlled overload',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 75s between sets, take all of it.\n4 rounds\n• 8–10 Underhand Grip Row (moderate to heavy)\nRest 75s after set',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 75s between sets, take all of it.\n4 sets\n• 8–10 Underhand Grip Row (moderate to heavy)\nRest 75s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5633,7 +5855,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75s after set"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240901/mood_app/workout_images/pm9titrm_scsrgr.jpg',
           intensityReason: 'Underhand angle shifts load to lats and biceps',
@@ -5658,7 +5881,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Negatives',
           duration: '12–14 min',
           description: 'Focuses on lat control with longer lowering phase',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Neutral Grip Row (3s eccentric each rep)\nRest 90s after set',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Neutral Grip Row (3s eccentric each rep)\nRest 90s after set',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5674,7 +5897,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s after set"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240542/mood_app/workout_images/1uyss7y4_csrr.jpg',
           intensityReason: '3s eccentric reps add high time under tension',
@@ -5699,7 +5923,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Row Drop Set',
           duration: '14–16 min',
           description: 'Heavy rows extended using fast load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Rows\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5708,14 +5932,16 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Rows",
+                    "note": "Drop → 8 reps; Drop → 8 reps",
                     "reps": "8",
-                    "note": "Drop → 8 reps; Drop → 8 reps"
+                    "tutorialSlug": "barbell_row"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241290/mood_app/workout_images/m556b5a2_scsr_1.jpg',
           intensityReason: 'Drop sets extend time under tension beyond failure',
@@ -5745,7 +5971,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Negative Rows',
           duration: '14–16 min',
           description: 'Time-under-tension rows using long eccentrics',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 Rows (4s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 90s between sets, take all of it.\n4 sets\n• 8 Rows (4s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5754,13 +5980,15 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Rows",
-                    "reps": "8"
+                    "reps": "8",
+                    "tutorialSlug": "barbell_row"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241275/mood_app/workout_images/511hj5j8_scsr.jpg',
           intensityReason: 'Extended eccentrics maximize strength development',
@@ -5813,7 +6041,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240557/mood_app/workout_images/ty987c3z_download_14_.jpg',
           intensityReason: 'Two grips stimulate width and thickness growth',
@@ -5843,19 +6072,28 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Neutral Grip Row",
                     "reps": "8",
-                    "tutorialSlug": "neutral_grip_t_bar_chest_supported_row",
-                    "note": "Immediately 8 Underhand Grip Row; Finish with 10s Hold at peak contraction"
+                    "tutorialSlug": "neutral_grip_t_bar_chest_supported_row"
+                  },
+                  {
+                    "name": "Underhand Grip Row",
+                    "note": "immediately, no rest",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Hold at peak contraction",
+                    "reps": "10s"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s after full sequence"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10s Hold at peak contraction — it counts, don't skip it. 4 rounds — all 2 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240542/mood_app/workout_images/1uyss7y4_csrr.jpg',
           intensityReason: 'Superset adds load, holds extend time under tension',
@@ -5880,7 +6118,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Squeeze Rows',
           duration: '16–18 min',
           description: 'Heavy rows finished with long isometric contractions',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 120s between sets, take all of it.\n4 rounds\n• 8 Rows + 10s Hold\nRest 120s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 120s between sets, take all of it.\n4 sets\n• 8 Rows + 10s Hold\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5895,7 +6133,8 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241290/mood_app/workout_images/m556b5a2_scsr_1.jpg',
           intensityReason: 'Isometric holds build peak contraction strength',
@@ -5925,7 +6164,7 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Row',
           duration: '18–20 min',
           description: 'Extended drop set to drive maximum pulling fatigue',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 4 moves in order, then rest 120s.\n3 rounds\n• 6 Rows\n• Row drop → 6\n• Row drop → 6\n• Row drop → 6\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 120s.\n3 sets\n• 6 Rows\n• Row drop → 6\n• Row drop → 6\n• Row drop → 6\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5935,13 +6174,26 @@ export const backWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Rows",
                     "reps": "6",
-                    "note": "Drop → 6; Drop → 6; Drop → 6"
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Row drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Row drop → 6",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Row drop → 6",
+                    "tutorialSlug": "barbell_row"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241275/mood_app/workout_images/511hj5j8_scsr.jpg',
           intensityReason: 'Triple drops maximize muscle fatigue and pump',

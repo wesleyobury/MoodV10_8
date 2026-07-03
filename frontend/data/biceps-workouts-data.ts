@@ -19,16 +19,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Alternating Dumbbell Curl",
-                    "sets": 4,
-                    "reps": "12",
                     "note": "standard reps",
+                    "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "dumbbell_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Builds curl discipline with stable elbow position',
@@ -67,16 +68,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Seated Dumbbell Curl",
-                    "sets": 4,
-                    "reps": "12",
                     "note": "standard reps",
+                    "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "dumbbell_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Seated position removes momentum for better isolation',
@@ -115,16 +117,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Hammer Curl",
-                    "sets": 4,
-                    "reps": "12",
                     "note": "standard reps",
+                    "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "dumbbell_hammer_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240788/mood_app/workout_images/2j38bvu7_download_1_.jpg',
           intensityReason: 'Neutral grip activates forearms and brachialis',
@@ -163,16 +166,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Dumbbell Curl",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold at top (elbow fully flexed) 8–10s",
                     "reps": "10",
-                    "note": "standard reps; Final set: squeeze to finish — hold at top (elbow fully flexed) 8–10s",
+                    "sets": 4,
                     "tutorialSlug": "dumbbell_curl"
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Isometric finish maximizes muscle recruitment',
@@ -213,16 +217,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Dumbbell Curl",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "standard reps",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "incline_db_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Incline position maximizes long-head stretch',
@@ -261,16 +266,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Dumbbell Curl",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "pause reps (1s halfway up)",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "dumbbell_curl"
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240788/mood_app/workout_images/2j38bvu7_download_1_.jpg',
           intensityReason: 'Pauses eliminate momentum for honest tension',
@@ -309,16 +315,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Alternating DB Curls",
-                    "sets": 4,
-                    "reps": "16",
                     "note": "burnout reps",
-                    "tutorialSlug": "dumbbell_curl"
+                    "reps": "16",
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 16 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Extended time under tension builds endurance and pump',
@@ -357,22 +363,23 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Dumbbell Curl",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "standard reps",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "dumbbell_curl"
                   },
                   {
                     "name": "Hammer Curls",
+                    "note": "superset with",
                     "reps": "10",
-                    "tutorialSlug": "dumbbell_hammer_curl",
-                    "note": "superset with"
+                    "tutorialSlug": "dumbbell_hammer_curl"
                   }
                 ],
                 "label": "Superset",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240788/mood_app/workout_images/2j38bvu7_download_1_.jpg',
           intensityReason: 'Two grip styles maximize total arm development',
@@ -413,16 +420,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Dumbbell Curl",
-                    "sets": 6,
-                    "reps": "8",
                     "note": "standard reps",
+                    "reps": "8",
+                    "sets": 6,
                     "tutorialSlug": "dumbbell_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Heavy loads with strict form build maximum strength',
@@ -452,7 +460,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Curl Drop Ladder',
           duration: '18–20 min',
           description: 'Multi-drop curl workout driving mechanical fatigue.',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  10 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 sets:\n• DB Curl — 10 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -460,7 +468,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "reps → drop ~20% → 8 reps → drop ~15% → AMRAP",
+                    "name": "DB Curl",
                     "reps": "10"
                   }
                 ],
@@ -468,7 +476,8 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "label": "Drop Ladder",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240788/mood_app/workout_images/2j38bvu7_download_1_.jpg',
           intensityReason: 'Drop sets extend time under tension past failure',
@@ -507,16 +516,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline DB Curl",
-                    "sets": 4,
-                    "reps": "15",
                     "note": "burnout reps",
+                    "reps": "15",
+                    "sets": 4,
                     "tutorialSlug": "incline_db_curl"
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 15 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240792/mood_app/workout_images/azkbdoo3_download_2_.jpg',
           intensityReason: 'Stretch-biased burnout maximizes long-head hypertrophy',
@@ -546,18 +556,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '21s + Iso Finish',
           duration: '18–20 min',
           description: 'Partial-range burnout workout finishing with peak contraction hold.',
-          battlePlan: 'Instructions: 21s: 7 reps in the bottom half, 7 in the top half, then 7 full reps — no rest inside the 21. The hold is strict: locked position, squeezing hard, no drifting. 3 sets — rest 90s between sets, take all of it.\nBattle Plan — Burnout + Isometric\n• 3 rounds of 21s\n• Final set, squeeze to finish, hold top flex 10s\nRest 90s',
+          battlePlan: 'Instructions: 21s: 7 reps in the bottom half, 7 in the top half, then 7 full reps — no rest inside the 21. The hold is strict: locked position, squeezing hard, no drifting. 3 sets — rest 90s between sets, take all of it.\nBattle Plan — Burnout + Isometric\n• DB Curl — 3 rounds of 21s (7 bottom-half + 7 top-half + 7 full)\n• Final set: hold top-flex squeeze 10s\nRest 90s',
           plan: {
-            "format": "circuit",
+            "format": "strength",
             "blocks": [
               {
                 "type": "straight",
-                "movements": [],
-                "rounds": 3,
+                "movements": [
+                  {
+                    "name": "DB Curl",
+                    "note": "Final set: hold top-flex squeeze 10s",
+                    "reps": "3"
+                  }
+                ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "21s: 7 reps in the bottom half, 7 in the top half, then 7 full reps — no rest inside the 21. The hold is strict: locked position, squeezing hard, no drifting. 3 sets — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240788/mood_app/workout_images/2j38bvu7_download_1_.jpg',
           intensityReason: '21s with iso hold completely exhausts biceps fibers',
@@ -604,16 +620,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Bar Curl",
-                    "sets": 4,
-                    "reps": "12",
                     "note": "standard reps",
+                    "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "ez_bar_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'EZ bar reduces wrist stress for comfortable curling',
@@ -652,16 +669,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Curl",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "eccentric reps (3s down)",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "ez_bar_curl"
                   }
                 ],
                 "label": "Eccentric Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'Slow eccentrics build strength through control',
@@ -700,15 +718,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Close-Grip EZ Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240570/mood_app/workout_images/annq3ae8_download_3_.jpg',
           intensityReason: 'Close grip emphasizes long head development',
@@ -747,16 +766,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Curl",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold bar at top 8–10s",
                     "reps": "10",
-                    "note": "standard reps; Final set: squeeze to finish — hold bar at top 8–10s",
+                    "sets": 4,
                     "tutorialSlug": "ez_bar_curl"
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240571/mood_app/workout_images/b35vwad0_download_4_.jpg',
           intensityReason: 'Isometric finish maximizes muscle engagement',
@@ -797,15 +817,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Wide-Grip EZ Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "10",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'Wide grip targets short head for peak development',
@@ -844,16 +865,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Curl",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "pause reps (1s halfway)",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "ez_bar_curl"
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'Pauses eliminate momentum for honest loading',
@@ -892,16 +914,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Curl",
-                    "sets": 4,
-                    "reps": "15",
                     "note": "burnout reps",
+                    "reps": "15",
+                    "sets": 4,
                     "tutorialSlug": "ez_bar_curl"
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 15 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240570/mood_app/workout_images/annq3ae8_download_3_.jpg',
           intensityReason: 'Extended reps build endurance and pump',
@@ -940,21 +963,22 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Curl",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "standard reps",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "ez_bar_curl"
                   },
                   {
                     "name": "Reverse EZ Curls",
-                    "reps": "10",
-                    "note": "superset with"
+                    "note": "superset with",
+                    "reps": "10"
                   }
                 ],
                 "label": "Superset",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240571/mood_app/workout_images/b35vwad0_download_4_.jpg',
           intensityReason: 'Two grip styles maximize forearm and bicep development',
@@ -995,16 +1019,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Curl",
-                    "sets": 6,
-                    "reps": "6",
                     "note": "standard reps",
+                    "reps": "6",
+                    "sets": 6,
                     "tutorialSlug": "ez_bar_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 6 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'Heavy loads with strict form build maximum strength',
@@ -1034,17 +1059,24 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Curl Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop curl workout driving fatigue safely.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets.\nBattle Plan — Drop Cluster\n• EZ-Bar Curl\n• Set 1: 10 reps\n• Set 2: drop set — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
               {
                 "type": "straight",
-                "movements": [],
+                "movements": [
+                  {
+                    "name": "EZ-Bar Curl",
+                    "note": "Set 1: 10 reps; Set 2: drop set — 10 → drop ~20% → 8; Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6",
+                    "tutorialSlug": "ez_bar_curl"
+                  }
+                ],
                 "label": "Drop Cluster",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg',
           intensityReason: 'Drop clusters extend time under tension past failure',
@@ -1083,16 +1115,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Curl",
-                    "sets": 4,
+                    "note": "burnout reps; Final set, squeeze to finish, hold top 10s",
                     "reps": "12",
-                    "note": "burnout reps; Final set: squeeze to finish — hold top 10s",
+                    "sets": 4,
                     "tutorialSlug": "ez_bar_curl"
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240570/mood_app/workout_images/annq3ae8_download_3_.jpg',
           intensityReason: 'Burnout with iso hold completely exhausts biceps',
@@ -1131,16 +1164,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Curl",
-                    "sets": 5,
-                    "reps": "8",
                     "note": "1.5 reps",
+                    "reps": "8",
+                    "sets": 5,
                     "tutorialSlug": "ez_bar_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Curl to the top, lower halfway, curl back up, then lower fully — that's ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240571/mood_app/workout_images/b35vwad0_download_4_.jpg',
           intensityReason: '1.5 reps double time under tension per rep',
@@ -1187,15 +1221,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Standing Cable Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240587/mood_app/workout_images/yv5l5jby_cable_curl.jpg',
           intensityReason: 'Cables provide constant tension throughout the movement',
@@ -1234,16 +1269,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Rope Cable Curl",
-                    "sets": 4,
-                    "reps": "12",
                     "note": "standard reps",
+                    "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "cable_rope_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240797/mood_app/workout_images/jzrqwni6_download.jpg',
           intensityReason: 'Neutral grip with constant cable tension hits brachialis',
@@ -1282,15 +1318,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Seated Low Cable Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240575/mood_app/workout_images/lz1p2boy_seated_low_cable_curl.jpg',
           intensityReason: 'Seated position removes momentum for pure biceps isolation',
@@ -1329,16 +1366,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Cable Curl",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold handle at full elbow flexion 8–10s",
                     "reps": "10",
-                    "note": "standard reps; Final set: squeeze to finish — hold handle at full elbow flexion 8–10s",
+                    "sets": 4,
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240573/mood_app/workout_images/f0ehglmc_cable_curl_2.jpg',
           intensityReason: 'Isometric finish with cable tension maximizes pump',
@@ -1379,16 +1417,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Cable Curl",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "standard reps",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "incline_db_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240905/mood_app/workout_images/qi05o2xg_download_19_.jpg',
           intensityReason: 'Incline position with cable creates extreme long-head stretch',
@@ -1427,16 +1466,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Cable Curl",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "pause reps (1s halfway)",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240911/mood_app/workout_images/vqw55nvb_download_18_.jpg',
           intensityReason: 'Pauses eliminate cable rebound for honest tension',
@@ -1475,15 +1515,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Single-Arm Cable Curls",
-                    "sets": 4,
+                    "note": "burnout reps",
                     "reps": "14",
-                    "note": "burnout reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 14 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240905/mood_app/workout_images/qi05o2xg_download_19_.jpg',
           intensityReason: 'Unilateral work with continuous cable tension builds endurance',
@@ -1522,21 +1563,22 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Cable Curl",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "standard reps",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "cable_straight_bar_curl"
                   },
                   {
                     "name": "Face-Away Cable Curls",
-                    "reps": "10",
-                    "note": "superset with"
+                    "note": "superset with",
+                    "reps": "10"
                   }
                 ],
                 "label": "Superset",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240911/mood_app/workout_images/vqw55nvb_download_18_.jpg',
           intensityReason: 'Two angles maximize stretch and contraction phases',
@@ -1577,16 +1619,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Cable Curl",
-                    "sets": 6,
-                    "reps": "8",
                     "note": "standard reps",
+                    "reps": "8",
+                    "sets": 6,
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240913/mood_app/workout_images/waan6rau_download_20_.jpg',
           intensityReason: 'Heavy cable loads with constant tension build strength',
@@ -1616,7 +1659,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Curl Drop Ladder',
           duration: '18–20 min',
           description: 'Multi-drop cable curl workout driving mechanical fatigue.',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  10 reps → drop ~15% → 8 reps → drop ~10% → AMRAP\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 sets:\n• Cable Curl — 10 reps → drop ~15% → 8 reps → drop ~10% → AMRAP\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1624,15 +1667,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "reps → drop ~15% → 8 reps → drop ~10% → AMRAP",
-                    "reps": "10"
+                    "name": "Cable Curl",
+                    "reps": "10",
+                    "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ],
                 "rounds": 3,
                 "label": "Drop Ladder",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240913/mood_app/workout_images/waan6rau_download_20_.jpg',
           intensityReason: 'Cable drop sets maintain tension without momentum',
@@ -1671,16 +1716,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Cable Curl",
-                    "sets": 4,
+                    "note": "burnout reps; Final set, squeeze to finish, hold at peak flexion 10s",
                     "reps": "15",
-                    "note": "burnout reps; Final set: squeeze to finish — hold at peak flexion 10s",
+                    "sets": 4,
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 15 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240797/mood_app/workout_images/jzrqwni6_download.jpg',
           intensityReason: 'Burnout with iso hold under cable tension exhausts biceps',
@@ -1719,16 +1765,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Cable Curl",
-                    "sets": 5,
-                    "reps": "8",
                     "note": "1.5 reps",
+                    "reps": "8",
+                    "sets": 5,
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Curl to the top, lower halfway, curl back up, then lower fully — that's ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240790/mood_app/workout_images/3z2y67t7_cc.jpg',
           intensityReason: '1.5 reps with cable tension double time under tension',
@@ -1775,15 +1822,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Preacher Machine Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240798/mood_app/workout_images/rmfkhn59_download_6_.jpg',
           intensityReason: 'Preacher pad eliminates cheating for pure biceps isolation',
@@ -1822,15 +1870,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Preacher Curl",
-                    "sets": 4,
+                    "note": "eccentric reps (3s down)",
                     "reps": "10",
-                    "note": "eccentric reps (3s down)"
+                    "sets": 4
                   }
                 ],
                 "label": "Eccentric Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240787/mood_app/workout_images/2h81ucwk_download_5_.jpg',
           intensityReason: 'Slow eccentrics on preacher pad hit hard',
@@ -1869,15 +1918,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Close-Grip Preacher Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240578/mood_app/workout_images/otlde2yi_preacher_curl_3.jpg',
           intensityReason: 'Close grip on preacher targets long head effectively',
@@ -1916,15 +1966,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Preacher Curl",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold top 8–10s",
                     "reps": "10",
-                    "note": "standard reps; Final set: squeeze to finish — hold top 8–10s"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240574/mood_app/workout_images/g54uz2wp_preacher_curl.jpg',
           intensityReason: 'Isometric finish on preacher maximizes contraction',
@@ -1965,15 +2016,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Preacher Curl",
-                    "sets": 4,
+                    "note": "pause reps (1s bottom)",
                     "reps": "10",
-                    "note": "pause reps (1s bottom)"
+                    "sets": 4
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240798/mood_app/workout_images/rmfkhn59_download_6_.jpg',
           intensityReason: 'Bottom pauses on preacher eliminate all momentum',
@@ -2012,15 +2064,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Wide-Grip Preacher Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "10",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240787/mood_app/workout_images/2h81ucwk_download_5_.jpg',
           intensityReason: 'Wide grip on preacher targets short head for peak development',
@@ -2059,15 +2112,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Preacher Curl",
-                    "sets": 4,
+                    "note": "burnout reps",
                     "reps": "15",
-                    "note": "burnout reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 15 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240578/mood_app/workout_images/otlde2yi_preacher_curl_3.jpg',
           intensityReason: 'Extended reps on preacher build endurance and pump',
@@ -2106,20 +2160,21 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Preacher Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "10",
-                    "note": "standard reps"
+                    "sets": 4
                   },
                   {
                     "name": "Top-Range Partial Preacher Curls",
-                    "reps": "10",
-                    "note": "superset with"
+                    "note": "superset with",
+                    "reps": "10"
                   }
                 ],
                 "label": "Superset",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240574/mood_app/workout_images/g54uz2wp_preacher_curl.jpg',
           intensityReason: 'Full and partial reps maximize fiber recruitment',
@@ -2160,15 +2215,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Preacher Curl",
-                    "sets": 6,
+                    "note": "standard reps",
                     "reps": "8",
-                    "note": "standard reps"
+                    "sets": 6
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240798/mood_app/workout_images/rmfkhn59_download_6_.jpg',
           intensityReason: 'Heavy loads on preacher build strength without cheating',
@@ -2198,17 +2254,23 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Preacher Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop preacher curl workout driving fatigue.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets.\nBattle Plan — Drop Cluster\n• Preacher Curl\n• Set 1: 10 reps\n• Set 2: drop set — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
               {
                 "type": "straight",
-                "movements": [],
+                "movements": [
+                  {
+                    "name": "Preacher Curl",
+                    "note": "Set 1: 10 reps; Set 2: drop set — 10 → drop ~20% → 8; Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6"
+                  }
+                ],
                 "label": "Drop Cluster",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240798/mood_app/workout_images/rmfkhn59_download_6_.jpg',
           intensityReason: 'Drop clusters on preacher extend time under tension',
@@ -2247,15 +2309,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Preacher Curl",
-                    "sets": 4,
+                    "note": "burnout reps; Final set, squeeze to finish, hold top 10s",
                     "reps": "12",
-                    "note": "burnout reps; Final set: squeeze to finish — hold top 10s"
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240578/mood_app/workout_images/otlde2yi_preacher_curl_3.jpg',
           intensityReason: 'Burnout with iso hold on preacher exhausts biceps completely',
@@ -2294,15 +2357,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Preacher Curl",
-                    "sets": 5,
+                    "note": "1.5 reps",
                     "reps": "8",
-                    "note": "1.5 reps"
+                    "sets": 5
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Curl to the top, lower halfway, curl back up, then lower fully — that's ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240574/mood_app/workout_images/g54uz2wp_preacher_curl.jpg',
           intensityReason: '1.5 reps on preacher double time under tension per rep',
@@ -2349,15 +2413,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Machine Biceps Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240799/mood_app/workout_images/um46qpzr_download_3_.jpg',
           intensityReason: 'Fixed path machine provides perfect biceps isolation',
@@ -2396,15 +2461,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Machine Curl",
-                    "sets": 4,
+                    "note": "eccentric reps (3s down)",
                     "reps": "10",
-                    "note": "eccentric reps (3s down)"
+                    "sets": 4
                   }
                 ],
                 "label": "Eccentric Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240793/mood_app/workout_images/h9obln9e_download_2_.jpg',
           intensityReason: 'Slow eccentrics on machine hit brutally hard',
@@ -2443,15 +2509,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Close-Grip Machine Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240586/mood_app/workout_images/tqfomss4_Screenshot_2026-02-02_at_11_52_43_PM.jpg',
           intensityReason: 'Narrow grip on machine targets long head',
@@ -2490,15 +2557,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Machine Curl",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold handles at top 8–10s",
                     "reps": "10",
-                    "note": "standard reps; Final set: squeeze to finish — hold handles at top 8–10s"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240582/mood_app/workout_images/qfupz5zv_bicep_curl_machine.jpg',
           intensityReason: 'Isometric finish on machine maximizes contraction',
@@ -2539,15 +2607,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Machine Curl",
-                    "sets": 4,
+                    "note": "pause reps (1s halfway)",
                     "reps": "10",
-                    "note": "pause reps (1s halfway)"
+                    "sets": 4
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240799/mood_app/workout_images/um46qpzr_download_3_.jpg',
           intensityReason: 'Pauses eliminate machine assist for pure biceps work',
@@ -2586,15 +2655,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Wide-Grip Machine Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "10",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240793/mood_app/workout_images/h9obln9e_download_2_.jpg',
           intensityReason: 'Wide grip on machine targets inner biceps',
@@ -2633,15 +2703,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Machine Curl",
-                    "sets": 4,
+                    "note": "burnout reps",
                     "reps": "15",
-                    "note": "burnout reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 15 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240586/mood_app/workout_images/tqfomss4_Screenshot_2026-02-02_at_11_52_43_PM.jpg',
           intensityReason: 'Extended reps on machine build endurance and pump',
@@ -2680,20 +2751,21 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Machine Curl",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "10",
-                    "note": "standard reps"
+                    "sets": 4
                   },
                   {
                     "name": "Top-Range Partial Curls",
-                    "reps": "10",
-                    "note": "superset with"
+                    "note": "superset with",
+                    "reps": "10"
                   }
                 ],
                 "label": "Superset",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240582/mood_app/workout_images/qfupz5zv_bicep_curl_machine.jpg',
           intensityReason: 'Full and partial reps maximize fiber recruitment',
@@ -2734,15 +2806,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Machine Curl",
-                    "sets": 6,
+                    "note": "standard reps",
                     "reps": "8",
-                    "note": "standard reps"
+                    "sets": 6
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240799/mood_app/workout_images/um46qpzr_download_3_.jpg',
           intensityReason: 'Heavy loads on machine build strength without cheating',
@@ -2772,17 +2845,23 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Curl Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop machine curl workout driving fatigue.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets.\nBattle Plan — Drop Cluster\n• Machine Biceps Curl\n• Set 1: 10 reps\n• Set 2: drop set — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
               {
                 "type": "straight",
-                "movements": [],
+                "movements": [
+                  {
+                    "name": "Machine Biceps Curl",
+                    "note": "Set 1: 10 reps; Set 2: drop set — 10 → drop ~20% → 8; Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6"
+                  }
+                ],
                 "label": "Drop Cluster",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240799/mood_app/workout_images/um46qpzr_download_3_.jpg',
           intensityReason: 'Drop clusters on machine extend time under tension',
@@ -2821,15 +2900,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Machine Curl",
-                    "sets": 4,
+                    "note": "burnout reps; Final set, squeeze to finish, hold top 10s",
                     "reps": "12",
-                    "note": "burnout reps; Final set: squeeze to finish — hold top 10s"
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240586/mood_app/workout_images/tqfomss4_Screenshot_2026-02-02_at_11_52_43_PM.jpg',
           intensityReason: 'Burnout with iso hold on machine exhausts biceps completely',
@@ -2868,15 +2948,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Machine Curl",
-                    "sets": 5,
+                    "note": "1.5 reps",
                     "reps": "8",
-                    "note": "1.5 reps"
+                    "sets": 5
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Curl to the top, lower halfway, curl back up, then lower fully — that's ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240582/mood_app/workout_images/qfupz5zv_bicep_curl_machine.jpg',
           intensityReason: '1.5 reps on machine double time under tension per rep',
@@ -2922,15 +3003,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "4×AMRAP Chin-Ups",
-                    "reps": "standard reps",
+                    "name": "Chin-Ups",
+                    "reps": "AMRAP",
+                    "sets": 4,
                     "tutorialSlug": "chin_ups"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 4 sets of AMRAP — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Bodyweight chin-ups build functional pulling strength',
@@ -2969,16 +3052,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Assisted Chin-Ups",
-                    "sets": 4,
-                    "reps": "8–10",
                     "note": "standard reps",
+                    "reps": "8–10",
+                    "sets": 4,
                     "tutorialSlug": "chin_ups"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 8–10 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Band assistance allows proper form development',
@@ -3017,16 +3101,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chin-Ups",
-                    "sets": 4,
-                    "reps": "5",
                     "note": "eccentric reps (5s down)",
+                    "reps": "5",
+                    "sets": 4,
                     "tutorialSlug": "chin_ups"
                   }
                 ],
                 "label": "Eccentric Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 5 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: 'Slow negatives build eccentric strength for full reps',
@@ -3065,16 +3150,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chin-Ups",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold chin over bar 10s",
                     "reps": "6",
-                    "note": "standard reps; Final set: squeeze to finish — hold chin over bar 10s",
+                    "sets": 4,
                     "tutorialSlug": "chin_ups"
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 6 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: 'Isometric hold at top maximizes biceps contraction',
@@ -3115,16 +3201,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chin-Ups",
-                    "sets": 4,
-                    "reps": "6",
                     "note": "eccentric reps (3s down)",
+                    "reps": "6",
+                    "sets": 4,
                     "tutorialSlug": "chin_ups"
                   }
                 ],
                 "label": "Eccentric Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Controlled tempo maximizes time under tension',
@@ -3162,15 +3249,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "4×AMRAP Close-Grip Chin-Ups",
-                    "reps": "standard reps",
-                    "tutorialSlug": "chin_ups"
+                    "name": "Close-Grip Chin-Ups",
+                    "reps": "AMRAP",
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 4 sets of AMRAP — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Close grip increases biceps demand',
@@ -3208,15 +3296,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "5×AMRAP Chin-Ups",
-                    "reps": "burnout reps",
+                    "name": "Chin-Ups",
+                    "reps": "AMRAP",
+                    "sets": 5,
                     "tutorialSlug": "chin_ups"
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 5 sets of AMRAP — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: 'Short rest burnout builds endurance and pump',
@@ -3255,21 +3345,22 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chin-Ups",
-                    "sets": 4,
-                    "reps": "6",
                     "note": "standard reps",
+                    "reps": "6",
+                    "sets": 4,
                     "tutorialSlug": "chin_ups"
                   },
                   {
                     "name": "Flexed-Arm Hang",
-                    "reps": "20s",
-                    "note": "superset with"
+                    "note": "superset with",
+                    "reps": "20s"
                   }
                 ],
                 "label": "Superset",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. The hold is strict: locked position, squeezing hard, no drifting. Work top to bottom — rest 90s between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: 'Reps plus iso hang maximize biceps fatigue',
@@ -3310,16 +3401,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Weighted Chin-Ups",
-                    "sets": 6,
-                    "reps": "5",
                     "note": "standard reps",
+                    "reps": "5",
+                    "sets": 6,
                     "tutorialSlug": "chin_ups"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "6 sets of 5 — rest 120s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Added weight builds serious pulling strength',
@@ -3349,7 +3441,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Chin-Up Drop Ladder',
           duration: '18–20 min',
           description: 'Multi-drop bodyweight workout driving fatigue.',
-          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 3 sets of 5 — rest 120s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  5 weighted reps → remove weight → AMRAP bodyweight → band-assist AMRAP\nRest 120s',
+          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 3 sets of 5 — rest 120s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 sets:\n• Weighted Chin-Up — 5 weighted reps → remove weight → AMRAP bodyweight → band-assist AMRAP\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3357,16 +3449,16 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Weighted Chin-Up Drop Ladder",
-                    "reps": "5",
-                    "tutorialSlug": "chin_ups"
+                    "name": "Weighted Chin-Up",
+                    "reps": "5"
                   }
                 ],
                 "rounds": 3,
                 "label": "Drop Ladder",
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 3 sets of 5 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240786/mood_app/workout_images/2h4qn95p_download.jpg',
           intensityReason: 'Progressive drops extend set past failure',
@@ -3404,16 +3496,18 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "4×AMRAP Chin-Ups",
-                    "reps": "burnout reps",
-                    "tutorialSlug": "chin_ups",
-                    "note": "Final set: squeeze to finish — hold top 10–15s"
+                    "name": "Chin-Ups",
+                    "note": "Final set, squeeze to finish, hold top 10–15s",
+                    "reps": "AMRAP",
+                    "sets": 4,
+                    "tutorialSlug": "chin_ups"
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. The hold is strict: locked position, squeezing hard, no drifting. 4 sets of AMRAP — rest 120s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: 'Burnout with iso hold exhausts biceps completely',
@@ -3452,16 +3546,17 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chin-Ups",
-                    "sets": 5,
-                    "reps": "4",
                     "note": "1.5 reps",
+                    "reps": "4",
+                    "sets": 5,
                     "tutorialSlug": "chin_ups"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Every rep = one full rep plus a half rep in the hardest range before you finish. 5 sets of 4 — rest 120s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg',
           intensityReason: '1.5 reps double time under tension per rep',

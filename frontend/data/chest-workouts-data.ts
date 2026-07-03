@@ -19,8 +19,8 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Barbell Bench Press",
-                    "sets": 4,
                     "reps": "8",
+                    "sets": 4,
                     "tutorialSlug": "barbell_flat_bench_press"
                   }
                 ],
@@ -66,15 +66,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Barbell Bench Press",
-                    "sets": 4,
                     "reps": "5",
+                    "sets": 4,
                     "tutorialSlug": "barbell_flat_bench_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Pause for a full 1 second on the chest."
+            "instructions": "4 sets of 5 — rest 90s between sets. Pause for a full 1 second on the chest."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241302/mood_app/workout_images/1yb66xch_download_5_.jpg',
           intensityReason: 'Paused reps to reinforce control and chest tension.',
@@ -114,15 +114,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Barbell Bench Press",
                     "note": "4s eccentric",
-                    "sets": 3,
                     "reps": "6",
+                    "sets": 3,
                     "tutorialSlug": "barbell_flat_bench_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Lower the bar for 4 seconds each rep."
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 6 — rest 90s between sets. Lower the bar for 4 seconds each rep."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240760/mood_app/workout_images/5pvyffxc_download_6_.jpg',
           intensityReason: 'Slow eccentrics reinforce form and chest awareness.',
@@ -161,15 +161,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Barbell Bench Press",
-                    "sets": 3,
                     "reps": "15–20",
+                    "sets": 3,
                     "tutorialSlug": "barbell_flat_bench_press"
                   }
                 ],
                 "rest": "60s"
               }
             ],
-            "instructions": "Choose a light load and move continuously."
+            "instructions": "Choose a light load and move continuously. 3 sets of 15–20 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240771/mood_app/workout_images/ibf4t44u_download_5_.jpg',
           intensityReason: 'High-rep benching to build endurance and comfort.',
@@ -210,15 +210,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Barbell Bench Press",
-                    "sets": 4,
                     "reps": "4/4/4",
+                    "sets": 4,
                     "tutorialSlug": "barbell_flat_bench_press"
                   }
                 ],
                 "rest": "2:00 between clusters"
               }
             ],
-            "instructions": "15s breaths between mini-sets."
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. 4 sets of 4/4/4 — rest 2:00 between sets. 15s breaths between mini-sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241308/mood_app/workout_images/hs5s9gux_download_6_.jpg',
           intensityReason: 'Cluster benching to maintain power and bar speed.',
@@ -257,15 +257,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Barbell Bench Press",
-                    "sets": 5,
                     "reps": "6",
+                    "sets": 5,
                     "tutorialSlug": "barbell_flat_bench_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Increase load only if all reps stay clean."
+            "instructions": "Increase load only if all reps stay clean. 5 sets of 6 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241302/mood_app/workout_images/1yb66xch_download_5_.jpg',
           intensityReason: 'Traditional working bench sets with meaningful load.',
@@ -304,10 +304,10 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Barbell Bench Press",
-                    "sets": 4,
+                    "note": "Final rep: 6–8s squeeze",
                     "reps": "4",
-                    "tutorialSlug": "barbell_flat_bench_press",
-                    "note": "Final rep: 6–8s squeeze"
+                    "sets": 4,
+                    "tutorialSlug": "barbell_flat_bench_press"
                   }
                 ],
                 "rest": "2:00"
@@ -352,20 +352,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Close-Grip Bench Press",
-                    "sets": 4,
                     "reps": "6",
+                    "sets": 4,
                     "tutorialSlug": "close_grip_bench_press"
                   },
                   {
                     "name": "Explosive Push-Ups",
-                    "sets": 4,
-                    "reps": "12–15"
+                    "reps": "12–15",
+                    "sets": 4
                   }
                 ],
                 "rest": "90s after push-ups"
               }
             ],
-            "instructions": "Move immediately from bar to floor."
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom — rest 90s between exercises. Move immediately from bar to floor."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240771/mood_app/workout_images/ibf4t44u_download_5_.jpg',
           intensityReason: 'Close-grip bench paired with explosive push-ups.',
@@ -406,15 +406,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Barbell Bench Press",
-                    "sets": 5,
                     "reps": "3/3/3",
+                    "sets": 5,
                     "tutorialSlug": "barbell_flat_bench_press"
                   }
                 ],
                 "rest": "2:00"
               }
             ],
-            "instructions": "Short breaths, full recovery between sets."
+            "instructions": "Short breaths, full recovery between sets. 5 sets of 3/3/3 — rest 2:00 between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241308/mood_app/workout_images/hs5s9gux_download_6_.jpg',
           intensityReason: 'Heavy cluster benching to sustain power output.',
@@ -453,15 +453,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Barbell Bench Press",
-                    "sets": 5,
                     "reps": "4",
+                    "sets": 5,
                     "tutorialSlug": "barbell_flat_bench_press"
                   }
                 ],
                 "rest": "2:00"
               }
             ],
-            "instructions": "Challenging load, zero missed reps."
+            "instructions": "5 sets of 4 — rest 2:00 between sets. Challenging load, zero missed reps."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241302/mood_app/workout_images/1yb66xch_download_5_.jpg',
           intensityReason: 'Heavy benching focused on precision and output.',
@@ -500,15 +500,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Bench Press",
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15 reps; Drop 3 (Very Light) — burnout",
                     "reps": "max reps",
-                    "tutorialSlug": "barbell_flat_bench_press",
-                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15 reps; Drop 3 (Very Light) — burnout"
+                    "tutorialSlug": "barbell_flat_bench_press"
                   }
                 ],
                 "rest": "2:30"
               }
             ],
-            "instructions": "Strip weight immediately between stages."
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Strip weight immediately between stages."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240760/mood_app/workout_images/5pvyffxc_download_6_.jpg',
           intensityReason: 'Four-stage bench drop set for maximal chest fatigue.',
@@ -547,20 +547,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Bench Press",
-                    "sets": 4,
                     "reps": "4",
+                    "sets": 4,
                     "tutorialSlug": "barbell_flat_bench_press"
                   },
                   {
                     "name": "Clap Push-Ups",
-                    "sets": 4,
-                    "reps": "6–10"
+                    "reps": "6–10",
+                    "sets": 4
                   }
                 ],
                 "rest": "2:00 after push-ups"
               }
             ],
-            "instructions": "Move quickly but under control."
+            "instructions": "Work top to bottom — rest 2:00 between exercises. Move quickly but under control."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240771/mood_app/workout_images/ibf4t44u_download_5_.jpg',
           intensityReason: 'Heavy benching paired with explosive plyo push-ups.',
@@ -607,8 +607,8 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Barbell Press",
-                    "sets": 4,
                     "reps": "8",
+                    "sets": 4,
                     "tutorialSlug": "barbell_incline_bench_press"
                   }
                 ],
@@ -654,15 +654,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Incline Press",
-                    "sets": 4,
                     "reps": "5",
+                    "sets": 4,
                     "tutorialSlug": "barbell_incline_bench_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Pause softly for 1 second on the chest."
+            "instructions": "4 sets of 5 — rest 90s between sets. Pause softly for 1 second on the chest."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241313/mood_app/workout_images/lnd9yph3_ibp.png',
           intensityReason: 'Paused incline reps to reinforce upper chest control.',
@@ -702,15 +702,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Incline Press",
                     "note": "4s eccentric",
-                    "sets": 3,
                     "reps": "6",
+                    "sets": 3,
                     "tutorialSlug": "barbell_incline_bench_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Lower the bar for 4 seconds each rep."
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 6 — rest 90s between sets. Lower the bar for 4 seconds each rep."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240761/mood_app/workout_images/6ssiv94d_download_4_.jpg',
           intensityReason: 'Slow eccentrics increase upper chest awareness and tension.',
@@ -749,15 +749,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Press",
-                    "sets": 3,
                     "reps": "15–20",
+                    "sets": 3,
                     "tutorialSlug": "barbell_incline_bench_press"
                   }
                 ],
                 "rest": "60s"
               }
             ],
-            "instructions": "Choose a light load and move continuously."
+            "instructions": "Choose a light load and move continuously. 3 sets of 15–20 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240767/mood_app/workout_images/fs4ku905_download_3_.jpg',
           intensityReason: 'High-rep incline pressing to build upper chest endurance.',
@@ -798,15 +798,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Press",
-                    "sets": 4,
                     "reps": "4/4/4",
+                    "sets": 4,
                     "tutorialSlug": "barbell_incline_bench_press"
                   }
                 ],
                 "rest": "2:00 between clusters"
               }
             ],
-            "instructions": "15s breaths between mini-sets."
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. follow the 1 timed segment in order, no skipping. 15s breaths between mini-sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241310/mood_app/workout_images/jz7j4fdt_download_7_.jpg',
           intensityReason: 'Cluster incline pressing to maintain power and bar speed.',
@@ -845,15 +845,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Press",
-                    "sets": 5,
                     "reps": "6",
+                    "sets": 5,
                     "tutorialSlug": "barbell_incline_bench_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Increase load only if all reps stay clean."
+            "instructions": "Increase load only if all reps stay clean. 5 sets of 6 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241313/mood_app/workout_images/lnd9yph3_ibp.png',
           intensityReason: 'Traditional incline benching with meaningful working weight.',
@@ -892,10 +892,10 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Incline Press",
-                    "sets": 4,
+                    "note": "Final rep: 6–8s squeeze",
                     "reps": "4",
-                    "tutorialSlug": "barbell_incline_bench_press",
-                    "note": "Final rep: 6–8s squeeze"
+                    "sets": 4,
+                    "tutorialSlug": "barbell_incline_bench_press"
                   }
                 ],
                 "rest": "2:00"
@@ -940,20 +940,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Press",
-                    "sets": 4,
                     "reps": "6",
+                    "sets": 4,
                     "tutorialSlug": "barbell_incline_bench_press"
                   },
                   {
                     "name": "Explosive Push-Ups",
-                    "sets": 4,
-                    "reps": "12–15"
+                    "reps": "12–15",
+                    "sets": 4
                   }
                 ],
                 "rest": "90s after push-ups"
               }
             ],
-            "instructions": "Move directly from bar to floor."
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom — rest 90s between exercises. Move directly from bar to floor."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240767/mood_app/workout_images/fs4ku905_download_3_.jpg',
           intensityReason: 'Incline pressing paired with explosive push-ups.',
@@ -994,15 +994,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Press",
-                    "sets": 5,
                     "reps": "3/3/3",
+                    "sets": 5,
                     "tutorialSlug": "barbell_incline_bench_press"
                   }
                 ],
                 "rest": "2:00"
               }
             ],
-            "instructions": "Short breaths, full recovery between sets."
+            "instructions": "Short breaths, full recovery between sets. follow the 1 timed segment in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241310/mood_app/workout_images/jz7j4fdt_download_7_.jpg',
           intensityReason: 'Heavy incline clusters to sustain upper chest power.',
@@ -1041,15 +1041,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Press",
-                    "sets": 5,
                     "reps": "4",
+                    "sets": 5,
                     "tutorialSlug": "barbell_incline_bench_press"
                   }
                 ],
                 "rest": "2:00"
               }
             ],
-            "instructions": "Challenging load, zero missed reps."
+            "instructions": "5 sets of 4 — rest 2:00 between sets. Challenging load, zero missed reps."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241313/mood_app/workout_images/lnd9yph3_ibp.png',
           intensityReason: 'Heavy incline pressing focused on upper chest strength.',
@@ -1088,15 +1088,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Press",
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15 reps; Drop 3 (Very Light) — burnout",
                     "reps": "max reps",
-                    "tutorialSlug": "barbell_incline_bench_press",
-                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15 reps; Drop 3 (Very Light) — burnout"
+                    "tutorialSlug": "barbell_incline_bench_press"
                   }
                 ],
                 "rest": "2:30"
               }
             ],
-            "instructions": "Strip weight immediately between stages."
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. follow the 1 timed segment in order, no skipping. Strip weight immediately between stages."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240761/mood_app/workout_images/6ssiv94d_download_4_.jpg',
           intensityReason: 'Four-stage incline drop set for deep upper chest fatigue.',
@@ -1135,20 +1135,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline Press",
-                    "sets": 4,
                     "reps": "4",
+                    "sets": 4,
                     "tutorialSlug": "barbell_incline_bench_press"
                   },
                   {
                     "name": "Clap Push-Ups",
-                    "sets": 4,
-                    "reps": "6–10"
+                    "reps": "6–10",
+                    "sets": 4
                   }
                 ],
                 "rest": "2:00 after push-ups"
               }
             ],
-            "instructions": "Move quickly but under control."
+            "instructions": "Work top to bottom — rest 2:00 between exercises. Move quickly but under control."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240767/mood_app/workout_images/fs4ku905_download_3_.jpg',
           intensityReason: 'Heavy incline pressing paired with explosive plyo push-ups.',
@@ -1195,21 +1195,21 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Flat Press",
-                    "sets": 2,
                     "reps": "10",
+                    "sets": 2,
                     "tutorialSlug": "dumbbell_flat_bench_press"
                   },
                   {
                     "name": "DB Incline Press",
-                    "sets": 2,
                     "reps": "8",
+                    "sets": 2,
                     "tutorialSlug": "dumbbell_incline_press"
                   }
                 ],
                 "rest": "75–90s"
               }
             ],
-            "instructions": "Use a load you could do for 2 more reps."
+            "instructions": "Work top to bottom — rest 75–90s between exercises. Use a load you could do for 2 more reps."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240779/mood_app/workout_images/th0hlzzs_download_18_.jpg',
           intensityReason: 'Foundational dumbbell pressing for chest control.',
@@ -1248,8 +1248,8 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused DB Incline Press",
-                    "sets": 4,
                     "reps": "8",
+                    "sets": 4,
                     "tutorialSlug": "dumbbell_incline_press"
                   }
                 ],
@@ -1296,15 +1296,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "DB Flat Press",
                     "note": "4s eccentric",
-                    "sets": 3,
                     "reps": "8",
+                    "sets": 3,
                     "tutorialSlug": "dumbbell_flat_bench_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Lower for 4 seconds each rep."
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 90s between sets. Lower for 4 seconds each rep."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240760/mood_app/workout_images/5pvyffxc_download_6_.jpg',
           intensityReason: 'Slow eccentrics to improve chest awareness.',
@@ -1343,15 +1343,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Incline Press",
-                    "sets": 3,
                     "reps": "15–20",
+                    "sets": 3,
                     "tutorialSlug": "dumbbell_incline_press"
                   }
                 ],
                 "rest": "60s"
               }
             ],
-            "instructions": "Choose light bells and move continuously."
+            "instructions": "Choose light bells and move continuously. 3 sets of 15–20 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240771/mood_app/workout_images/ibf4t44u_download_5_.jpg',
           intensityReason: 'High-rep dumbbell pressing for chest endurance.',
@@ -1392,15 +1392,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Flat Press",
-                    "sets": 4,
                     "reps": "5/5/5",
+                    "sets": 4,
                     "tutorialSlug": "dumbbell_flat_bench_press"
                   }
                 ],
                 "rest": "2:00 between clusters"
               }
             ],
-            "instructions": "15s breaths between mini-sets."
+            "instructions": "4 sets of 5/5/5 — rest 2:00 between sets. 15s breaths between mini-sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240779/mood_app/workout_images/th0hlzzs_download_18_.jpg',
           intensityReason: 'Dumbbell clusters to maintain pressing power.',
@@ -1439,21 +1439,21 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Flat Press",
-                    "sets": 3,
                     "reps": "8",
+                    "sets": 3,
                     "tutorialSlug": "dumbbell_flat_bench_press"
                   },
                   {
                     "name": "DB Incline Press",
-                    "sets": 2,
                     "reps": "8",
+                    "sets": 2,
                     "tutorialSlug": "dumbbell_incline_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Increase weight only if reps stay clean."
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom — rest 90s between exercises. Increase weight only if reps stay clean."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240773/mood_app/workout_images/msod5irt_download_19_.jpg',
           intensityReason: 'Traditional dumbbell pressing with meaningful load.',
@@ -1492,16 +1492,16 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused DB Incline Press",
-                    "sets": 4,
+                    "note": "Final rep: 6–8s squeeze",
                     "reps": "6",
-                    "tutorialSlug": "dumbbell_incline_press",
-                    "note": "Final rep: 6–8s squeeze"
+                    "sets": 4,
+                    "tutorialSlug": "dumbbell_incline_press"
                   }
                 ],
                 "rest": "2:00"
               }
             ],
-            "instructions": "Final rep includes a 6–8s squeeze."
+            "instructions": "Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 2:00 between sets. Final rep includes a 6–8s squeeze."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240760/mood_app/workout_images/5pvyffxc_download_6_.jpg',
           intensityReason: 'Paused dumbbell pressing with strong squeeze finish.',
@@ -1540,20 +1540,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Incline Press",
-                    "sets": 4,
                     "reps": "8",
+                    "sets": 4,
                     "tutorialSlug": "dumbbell_incline_press"
                   },
                   {
                     "name": "Chest-Biased Push-Ups",
-                    "sets": 4,
-                    "reps": "15–20"
+                    "reps": "15–20",
+                    "sets": 4
                   }
                 ],
                 "rest": "90s after push-ups"
               }
             ],
-            "instructions": "Move directly from bench to floor."
+            "instructions": "Work top to bottom — rest 90s between exercises. Move directly from bench to floor."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240771/mood_app/workout_images/ibf4t44u_download_5_.jpg',
           intensityReason: 'Incline dumbbell pressing paired with push-ups.',
@@ -1594,15 +1594,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Flat Press",
-                    "sets": 5,
                     "reps": "4/4/4",
+                    "sets": 5,
                     "tutorialSlug": "dumbbell_flat_bench_press"
                   }
                 ],
                 "rest": "2:00"
               }
             ],
-            "instructions": "Short breaths, full recovery between sets."
+            "instructions": "Short breaths, full recovery between sets. 5 sets of 4/4/4 — rest 2:00 between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240779/mood_app/workout_images/th0hlzzs_download_18_.jpg',
           intensityReason: 'Heavy dumbbell clusters to sustain chest output.',
@@ -1641,21 +1641,21 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Flat Press",
-                    "sets": 3,
                     "reps": "6",
+                    "sets": 3,
                     "tutorialSlug": "dumbbell_flat_bench_press"
                   },
                   {
                     "name": "DB Incline Press",
-                    "sets": 2,
                     "reps": "6",
+                    "sets": 2,
                     "tutorialSlug": "dumbbell_incline_press"
                   }
                 ],
                 "rest": "2:00"
               }
             ],
-            "instructions": "Challenging load, zero sloppy reps."
+            "instructions": "Work top to bottom — rest 2:00 between exercises. Challenging load, zero sloppy reps."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240773/mood_app/workout_images/msod5irt_download_19_.jpg',
           intensityReason: 'Heavy dumbbell pressing focused on chest strength.',
@@ -1694,15 +1694,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Press",
-                    "reps": "max reps",
-                    "tutorialSlug": "dumbbell_flat_bench_press",
-                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 15–20 reps"
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 15–20 reps",
+                    "reps": "max reps"
                   }
                 ],
                 "rest": "2:30"
               }
             ],
-            "instructions": "Drop weight immediately between stages."
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Drop weight immediately between stages."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240760/mood_app/workout_images/5pvyffxc_download_6_.jpg',
           intensityReason: 'Multi-stage dumbbell drops for deep chest fatigue.',
@@ -1741,20 +1740,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Flat Press",
-                    "sets": 4,
                     "reps": "6",
+                    "sets": 4,
                     "tutorialSlug": "dumbbell_flat_bench_press"
                   },
                   {
                     "name": "Clap Push-Ups",
-                    "sets": 4,
-                    "reps": "6–10"
+                    "reps": "6–10",
+                    "sets": 4
                   }
                 ],
                 "rest": "2:00 after push-ups"
               }
             ],
-            "instructions": "Move quickly but under control."
+            "instructions": "Work top to bottom — rest 2:00 between exercises. Move quickly but under control."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240771/mood_app/workout_images/ibf4t44u_download_5_.jpg',
           intensityReason: 'Heavy dumbbell pressing paired with plyometric push-ups.',
@@ -1801,8 +1800,8 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Decline Barbell Press",
-                    "sets": 4,
                     "reps": "8",
+                    "sets": 4,
                     "tutorialSlug": "decline_bench_press"
                   }
                 ],
@@ -1848,15 +1847,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Decline Press",
-                    "sets": 4,
                     "reps": "5",
+                    "sets": 4,
                     "tutorialSlug": "decline_bench_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Pause for 1 second on the chest."
+            "instructions": "4 sets of 5 — rest 90s between sets. Pause for 1 second on the chest."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241316/mood_app/workout_images/r1uig0ll_download_4_.jpg',
           intensityReason: 'Paused decline reps to reinforce chest tension.',
@@ -1896,15 +1895,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Decline Press",
                     "note": "4s eccentric",
-                    "sets": 3,
                     "reps": "6",
+                    "sets": 3,
                     "tutorialSlug": "decline_bench_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Lower for 4 seconds each rep."
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 6 — rest 90s between sets. Lower for 4 seconds each rep."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240784/mood_app/workout_images/y22u5a5z_Screenshot_2026-02-01_at_10_11_43_PM.jpg',
           intensityReason: 'Slow eccentrics increase lower chest time under tension.',
@@ -1943,15 +1942,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Decline Press",
-                    "sets": 3,
                     "reps": "15–20",
+                    "sets": 3,
                     "tutorialSlug": "decline_bench_press"
                   }
                 ],
                 "rest": "60s"
               }
             ],
-            "instructions": "Choose a light load and move continuously."
+            "instructions": "Choose a light load and move continuously. 3 sets of 15–20 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240783/mood_app/workout_images/wu5otnku_Screenshot_2026-02-01_at_10_10_52_PM.jpg',
           intensityReason: 'High-rep decline pressing to build lower chest endurance.',
@@ -1992,15 +1991,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Decline Press",
-                    "sets": 4,
                     "reps": "4/4/4",
+                    "sets": 4,
                     "tutorialSlug": "decline_bench_press"
                   }
                 ],
                 "rest": "2:00 between clusters"
               }
             ],
-            "instructions": "15s breaths between mini-sets."
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. 4 sets of 4/4/4 — rest 2:00 between sets. 15s breaths between mini-sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241316/mood_app/workout_images/r1uig0ll_download_4_.jpg',
           intensityReason: 'Cluster decline pressing to maintain output and control.',
@@ -2039,15 +2038,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Decline Press",
-                    "sets": 5,
                     "reps": "6",
+                    "sets": 5,
                     "tutorialSlug": "decline_bench_press"
                   }
                 ],
                 "rest": "90s"
               }
             ],
-            "instructions": "Increase load only if reps stay clean."
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 6 — rest 90s between sets. Increase load only if reps stay clean."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241316/mood_app/workout_images/r1uig0ll_download_4_.jpg',
           intensityReason: 'Traditional decline benching with meaningful working load.',
@@ -2086,16 +2085,16 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Decline Press",
-                    "sets": 4,
+                    "note": "Final rep: 6–8s squeeze",
                     "reps": "4",
-                    "tutorialSlug": "decline_bench_press",
-                    "note": "Final rep: 6–8s squeeze"
+                    "sets": 4,
+                    "tutorialSlug": "decline_bench_press"
                   }
                 ],
                 "rest": "2:00"
               }
             ],
-            "instructions": "Final rep includes a 6–8s squeeze."
+            "instructions": "Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 4 — rest 2:00 between sets. Final rep includes a 6–8s squeeze."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240784/mood_app/workout_images/y22u5a5z_Screenshot_2026-02-01_at_10_11_43_PM.jpg',
           intensityReason: 'Paused decline pressing with strong contraction finish.',
@@ -2134,20 +2133,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Decline Press",
-                    "sets": 4,
                     "reps": "6",
+                    "sets": 4,
                     "tutorialSlug": "decline_bench_press"
                   },
                   {
                     "name": "Chest-Biased Push-Ups",
-                    "sets": 4,
-                    "reps": "15–20"
+                    "reps": "15–20",
+                    "sets": 4
                   }
                 ],
                 "rest": "90s after push-ups"
               }
             ],
-            "instructions": "Move directly from bar to floor."
+            "instructions": "Work top to bottom — rest 90s between exercises. Move directly from bar to floor."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240783/mood_app/workout_images/wu5otnku_Screenshot_2026-02-01_at_10_10_52_PM.jpg',
           intensityReason: 'Decline pressing paired with chest-focused push-ups.',
@@ -2188,15 +2187,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Decline Press",
-                    "sets": 5,
                     "reps": "3/3/3",
+                    "sets": 5,
                     "tutorialSlug": "decline_bench_press"
                   }
                 ],
                 "rest": "2:00"
               }
             ],
-            "instructions": "Short breaths, full recovery between sets."
+            "instructions": "Short breaths, full recovery between sets. 5 sets of 3/3/3 — rest 2:00 between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241316/mood_app/workout_images/r1uig0ll_download_4_.jpg',
           intensityReason: 'Heavy decline clusters to sustain lower chest power.',
@@ -2235,15 +2234,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Decline Press",
-                    "sets": 5,
                     "reps": "4",
+                    "sets": 5,
                     "tutorialSlug": "decline_bench_press"
                   }
                 ],
                 "rest": "2:00"
               }
             ],
-            "instructions": "Challenging load, zero missed reps."
+            "instructions": "5 sets of 4 — rest 2:00 between sets. Challenging load, zero missed reps."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241316/mood_app/workout_images/r1uig0ll_download_4_.jpg',
           intensityReason: 'Heavy decline pressing focused on lower chest strength.',
@@ -2282,15 +2281,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Decline Press",
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15 reps; Drop 3 (Very Light) — burnout",
                     "reps": "max reps",
-                    "tutorialSlug": "decline_bench_press",
-                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15 reps; Drop 3 (Very Light) — burnout"
+                    "tutorialSlug": "decline_bench_press"
                   }
                 ],
                 "rest": "2:30"
               }
             ],
-            "instructions": "Strip weight immediately between stages."
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Strip weight immediately between stages."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240784/mood_app/workout_images/y22u5a5z_Screenshot_2026-02-01_at_10_11_43_PM.jpg',
           intensityReason: 'Four-stage decline drop set for deep chest fatigue.',
@@ -2329,20 +2328,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Decline Press",
-                    "sets": 4,
                     "reps": "4",
+                    "sets": 4,
                     "tutorialSlug": "decline_bench_press"
                   },
                   {
                     "name": "Clap Push-Ups",
-                    "sets": 4,
-                    "reps": "6–10"
+                    "reps": "6–10",
+                    "sets": 4
                   }
                 ],
                 "rest": "2:00 after push-ups"
               }
             ],
-            "instructions": "Move quickly but under control."
+            "instructions": "Work top to bottom — rest 2:00 between exercises. Move quickly but under control."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240783/mood_app/workout_images/wu5otnku_Screenshot_2026-02-01_at_10_10_52_PM.jpg',
           intensityReason: 'Heavy decline pressing paired with explosive plyo push-ups.',
@@ -2389,18 +2388,18 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Smith Flat Press",
-                    "sets": 2,
-                    "reps": "10"
+                    "reps": "10",
+                    "sets": 2
                   },
                   {
                     "name": "Smith Incline Press",
-                    "sets": 2,
-                    "reps": "8"
+                    "reps": "8",
+                    "sets": 2
                   }
                 ]
               }
             ],
-            "instructions": "Use a load you could do for 2 more reps."
+            "instructions": "Work top to bottom. Use a load you could do for 2 more reps."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241319/mood_app/workout_images/wqpgrlpk_download_9_.jpg',
           intensityReason: 'Stable Smith pressing to build chest confidence.',
@@ -2439,13 +2438,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Smith Incline Press",
-                    "sets": 4,
-                    "reps": "8"
+                    "reps": "8",
+                    "sets": 4
                   }
                 ]
               }
             ],
-            "instructions": "Pause 1 second on chest."
+            "instructions": "4 sets of 8 — rest between sets. Pause 1 second on chest."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241315/mood_app/workout_images/pl1dkh7x_download_8_.jpg',
           intensityReason: 'Paused Smith reps to reinforce chest engagement.',
@@ -2485,13 +2484,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Smith Flat Press",
                     "note": "4s eccentric",
-                    "sets": 3,
-                    "reps": "8"
+                    "reps": "8",
+                    "sets": 3
                   }
                 ]
               }
             ],
-            "instructions": "Lower for 4 seconds."
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest between sets. Lower for 4 seconds."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240758/mood_app/workout_images/4b771hh1_download_15_.jpg',
           intensityReason: 'Slow negatives on Smith press for chest tension.',
@@ -2530,13 +2529,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Smith Incline Press",
-                    "sets": 3,
-                    "reps": "15–20"
+                    "reps": "15–20",
+                    "sets": 3
                   }
                 ]
               }
             ],
-            "instructions": "Choose light load."
+            "instructions": "3 sets of 15–20 — rest between sets. Choose light load."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240770/mood_app/workout_images/hag08c16_download_14_.jpg',
           intensityReason: 'High-rep Smith pressing for chest endurance.',
@@ -2577,13 +2576,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Smith Flat Press",
-                    "sets": 4,
-                    "reps": "5/5/5"
+                    "reps": "5/5/5",
+                    "sets": 4
                   }
                 ]
               }
             ],
-            "instructions": "15s breaths."
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. 4 sets of 5/5/5 — rest between sets. 15s breaths."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241319/mood_app/workout_images/wqpgrlpk_download_9_.jpg',
           intensityReason: 'Smith cluster pressing to maintain output.',
@@ -2622,18 +2621,18 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Smith Flat Press",
-                    "sets": 3,
-                    "reps": "8"
+                    "reps": "8",
+                    "sets": 3
                   },
                   {
                     "name": "Smith Incline Press",
-                    "sets": 2,
-                    "reps": "8"
+                    "reps": "8",
+                    "sets": 2
                   }
                 ]
               }
             ],
-            "instructions": "Increase load only if reps stay clean."
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom. Increase load only if reps stay clean."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241315/mood_app/workout_images/pl1dkh7x_download_8_.jpg',
           intensityReason: 'Traditional Smith pressing with meaningful load.',
@@ -2672,13 +2671,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Smith Incline Press",
-                    "sets": 4,
-                    "reps": "6"
+                    "reps": "6",
+                    "sets": 4
                   }
                 ]
               }
             ],
-            "instructions": "Final rep 6–8s squeeze."
+            "instructions": "Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest between sets. Final rep 6–8s squeeze."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240758/mood_app/workout_images/4b771hh1_download_15_.jpg',
           intensityReason: 'Paused Smith pressing with contraction finish.',
@@ -2717,18 +2716,18 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Smith Incline Press",
-                    "sets": 4,
-                    "reps": "8"
+                    "reps": "8",
+                    "sets": 4
                   },
                   {
                     "name": "Push-Ups",
-                    "sets": 4,
-                    "reps": "15–20"
+                    "reps": "15–20",
+                    "sets": 4
                   }
                 ]
               }
             ],
-            "instructions": "Move quickly."
+            "instructions": "Work top to bottom. Move quickly."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240770/mood_app/workout_images/hag08c16_download_14_.jpg',
           intensityReason: 'Smith incline pressing paired with push-ups.',
@@ -2769,13 +2768,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Smith Flat Press",
-                    "sets": 5,
-                    "reps": "4/4/4"
+                    "reps": "4/4/4",
+                    "sets": 5
                   }
                 ]
               }
             ],
-            "instructions": "Short breaths."
+            "instructions": "5 sets of 4/4/4 — rest between sets. Short breaths."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241319/mood_app/workout_images/wqpgrlpk_download_9_.jpg',
           intensityReason: 'Heavy Smith clusters to sustain chest output.',
@@ -2814,18 +2813,18 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Smith Flat Press",
-                    "sets": 3,
-                    "reps": "6"
+                    "reps": "6",
+                    "sets": 3
                   },
                   {
                     "name": "Smith Incline Press",
-                    "sets": 2,
-                    "reps": "6"
+                    "reps": "6",
+                    "sets": 2
                   }
                 ]
               }
             ],
-            "instructions": "Challenging load."
+            "instructions": "Work top to bottom. Challenging load."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241315/mood_app/workout_images/pl1dkh7x_download_8_.jpg',
           intensityReason: 'Heavy Smith pressing focused on chest strength.',
@@ -2864,13 +2863,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Smith Press",
-                    "reps": "max reps",
-                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15; Drop 3 (Very Light) — burnout"
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15; Drop 3 (Very Light) — burnout",
+                    "reps": "max reps"
                   }
                 ]
               }
             ],
-            "instructions": "Strip plates immediately."
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Strip plates immediately."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240758/mood_app/workout_images/4b771hh1_download_15_.jpg',
           intensityReason: 'Four-stage Smith drop set for deep chest fatigue.',
@@ -2909,18 +2908,18 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Smith Flat Press",
-                    "sets": 4,
-                    "reps": "6"
+                    "reps": "6",
+                    "sets": 4
                   },
                   {
                     "name": "Clap Push-Ups",
-                    "sets": 4,
-                    "reps": "6–10"
+                    "reps": "6–10",
+                    "sets": 4
                   }
                 ]
               }
             ],
-            "instructions": "Fast transitions."
+            "instructions": "Work top to bottom. Fast transitions."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240770/mood_app/workout_images/hag08c16_download_14_.jpg',
           intensityReason: 'Heavy Smith pressing paired with plyometric push-ups.',
@@ -2967,12 +2966,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chest Press Machine",
-                    "sets": 4,
-                    "reps": "12"
+                    "reps": "12",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241306/mood_app/workout_images/etmzu51q_download_3_.jpg',
           intensityReason: 'Chest press machine reps for controlled chest work.',
@@ -3011,12 +3011,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Chest Press",
-                    "sets": 4,
-                    "reps": "10"
+                    "reps": "10",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241305/mood_app/workout_images/67nyth7l_download_2_.jpg',
           intensityReason: 'Paused machine pressing for chest engagement.',
@@ -3056,12 +3057,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Chest Press",
                     "note": "4s eccentric",
-                    "sets": 3,
-                    "reps": "10"
+                    "reps": "10",
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240764/mood_app/workout_images/baf95b3k_ChatGPT_Image_Feb_1_2026_09_39_15_PM.jpg',
           intensityReason: 'Slow negatives on chest press machine.',
@@ -3100,12 +3102,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chest Press",
-                    "sets": 3,
-                    "reps": "15–20"
+                    "reps": "15–20",
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 15–20 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240781/mood_app/workout_images/vrqnhbou_ChatGPT_Image_Feb_1_2026_09_36_59_PM.jpg',
           intensityReason: 'High-rep machine pressing for chest endurance.',
@@ -3146,12 +3149,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chest Press",
-                    "sets": 4,
-                    "reps": "6/6/6"
+                    "reps": "6/6/6",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 6/6/6 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241306/mood_app/workout_images/etmzu51q_download_3_.jpg',
           intensityReason: 'Machine clusters to maintain pressing output.',
@@ -3190,12 +3194,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chest Press",
-                    "sets": 5,
-                    "reps": "10"
+                    "reps": "10",
+                    "sets": 5
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 10 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241305/mood_app/workout_images/67nyth7l_download_2_.jpg',
           intensityReason: 'Traditional machine pressing with meaningful load.',
@@ -3234,13 +3239,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Chest Press",
-                    "sets": 4,
+                    "note": "Final rep: 6–8s squeeze",
                     "reps": "8",
-                    "note": "Final rep: 6–8s squeeze"
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240764/mood_app/workout_images/baf95b3k_ChatGPT_Image_Feb_1_2026_09_39_15_PM.jpg',
           intensityReason: 'Paused machine pressing with contraction finish.',
@@ -3279,17 +3285,18 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chest Press",
-                    "sets": 4,
-                    "reps": "10"
+                    "reps": "10",
+                    "sets": 4
                   },
                   {
                     "name": "Push-Ups",
-                    "sets": 4,
-                    "reps": "15–25"
+                    "reps": "15–25",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240781/mood_app/workout_images/vrqnhbou_ChatGPT_Image_Feb_1_2026_09_36_59_PM.jpg',
           intensityReason: 'Machine pressing paired with push-ups for volume.',
@@ -3330,12 +3337,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chest Press",
-                    "sets": 5,
-                    "reps": "5/5/5"
+                    "reps": "5/5/5",
+                    "sets": 5
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 5/5/5 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241306/mood_app/workout_images/etmzu51q_download_3_.jpg',
           intensityReason: 'Heavy machine clusters to maximize chest output.',
@@ -3374,12 +3382,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chest Press",
-                    "sets": 5,
-                    "reps": "8"
+                    "reps": "8",
+                    "sets": 5
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 8 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241305/mood_app/workout_images/67nyth7l_download_2_.jpg',
           intensityReason: 'Heavy machine pressing for chest strength focus.',
@@ -3418,12 +3427,13 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chest Press",
-                    "reps": "max reps",
-                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15; Drop 3 (Very Light) — burnout"
+                    "note": "Drop 1 (Medium) — max reps; Drop 2 (Light) — 12–15; Drop 3 (Very Light) — burnout",
+                    "reps": "max reps"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240764/mood_app/workout_images/baf95b3k_ChatGPT_Image_Feb_1_2026_09_39_15_PM.jpg',
           intensityReason: 'Four-stage machine drop set for chest overload.',
@@ -3462,17 +3472,18 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Chest Press",
-                    "sets": 4,
-                    "reps": "8"
+                    "reps": "8",
+                    "sets": 4
                   },
                   {
                     "name": "Clap Push-Ups",
-                    "sets": 4,
-                    "reps": "6–10"
+                    "reps": "6–10",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240781/mood_app/workout_images/vrqnhbou_ChatGPT_Image_Feb_1_2026_09_36_59_PM.jpg',
           intensityReason: 'Heavy machine pressing paired with explosive push-ups.',
@@ -3519,13 +3530,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pec Deck Fly",
-                    "sets": 4,
                     "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "pec_deck_fly"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241317/mood_app/workout_images/rf17lbcl_pmd2.jpg',
           intensityReason: 'Pec deck flyes to build chest awareness.',
@@ -3564,13 +3576,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Pec Deck",
-                    "sets": 4,
                     "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "pec_deck_fly"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241303/mood_app/workout_images/5hd3my3c_pdm.jpg',
           intensityReason: 'Paused flyes to reinforce chest control.',
@@ -3610,13 +3623,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Pec Deck Fly",
                     "note": "4s eccentric",
-                    "sets": 3,
                     "reps": "10",
+                    "sets": 3,
                     "tutorialSlug": "pec_deck_fly"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240768/mood_app/workout_images/gerfnpik_Screenshot_2026-02-01_at_10_26_17_PM.jpg',
           intensityReason: 'Slow eccentrics on pec deck for chest tension.',
@@ -3655,13 +3669,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pec Deck Fly",
-                    "sets": 3,
                     "reps": "15–25",
+                    "sets": 3,
                     "tutorialSlug": "pec_deck_fly"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 15–25 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240766/mood_app/workout_images/catnm0o6_download_8_.jpg',
           intensityReason: 'High-rep pec deck flyes for chest endurance.',
@@ -3702,13 +3717,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pec Deck Fly",
-                    "sets": 4,
                     "reps": "6/6/6",
+                    "sets": 4,
                     "tutorialSlug": "pec_deck_fly"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 6/6/6 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241317/mood_app/workout_images/rf17lbcl_pmd2.jpg',
           intensityReason: 'Pec deck clusters to maintain chest tension.',
@@ -3747,13 +3763,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pec Deck Fly",
-                    "sets": 5,
                     "reps": "12",
+                    "sets": 5,
                     "tutorialSlug": "pec_deck_fly"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 12 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241303/mood_app/workout_images/5hd3my3c_pdm.jpg',
           intensityReason: 'Traditional pec deck flyes with meaningful load.',
@@ -3792,14 +3809,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Pec Deck",
-                    "sets": 4,
+                    "note": "Final rep: 6–8s squeeze",
                     "reps": "10",
-                    "tutorialSlug": "pec_deck_fly",
-                    "note": "Final rep: 6–8s squeeze"
+                    "sets": 4,
+                    "tutorialSlug": "pec_deck_fly"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240768/mood_app/workout_images/gerfnpik_Screenshot_2026-02-01_at_10_26_17_PM.jpg',
           intensityReason: 'Paused pec deck flyes with contraction finish.',
@@ -3838,18 +3856,19 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pec Deck Fly",
-                    "sets": 4,
                     "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "pec_deck_fly"
                   },
                   {
                     "name": "Push-Ups",
-                    "sets": 4,
-                    "reps": "15–25"
+                    "reps": "15–25",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240766/mood_app/workout_images/catnm0o6_download_8_.jpg',
           intensityReason: 'Pec deck flyes paired with push-ups.',
@@ -3890,13 +3909,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pec Deck Fly",
-                    "sets": 5,
                     "reps": "5/5/5",
+                    "sets": 5,
                     "tutorialSlug": "pec_deck_fly"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 5/5/5 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241317/mood_app/workout_images/rf17lbcl_pmd2.jpg',
           intensityReason: 'Heavy pec deck clusters for deep chest fatigue.',
@@ -3935,13 +3955,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pec Deck Fly",
-                    "sets": 5,
                     "reps": "10",
+                    "sets": 5,
                     "tutorialSlug": "pec_deck_fly"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 10 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241303/mood_app/workout_images/5hd3my3c_pdm.jpg',
           intensityReason: 'Heavy pec deck flyes for chest overload.',
@@ -3981,12 +4002,18 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Pec Deck",
                     "reps": "max reps",
-                    "tutorialSlug": "pec_deck_fly",
-                    "note": "Drop 1 — max reps; Drop 2 — 12–15; Drop 3 — burnout"
+                    "tutorialSlug": "pec_deck_fly"
+                  },
+                  {
+                    "name": "Cascade drop 2",
+                    "note": "Drop 1 — max reps; Drop 3 — burnout",
+                    "reps": "12–15",
+                    "tutorialSlug": "pec_deck_fly"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240768/mood_app/workout_images/gerfnpik_Screenshot_2026-02-01_at_10_26_17_PM.jpg',
           intensityReason: 'Four-stage pec deck drop set for chest overload.',
@@ -4025,18 +4052,19 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pec Deck Fly",
-                    "sets": 4,
                     "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "pec_deck_fly"
                   },
                   {
                     "name": "Clap Push-Ups",
-                    "sets": 4,
-                    "reps": "6–10"
+                    "reps": "6–10",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240766/mood_app/workout_images/catnm0o6_download_8_.jpg',
           intensityReason: 'Pec deck flyes paired with plyometric push-ups.',
@@ -4083,14 +4111,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Mid Cable Fly",
-                    "sets": 4,
                     "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "cable_machine_fly"
                   }
                 ]
               }
             ],
-            "instructions": "Moderate weight, clean reps."
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest between sets. Moderate weight, clean reps."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240774/mood_app/workout_images/qzdq0zi2_ChatGPT_Image_Feb_1_2026_09_31_56_PM.jpg',
           intensityReason: 'Cable flyes to build chest tension and control.',
@@ -4129,14 +4157,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "High-to-Low Cable Fly",
-                    "sets": 4,
                     "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "cable_fly_high_to_low"
                   }
                 ]
               }
             ],
-            "instructions": "Pause 1s at peak."
+            "instructions": "4 sets of 10 — rest between sets. Pause 1s at peak."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240780/mood_app/workout_images/vlu2ckag_download_11_.jpg',
           intensityReason: 'Paused cable flyes for chest engagement.',
@@ -4175,14 +4203,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Low-to-High Cable Fly",
-                    "sets": 3,
                     "reps": "10",
+                    "sets": 3,
                     "tutorialSlug": "cable_fly_low_to_high"
                   }
                 ]
               }
             ],
-            "instructions": "4s eccentric."
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest between sets. 4s eccentric."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240756/mood_app/workout_images/1jrl3snf_download_10_.jpg',
           intensityReason: 'Slow eccentrics on cables for chest tension.',
@@ -4221,14 +4249,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Mid Cable Fly",
-                    "sets": 3,
                     "reps": "15–25",
+                    "sets": 3,
                     "tutorialSlug": "cable_machine_fly"
                   }
                 ]
               }
             ],
-            "instructions": "Light load."
+            "instructions": "3 sets of 15–25 — rest between sets. Light load."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240776/mood_app/workout_images/szkempjn_download_9_.jpg',
           intensityReason: 'High-rep cable flyes for chest endurance.',
@@ -4269,14 +4297,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "High-to-Low Cable Fly",
-                    "sets": 4,
                     "reps": "8/8/8",
+                    "sets": 4,
                     "tutorialSlug": "cable_fly_high_to_low"
                   }
                 ]
               }
             ],
-            "instructions": "15s breaths."
+            "instructions": "4 sets of 8/8/8 — rest between sets. 15s breaths."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240774/mood_app/workout_images/qzdq0zi2_ChatGPT_Image_Feb_1_2026_09_31_56_PM.jpg',
           intensityReason: 'Cable clusters to maintain chest tension.',
@@ -4315,20 +4343,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Mid Cable Fly",
-                    "sets": 3,
                     "reps": "12",
+                    "sets": 3,
                     "tutorialSlug": "cable_machine_fly"
                   },
                   {
                     "name": "Low-to-High Cable Fly",
-                    "sets": 2,
                     "reps": "12",
+                    "sets": 2,
                     "tutorialSlug": "cable_fly_low_to_high"
                   }
                 ]
               }
             ],
-            "instructions": "Increase load only if reps stay clean."
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom. Increase load only if reps stay clean."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240780/mood_app/workout_images/vlu2ckag_download_11_.jpg',
           intensityReason: 'Traditional cable flyes with meaningful load.',
@@ -4367,14 +4395,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "High-to-Low Cable Fly",
-                    "sets": 4,
                     "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "cable_fly_high_to_low"
                   }
                 ]
               }
             ],
-            "instructions": "Final rep 6–8s squeeze."
+            "instructions": "Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest between sets. Final rep 6–8s squeeze."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240756/mood_app/workout_images/1jrl3snf_download_10_.jpg',
           intensityReason: 'Paused cable flyes with contraction finish.',
@@ -4413,19 +4441,19 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Low-to-High Cable Fly",
-                    "sets": 4,
                     "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "cable_fly_low_to_high"
                   },
                   {
                     "name": "Push-Ups",
-                    "sets": 4,
-                    "reps": "15–25"
+                    "reps": "15–25",
+                    "sets": 4
                   }
                 ]
               }
             ],
-            "instructions": "Move quickly."
+            "instructions": "Work top to bottom. Move quickly."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240776/mood_app/workout_images/szkempjn_download_9_.jpg',
           intensityReason: 'Cable flyes paired with push-ups.',
@@ -4466,14 +4494,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Mid Cable Fly",
-                    "sets": 5,
                     "reps": "6/6/6",
+                    "sets": 5,
                     "tutorialSlug": "cable_machine_fly"
                   }
                 ]
               }
             ],
-            "instructions": "Short breaths."
+            "instructions": "5 sets of 6/6/6 — rest between sets. Short breaths."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240774/mood_app/workout_images/qzdq0zi2_ChatGPT_Image_Feb_1_2026_09_31_56_PM.jpg',
           intensityReason: 'Heavy cable clusters for deep chest fatigue.',
@@ -4512,20 +4540,20 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "High-to-Low Cable Fly",
-                    "sets": 3,
                     "reps": "10",
+                    "sets": 3,
                     "tutorialSlug": "cable_fly_high_to_low"
                   },
                   {
                     "name": "Low-to-High Cable Fly",
-                    "sets": 2,
                     "reps": "10",
+                    "sets": 2,
                     "tutorialSlug": "cable_fly_low_to_high"
                   }
                 ]
               }
             ],
-            "instructions": "Challenging load."
+            "instructions": "Work top to bottom. Challenging load."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240780/mood_app/workout_images/vlu2ckag_download_11_.jpg',
           intensityReason: 'Heavy cable flyes for chest overload.',
@@ -4565,13 +4593,18 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Cable Fly",
                     "reps": "max reps",
-                    "tutorialSlug": "cable_machine_fly",
-                    "note": "Drop 1 — max reps; Drop 2 — 12–15; Drop 3 — burnout"
+                    "tutorialSlug": "cable_machine_fly"
+                  },
+                  {
+                    "name": "Cascade drop 2",
+                    "note": "Drop 1 — max reps; Drop 3 — burnout",
+                    "reps": "12–15",
+                    "tutorialSlug": "cable_machine_fly"
                   }
                 ]
               }
             ],
-            "instructions": "Strip weight immediately."
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Work top to bottom. Strip weight immediately."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240756/mood_app/workout_images/1jrl3snf_download_10_.jpg',
           intensityReason: 'Four-stage cable drop set for chest overload.',
@@ -4610,19 +4643,19 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "High-to-Low Cable Fly",
-                    "sets": 4,
                     "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "cable_fly_high_to_low"
                   },
                   {
                     "name": "Clap Push-Ups",
-                    "sets": 4,
-                    "reps": "6–10"
+                    "reps": "6–10",
+                    "sets": 4
                   }
                 ]
               }
             ],
-            "instructions": "Fast transitions."
+            "instructions": "Work top to bottom. Fast transitions."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240776/mood_app/workout_images/szkempjn_download_9_.jpg',
           intensityReason: 'Cable flyes paired with plyometric push-ups.',
@@ -4669,13 +4702,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Assisted / Bodyweight Dips",
-                    "sets": 4,
                     "reps": "6–10",
+                    "sets": 4,
                     "tutorialSlug": "assisted_dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 6–10 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241318/mood_app/workout_images/sudzdwsx_download_3_.jpg',
           intensityReason: 'Chest-focused dips to build pressing confidence.',
@@ -4714,13 +4748,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Dips",
-                    "sets": 4,
                     "reps": "6–8",
+                    "sets": 4,
                     "tutorialSlug": "dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241309/mood_app/workout_images/i8tbsgyh_download_4_.jpg',
           intensityReason: 'Paused dips to reinforce chest engagement.',
@@ -4760,13 +4795,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Dips",
                     "note": "4s eccentric",
-                    "sets": 3,
                     "reps": "6",
+                    "sets": 3,
                     "tutorialSlug": "dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 6 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240763/mood_app/workout_images/a1hm6idf_download_13_.jpg',
           intensityReason: 'Slow eccentrics on dips for chest control.',
@@ -4805,13 +4841,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Assisted Dips",
-                    "sets": 3,
                     "reps": "12–20",
+                    "sets": 3,
                     "tutorialSlug": "assisted_dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 12–20 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240772/mood_app/workout_images/lccg7x1a_download_12_.jpg',
           intensityReason: 'High-rep dips to build chest endurance.',
@@ -4852,13 +4889,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Dips",
-                    "sets": 4,
                     "reps": "5/5/5",
+                    "sets": 4,
                     "tutorialSlug": "dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 5/5/5 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241318/mood_app/workout_images/sudzdwsx_download_3_.jpg',
           intensityReason: 'Dip clusters to maintain chest output.',
@@ -4897,13 +4935,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Dips",
-                    "sets": 5,
                     "reps": "8–10",
+                    "sets": 5,
                     "tutorialSlug": "dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 8–10 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241309/mood_app/workout_images/i8tbsgyh_download_4_.jpg',
           intensityReason: 'Traditional dips with meaningful volume.',
@@ -4942,14 +4981,15 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Paused Dips",
-                    "sets": 4,
+                    "note": "Final rep: 6–8s squeeze",
                     "reps": "6",
-                    "tutorialSlug": "dips",
-                    "note": "Final rep: 6–8s squeeze"
+                    "sets": 4,
+                    "tutorialSlug": "dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240763/mood_app/workout_images/a1hm6idf_download_13_.jpg',
           intensityReason: 'Paused dips with contraction finish.',
@@ -4988,18 +5028,19 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Dips",
-                    "sets": 4,
                     "reps": "8",
+                    "sets": 4,
                     "tutorialSlug": "dips"
                   },
                   {
                     "name": "Push-Ups",
-                    "sets": 4,
-                    "reps": "15–25"
+                    "reps": "15–25",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240772/mood_app/workout_images/lccg7x1a_download_12_.jpg',
           intensityReason: 'Dips paired with push-ups for chest volume.',
@@ -5040,13 +5081,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Weighted Dips",
-                    "sets": 5,
                     "reps": "4/4/4",
+                    "sets": 5,
                     "tutorialSlug": "dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 4/4/4 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241318/mood_app/workout_images/sudzdwsx_download_3_.jpg',
           intensityReason: 'Heavy dip clusters for chest overload.',
@@ -5085,13 +5127,14 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Weighted Dips",
-                    "sets": 5,
                     "reps": "6–8",
+                    "sets": 5,
                     "tutorialSlug": "dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 6–8 — rest between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241309/mood_app/workout_images/i8tbsgyh_download_4_.jpg',
           intensityReason: 'Heavy dips focused on chest strength.',
@@ -5145,7 +5188,8 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240763/mood_app/workout_images/a1hm6idf_download_13_.jpg',
           intensityReason: 'Cascading dip drops for deep chest fatigue.',
@@ -5184,18 +5228,19 @@ export const chestWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Weighted Dips",
-                    "sets": 4,
                     "reps": "6",
+                    "sets": 4,
                     "tutorialSlug": "dips"
                   },
                   {
                     "name": "Clap Push-Ups",
-                    "sets": 4,
-                    "reps": "6–10"
+                    "reps": "6–10",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240772/mood_app/workout_images/lccg7x1a_download_12_.jpg',
           intensityReason: 'Heavy dips paired with plyometric push-ups.',

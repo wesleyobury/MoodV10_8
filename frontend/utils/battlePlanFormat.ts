@@ -3,6 +3,10 @@ import { TUTORIAL_MAP } from './tutorialMap';
 
 const slugKey = (s: string): string => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
+// Capitalize movement names for display without clobbering acronyms/proper casing
+// (words already containing an uppercase letter are left untouched: RPE, DB, EMOM).
+const titleName = (s: string): string => s.split(/(\s+)/).map(tok => (!tok || /^\s+$/.test(tok) || /[A-Z]/.test(tok)) ? tok : tok.charAt(0).toUpperCase() + tok.slice(1)).join('');
+
 // Runtime structuring of a legacy battlePlan string into the standardized shape.
 // Mirrors the offline converter (tools/convert_all.js) minus library tagging, so
 // the session screen can render structured tiles even before `plan` is threaded
@@ -56,6 +60,8 @@ function skipLine(body: string, ctx: ParseCtx): boolean {
   let rm = body.match(/^battle plan\s*[—–-]\s*(.+)$/i); if (rm) { ctx.label = rm[1].trim(); return true; }
   rm = body.match(/^(?:perform\s+)?(\d+)\s*(?:[a-z]+\s+)?rounds?\b/i); if (rm) { ctx.rounds = +rm[1]; return true; }
   rm = body.match(/^(\d+)\s*cycles?\b/i); if (rm) { ctx.rounds = +rm[1]; return true; }
+  // A standalone "N sets" header (single-exercise workouts use "sets" where circuits use "rounds").
+  rm = body.match(/^(\d+)\s*sets?\s*:?\s*$/i); if (rm) { ctx.rounds = +rm[1]; return true; }
   if (/^(perform|repeat|then|finish|cycles?\b|superset|circuit|amrap|emom|drop\b|immediately\b|add\b|final set|final rep|set \d)/i.test(body)) { ctx.notes.push(body); return true; }
   return false;
 }
@@ -70,8 +76,18 @@ export function parseBattlePlan(raw: string, workoutName = ''): BattlePlan {
     const bullet = /^•/.test(t);
     let body = t.replace(/^•\s*/, '').trim();
     if (!body) continue;
+    // Fix A: "N rounds:" / "N cycles:" prefix — capture the count but KEEP any work that
+    // follows on the same line (e.g. "8 rounds: 20 sec max effort" must not lose the interval).
+    const rp = body.match(/^(?:perform\s+)?(\d+)\s*(?:[a-z]+\s+)?(rounds?|cycles?)\b\s*[:\-–—]?\s*(.*)$/i);
+    if (rp) { ctx.rounds = +rp[1]; const rem = rp[3].trim(); if (!rem || !/^(\d|[A-Z])/.test(rem)) continue; body = rem; }
+    // Fix C: "finish with <segment>" — keep the finisher as a real movement, not a note.
+    const fin = body.match(/^finish(?:\s+(?:with|on|off\s+with))?\s*[:\-–—]?\s*(.+)$/i);
+    if (fin && /\d/.test(fin[1])) { body = fin[1].trim(); }
     if (skipLine(body, ctx)) continue;
     if (isInterval) { const seg = parseTime(body); if (seg) { moves.push(seg); continue; } }
+    // Fix D: EMOM "Odd min, N X" / "Even min, N X" / "Min 1: N X" → structured movement.
+    const emom = body.match(/^(odd min|even min|min(?:ute)?\s*\d+(?:\s*[–-]\s*\d+)?)\s*[,:]\s*(\d+)\s+(.+)$/i);
+    if (emom) { const nm = emom[3].replace(/\s*\(.*?\)\s*/g, ' ').trim(); moves.push({ name: nm, reps: emom[2], note: emom[1].trim() }); continue; }
     body = body.replace(/^clusters?\s*:\s*/i, '');
     const bare = body.replace(/\s*\(.*?\)\s*/g, ' ').trim();
     if (!bullet && !/\d/.test(bare)) { pendingName = bare; continue; }
@@ -105,6 +121,7 @@ export function parseBattlePlan(raw: string, workoutName = ''): BattlePlan {
     }
     const hasReal = mv.name && canon(mv.name).some(t => !NONNAME.has(t));
     if (!hasReal && workoutName) mv.name = workoutName;
+    if (mv.name && !/[A-Z]/.test(mv.name)) mv.name = titleName(mv.name);
     if (!mv.tutorialSlug) {
       const slug = TUTORIAL_MAP[slugKey(mv.name)];
       if (slug) mv.tutorialSlug = slug;
@@ -119,6 +136,10 @@ export function parseBattlePlan(raw: string, workoutName = ''): BattlePlan {
     const lead = moves[0].tutorialSlug;
     moves.forEach(mv => { if (!mv.tutorialSlug) mv.tutorialSlug = lead; });
   }
+  // Fallback: if no round/cycle count came from a bullet, read it from the Instructions
+  // line (e.g. "5 rounds — follow the 3 timed segments"), so removing a redundant
+  // "• N rounds:" bullet from the text never drops the set count.
+  if (!ctx.rounds && ctx.instructions) { const rm = ctx.instructions.match(/\b(\d+)\s*rounds?\b/i); if (rm) ctx.rounds = +rm[1]; }
   const rounds = ctx.rounds;
   const format: BattlePlan['format'] = isInterval ? 'interval' : (rounds ? 'circuit' : 'strength');
   const type: BattlePlanBlock['type'] = isInterval ? 'interval'

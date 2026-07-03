@@ -10,7 +10,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Goblet Squat',
           duration: '10–12 min',
           description: 'Simple squat variation teaches control and balance with front load support.',
-          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 rounds\n• 10-12 goblet squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 sets\n• 10-12 goblet squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -18,7 +18,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "goblet squats",
+                    "name": "Goblet Squats",
                     "reps": "10-12",
                     "tutorialSlug": "kb_squat"
                   }
@@ -26,7 +26,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10-12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241347/mood_app/workout_images/iq16b1nm_download.jpg',
           intensityReason: 'Front load squat builds posture and safe depth.',
@@ -51,7 +52,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB RDL',
           duration: '10–12 min',
           description: 'Dumbbell hinge builds strength safely for beginners with proper form.',
-          battlePlan: 'Instructions: 3 sets of 8-10 — rest 75s between sets, take all of it.\n3 rounds\n• 8-10 dumbbell RDLs\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 8-10 — rest 75s between sets, take all of it.\n3 sets\n• 8-10 Dumbbell RDLs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -59,7 +60,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "dumbbell RDLs",
+                    "name": "Dumbbell RDLs",
                     "reps": "8-10",
                     "tutorialSlug": "db_rdl"
                   }
@@ -67,7 +68,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8-10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241323/mood_app/workout_images/5v2oyit3_dbrdl.jpg',
           intensityReason: 'Hip hinge pattern develops hamstrings + glutes.',
@@ -92,7 +94,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Box Goblet Squat',
           duration: '10–12 min',
           description: 'Box-guided goblet squats reinforce depth and control',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Box Goblet Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 Box Goblet Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -108,7 +110,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241263/mood_app/workout_images/0t57iowy_db_goblet_squat.jpg',
           intensityReason: 'Box squat builds confidence and consistent depth',
@@ -138,7 +141,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported Reverse Lunge',
           duration: '10–12 min',
           description: 'Assisted lunges reduce balance demand for beginners',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per leg Reverse Lunges\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 sets\n• 8 per leg Reverse Lunges\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -154,7 +157,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241281/mood_app/workout_images/cnnnnm30_db_reverse_lunge.jpg',
           intensityReason: 'Support reduces balance stress while building strength',
@@ -184,7 +188,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported Step-Ups',
           duration: '10–12 min',
           description: 'Step-ups with light support to build balance, control, and rhythm.',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 75s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 sets\n• Supported Step-Ups — 8 per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -199,7 +203,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/7tvi5pvu_db%20step%20up.png',
           intensityReason: 'Support + light load builds confidence in the step pattern.',
@@ -229,7 +234,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Walking Lunge',
           duration: '10–12 min',
           description: 'Forward lunges focusing on balance, rhythm, and controlled reps.',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8–10 per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 75s between sets, take all of it.\n3 sets\n• 8–10 per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -244,7 +249,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/rurzgx9a_db%20walking%20lunge.png',
           intensityReason: 'Light load + steady cadence locks in the lunge pattern before adding intensity.',
@@ -276,7 +282,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bulgarian Split Squat',
           duration: '14–16 min',
           description: 'Advanced split squat builds quads and glute drive with elevated rear foot.',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 75-90s between sets, take all of it.\n4 rounds\n• 8-10 bulgarian split squats per leg\nRest 75-90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 75-90s between sets, take all of it.\n4 sets\n• 8-10 bulgarian split squats per leg\nRest 75-90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -284,7 +290,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "bulgarian split squats per leg",
+                    "name": "Bulgarian Split Squats Per Leg",
                     "reps": "8-10",
                     "tutorialSlug": "db_bulgarian_split_squat"
                   }
@@ -292,7 +298,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75-90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 75-90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241353/mood_app/workout_images/mxfs858v_dbbss.jpg',
           intensityReason: 'Rear foot elevated squat raises ROM + intensity.',
@@ -317,7 +324,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lateral Lunge',
           duration: '14–16 min',
           description: 'Trains quads, glutes, and groin through lateral range of motion.',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per side Lateral Lunges\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 sets\n• 8 per side Lateral Lunges\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -325,15 +332,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Lateral Lunge",
-                    "reps": "8/side",
-                    "tutorialSlug": "db_side_lunge"
+                    "name": "Lateral Lunges",
+                    "reps": "8/side"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241344/mood_app/workout_images/hiyqkn20_db_lat_lunge.jpg',
           intensityReason: 'Side lunge develops stability and hip strength.',
@@ -358,7 +365,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front-Foot Elevated Split Squat',
           duration: '14–16 min',
           description: 'Elevated front foot increases quad loading and depth',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg Split Squats\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• 8 per leg Split Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -374,7 +381,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241295/mood_app/workout_images/rvwet9i1_db_elevated_split_squat.jpg',
           intensityReason: 'Front elevation deepens range of motion for quads',
@@ -404,7 +412,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Squat Drop Set',
           duration: '14–16 min',
           description: 'Squats extended using fast dumbbell weight drops',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 8 DB Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• 8 DB Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -414,14 +422,22 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "DB Squats",
                     "reps": "8",
-                    "tutorialSlug": "kb_squat",
-                    "note": "Drop → 8; Drop → 8"
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "kb_squat"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241293/mood_app/workout_images/p55uxvw3_db_squat.jpg',
           intensityReason: 'Drop sets extend time under tension for maximum pump',
@@ -451,7 +467,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Step-Ups',
           duration: '14–16 min',
           description: 'Step-ups using slow eccentrics to increase tension and control.',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg (3s down)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• 8 per leg (3s down)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -466,7 +482,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/7tvi5pvu_db%20step%20up.png',
           intensityReason: 'Tempo eccentric stresses single-leg quads + glutes for hypertrophy.',
@@ -496,7 +513,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Walking Lunge Pulses',
           duration: '14–16 min',
           description: 'Walking lunges extended with pulses for added tension and burn.',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per leg + 3 pulses\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 sets\n• 8 per leg + 3 pulses\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -504,14 +521,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "+ 3 pulses",
+                    "name": "+ 3 Pulses",
                     "reps": "8/leg"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/rurzgx9a_db%20walking%20lunge.png',
           intensityReason: 'Pulses extend time under tension, hammering quads and glutes mid-step.',
@@ -541,7 +559,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Goblet Squat Tempo',
           duration: '14–16 min',
           description: 'Goblet squats using slow eccentrics to build quad control.',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10–12 — rest 90s between sets, take all of it.\n4 rounds\n• 10–12 reps\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10–12 — rest 90s between sets, take all of it.\n4 sets\n• 10–12 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -557,7 +575,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10–12 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/tsuxq68j_db%20goblet%20squat.png',
           intensityReason: 'Tempo eccentric maximizes quad tension without heavier loading.',
@@ -610,7 +629,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241391/mood_app/workout_images/elc9qz74_download_13_.jpg',
           intensityReason: 'Push pull pairing overloads full lower body range.',
@@ -635,7 +655,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Squat Iso Hold + Pulses',
           duration: '16–18 min',
           description: 'Brutal high tension squat burns and builds depth strength.',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Squats + 10s Hold + 6 Pulses\nRest 90s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 90s between sets, take all of it.\n3 sets\n• 10 Squats + 10s Hold + 6 Pulses\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -651,7 +671,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241368/mood_app/workout_images/zkmq6vqh_download_1_.jpg',
           intensityReason: 'Long isos with pulses maximize quad fatigue.',
@@ -676,7 +697,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Double Dumbbell Front Squat',
           duration: '16–18 min',
           description: 'Front-loaded squats demanding core and quad strength',
-          battlePlan: 'Instructions: 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 rounds\n• 6–8 Front Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 sets\n• 6–8 Front Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -692,7 +713,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6–8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241297/mood_app/workout_images/x54zcr7d_db_front_squat.jpg',
           intensityReason: 'Front load challenges core stability under heavy load',
@@ -722,7 +744,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bulgarian Split Squat Burnout',
           duration: '16–18 min',
           description: 'High-fatigue unilateral squat finisher for quads',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12–15 per side — rest 120s between sets, take all of it.\n3 rounds\n• 12–15 Bulgarian Split Squats per leg\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12–15 per side — rest 120s between sets, take all of it.\n3 sets\n• 12–15 Bulgarian Split Squats per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -738,7 +760,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12–15 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241353/mood_app/workout_images/mxfs858v_dbbss.jpg',
           intensityReason: 'High-rep unilateral work pushes quads to failure',
@@ -768,7 +791,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Explosive Step-Up + Eccentric Return',
           duration: '16–18 min',
           description: 'Explosive step-ups paired with slow controlled eccentric returns.',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 rounds\n• 6 per leg\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 sets\n• Explosive Step-Up — 6 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -776,14 +799,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Explosive Step-Up + Eccentric Return",
+                    "name": "Explosive Step-Up",
                     "reps": "6"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 6 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/7tvi5pvu_db%20step%20up.png',
           intensityReason: 'Power on the way up + slow return delivers maximum single-leg load.',
@@ -813,7 +837,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Walking Lunge Drop Set',
           duration: '16–18 min',
           description: 'Continuous lunges extended with weight drops to near failure.',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — all 2 moves in order, then rest 120s.\n3 rounds\n• 10 per leg\n• Lunge drop → 10\n• Drop → BW to failure\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 sets — all 2 moves in order, then rest 120s.\n3 sets\n• Walking Lunge — 10 per leg\n• Lunge drop → 10\n• Drop → BW to failure\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -821,15 +845,19 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Walking Lunge Drop Set",
-                    "reps": "10",
-                    "note": "Drop → 10; Drop → BW to failure"
+                    "name": "Walking Lunge",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Lunge drop → 10",
+                    "note": "Drop → BW to failure"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 sets — all 2 moves in order, then rest 120s."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/rurzgx9a_db%20walking%20lunge.png',
           intensityReason: 'Continuous load reductions push past traditional failure for maximum burn.',
@@ -859,7 +887,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Goblet Squat 1.5 Reps',
           duration: '16–18 min',
           description: 'Goblet squats using 1.5 reps to increase time under tension.',
-          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 reps\nRest 120s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 sets\n• 8–10 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -875,7 +903,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. 4 sets of 8–10 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/tsuxq68j_db%20goblet%20squat.png',
           intensityReason: '1.5 reps double the bottom-half stress, maxing out quad time under tension.',
@@ -913,7 +942,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat',
           duration: '10–12 min',
           description: 'Classic barbell squat lays foundation for leg strength and control.',
-          battlePlan: 'Instructions: 3 sets of 8-10 — rest 90s between sets, take all of it.\n3 rounds\n• 8-10 back squats\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8-10 — rest 90s between sets, take all of it.\n3 sets\n• 8-10 back squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -921,7 +950,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "back squats",
+                    "name": "Back Squats",
                     "reps": "8-10",
                     "tutorialSlug": "smith_machine_back_squat"
                   }
@@ -929,7 +958,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8-10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241394/mood_app/workout_images/gxoxkpbs_download_5_.jpg',
           intensityReason: 'Foundational squat builds strength + control.',
@@ -954,7 +984,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Reverse Lunge',
           duration: '10–12 min',
           description: 'Reverse lunge reduces strain while building single leg strength.',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75-90s between sets, take all of it.\n3 rounds\n• 8 per leg Reverse Lunges\nRest 75-90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75-90s between sets, take all of it.\n3 sets\n• 8 per leg Reverse Lunges\nRest 75-90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -970,7 +1000,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75-90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75-90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241388/mood_app/workout_images/a96gl1sh_download_7_.jpg',
           videoUrl: 'https://res.cloudinary.com/dfsygar5c/video/upload/v1770240475/mood_app/workout_videos/BB_lunge.mov',
@@ -996,7 +1027,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rack RDL',
           duration: '10–12 min',
           description: 'Beginner hinge teaches depth and hamstring control with barbell.',
-          battlePlan: 'Instructions: 3 sets of 8-10 — rest 75-90s between sets, take all of it.\n3 rounds\n• 8-10 rack rdls\nRest 75-90s',
+          battlePlan: 'Instructions: 3 sets of 8-10 — rest 75-90s between sets, take all of it.\n3 sets\n• 8-10 rack rdls\nRest 75-90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1004,7 +1035,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "rack rdls",
+                    "name": "Rack Rdls",
                     "reps": "8-10",
                     "tutorialSlug": "db_rdl"
                   }
@@ -1012,7 +1043,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75-90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8-10 — rest 75-90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241277/mood_app/workout_images/5q9lqk7k_bb_rdl.jpg',
           intensityReason: 'Barbell hinge pattern develops glutes + hams.',
@@ -1037,7 +1069,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Box Back Squat',
           duration: '12–14 min',
           description: 'Box-guided squats reinforcing depth and control',
-          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Box Back Squats\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Box Back Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1053,7 +1085,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241296/mood_app/workout_images/wwl8m04q_back_squat.jpg',
           intensityReason: 'Box squat builds consistent depth and confidence',
@@ -1083,7 +1116,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Back Squat',
           duration: '12–14 min',
           description: 'Slow eccentric squats building confidence and control',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 120s between sets, take all of it.\n3 rounds\n• 8 Back Squats (3s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 120s between sets, take all of it.\n3 sets\n• 8 Back Squats (3s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1099,7 +1132,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241299/mood_app/workout_images/xfs748m6_bb_back_squat_2.jpg',
           intensityReason: 'Tempo work increases time under tension',
@@ -1129,7 +1163,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Zercher Box Squat',
           duration: '12–14 min',
           description: 'Zercher squats using box support to reinforce depth and control',
-          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 reps\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1145,7 +1179,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/5n35ypfy_zercher%20squat.png',
           intensityReason: 'Box guidance teaches safe Zercher depth and bracing',
@@ -1175,7 +1210,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Static Lunge',
           duration: '12–14 min',
           description: 'Stationary lunges focusing on balance, control, and positioning',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 sets\n• Barbell Static Lunge — 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1191,7 +1226,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/phvexum7_bb%20lunge.png',
           intensityReason: 'Stationary stance lets beginners groove the lunge pattern',
@@ -1221,7 +1257,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bodyweight Jump Squat',
           duration: '10–12 min',
           description: 'Jump squats introducing explosive movement with safe mechanics',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 8–10 — rest 75s between sets, take all of it.\n3 rounds\n• 8–10 reps\nRest 75s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 8–10 — rest 75s between sets, take all of it.\n3 sets\n• 8–10 reps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1237,7 +1273,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 8–10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/hkwmfgkl_jump%20squat.png',
           intensityReason: 'Bodyweight jumps teach soft landings before adding load',
@@ -1269,7 +1306,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Squat',
           duration: '14–16 min',
           description: 'Front squat builds quads while demanding upright posture.',
-          battlePlan: 'Instructions: 4 sets of 6-8 — rest 90s between sets, take all of it.\n4 rounds\n• 6-8 front squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 6-8 — rest 90s between sets, take all of it.\n4 sets\n• 6-8 front squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1277,7 +1314,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "front squats",
+                    "name": "Front Squats",
                     "reps": "6-8",
                     "tutorialSlug": "barbell_front_squat"
                   }
@@ -1285,7 +1322,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6-8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241365/mood_app/workout_images/wag3ztrn_bbfs.jpg',
           videoUrl: 'https://res.cloudinary.com/dfsygar5c/video/upload/v1770240478/mood_app/workout_videos/BB_front_squat.mov',
@@ -1311,7 +1349,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bulgarian Split Squat',
           duration: '14–16 min',
           description: 'Advanced unilateral builder with deeper range and balance challenge.',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 bulgarians per side\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 90s between sets, take all of it.\n4 sets\n• 8-10 bulgarians per side\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1319,15 +1357,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Bulgarian Split Squat",
-                    "reps": "8-10",
-                    "tutorialSlug": "db_bulgarian_split_squat"
+                    "name": "Bulgarians Per Side",
+                    "reps": "8-10"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241324/mood_app/workout_images/8m6t0a7f_Screenshot_2025-12-06_at_7_08_54_PM.jpg',
           intensityReason: 'Rear foot squat overloads quads and balance.',
@@ -1352,7 +1390,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rack Deficit RDL',
           duration: '14–16 min',
           description: 'Longer range hinge boosts hamstring hypertrophy with elevated position.',
-          battlePlan: 'Instructions: 3 sets of 8-10 — rest 90s between sets, take all of it.\n3 rounds\n• 8-10 deficit rdls\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8-10 — rest 90s between sets, take all of it.\n3 sets\n• 8-10 deficit rdls\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1360,7 +1398,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "deficit rdls",
+                    "name": "Deficit Rdls",
                     "reps": "8-10",
                     "tutorialSlug": "db_rdl"
                   }
@@ -1368,7 +1406,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8-10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241277/mood_app/workout_images/5q9lqk7k_bb_rdl.jpg',
           intensityReason: 'Standing on plates increases hamstring stretch.',
@@ -1393,7 +1432,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Squat',
           duration: '14–16 min',
           description: 'Front-loaded squats increasing quad and core demand',
-          battlePlan: 'Instructions: 4 sets of 6–8 — rest 150s between sets, take all of it.\n4 rounds\n• 6–8 Front Squats\nRest 150s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 150s between sets, take all of it.\n4 sets\n• 6–8 Front Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1409,7 +1448,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6–8 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241365/mood_app/workout_images/wag3ztrn_bbfs.jpg',
           intensityReason: 'Front load challenges core stability under load',
@@ -1439,7 +1479,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat Drop Set',
           duration: '16–18 min',
           description: 'Squats extended with rapid plate reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 180s.\n3 rounds\n• 6 Back Squats\n• Squat drop → 6\n• Squat drop → 6\nRest 180s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 180s.\n3 sets\n• 6 Back Squats\n• Squat drop → 6\n• Squat drop → 6\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1449,14 +1489,22 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Back Squats",
                     "reps": "6",
-                    "tutorialSlug": "smith_machine_back_squat",
-                    "note": "Drop → 6; Drop → 6"
+                    "tutorialSlug": "smith_machine_back_squat"
+                  },
+                  {
+                    "name": "Squat drop → 6",
+                    "tutorialSlug": "smith_machine_back_squat"
+                  },
+                  {
+                    "name": "Squat drop → 6",
+                    "tutorialSlug": "smith_machine_back_squat"
                   }
                 ],
                 "rounds": 3,
                 "rest": "180s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 180s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241394/mood_app/workout_images/gxoxkpbs_download_5_.jpg',
           intensityReason: 'Drop sets extend time under tension for maximum pump',
@@ -1486,7 +1534,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Zercher Squat',
           duration: '14–16 min',
           description: 'Zercher squats with slow eccentrics increasing tension and control',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 rounds\n• 6–8 reps\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 sets\n• 6–8 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1502,7 +1550,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6–8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/5n35ypfy_zercher%20squat.png',
           intensityReason: 'Slow eccentric Zercher hammers the core and quads',
@@ -1532,7 +1581,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Walking Lunge',
           duration: '14–16 min',
           description: 'Loaded walking lunges building unilateral strength and control',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 rounds\n• 8 per leg\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 sets\n• Barbell Walking Lunge — 8 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1548,7 +1597,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/phvexum7_bb%20lunge.png',
           intensityReason: 'Walking pattern adds balance demand to loaded lunge',
@@ -1578,7 +1628,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Jump Squat Repeats',
           duration: '14–16 min',
           description: 'Repeated jump squats improving power output and endurance',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 90s between sets, take all of it.\n4 rounds\n• 10 reps\nRest 90s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 90s between sets, take all of it.\n4 sets\n• Jump Squat — 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1586,15 +1636,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Jump Squat Repeats",
-                    "reps": "10",
-                    "tutorialSlug": "kb_squat"
+                    "name": "Jump Squat",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/hkwmfgkl_jump%20squat.png',
           intensityReason: 'Repeated jumps build explosive endurance',
@@ -1626,7 +1676,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Back Squat',
           duration: '16–18 min',
           description: 'Keeps muscles under control in deepest range with bottom pause.',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 90s between sets, take all of it.\n4 rounds\n• 6 Pause Back Squats\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 90s between sets, take all of it.\n4 sets\n• 6 Pause Back Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1642,7 +1692,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241394/mood_app/workout_images/gxoxkpbs_download_5_.jpg',
           intensityReason: 'Bottom pause builds strength and eliminates bounce.',
@@ -1667,7 +1718,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Walking Lunges',
           duration: '16–18 min',
           description: 'Combination of strength, balance, and conditioning challenge.',
-          battlePlan: 'Instructions: 3 sets of 20 — rest 90s between sets, take all of it.\n3 rounds\n• 20 steps total Walking Lunges\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 20 — rest 90s between sets, take all of it.\n3 sets\n• Walking Lunges — 20 steps total\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1675,15 +1726,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "steps total Walking Lunges",
-                    "reps": "20",
-                    "tutorialSlug": "walking_lunges"
+                    "name": "Walking Lunges",
+                    "reps": "20"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 20 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241388/mood_app/workout_images/a96gl1sh_download_7_.jpg',
           intensityReason: 'Continuous walking pattern overloads endurance.',
@@ -1729,7 +1780,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241389/mood_app/workout_images/cj6gx8ak_download_6_.jpg',
           intensityReason: 'Pair squat + hinge for full lower body overload.',
@@ -1754,7 +1806,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Back Squat',
           duration: '18–20 min',
           description: 'Low-rep squats emphasizing maximal strength',
-          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 rounds\n• 3–5 Back Squats\nRest 180s',
+          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 sets\n• 3–5 Back Squats\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1770,7 +1822,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 5,
                 "rest": "180s"
               }
-            ]
+            ],
+            "instructions": "5 sets of 3–5 — rest 180s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241299/mood_app/workout_images/xfs748m6_bb_back_squat_2.jpg',
           intensityReason: 'Heavy load builds maximal leg strength',
@@ -1800,26 +1853,24 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep finisher driving full leg fatigue',
-          battlePlan: 'Instructions: Aim for 2–3 rounds — stop when quality drops.\n3 rounds\n• 15–20 Back Squats\nRest 180s',
+          battlePlan: 'Instructions: Aim for 2–3 sets — stop when quality drops.\n3 sets\n• 15–20 Back Squats\nRest 180s',
           plan: {
-            "format": "strength",
+            "format": "circuit",
             "blocks": [
               {
-                "type": "superset",
+                "type": "straight",
                 "movements": [
-                  {
-                    "name": "rounds",
-                    "reps": "2–3"
-                  },
                   {
                     "name": "Back Squats",
                     "reps": "15–20",
                     "tutorialSlug": "smith_machine_back_squat"
                   }
                 ],
+                "rounds": 3,
                 "rest": "180s"
               }
-            ]
+            ],
+            "instructions": "Aim for 2–3 sets — stop when quality drops."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241296/mood_app/workout_images/wwl8m04q_back_squat.jpg',
           intensityReason: 'High reps push legs to complete fatigue',
@@ -1849,7 +1900,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Zercher Pause Squat',
           duration: '16–18 min',
           description: 'Paused Zercher squats building strength in the bottom position',
-          battlePlan: 'Instructions: Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 reps\nRest 150s',
+          battlePlan: 'Instructions: Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 sets\n• 5–6 reps\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1865,7 +1916,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/5n35ypfy_zercher%20squat.png',
           intensityReason: 'Bottom pauses develop raw strength out of the hole',
@@ -1895,7 +1947,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Lunge Burnout',
           duration: '16–18 min',
           description: 'High-rep lunges pushing full leg fatigue and endurance output',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 120s between sets, take all of it.\n3 rounds\n• 12 per leg\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 120s between sets, take all of it.\n3 sets\n• Barbell Lunge — 12 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1903,15 +1955,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Barbell Lunge Burnout",
-                    "reps": "12",
-                    "tutorialSlug": "barbell_lunge"
+                    "name": "Barbell Lunge",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/phvexum7_bb%20lunge.png',
           intensityReason: 'Volume lunges drive deep posterior + quad fatigue',
@@ -1941,7 +1993,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Jump Squat Clusters',
           duration: '16–18 min',
           description: 'Clustered jump squats maintaining power output under fatigue',
-          battlePlan: 'Instructions: 4 sets — rest 120s between sets, take all of it.\n4 rounds\nRest 120s',
+          battlePlan: 'Instructions: Cluster set — do 5 reps, rack or reset for ~15s, then the next 5, then the last 5; keep every jump explosive. 4 sets, rest 120s between sets.\n4 sets\n• Jump Squat — 5 + 5 + 5 (cluster, short reset between mini-sets)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1949,14 +2001,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Jump Squat Clusters",
-                    "tutorialSlug": "kb_squat"
+                    "name": "Jump Squat",
+                    "reps": "5"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Cluster set — do 5 reps, rack or reset for ~15s, then the next 5, then the last 5; keep every jump explosive. 4 sets, rest 120s between sets."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/hkwmfgkl_jump%20squat.png',
           intensityReason: 'Cluster sets preserve max power output across reps',
@@ -1994,7 +2047,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Leg Press',
           duration: '10–12 min',
           description: 'Basic press builds safety, posture, and control with machine support.',
-          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 rounds\n• 10-12 neutral leg press\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 sets\n• 10-12 neutral leg press\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2002,7 +2055,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "neutral leg press",
+                    "name": "Neutral Leg Press",
                     "reps": "10-12",
                     "tutorialSlug": "leg_press"
                   }
@@ -2010,7 +2063,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10-12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241398/mood_app/workout_images/l1ouzm6t_download_1_.jpg',
           intensityReason: 'Teaches full ROM with stable machine support.',
@@ -2035,7 +2089,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Narrow Stance Press',
           duration: '10–12 min',
           description: 'Targets quads more directly in safe range of motion.',
-          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 rounds\n• 10-12 narrow stance press\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 sets\n• 10-12 narrow stance press\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2043,14 +2097,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "narrow stance press",
+                    "name": "Narrow Stance Press",
                     "reps": "10-12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10-12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241399/mood_app/workout_images/nbzhkmy8_download_2_.jpg',
           intensityReason: 'Close foot stance emphasizes quad activation.',
@@ -2075,7 +2130,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Leg Press + Iso Hold',
           duration: '10–12 min',
           description: 'Controlled leg press reps with pauses and static finish',
-          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Leg Press Reps (2s pause at bottom)\n• Immediately 20–30s Iso Hold (halfway up sled)\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 sets\n• 10 Leg Press Reps (2s pause at bottom)\n• Immediately 20–30s Iso Hold (halfway up sled)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2084,15 +2139,16 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Leg Press Reps",
+                    "note": "Immediately 20–30s Iso Hold (halfway up sled)",
                     "reps": "10",
-                    "tutorialSlug": "leg_press",
-                    "note": "Immediately 20–30s Iso Hold (halfway up sled)"
+                    "tutorialSlug": "leg_press"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241279/mood_app/workout_images/8gup9yxv_leg_press.jpg',
           intensityReason: 'Pauses remove momentum and protect knees while iso holds extend time under tension',
@@ -2122,7 +2178,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Leg Press',
           duration: '10–12 min',
           description: 'Controlled leg press emphasizing slow negatives',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Leg Press (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 90s between sets, take all of it.\n3 sets\n• 12 Leg Press (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2138,7 +2194,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241269/mood_app/workout_images/2wjzuq6x_leg_press_2.jpg',
           intensityReason: 'Tempo work increases time under tension',
@@ -2170,7 +2227,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Glute Press',
           duration: '14–16 min',
           description: 'Outside placement recruits posterior chain harder than narrow stance.',
-          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 wide stance press\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 sets\n• 8-10 wide stance press\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2178,14 +2235,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "wide stance press",
+                    "name": "Wide Stance Press",
                     "reps": "8-10"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8-10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241398/mood_app/workout_images/l1ouzm6t_download_1_.jpg',
           intensityReason: 'Wider stance shifts target to glutes + hamstrings.',
@@ -2210,7 +2268,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single Leg Press',
           duration: '14–16 min',
           description: 'One leg at a time reduces imbalances in strength development.',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg Single Leg Press\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• 8 per leg Single Leg Press\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2226,7 +2284,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241354/mood_app/workout_images/pfq28xzl_Screenshot_2025-12-06_at_7_18_57_PM.jpg',
           intensityReason: 'Unilateral training balances quads + hamstrings.',
@@ -2251,7 +2310,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Pause Reps',
           duration: '14–16 min',
           description: 'Paused reps strengthening bottom-range leg drive',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 Leg Press (2s pause)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 sets\n• 8–10 Leg Press (2s pause)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2267,7 +2326,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8–10 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241399/mood_app/workout_images/nbzhkmy8_download_2_.jpg',
           intensityReason: 'Pauses eliminate momentum for greater muscle activation',
@@ -2297,7 +2357,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Drop Ladder',
           duration: '14–16 min',
           description: 'Progressive drops extending quad fatigue',
-          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 10 reps\n• Press drop → 10\n• Press drop → 10\nRest 150s',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. 3 sets — all 3 moves in order, then rest 150s.\n3 sets\n• Leg Press — 10 reps\n• Press drop → 10\n• Press drop → 10\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2305,16 +2365,24 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Leg Press Drop Ladder",
+                    "name": "Leg Press",
                     "reps": "10",
-                    "tutorialSlug": "leg_press",
-                    "note": "Drop → 10; Drop → 10"
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Press drop → 10",
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
+                    "name": "Press drop → 10",
+                    "tutorialSlug": "leg_press"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. 3 sets — all 3 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241269/mood_app/workout_images/2wjzuq6x_leg_press_2.jpg',
           intensityReason: 'Drop sets extend time under tension for maximum pump',
@@ -2346,7 +2414,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop Set Press',
           duration: '16–18 min',
           description: 'Extends time under tension with progressive load reduction.',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Heavy Press → Drop x2 (6–8 reps each)\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Heavy Press → Drop x2 (6–8 reps each)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2361,7 +2429,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241269/mood_app/workout_images/2wjzuq6x_leg_press_2.jpg',
           intensityReason: 'Strip weight quickly to overload muscle fatigue.',
@@ -2386,7 +2455,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Press',
           duration: '16–18 min',
           description: 'Pausing forces muscles to do all the hard work without momentum.',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 Leg Press Reps (2s pause at bottom)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 90s between sets, take all of it.\n4 sets\n• 8 Leg Press Reps (2s pause at bottom)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2402,7 +2471,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241279/mood_app/workout_images/8gup9yxv_leg_press.jpg',
           intensityReason: 'Mid rep pause kills momentum and builds tension.',
@@ -2427,7 +2497,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Low-Rep Leg Press',
           duration: '16–18 min',
           description: 'Max-strength leg pressing with heavy loads',
-          battlePlan: 'Instructions: 5 sets of 5–6 — rest 150s between sets, take all of it.\n5 rounds\n• 5–6 Leg Press\nRest 150s',
+          battlePlan: 'Instructions: 5 sets of 5–6 — rest 150s between sets, take all of it.\n5 sets\n• 5–6 Leg Press\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2443,7 +2513,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 5,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "5 sets of 5–6 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241269/mood_app/workout_images/2wjzuq6x_leg_press_2.jpg',
           intensityReason: 'Heavy load builds maximal leg strength',
@@ -2473,7 +2544,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Burnout',
           duration: '18–20 min',
           description: 'High-rep finisher driving complete quad exhaustion',
-          battlePlan: 'Instructions: 3 sets of 20–25 — rest 150s between sets, take all of it.\n3 rounds\n• 20–25 Leg Press\nRest 150s',
+          battlePlan: 'Instructions: 3 sets of 20–25 — rest 150s between sets, take all of it.\n3 sets\n• 20–25 Leg Press\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2489,7 +2560,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 20–25 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241279/mood_app/workout_images/8gup9yxv_leg_press.jpg',
           intensityReason: 'High reps push quads to complete fatigue',
@@ -2527,7 +2599,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Hack Squat',
           duration: '10–12 min',
           description: 'Basic hack squat introduces form and confidence with machine guidance.',
-          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 rounds\n• 10-12 hack squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 sets\n• 10-12 hack squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2535,7 +2607,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "hack squats",
+                    "name": "Hack Squats",
                     "reps": "10-12",
                     "tutorialSlug": "hack_squat"
                   }
@@ -2543,7 +2615,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10-12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241396/mood_app/workout_images/k4t4lzbt_download.jpg',
           intensityReason: 'Machine guidance builds squat mechanics safely.',
@@ -2568,7 +2641,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Narrow Hack Squat',
           duration: '10–12 min',
           description: 'Builds quad dominant strength with stable machine support.',
-          battlePlan: 'Instructions: 3 sets of 8-10 — rest 75s between sets, take all of it.\n3 rounds\n• 8-10 narrow hack squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 8-10 — rest 75s between sets, take all of it.\n3 sets\n• 8-10 narrow hack squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2576,7 +2649,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "narrow hack squats",
+                    "name": "Narrow Hack Squats",
                     "reps": "8-10",
                     "tutorialSlug": "hack_squat"
                   }
@@ -2584,7 +2657,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8-10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_workout-visuals-1/artifacts/ffi2msmn_hs.avif',
           intensityReason: 'Narrow stance emphasizes quads more directly.',
@@ -2609,7 +2683,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Hack Squat',
           duration: '10–12 min',
           description: 'Machine-guided squat emphasizing depth and quad control',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Hack Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 Hack Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2625,7 +2699,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_workout-content/artifacts/8g0a1brc_hack%20squat%202.avif',
           intensityReason: 'Controlled tempo builds strength and joint awareness',
@@ -2655,7 +2730,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hack Squat Pause Reps',
           duration: '10–12 min',
           description: 'Paused squats building strength out of the bottom',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Hack Squats (2s pause)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Hack Squats (2s pause)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2671,7 +2746,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_workout-content/artifacts/t0da41os_hack%20squat.avif',
           intensityReason: 'Pauses eliminate momentum for greater muscle activation',
@@ -2703,7 +2779,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Hack Squat',
           duration: '14–16 min',
           description: 'Trains posterior chain through deeper ROM with wide stance.',
-          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 wide hack squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 sets\n• 8-10 wide hack squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2711,7 +2787,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "wide hack squats",
+                    "name": "Wide Hack Squats",
                     "reps": "8-10",
                     "tutorialSlug": "hack_squat"
                   }
@@ -2719,7 +2795,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8-10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241396/mood_app/workout_images/k4t4lzbt_download.jpg',
           intensityReason: 'Wide stance targets glute and hamstring drive.',
@@ -2749,19 +2826,24 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Hack Squats",
                     "reps": "8",
-                    "tutorialSlug": "hack_squat",
-                    "note": "Immediately 12 Hack Calf Raises"
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Hack Calf Raises",
+                    "note": "immediately, no rest",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241345/mood_app/workout_images/igmrt7qu_hscr.jpg',
           intensityReason: 'Add calf emphasis within heavy squat structure.',
@@ -2786,7 +2868,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hack Squat Drop Set',
           duration: '14–16 min',
           description: 'Extended squat sets using rapid weight reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 8 Hack Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• 8 Hack Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2796,14 +2878,22 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Hack Squats",
                     "reps": "8",
-                    "tutorialSlug": "hack_squat",
-                    "note": "Drop → 8; Drop → 8"
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "hack_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "hack_squat"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_workout-content/artifacts/8g0a1brc_hack%20squat%202.avif',
           intensityReason: 'Drop sets extend time under tension for maximum pump',
@@ -2833,7 +2923,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heel-Elevated Hack Squat',
           duration: '14–16 min',
           description: 'Quad-biased squats using heel elevation',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Hack Squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 sets\n• 8–10 Hack Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2849,7 +2939,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_workout-content/artifacts/t0da41os_hack%20squat.avif',
           intensityReason: 'Heel elevation shifts emphasis to quads',
@@ -2879,7 +2970,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Reverse Hack Squat',
           duration: '14–16 min',
           description: 'Reverse-facing hack squat emphasizing glutes and quads',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 Reverse Hack Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 sets\n• 8–10 Reverse Hack Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2895,7 +2986,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241327/mood_app/workout_images/a9f6gtvn_rhs.jpg',
           intensityReason: 'Reverse position increases glute and quad emphasis',
@@ -2927,7 +3019,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep Hack Squat',
           duration: '16–18 min',
           description: 'Blends controlled pulses with full ROM squatting for hypertrophy.',
-          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 3 sets of 6-8 — rest 90s between sets, take all of it.\n3 rounds\n• 6-8 hack squats (1 full + ½ rep = 1 rep)\nRest 90s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 3 sets of 6-8 — rest 90s between sets, take all of it.\n3 sets\n• 6-8 hack squats (1 full + ½ rep = 1 rep)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2935,7 +3027,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "hack squats",
+                    "name": "Hack Squats",
                     "reps": "6-8",
                     "tutorialSlug": "hack_squat"
                   }
@@ -2943,7 +3035,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. 3 sets of 6-8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241396/mood_app/workout_images/k4t4lzbt_download.jpg',
           intensityReason: 'Partial + full reps increase hypertrophy tension.',
@@ -2968,7 +3061,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Reverse Hack Squat',
           duration: '16–18 min',
           description: 'Reverse stance hack builds posterior chain strength and development.',
-          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 reverse hack squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 sets\n• 8-10 reverse hack squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2976,7 +3069,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "reverse hack squats",
+                    "name": "Reverse Hack Squats",
                     "reps": "8-10",
                     "tutorialSlug": "reverse_hack_squat"
                   }
@@ -2984,7 +3077,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8-10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241327/mood_app/workout_images/a9f6gtvn_rhs.jpg',
           intensityReason: 'Facing pad emphasizes glutes and hamstrings.',
@@ -3009,7 +3103,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Hack Squat',
           duration: '16–18 min',
           description: 'Low-rep squats emphasizing maximal quad strength',
-          battlePlan: 'Instructions: 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 Hack Squats\nRest 150s',
+          battlePlan: 'Instructions: 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 sets\n• 5–6 Hack Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3025,7 +3119,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 5–6 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_workout-content/artifacts/t0da41os_hack%20squat.avif',
           intensityReason: 'Heavy load builds maximal strength',
@@ -3055,7 +3150,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hack Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep finisher for complete quad exhaustion',
-          battlePlan: 'Instructions: 3 sets of 15–20 — rest 150s between sets, take all of it.\n3 rounds\n• 15–20 Hack Squats\nRest 150s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 150s between sets, take all of it.\n3 sets\n• 15–20 Hack Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3071,7 +3166,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15–20 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_workout-content/artifacts/t0da41os_hack%20squat.avif',
           intensityReason: 'High reps push quads to complete fatigue',
@@ -3101,7 +3197,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Reverse Hack Squat',
           duration: '16–18 min',
           description: 'Heavy reverse hack squats for maximal leg loading',
-          battlePlan: 'Instructions: 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 Reverse Hack Squats\nRest 150s',
+          battlePlan: 'Instructions: 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 sets\n• 5–6 Reverse Hack Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3117,7 +3213,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 5–6 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241327/mood_app/workout_images/a9f6gtvn_rhs.jpg',
           intensityReason: 'Heavy reverse loading maximizes leg strength',
@@ -3155,7 +3252,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Squat',
           duration: '10–12 min',
           description: 'Cable tension mimics goblet squat with safety and control.',
-          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 rounds\n• 10-12 cable squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 sets\n• 10-12 cable squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3163,7 +3260,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "cable squats",
+                    "name": "Cable Squats",
                     "reps": "10-12",
                     "tutorialSlug": "cable_squat"
                   }
@@ -3171,7 +3268,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10-12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241357/mood_app/workout_images/s4c1d5ao_download_3_.jpg',
           intensityReason: 'Front loaded setup controls posture + squat form.',
@@ -3196,7 +3294,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Step Through',
           duration: '10–12 min',
           description: 'Crossover cable step engages quads + glutes together with unilateral work.',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per side Step Throughs\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 sets\n• 8 per side Step Throughs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3211,7 +3309,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241366/mood_app/workout_images/yt6adjli_image.jpg',
           intensityReason: 'Split stance improves single leg drive and balance.',
@@ -3236,7 +3335,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Goblet Squat',
           duration: '10–12 min',
           description: 'Front-loaded squats using cable tension for stability',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Cable Goblet Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 sets\n• 12 Cable Goblet Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3252,7 +3351,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241291/mood_app/workout_images/p1po1v7d_cable_goblet_squat.jpg',
           intensityReason: 'Cable tension provides constant load for control',
@@ -3282,7 +3382,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Reverse Lunge',
           duration: '10–12 min',
           description: 'Assisted reverse lunges reducing balance demands',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 Reverse Lunges per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 sets\n• 8 Reverse Lunges per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3298,7 +3398,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241285/mood_app/workout_images/gqxv7zxa_cable_reverse_lunge.jpg',
           intensityReason: 'Cable assists balance while building leg strength',
@@ -3330,7 +3431,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable RDL',
           duration: '14–16 min',
           description: 'Cable variation keeps constant load on posterior chain throughout ROM.',
-          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 cable rdls\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 sets\n• 8-10 cable rdls\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3338,7 +3439,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "cable rdls",
+                    "name": "Cable Rdls",
                     "reps": "8-10",
                     "tutorialSlug": "db_rdl"
                   }
@@ -3346,7 +3447,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8-10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241286/mood_app/workout_images/h8lj3keb_cable_rdl2.jpg',
           intensityReason: 'Hip hinge move teaches tension through hamstrings.',
@@ -3371,7 +3473,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Split Squat',
           duration: '14–16 min',
           description: 'Great hypertrophy builder with guided constant tension throughout movement.',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 cable split squats per leg\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 90s between sets, take all of it.\n4 sets\n• 8-10 cable split squats per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3379,7 +3481,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "cable split squats per leg",
+                    "name": "Cable Split Squats Per Leg",
                     "reps": "8-10",
                     "tutorialSlug": "cable_squat"
                   }
@@ -3387,7 +3489,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241355/mood_app/workout_images/rnzpjsna_Screenshot_2025-12-06_at_7_23_45_PM.jpg',
           intensityReason: 'Unilateral squat keeps quads under stable load.',
@@ -3412,7 +3515,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Squat to Row',
           duration: '14–16 min',
           description: 'Squat-to-row pattern integrating legs and upper back',
-          battlePlan: 'Instructions: 4 sets of 8 — rest 120s between sets, take all of it.\n4 rounds\n• 8 Squat to Rows\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 8 — rest 120s between sets, take all of it.\n4 sets\n• 8 Squat to Rows\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3428,7 +3531,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241291/mood_app/workout_images/p1po1v7d_cable_goblet_squat.jpg',
           intensityReason: 'Compound movement trains legs and back together',
@@ -3458,7 +3562,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Romanian Deadlift',
           duration: '14–16 min',
           description: 'Hip hinge emphasizing hamstrings under constant tension',
-          battlePlan: 'Instructions: 4 sets of 10 — rest 120s between sets, take all of it.\n4 rounds\n• 10 Cable RDLs\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 10 — rest 120s between sets, take all of it.\n4 sets\n• 10 Cable RDLs\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3474,7 +3578,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 10 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241286/mood_app/workout_images/h8lj3keb_cable_rdl2.jpg',
           intensityReason: 'Constant cable tension maximizes hamstring engagement',
@@ -3506,7 +3611,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Front Squat',
           duration: '16–18 min',
           description: 'Replicates barbell front squat with cable constant tension loading.',
-          battlePlan: 'Instructions: 4 sets of 6-8 — rest 90s between sets, take all of it.\n4 rounds\n• 6-8 heavy cable front squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 6-8 — rest 90s between sets, take all of it.\n4 sets\n• 6-8 heavy cable front squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3514,7 +3619,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "heavy cable front squats",
+                    "name": "Heavy Cable Front Squats",
                     "reps": "6-8",
                     "tutorialSlug": "cable_squat"
                   }
@@ -3522,7 +3627,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6-8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241291/mood_app/workout_images/p1po1v7d_cable_goblet_squat.jpg',
           intensityReason: 'Heavy stack front squat overloads safe quads.',
@@ -3568,7 +3674,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241286/mood_app/workout_images/h8lj3keb_cable_rdl2.jpg',
           intensityReason: 'Combo pairing keeps full leg tension loading.',
@@ -3593,7 +3700,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Squat Drop Set',
           duration: '18–20 min',
           description: 'Extended squats using rapid cable weight reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 10 Cable Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s.\n3 sets\n• 10 Cable Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3603,14 +3710,22 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Cable Squats",
                     "reps": "10",
-                    "tutorialSlug": "cable_squat",
-                    "note": "Drop → 8; Drop → 8"
+                    "tutorialSlug": "cable_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "cable_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "cable_squat"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241291/mood_app/workout_images/p1po1v7d_cable_goblet_squat.jpg',
           intensityReason: 'Drop sets extend time under constant cable tension',
@@ -3640,7 +3755,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Split Squat Advanced',
           duration: '18–20 min',
           description: 'Front-loaded split squats emphasizing unilateral strength',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 150s between sets, take all of it.\n4 rounds\n• 8 Split Squats per leg\nRest 150s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 150s between sets, take all of it.\n4 sets\n• 8 Split Squats per leg\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3656,7 +3771,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241355/mood_app/workout_images/rnzpjsna_Screenshot_2025-12-06_at_7_23_45_PM.jpg',
           intensityReason: 'Heavy unilateral work builds balanced leg strength',
@@ -3694,7 +3810,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Trap Bar Deadlift Squat',
           duration: '10–12 min',
           description: 'Full‑body squat/deadlift hybrid builds foundation',
-          battlePlan: 'Instructions: 3 sets of 8–10 — rest 75–90s between sets, take all of it.\n3 rounds\n• 8–10 Deadlift‑Style Trap Bar Squats\nRest 75–90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 75–90s between sets, take all of it.\n3 sets\n• 8–10 Deadlift‑Style Trap Bar Squats\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3710,7 +3826,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8–10 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241387/mood_app/workout_images/3cnpyyx1_tbss.jpg',
           intensityReason: 'Safest trap bar squat teaches form and posture',
@@ -3735,7 +3852,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Grip Trap Bar Squat',
           duration: '10–12 min',
           description: 'Neutral foot placement encourages steady control',
-          battlePlan: 'Instructions: 3 sets of 8–10 — rest 75–90s between sets, take all of it.\n3 rounds\n• 8–10 Neutral Squats\nRest 75–90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 75–90s between sets, take all of it.\n3 sets\n• 8–10 Neutral Squats\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3751,7 +3868,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8–10 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241403/mood_app/workout_images/sbumk4mn_tbs.jpg',
           intensityReason: 'Balanced stance builds quads and glutes evenly',
@@ -3776,7 +3894,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Trap Bar Deadlift',
           duration: '12–14 min',
           description: 'Neutral-grip deadlifts reducing spinal stress',
-          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Trap Bar Deadlifts\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Trap Bar Deadlifts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3792,7 +3910,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241270/mood_app/workout_images/4iszp6ah_trap_bar_dl_2.jpg',
           intensityReason: 'Neutral grip reduces spinal loading',
@@ -3822,7 +3941,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Trap Bar Deadlift',
           duration: '12–14 min',
           description: 'Controlled deadlifts emphasizing slow eccentrics',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 120s between sets, take all of it.\n3 rounds\n• 8 Trap Bar Deadlifts (3s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 120s between sets, take all of it.\n3 sets\n• 8 Trap Bar Deadlifts (3s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3838,7 +3957,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241273/mood_app/workout_images/4pazduz4_trab_bar_dl.jpg',
           intensityReason: 'Tempo work increases time under tension',
@@ -3870,7 +3990,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Stance Trap Bar Squat',
           duration: '14–16 min',
           description: 'Builds hip strength and glute drive through stance',
-          battlePlan: 'Instructions: 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 rounds\n• 6–8 Wide Stance Squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 sets\n• 6–8 Wide Stance Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3886,7 +4006,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6–8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241270/mood_app/workout_images/4iszp6ah_trap_bar_dl_2.jpg',
           intensityReason: 'wider base targets hips and glutes with a stronger emphasis',
@@ -3911,7 +4032,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Trap Bar Squat',
           duration: '14–16 min',
           description: 'Slow descent builds control and hypertrophy for greater muscle growth',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 rounds\n• 6–8 Squats (3–4s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 sets\n• 6–8 Squats (3–4s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3927,7 +4048,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6–8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241403/mood_app/workout_images/sbumk4mn_tbs.jpg',
           intensityReason: 'Extended eccentrics increase muscle time under tension',
@@ -3952,7 +4074,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Trap Bar Drop Set',
           duration: '14–16 min',
           description: 'Deadlifts extended using fast weight reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 6 Deadlifts\n• Bar drop → 6\n• Bar drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s.\n3 sets\n• 6 Deadlifts\n• Bar drop → 6\n• Bar drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3962,14 +4084,22 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Deadlifts",
                     "reps": "6",
-                    "tutorialSlug": "barbell_deadlift",
-                    "note": "Drop → 6; Drop → 6"
+                    "tutorialSlug": "barbell_deadlift"
+                  },
+                  {
+                    "name": "Bar drop → 6",
+                    "tutorialSlug": "barbell_deadlift"
+                  },
+                  {
+                    "name": "Bar drop → 6",
+                    "tutorialSlug": "barbell_deadlift"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241270/mood_app/workout_images/4iszp6ah_trap_bar_dl_2.jpg',
           intensityReason: 'Drop sets extend time under tension for maximum pump',
@@ -3999,7 +4129,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Trap Bar Pause Deadlift',
           duration: '14–16 min',
           description: 'Paused deadlifts strengthening bottom position',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 Deadlifts (2s pause)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 sets\n• 5–6 Deadlifts (2s pause)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4015,7 +4145,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241273/mood_app/workout_images/4pazduz4_trab_bar_dl.jpg',
           intensityReason: 'Pauses eliminate momentum for greater muscle activation',
@@ -4047,7 +4178,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Trap Bar Squat',
           duration: '16–18 min',
           description: 'Builds stability and power out of squat bottom',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 90s between sets, take all of it.\n4 rounds\n• 6 Paused Squats (2s)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 90s between sets, take all of it.\n4 sets\n• 6 Paused Squats (2s)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4063,7 +4194,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241270/mood_app/workout_images/4iszp6ah_trap_bar_dl_2.jpg',
           intensityReason: '2s pause eliminates momentum, loads glutes/quads',
@@ -4088,7 +4220,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep Trap Bar Squat',
           duration: '16–18 min',
           description: 'Doubles workload while keeping constant tension',
-          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 3 sets — rest 90s between sets, take all of it.\n3 rounds\n• 6–8 1½ Rep Trap Bar Squats\nRest 90s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 3 sets — rest 90s between sets, take all of it.\n3 sets\n• 6–8 1½ Rep Trap Bar Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4103,7 +4235,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. 3 sets — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241273/mood_app/workout_images/4pazduz4_trab_bar_dl.jpg',
           intensityReason: 'Half + full rep combo extends quad fatigue for greater challenge',
@@ -4128,7 +4261,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Trap Bar Deadlift',
           duration: '18–20 min',
           description: 'Max-load deadlifts emphasizing total leg power',
-          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 rounds\n• 3–5 Deadlifts\nRest 180s',
+          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 sets\n• 3–5 Deadlifts\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4144,7 +4277,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 5,
                 "rest": "180s"
               }
-            ]
+            ],
+            "instructions": "5 sets of 3–5 — rest 180s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241270/mood_app/workout_images/4iszp6ah_trap_bar_dl_2.jpg',
           intensityReason: 'Heavy load builds maximal leg power',
@@ -4174,7 +4308,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Trap Bar Burnout Pulls',
           duration: '18–20 min',
           description: 'High-rep finisher driving leg exhaustion',
-          battlePlan: 'Instructions: 3 sets of 15 — rest 180s between sets, take all of it.\n3 rounds\n• 15 Deadlifts\nRest 180s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 180s between sets, take all of it.\n3 sets\n• 15 Deadlifts\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4190,7 +4324,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "180s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15 — rest 180s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241273/mood_app/workout_images/4pazduz4_trab_bar_dl.jpg',
           intensityReason: 'High reps push legs to complete fatigue',
@@ -4228,7 +4363,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Standard Squat',
           duration: '10–12 min',
           description: 'Controlled full-range squats building leg foundation',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4244,7 +4379,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_workout-content/artifacts/9whvfgtz_pit%20shark%20squat.avif',
           intensityReason: 'Pit shark builds strength with natural squat mechanics',
@@ -4274,7 +4410,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Pit Shark Squat',
           duration: '10–12 min',
           description: 'Slow eccentrics reinforcing squat control',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 sets\n• 10 Squats (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4290,7 +4426,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241301/mood_app/workout_images/zbfap5ab_pit_shark_squat_3.jpg',
           intensityReason: 'Tempo work builds control and muscle engagement',
@@ -4320,7 +4457,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Pause Squat',
           duration: '10–12 min',
           description: 'Paused squats strengthening bottom position',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Squats (2s pause)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Squats (2s pause)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4336,7 +4473,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241266/mood_app/workout_images/27jkyx8o_pit_shark_squat_2.jpg',
           intensityReason: 'Pauses eliminate momentum for greater activation',
@@ -4366,7 +4504,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Step-Ups',
           duration: '10–12 min',
           description: 'Elevated step-ups emphasizing unilateral leg drive',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 Step-Ups per leg\nRest 75s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 sets\n• 8 Step-Ups per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4381,7 +4519,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241287/mood_app/workout_images/hm30g4dw_pit_shark_step_up.jpg',
           intensityReason: 'Unilateral work builds balanced leg strength',
@@ -4413,7 +4552,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Pit Shark Squat',
           duration: '14–16 min',
           description: 'Lower-rep squats emphasizing leg strength',
-          battlePlan: 'Instructions: 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 rounds\n• 6–8 Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 sets\n• 6–8 Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4429,7 +4568,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6–8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_workout-content/artifacts/9whvfgtz_pit%20shark%20squat.avif',
           intensityReason: 'Heavier loads build raw strength',
@@ -4459,7 +4599,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Romanian Deadlift',
           duration: '14–16 min',
           description: 'Hip hinge emphasizing hamstrings and glutes',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 RDLs\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 sets\n• 8–10 RDLs\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4475,7 +4615,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241280/mood_app/workout_images/bom80199_pit_shark_rdl.jpg',
           intensityReason: 'RDL pattern develops posterior chain',
@@ -4505,7 +4646,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Drop Set Squat',
           duration: '14–16 min',
           description: 'Extended squat sets using fast load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s.\n3 sets\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4515,14 +4656,22 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Squats",
                     "reps": "8",
-                    "tutorialSlug": "kb_squat",
-                    "note": "Drop → 8; Drop → 8"
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "kb_squat"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241301/mood_app/workout_images/zbfap5ab_pit_shark_squat_3.jpg',
           intensityReason: 'Drop sets extend time under tension',
@@ -4552,7 +4701,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Jump Squat',
           duration: '14–16 min',
           description: 'Light explosive squats developing leg power',
-          battlePlan: 'Instructions: 3 sets of 6–8 — rest 120s between sets, take all of it.\n3 rounds\n• 6–8 Jump Squats\nRest 120s',
+          battlePlan: 'Instructions: 3 sets of 6–8 — rest 120s between sets, take all of it.\n3 sets\n• 6–8 Jump Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4568,7 +4717,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 6–8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240688/mood_app/workout_images/ucxnrjme_pit_shark_jump_squat.jpg',
           intensityReason: 'Explosive work builds power output',
@@ -4598,7 +4748,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Step-Ups',
           duration: '14–16 min',
           description: 'Belt-loaded step-ups reducing spinal load while training legs',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• Pit Shark Step-Ups — 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4613,7 +4763,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/mt2elt9e_pit%20shark%20step%20up.png',
           intensityReason: 'Belt-loaded step-ups train legs without compressing the spine',
@@ -4645,7 +4796,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Max-Load Pit Shark Squat',
           duration: '18–20 min',
           description: 'Heavy squats for maximal leg strength',
-          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 rounds\n• 3–5 Squats\nRest 180s',
+          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 sets\n• 3–5 Squats\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4661,7 +4812,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 5,
                 "rest": "180s"
               }
-            ]
+            ],
+            "instructions": "5 sets of 3–5 — rest 180s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_workout-content/artifacts/9whvfgtz_pit%20shark%20squat.avif',
           intensityReason: 'Heavy loads build maximal strength',
@@ -4691,7 +4843,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Pit Shark RDL',
           duration: '18–20 min',
           description: 'Loaded hinges emphasizing posterior chain strength',
-          battlePlan: 'Instructions: 4 sets of 6–8 — rest 150s between sets, take all of it.\n4 rounds\n• 6–8 RDLs\nRest 150s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 150s between sets, take all of it.\n4 sets\n• 6–8 RDLs\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4707,7 +4859,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6–8 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241280/mood_app/workout_images/bom80199_pit_shark_rdl.jpg',
           intensityReason: 'Heavy RDLs maximize hamstring development',
@@ -4737,7 +4890,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Triple Drop Squat',
           duration: '18–20 min',
           description: 'Extended triple-drop squats for total exhaustion',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 4 moves in order, then rest 180s.\n3 rounds\n• 6 Squats\n• Squat drop → 6\n• Squat drop → 6\n• Squat drop → 6\nRest 180s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 180s.\n3 sets\n• 6 Squats\n• Squat drop → 6\n• Squat drop → 6\n• Squat drop → 6\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4747,14 +4900,26 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Squats",
                     "reps": "6",
-                    "tutorialSlug": "kb_squat",
-                    "note": "Drop → 6; Drop → 6; Drop → 6"
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 6",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 6",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 6",
+                    "tutorialSlug": "kb_squat"
                   }
                 ],
                 "rounds": 3,
                 "rest": "180s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 4 moves in order, then rest 180s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241266/mood_app/workout_images/27jkyx8o_pit_shark_squat_2.jpg',
           intensityReason: 'Triple drops maximize muscle fatigue',
@@ -4784,7 +4949,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Jump Squat Burnout',
           duration: '18–20 min',
           description: 'Explosive jump squats performed under fatigue',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 8–10 — rest 150s between sets, take all of it.\n3 rounds\n• 8–10 Jump Squats\nRest 150s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 8–10 — rest 150s between sets, take all of it.\n3 sets\n• 8–10 Jump Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4800,7 +4965,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 8–10 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240688/mood_app/workout_images/ucxnrjme_pit_shark_jump_squat.jpg',
           intensityReason: 'Explosive burnout builds power endurance',
@@ -4830,7 +4996,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Step-Up Pulses',
           duration: '16–18 min',
           description: 'Step-ups extended with pulses to increase tension and fatigue',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 rounds\n• 6 per leg + 3 pulses\nRest 120s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 sets\n• 6 per leg + 3 pulses\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4838,14 +5004,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "+ 3 pulses",
+                    "name": "+ 3 Pulses",
                     "reps": "6/leg"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/mt2elt9e_pit%20shark%20step%20up.png',
           intensityReason: 'Top pulses extend time under tension for max quad/glute fatigue',
@@ -4883,7 +5050,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Standard Squat',
           duration: '10–12 min',
           description: 'Guided squats reinforcing consistent movement path',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4899,7 +5066,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241289/mood_app/workout_images/le4l1rje_smith_squat_2.jpg',
           intensityReason: 'Smith machine builds strength with guided bar path',
@@ -4929,7 +5097,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Smith Squat',
           duration: '10–12 min',
           description: 'Slow eccentrics building leg control',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 sets\n• 10 Squats (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4945,7 +5113,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241300/mood_app/workout_images/ynnuugau_smith_squat.jpg',
           intensityReason: 'Tempo work increases muscle engagement',
@@ -4975,7 +5144,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Reverse Lunge',
           duration: '10–12 min',
           description: 'Guided lunges reducing balance demand',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 Lunges per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 sets\n• 8 Lunges per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4990,7 +5159,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241264/mood_app/workout_images/15roxyzj_smith_reverse_lunge.jpg',
           intensityReason: 'Guided path allows focus on leg drive',
@@ -5020,7 +5190,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Romanian Deadlift',
           duration: '10–12 min',
           description: 'Guided hip hinge emphasizing hamstring stretch',
-          battlePlan: 'Instructions: 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 RDLs\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 10 — rest 90s between sets, take all of it.\n3 sets\n• 10 RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5036,7 +5206,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241278/mood_app/workout_images/6vr69tt8_smith_rdl.jpg',
           intensityReason: 'Guided RDL teaches hinge mechanics safely',
@@ -5066,7 +5237,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Supported Step-Ups',
           duration: '10–12 min',
           description: 'Guided step-ups using bar support to assist balance and control',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 75s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 sets\n• Smith Supported Step-Ups — 8 per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5081,7 +5252,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/sijsojfi_smith%20machine%20step%20up.png',
           intensityReason: 'Smith bar path stabilizes the step-up while you build leg strength',
@@ -5113,7 +5285,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Front Squat',
           duration: '14–16 min',
           description: 'Front-loaded squats emphasizing quads and core',
-          battlePlan: 'Instructions: 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 rounds\n• 6–8 Front Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 sets\n• 6–8 Front Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5129,7 +5301,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6–8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241282/mood_app/workout_images/e8vt7ayl_smith_front_squat.jpg',
           intensityReason: 'Front load challenges core stability',
@@ -5159,7 +5332,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Split Squat',
           duration: '14–16 min',
           description: 'Stationary split squats with guided bar path',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 rounds\n• 8 Split Squats per leg\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 sets\n• 8 Split Squats per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5175,7 +5348,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241268/mood_app/workout_images/28os8gvb_smith_split.jpg',
           intensityReason: 'Unilateral work builds balanced strength',
@@ -5205,7 +5379,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Squat Drop Set',
           duration: '14–16 min',
           description: 'Extended squats using fast load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s.\n3 sets\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5215,14 +5389,22 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Squats",
                     "reps": "8",
-                    "tutorialSlug": "kb_squat",
-                    "note": "Drop → 8; Drop → 8"
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "kb_squat"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241289/mood_app/workout_images/le4l1rje_smith_squat_2.jpg',
           intensityReason: 'Drop sets extend time under tension',
@@ -5252,7 +5434,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Jump Squat',
           duration: '14–16 min',
           description: 'Explosive squats using Smith track for safety',
-          battlePlan: 'Instructions: 4 sets of 5–6 — rest 120s between sets, take all of it.\n4 rounds\n• 5–6 Jump Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 5–6 — rest 120s between sets, take all of it.\n4 sets\n• 5–6 Jump Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5268,7 +5450,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 5–6 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241283/mood_app/workout_images/eefeuowu_smith_jump_squat.jpg',
           intensityReason: 'Guided path allows explosive focus',
@@ -5298,7 +5481,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Step-Ups Tempo',
           duration: '14–16 min',
           description: 'Step-ups using controlled tempo for increased tension',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• Smith Step-Ups — 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5306,14 +5489,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Smith Step-Ups Tempo",
+                    "name": "Smith Step-Ups",
                     "reps": "8"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/sijsojfi_smith%20machine%20step%20up.png',
           intensityReason: 'Tempo step-ups maximize quad/glute time under tension',
@@ -5345,7 +5529,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Smith Squat',
           duration: '18–20 min',
           description: 'Heavy guided squats emphasizing maximal strength',
-          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 rounds\n• 3–5 Squats\nRest 180s',
+          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 sets\n• 3–5 Squats\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5361,7 +5545,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 5,
                 "rest": "180s"
               }
-            ]
+            ],
+            "instructions": "5 sets of 3–5 — rest 180s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241300/mood_app/workout_images/ynnuugau_smith_squat.jpg',
           intensityReason: 'Heavy loads build maximal strength',
@@ -5391,7 +5576,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Pause Squat',
           duration: '16–18 min',
           description: 'Paused squats reinforcing bottom-end strength',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 Squats (2s pause)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 sets\n• 5–6 Squats (2s pause)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5407,7 +5592,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241289/mood_app/workout_images/le4l1rje_smith_squat_2.jpg',
           intensityReason: 'Pauses build raw strength from weakest position',
@@ -5437,7 +5623,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith RDL Drop Set',
           duration: '18–20 min',
           description: 'Hinges extended with rapid load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 6 RDLs\n• RDL drop → 6\n• RDL drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s.\n3 sets\n• 6 RDLs\n• RDL drop → 6\n• RDL drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5447,14 +5633,22 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "RDLs",
                     "reps": "6",
-                    "tutorialSlug": "smith_machine_rdl",
-                    "note": "Drop → 6; Drop → 6"
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "RDL drop → 6",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "RDL drop → 6",
+                    "tutorialSlug": "smith_machine_rdl"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 150s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241278/mood_app/workout_images/6vr69tt8_smith_rdl.jpg',
           intensityReason: 'Drop sets maximize posterior chain fatigue',
@@ -5484,7 +5678,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep finisher for total leg fatigue',
-          battlePlan: 'Instructions: 3 sets of 20 — rest 180s between sets, take all of it.\n3 rounds\n• 20 Squats\nRest 180s',
+          battlePlan: 'Instructions: 3 sets of 20 — rest 180s between sets, take all of it.\n3 sets\n• 20 Squats\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5500,7 +5694,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "180s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 20 — rest 180s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241289/mood_app/workout_images/le4l1rje_smith_squat_2.jpg',
           intensityReason: 'High reps push legs to complete fatigue',
@@ -5530,7 +5725,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Step-Up Drive',
           duration: '16–18 min',
           description: 'Explosive step-ups focusing on power and control under load',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 rounds\n• 6 per leg\nRest 120s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 sets\n• Smith Step-Up — 6 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5538,14 +5733,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Smith Step-Up Drive",
+                    "name": "Smith Step-Up",
                     "reps": "6"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/sijsojfi_smith%20machine%20step%20up.png',
           intensityReason: 'Heavy explosive step-ups develop unilateral power',
@@ -5583,7 +5779,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Static Lunge',
           duration: '10–12 min',
           description: 'Stationary lunges building balance, control, and movement confidence',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 sets\n• KB Static Lunge — 8 per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5598,7 +5794,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/75iax87r_kb%20lunge.png',
           intensityReason: 'Stationary lunges teach balance and bracing under kettlebell load',
@@ -5616,7 +5813,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Supported Step-Up',
           duration: '10–12 min',
           description: 'Step-ups using light support to build balance and coordination',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 75s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 sets\n• KB Supported Step-Up — 8 per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5631,7 +5828,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/frus5rdt_kb%20step%20up.png',
           intensityReason: 'Light support lets beginners groove balance before adding intensity',
@@ -5649,7 +5847,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Controlled Swing',
           duration: '10–12 min',
           description: 'Basic swings building hip hinge mechanics and coordination',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 reps\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 sets\n• 12–15 reps\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5665,7 +5863,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/ajm4hd60_kb%20swing.png',
           intensityReason: 'Foundational hip hinge teaches power transfer through the posterior chain',
@@ -5683,7 +5882,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Deadlift',
           duration: '10–12 min',
           description: 'Basic hinge movement building posterior chain strength safely',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 reps\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 reps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5698,7 +5897,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/wt6q1tpv_kb%20deadlift.png',
           intensityReason: 'Foundational hinge pattern teaches posterior chain engagement',
@@ -5718,7 +5918,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Walking Lunge',
           duration: '14–16 min',
           description: 'Walking lunges building unilateral strength and continuous tension',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• KB Walking Lunge — 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5733,7 +5933,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/3pz6hkz9_kb%20lunge%202.png',
           intensityReason: 'Walking adds balance demand on top of unilateral leg drive',
@@ -5751,7 +5952,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Step-Up Tempo',
           duration: '14–16 min',
           description: 'Step-ups with slow eccentrics increasing tension and control',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg (3s down)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• 8 per leg (3s down)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5766,7 +5967,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7j1bpxt0_kb%20step%20up%202.png',
           intensityReason: 'Slow eccentric phase amplifies time under tension on each rep',
@@ -5784,7 +5986,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Swing Tempo',
           duration: '14–16 min',
           description: 'Swings with controlled returns increasing time under tension',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 75s between sets, take all of it.\n4 rounds\n• 12 reps\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 75s between sets, take all of it.\n4 sets\n• KB Swing — 12 reps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5792,7 +5994,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "KB Swing Tempo",
+                    "name": "KB Swing",
                     "reps": "12",
                     "tutorialSlug": "kb_single_arm_swing"
                   }
@@ -5800,7 +6002,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/pj2fe7fs_kb%20swing%202.png',
           intensityReason: 'Controlled return phase doubles posterior chain time under tension',
@@ -5818,7 +6021,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Deadlift Tempo',
           duration: '14–16 min',
           description: 'Deadlifts with slow eccentrics increasing time under tension',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 90s between sets, take all of it.\n4 rounds\n• 10 reps (3s down)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 90s between sets, take all of it.\n4 sets\n• 10 reps (3s down)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5833,7 +6036,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/cbm9hqde_kb%20deadlift%202.png',
           intensityReason: 'Slow eccentric amplifies posterior chain time under tension',
@@ -5853,7 +6057,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Walking Lunge Drop Set',
           duration: '16–18 min',
           description: 'Continuous lunges extended with weight drops to near failure',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 120s between sets, take all of it.\n3 rounds\n• 10 per leg → Drop → 10 → Drop → BW\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 120s between sets, take all of it.\n3 sets\n• 10 per leg → Drop → 10 → Drop → BW\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5868,7 +6072,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/em1qkl0b_kb%20lunge%203.png',
           intensityReason: 'Drop sets push past comfortable rep ranges into real fatigue',
@@ -5886,7 +6091,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Explosive Step-Up',
           duration: '16–18 min',
           description: 'Explosive step-ups building power and high-output strength',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 rounds\n• 6 per leg\nRest 120s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 sets\n• KB Explosive Step-Up — 6 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5901,7 +6106,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/7w1rm7gq_kb%20step%20up%203.png',
           intensityReason: 'Explosive intent develops unilateral power and landing control',
@@ -5919,7 +6125,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Swing Intervals',
           duration: '16–18 min',
           description: 'High-output swings performed in timed explosive intervals',
-          battlePlan: 'Instructions: 5 sets of 20s — rest 90s between sets, take all of it.\n5 rounds\n• 20s on / 20s off\nRest 90s',
+          battlePlan: 'Instructions: 5 sets of 20s — rest 90s between sets, take all of it.\n5 sets\n• 20s on / 20s off\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5927,14 +6133,15 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "on / 20s off",
+                    "name": "On / 20s Off",
                     "reps": "20s"
                   }
                 ],
                 "rounds": 5,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "5 sets of 20s — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/qt6ggg2u_kb%20swing%203.png',
           intensityReason: 'Timed intervals demand max power output rep after rep',
@@ -5952,7 +6159,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Deadlift Drop Set',
           duration: '16–18 min',
           description: 'Deadlifts extended with weight drops pushing toward failure',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — rest 120s between sets, take all of it.\n3 rounds\n• Deadlift 8 → drop → 8 → drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — rest 120s between sets, take all of it.\n3 sets\n• Deadlift 8 → drop → 8 → drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5960,13 +6167,14 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "8 → Drop → 8 → Drop → 8"
+                    "name": "Deadlift 8 → drop → 8 → drop → 8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/29ao1zhg_kb%20deadlift%203.png',
           intensityReason: 'Weight drops sustain posterior chain effort past traditional failure',
@@ -5992,7 +6200,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Pendulum Squat',
           duration: '10–12 min',
           description: 'Machine-guided squats emphasizing control and depth',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Pendulum Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 Pendulum Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6008,7 +6216,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/4ei74z7h_Pendullum%20squat.png',
           intensityReason: 'Guided path lets beginners focus purely on depth and quad engagement',
@@ -6026,7 +6235,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendulum Squat Pause',
           duration: '10–12 min',
           description: 'Paused reps improving bottom control',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Squats (2s pause)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Squats (2s pause)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6042,7 +6251,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/6qfpin63_Pendullum%20squat%202.png',
           intensityReason: 'Paused reps remove momentum and reinforce control out of the bottom',
@@ -6060,7 +6270,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Pendulum Squat',
           duration: '10–12 min',
           description: 'Slow eccentric squats building tension',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 sets\n• 10 Squats (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6076,7 +6286,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/uqrxzr6n_Pendullum%20squat%203.png',
           intensityReason: 'Slow eccentric maximises quad time under tension',
@@ -6096,7 +6307,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendulum Squat Drop Set',
           duration: '14–16 min',
           description: 'Extended squat sets using rapid weight drops',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6106,14 +6317,22 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "Squats",
                     "reps": "8",
-                    "tutorialSlug": "kb_squat",
-                    "note": "Drop → 8; Drop → 8"
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "kb_squat"
+                  },
+                  {
+                    "name": "Squat drop → 8",
+                    "tutorialSlug": "kb_squat"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/4ei74z7h_Pendullum%20squat.png',
           intensityReason: 'Back-to-back drops extend effort past traditional failure',
@@ -6131,7 +6350,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heel-Elevated Pendulum Squat',
           duration: '14–16 min',
           description: 'Quad-biased squats using heel elevation',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 sets\n• 8–10 Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6147,7 +6366,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/6qfpin63_Pendullum%20squat%202.png',
           intensityReason: 'Heel elevation deepens range and biases the quads',
@@ -6165,7 +6385,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendulum Squat Pulses',
           duration: '14–16 min',
           description: 'Squats extended with bottom pulses',
-          battlePlan: 'Instructions: 3 sets of 8 — rest 120s between sets, take all of it.\n3 rounds\n• 8 Squats + 5 pulses\nRest 120s',
+          battlePlan: 'Instructions: 3 sets of 8 — rest 120s between sets, take all of it.\n3 sets\n• 8 Squats + 5 pulses\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6181,7 +6401,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/uqrxzr6n_Pendullum%20squat%203.png',
           intensityReason: 'Pulses keep tension where it counts most',
@@ -6201,7 +6422,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Pendulum Squat',
           duration: '16–18 min',
           description: 'Low-rep squats emphasizing maximal strength',
-          battlePlan: 'Instructions: 5 sets of 5–6 — rest 150s between sets, take all of it.\n5 rounds\n• 5–6 Squats\nRest 150s',
+          battlePlan: 'Instructions: 5 sets of 5–6 — rest 150s between sets, take all of it.\n5 sets\n• 5–6 Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6217,7 +6438,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 5,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "5 sets of 5–6 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/4ei74z7h_Pendullum%20squat.png',
           intensityReason: 'Heavy low-rep work develops raw quad strength',
@@ -6235,7 +6457,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendulum Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep finisher driving full quad fatigue',
-          battlePlan: 'Instructions: 3 sets of 15–20 — rest 150s between sets, take all of it.\n3 rounds\n• 15–20 Squats\nRest 150s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 150s between sets, take all of it.\n3 sets\n• 15–20 Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6251,7 +6473,8 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15–20 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/6qfpin63_Pendullum%20squat%202.png',
           intensityReason: 'High-rep volume drives quads to total fatigue',
@@ -6269,7 +6492,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendulum Squat 1.5 Reps',
           duration: '18–20 min',
           description: 'Extended reps increasing time under tension',
-          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 4 sets — rest 150s between sets, take all of it.\n4 rounds\n• 6–8 1.5-rep Squat Reps\nRest 150s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 4 sets — rest 150s between sets, take all of it.\n4 sets\n• 6–8 1.5-rep Squat Reps\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6277,14 +6500,14 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Pendulum Squat 1.5 Reps",
-                    "tutorialSlug": "kb_squat"
+                    "name": "6–8 1.5-rep Squat Reps"
                   }
                 ],
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. 4 sets — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/uqrxzr6n_Pendullum%20squat%203.png',
           intensityReason: '1.5 reps double time spent in the deepest range',

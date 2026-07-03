@@ -199,7 +199,7 @@ export const TUTORIAL_MAP: Record<string, string> = {
   "glute biased back squat": "kb_squat",
   "glute bridge": "glute_bridge",
   "goblet jump squats": "kb_goblet_jump_squat",
-  "goblet squat": "kb_squat",
+  "goblet squat": "kb_goblet_squat",
   "goblet squat 1 5 reps": "dumbbell_goblet_squat",
   "goblet squat jumps": "kb_goblet_jump_squat",
   "goblet squat tempo": "kb_squat",

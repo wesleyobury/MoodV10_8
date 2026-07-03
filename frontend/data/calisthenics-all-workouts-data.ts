@@ -19,29 +19,30 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Ring Support Lean",
-                    "intensity": "RPE 4",
+                    "reps": "15–25s",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "15–25s"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "High Ring Row",
-                    "intensity": "RPE 4",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Kneeling Ring Pushup",
                     "intensity": "RPE 4",
+                    "name": "Kneeling Ring Pushup",
+                    "reps": "8–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241244/mood_app/workout_images/qhw328ft_download_6_.jpg',
           intensityReason: 'Stable regressions teach alignment and shoulder set.',
@@ -72,29 +73,30 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Ring Scap Rows",
-                    "intensity": "RPE 4",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Ring Scap Pushups",
-                    "intensity": "RPE 4",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Dead Bug",
                     "intensity": "RPE 4",
+                    "name": "Dead Bug",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241236/mood_app/workout_images/n3zrasp5_download_5_.jpg',
           intensityReason: 'Scap control on rings builds robust base stability.',
@@ -125,30 +127,31 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Ring Row",
-                    "intensity": "RPE 4",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Ring Pushup",
-                    "intensity": "RPE 4",
+                    "reps": "8–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Hollow Hold",
                     "intensity": "RPE 4",
+                    "name": "Hollow Hold",
+                    "reps": "20–30s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "20–30s",
                     "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241259/mood_app/workout_images/z7qrv937_download_4_.jpg',
           intensityReason: 'Angle adjustments dial in intensity while stable.',
@@ -181,29 +184,30 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 5",
                     "name": "Ring Row",
-                    "intensity": "RPE 5",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Ring Pushup",
-                    "intensity": "RPE 5",
+                    "reps": "8–12",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–12"
+                    "sets": 4
                   },
                   {
-                    "name": "Ring Knee Tucks",
                     "intensity": "RPE 5",
+                    "name": "Ring Knee Tucks",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241190/mood_app/workout_images/0ah02106_download_9_.jpg',
           intensityReason: 'Moderate ring angles challenge stabilizers with control.',
@@ -234,29 +238,31 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Ring Archer Row",
                     "intensity": "RPE 5–6",
+                    "name": "Ring Archer Row",
+                    "reps": "6–8/side",
                     "rest": "90s",
-                    "sets": 4,
-                    "reps": "6–8/side"
+                    "sets": 4
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Ring Pushup",
-                    "intensity": "RPE 5",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Hollow Rock",
                     "intensity": "RPE 5",
+                    "name": "Hollow Rock",
+                    "reps": "10–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–15"
+                    "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241256/mood_app/workout_images/wd1l2iea_download_8_.jpg',
           intensityReason: 'Unilateral bias builds strength and positional control.',
@@ -287,30 +293,31 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 5",
                     "name": "Ring Row",
-                    "intensity": "RPE 5",
+                    "reps": "8–12",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–12"
+                    "sets": 4
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Ring Pushup",
-                    "intensity": "RPE 5",
+                    "reps": "10–12",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "10–12"
+                    "sets": 4
                   },
                   {
-                    "name": "Front Plank",
                     "intensity": "RPE 5",
+                    "name": "Front Plank",
+                    "reps": "30–40s",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "30–40s",
                     "tutorialSlug": "plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241222/mood_app/workout_images/fv7h4gkz_row.jpg',
           intensityReason: 'Moderate volume builds work capacity while stable.',
@@ -343,29 +350,30 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Ring Archer Row",
                     "intensity": "RPE 6–7",
+                    "name": "Ring Archer Row",
+                    "reps": "4–6/side",
                     "rest": "90–120s",
-                    "sets": 5,
-                    "reps": "4–6/side"
+                    "sets": 5
                   },
                   {
+                    "intensity": "RPE 6",
                     "name": "Ring Archer Pushup",
-                    "intensity": "RPE 6",
+                    "reps": "4–6/side",
                     "rest": "90s",
-                    "sets": 4,
-                    "reps": "4–6/side"
+                    "sets": 4
                   },
                   {
-                    "name": "Ring-Assisted Pistol",
                     "intensity": "RPE 6",
+                    "name": "Ring-Assisted Pistol",
+                    "reps": "6–8/side",
                     "rest": "75s",
-                    "sets": 3,
-                    "reps": "6–8/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241256/mood_app/workout_images/wd1l2iea_download_8_.jpg',
           intensityReason: 'Full unilateral work challenges single-arm control.',
@@ -396,31 +404,32 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "False-Grip Ring Row",
                     "intensity": "RPE 6",
+                    "name": "False-Grip Ring Row",
+                    "reps": "6–8",
                     "rest": "90s",
-                    "sets": 5,
-                    "reps": "6–8"
+                    "sets": 5
                   },
                   {
-                    "name": "Ring Muscle-Up Transition Practice",
                     "intensity": "RPE 6–7",
+                    "name": "Ring Muscle-Up Transition Practice",
+                    "reps": "3–4",
                     "rest": "120s",
                     "sets": 4,
-                    "reps": "3–4",
                     "tutorialSlug": "muscle_ups"
                   },
                   {
-                    "name": "Ring Dip",
                     "intensity": "RPE 6",
+                    "name": "Ring Dip",
+                    "reps": "6–8",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "6–8",
                     "tutorialSlug": "dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240922/mood_app/workout_images/dq0uzole_download_7_.jpg',
           intensityReason: 'MU drills require powerful pull, dip, and transition.',
@@ -451,30 +460,31 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 6",
                     "name": "Ring Row",
-                    "intensity": "RPE 6",
+                    "reps": "10–15",
                     "rest": "75s",
-                    "sets": 5,
-                    "reps": "10–15"
+                    "sets": 5
                   },
                   {
+                    "intensity": "RPE 6",
                     "name": "Ring Pushup",
-                    "intensity": "RPE 6",
+                    "reps": "12–16",
                     "rest": "75s",
-                    "sets": 5,
-                    "reps": "12–16"
+                    "sets": 5
                   },
                   {
-                    "name": "Ring Front Plank",
                     "intensity": "RPE 6",
+                    "name": "Ring Front Plank",
+                    "reps": "30–50s",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "30–50s",
                     "tutorialSlug": "plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241235/mood_app/workout_images/n2vbefok_download_7_.jpg',
           intensityReason: 'High volume builds muscular endurance on unstable surface.',
@@ -513,31 +523,32 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Kneeling Ab Wheel",
                     "intensity": "RPE 4",
+                    "name": "Kneeling Ab Wheel",
+                    "reps": "6–8",
                     "rest": "75s",
                     "sets": 3,
-                    "reps": "6–8",
                     "tutorialSlug": "kneeling_ab_wheel"
                   },
                   {
-                    "name": "Dead Bug",
                     "intensity": "RPE 4",
+                    "name": "Dead Bug",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   },
                   {
-                    "name": "Front Plank",
                     "intensity": "RPE 4",
+                    "name": "Front Plank",
+                    "reps": "20–30s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "20–30s",
                     "tutorialSlug": "plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241241/mood_app/workout_images/pgkoxn00_download.jpg',
           intensityReason: 'Short ranges teach control without overloading spine.',
@@ -568,32 +579,33 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Kneeling Ab Wheel Eccentric",
                     "intensity": "RPE 4",
+                    "name": "Kneeling Ab Wheel Eccentric",
+                    "reps": "4–6",
                     "rest": "90s",
                     "sets": 3,
-                    "reps": "4–6",
                     "tutorialSlug": "kneeling_ab_wheel"
                   },
                   {
-                    "name": "Hollow Hold",
                     "intensity": "RPE 4",
+                    "name": "Hollow Hold",
+                    "reps": "20–30s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "20–30s",
                     "tutorialSlug": "hollow_holds"
                   },
                   {
-                    "name": "Bird Dog",
                     "intensity": "RPE 4",
+                    "name": "Bird Dog",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "8–10/side",
                     "tutorialSlug": "bird_dog"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241258/mood_app/workout_images/ytutfbco_download_1_.jpg',
           intensityReason: 'Controlled negatives build safe end-range capacity.',
@@ -624,32 +636,33 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Kneeling Ab Wheel",
                     "intensity": "RPE 4",
+                    "name": "Kneeling Ab Wheel",
+                    "reps": "6–8",
                     "rest": "75s",
                     "sets": 3,
-                    "reps": "6–8",
                     "tutorialSlug": "kneeling_ab_wheel"
                   },
                   {
-                    "name": "Side Plank",
                     "intensity": "RPE 4",
+                    "name": "Side Plank",
+                    "reps": "20–30s/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "20–30s/side",
                     "tutorialSlug": "side_plank"
                   },
                   {
-                    "name": "Front Plank",
                     "intensity": "RPE 4",
+                    "name": "Front Plank",
+                    "reps": "20–30s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "20–30s",
                     "tutorialSlug": "plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241257/mood_app/workout_images/wgjgrxlk_download_2_.jpg',
           intensityReason: 'Gradual ROM progression increases tension safely.',
@@ -682,31 +695,33 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Kneeling Ab Wheel",
                     "intensity": "RPE 5",
+                    "name": "Kneeling Ab Wheel",
+                    "reps": "6–8",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "6–8",
                     "tutorialSlug": "kneeling_ab_wheel"
                   },
                   {
-                    "name": "Hollow Rock",
                     "intensity": "RPE 5",
+                    "name": "Hollow Rock",
+                    "reps": "10–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–15"
+                    "tutorialSlug": "hollow_holds"
                   },
                   {
-                    "name": "Side Plank with Hip Tap",
                     "intensity": "RPE 5",
+                    "name": "Side Plank with Hip Tap",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "8–10/side",
                     "tutorialSlug": "side_plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241241/mood_app/workout_images/pgkoxn00_download.jpg',
           intensityReason: 'Moderate volume kneeling rolls challenge midline.',
@@ -737,31 +752,32 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Kneeling Ab Wheel Eccentric",
                     "intensity": "RPE 5–6",
+                    "name": "Kneeling Ab Wheel Eccentric",
+                    "reps": "4–6",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "4–6",
                     "tutorialSlug": "kneeling_ab_wheel"
                   },
                   {
-                    "name": "Dead Bug",
                     "intensity": "RPE 5",
+                    "name": "Dead Bug",
+                    "reps": "12–14/side",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "12–14/side"
+                    "sets": 3
                   },
                   {
-                    "name": "Front Plank",
                     "intensity": "RPE 5",
+                    "name": "Front Plank",
+                    "reps": "25–35s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "25–35s",
                     "tutorialSlug": "plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241258/mood_app/workout_images/ytutfbco_download_1_.jpg',
           intensityReason: 'Longer negatives build strength in extended ranges.',
@@ -792,32 +808,33 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Kneeling Ab Wheel Diagonal Rolls",
                     "intensity": "RPE 5",
+                    "name": "Kneeling Ab Wheel Diagonal Rolls",
+                    "reps": "5–6/side",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "5–6/side",
                     "tutorialSlug": "kneeling_ab_wheel"
                   },
                   {
-                    "name": "Side Plank",
                     "intensity": "RPE 5",
+                    "name": "Side Plank",
+                    "reps": "25–35s/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "25–35s/side",
                     "tutorialSlug": "side_plank"
                   },
                   {
-                    "name": "Hollow Hold",
                     "intensity": "RPE 5",
+                    "name": "Hollow Hold",
+                    "reps": "25–35s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "25–35s",
                     "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241257/mood_app/workout_images/wgjgrxlk_download_2_.jpg',
           intensityReason: 'Slight angle changes load obliques and anti-rotation.',
@@ -850,31 +867,33 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Kneeling Ab Wheel",
                     "intensity": "RPE 6",
+                    "name": "Kneeling Ab Wheel",
+                    "reps": "6–8",
                     "rest": "90s",
                     "sets": 5,
-                    "reps": "6–8",
                     "tutorialSlug": "kneeling_ab_wheel"
                   },
                   {
-                    "name": "Hollow Rock",
                     "intensity": "RPE 6",
+                    "name": "Hollow Rock",
+                    "reps": "12–16",
                     "rest": "60s",
                     "sets": 4,
-                    "reps": "12–16"
+                    "tutorialSlug": "hollow_holds"
                   },
                   {
-                    "name": "Side Plank with Reach",
                     "intensity": "RPE 6",
+                    "name": "Side Plank with Reach",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12/side",
                     "tutorialSlug": "side_plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241241/mood_app/workout_images/pgkoxn00_download.jpg',
           intensityReason: 'Full-range kneeling rolls challenge deep core safely.',
@@ -905,32 +924,33 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Kneeling Ab Wheel Eccentric",
                     "intensity": "RPE 6–7",
+                    "name": "Kneeling Ab Wheel Eccentric",
+                    "reps": "3–5",
                     "rest": "120s",
                     "sets": 5,
-                    "reps": "3–5",
                     "tutorialSlug": "kneeling_ab_wheel"
                   },
                   {
-                    "name": "Front Plank",
                     "intensity": "RPE 6",
+                    "name": "Front Plank",
+                    "reps": "30–45s",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "30–45s",
                     "tutorialSlug": "plank"
                   },
                   {
-                    "name": "Hollow Hold",
                     "intensity": "RPE 6",
+                    "name": "Hollow Hold",
+                    "reps": "30–40s",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "30–40s",
                     "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241258/mood_app/workout_images/ytutfbco_download_1_.jpg',
           intensityReason: 'Very slow negatives build resilience in long ranges.',
@@ -961,31 +981,32 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Kneeling Ab Wheel",
                     "intensity": "RPE 6",
+                    "name": "Kneeling Ab Wheel",
+                    "reps": "5–6",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "5–6",
                     "tutorialSlug": "kneeling_ab_wheel"
                   },
                   {
-                    "name": "Kneeling Diagonal Rolls",
                     "intensity": "RPE 6",
+                    "name": "Kneeling Diagonal Rolls",
+                    "reps": "5–6/side",
                     "rest": "90s",
-                    "sets": 3,
-                    "reps": "5–6/side"
+                    "sets": 3
                   },
                   {
-                    "name": "Side Plank",
                     "intensity": "RPE 6",
+                    "name": "Side Plank",
+                    "reps": "30–40s/side",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "30–40s/side",
                     "tutorialSlug": "side_plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep = one full rep plus a half rep in the hardest range before you finish. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241257/mood_app/workout_images/wgjgrxlk_download_2_.jpg',
           intensityReason: '1.5 wheel reps add bracing time at safe midrange.',
@@ -1024,29 +1045,30 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Incline Pushup on Parallettes",
-                    "intensity": "RPE 4",
+                    "reps": "8–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–12"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Table Row or Band Row",
-                    "intensity": "RPE 4",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Dead Bug",
                     "intensity": "RPE 4",
+                    "name": "Dead Bug",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240928/mood_app/workout_images/kencpix3_incline_pushup.jpg',
           intensityReason: 'Elevated grips reduce wrist strain and aid control.',
@@ -1077,30 +1099,31 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Deficit Pushup",
-                    "intensity": "RPE 4",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Scapular Pushups on Bars",
-                    "intensity": "RPE 4",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Side Plank",
                     "intensity": "RPE 4",
+                    "name": "Side Plank",
+                    "reps": "20–30s/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "20–30s/side",
                     "tutorialSlug": "side_plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240917/mood_app/workout_images/3ltjblfg_deficit_pushup.jpg',
           intensityReason: 'Slight deficit allows safe depth and chest tension.',
@@ -1131,31 +1154,32 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Parallette Lean Hold",
                     "intensity": "RPE 4",
+                    "name": "Parallette Lean Hold",
+                    "reps": "15–25s",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "15–25s"
+                    "sets": 3
                   },
                   {
-                    "name": "Parallette Pushup",
                     "intensity": "RPE 4",
+                    "name": "Parallette Pushup",
+                    "reps": "8–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–12",
                     "tutorialSlug": "parallette_push_ups"
                   },
                   {
-                    "name": "Hollow Hold",
                     "intensity": "RPE 4",
+                    "name": "Hollow Hold",
+                    "reps": "20–30s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "20–30s",
                     "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240933/mood_app/workout_images/yneg02k1_pseduo_planch_lean.jpg',
           intensityReason: 'Forward lean introduces planche-line loading gently.',
@@ -1188,30 +1212,30 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 5",
                     "name": "Deep Parallette Pushup",
-                    "intensity": "RPE 5",
-                    "rest": "75s",
-                    "sets": 4,
                     "reps": "8–12",
-                    "tutorialSlug": "parallette_push_ups"
-                  },
-                  {
-                    "name": "Inverted Row",
-                    "intensity": "RPE 5",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Parallette Knee Tucks",
                     "intensity": "RPE 5",
+                    "name": "Inverted Row",
+                    "reps": "8–10",
+                    "rest": "75s",
+                    "sets": 4
+                  },
+                  {
+                    "intensity": "RPE 5",
+                    "name": "Parallette Knee Tucks",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240917/mood_app/workout_images/3ltjblfg_deficit_pushup.jpg',
           intensityReason: 'Deeper range increases tension at manageable load.',
@@ -1242,30 +1266,32 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Pseudo Planche Pushup",
                     "intensity": "RPE 5–6",
+                    "name": "Pseudo Planche Pushup",
+                    "reps": "6–8",
                     "rest": "90s",
-                    "sets": 4,
-                    "reps": "6–8"
+                    "sets": 4
                   },
                   {
-                    "name": "Box/Bench Dips",
                     "intensity": "RPE 5",
+                    "name": "Box/Bench Dips",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "bench_dips"
                   },
                   {
-                    "name": "Hollow Rock",
                     "intensity": "RPE 5",
+                    "name": "Hollow Rock",
+                    "reps": "10–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–15"
+                    "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240933/mood_app/workout_images/yneg02k1_pseduo_planch_lean.jpg',
           intensityReason: 'Lean progressions build anterior shoulder integrity.',
@@ -1296,30 +1322,31 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 5",
                     "name": "Wide Parallette Pushup",
-                    "intensity": "RPE 5",
+                    "reps": "8–12",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–12"
+                    "sets": 4
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Neutral Parallette Pushup",
-                    "intensity": "RPE 5",
+                    "reps": "8–12",
                     "rest": "60–75s",
-                    "sets": 3,
-                    "reps": "8–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Side Plank with Reach",
                     "intensity": "RPE 5",
+                    "name": "Side Plank with Reach",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "8–10/side",
                     "tutorialSlug": "side_plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240921/mood_app/workout_images/9f2tiro6_download_24_.jpg',
           intensityReason: 'Hand placement changes emphasize different fibers.',
@@ -1352,30 +1379,31 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 6",
                     "name": "Feet-Elevated Pike Pushup",
-                    "intensity": "RPE 6",
+                    "reps": "6–8",
                     "rest": "90s",
-                    "sets": 5,
-                    "reps": "6–8"
+                    "sets": 5
                   },
                   {
+                    "intensity": "RPE 6",
                     "name": "Parallette Lean Hold",
-                    "intensity": "RPE 6",
+                    "reps": "20–30s",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "20–30s"
+                    "sets": 4
                   },
                   {
-                    "name": "Parallette Tuck L-Sit",
                     "intensity": "RPE 6",
+                    "name": "Parallette Tuck L-Sit",
+                    "reps": "10–15s",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10–15s",
                     "tutorialSlug": "parallette_l_sit"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240934/mood_app/workout_images/yrisnwxk_pike.jpg',
           intensityReason: 'Elevated pike positions build overhead pressing lines.',
@@ -1406,29 +1434,31 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 6",
                     "name": "Deep Deficit Parallette Pushup",
-                    "intensity": "RPE 6",
+                    "reps": "6–10",
                     "rest": "90s",
-                    "sets": 5,
-                    "reps": "6–10"
+                    "sets": 5
                   },
                   {
+                    "intensity": "RPE 6",
                     "name": "Feet-Elevated Inverted Row",
-                    "intensity": "RPE 6",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Hollow Rock",
                     "intensity": "RPE 6",
+                    "name": "Hollow Rock",
+                    "reps": "12–16",
                     "rest": "60s",
                     "sets": 4,
-                    "reps": "12–16"
+                    "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240917/mood_app/workout_images/3ltjblfg_deficit_pushup.jpg',
           intensityReason: 'Deeper deficit increases load and shoulder stability.',
@@ -1459,31 +1489,32 @@ export const additionalWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Parallette Pushup",
                     "intensity": "RPE 6",
+                    "name": "Parallette Pushup",
+                    "reps": "6–8",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "6–8",
                     "tutorialSlug": "parallette_push_ups"
                   },
                   {
-                    "name": "Pseudo Planche Pushup",
                     "intensity": "RPE 6",
+                    "name": "Pseudo Planche Pushup",
+                    "reps": "6–8",
                     "rest": "90s",
-                    "sets": 4,
-                    "reps": "6–8"
+                    "sets": 4
                   },
                   {
-                    "name": "Parallette L-Sit",
                     "intensity": "RPE 6",
+                    "name": "Parallette L-Sit",
+                    "reps": "10–15s",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10–15s",
                     "tutorialSlug": "parallette_l_sit"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep = one full rep plus a half rep in the hardest range before you finish. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240927/mood_app/workout_images/hbfykdfb_download_25_.jpg',
           intensityReason: '1.5 pushups add tension without joint irritability.',
@@ -1526,30 +1557,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Bodyweight Squat",
                     "intensity": "RPE 4",
+                    "name": "Bodyweight Squat",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "kb_squat"
                   },
                   {
-                    "name": "Incline Pushup",
                     "intensity": "RPE 4",
+                    "name": "Incline Pushup",
+                    "reps": "8–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Dead Bug",
                     "intensity": "RPE 4",
+                    "name": "Dead Bug",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "8–10/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240920/mood_app/workout_images/8pq54s9o_download_16_.jpg',
           intensityReason: 'Simple patterns build control without loading demands.',
@@ -1580,31 +1612,32 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Hip Hinge",
                     "intensity": "RPE 4",
+                    "name": "Hip Hinge",
+                    "reps": "12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Reverse Lunge",
                     "intensity": "RPE 4",
+                    "name": "Reverse Lunge",
+                    "reps": "8/side",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8/side",
                     "tutorialSlug": "barbell_reverse_lunge"
                   },
                   {
-                    "name": "Front Plank",
                     "intensity": "RPE 4",
+                    "name": "Front Plank",
+                    "reps": "20–40s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "20–40s",
                     "tutorialSlug": "plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240923/mood_app/workout_images/dvx5s4v8_download_17_.jpg',
           intensityReason: 'Hip hinge and knee patterns build base body control.',
@@ -1635,30 +1668,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Towel/Doorframe Row",
-                    "intensity": "RPE 4",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Incline Pushup",
-                    "intensity": "RPE 4",
+                    "reps": "8–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Hollow Hold",
                     "intensity": "RPE 4",
+                    "name": "Hollow Hold",
+                    "reps": "15–25s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "15–25s",
                     "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240919/mood_app/workout_images/3v9vj2rl_download_20_.jpg',
           intensityReason: 'Vertical pulls regress to build scap control safely.',
@@ -1689,39 +1723,40 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Bodyweight Squat",
                     "intensity": "RPE 4",
+                    "name": "Bodyweight Squat",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "kb_squat"
                   },
                   {
-                    "name": "Wall Sit",
                     "intensity": "RPE 4",
+                    "name": "Wall Sit",
+                    "reps": "30–45s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "30–45s",
                     "tutorialSlug": "sit_ups"
                   },
                   {
-                    "name": "Knee Pushup",
                     "intensity": "RPE 4",
+                    "name": "Knee Pushup",
+                    "reps": "8–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Side Plank",
                     "intensity": "RPE 4",
+                    "name": "Side Plank",
+                    "reps": "15–25s/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "15–25s/side",
                     "tutorialSlug": "side_plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240930/mood_app/workout_images/udye11gr_download_21_.jpg',
           intensityReason: 'Controlled flow builds capacity with minimal strain.',
@@ -1754,38 +1789,40 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Rear-Foot Flat Split Squat",
                     "intensity": "RPE 5",
+                    "name": "Rear-Foot Flat Split Squat",
+                    "reps": "8/side",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8/side",
                     "tutorialSlug": "kb_squat"
                   },
                   {
-                    "name": "Pushup",
                     "intensity": "RPE 5",
+                    "name": "Pushup",
+                    "reps": "8–12",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8–12"
+                    "sets": 4
                   },
                   {
-                    "name": "Glute Bridge",
                     "intensity": "RPE 5",
+                    "name": "Glute Bridge",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "glute_bridge"
                   },
                   {
-                    "name": "Hollow Rock",
                     "intensity": "RPE 5",
+                    "name": "Hollow Rock",
+                    "reps": "10–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–15"
+                    "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240923/mood_app/workout_images/dvx5s4v8_download_17_.jpg',
           intensityReason: 'Moderate volume builds strength with steady control.',
@@ -1816,37 +1853,38 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Heel Tap Step-Down",
                     "intensity": "RPE 5",
+                    "name": "Heel Tap Step-Down",
+                    "reps": "6–8/side",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "6–8/side"
+                    "sets": 4
                   },
                   {
-                    "name": "Skater Squat",
                     "intensity": "RPE 5",
+                    "name": "Skater Squat",
+                    "reps": "6–8/side",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "6–8/side",
                     "tutorialSlug": "kb_squat"
                   },
                   {
-                    "name": "Pushup",
                     "intensity": "RPE 5",
+                    "name": "Pushup",
+                    "reps": "8–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Dead Bug",
                     "intensity": "RPE 5",
+                    "name": "Dead Bug",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240929/mood_app/workout_images/t0xtqts3_download_19_.jpg',
           intensityReason: 'Unilateral patterns build balance and hip stability.',
@@ -1877,38 +1915,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Bodyweight Good Morning",
                     "intensity": "RPE 5",
+                    "name": "Bodyweight Good Morning",
+                    "reps": "12",
                     "rest": "60s",
                     "sets": 4,
-                    "reps": "12",
                     "tutorialSlug": "barbell_good_mornings"
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Table/Ring Row Regression",
-                    "intensity": "RPE 5",
+                    "reps": "8–10",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Pushup",
-                    "intensity": "RPE 5",
+                    "reps": "8–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Side Plank",
                     "intensity": "RPE 5",
+                    "name": "Side Plank",
+                    "reps": "25–35s/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "25–35s/side",
                     "tutorialSlug": "side_plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240927/mood_app/workout_images/jb142mdj_download_22_.jpg',
           intensityReason: 'Hip hinge pairs with row regressions for posture.',
@@ -1939,31 +1978,32 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Squat → Reverse Lunge",
                     "intensity": "RPE 5",
+                    "name": "Squat → Reverse Lunge",
+                    "reps": "6/side",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "6/side",
                     "tutorialSlug": "kb_squat"
                   },
                   {
-                    "name": "Pushup",
                     "intensity": "RPE 5",
+                    "name": "Pushup",
+                    "reps": "8–12",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8–12"
+                    "sets": 4
                   },
                   {
-                    "name": "Hollow Hold",
                     "intensity": "RPE 5",
+                    "name": "Hollow Hold",
+                    "reps": "25–35s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "25–35s",
                     "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240920/mood_app/workout_images/8pq54s9o_download_16_.jpg',
           intensityReason: 'Alternating patterns elevate capacity with control.',
@@ -1996,30 +2036,32 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Pistol Box Squat",
                     "intensity": "RPE 6",
+                    "name": "Pistol Box Squat",
+                    "reps": "5–7/side",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "5–7/side",
                     "tutorialSlug": "kb_squat"
                   },
                   {
-                    "name": "Decline Pushup",
                     "intensity": "RPE 6",
+                    "name": "Decline Pushup",
+                    "reps": "8–12",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8–12"
+                    "sets": 4
                   },
                   {
-                    "name": "Hollow Rock",
                     "intensity": "RPE 6",
+                    "name": "Hollow Rock",
+                    "reps": "10–15",
                     "rest": "60s",
                     "sets": 4,
-                    "reps": "10–15"
+                    "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240925/mood_app/workout_images/h7zvxkan_PS.jpg',
           intensityReason: 'Higher tension bodyweight builds strength under control.',
@@ -2050,31 +2092,32 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Single-Leg RDL Reach",
                     "intensity": "RPE 6",
+                    "name": "Single-Leg RDL Reach",
+                    "reps": "6–8/side",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "6–8/side",
                     "tutorialSlug": "db_single_leg_rdl"
                   },
                   {
-                    "name": "Table/Ring Row",
                     "intensity": "RPE 6",
+                    "name": "Table/Ring Row",
+                    "reps": "8–10",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Side Plank",
                     "intensity": "RPE 6",
+                    "name": "Side Plank",
+                    "reps": "35–45s/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "35–45s/side",
                     "tutorialSlug": "side_plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240932/mood_app/workout_images/voz31xv4_download_23_.jpg',
           intensityReason: 'Single-leg hinge and rows increase posterior demand.',
@@ -2105,38 +2148,39 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 6",
                     "name": "Pushup",
-                    "intensity": "RPE 6",
+                    "reps": "8–12",
                     "rest": "60–75s",
-                    "sets": 5,
-                    "reps": "8–12"
+                    "sets": 5
                   },
                   {
+                    "intensity": "RPE 6",
                     "name": "Inverted Row",
-                    "intensity": "RPE 6",
+                    "reps": "8–10",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Squat Jump",
                     "intensity": "RPE 6",
+                    "name": "Squat Jump",
+                    "reps": "8",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8",
                     "tutorialSlug": "landmine_hack_squat_jump"
                   },
                   {
-                    "name": "Hollow Hold",
                     "intensity": "RPE 6",
+                    "name": "Hollow Hold",
+                    "reps": "30–40s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "30–40s",
                     "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240924/mood_app/workout_images/e6le95i4_download_18_.jpg',
           intensityReason: 'Higher push–pull volume builds endurance and control.',
@@ -2167,31 +2211,32 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Bodyweight Squat",
                     "intensity": "RPE 6",
+                    "name": "Bodyweight Squat",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8–10",
                     "tutorialSlug": "kb_squat"
                   },
                   {
-                    "name": "Pushup",
                     "intensity": "RPE 6",
+                    "name": "Pushup",
+                    "reps": "6–8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "6–8"
+                    "sets": 4
                   },
                   {
-                    "name": "Side Plank with Top-Arm Reach",
                     "intensity": "RPE 6",
+                    "name": "Side Plank with Top-Arm Reach",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "8–10/side",
                     "tutorialSlug": "side_plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. Own the lowering — count the seconds down, then move normally on the way up. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240920/mood_app/workout_images/8pq54s9o_download_16_.jpg',
           intensityReason: '1.5 tempo adds time under tension for safe progress.',
@@ -2230,29 +2275,30 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Dead Hang",
-                    "intensity": "RPE 4",
+                    "reps": "20–30s",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "20–30s"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Band-Assisted Pullup",
-                    "intensity": "RPE 4",
+                    "reps": "4–6",
                     "rest": "75s",
-                    "sets": 3,
-                    "reps": "4–6"
+                    "sets": 3
                   },
                   {
-                    "name": "Inverted Row",
                     "intensity": "RPE 4",
+                    "name": "Inverted Row",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241216/mood_app/workout_images/cvdrz3i5_inverted_rows.jpg',
           intensityReason: 'Assisted hangs and rows build grip and scap control.',
@@ -2283,31 +2329,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Scapular Pullups",
-                    "intensity": "RPE 4",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Eccentric Pullup",
-                    "intensity": "RPE 4",
-                    "rest": "75s",
-                    "sets": 3,
                     "reps": "3–5",
-                    "tutorialSlug": "pull_ups"
+                    "rest": "75s",
+                    "sets": 3
                   },
                   {
-                    "name": "Hollow Hold",
                     "intensity": "RPE 4",
+                    "name": "Hollow Hold",
+                    "reps": "20–30s",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "20–30s",
                     "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241221/mood_app/workout_images/fh1b52aj_dead_hang.jpg',
           intensityReason: 'Scapular movement priming builds safer pull strength.',
@@ -2338,30 +2384,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Neutral-Grip Band-Assisted Pullup",
                     "intensity": "RPE 4",
+                    "name": "Neutral-Grip Band-Assisted Pullup",
+                    "reps": "5–7",
                     "rest": "75s",
-                    "sets": 3,
-                    "reps": "5–7"
+                    "sets": 3
                   },
                   {
-                    "name": "Eccentric Chin-Up",
                     "intensity": "RPE 4",
+                    "name": "Eccentric Chin-Up",
+                    "reps": "3–4",
                     "rest": "75s",
                     "sets": 3,
-                    "reps": "3–4",
                     "tutorialSlug": "chin_ups"
                   },
                   {
-                    "name": "Inverted Row",
                     "intensity": "RPE 4",
+                    "name": "Inverted Row",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241201/mood_app/workout_images/7475d60t_chin_ups.jpg',
           intensityReason: 'Different bar grips distribute load and teach control.',
@@ -2394,29 +2441,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 5",
                     "name": "Band-Assisted Pullup",
-                    "intensity": "RPE 5",
+                    "reps": "6–8",
                     "rest": "90s",
-                    "sets": 4,
-                    "reps": "6–8"
+                    "sets": 4
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Inverted Row",
-                    "intensity": "RPE 5",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Hollow Rock",
                     "intensity": "RPE 5",
+                    "name": "Hollow Rock",
+                    "reps": "10–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–15"
+                    "tutorialSlug": "hollow_holds"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241216/mood_app/workout_images/cvdrz3i5_inverted_rows.jpg',
           intensityReason: 'Moderate band assist allows higher-quality volume.',
@@ -2447,32 +2496,32 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Eccentric Chin-Up",
                     "intensity": "RPE 5–6",
+                    "name": "Eccentric Chin-Up",
+                    "reps": "3–4",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "3–4",
                     "tutorialSlug": "chin_ups"
                   },
                   {
-                    "name": "Top Isometric Pullup Hold",
                     "intensity": "RPE 5",
-                    "rest": "75s",
-                    "sets": 3,
+                    "name": "Top Isometric Pullup Hold",
                     "reps": "10–15s",
-                    "tutorialSlug": "pull_ups"
+                    "rest": "75s",
+                    "sets": 3
                   },
                   {
-                    "name": "Hanging Knee Raise",
                     "intensity": "RPE 5",
+                    "name": "Hanging Knee Raise",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "hanging_knee_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. The hold is strict: locked position, squeezing hard, no drifting. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241201/mood_app/workout_images/7475d60t_chin_ups.jpg',
           intensityReason: 'Negatives build strength through full, safe range.',
@@ -2503,30 +2552,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Neutral-Grip Pullup",
                     "intensity": "RPE 5–6",
+                    "name": "Neutral-Grip Pullup",
+                    "reps": "5–7",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "5–7",
                     "tutorialSlug": "neutral_grip_assisted_pull_up"
                   },
                   {
-                    "name": "Pronated Inverted Row",
                     "intensity": "RPE 5",
+                    "name": "Pronated Inverted Row",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Dead Hang",
                     "intensity": "RPE 5",
+                    "name": "Dead Hang",
+                    "reps": "30–40s",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "30–40s"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241221/mood_app/workout_images/fh1b52aj_dead_hang.jpg',
           intensityReason: 'Grip variations balance forearm and lat engagement.',
@@ -2559,31 +2609,32 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Strict Pullup",
                     "intensity": "RPE 6",
+                    "name": "Strict Pullup",
+                    "reps": "4–6",
                     "rest": "90s",
                     "sets": 5,
-                    "reps": "4–6",
                     "tutorialSlug": "pull_ups"
                   },
                   {
-                    "name": "Chest-to-Bar Inverted Row",
                     "intensity": "RPE 6",
+                    "name": "Chest-to-Bar Inverted Row",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Hanging Leg Raise",
                     "intensity": "RPE 6",
+                    "name": "Hanging Leg Raise",
+                    "reps": "8–12",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–12",
                     "tutorialSlug": "hanging_toe_touch"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241230/mood_app/workout_images/kzuswott_download_15_.jpg',
           intensityReason: 'Strict sets prioritize clean strength and scap control.',
@@ -2614,30 +2665,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Weighted Eccentric Pullup",
                     "intensity": "RPE 6–7",
-                    "rest": "120s",
-                    "sets": 5,
+                    "name": "Weighted Eccentric Pullup",
                     "reps": "2–3",
-                    "tutorialSlug": "pull_ups"
+                    "rest": "120s",
+                    "sets": 5
                   },
                   {
-                    "name": "Hollow Rock",
                     "intensity": "RPE 6",
+                    "name": "Hollow Rock",
+                    "reps": "12–16",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "12–16"
+                    "tutorialSlug": "hollow_holds"
                   },
                   {
-                    "name": "Bar Hang",
                     "intensity": "RPE 6",
+                    "name": "Bar Hang",
+                    "reps": "30–40s",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "30–40s"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241226/mood_app/workout_images/iqs19xds_weighted_pullup.jpg',
           intensityReason: 'Weighted negatives push strength beyond sticking zones.',
@@ -2668,32 +2720,33 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Neutral-Grip Pullup",
                     "intensity": "RPE 6",
+                    "name": "Neutral-Grip Pullup",
+                    "reps": "5–7",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "5–7",
                     "tutorialSlug": "neutral_grip_assisted_pull_up"
                   },
                   {
-                    "name": "Pronated Pullup",
                     "intensity": "RPE 6",
+                    "name": "Pronated Pullup",
+                    "reps": "4–6",
                     "rest": "90s",
                     "sets": 3,
-                    "reps": "4–6",
                     "tutorialSlug": "pull_ups"
                   },
                   {
-                    "name": "Top Isometric Chin-Up Hold",
                     "intensity": "RPE 6",
+                    "name": "Top Isometric Chin-Up Hold",
+                    "reps": "10–15s",
                     "rest": "75s",
                     "sets": 3,
-                    "reps": "10–15s",
                     "tutorialSlug": "chin_ups"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241201/mood_app/workout_images/7475d60t_chin_ups.jpg',
           intensityReason: 'Higher total pulls with varied grips improve capacity.',
@@ -2724,7 +2777,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Knee Raise',
           duration: '8–10 min',
           description: 'Hanging knee raises building core control and lower ab strength',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60s between sets, take all of it.\n3 rounds\n• 10–12 reps\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60s between sets, take all of it.\n3 sets\n• 10–12 reps\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2740,7 +2793,8 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/t73he7a9_hanging%20knee%20raise%202.png',
           intensityReason: 'Knee raises teach lower-ab control without overloading the core',
@@ -2756,7 +2810,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Alternating Hanging Knee Raise',
           duration: '8–10 min',
           description: 'Alternating knee raises improving coordination and core control',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 60s between sets, take all of it.\n3 rounds\n• 12 total reps\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 60s between sets, take all of it.\n3 sets\n• 12 total reps\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2764,15 +2818,15 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Alternating Hanging Knee Raise",
-                    "reps": "12",
-                    "tutorialSlug": "hanging_knee_raise"
+                    "name": "Total Reps",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/50qyiwtg_alternating%20hangin%20knee%20raise.png',
           intensityReason: 'Alternating reps build coordination and unilateral core stability',
@@ -2788,7 +2842,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Knee Raise Hold',
           duration: '8–10 min',
           description: 'Knee raises with pauses increasing abdominal tension and control',
-          battlePlan: 'Instructions: Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 — rest 60s between sets, take all of it.\n3 rounds\n• 8 reps (2s hold)\nRest 60s',
+          battlePlan: 'Instructions: Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 — rest 60s between sets, take all of it.\n3 sets\n• 8 reps (2s hold)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2804,7 +2858,8 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/5lr2vsej_hanging%20knee%20raise%203.png',
           intensityReason: 'Top-position holds maximize ab tension and time-under-load',
@@ -2820,7 +2875,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Slow Hanging Knee Raise',
           duration: '8–10 min',
           description: 'Slow-tempo knee raises increasing lower ab tension and control',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8–10 — rest 60s between sets, take all of it.\n3 rounds\n• 8–10 reps (3s eccentric)\nRest 60s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8–10 — rest 60s between sets, take all of it.\n3 sets\n• 8–10 reps (3s eccentric)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2836,7 +2891,8 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8–10 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/cjxoatel_hanging%20knee%20raise%204.png',
           intensityReason: 'Slow tempo increases time under tension for the lower abs',
@@ -2854,7 +2910,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Leg Raise',
           duration: '10–12 min',
           description: 'Straight-leg raises increasing lower ab strength and tension',
-          battlePlan: 'Instructions: 4 sets of 10–12 — rest 75s between sets, take all of it.\n4 rounds\n• 10–12 reps\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 10–12 — rest 75s between sets, take all of it.\n4 sets\n• 10–12 reps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2870,7 +2926,8 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/btrm5pgt_pull%20up%20bar%20leg%20raise.png',
           intensityReason: 'Straight legs lengthen the lever and overload the lower abs',
@@ -2886,7 +2943,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Toes-to-Bar Progression',
           duration: '10–12 min',
           description: 'Controlled toe raises improving compression and abdominal strength',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 75s between sets, take all of it.\n4 rounds\n• 8–10 reps\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 75s between sets, take all of it.\n4 sets\n• 8–10 reps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2901,7 +2958,8 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/dadu4ryl_pull%20up%20bar%20toe%20to%20bar.png',
           intensityReason: 'Reaching for the bar develops abdominal compression strength',
@@ -2917,7 +2975,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Leg Raise Pulses',
           duration: '10–12 min',
           description: 'Leg raises extended with pulses increasing abdominal tension',
-          battlePlan: 'Instructions: 4 sets of 8 — rest 75s between sets, take all of it.\n4 rounds\n• 8 reps + 4 pulses\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 8 — rest 75s between sets, take all of it.\n4 sets\n• 8 reps + 4 pulses\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2925,14 +2983,15 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "reps + 4 pulses",
+                    "name": "Reps + 4 Pulses",
                     "reps": "8"
                   }
                 ],
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/8x9e66q8_hanging%20leg%20raise%202.png',
           intensityReason: 'Top-end pulses keep the abs loaded in their hardest range',
@@ -2948,7 +3007,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Windshield Wiper Intro',
           duration: '10–12 min',
           description: 'Rotational hanging raises building oblique strength and control',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 75s between sets, take all of it.\n4 rounds\n• 6 per side\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 75s between sets, take all of it.\n4 sets\n• 6 per side\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2963,7 +3022,8 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/xv28u0mp_windshield%20wipers.png',
           intensityReason: 'Rotational pattern teaches oblique control and core stability',
@@ -2981,7 +3041,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Toes-to-Bar',
           duration: '12–14 min',
           description: 'Full toes-to-bar reps demanding advanced core compression strength',
-          battlePlan: 'Instructions: 4 sets of 10–12 — rest 90s between sets, take all of it.\n4 rounds\n• 10–12 reps\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 10–12 — rest 90s between sets, take all of it.\n4 sets\n• 10–12 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2997,7 +3057,8 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 10–12 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/dadu4ryl_pull%20up%20bar%20toe%20to%20bar.png',
           intensityReason: 'Full range requires elite compression strength and grip',
@@ -3013,7 +3074,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging L-Sit Raise',
           duration: '12–14 min',
           description: 'L-sit raises combining compression strength with core endurance',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 reps\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 sets\n• 8–10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3029,7 +3090,8 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/k7ylihgl_L%20sit%20pull%20up.png',
           intensityReason: 'L-sit hold demands max compression + endurance simultaneously',
@@ -3045,7 +3107,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Windshield Wipers',
           duration: '12–14 min',
           description: 'Full rotational raises building advanced oblique and core strength',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per side\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• 8 per side\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3060,7 +3122,8 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/xv28u0mp_windshield%20wipers.png',
           intensityReason: 'Full rotation overloads the obliques with elite control',
@@ -3076,7 +3139,7 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Toes-to-Bar Burnout',
           duration: '12–14 min',
           description: 'High-rep toes-to-bar sets pushing abdominal endurance and grip',
-          battlePlan: 'Instructions: 3 sets of 15–20 — rest 90s between sets, take all of it.\n3 rounds\n• 15–20 reps\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 90s between sets, take all of it.\n3 sets\n• 15–20 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3091,7 +3154,8 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15–20 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/khia1c9e_hanging%20toe%20to%20bar%202.png',
           intensityReason: 'High-rep volume drives abdominal endurance and grip stamina',
@@ -3123,30 +3187,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Parallel Bar Support Hold",
                     "intensity": "RPE 4",
+                    "name": "Parallel Bar Support Hold",
+                    "reps": "15–25s",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "15–25s"
+                    "sets": 3
                   },
                   {
-                    "name": "Band-Assisted Dips",
                     "intensity": "RPE 4",
+                    "name": "Band-Assisted Dips",
+                    "reps": "5–7",
                     "rest": "75s",
                     "sets": 3,
-                    "reps": "5–7",
                     "tutorialSlug": "assisted_dips"
                   },
                   {
-                    "name": "Parallel Bar Knee Tucks",
                     "intensity": "RPE 4",
+                    "name": "Parallel Bar Knee Tucks",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241218/mood_app/workout_images/eyqn2a9a_download_10_.jpg',
           intensityReason: 'Support holds and assisted dips teach body alignment.',
@@ -3177,30 +3242,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Parallel Bar Inverted Row",
                     "intensity": "RPE 4",
+                    "name": "Parallel Bar Inverted Row",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Band-Assisted Dips",
                     "intensity": "RPE 4",
+                    "name": "Band-Assisted Dips",
+                    "reps": "5–7",
                     "rest": "75s",
                     "sets": 3,
-                    "reps": "5–7",
                     "tutorialSlug": "assisted_dips"
                   },
                   {
-                    "name": "Dead Bug",
                     "intensity": "RPE 4",
+                    "name": "Dead Bug",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241212/mood_app/workout_images/bhu7tjin_download_14_.jpg',
           intensityReason: 'Bar rows build scap control with simple setup.',
@@ -3231,31 +3297,32 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Parallel Bar Support Hold",
                     "intensity": "RPE 4",
+                    "name": "Parallel Bar Support Hold",
+                    "reps": "20–30s",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "20–30s"
+                    "sets": 3
                   },
                   {
-                    "name": "Assisted Dip Eccentric",
                     "intensity": "RPE 4",
+                    "name": "Assisted Dip Eccentric",
+                    "reps": "3–5",
                     "rest": "75s",
                     "sets": 3,
-                    "reps": "3–5",
                     "tutorialSlug": "assisted_dips"
                   },
                   {
-                    "name": "Hanging Knee Raise",
                     "intensity": "RPE 4",
+                    "name": "Hanging Knee Raise",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "hanging_knee_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241253/mood_app/workout_images/v42ceu0x_download_11_.jpg',
           intensityReason: 'Stable support positions teach shoulder packing.',
@@ -3288,30 +3355,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Band-Assisted Dips",
                     "intensity": "RPE 5",
+                    "name": "Band-Assisted Dips",
+                    "reps": "6–8",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "6–8",
                     "tutorialSlug": "assisted_dips"
                   },
                   {
-                    "name": "Parallel Bar Inverted Row",
                     "intensity": "RPE 5",
+                    "name": "Parallel Bar Inverted Row",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Parallel Bar Knee Raise",
                     "intensity": "RPE 5",
+                    "name": "Parallel Bar Knee Raise",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241212/mood_app/workout_images/bhu7tjin_download_14_.jpg',
           intensityReason: 'Moderate dip volume strengthens chest and triceps.',
@@ -3342,30 +3410,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Parallel Bar Support Hold",
                     "intensity": "RPE 5",
+                    "name": "Parallel Bar Support Hold",
+                    "reps": "25–35s",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "25–35s"
+                    "sets": 4
                   },
                   {
-                    "name": "Tempo Dips with Band",
                     "intensity": "RPE 5–6",
+                    "name": "Tempo Dips with Band",
+                    "reps": "5–7",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "5–7",
                     "tutorialSlug": "dips"
                   },
                   {
-                    "name": "Dead Bug",
                     "intensity": "RPE 5",
+                    "name": "Dead Bug",
+                    "reps": "12–14/side",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "12–14/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241208/mood_app/workout_images/acv740pg_download_12_.jpg',
           intensityReason: 'Isometrics add control for safer pressing patterns.',
@@ -3396,30 +3465,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Parallel Bar Row",
                     "intensity": "RPE 5",
+                    "name": "Parallel Bar Row",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Band-Assisted Dips",
                     "intensity": "RPE 5–6",
+                    "name": "Band-Assisted Dips",
+                    "reps": "6–8",
                     "rest": "90s",
                     "sets": 4,
-                    "reps": "6–8",
                     "tutorialSlug": "assisted_dips"
                   },
                   {
-                    "name": "Parallel Bar Knee Tucks",
                     "intensity": "RPE 5",
+                    "name": "Parallel Bar Knee Tucks",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241253/mood_app/workout_images/v42ceu0x_download_11_.jpg',
           intensityReason: 'Pair rows with dips for balanced push–pull control.',
@@ -3452,31 +3522,32 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Strict Parallel Bar Dips",
                     "intensity": "RPE 6",
+                    "name": "Strict Parallel Bar Dips",
+                    "reps": "5–7",
                     "rest": "90s",
                     "sets": 5,
-                    "reps": "5–7",
                     "tutorialSlug": "dips"
                   },
                   {
-                    "name": "Feet-Elevated Parallel Bar Row",
                     "intensity": "RPE 6",
+                    "name": "Feet-Elevated Parallel Bar Row",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Parallel Bar Tuck L-Sit Hold",
                     "intensity": "RPE 6",
+                    "name": "Parallel Bar Tuck L-Sit Hold",
+                    "reps": "10–15s",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10–15s",
                     "tutorialSlug": "sit_ups"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241208/mood_app/workout_images/acv740pg_download_12_.jpg',
           intensityReason: 'Bodyweight dips build pressing power and stability.',
@@ -3507,30 +3578,31 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Weighted Eccentric Dip",
                     "intensity": "RPE 6–7",
+                    "name": "Weighted Eccentric Dip",
+                    "reps": "2–3",
                     "rest": "120s",
                     "sets": 5,
-                    "reps": "2–3",
                     "tutorialSlug": "dips"
                   },
                   {
-                    "name": "Parallel Bar Row",
                     "intensity": "RPE 6",
+                    "name": "Parallel Bar Row",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Parallel Bar Knee Raise",
                     "intensity": "RPE 6",
+                    "name": "Parallel Bar Knee Raise",
+                    "reps": "10–12",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "10–12"
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241212/mood_app/workout_images/bhu7tjin_download_14_.jpg',
           intensityReason: 'Weighted eccentrics increase force in safe ranges.',
@@ -3561,31 +3633,32 @@ export const calisthenicsWorkoutsDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Dips",
                     "intensity": "RPE 6",
+                    "name": "Dips",
+                    "reps": "4–6",
                     "rest": "120s",
                     "sets": 4,
-                    "reps": "4–6",
                     "tutorialSlug": "dips"
                   },
                   {
-                    "name": "Chest-to-Bar Parallel Bar Row",
                     "intensity": "RPE 6",
+                    "name": "Chest-to-Bar Parallel Bar Row",
+                    "reps": "8–10",
                     "rest": "75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
-                    "name": "Tuck L-Sit Hold",
                     "intensity": "RPE 6",
+                    "name": "Tuck L-Sit Hold",
+                    "reps": "12–18s",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "12–18s",
                     "tutorialSlug": "sit_ups"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep = one full rep plus a half rep in the hardest range before you finish. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241224/mood_app/workout_images/gua5r4vy_download_13_.jpg',
           intensityReason: '1.5 dip reps increase time under tension efficiently.',

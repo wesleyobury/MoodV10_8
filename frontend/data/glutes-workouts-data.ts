@@ -10,7 +10,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Back Squat',
           duration: '12–14 min',
           description: 'Back squats building glute strength through controlled movement',
-          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 reps\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -26,7 +26,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
           intensityReason: 'Controlled tempo teaches glute loading and squat positioning',
@@ -44,7 +45,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Box Back Squat',
           duration: '12–14 min',
           description: 'Box-guided squats reinforcing glute loading and depth control',
-          battlePlan: 'Instructions: 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 reps\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• Box Back Squat — 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -60,7 +61,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
           intensityReason: 'Box reference reinforces depth and consistent glute loading',
@@ -78,7 +80,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Back Squat',
           duration: '12–14 min',
           description: 'Slow eccentric squats increasing glute tension and positioning',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 reps (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -94,7 +96,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
           intensityReason: 'Slow eccentric amplifies glute tension under controlled load',
@@ -114,7 +117,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Glute-Biased Back Squat',
           duration: '14–16 min',
           description: 'Wider stance squats emphasizing glute engagement and strength',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 reps\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 sets\n• 8–10 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -130,7 +133,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
           intensityReason: 'Wider stance emphasizes hip drive and glute recruitment',
@@ -148,7 +152,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat Pulses',
           duration: '14–16 min',
           description: 'Squats extended with bottom pulses increasing glute tension',
-          battlePlan: 'Instructions: 4 sets of 8 — rest 120s between sets, take all of it.\n4 rounds\n• 8 reps + 4 pulses\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 8 — rest 120s between sets, take all of it.\n4 sets\n• 8 reps + 4 pulses\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -156,15 +160,15 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Back Squat Pulses",
-                    "reps": "8",
-                    "tutorialSlug": "kb_squat"
+                    "name": "Reps + 4 Pulses",
+                    "reps": "8"
                   }
                 ],
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
           intensityReason: 'Bottom pulses sustain glute tension in the deepest range',
@@ -182,7 +186,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat Pause Reps',
           duration: '14–16 min',
           description: 'Paused squats building glute strength from the bottom position',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 sets\n• 6–8 reps (2s pause)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -198,7 +202,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
           intensityReason: 'Paused bottom develops strength out of the hardest position',
@@ -218,7 +223,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Glute Back Squat',
           duration: '16–18 min',
           description: 'Heavy squats emphasizing maximal glute strength and output',
-          battlePlan: 'Instructions: 5 sets of 5–6 — rest 150s between sets, take all of it.\n5 rounds\n• 5–6 reps\nRest 150s',
+          battlePlan: 'Instructions: 5 sets of 5–6 — rest 150s between sets, take all of it.\n5 sets\n• 5–6 reps\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -234,7 +239,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 5,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "5 sets of 5–6 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/axy2u246_back%20squat%203.png',
           intensityReason: 'Heavy load drives maximal glute strength adaptations',
@@ -252,7 +258,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat 1.5 Reps',
           duration: '16–18 min',
           description: 'Extended-rep squats increasing glute tension and fatigue output',
-          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 4 sets of 6–8 — rest 150s between sets, take all of it.\n4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 4 sets of 6–8 — rest 150s between sets, take all of it.\n4 sets\n• 6–8 reps (1.5 reps)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -268,7 +274,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. 4 sets of 6–8 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/lbu1kh3e_back%20squat.png',
           intensityReason: '1.5 reps double time spent in the deepest glute-loading range',
@@ -286,7 +293,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep squats driving deep glute fatigue and endurance',
-          battlePlan: 'Instructions: 3 sets of 15–20 — rest 150s between sets, take all of it.\n3 rounds\n• 15–20 reps\nRest 150s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 150s between sets, take all of it.\n3 sets\n• 15–20 reps\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -302,7 +309,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15–20 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/kwxoaq36_back%20squat%202.png',
           intensityReason: 'High-rep volume drives deep glute fatigue and endurance',
@@ -328,7 +336,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Ankle Kickback',
           duration: '10–12 min',
           description: 'Ankle‑strapped motion builds activation through glutes',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10–12 per side — rest 60s between sets, take all of it.\n3 rounds\n• 10–12 per leg Kickbacks\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10–12 per side — rest 60s between sets, take all of it.\n3 sets\n• 10–12 per leg Kickbacks\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -343,7 +351,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10–12 per side — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241386/mood_app/workout_images/2ambyktp_gk2.jpg',
           intensityReason: 'Cable adds constant tension for strict hip extension',
@@ -368,7 +377,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Pull‑Through',
           duration: '10–12 min',
           description: 'Great hip hinge builder for posterior chain activation',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Pull‑Throughs\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 Pull‑Throughs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -376,15 +385,15 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Cable Pull‑Through",
-                    "reps": "10–12",
-                    "tutorialSlug": "cable_pull_through"
+                    "name": "Pull‑Throughs",
+                    "reps": "10–12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241343/mood_app/workout_images/hgi9y71r_cpt.jpg',
           intensityReason: 'Rope hinge motion loads glutes with safe posture path',
@@ -409,7 +418,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Hip Extension',
           duration: '10–12 min',
           description: 'Standing extensions reinforcing glute firing',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12–15 per side — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Extensions per leg\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12–15 per side — rest 60s between sets, take all of it.\n3 sets\n• 12–15 Extensions per leg\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -424,7 +433,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12–15 per side — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240658/mood_app/workout_images/7v4ve2vi_cable_hip_ext.jpg',
           intensityReason: 'Cable resistance teaches proper hip extension pattern',
@@ -454,7 +464,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Assisted Squat Hold',
           duration: '10–12 min',
           description: 'Static squat holds emphasizing glute tension',
-          battlePlan: 'Instructions: 3 sets of 20–30s — rest 75s between sets, take all of it.\n3 rounds\n• 20–30s Holds\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 20–30s — rest 75s between sets, take all of it.\n3 sets\n• 20–30s Holds\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -462,15 +472,15 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Cable Assisted Squat Hold",
-                    "reps": "20–30s",
-                    "tutorialSlug": "cable_squat"
+                    "name": "Holds",
+                    "reps": "20–30s"
                   }
                 ],
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 20–30s — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240676/mood_app/workout_images/j9bwfr8q_Cable_squat_1.jpg',
           intensityReason: 'Isometric holds build glute endurance and stability',
@@ -502,7 +512,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Step‑Back Lunge',
           duration: '14–16 min',
           description: 'Cable anchor increases balance and constant tension',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8–10 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 per leg Step‑Back Lunges\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8–10 per side — rest 90s between sets, take all of it.\n4 sets\n• 8–10 per leg Step‑Back Lunges\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -517,7 +527,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8–10 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241349/mood_app/workout_images/kbqqdimd_download_2_.jpg',
           intensityReason: 'Rear lunges with cable build unilateral glute force',
@@ -542,7 +553,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable High Kickback',
           duration: '14–16 min',
           description: 'Top‑end contraction isolates and strengthens glutes',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 per side — rest 75–90s between sets, take all of it.\n3 rounds\n• 8–10 per leg Kickbacks (2s pause top)\nRest 75–90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 per side — rest 75–90s between sets, take all of it.\n3 sets\n• 8–10 per leg Kickbacks (2s pause top)\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -557,7 +568,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 per side — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241390/mood_app/workout_images/coxrp5yp_gk.jpg',
           intensityReason: 'Kickbacks with higher angle add peak glute tension',
@@ -582,7 +594,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Step-Up Drive',
           duration: '14–16 min',
           description: 'Elevated step-ups emphasizing glute drive',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 Step-Ups per leg\nRest 90s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• 8 Step-Ups per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -597,7 +609,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Step-ups with cable resistance build unilateral power',
@@ -627,7 +640,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Reverse Lunge Pause',
           duration: '14–16 min',
           description: 'Reverse lunges with bottom-position pauses',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 Lunges per leg (2s pause)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 sets\n• 8 Lunges per leg (2s pause)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -642,7 +655,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Paused lunges strengthen glutes in stretched position',
@@ -694,7 +708,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241343/mood_app/workout_images/hgi9y71r_cpt.jpg',
           intensityReason: 'Pair hinge and squat hits glutes from dual angles',
@@ -719,7 +734,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Kickback Burnout',
           duration: '16–18 min',
           description: 'Ankle‑cuff movement torches glutes with total volume',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 15–20 per side — rest 90s between sets, take all of it.\n3 rounds\n• 15–20 per leg Kickbacks\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 15–20 per side — rest 90s between sets, take all of it.\n3 sets\n• 15–20 per leg Kickbacks\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -734,7 +749,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 15–20 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241390/mood_app/workout_images/coxrp5yp_gk.jpg',
           intensityReason: 'High rep burnout floods glutes with strict tension',
@@ -759,7 +775,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep squats under constant glute tension',
-          battlePlan: 'Instructions: 3 sets of 20 — rest 150s between sets, take all of it.\n3 rounds\n• 20 Squats\nRest 150s',
+          battlePlan: 'Instructions: 3 sets of 20 — rest 150s between sets, take all of it.\n3 sets\n• 20 Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -775,7 +791,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 20 — rest 150s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'High-rep cable squats maximize metabolic stress',
@@ -805,7 +822,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable RDL Drop Series',
           duration: '18–20 min',
           description: 'Hinges extended with multiple fast drops',
-          battlePlan: 'Instructions: 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 8 RDLs\n• Series drop → 6\n• Series drop → 6\nRest 150s',
+          battlePlan: 'Instructions: 3 sets — all 3 moves in order, then rest 150s.\n3 sets\n• 8 RDLs\n• Series drop → 6\n• Series drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -815,14 +832,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                   {
                     "name": "RDLs",
                     "reps": "8",
-                    "tutorialSlug": "smith_machine_rdl",
-                    "note": "Drop → 6; Drop → 6"
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Series drop → 6",
+                    "tutorialSlug": "smith_machine_rdl"
+                  },
+                  {
+                    "name": "Series drop → 6",
+                    "tutorialSlug": "smith_machine_rdl"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "3 sets — all 3 moves in order, then rest 150s."
           },
           imageUrl: '',
           intensityReason: 'Drop series extends glute and hamstring fatigue',
@@ -860,7 +885,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bodyweight Hip Thrust',
           duration: '10–12 min',
           description: 'Teaches thrust basics before loading with bar weight',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Bodyweight Hip Thrusts\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 sets\n• 12–15 Bodyweight Hip Thrusts\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -876,7 +901,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241401/mood_app/workout_images/odvl0o6h_ht.jpg',
           intensityReason: 'Entry thrust builds safe mechanics for hip extension',
@@ -901,7 +927,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Light Bar Hip Thrust',
           duration: '10–12 min',
           description: 'Adds external weight to strengthen glute hip drive',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Light Bar Hip Thrusts\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 Light Bar Hip Thrusts\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -916,7 +942,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241402/mood_app/workout_images/roi44n5q_download_10_.jpg',
           intensityReason: 'Light load introduces controlled thrust progression',
@@ -941,7 +968,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Elevated Hip Thrust',
           duration: '10–12 min',
           description: 'Bench-elevated thrusts emphasizing full glute lockout',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Hip Thrusts\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 sets\n• 12 Hip Thrusts\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -957,7 +984,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240679/mood_app/workout_images/mr69uwpz_bb_hip_thrust.jpg',
           intensityReason: 'Elevated position teaches proper hip extension mechanics',
@@ -987,7 +1015,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hip Thrust Pulse Reps',
           duration: '10–12 min',
           description: 'Short-range pulses maintaining constant glute tension',
-          battlePlan: 'Instructions: 3 sets of 15 — rest 75s between sets, take all of it.\n3 rounds\n• 15 Pulse Thrusts\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 75s between sets, take all of it.\n3 sets\n• 15 Pulse Thrusts\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -995,15 +1023,15 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Hip Thrust Pulse Reps",
-                    "reps": "15",
-                    "tutorialSlug": "barbell_hip_thrust"
+                    "name": "Pulse Thrusts",
+                    "reps": "15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240654/mood_app/workout_images/60kuhstx_hip_thrust.jpg',
           intensityReason: 'Continuous tension builds glute endurance and activation',
@@ -1035,7 +1063,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Banded Hip Thrust',
           duration: '14–16 min',
           description: 'Builds glute lockout with band top range tension',
-          battlePlan: 'Instructions: 4 sets of 10 — rest 90s between sets, take all of it.\n4 rounds\n• 10 Banded Hip Thrusts\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 10 — rest 90s between sets, take all of it.\n4 sets\n• 10 Banded Hip Thrusts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1050,7 +1078,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241401/mood_app/workout_images/odvl0o6h_ht.jpg',
           intensityReason: 'Band drives abduction for long range contraction',
@@ -1075,7 +1104,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single‑Leg Hip Thrust',
           duration: '14–16 min',
           description: 'Unilateral load prevents imbalance and aids stability',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 per leg Single‑Leg Hip Thrusts\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 90s between sets, take all of it.\n3 sets\n• 8–10 per leg Single‑Leg Hip Thrusts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1090,7 +1119,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241361/mood_app/workout_images/sq01qvar_image.jpg',
           intensityReason: 'One‑leg thrust isolates glutes for stronger balance',
@@ -1115,7 +1145,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Hip Thrust',
           duration: '14–16 min',
           description: 'Slow eccentrics increasing glute time under tension',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Thrusts (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 sets\n• 8–10 Thrusts (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1123,15 +1153,15 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Tempo Hip Thrust",
-                    "reps": "8–10",
-                    "tutorialSlug": "barbell_hip_thrust"
+                    "name": "Thrusts",
+                    "reps": "8–10"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240679/mood_app/workout_images/mr69uwpz_bb_hip_thrust.jpg',
           intensityReason: 'Extended eccentric phase maximizes muscle fiber recruitment',
@@ -1161,7 +1191,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hip Thrust Drop Set',
           duration: '14–16 min',
           description: 'Extended thrust sets using fast load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 8 Thrusts\n• Thrust drop → 8\n• Thrust drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• 8 Thrusts\n• Thrust drop → 8\n• Thrust drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1169,16 +1199,21 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Hip Thrust Drop Set",
-                    "reps": "8",
-                    "tutorialSlug": "barbell_hip_thrust",
-                    "note": "Drop → 8; Drop → 8"
+                    "name": "Thrusts",
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Thrust drop → 8"
+                  },
+                  {
+                    "name": "Thrust drop → 8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240654/mood_app/workout_images/60kuhstx_hip_thrust.jpg',
           intensityReason: 'Drop sets extend time under tension for hypertrophy',
@@ -1210,7 +1245,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Bar Hip Thrust',
           duration: '16–18 min',
           description: 'Barbell lift grows strength and posterior hip power',
-          battlePlan: 'Instructions: 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 rounds\n• 6–8 Heavy Hip Thrusts\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 sets\n• 6–8 Heavy Hip Thrusts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1226,7 +1261,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 6–8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241401/mood_app/workout_images/odvl0o6h_ht.jpg',
           videoUrl: 'https://res.cloudinary.com/dfsygar5c/video/upload/v1770240480/mood_app/workout_videos/BB_hip_thrust.mov',
@@ -1257,19 +1293,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Hip Thrusts",
                     "reps": "8–10",
-                    "tutorialSlug": "barbell_hip_thrust",
-                    "note": "Finish with 10s Iso Hold at top"
+                    "tutorialSlug": "barbell_hip_thrust"
+                  },
+                  {
+                    "name": "Iso Hold at top",
+                    "reps": "10s"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Cap every set with the finisher: 10s Iso Hold at top — it counts, don't skip it. The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241402/mood_app/workout_images/roi44n5q_download_10_.jpg',
           intensityReason: 'Iso hold extending reps prolongs glute time under load',
@@ -1294,7 +1334,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Hip Thrust Pause',
           duration: '18–20 min',
           description: 'Heavy thrusts with long lockout pauses',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 Thrusts (2s pause)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 sets\n• 5–6 Thrusts (2s pause)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1302,15 +1342,15 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Heavy Hip Thrust Pause",
-                    "reps": "5–6",
-                    "tutorialSlug": "barbell_hip_thrust"
+                    "name": "Thrusts",
+                    "reps": "5–6"
                   }
                 ],
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241401/mood_app/workout_images/odvl0o6h_ht.jpg',
           intensityReason: 'Paused heavy thrusts build peak glute strength',
@@ -1340,24 +1380,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hip Thrust Burnout Ladder',
           duration: '18–20 min',
           description: 'Descending ladder maximizing glute fatigue',
-          battlePlan: 'Instructions: Aim for 2–3 ladders — stop when quality drops.\n3 rounds\n• 12 → 10 → 8 → 6 Thrusts\nRest 150s',
+          battlePlan: 'Instructions: Aim for 2–3 ladders — stop when quality drops.\n3 sets\n• 12 → 10 → 8 → 6 Thrusts\nRest 150s',
           plan: {
-            "format": "strength",
+            "format": "circuit",
             "blocks": [
               {
-                "type": "superset",
+                "type": "straight",
                 "movements": [
-                  {
-                    "name": "ladders",
-                    "reps": "2–3"
-                  },
                   {
                     "name": "12 → 10 → 8 → 6 Thrusts"
                   }
                 ],
+                "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Aim for 2–3 ladders — stop when quality drops."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241402/mood_app/workout_images/roi44n5q_download_10_.jpg',
           intensityReason: 'Ladder format accumulates massive training volume',
@@ -1395,7 +1433,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Kickback',
           duration: '10–12 min',
           description: 'Pad press hip drive builds foundation safely first',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10–12 per side — rest 60s between sets, take all of it.\n3 rounds\n• 10–12 per leg Kickbacks\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10–12 per side — rest 60s between sets, take all of it.\n3 sets\n• 10–12 per leg Kickbacks\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1410,7 +1448,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10–12 per side — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241405/mood_app/workout_images/u602jvhu_download_9_.jpg',
           intensityReason: 'Guided extension path isolates glutes effectively',
@@ -1435,7 +1474,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Kickback',
           duration: '10–12 min',
           description: 'Seated pad drive provides beginner stability focus',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 60s between sets, take all of it.\n3 rounds\n• 12 per leg Seated Kickbacks\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 60s between sets, take all of it.\n3 sets\n• 12 per leg Seated Kickbacks\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1450,7 +1489,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241397/mood_app/workout_images/k5zii6kf_download_8_.jpg',
           intensityReason: 'Torso support stabilizes movement for beginners',
@@ -1475,7 +1515,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single-Leg Kickback',
           duration: '10–12 min',
           description: 'Straight-path kickbacks building glute control',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 60s between sets, take all of it.\n3 rounds\n• 12 Kickbacks per leg\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 60s between sets, take all of it.\n3 sets\n• 12 Kickbacks per leg\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1490,7 +1530,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240675/mood_app/workout_images/haz45wxi_glute_kickback_2.jpg',
           intensityReason: 'Machine-guided movement teaches proper kickback form',
@@ -1520,7 +1561,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Kickback Pulse Reps',
           duration: '10–12 min',
           description: 'Short-range pulses keeping glutes loaded',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 15 per side — rest 75s between sets, take all of it.\n3 rounds\n• 15 Pulses per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 15 per side — rest 75s between sets, take all of it.\n3 sets\n• 15 Pulses per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1535,7 +1576,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 15 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240680/mood_app/workout_images/nyipzbcv_glute_kickback.jpg',
           intensityReason: 'Continuous tension builds glute endurance',
@@ -1567,7 +1609,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Kickback',
           duration: '14–16 min',
           description: 'Progressive overload builds strength at extension',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8–10 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Heavy Kickbacks per leg\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8–10 per side — rest 90s between sets, take all of it.\n4 sets\n• 8–10 Heavy Kickbacks per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1582,7 +1624,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8–10 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241405/mood_app/workout_images/u602jvhu_download_9_.jpg',
           intensityReason: 'Increased load pushes hypertrophy for glutes',
@@ -1607,7 +1650,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Kickback',
           duration: '14–16 min',
           description: 'Strict tempo isolates stronger contraction at end',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per leg Pause Kickbacks\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 sets\n• 8 per leg Pause Kickbacks\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1622,7 +1665,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241397/mood_app/workout_images/k5zii6kf_download_8_.jpg',
           intensityReason: 'Added pause loads glute contraction maximally',
@@ -1647,7 +1691,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Kickback',
           duration: '14–16 min',
           description: 'Slow eccentrics extending glute fatigue',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10 per side — rest 90s between sets, take all of it.\n4 rounds\n• 10 Reps per leg (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10 per side — rest 90s between sets, take all of it.\n4 sets\n• 10 Reps per leg (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1662,7 +1706,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10 per side — rest 90s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Tempo work increases time under tension dramatically',
@@ -1692,7 +1737,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Kickback Drop Set',
           duration: '14–16 min',
           description: 'Extended kickbacks with rapid load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 10 Reps\n• Kickback drop → 8\n• Kickback drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• Kickback — 10 Reps\n• Kickback drop → 8\n• Kickback drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1700,15 +1745,21 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Kickback Drop Set",
-                    "reps": "10",
-                    "note": "Drop → 8; Drop → 8"
+                    "name": "Kickback",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Kickback drop → 8"
+                  },
+                  {
+                    "name": "Kickback drop → 8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: '',
           intensityReason: 'Drop sets extend fatigue without rest',
@@ -1740,7 +1791,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop‑Set Kickback',
           duration: '16–18 min',
           description: 'Sequential weight drops demand non‑stop contraction',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 Heavy Kickbacks per leg\n• Drop 15% weight → 6–8 reps\n• Drop 15% again → 6–8 reps\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 sets\n• 8 Heavy Kickbacks per leg\n• Drop 15% weight → 6–8 reps\n• Drop 15% again → 6–8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1749,14 +1800,15 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Heavy Kickbacks per leg",
-                    "reps": "8",
-                    "note": "Drop 15% weight → 6–8 reps; Drop 15% again → 6–8 reps"
+                    "note": "Drop 15% weight → 6–8 reps; Drop 15% again → 6–8 reps",
+                    "reps": "8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241405/mood_app/workout_images/u602jvhu_download_9_.jpg',
           intensityReason: 'Drop loading pattern extends tension for hypertrophy',
@@ -1786,18 +1838,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Kickbacks each leg",
-                    "reps": "8",
-                    "note": "Finish with 10s Iso Hold on last rep"
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Iso Hold on last rep",
+                    "reps": "10s"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Cap every set with the finisher: 10s Iso Hold on last rep — it counts, don't skip it. The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241397/mood_app/workout_images/k5zii6kf_download_8_.jpg',
           intensityReason: 'Iso hold after reps enhances glute activation burn',
@@ -1822,7 +1878,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Kickback Pause',
           duration: '18–20 min',
           description: 'Loaded kickbacks with long peak holds',
-          battlePlan: 'Instructions: Dead-stop pause — kill all momentum at the pause point before finishing the rep. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 150s between sets, take all of it.\n4 rounds\n• 8 Reps per leg (2s hold)\nRest 150s',
+          battlePlan: 'Instructions: Dead-stop pause — kill all momentum at the pause point before finishing the rep. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 150s between sets, take all of it.\n4 sets\n• 8 Reps per leg (2s hold)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1837,7 +1893,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Dead-stop pause — kill all momentum at the pause point before finishing the rep. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 150s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Heavy paused kickbacks build peak glute strength',
@@ -1867,24 +1924,23 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Kickback Burnout Ladder',
           duration: '18–20 min',
           description: 'Descending ladder maximizing glute exhaustion',
-          battlePlan: 'Instructions: Aim for 2–3 ladders — stop when quality drops.\n3 rounds\n• 15 → 12 → 10 Reps\nRest 150s',
+          battlePlan: 'Instructions: Aim for 2–3 ladders — stop when quality drops.\n3 sets\n• Cable Kickback — 15 → 12 → 10 reps each leg (drop weight each rung)\nRest 150s',
           plan: {
-            "format": "strength",
+            "format": "circuit",
             "blocks": [
               {
-                "type": "superset",
+                "type": "straight",
                 "movements": [
                   {
-                    "name": "ladders",
-                    "reps": "2–3"
-                  },
-                  {
-                    "name": "15 → 12 → 10 Reps"
+                    "name": "Cable Kickback",
+                    "reps": "15"
                   }
                 ],
+                "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Aim for 2–3 ladders — stop when quality drops."
           },
           imageUrl: '',
           intensityReason: 'Ladder format accumulates maximum training volume',
@@ -1922,7 +1978,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standard Abduction',
           duration: '10–12 min',
           description: 'Intro machine work builds stability in outer hips',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Abductions\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 sets\n• 12–15 Abductions\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1938,7 +1994,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241400/mood_app/workout_images/o6mep0pr_ha.jpg',
           intensityReason: 'Basic seated movement strengthens glute medius',
@@ -1963,7 +2020,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lean Forward Abduction',
           duration: '10–12 min',
           description: 'Shifts emphasis effectively into upper glute tissues',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 75s between sets, take all of it.\n3 rounds\n• 12–15 Lean Abductions\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 75s between sets, take all of it.\n3 sets\n• 12–15 Lean Abductions\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1978,7 +2035,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241329/mood_app/workout_images/ca2oebzr_lfha.jpg',
           intensityReason: 'Lean angle biases deeper glute muscle activity',
@@ -2003,7 +2061,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Abduction',
           duration: '10–12 min',
           description: 'Controlled abductions targeting outer glutes',
-          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 rounds\n• 15 Abductions\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 sets\n• 15 Abductions\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2019,7 +2077,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15 — rest 60s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Seated position isolates glute medius effectively',
@@ -2049,7 +2108,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Abduction Hold Reps',
           duration: '10–12 min',
           description: 'Abductions with extended peak contractions',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Reps (2s hold)\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 sets\n• 12 Reps (2s hold)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2058,14 +2117,14 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Abduction Hold Reps",
-                    "reps": "12",
-                    "tutorialSlug": "hip_abductor"
+                    "reps": "12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Isometric holds enhance mind-muscle connection',
@@ -2097,7 +2156,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Banded Abduction',
           duration: '14–16 min',
           description: 'Combo band+machine emphasizes hypertrophy work',
-          battlePlan: 'Instructions: 4 sets of 12 — rest 90s between sets, take all of it.\n4 rounds\n• 12 Banded Abductions\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 12 — rest 90s between sets, take all of it.\n4 sets\n• 12 Banded Abductions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2112,7 +2171,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 12 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241400/mood_app/workout_images/o6mep0pr_ha.jpg',
           intensityReason: 'Band tension increases abductor contraction top end',
@@ -2137,7 +2197,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Unilateral Abduction',
           duration: '14–16 min',
           description: 'Asymmetry training balances strength between hips',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8–10 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 per side Abductions\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8–10 per side — rest 90s between sets, take all of it.\n4 sets\n• 8–10 per side Abductions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2153,7 +2213,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8–10 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241392/mood_app/workout_images/eqwbozow_Screenshot_2025-12-02_at_4_48_10_PM.jpg',
           intensityReason: 'One‑sided work isolates weaker glute completely',
@@ -2178,7 +2239,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Abduction',
           duration: '14–16 min',
           description: 'Slower eccentrics increasing glute med load',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 90s between sets, take all of it.\n4 rounds\n• 12 Reps (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 90s between sets, take all of it.\n4 sets\n• 12 Reps (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2194,7 +2255,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 90s between sets, take all of it."
           },
           imageUrl: '',
           intensityReason: 'Tempo work maximizes time under tension',
@@ -2224,7 +2286,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Abduction Drop Set',
           duration: '14–16 min',
           description: 'Extended sets using rapid load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 12 Reps\n• Abduction drop → 10\n• Abduction drop → 10\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• Abduction — 12 Reps\n• Abduction drop → 10\n• Abduction drop → 10\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2232,16 +2294,21 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Abduction Drop Set",
-                    "reps": "12",
-                    "tutorialSlug": "hip_abductor",
-                    "note": "Drop → 10; Drop → 10"
+                    "name": "Abduction",
+                    "reps": "12"
+                  },
+                  {
+                    "name": "Abduction drop → 10"
+                  },
+                  {
+                    "name": "Abduction drop → 10"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: '',
           intensityReason: 'Drop sets extend fatigue for enhanced hypertrophy',
@@ -2273,7 +2340,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop‑Set Abduction',
           duration: '16–18 min',
           description: 'Stacked reps crush glute medius with high overload',
-          battlePlan: 'Instructions: 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Heavy Abductions\n• Drop 20% → 10 reps\n• Drop 20% again → 10 reps\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 90s between sets, take all of it.\n3 sets\n• 12 Heavy Abductions\n• Drop 20% → 10 reps\n• Drop 20% again → 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2282,15 +2349,15 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Heavy Abductions",
-                    "reps": "12",
-                    "tutorialSlug": "hip_abductor",
-                    "note": "Drop 20% → 10 reps; Drop 20% again → 10 reps"
+                    "note": "Drop 20% → 10 reps; Drop 20% again → 10 reps",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241400/mood_app/workout_images/o6mep0pr_ha.jpg',
           intensityReason: 'Drop set prolongs effort rising metabolic fatigue',
@@ -2334,7 +2401,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. The hold is strict: locked position, squeezing hard, no drifting. 3 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241392/mood_app/workout_images/eqwbozow_Screenshot_2025-12-02_at_4_48_10_PM.jpg',
           intensityReason: 'Iso hold primes glutes then high‑rep sets extend',
@@ -2359,7 +2427,7 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Abduction Burnout Holds',
           duration: '18–20 min',
           description: 'High-tension abductions finished with long holds',
-          battlePlan: 'Instructions: 3 sets of 15 — rest 150s between sets, take all of it.\n3 rounds\n• 15 Reps + 20s Hold\nRest 150s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 150s between sets, take all of it.\n3 sets\n• 15 Reps + 20s Hold\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2374,7 +2442,8 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240656/mood_app/workout_images/746w3mny_hip_abductor.jpg',
           intensityReason: 'Combined reps and holds maximize glute medius fatigue',
@@ -2404,24 +2473,22 @@ export const glutesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Abduction',
           duration: '18–20 min',
           description: 'Multi-drop abductions for full exhaustion',
-          battlePlan: 'Instructions: Aim for 2–3 rounds — stop when quality drops.\n3 rounds\n• Abduction 12 → 10 → 8 → 8\nRest 150s',
+          battlePlan: 'Instructions: Aim for 2–3 sets — stop when quality drops.\n3 sets\n• Abduction 12 → 10 → 8 → 8\nRest 150s',
           plan: {
-            "format": "strength",
+            "format": "circuit",
             "blocks": [
               {
-                "type": "superset",
+                "type": "straight",
                 "movements": [
                   {
-                    "name": "rounds",
-                    "reps": "2–3"
-                  },
-                  {
-                    "name": "12 → 10 → 8 → 8"
+                    "name": "Abduction 12 → 10 → 8 → 8"
                   }
                 ],
+                "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Aim for 2–3 sets — stop when quality drops."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240686/mood_app/workout_images/swjfi31g_hip_abductor_2.jpg',
           intensityReason: 'Triple drops ensure complete muscle fiber recruitment',

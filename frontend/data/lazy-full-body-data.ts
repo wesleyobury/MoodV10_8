@@ -18,31 +18,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Leg Press",
                     "intensity": "RPE 4",
+                    "name": "Leg Press",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Machine Chest Press",
                     "intensity": "RPE 4",
+                    "name": "Machine Chest Press",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Cable Crunch",
                     "intensity": "RPE 4",
+                    "name": "Cable Crunch",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "crunches"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241219/mood_app/workout_images/f8k0kcti_download.jpg',
           intensityReason: 'Simple machines pair leg and press lines with minimal setup.',
@@ -71,30 +72,31 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Hack Squat",
                     "intensity": "RPE 4",
+                    "name": "Hack Squat",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "hack_squat"
                   },
                   {
-                    "name": "Machine Shoulder Press",
                     "intensity": "RPE 4",
+                    "name": "Machine Shoulder Press",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Cable Anti-Rotation Hold or Dead Bug",
                     "intensity": "RPE 4",
+                    "name": "Cable Anti-Rotation Hold or Dead Bug",
+                    "reps": "20–30s/side",
                     "rest": "45s",
-                    "sets": 3,
-                    "reps": "20–30s/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241252/mood_app/workout_images/uwuwsltl_download_30_.jpg',
           intensityReason: 'Guided squats and overhead press reduce bracing demand.',
@@ -123,31 +125,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Smith Back Squat",
                     "intensity": "RPE 4",
+                    "name": "Smith Back Squat",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "smith_machine_back_squat"
                   },
                   {
-                    "name": "Smith Machine Bench Press",
                     "intensity": "RPE 4",
+                    "name": "Smith Machine Bench Press",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Front Plank",
                     "intensity": "RPE 4",
+                    "name": "Front Plank",
+                    "reps": "20–40s",
                     "rest": "45s",
                     "sets": 3,
-                    "reps": "20–40s",
                     "tutorialSlug": "plank"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241198/mood_app/workout_images/5a61mmh2_sms.jpg',
           intensityReason: 'Smith paths stabilize compound lines for safer control.',
@@ -178,31 +181,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Leg Press",
                     "intensity": "RPE 5",
+                    "name": "Leg Press",
+                    "reps": "10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Machine Chest Press",
                     "intensity": "RPE 5",
+                    "name": "Machine Chest Press",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
-                    "name": "Cable Crunch",
                     "intensity": "RPE 5",
+                    "name": "Cable Crunch",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "crunches"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241202/mood_app/workout_images/85rxong7_download_29_.jpg',
           intensityReason: 'Moderate compounds pair quads, chest, and stable core.',
@@ -231,30 +235,31 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Hack Squat",
                     "intensity": "RPE 5–6",
+                    "name": "Hack Squat",
+                    "reps": "8",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "hack_squat"
                   },
                   {
-                    "name": "Machine Shoulder Press",
                     "intensity": "RPE 5",
+                    "name": "Machine Shoulder Press",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
-                    "name": "Cable Pallof Press",
                     "intensity": "RPE 5",
+                    "name": "Cable Pallof Press",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/e0ct7tlh_hs.avif',
           intensityReason: 'Overhead work with hack squats balances systemic load.',
@@ -283,31 +288,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Smith Back Squat",
                     "intensity": "RPE 5–6",
+                    "name": "Smith Back Squat",
+                    "reps": "8",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "smith_machine_back_squat"
                   },
                   {
-                    "name": "Smith Machine Bench Press",
                     "intensity": "RPE 5",
+                    "name": "Smith Machine Bench Press",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
-                    "name": "Hanging Knee Raise",
                     "intensity": "RPE 5",
+                    "name": "Hanging Knee Raise",
+                    "reps": "10–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–15",
                     "tutorialSlug": "hanging_knee_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241196/mood_app/workout_images/3wkbxmxc_download.jpg',
           intensityReason: 'Smith guidance reduces balance while loading safely heavy.',
@@ -338,31 +344,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
+                    "intensity": "RPE 7",
                     "name": "Leg Press",
-                    "intensity": "RPE 7",
-                    "sets": 1,
                     "reps": "8",
-                    "tutorialSlug": "leg_press"
-                  },
-                  {
-                    "name": "Machine Chest Press",
-                    "intensity": "RPE 7",
                     "sets": 1,
-                    "reps": "6–8",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Cable Crunch",
+                    "intensity": "RPE 7",
+                    "name": "Machine Chest Press",
+                    "reps": "6–8",
+                    "sets": 1,
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
                     "intensity": "RPE 6",
+                    "name": "Cable Crunch",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "crunches"
                   }
                 ],
                 "rest": "90s; repeat for 2–3 total series"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom — rest 90s; repeat for 2–3 total series between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241219/mood_app/workout_images/f8k0kcti_download.jpg',
           intensityReason: 'Drop-set presses expand work capacity without complexity.',
@@ -400,15 +407,16 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                     "reps": "3"
                   },
                   {
-                    "name": "High-to-Low Cable Chop",
                     "intensity": "RPE 6",
+                    "name": "High-to-Low Cable Chop",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "8–10/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241215/mood_app/workout_images/clw7t7y4_smbp.jpg',
           intensityReason: 'Cluster sets keep power high while posture stays crisp.',
@@ -437,31 +445,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Goblet Squat",
                     "intensity": "RPE 6",
+                    "name": "Cable Goblet Squat",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_squat"
                   },
                   {
-                    "name": "Incline Cable Fly",
                     "intensity": "RPE 6",
+                    "name": "Incline Cable Fly",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_fly_low_to_high"
                   },
                   {
-                    "name": "Cable Anti-Rotation Hold",
                     "intensity": "RPE 6",
+                    "name": "Cable Anti-Rotation Hold",
+                    "reps": "25–35s/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "25–35s/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241248/mood_app/workout_images/rvk5my8t_cgs.jpg',
           intensityReason: '1.5 reps add time under tension at manageable loads.',
@@ -498,31 +507,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Smith RDL or Seated Leg Curl",
                     "intensity": "RPE 4",
+                    "name": "Smith RDL or Seated Leg Curl",
+                    "reps": "10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10",
                     "tutorialSlug": "db_rdl"
                   },
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 4",
+                    "name": "Seated Row",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Cable Pallof Press",
                     "intensity": "RPE 4",
+                    "name": "Cable Pallof Press",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241223/mood_app/workout_images/gs71guo5_download_5_.jpg',
           intensityReason: 'Machines pair hinge and pull lines with minimal setup.',
@@ -551,30 +561,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "45° Back Extension",
-                    "tutorialSlug": "roman_chair_weighted_back_extension"
-                  },
-                  {
-                    "name": "3 × 10–12 , 60s rest"
-                  },
-                  {
-                    "name": "Lat Pulldown",
                     "intensity": "RPE 4",
+                    "name": "Back Extension",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
+                    "tutorialSlug": "roman_chair_back_extension"
+                  },
+                  {
+                    "intensity": "RPE 4",
+                    "name": "Lat Pulldown",
                     "reps": "8–10",
+                    "rest": "60s",
+                    "sets": 3,
                     "tutorialSlug": "neutral_grip_lat_pulldown"
                   },
                   {
-                    "name": "Dead Bug or Cable Anti-Rotation Hold",
                     "intensity": "RPE 4",
+                    "name": "Dead Bug or Cable Anti-Rotation Hold",
+                    "reps": "20–30s/side",
                     "rest": "45s",
-                    "sets": 3,
-                    "reps": "20–30s/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241225/mood_app/workout_images/gwy2em83_download_34_.jpg',
           intensityReason: 'Supported hinge plus vertical pull reduce bracing.',
@@ -603,31 +615,33 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Pull-Through",
                     "intensity": "RPE 4",
+                    "name": "Cable Pull-Through",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_pull_through"
                   },
                   {
-                    "name": "High Cable Row",
                     "intensity": "RPE 4",
+                    "name": "High Cable Row",
+                    "reps": "10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
-                    "name": "Cable Crunch",
                     "intensity": "RPE 4",
+                    "name": "Cable Crunch",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "crunches"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241193/mood_app/workout_images/1tdr3nmt_download_4_.jpg',
           intensityReason: 'Cable pull-through and rows guide motion with ease.',
@@ -658,31 +672,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Smith RDL",
                     "intensity": "RPE 5–6",
+                    "name": "Smith RDL",
+                    "reps": "8",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "smith_machine_rdl"
                   },
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 5",
+                    "name": "Seated Row",
+                    "reps": "8",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Cable Anti-Rotation Hold",
                     "intensity": "RPE 5",
+                    "name": "Cable Anti-Rotation Hold",
+                    "reps": "25–35s/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "25–35s/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241255/mood_app/workout_images/wayclwit_download_33_.jpg',
           intensityReason: 'Moderate hinge with rows builds pull chain efficiently.',
@@ -711,32 +726,33 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Back Extension",
                     "intensity": "RPE 5",
+                    "name": "Back Extension",
+                    "reps": "10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10",
                     "tutorialSlug": "roman_chair_back_extension"
                   },
                   {
-                    "name": "Lat Pulldown",
                     "intensity": "RPE 5",
+                    "name": "Lat Pulldown",
+                    "reps": "8",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "neutral_grip_lat_pulldown"
                   },
                   {
-                    "name": "Cable Crunch",
                     "intensity": "RPE 5",
+                    "name": "Cable Crunch",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "crunches"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241225/mood_app/workout_images/gwy2em83_download_34_.jpg',
           intensityReason: 'Back extension pairs with pulldown for balanced pull.',
@@ -765,30 +781,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Pull-Through",
                     "intensity": "RPE 5",
+                    "name": "Cable Pull-Through",
+                    "reps": "10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10",
                     "tutorialSlug": "cable_pull_through"
                   },
                   {
-                    "name": "High Cable Row",
                     "intensity": "RPE 5",
+                    "name": "High Cable Row",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8–10"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
-                    "name": "Low-to-High Cable Chop",
                     "intensity": "RPE 5",
+                    "name": "Low-to-High Cable Chop",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "8–10/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241193/mood_app/workout_images/1tdr3nmt_download_4_.jpg',
           intensityReason: 'Cable hinge and rows add control with low setup needs.',
@@ -819,30 +837,31 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Seated Leg Curl or Lat Pulldown",
                     "intensity": "RPE 7",
-                    "sets": 1,
-                    "reps": "8–10"
+                    "name": "Seated Leg Curl or Lat Pulldown",
+                    "reps": "8–10",
+                    "sets": 1
                   },
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 6",
+                    "name": "Seated Row",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Cable Pallof Press",
                     "intensity": "RPE 6",
+                    "name": "Cable Pallof Press",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   }
                 ],
                 "rest": "90s; repeat for 2–3 total series"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom — rest 90s; repeat for 2–3 total series between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241246/mood_app/workout_images/rdlmprvh_download_19_.jpg',
           intensityReason: 'Drop sets extend tension without complex technique.',
@@ -876,23 +895,24 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                     "tutorialSlug": "smith_machine_rdl"
                   },
                   {
-                    "name": "Chest-Supported Row Machine",
                     "intensity": "RPE 6",
+                    "name": "Chest-Supported Row Machine",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "chest_supported_db_row"
                   },
                   {
-                    "name": "High-to-Low Cable Chop",
                     "intensity": "RPE 6",
+                    "name": "High-to-Low Cable Chop",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "8–10/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241191/mood_app/workout_images/0wssum58_Screenshot_2025-12-04_at_12_00_14_AM.jpg',
           intensityReason: 'Clusters preserve output while scap control stays crisp.',
@@ -921,30 +941,32 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Back Extension",
                     "intensity": "RPE 6",
+                    "name": "Back Extension",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "roman_chair_back_extension"
                   },
                   {
-                    "name": "High Cable Row",
                     "intensity": "RPE 6",
+                    "name": "High Cable Row",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
-                    "name": "Cable Anti-Rotation Hold",
                     "intensity": "RPE 6",
+                    "name": "Cable Anti-Rotation Hold",
+                    "reps": "25–35s/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "25–35s/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep = one full rep plus a half rep in the hardest range before you finish. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241262/mood_app/workout_images/zpva3a7u_download_1_.jpg',
           intensityReason: '1.5 reps add time under tension using controlled loads.',
@@ -981,38 +1003,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Leg Press",
                     "intensity": "RPE 4",
+                    "name": "Leg Press",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Machine Chest Press",
                     "intensity": "RPE 4",
+                    "name": "Machine Chest Press",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 4",
+                    "name": "Seated Row",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Cable Pallof Press",
                     "intensity": "RPE 4",
+                    "name": "Cable Pallof Press",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241254/mood_app/workout_images/v9n7t5ul_download_31_.jpg',
           intensityReason: 'Machines guide compound lines with very simple setup.',
@@ -1041,38 +1064,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Hack Squat",
                     "intensity": "RPE 4",
+                    "name": "Hack Squat",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "hack_squat"
                   },
                   {
-                    "name": "Machine Shoulder Press",
                     "intensity": "RPE 4",
+                    "name": "Machine Shoulder Press",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Lat Pulldown",
                     "intensity": "RPE 4",
+                    "name": "Lat Pulldown",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "neutral_grip_lat_pulldown"
                   },
                   {
-                    "name": "Cable Anti-Rotation Hold",
                     "intensity": "RPE 4",
+                    "name": "Cable Anti-Rotation Hold",
+                    "reps": "20–30s/side",
                     "rest": "45s",
-                    "sets": 3,
-                    "reps": "20–30s/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241217/mood_app/workout_images/e65l9jkf_download_34_.jpg',
           intensityReason: 'Vertical push and pull anchor guided lower and core.',
@@ -1101,37 +1125,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Goblet Squat",
                     "intensity": "RPE 4",
+                    "name": "Cable Goblet Squat",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_squat"
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Cable Chest Press",
-                    "intensity": "RPE 4",
+                    "reps": "10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "High Cable Row",
-                    "intensity": "RPE 4",
+                    "reps": "10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
-                    "name": "High-to-Low Cable Chop",
                     "intensity": "RPE 4",
+                    "name": "High-to-Low Cable Chop",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "8–10/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241227/mood_app/workout_images/ivpc3qvz_cgs.jpg',
           intensityReason: 'Cable squat, press, and row reduce bracing demands.',
@@ -1162,38 +1188,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Leg Press",
                     "intensity": "RPE 5",
+                    "name": "Leg Press",
+                    "reps": "10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Machine Chest Press",
                     "intensity": "RPE 5",
+                    "name": "Machine Chest Press",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 5",
+                    "name": "Seated Row",
+                    "reps": "8",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Cable Overhead Pallof",
                     "intensity": "RPE 5",
+                    "name": "Cable Overhead Pallof",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241247/mood_app/workout_images/re7tjas0_download_33_.jpg',
           intensityReason: 'Moderate compound volume across legs, push, and pull.',
@@ -1222,38 +1249,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Hack Squat",
                     "intensity": "RPE 5–6",
+                    "name": "Hack Squat",
+                    "reps": "8",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "hack_squat"
                   },
                   {
-                    "name": "Machine Shoulder Press",
                     "intensity": "RPE 5",
+                    "name": "Machine Shoulder Press",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
-                    "name": "Lat Pulldown",
                     "intensity": "RPE 5",
+                    "name": "Lat Pulldown",
+                    "reps": "8",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "neutral_grip_lat_pulldown"
                   },
                   {
-                    "name": "Cable Anti-Rotation Hold",
                     "intensity": "RPE 5",
+                    "name": "Cable Anti-Rotation Hold",
+                    "reps": "25–35s/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "25–35s/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/hmkic4v7_hs.avif',
           intensityReason: 'Vertical pairs build balanced output with simple cues.',
@@ -1282,38 +1310,39 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Smith Back Squat",
                     "intensity": "RPE 5–6",
+                    "name": "Smith Back Squat",
+                    "reps": "8",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "smith_machine_back_squat"
                   },
                   {
-                    "name": "Smith Machine Bench Press",
                     "intensity": "RPE 5",
+                    "name": "Smith Machine Bench Press",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
-                    "name": "Chest-Supported Row Machine",
                     "intensity": "RPE 5",
+                    "name": "Chest-Supported Row Machine",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "chest_supported_db_row"
                   },
                   {
-                    "name": "Low-to-High Cable Chop",
                     "intensity": "RPE 5",
+                    "name": "Low-to-High Cable Chop",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "8–10/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241250/mood_app/workout_images/uazsquaz_download_8_.jpg',
           intensityReason: 'Smith guidance allows heavier compounds with control.',
@@ -1344,39 +1373,40 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
+                    "intensity": "RPE 7",
                     "name": "Leg Press",
-                    "intensity": "RPE 7",
-                    "sets": 1,
                     "reps": "8",
-                    "tutorialSlug": "leg_press"
-                  },
-                  {
-                    "name": "Machine Chest Press",
-                    "intensity": "RPE 7",
                     "sets": 1,
-                    "reps": "6–8",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Seated Row",
+                    "intensity": "RPE 7",
+                    "name": "Machine Chest Press",
+                    "reps": "6–8",
+                    "sets": 1,
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
                     "intensity": "RPE 6",
+                    "name": "Seated Row",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Cable Pallof Press",
                     "intensity": "RPE 6",
+                    "name": "Cable Pallof Press",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12/side",
                     "tutorialSlug": "leg_press"
                   }
                 ],
                 "rest": "90s; repeat for 2–3 total series"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom — rest 90s; repeat for 2–3 total series between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241261/mood_app/workout_images/zpkugltm_download.jpg',
           intensityReason: 'Drop sets scale volume across lifts without complexity.',
@@ -1414,22 +1444,24 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                     "reps": "3"
                   },
                   {
-                    "name": "High Cable Row",
                     "intensity": "RPE 6",
+                    "name": "High Cable Row",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
-                    "name": "High-to-Low Cable Chop",
                     "intensity": "RPE 6",
+                    "name": "High-to-Low Cable Chop",
+                    "reps": "8–10/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "8–10/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241260/mood_app/workout_images/zjzedsvc_download_8_.jpg',
           intensityReason: 'Clusters maintain power while form remains reliable.',
@@ -1458,38 +1490,40 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Goblet Squat",
                     "intensity": "RPE 6",
+                    "name": "Cable Goblet Squat",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_squat"
                   },
                   {
-                    "name": "Cable Fly",
                     "intensity": "RPE 6",
+                    "name": "Cable Fly",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_machine_fly"
                   },
                   {
-                    "name": "High Cable Row",
                     "intensity": "RPE 6",
+                    "name": "High Cable Row",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
-                    "name": "Cable Overhead Pallof",
                     "intensity": "RPE 6",
+                    "name": "Cable Overhead Pallof",
+                    "reps": "10–12/side",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12/side"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241203/mood_app/workout_images/8uykic1g_download_2_.jpg',
           intensityReason: '1.5 reps add tension at manageable loads across lifts.',

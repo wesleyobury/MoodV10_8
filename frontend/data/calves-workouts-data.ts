@@ -10,7 +10,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standing DB Calf Raise',
           duration: '10–12 min',
           description: 'Simple standing lift for foundational calf development',
-          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 rounds\n• 15–20 Standing Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 sets\n• 15–20 Standing Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -18,15 +18,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Standing DB Calf Raise",
-                    "reps": "15–20",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Standing Calf Raises",
+                    "reps": "15–20"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15–20 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240640/mood_app/workout_images/ag6d909x_download_28_.jpg',
           intensityReason: 'Basic raise builds calf strength with controlled range',
@@ -51,7 +51,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated DB Calf Raise',
           duration: '10–12 min',
           description: 'Targets deeper calf muscle with stable seated form',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Seated Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 sets\n• 12–15 Seated Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -59,15 +59,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Seated DB Calf Raise",
-                    "reps": "12–15",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Seated Calf Raises",
+                    "reps": "12–15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240633/mood_app/workout_images/1iqoqmt3_download_29_.jpg',
           intensityReason: 'Seated position isolates soleus muscle for growth',
@@ -92,7 +92,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Supported Calf Raise',
           duration: '8–10 min',
           description: 'Assisted calf raises improving balance and control',
-          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 rounds\n• 15 Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 sets\n• 15 Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -100,15 +100,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Dumbbell Supported Calf Raise",
-                    "reps": "15",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Raises",
+                    "reps": "15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240674/mood_app/workout_images/h32rmzt1_db_calf_raise.jpg',
           intensityReason: 'Supported position allows focus on calf activation',
@@ -140,7 +140,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single‑Leg DB Calf Raise',
           duration: '14–16 min',
           description: 'Isolates each calf for balanced strength and size',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 75s between sets, take all of it.\n4 rounds\n• 10–12 per leg Single‑Leg Raises\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 75s between sets, take all of it.\n4 sets\n• 10–12 per leg Single‑Leg Raises\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -148,15 +148,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Single‑Leg DB Calf Raise",
-                    "reps": "10–12/leg",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Single‑Leg Raises",
+                    "reps": "10–12/leg"
                   }
                 ],
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241341/mood_app/workout_images/comj9q78_download_4_.jpg',
           intensityReason: 'Unilateral raise increases load and balance demand',
@@ -193,13 +193,16 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                     "reps": "10–12"
                   },
                   {
-                    "name": "• Immediately 15 Bodyweight Calf Raises"
+                    "name": "Bodyweight Calf Raises",
+                    "note": "immediately, no rest",
+                    "reps": "15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — all 2 moves in order, then rest 75s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240633/mood_app/workout_images/1iqoqmt3_download_29_.jpg',
           intensityReason: 'Slow eccentric phase maximizes calf time under tension',
@@ -224,7 +227,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Single-Leg Calf Raise',
           duration: '10–12 min',
           description: 'Unilateral raises increasing calf loading',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10 per side — rest 75s between sets, take all of it.\n4 rounds\n• 10 Raises per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10 per side — rest 75s between sets, take all of it.\n4 sets\n• 10 Raises per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -232,15 +235,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Dumbbell Single-Leg Calf Raise",
-                    "reps": "10",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Raises per leg",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240674/mood_app/workout_images/h32rmzt1_db_calf_raise.jpg',
           intensityReason: 'Single-leg work doubles effective load per calf',
@@ -272,7 +275,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Calf Raise (Drop Set)',
           duration: '16–18 min',
           description: 'Stripping load forces fibers to contract under fatigue',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 sets\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -280,16 +283,16 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "DB Calf Raise (Drop Set)",
-                    "reps": "12",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Drop 15–20% → 10 reps; Drop 15–20% → 10 reps"
+                    "name": "Heavy Calf Raises",
+                    "note": "Drop 15–20% → 10 reps; Drop 15–20% → 10 reps",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240640/mood_app/workout_images/ag6d909x_download_28_.jpg',
           intensityReason: 'Drop sets extend effort for intense calf overload',
@@ -319,19 +322,27 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
-                    "name": "DB Calf Raise (Iso + Jumps)",
-                    "reps": "12–15",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Finish with 10s Iso Hold at top; Immediately 10 Stiff Leg Jumps"
+                    "name": "Calf Raises",
+                    "reps": "12–15"
+                  },
+                  {
+                    "name": "Iso Hold at top",
+                    "reps": "10s"
+                  },
+                  {
+                    "name": "Stiff Leg Jumps",
+                    "note": "immediately, no rest",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10s Iso Hold at top — it counts, don't skip it. 3 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240633/mood_app/workout_images/1iqoqmt3_download_29_.jpg',
           intensityReason: 'Static hold at peak contraction maximizes tension',
@@ -356,24 +367,23 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Calf Raise Ladder',
           duration: '14–16 min',
           description: 'Descending ladder maximizing calf fatigue',
-          battlePlan: 'Instructions: Aim for 2–3 ladders — stop when quality drops.\n3 rounds\n• 20 → 15 → 10 Raises\nRest 120s',
+          battlePlan: 'Instructions: Aim for 2–3 ladders — stop when quality drops.\n3 sets\n• DB Calf Raise — 20 → 15 → 10 reps (drop weight each rung)\nRest 120s',
           plan: {
-            "format": "strength",
+            "format": "circuit",
             "blocks": [
               {
-                "type": "superset",
+                "type": "straight",
                 "movements": [
                   {
-                    "name": "ladders",
-                    "reps": "2–3"
-                  },
-                  {
-                    "name": "20 → 15 → 10 Raises"
+                    "name": "DB Calf Raise",
+                    "reps": "20"
                   }
                 ],
+                "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Aim for 2–3 ladders — stop when quality drops."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240674/mood_app/workout_images/h32rmzt1_db_calf_raise.jpg',
           intensityReason: 'Ladder format accumulates high training volume',
@@ -411,7 +421,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standing Barbell Calf Raise',
           duration: '10–12 min',
           description: 'Classic standing raise for overall calf development',
-          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 rounds\n• 15–20 Standing Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 sets\n• 15–20 Standing Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -419,15 +429,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Standing Barbell Calf Raise",
-                    "reps": "15–20",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Standing Calf Raises",
+                    "reps": "15–20"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15–20 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240650/mood_app/workout_images/vfevelz1_download_24_.jpg',
           intensityReason: 'Barbell load builds foundational calf strength',
@@ -452,7 +462,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Calf Raise (Elevated)',
           duration: '10–12 min',
           description: 'Plate under toes enhances calf muscle activation',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 75s between sets, take all of it.\n3 rounds\n• 12–15 Elevated Calf Raises\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 75s between sets, take all of it.\n3 sets\n• 12–15 Elevated Calf Raises\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -460,15 +470,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Barbell Calf Raise (Elevated)",
-                    "reps": "12–15",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Elevated Calf Raises",
+                    "reps": "12–15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240653/mood_app/workout_images/xf7sknhj_download_25_.jpg',
           intensityReason: 'Elevated toes increase stretch for deeper range',
@@ -493,7 +503,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Standing Calf Raise',
           duration: '8–10 min',
           description: 'Standing calf raises building basic ankle strength',
-          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 rounds\n• 15 Standing Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 sets\n• 15 Standing Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -501,15 +511,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Barbell Standing Calf Raise",
-                    "reps": "15",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Standing Calf Raises",
+                    "reps": "15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240687/mood_app/workout_images/tzc8onjz_bb_calf_raise.jpg',
           intensityReason: 'Standing position maximizes gastrocnemius activation',
@@ -546,19 +556,23 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
-                    "name": "Barbell Calf Raise",
-                    "reps": "10–12",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Immediately 15 Bodyweight Calf Raises"
+                    "name": "Pause Calf Raises",
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Bodyweight Calf Raises",
+                    "note": "immediately, no rest",
+                    "reps": "15"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240650/mood_app/workout_images/vfevelz1_download_24_.jpg',
           intensityReason: 'Pause at top maximizes peak contraction tension',
@@ -583,7 +597,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Calf Raise (Tempo)',
           duration: '14–16 min',
           description: 'Controlled tempo builds endurance and hypertrophy',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10–12 — rest 90s between sets, take all of it.\n3 rounds\n• 10–12 Tempo Calf Raises\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10–12 — rest 90s between sets, take all of it.\n3 sets\n• 10–12 Tempo Calf Raises\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -591,15 +605,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Barbell Calf Raise (Tempo)",
-                    "reps": "10–12",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Tempo Calf Raises",
+                    "reps": "10–12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10–12 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240653/mood_app/workout_images/xf7sknhj_download_25_.jpg',
           intensityReason: 'Slow eccentric phase maximizes calf time under tension',
@@ -624,7 +638,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Tempo Calf Raise',
           duration: '10–12 min',
           description: 'Slow eccentrics increasing calf time under tension',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 75s between sets, take all of it.\n4 rounds\n• 12 Calf Raises (3s eccentric)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 75s between sets, take all of it.\n4 sets\n• 12 Calf Raises (3s eccentric)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -632,15 +646,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Barbell Tempo Calf Raise",
-                    "reps": "12",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Calf Raises",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240687/mood_app/workout_images/tzc8onjz_bb_calf_raise.jpg',
           intensityReason: 'Tempo work maximizes muscle fiber recruitment',
@@ -672,7 +686,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Calf Raise (Drop Set)',
           duration: '16–18 min',
           description: 'Stripping load forces fibers to contract under fatigue',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 sets\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -680,16 +694,16 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Barbell Calf Raise (Drop Set)",
-                    "reps": "12",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Drop 15–20% → 10 reps; Drop 15–20% → 10 reps"
+                    "name": "Heavy Calf Raises",
+                    "note": "Drop 15–20% → 10 reps; Drop 15–20% → 10 reps",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240650/mood_app/workout_images/vfevelz1_download_24_.jpg',
           intensityReason: 'Drop sets extend effort for intense calf overload',
@@ -719,19 +733,27 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
-                    "name": "Barbell Calf Raise (Iso + Jumps)",
-                    "reps": "12–15",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Finish with 10s Iso Hold at top; Immediately 10 Stiff Leg Jumps"
+                    "name": "Calf Raises",
+                    "reps": "12–15"
+                  },
+                  {
+                    "name": "Iso Hold at top",
+                    "reps": "10s"
+                  },
+                  {
+                    "name": "Stiff Leg Jumps",
+                    "note": "immediately, no rest",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10s Iso Hold at top — it counts, don't skip it. 3 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240653/mood_app/workout_images/xf7sknhj_download_25_.jpg',
           intensityReason: 'Static hold at peak contraction maximizes tension',
@@ -756,7 +778,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Calf Raise Drop Set',
           duration: '14–16 min',
           description: 'Extended standing raises using fast load reductions',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 10 Heavy Raises\n• Raise drop → 12\n• Raise drop → 15\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• 10 Heavy Raises\n• Raise drop → 12\n• Raise drop → 15\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -764,16 +786,21 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Barbell Calf Raise Drop Set",
-                    "reps": "10",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Drop → 12; Drop → 15"
+                    "name": "Heavy Raises",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Raise drop → 12"
+                  },
+                  {
+                    "name": "Raise drop → 15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240687/mood_app/workout_images/tzc8onjz_bb_calf_raise.jpg',
           intensityReason: 'Drop sets push calves to complete fatigue',
@@ -811,7 +838,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise (Neutral)',
           duration: '10–12 min',
           description: 'Basic press for foundational calf development',
-          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 rounds\n• 15–20 Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 sets\n• 15–20 Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -819,15 +846,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Leg Press Calf Raise (Neutral)",
-                    "reps": "15–20",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Calf Raises",
+                    "reps": "15–20"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15–20 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240644/mood_app/workout_images/jwime8o9_download_30_.jpg',
           intensityReason: 'Machine guidance builds calf strength safely',
@@ -852,7 +879,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise (Toes Out)',
           duration: '10–12 min',
           description: 'Foot angle variation for balanced calf growth and stimulation',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 75s between sets, take all of it.\n3 rounds\n• 12–15 Toes Out Calf Raises\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 75s between sets, take all of it.\n3 sets\n• 12–15 Toes Out Calf Raises\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -860,15 +887,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Leg Press Calf Raise (Toes Out)",
-                    "reps": "12–15",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Toes Out Calf Raises",
+                    "reps": "12–15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240632/mood_app/workout_images/02ysdj6y_download_31_.jpg',
           intensityReason: 'Toes out stance targets inner calf muscle fibers',
@@ -893,7 +920,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise',
           duration: '8–10 min',
           description: 'Supported calf raises using leg press sled',
-          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 rounds\n• 15 Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 sets\n• 15 Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -901,15 +928,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Leg Press Calf Raise",
-                    "reps": "15",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Raises",
+                    "reps": "15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240666/mood_app/workout_images/ccewdems_leg_press_calf_raise.jpg',
           intensityReason: 'Sled support allows focus on pure calf work',
@@ -941,7 +968,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single‑Leg Press Calf Raise',
           duration: '14–16 min',
           description: 'Isolates each calf for balanced strength and size',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 90s between sets, take all of it.\n4 rounds\n• 10–12 per leg Single‑Leg Raises\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 90s between sets, take all of it.\n4 sets\n• 10–12 per leg Single‑Leg Raises\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -949,15 +976,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Single‑Leg Press Calf Raise",
-                    "reps": "10–12/leg",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Single‑Leg Raises",
+                    "reps": "10–12/leg"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241351/mood_app/workout_images/kwq6qti7_Screenshot_2025-12-06_at_9_20_46_PM.jpg',
           intensityReason: 'Unilateral raise increases load and balance demand',
@@ -982,24 +1009,28 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise',
           duration: '14–16 min',
           description: 'Builds strength and control through isometric hold',
-          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 10–12 Pause Calf Raises\n• 15 Bodyweight Calf Raises — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 sets — all 2 moves in order, then rest 90s.\n3 sets\n• 10–12 Pause Calf Raises\n• 15 Bodyweight Calf Raises — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
-                    "name": "Leg Press Calf Raise",
-                    "reps": "10–12",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Immediately 15 Bodyweight Calf Raises"
+                    "name": "Pause Calf Raises",
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Bodyweight Calf Raises",
+                    "note": "immediately, no rest",
+                    "reps": "15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 sets — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240632/mood_app/workout_images/02ysdj6y_download_31_.jpg',
           intensityReason: 'Pause at top maximizes peak contraction tension',
@@ -1024,7 +1055,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Pause',
           duration: '10–12 min',
           description: 'Paused calf raises emphasizing top-end contraction',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 12 — rest 75s between sets, take all of it.\n4 rounds\n• 12 Raises (2s pause)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 12 — rest 75s between sets, take all of it.\n4 sets\n• 12 Raises (2s pause)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1032,15 +1063,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Leg Press Calf Pause",
-                    "reps": "12",
-                    "tutorialSlug": "leg_press"
+                    "name": "Raises",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240666/mood_app/workout_images/ccewdems_leg_press_calf_raise.jpg',
           intensityReason: 'Paused contractions strengthen shortened position',
@@ -1072,7 +1103,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise (Drop Set)',
           duration: '16–18 min',
           description: 'Stripping load forces fibers to contract under fatigue',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 sets\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1080,16 +1111,16 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Leg Press Calf Raise (Drop Set)",
-                    "reps": "12",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Drop 15–20% → 10 reps; Drop 15–20% → 10 reps"
+                    "name": "Heavy Calf Raises",
+                    "note": "Drop 15–20% → 10 reps; Drop 15–20% → 10 reps",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240644/mood_app/workout_images/jwime8o9_download_30_.jpg',
           intensityReason: 'Drop sets extend effort for intense calf overload',
@@ -1119,19 +1150,27 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
-                    "name": "Leg Press Calf Raise (Iso + Jumps)",
-                    "reps": "12–15",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Finish with 10s Iso Hold at top; Immediately 10 Stiff Leg Jumps"
+                    "name": "Calf Raises",
+                    "reps": "12–15"
+                  },
+                  {
+                    "name": "Iso Hold at top",
+                    "reps": "10s"
+                  },
+                  {
+                    "name": "Stiff Leg Jumps",
+                    "note": "immediately, no rest",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10s Iso Hold at top — it counts, don't skip it. 3 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240632/mood_app/workout_images/02ysdj6y_download_31_.jpg',
           intensityReason: 'Static hold at peak contraction maximizes tension',
@@ -1156,7 +1195,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Drop Set',
           duration: '14–16 min',
           description: 'Extended calf sets using rapid sled weight drops',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 10 Raises\n• Calf drop → 15\n• Calf drop → 20\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• 10 Raises\n• Calf drop → 15\n• Calf drop → 20\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1164,16 +1203,21 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Leg Press Calf Drop Set",
-                    "reps": "10",
-                    "tutorialSlug": "leg_press",
-                    "note": "Drop → 15; Drop → 20"
+                    "name": "Raises",
+                    "reps": "10"
+                  },
+                  {
+                    "name": "Calf drop → 15"
+                  },
+                  {
+                    "name": "Calf drop → 20"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240666/mood_app/workout_images/ccewdems_leg_press_calf_raise.jpg',
           intensityReason: 'Drop sets push calves to complete exhaustion',
@@ -1211,7 +1255,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standing Calf Raise Machine',
           duration: '10–12 min',
           description: 'Basic standing raise for foundational calf development',
-          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 rounds\n• 15–20 Standing Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 sets\n• 15–20 Standing Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1219,15 +1263,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Standing Calf Raise Machine",
-                    "reps": "15–20",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Standing Calf Raises",
+                    "reps": "15–20"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15–20 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241350/mood_app/workout_images/kh18cxcw_Screenshot_2025-12-06_at_9_24_28_PM.jpg',
           intensityReason: 'Machine guidance builds calf strength safely',
@@ -1252,7 +1296,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Calf Raise Machine',
           duration: '10–12 min',
           description: 'Targets deeper calf muscle with stable seated form',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Seated Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 sets\n• 12–15 Seated Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1260,15 +1304,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Seated Calf Raise Machine",
-                    "reps": "12–15",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Seated Calf Raises",
+                    "reps": "12–15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240649/mood_app/workout_images/tp1piceg_download_26_.jpg',
           intensityReason: 'Seated position isolates soleus muscle for growth',
@@ -1293,7 +1337,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Calf Raise',
           duration: '8–10 min',
           description: 'Guided calf raises reinforcing full range control',
-          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 rounds\n• 15 Machine Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 sets\n• 15 Machine Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1301,15 +1345,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Machine Calf Raise",
-                    "reps": "15",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Machine Raises",
+                    "reps": "15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240671/mood_app/workout_images/elld3iw7_calf_machine_calf_raise.jpg',
           intensityReason: 'Machine guidance ensures proper calf activation',
@@ -1341,7 +1385,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single‑Leg Calf Raise Machine',
           duration: '14–16 min',
           description: 'Isolates each calf for balanced strength and size',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 75s between sets, take all of it.\n4 rounds\n• 10–12 per leg Single‑Leg Raises\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 75s between sets, take all of it.\n4 sets\n• 10–12 per leg Single‑Leg Raises\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1349,15 +1393,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Single‑Leg Calf Raise Machine",
-                    "reps": "10–12/leg",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Single‑Leg Raises",
+                    "reps": "10–12/leg"
                   }
                 ],
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241326/mood_app/workout_images/97bkhdmm_Screenshot_2025-12-06_at_9_25_30_PM.jpg',
           intensityReason: 'Unilateral raise increases load and balance demand',
@@ -1387,19 +1431,23 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
-                    "name": "Calf Raise Machine",
-                    "reps": "10–12",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Immediately 15 Bodyweight Calf Raises"
+                    "name": "Pause Calf Raises",
+                    "reps": "10–12"
+                  },
+                  {
+                    "name": "Bodyweight Calf Raises",
+                    "note": "immediately, no rest",
+                    "reps": "15"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240649/mood_app/workout_images/tp1piceg_download_26_.jpg',
           intensityReason: 'Pause at top maximizes peak contraction tension',
@@ -1424,7 +1472,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Machine Calf Raise',
           duration: '10–12 min',
           description: 'Paused raises reinforcing peak calf contraction',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 12 — rest 75s between sets, take all of it.\n4 rounds\n• 12 Raises (2s pause)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 12 — rest 75s between sets, take all of it.\n4 sets\n• 12 Raises (2s pause)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1432,15 +1480,15 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Pause Machine Calf Raise",
-                    "reps": "12",
-                    "tutorialSlug": "calf_raise"
+                    "name": "Raises",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 4,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240671/mood_app/workout_images/elld3iw7_calf_machine_calf_raise.jpg',
           intensityReason: 'Paused contractions maximize peak tension',
@@ -1472,7 +1520,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Calf Raise Machine (Drop Set)',
           duration: '16–18 min',
           description: 'Stripping load forces fibers to contract under fatigue',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 sets\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1480,16 +1528,16 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Calf Raise Machine (Drop Set)",
-                    "reps": "12",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Drop 15–20% → 10 reps; Drop 15–20% → 10 reps"
+                    "name": "Heavy Calf Raises",
+                    "note": "Drop 15–20% → 10 reps; Drop 15–20% → 10 reps",
+                    "reps": "12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240635/mood_app/workout_images/1jerzr2s_download_27_.jpg',
           intensityReason: 'Drop sets extend effort for intense calf overload',
@@ -1519,19 +1567,27 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
-                    "name": "Calf Raise Machine (Iso + Jumps)",
-                    "reps": "12–15",
-                    "tutorialSlug": "calf_raise",
-                    "note": "Finish with 10s Iso Hold at top; Immediately 10 Stiff Leg Jumps"
+                    "name": "Calf Raises",
+                    "reps": "12–15"
+                  },
+                  {
+                    "name": "Iso Hold at top",
+                    "reps": "10s"
+                  },
+                  {
+                    "name": "Stiff Leg Jumps",
+                    "note": "immediately, no rest",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10s Iso Hold at top — it counts, don't skip it. 3 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240649/mood_app/workout_images/tp1piceg_download_26_.jpg',
           intensityReason: 'Static hold at peak contraction maximizes tension',
@@ -1556,7 +1612,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Calf Burnout Set',
           duration: '14–16 min',
           description: 'High-rep calf raises pushing muscular endurance',
-          battlePlan: 'Instructions: 3 sets of 25–30 — rest 120s between sets, take all of it.\n3 rounds\n• 25–30 Raises\nRest 120s',
+          battlePlan: 'Instructions: 3 sets of 25–30 — rest 120s between sets, take all of it.\n3 sets\n• 25–30 Raises\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1571,7 +1627,8 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 25–30 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240671/mood_app/workout_images/elld3iw7_calf_machine_calf_raise.jpg',
           intensityReason: 'High-rep work maximizes calf endurance and pump',

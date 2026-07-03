@@ -18,32 +18,33 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Leg Press",
                     "intensity": "RPE 4",
+                    "name": "Leg Press",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 4",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Seated Calf Raise",
                     "intensity": "RPE 4",
+                    "name": "Seated Calf Raise",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241239/mood_app/workout_images/p3j5vmje_download.jpg',
           intensityReason: 'Guided machines load quads safely with minimal setup.',
@@ -72,32 +73,33 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 4",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Leg Press",
                     "intensity": "RPE 4",
+                    "name": "Leg Press",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Calf Press",
                     "intensity": "RPE 4",
+                    "name": "Calf Press",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241251/mood_app/workout_images/ujjqi8g2_download_1_.jpg',
           intensityReason: 'Simple seated chain builds quads with gentle guidance.',
@@ -126,32 +128,33 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Hack Squat",
                     "intensity": "RPE 4",
+                    "name": "Hack Squat",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "hack_squat"
                   },
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 4",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Standing Calf Raise",
                     "intensity": "RPE 4",
+                    "name": "Standing Calf Raise",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/sb8mhy0d_hs.avif',
           intensityReason: 'Supported hack squat targets quads with easy bracing.',
@@ -182,32 +185,33 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Leg Press",
                     "intensity": "RPE 5",
+                    "name": "Leg Press",
+                    "reps": "10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 5",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Seated Calf Raise",
                     "intensity": "RPE 5",
+                    "name": "Seated Calf Raise",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241239/mood_app/workout_images/p3j5vmje_download.jpg',
           intensityReason: 'Moderate sled volume with clean knee extension focus.',
@@ -236,32 +240,33 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Hack Squat",
                     "intensity": "RPE 5–6",
+                    "name": "Hack Squat",
+                    "reps": "8",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "hack_squat"
                   },
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 5",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Calf Press",
                     "intensity": "RPE 5",
+                    "name": "Calf Press",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/sb8mhy0d_hs.avif',
           intensityReason: 'Guided squat pattern builds quads without balance load.',
@@ -290,32 +295,33 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Smith Front Squat",
                     "intensity": "RPE 5–6",
+                    "name": "Smith Front Squat",
+                    "reps": "8",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "db_front_squat"
                   },
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 5",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Standing Calf Raise",
                     "intensity": "RPE 5",
+                    "name": "Standing Calf Raise",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241199/mood_app/workout_images/6q78aa0l_smfs.jpg',
           intensityReason: 'Smith guidance reduces setup and stabilizer demands.',
@@ -346,32 +352,33 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Leg Press",
                     "intensity": "RPE 7",
-                    "sets": 1,
+                    "name": "Leg Press",
                     "reps": "8",
+                    "sets": 1,
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 6",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Seated Calf Raise",
                     "intensity": "RPE 6",
+                    "name": "Seated Calf Raise",
+                    "reps": "15–20",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "15–20",
                     "tutorialSlug": "calf_raise"
                   }
                 ],
                 "rest": "90s; repeat for 3 total series"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom — rest 90s; repeat for 3 total series between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241239/mood_app/workout_images/p3j5vmje_download.jpg',
           intensityReason: 'Drop set increases volume without complex technique.',
@@ -405,24 +412,25 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                     "tutorialSlug": "hack_squat"
                   },
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 6",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Standing Calf Raise",
                     "intensity": "RPE 6",
+                    "name": "Standing Calf Raise",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/sb8mhy0d_hs.avif',
           intensityReason: 'Clusters sustain output while preserving clean rep quality.',
@@ -451,32 +459,33 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Smith Split Squat",
                     "intensity": "RPE 6",
+                    "name": "Smith Split Squat",
+                    "reps": "8–10/side",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10/side",
                     "tutorialSlug": "kb_squat"
                   },
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 6",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Calf Press",
                     "intensity": "RPE 6",
+                    "name": "Calf Press",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241207/mood_app/workout_images/a1srgmco_download_2_.jpg',
           intensityReason: 'Supported split squats bias quads with low balance load.',
@@ -513,30 +522,31 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 4",
+                    "name": "Seated Leg Curl",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Smith RDL or Plate-Loaded RDL Machine",
                     "intensity": "RPE 4",
+                    "name": "Smith RDL or Plate-Loaded RDL Machine",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "smith_machine_rdl"
                   },
                   {
-                    "name": "Glute Drive / Hip Thrust Machine",
                     "intensity": "RPE 4",
+                    "name": "Glute Drive / Hip Thrust Machine",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241229/mood_app/workout_images/k4j5yazw_download_5_.jpg',
           intensityReason: 'Simple hip hinge machines train hams and glutes safely.',
@@ -565,30 +575,31 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Seated Leg Curl",
-                    "intensity": "RPE 4",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Hip Thrust Machine",
-                    "intensity": "RPE 4",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Seated Calf Raise",
                     "intensity": "RPE 4",
+                    "name": "Seated Calf Raise",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241214/mood_app/workout_images/cj4dx97r_download_3_.jpg',
           intensityReason: 'Knee flexion focus with easy glute and calf support.',
@@ -617,30 +628,32 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "45° Back Extension",
-                    "tutorialSlug": "roman_chair_weighted_back_extension"
-                  },
-                  {
-                    "name": "3 × 10–12 , 60s rest"
-                  },
-                  {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 4",
-                    "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
-                  },
-                  {
-                    "name": "Cable Pull-Through",
-                    "intensity": "RPE 4",
-                    "rest": "60s",
-                    "sets": 3,
+                    "name": "Back Extension",
                     "reps": "10–12",
+                    "rest": "60s",
+                    "sets": 3,
+                    "tutorialSlug": "roman_chair_back_extension"
+                  },
+                  {
+                    "intensity": "RPE 4",
+                    "name": "Seated Leg Curl",
+                    "reps": "10–12",
+                    "rest": "60s",
+                    "sets": 3
+                  },
+                  {
+                    "intensity": "RPE 4",
+                    "name": "Cable Pull-Through",
+                    "reps": "10–12",
+                    "rest": "60s",
+                    "sets": 3,
                     "tutorialSlug": "cable_pull_through"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241192/mood_app/workout_images/149z42kp_download_19_.jpg',
           intensityReason: 'Supported hinge and curls reduce setup complexity.',
@@ -671,29 +684,30 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 5",
                     "name": "Seated Leg Curl",
-                    "intensity": "RPE 5",
+                    "reps": "8–10",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8–10"
+                    "sets": 4
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Lying Leg Curl",
-                    "intensity": "RPE 5",
+                    "reps": "10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10"
+                    "sets": 3
                   },
                   {
-                    "name": "Hip Thrust Machine",
                     "intensity": "RPE 5",
+                    "name": "Hip Thrust Machine",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241192/mood_app/workout_images/149z42kp_download_19_.jpg',
           intensityReason: 'Seated and lying curls load hams through full range.',
@@ -722,31 +736,32 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Smith RDL",
                     "intensity": "RPE 5–6",
+                    "name": "Smith RDL",
+                    "reps": "8",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "smith_machine_rdl"
                   },
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 5",
+                    "name": "Seated Leg Curl",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Back Extension",
                     "intensity": "RPE 5",
+                    "name": "Back Extension",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "roman_chair_back_extension"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241229/mood_app/workout_images/k4j5yazw_download_5_.jpg',
           intensityReason: 'Guided RDL reduces balance needs while loading safely.',
@@ -775,31 +790,32 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Pull-Through",
                     "intensity": "RPE 5",
+                    "name": "Cable Pull-Through",
+                    "reps": "10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10",
                     "tutorialSlug": "cable_pull_through"
                   },
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 5",
+                    "name": "Seated Leg Curl",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Hip Abduction",
                     "intensity": "RPE 5",
+                    "name": "Hip Abduction",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "hip_abductor"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241210/mood_app/workout_images/aggvazg1_download_4_.jpg',
           intensityReason: 'Cables guide hinge arcs with modest setup demands.',
@@ -830,30 +846,31 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 7",
-                    "sets": 1,
-                    "reps": "8"
+                    "name": "Seated Leg Curl",
+                    "reps": "8",
+                    "sets": 1
                   },
                   {
-                    "name": "Smith RDL",
                     "intensity": "RPE 6",
+                    "name": "Smith RDL",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "smith_machine_rdl"
                   },
                   {
-                    "name": "Hip Thrust Machine",
                     "intensity": "RPE 6",
+                    "name": "Hip Thrust Machine",
+                    "reps": "10–12",
                     "rest": "60–75s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ],
                 "rest": "90s; repeat for 3 total series"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom — rest 90s; repeat for 3 total series between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241214/mood_app/workout_images/cj4dx97r_download_3_.jpg',
           intensityReason: 'Drop sets extend ham tension without complex skills.',
@@ -887,23 +904,24 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                     "tutorialSlug": "smith_machine_rdl"
                   },
                   {
-                    "name": "Lying Leg Curl",
                     "intensity": "RPE 6",
+                    "name": "Lying Leg Curl",
+                    "reps": "10–12",
                     "rest": "60–75s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Hip Abduction",
                     "intensity": "RPE 6",
+                    "name": "Hip Abduction",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "hip_abductor"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241229/mood_app/workout_images/k4j5yazw_download_5_.jpg',
           intensityReason: 'Hinge clusters keep power while preserving spine control.',
@@ -932,31 +950,32 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 6",
+                    "name": "Seated Leg Curl",
+                    "reps": "8–10",
                     "rest": "60–75s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Cable Pull-Through",
                     "intensity": "RPE 6",
+                    "name": "Cable Pull-Through",
+                    "reps": "10–12",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_pull_through"
                   },
                   {
-                    "name": "Back Extension",
                     "intensity": "RPE 6",
+                    "name": "Back Extension",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "roman_chair_back_extension"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Curl to the top, lower halfway, curl back up, then lower fully — that's ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241210/mood_app/workout_images/aggvazg1_download_4_.jpg',
           intensityReason: '1.5 curls add time under tension in safe positions.',
@@ -993,39 +1012,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Leg Press",
                     "intensity": "RPE 4",
+                    "name": "Leg Press",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 4",
+                    "name": "Seated Leg Curl",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 4",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Seated Calf Raise",
                     "intensity": "RPE 4",
+                    "name": "Seated Calf Raise",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241231/mood_app/workout_images/l69s6mlz_download.jpg',
           intensityReason: 'Balanced machines target legs with minimal coaching.',
@@ -1054,38 +1074,39 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Hack Squat",
                     "intensity": "RPE 4",
+                    "name": "Hack Squat",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "hack_squat"
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Hip Thrust Machine",
-                    "intensity": "RPE 4",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Seated Leg Curl",
-                    "intensity": "RPE 4",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Standing Calf Raise",
                     "intensity": "RPE 4",
+                    "name": "Standing Calf Raise",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/rchrkjlm_hs.avif',
           intensityReason: 'Guided paths reduce setup and stabilize each lift.',
@@ -1114,39 +1135,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Pull-Through",
                     "intensity": "RPE 4",
+                    "name": "Cable Pull-Through",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_pull_through"
                   },
                   {
-                    "name": "Cable Goblet Squat",
                     "intensity": "RPE 4",
+                    "name": "Cable Goblet Squat",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_squat"
                   },
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 4",
+                    "name": "Seated Leg Curl",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Hip Abduction",
                     "intensity": "RPE 4",
+                    "name": "Hip Abduction",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "hip_abductor"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241206/mood_app/workout_images/9k0i6seo_download_4_.jpg',
           intensityReason: 'Cable arcs guide hips and knees with modest effort.',
@@ -1177,39 +1199,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Leg Press",
                     "intensity": "RPE 5",
+                    "name": "Leg Press",
+                    "reps": "10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 5",
+                    "name": "Seated Leg Curl",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Leg Extension",
                     "intensity": "RPE 5",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Calf Press",
                     "intensity": "RPE 5",
+                    "name": "Calf Press",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241231/mood_app/workout_images/l69s6mlz_download.jpg',
           intensityReason: 'Moderate volume across quads, hams, glutes, calves.',
@@ -1238,38 +1261,39 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Hack Squat",
                     "intensity": "RPE 5–6",
+                    "name": "Hack Squat",
+                    "reps": "8",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "hack_squat"
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Hip Thrust Machine",
-                    "intensity": "RPE 5",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Seated Leg Curl",
-                    "intensity": "RPE 5",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Standing Calf Raise",
                     "intensity": "RPE 5",
+                    "name": "Standing Calf Raise",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241238/mood_app/workout_images/nsyfdaao_download_3_.jpg',
           intensityReason: 'Guided squat and hinge pair simplifies workload.',
@@ -1298,39 +1322,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Smith Back Squat",
                     "intensity": "RPE 5–6",
+                    "name": "Smith Back Squat",
+                    "reps": "8",
                     "rest": "75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "smith_machine_back_squat"
                   },
                   {
-                    "name": "Smith RDL",
                     "intensity": "RPE 5",
+                    "name": "Smith RDL",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "smith_machine_rdl"
                   },
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 5",
+                    "name": "Seated Leg Curl",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Hip Abduction",
                     "intensity": "RPE 5",
+                    "name": "Hip Abduction",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "hip_abductor"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241233/mood_app/workout_images/lzw2ud21_download.jpg',
           intensityReason: 'Smith guidance reduces balance demands and setup.',
@@ -1361,39 +1386,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
+                    "intensity": "RPE 7",
                     "name": "Leg Press",
-                    "intensity": "RPE 7",
-                    "sets": 1,
                     "reps": "8",
-                    "tutorialSlug": "leg_press"
-                  },
-                  {
-                    "name": "Seated Leg Curl",
-                    "intensity": "RPE 7",
                     "sets": 1,
-                    "reps": "10",
                     "tutorialSlug": "leg_press"
                   },
                   {
-                    "name": "Leg Extension",
+                    "intensity": "RPE 7",
+                    "name": "Seated Leg Curl",
+                    "reps": "10",
+                    "sets": 1,
+                    "tutorialSlug": "leg_press"
+                  },
+                  {
                     "intensity": "RPE 6",
+                    "name": "Leg Extension",
+                    "reps": "10–12",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "quad_extension"
                   },
                   {
-                    "name": "Seated Calf Raise",
                     "intensity": "RPE 6",
+                    "name": "Seated Calf Raise",
+                    "reps": "15–20",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "15–20",
                     "tutorialSlug": "calf_raise"
                   }
                 ],
                 "rest": "90s; repeat for 3 total series"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom — rest 90s; repeat for 3 total series between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241231/mood_app/workout_images/l69s6mlz_download.jpg',
           intensityReason: 'Drop sets add volume without technical complexity.',
@@ -1432,23 +1458,24 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                     "tutorialSlug": "smith_machine_rdl"
                   },
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 6",
+                    "name": "Seated Leg Curl",
+                    "reps": "10–12",
                     "rest": "60–75s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Hip Abduction",
                     "intensity": "RPE 6",
+                    "name": "Hip Abduction",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "hip_abductor"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_upper-body-enhance/artifacts/0tawdmfz_hs.avif',
           intensityReason: 'Clusters preserve form while keeping output high.',
@@ -1477,39 +1504,40 @@ export const lazyLowerBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Pull-Through",
                     "intensity": "RPE 6",
+                    "name": "Cable Pull-Through",
+                    "reps": "10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "10",
                     "tutorialSlug": "cable_pull_through"
                   },
                   {
-                    "name": "Cable Goblet Squat",
                     "intensity": "RPE 6",
+                    "name": "Cable Goblet Squat",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_squat"
                   },
                   {
-                    "name": "Seated Leg Curl",
                     "intensity": "RPE 6",
+                    "name": "Seated Leg Curl",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Standing Calf Raise",
                     "intensity": "RPE 6",
+                    "name": "Standing Calf Raise",
+                    "reps": "12–15",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "calf_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241194/mood_app/workout_images/3gaohp2y_cgs.jpg',
           intensityReason: 'Midrange cable work adds tension at modest loading.',

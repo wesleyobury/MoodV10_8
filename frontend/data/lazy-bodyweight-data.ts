@@ -30,7 +30,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 rounds — follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241046/mood_app/workout_images/0jyalb2d_download_26_.jpg',
           intensityReason: 'Gentle surges raise HR without impact or joint strain.',
@@ -59,17 +60,15 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Incline Cruise",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "8–10 min",
                     "intensity": "RPE 3–4",
                     "name": "Walk @ 3–5% incline"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241072/mood_app/workout_images/lcrp3pfp_download_27_.jpg',
           intensityReason: 'Mild grade adds work quietly with stable mechanics.',
@@ -117,7 +116,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 rounds — follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241046/mood_app/workout_images/0jyalb2d_download_26_.jpg',
           intensityReason: 'Short brisk segments raise cadence and HR safely.',
@@ -138,7 +138,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Incline Switch-Ups',
           duration: '10–12 min',
           description: 'Change incline each minute; maintain easy comfortable pace.',
-          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 1 timed segment in order, no skipping.\n10–12 min continuous\nThen alternate each minute: 2% → 5% → 3% → 6% … (RPE 4–5)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Steady continuous walk, changing the incline each minute.\n• Treadmill Walk — 10–12 min continuous, alternate incline each minute: 2% → 5% → 3% → 6% … (RPE 4–5)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -146,15 +146,14 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "duration": "10–12 min",
-                    "name": "continuous"
-                  },
-                  {
-                    "name": "Alternate each minute: 2% → 5% → 3% → 6% …"
+                    "intensity": "RPE 4–5",
+                    "name": "Treadmill Walk",
+                    "reps": "10–12"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Steady continuous walk, changing the incline each minute."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241072/mood_app/workout_images/lcrp3pfp_download_27_.jpg',
           intensityReason: 'Alternating grades keep interest without impact load.',
@@ -198,7 +197,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 rounds — follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241046/mood_app/workout_images/0jyalb2d_download_26_.jpg',
           intensityReason: 'Short jogs elevate HR while total fatigue stays low.',
@@ -219,7 +219,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Hill Breeze',
           duration: '12–14 min',
           description: 'One-minute hill efforts with flat recoveries; breathe calm.',
-          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — follow the 2 timed segments in order, no skipping. Each round is one cycle.\n6 rounds continuous\n• 1 min @ 5–6% (RPE 5)\n• 1 min flat (RPE 3–4)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — follow the 2 timed segments in order, no skipping. Each round is one cycle.\n6 rounds continuous\n• 1 min Walk @ 5–6% (RPE 5)\n• 1 min flat (RPE 3–4)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -229,17 +229,18 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                   {
                     "duration": "1 min",
                     "intensity": "RPE 5",
-                    "name": "@ 5–6%"
+                    "name": "Walk @ 5–6%"
                   },
                   {
                     "duration": "1 min",
                     "intensity": "RPE 3–4",
-                    "name": "flat"
+                    "name": "Flat"
                   }
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — follow the 2 timed segments in order, no skipping. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241072/mood_app/workout_images/lcrp3pfp_download_27_.jpg',
           intensityReason: 'Short hill rises engage legs gently without heavy load.',
@@ -276,17 +277,15 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Cruise Spin",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "8–10 min",
                     "intensity": "RPE 3",
                     "name": "Easy Spin"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241059/mood_app/workout_images/8k8d6fo4_download_24_.jpg',
           intensityReason: 'Easy spin boosts circulation with very low muscular load.',
@@ -307,7 +306,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Cadence Teasers',
           duration: '8–10 min',
           description: 'Easy spin punctuated by quick fast-leg bursts; reset easy.',
-          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 rounds — follow the 2 timed segments in order, no skipping.\n3 rounds\n• 2 min Easy (RPE 3)\n• 20s Fast Legs / 40s Easy (repeat 1× = 1 block)\nComplete both intervals back-to-back to finish each round',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 sets — follow the 2 timed segments in order, no skipping.\n3 sets\n• 2 min Easy (RPE 3)\n• 20s Fast Legs / 40s Easy (repeat 1× = 1 block)\nComplete both intervals back-to-back to finish each set',
           plan: {
             "format": "interval",
             "blocks": [
@@ -327,7 +326,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 sets — follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241071/mood_app/workout_images/jx5sn8pf_download_25_.jpg',
           intensityReason: 'Short fast legs nudge HR without accumulating fatigue.',
@@ -359,7 +359,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "10–12 min",
-                    "name": "continuous"
+                    "name": "Continuous"
                   },
                   {
                     "duration": "1 min",
@@ -374,7 +374,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241059/mood_app/workout_images/8k8d6fo4_download_24_.jpg',
           intensityReason: 'Slight resistance bumps engage muscles yet stay comfy.',
@@ -413,7 +414,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 2 moves in order. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241071/mood_app/workout_images/jx5sn8pf_download_25_.jpg',
           intensityReason: 'Short controlled pushes lift HR then settle cleanly.',
@@ -436,7 +438,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Pyramid Spin',
           duration: '12–14 min',
           description: '1–2–3–2–1 @ RPE 5 with 1-min easy recoveries between.',
-          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 7 timed segments in order, no skipping.\n1 set\n• 2 min Easy\n• 1 min @ RPE 5 → 1 min Easy\n• 2 min @ RPE 5 → 1 min Easy\n• 3 min @ RPE 5 → 1 min Easy\n• 2 min @ RPE 5 → 1 min Easy\n• 1 min @ RPE 5 → 2 min Easy finish',
+          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 7 timed segments in order, no skipping.\n1 set\n• 2 min Easy\n• 1 min Spin @ RPE 5 → 1 min Easy\n• 2 min Spin @ RPE 5 → 1 min Easy\n• 3 min Spin @ RPE 5 → 1 min Easy\n• 2 min Spin @ RPE 5 → 1 min Easy\n• 1 min Spin @ RPE 5 → 2 min Easy finish',
           plan: {
             "format": "interval",
             "blocks": [
@@ -444,36 +446,34 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Pyramid Spin",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "2 min",
                     "name": "Easy"
                   },
                   {
                     "duration": "1 min",
-                    "name": "@ RPE 5 → 1 min Easy"
+                    "name": "Spin @ RPE 5 → 1 min Easy"
                   },
                   {
                     "duration": "2 min",
-                    "name": "@ RPE 5 → 1 min Easy"
+                    "name": "Spin @ RPE 5 → 1 min Easy"
                   },
                   {
                     "duration": "3 min",
-                    "name": "@ RPE 5 → 1 min Easy"
+                    "name": "Spin @ RPE 5 → 1 min Easy"
                   },
                   {
                     "duration": "2 min",
-                    "name": "@ RPE 5 → 1 min Easy"
+                    "name": "Spin @ RPE 5 → 1 min Easy"
                   },
                   {
                     "duration": "1 min",
-                    "name": "@ RPE 5 → 2 min Easy finish"
+                    "name": "Spin @ RPE 5 → 2 min Easy finish"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 7 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241059/mood_app/workout_images/8k8d6fo4_download_24_.jpg',
           intensityReason: 'Build and drop ladder sustains focus without strain.',
@@ -494,7 +494,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Stand Sprinkles',
           duration: '12–14 min',
           description: 'Seated easy with short stands; return to seat smoothly.',
-          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 rounds — follow the 2 timed segments in order, no skipping.\n5 rounds\n• 2 min Easy (RPE 3)\n• 15–20s Standing (RPE 6)\nRepeat; no extra rest between rounds',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 sets — follow the 2 timed segments in order, no skipping.\n5 sets\n• 2 min Easy (RPE 3)\n• 15–20s Standing (RPE 6)\nRepeat; no extra rest between sets',
           plan: {
             "format": "interval",
             "blocks": [
@@ -510,12 +510,13 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                     "duration": "15–20s",
                     "intensity": "RPE 6",
                     "name": "Standing",
-                    "note": "Repeat; no extra rest between rounds"
+                    "note": "Repeat; no extra rest between sets"
                   }
                 ],
                 "rounds": 5
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 sets — follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241071/mood_app/workout_images/jx5sn8pf_download_25_.jpg',
           intensityReason: 'Brief standing bouts add variety with mild leg load.',
@@ -552,17 +553,15 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Glide Easy",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "8–10 min",
                     "intensity": "RPE 3",
                     "name": "Easy Glide"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241047/mood_app/workout_images/1b8gmmf3_download_11_.jpg',
           intensityReason: 'Low-impact glide increases flow with minimal stress.',
@@ -595,7 +594,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                     "name": "Easy"
                   },
                   {
-                    "name": "3 × done back-to-back"
+                    "name": "3 × Done Back-to-back"
                   },
                   {
                     "name": "Recovery is the 40s Easy within each trio"
@@ -603,7 +602,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 3 rounds — follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241061/mood_app/workout_images/c5a1o86a_download_12_.jpg',
           intensityReason: 'Short tempo lifts add spark while effort stays easy.',
@@ -635,7 +635,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "10–12 min",
-                    "name": "continuous"
+                    "name": "Continuous"
                   },
                   {
                     "duration": "1 min",
@@ -650,7 +650,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Waves: each round runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241047/mood_app/workout_images/1b8gmmf3_download_11_.jpg',
           intensityReason: 'Mild ramp changes add novelty without taxing joints.',
@@ -689,7 +690,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 2 moves in order. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241061/mood_app/workout_images/c5a1o86a_download_12_.jpg',
           intensityReason: 'Upper-body emphasis spreads load while staying light.',
@@ -732,7 +734,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 5
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 rounds — follow the 2 timed segments in order, no skipping. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241047/mood_app/workout_images/1b8gmmf3_download_11_.jpg',
           intensityReason: 'Short tempo bouts lift HR gently without impact.',
@@ -761,10 +764,6 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Ramp Pyramid",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "2 min",
                     "name": "Easy"
                   },
@@ -780,9 +779,11 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                     "duration": "2 min",
                     "name": "Easy"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. follow the 5 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241061/mood_app/workout_images/c5a1o86a_download_12_.jpg',
           intensityReason: 'Gradual ramp build challenges, then eases smoothly.',
@@ -819,17 +820,15 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Easy Steps",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "8–10 min",
                     "intensity": "RPE 3",
                     "name": "Level 1–3"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241058/mood_app/workout_images/891czvrs_download_22_.jpg',
           intensityReason: 'Gentle stepping raises HR with clean, safe mechanics.',
@@ -871,7 +870,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Dead-stop pause — kill all momentum at the pause point before finishing the rep. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 rounds — follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241051/mood_app/workout_images/4vr4kipb_download_23_.jpg',
           intensityReason: 'Cadence dips ensure control while preventing fatigue.',
@@ -903,7 +903,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "10–12 min",
-                    "name": "continuous"
+                    "name": "Continuous"
                   },
                   {
                     "duration": "1 min",
@@ -917,7 +917,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241058/mood_app/workout_images/891czvrs_download_22_.jpg',
           intensityReason: 'Cadence shifts add variety without heavy muscular load.',
@@ -938,7 +939,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Two-Step Rhythm',
           duration: '10–12 min',
           description: 'Insert five double-steps at 30s mark each minute set.',
-          battlePlan: 'Instructions: Each round is one cycle. At 30s within each minute, perform 5 double-steps.\n6 rounds\n• 1 min Normal Steps (RPE 4)',
+          battlePlan: 'Instructions: Each set is one cycle. At 30s within each minute, perform 5 double-steps.\n6 sets\n• 1 min Normal Steps (RPE 4)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -949,14 +950,12 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                     "duration": "1 min",
                     "intensity": "RPE 4",
                     "name": "Normal Steps"
-                  },
-                  {
-                    "name": "At 30s within each minute: perform 5 double-steps"
                   }
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Each set is one cycle. At 30s within each minute, perform 5 double-steps."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241051/mood_app/workout_images/4vr4kipb_download_23_.jpg',
           intensityReason: 'Occasional double-steps wake hips and balance safely.',
@@ -979,7 +978,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Side-Step Sprinkle',
           duration: '12–14 min',
           description: 'Mostly forward steps with 30s lateral work each minute.',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 2 moves in order. Each round is one cycle.\n6 rounds\n• 90s Forward (RPE 4)\n• 30s Side-Steps L/R (RPE 5)',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 sets — all 2 moves in order. Each set is one cycle.\n6 sets\n• 90s Forward (RPE 4)\n• 30s Side-Steps L/R (RPE 5)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -997,7 +996,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 sets — all 2 moves in order. Each set is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241058/mood_app/workout_images/891czvrs_download_22_.jpg',
           intensityReason: 'Light lateral steps add variety with modest intensity.',
@@ -1018,7 +1018,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Mini Climb Waves',
           duration: '12–14 min',
           description: 'Two minutes level 3–4, one minute level 5–6; repeat flow.',
-          battlePlan: 'Instructions: Waves: each round runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 rounds — follow the 2 timed segments in order, no skipping.\n4 rounds\n• 2 min Level 3–4 (RPE 4)\n• 1 min Level 5–6 (RPE 6)',
+          battlePlan: 'Instructions: Waves: each set runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 sets — follow the 2 timed segments in order, no skipping.\n4 sets\n• 2 min Level 3–4 (RPE 4)\n• 1 min Level 5–6 (RPE 6)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1038,7 +1038,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "Waves: each set runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 sets — follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241051/mood_app/workout_images/4vr4kipb_download_23_.jpg',
           intensityReason: 'Slight level waves lift HR then settle it smoothly again.',
@@ -1067,7 +1068,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Easy Row Flow',
           duration: '8–10 min',
           description: 'Smooth 18–20 spm, gentle pressure, relaxed breathing.',
-          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n1 set\n• 8–10 min @ 18–20 spm, RPE 3',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n1 set\n• 8–10 min Row @ 18–20 spm, RPE 3',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1075,16 +1076,14 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Easy Row Flow",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "8–10 min",
-                    "name": "@ 18–20 spm, RPE 3"
+                    "name": "Row @ 18–20 spm, RPE 3"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241053/mood_app/workout_images/6b87wtzw_download_20_.jpg',
           intensityReason: 'Light strokes increase flow with minimal joint loading.',
@@ -1113,10 +1112,6 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Pick Drill Lite",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "2 min",
                     "intensity": "RPE 2–3",
                     "name": "Arms-only"
@@ -1131,9 +1126,11 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                     "intensity": "RPE 3–4",
                     "name": "Full Stroke"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 4 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241079/mood_app/workout_images/zxa3naw1_download_21_.jpg',
           intensityReason: 'Technique segments build rhythm at very easy effort.',
@@ -1156,7 +1153,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Rate Pops',
           duration: '10–12 min',
           description: 'One minute 18 spm, 30s 24 spm; smooth easy pressure.',
-          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — follow the 3 timed segments in order, no skipping. Each round is one cycle.\n6 rounds continuous\n• 1 min @ 18 spm (RPE 3–4)\n• 30s @ 24 spm (RPE 5)\n• 30s @ 18 spm reset',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — follow the 3 timed segments in order, no skipping. Each round is one cycle.\n6 rounds continuous\n• 1 min Row @ 18 spm (RPE 3–4)\n• 30s Row @ 24 spm (RPE 5)\n• 30s Row @ 18 spm reset',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1166,21 +1163,22 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                   {
                     "duration": "1 min",
                     "intensity": "RPE 3–4",
-                    "name": "@ 18 spm"
+                    "name": "Row @ 18 spm"
                   },
                   {
                     "duration": "30s",
                     "intensity": "RPE 5",
-                    "name": "@ 24 spm"
+                    "name": "Row @ 24 spm"
                   },
                   {
                     "duration": "30s",
-                    "name": "@ 18 spm reset"
+                    "name": "Row @ 18 spm reset"
                   }
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — follow the 3 timed segments in order, no skipping. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241053/mood_app/workout_images/6b87wtzw_download_20_.jpg',
           intensityReason: 'Short rate lifts nudge HR while technique stays clean.',
@@ -1201,7 +1199,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Technique Tempo',
           duration: '10–12 min',
           description: 'Two minutes easy, one-minute tempo; controlled repeats.',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 rounds — follow the 2 timed segments in order, no skipping.\n4 rounds\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 5)\nNo extra rest; continuous flow',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 sets — follow the 2 timed segments in order, no skipping.\n4 sets\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 5)\nNo extra rest; continuous flow',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1221,7 +1219,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 sets — follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241079/mood_app/workout_images/zxa3naw1_download_21_.jpg',
           intensityReason: 'Slight tempo raises HR while mechanics remain crisp.',
@@ -1252,27 +1251,25 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "500m Sprinkle",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "4 min",
                     "intensity": "RPE 3",
                     "name": "Easy"
                   },
                   {
-                    "duration": "500m",
                     "intensity": "RPE 6",
-                    "name": "Steady"
+                    "name": "Steady",
+                    "reps": "~500m"
                   },
                   {
                     "duration": "4–6 min",
                     "intensity": "RPE 3",
                     "name": "Easy"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 4 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241053/mood_app/workout_images/6b87wtzw_download_20_.jpg',
           intensityReason: 'Short 500m adds spice while total load remains easy.',
@@ -1293,7 +1290,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Ladder Rate',
           duration: '12–14 min',
           description: '2 min each at 18, 20, 22 spm, then descend back down.',
-          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 4 timed segments in order, no skipping.\n1 set\n• 2 min @ 18 spm → 2 @ 20 → 2 @ 22\n• Rate 2 @ 20 → 2 @ 18\nAll at RPE 4–5 max',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 4 timed segments in order, no skipping.\n1 set\n• 2 min Row @ 18 spm → 2 @ 20 → 2 @ 22\n• Rate 2 @ 20 → 2 @ 18\nAll at RPE 4–5 max',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1301,22 +1298,20 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Ladder Rate",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "2 min",
-                    "name": "@ 18 spm → 2 @ 20 → 2 @ 22"
+                    "name": "Row @ 18 spm → 2 @ 20 → 2 @ 22"
                   },
                   {
-                    "name": "2 @ 20 → 2 @ 18"
+                    "name": "Rate 2 @ 20 → 2 @ 18"
                   },
                   {
                     "name": "All at RPE 4–5 max"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 4 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241079/mood_app/workout_images/zxa3naw1_download_21_.jpg',
           intensityReason: 'Rate ladder entertains without adding heavy intensity.',
@@ -1353,18 +1348,15 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Easy Glide Pulls",
-                    "reps": "1",
-                    "tutorialSlug": "pull_ups"
-                  },
-                  {
                     "duration": "8–10 min",
                     "intensity": "RPE 3",
                     "name": "Easy"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241048/mood_app/workout_images/1zo355rz_skiierg.jpg',
           intensityReason: 'Gentle pulls engage lats/core with low joint loading.',
@@ -1397,7 +1389,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                     "name": "Easy"
                   },
                   {
-                    "name": "3 × back-to-back"
+                    "name": "3 × Back-to-back"
                   },
                   {
                     "name": "The 45s Easy is the rest; no extra pause"
@@ -1405,7 +1397,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241056/mood_app/workout_images/7ynxfrel_ski1.jpg',
           intensityReason: 'Short pick-ups wake rhythm while keeping effort light.',
@@ -1428,7 +1421,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Rate Waves',
           duration: '10–12 min',
           description: 'Alternate 1 min @ 20 spm and 1 min @ 24 spm; easy power.',
-          battlePlan: 'Instructions: Waves: each round runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping.\n10–12 min continuous\n• 1 min @ 20 spm (RPE 3–4)\n• 1 min @ 24 spm (RPE 5)',
+          battlePlan: 'Instructions: Waves: each round runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping.\n10–12 min continuous\n• 1 min Ski @ 20 spm (RPE 3–4)\n• 1 min Ski @ 24 spm (RPE 5)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1437,21 +1430,22 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "10–12 min",
-                    "name": "continuous"
+                    "name": "Continuous"
                   },
                   {
                     "duration": "1 min",
                     "intensity": "RPE 3–4",
-                    "name": "@ 20 spm"
+                    "name": "Ski @ 20 spm"
                   },
                   {
                     "duration": "1 min",
                     "intensity": "RPE 5",
-                    "name": "@ 24 spm"
+                    "name": "Ski @ 24 spm"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Waves: each round runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241048/mood_app/workout_images/1zo355rz_skiierg.jpg',
           intensityReason: 'Small rate changes add interest without added strain.',
@@ -1490,7 +1484,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 2 moves in order. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241056/mood_app/workout_images/7ynxfrel_ski1.jpg',
           intensityReason: 'Technique emphasis spreads work while staying easy.',
@@ -1518,7 +1513,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "circuit",
+                "type": "straight",
                 "movements": [
                   {
                     "name": "Pull / 20s Easy",
@@ -1538,7 +1533,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. 3 rounds — all 3 moves in order. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241048/mood_app/workout_images/1zo355rz_skiierg.jpg',
           intensityReason: 'Small builds keep fun up without heavy fatigue buildup.',
@@ -1579,7 +1575,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 5
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 rounds — follow the 2 timed segments in order, no skipping. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241056/mood_app/workout_images/7ynxfrel_ski1.jpg',
           intensityReason: 'Slight tempo keeps interest while mechanics stay crisp.',
@@ -1608,7 +1605,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Easy Singles',
           duration: '6–8 min',
           description: 'Simple singles; short contacts; relaxed quiet shoulders.',
-          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 sets of 40s — rest between sets, take all of it.\n3 rounds\n• 40s Jump / 20s Rest (RPE 3–4)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 sets of 40s — rest between sets, take all of it.\n3 sets\n• 40s Jump / 20s Rest (RPE 3–4)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1622,7 +1619,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 sets of 40s — rest between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241067/mood_app/workout_images/hx5xzvml_download_14_.jpg',
           intensityReason: 'Light rhythm warms calves and lungs with minimal stress.',
@@ -1643,7 +1641,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Box Step Rope',
           duration: '6–8 min',
           description: 'Alternating steps under rope; easy beat; relaxed flow.',
-          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 sets of 45s — rest between sets, take all of it.\n3 rounds\n• 45s Step Rope / 15s Rest (RPE 3–4)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 sets of 45s — rest between sets, take all of it.\n3 sets\n• 45s Step Rope / 15s Rest (RPE 3–4)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1657,7 +1655,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 sets of 45s — rest between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241078/mood_app/workout_images/vjbmjg1y_jr_singles.jpg',
           intensityReason: 'Step pattern lowers impact and keeps rhythm friendly.',
@@ -1698,7 +1697,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241067/mood_app/workout_images/hx5xzvml_download_14_.jpg',
           intensityReason: 'Slight tempo raises HR while remaining comfortable.',
@@ -1719,7 +1719,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Side-to-Side Steps',
           duration: '8–10 min',
           description: 'Small side shuffles under rope; smooth even rhythm.',
-          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 sets of 40s — rest between sets, take all of it.\n5 rounds\n• 40s Lateral Steps / 20s Rest (RPE 4–5)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 sets of 40s — rest between sets, take all of it.\n5 sets\n• 40s Lateral Steps / 20s Rest (RPE 4–5)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1733,7 +1733,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 5
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 sets of 40s — rest between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241078/mood_app/workout_images/vjbmjg1y_jr_singles.jpg',
           intensityReason: 'Mild lateral steps add variety and light coordination.',
@@ -1778,7 +1779,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 3 moves in order. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241055/mood_app/workout_images/7xdwafzn_download_15_.jpg',
           intensityReason: 'Short rhythm changes stimulate without heavy strain.',
@@ -1799,7 +1801,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Sprinkle Doubles',
           duration: '10–12 min',
           description: 'Singles base with 5–10 double-unders sprinkled in calmly.',
-          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 sets of 60s — rest between sets, take all of it.\n5 rounds\n• 60s Singles; add 5–10 DU anywhere (RPE 5–6)\n• 30–45s Rest',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 sets of 60s — rest between sets, take all of it.\n5 sets\n• 60s Singles; add 5–10 DU anywhere (RPE 5–6)\n• 30–45s Rest',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1813,7 +1815,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 5
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 sets of 60s — rest between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241075/mood_app/workout_images/nj4p5yh5_download_16_.jpg',
           intensityReason: 'Occasional doubles add challenge while volume stays low.',
@@ -1850,17 +1853,15 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Step-Ups Easy",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "8–10 min",
                     "intensity": "RPE 3–4",
                     "name": "Continuous Step-Ups"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241050/mood_app/workout_images/43a622qp_download_17_.jpg',
           intensityReason: 'Low step work moves legs with minimal joint impact.',
@@ -1900,7 +1901,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 3 rounds — all 2 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241062/mood_app/workout_images/dgbd4a69_download_18_.jpg',
           intensityReason: 'Box target keeps depth safe with comfortable cadence.',
@@ -1941,7 +1943,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 rounds — all 2 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241050/mood_app/workout_images/43a622qp_download_17_.jpg',
           intensityReason: 'Small knee drive lifts HR without jumping impact.',
@@ -1976,13 +1979,14 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                   },
                   {
                     "name": "Step-Ups Easy",
-                    "reps": "45s",
-                    "note": "Repeat flow"
+                    "note": "Repeat flow",
+                    "reps": "45s"
                   }
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 rounds — all 2 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241067/mood_app/workout_images/ikffehr2_download_19_.jpg',
           intensityReason: 'Light pulses increase time under tension comfortably.',
@@ -2024,7 +2028,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 5
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Every rep at full intent — reset your stance between reps; speed beats load. 5 rounds — all 2 moves in order. Rest 30s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241067/mood_app/workout_images/ikffehr2_download_19_.jpg',
           intensityReason: 'Low jumps keep playful intent with soft controlled landings.',
@@ -2045,7 +2050,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Box Jump Clusters',
           duration: '12–14 min',
           description: 'Two jumps, 10s rest, two jumps; step down always.',
-          battlePlan: 'Instructions: Cluster set: 2 Jumps → 10s rest → 2 Jumps — the built-in mini-rest keeps every rep explosive, don\'t cut it short. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 5 sets of 4 — rest between sets, take all of it.\n5 rounds\n• 4 Jumps — cluster style\n• Then 60s Easy Step-Ups\nRepeat; total RPE 5–6',
+          battlePlan: 'Instructions: Cluster set: 2 Jumps → 10s rest → 2 Jumps — the built-in mini-rest keeps every rep explosive, don\'t cut it short. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 5 sets of 4 — rest between sets, take all of it.\n5 sets\n• 4 Jumps — cluster style\n• Then 60s Easy Step-Ups\nRepeat; total RPE 5–6',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2053,14 +2058,15 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Jumps → 10s rest → 2 Jumps",
-                    "reps": "2",
-                    "note": "Then 60s Easy Step-Ups; Repeat; total RPE 5–6"
+                    "name": "Jumps",
+                    "note": "cluster style; Then 60s Easy Step-Ups; Repeat; total RPE 5–6",
+                    "reps": "4"
                   }
                 ],
                 "rounds": 5
               }
-            ]
+            ],
+            "instructions": "Cluster set: 2 Jumps → 10s rest → 2 Jumps — the built-in mini-rest keeps every rep explosive, don't cut it short. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 5 sets of 4 — rest between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241076/mood_app/workout_images/qj1k6asd_bj.jpg',
           intensityReason: 'Clusters sustain jump quality with brief micro-rests.',
@@ -2116,7 +2122,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 4 moves in order. Rest 30s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241066/mood_app/workout_images/gwmz0zxk_download_3_.jpg',
           intensityReason: 'Simple moves elevate flow with low joint and back stress.',
@@ -2165,7 +2172,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 4 moves in order. Rest 30s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241073/mood_app/workout_images/lz6xvlc5_download_4_.jpg',
           intensityReason: 'Gentle full-body mix builds heat without large fatigue.',
@@ -2226,7 +2234,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 2
               }
-            ]
+            ],
+            "instructions": "2 rounds — all 6 moves in order. Rest 60s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241045/mood_app/workout_images/04x6jgb3_download_5_.jpg',
           intensityReason: 'Light core and hip work supports posture and ease.',
@@ -2272,15 +2281,12 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                   {
                     "duration": "30s",
                     "name": "Dead Bug"
-                  },
-                  {
-                    "duration": "30s",
-                    "name": "Rest"
                   }
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "3 rounds — follow the 4 timed segments in order, no skipping. Rest 30s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241063/mood_app/workout_images/e0xo73cq_download_6_.jpg',
           intensityReason: 'Low-impact pace warms body without jumping stress.',
@@ -2328,15 +2334,12 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                     "duration": "30s",
                     "name": "Forearm Plank",
                     "tutorialSlug": "plank"
-                  },
-                  {
-                    "duration": "30s",
-                    "name": "Rest"
                   }
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "3 rounds — follow the 4 timed segments in order, no skipping. Rest 30s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241066/mood_app/workout_images/gwmz0zxk_download_3_.jpg',
           intensityReason: 'Short sets raise HR while pace stays conversational.',
@@ -2385,7 +2388,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 4 moves in order. Rest 30s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241073/mood_app/workout_images/lz6xvlc5_download_4_.jpg',
           intensityReason: 'Hinge, core, balance blend with easy controlled pacing.',
@@ -2434,7 +2438,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 4 moves in order. Rest 30s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241045/mood_app/workout_images/04x6jgb3_download_5_.jpg',
           intensityReason: 'Tiny hops add pop while impact stays manageable.',
@@ -2482,7 +2487,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 4 moves in order. Rest 30s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241063/mood_app/workout_images/e0xo73cq_download_6_.jpg',
           intensityReason: 'Gentle core and shoulder work adds tone without strain.',
@@ -2533,7 +2539,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 4 moves in order. Rest 30s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241070/mood_app/workout_images/jurt20jc_download_7_.jpg',
           intensityReason: 'Short jump sets lift HR; total impact stays moderate.',
@@ -2556,23 +2563,21 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           description: 'Few burpees per minute; squats and core fill remaining.',
           battlePlan: 'Instructions: Start the work at the top of every minute — whatever\'s left of the minute is your rest. Falling behind? Trim reps, don\'t skip minutes. Work top to bottom. EMOM for 12 minutes.\n• Odd minutes, 4–6 Burpees, then Squats till minute\n• Even minutes, 20s Hollow Hold, then Lunges till minute',
           plan: {
-            "format": "interval",
+            "format": "strength",
             "blocks": [
               {
-                "type": "interval",
+                "type": "superset",
                 "movements": [
                   {
-                    "name": "Odd: 4–6 Burpees, then Squats till minute",
-                    "tutorialSlug": "kb_squat"
+                    "name": "Odd minutes, 4–6 Burpees, then Squats till minute"
                   },
                   {
-                    "name": "Even: 20s Hollow Hold, then Lunges till minute",
-                    "tutorialSlug": "hollow_holds",
-                    "note": "EMOM 12 min"
+                    "name": "Even minutes, 20s Hollow Hold, then Lunges till minute"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Start the work at the top of every minute — whatever's left of the minute is your rest. Falling behind? Trim reps, don't skip minutes. Work top to bottom. EMOM for 12 minutes."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241052/mood_app/workout_images/560zzeug_download_8_.jpg',
           intensityReason: 'Sparse burpees add spice while rest moves stay easy.',
@@ -2598,10 +2603,10 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
             "format": "strength",
             "blocks": [
               {
-                "type": "superset",
+                "type": "straight",
                 "movements": [
                   {
-                    "name": "set flow",
+                    "name": "Set Flow",
                     "reps": "1"
                   },
                   {
@@ -2617,11 +2622,12 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                     "reps": "10"
                   },
                   {
-                    "name": "Between rungs: 20s Alternating Lunges"
+                    "name": "Between rungs, 20s Alternating Lunges"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241077/mood_app/workout_images/r5b5c9ea_download_9_.jpg',
           intensityReason: 'Short ladders challenge without heavy fatigue buildup.',
@@ -2670,7 +2676,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 4 moves in order. Rest 30s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241064/mood_app/workout_images/fx9b15hc_download_10_.jpg',
           intensityReason: 'Mixed jumps challenge safely with soft controlled landings.',
@@ -2707,17 +2714,15 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Breeze Pedal",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "8–10 min",
                     "intensity": "RPE 3",
                     "name": "Easy"
                   }
-                ]
+                ],
+                "rounds": 1
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241069/mood_app/workout_images/j0sczg6l_download_2_.jpg',
           intensityReason: 'Easy spin moves blood with very low systemic stress.',
@@ -2750,7 +2755,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                     "name": "Easy"
                   },
                   {
-                    "name": "3 × back-to-back"
+                    "name": "3 × Back-to-back"
                   },
                   {
                     "name": "The 40s Easy is the rest; no extra pause"
@@ -2758,7 +2763,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241074/mood_app/workout_images/m4tsgs02_download_1_.jpg',
           intensityReason: 'Brief pickups add spark without accumulating fatigue.',
@@ -2790,7 +2796,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "10–12 min",
-                    "name": "continuous"
+                    "name": "Continuous"
                   },
                   {
                     "duration": "1 min",
@@ -2804,7 +2810,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Waves: each round runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241069/mood_app/workout_images/j0sczg6l_download_2_.jpg',
           intensityReason: 'Oscillations lift HR while the ride stays comfortable.',
@@ -2843,7 +2850,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 2 moves in order. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241074/mood_app/workout_images/m4tsgs02_download_1_.jpg',
           intensityReason: 'Resistance shifts add variety under steady cadence.',
@@ -2874,12 +2882,13 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Mini-Tabata Lite",
-                    "reps": "1"
-                  },
-                  {
                     "duration": "4 min",
                     "name": "Easy"
+                  },
+                  {
+                    "duration": "10s",
+                    "intensity": "RPE 7",
+                    "name": "Hard  / 20s Easy"
                   },
                   {
                     "duration": "4–6 min",
@@ -2888,7 +2897,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Tabata: 20 seconds truly all-out, 10 seconds off. The last rounds should feel barely finishable. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241069/mood_app/workout_images/j0sczg6l_download_2_.jpg',
           intensityReason: 'Very short efforts spice an otherwise easy ride safely.',
@@ -2931,7 +2941,8 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. 3 rounds — all 3 moves in order. Each round is one cycle."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241074/mood_app/workout_images/m4tsgs02_download_1_.jpg',
           intensityReason: 'Short building pushes lift HR without overreaching.',

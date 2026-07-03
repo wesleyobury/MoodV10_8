@@ -19,15 +19,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Seated DB Overhead Extensions",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240802/mood_app/workout_images/4553zhn5_db_overhead_sc.jpg',
           intensityReason: 'Overhead position maximizes long-head triceps stretch',
@@ -66,16 +67,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Skullcrushers",
-                    "sets": 4,
-                    "reps": "12",
                     "note": "standard reps",
+                    "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "db_skull_crusher"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240804/mood_app/workout_images/4yj3bfg1_lying_db_sc.jpg',
           intensityReason: 'Horizontal position provides stable triceps isolation',
@@ -114,15 +116,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Kickbacks",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "15",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 15 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240814/mood_app/workout_images/lj8oy8ts_dumbell_kickback.jpg',
           intensityReason: 'Kickbacks emphasize peak triceps contraction',
@@ -163,16 +166,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Overhead DB Extensions",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "pause reps (1s bottom)",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "cable_overhead_tricep_extension"
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241099/mood_app/workout_images/yyzj0dlo_download_1_.jpg',
           intensityReason: 'Pauses in the stretch emphasize long-head load',
@@ -211,15 +215,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Skullcrushers",
-                    "sets": 4,
+                    "note": "burnout reps",
                     "reps": "15",
-                    "note": "burnout reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 15 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241082/mood_app/workout_images/5cjqt0fg_download.jpg',
           intensityReason: 'Extended reps build endurance and pump',
@@ -258,22 +263,23 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Overhead Extensions",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "standard reps",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "cable_overhead_tricep_extension"
                   },
                   {
                     "name": "DB Skullcrushers",
+                    "note": "superset with",
                     "reps": "10",
-                    "tutorialSlug": "db_skull_crusher",
-                    "note": "superset with"
+                    "tutorialSlug": "db_skull_crusher"
                   }
                 ],
                 "label": "Superset",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240802/mood_app/workout_images/4553zhn5_db_overhead_sc.jpg',
           intensityReason: 'Two angles maximize triceps fiber recruitment',
@@ -314,16 +320,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Overhead Extensions",
-                    "sets": 6,
-                    "reps": "8",
                     "note": "standard reps",
+                    "reps": "8",
+                    "sets": 6,
                     "tutorialSlug": "cable_overhead_tricep_extension"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241099/mood_app/workout_images/yyzj0dlo_download_1_.jpg',
           intensityReason: 'Heavy loads with strict form build maximum strength',
@@ -353,17 +360,23 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Extension Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop overhead extension workout driving mechanical fatigue.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets.\nBattle Plan — Drop Cluster\n• DB Overhead Extension\n• Set 1: 10 reps\n• Set 2: drop set — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
               {
                 "type": "straight",
-                "movements": [],
+                "movements": [
+                  {
+                    "name": "DB Overhead Extension",
+                    "note": "Set 1: 10 reps; Set 2: drop set — 10 → drop ~20% → 8; Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6"
+                  }
+                ],
                 "label": "Drop Cluster",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241082/mood_app/workout_images/5cjqt0fg_download.jpg',
           intensityReason: 'Drop clusters extend time under tension past failure',
@@ -402,16 +415,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "DB Skullcrushers",
-                    "sets": 4,
+                    "note": "burnout reps; Final set, squeeze to finish, hold full elbow extension 12–15s",
                     "reps": "12",
-                    "note": "burnout reps; Final set: squeeze to finish — hold full elbow extension 12–15s",
+                    "sets": 4,
                     "tutorialSlug": "db_skull_crusher"
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240801/mood_app/workout_images/18sc3txx_flat_db_sc.jpg',
           intensityReason: 'Burnout with iso hold completely exhausts triceps',
@@ -458,15 +472,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Seated KB Overhead Extensions",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241093/mood_app/workout_images/oei647bg_download_5_.jpg',
           intensityReason: 'Seated position isolates triceps for clean overhead extension',
@@ -505,15 +520,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "KB Floor Skullcrushers",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240811/mood_app/workout_images/knclvtk4_Flat_kb_sc.jpg',
           intensityReason: 'Floor provides consistent depth control',
@@ -552,15 +568,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline KB Tricep Extensions",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold lockout 10s",
                     "reps": "10",
-                    "note": "standard reps; Final set: squeeze to finish — hold lockout 10s"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240805/mood_app/workout_images/8346vntm_oh_kb_sc.jpg',
           intensityReason: 'Incline angle with iso hold maximizes triceps contraction',
@@ -601,16 +618,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "KB Overhead Extensions",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "pause reps (1s bottom)",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "cable_overhead_tricep_extension"
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240805/mood_app/workout_images/8346vntm_oh_kb_sc.jpg',
           intensityReason: 'Pauses in the stretch maximize long-head load',
@@ -649,15 +667,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Incline KB Skullcrushers",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240815/mood_app/workout_images/pyyiholy_incline_kb_sc.jpg',
           intensityReason: 'Incline angle changes resistance curve for varied stimulus',
@@ -696,15 +715,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "KB Floor Extensions",
-                    "sets": 4,
+                    "note": "burnout reps",
                     "reps": "15",
-                    "note": "burnout reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 15 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241097/mood_app/workout_images/uwwxoov7_download_4_.jpg',
           intensityReason: 'Extended reps build endurance and pump',
@@ -745,16 +765,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "KB Overhead Extensions",
-                    "sets": 6,
-                    "reps": "8",
                     "note": "standard reps",
+                    "reps": "8",
+                    "sets": 6,
                     "tutorialSlug": "cable_overhead_tricep_extension"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241093/mood_app/workout_images/oei647bg_download_5_.jpg',
           intensityReason: 'Heavy loads with strict form build maximum strength',
@@ -784,17 +805,23 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Extension Drop Cluster (45°)',
           duration: '18–20 min',
           description: 'Multi-drop incline KB workout driving mechanical fatigue.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop — 10 → lighter bell → 8. Set 3 — triple drop — 8 → lighter → 6 → lighter → 6.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets.\nBattle Plan — Drop Cluster\n• KB Overhead Extension (45°)\n• Set 1: 10 reps\n• Set 2: drop — 10 → lighter bell → 8\n• Set 3: triple drop — 8 → lighter → 6 → lighter → 6\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
               {
                 "type": "straight",
-                "movements": [],
+                "movements": [
+                  {
+                    "name": "KB Overhead Extension",
+                    "note": "Set 1: 10 reps; Set 2: drop — 10 → lighter bell → 8; Set 3: triple drop — 8 → lighter → 6 → lighter → 6"
+                  }
+                ],
                 "label": "Drop Cluster",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240805/mood_app/workout_images/8346vntm_oh_kb_sc.jpg',
           intensityReason: 'KB drops extend time under tension past failure',
@@ -833,15 +860,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "KB Extensions",
-                    "sets": 4,
+                    "note": "burnout reps; Final set, squeeze to finish, hold full extension 12–15s",
                     "reps": "12",
-                    "note": "burnout reps; Final set: squeeze to finish — hold full extension 12–15s"
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240811/mood_app/workout_images/knclvtk4_Flat_kb_sc.jpg',
           intensityReason: 'Burnout with iso hold completely exhausts triceps',
@@ -888,16 +916,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Skullcrushers",
-                    "sets": 4,
-                    "reps": "12",
                     "note": "standard reps",
+                    "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "ez_bar_skull_crusher"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_1e4509cd-7b58-4b0c-b78f-c8a74434260e/artifacts/4hcxd7ex_ez%20bar%20sc%202.avif',
           intensityReason: 'EZ bar angle reduces wrist strain for comfortable loading',
@@ -936,16 +965,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Close-Grip EZ Press",
-                    "sets": 4,
-                    "reps": "10",
                     "note": "standard reps",
+                    "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "close_grip_bench_press"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240567/mood_app/workout_images/5hyynoy0_cg_ez_bar_press.jpg',
           intensityReason: 'Close grip transfers load to triceps for compound pressing',
@@ -984,15 +1014,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Extensions",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold lockout 10s",
                     "reps": "10",
-                    "note": "standard reps; Final set: squeeze to finish — hold lockout 10s"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240585/mood_app/workout_images/sbl2u1ih_ez_bar_sc.jpg',
           intensityReason: 'Isometric finish maximizes triceps contraction',
@@ -1032,17 +1063,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Paused EZ Skullcrushers",
-                    "sets": 4,
-                    "reps": "10",
+                    "name": "Skullcrushers",
                     "note": "pause reps (1s bottom)",
-                    "tutorialSlug": "ez_bar_skull_crusher"
+                    "reps": "10",
+                    "sets": 4
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241095/mood_app/workout_images/pa8x192c_download_2_.jpg',
           intensityReason: 'Pauses in the stretch maximize long-head load',
@@ -1081,15 +1112,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Extensions",
-                    "sets": 4,
+                    "note": "burnout reps",
                     "reps": "15",
-                    "note": "burnout reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 15 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241096/mood_app/workout_images/ri9qkrqs_download_3_.jpg',
           intensityReason: 'Extended reps build endurance and pump',
@@ -1128,21 +1160,22 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Skullcrushers",
-                    "sets": 4,
                     "reps": "10",
+                    "sets": 4,
                     "tutorialSlug": "ez_bar_skull_crusher"
                   },
                   {
                     "name": "Close-Grip EZ Press",
+                    "note": "superset with",
                     "reps": "8",
-                    "tutorialSlug": "close_grip_bench_press",
-                    "note": "superset with"
+                    "tutorialSlug": "close_grip_bench_press"
                   }
                 ],
                 "label": "Superset",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_1e4509cd-7b58-4b0c-b78f-c8a74434260e/artifacts/4hcxd7ex_ez%20bar%20sc%202.avif',
           intensityReason: 'Isolation + compound maximizes triceps fatigue',
@@ -1183,15 +1216,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Skullcrushers",
-                    "sets": 6,
                     "reps": "8",
+                    "sets": 6,
                     "tutorialSlug": "ez_bar_skull_crusher"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240585/mood_app/workout_images/sbl2u1ih_ez_bar_sc.jpg',
           intensityReason: 'Heavy loads with strict form build maximum strength',
@@ -1221,17 +1255,23 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Extension Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop EZ extension workout driving fatigue.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets.\nBattle Plan — Drop Cluster\n• EZ-Bar Overhead Extension\n• Set 1: 10 reps\n• Set 2: drop — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
               {
                 "type": "straight",
-                "movements": [],
+                "movements": [
+                  {
+                    "name": "EZ-Bar Overhead Extension",
+                    "note": "Set 1: 10 reps; Set 2: drop — 10 → drop ~20% → 8; Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6"
+                  }
+                ],
                 "label": "Drop Cluster",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240583/mood_app/workout_images/rqvfpdvu_ez_bar_sc_3.jpg',
           intensityReason: 'Drop clusters extend time under tension past failure',
@@ -1270,15 +1310,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "EZ Extensions",
-                    "sets": 4,
+                    "note": "Final set, squeeze to finish, hold lockout 12–15s",
                     "reps": "12",
-                    "note": "Final set: squeeze to finish — hold lockout 12–15s"
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241095/mood_app/workout_images/pa8x192c_download_2_.jpg',
           intensityReason: 'Burnout with iso hold completely exhausts triceps',
@@ -1325,15 +1366,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Overhead Rope Extensions",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240894/mood_app/workout_images/k3gdq2dy_download_1_.jpg',
           intensityReason: 'Overhead cable position maximizes long-head stretch',
@@ -1372,15 +1414,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Straight-Bar Pushdowns",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241091/mood_app/workout_images/lv1qz5u4_download.jpg',
           intensityReason: 'Straight bar teaches strict downward extension',
@@ -1419,16 +1462,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Overhead Cable Extensions",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold full extension overhead 10s",
                     "reps": "10",
-                    "note": "standard reps; Final set: squeeze to finish — hold full extension overhead 10s",
+                    "sets": 4,
                     "tutorialSlug": "cable_overhead_tricep_extension"
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240563/mood_app/workout_images/44n90zpn_OH_tri_ext.jpg',
           intensityReason: 'Isometric finish maximizes triceps contraction',
@@ -1469,15 +1513,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Overhead Rope Extensions",
-                    "sets": 4,
+                    "note": "pause reps (1s in stretch)",
                     "reps": "10",
-                    "note": "pause reps (1s in stretch)"
+                    "sets": 4
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240894/mood_app/workout_images/k3gdq2dy_download_1_.jpg',
           intensityReason: 'Pauses in the stretch maximize long-head load',
@@ -1516,15 +1561,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "High-to-Low Rope Extensions",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241089/mood_app/workout_images/lruescv6_download_1_.jpg',
           intensityReason: 'High pulley angle alters loading curve',
@@ -1563,16 +1609,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Cable Extensions",
-                    "sets": 4,
-                    "reps": "15–20",
                     "note": "burnout reps",
+                    "reps": "15–20",
+                    "sets": 4,
                     "tutorialSlug": "cable_overhead_tricep_extension"
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 15–20 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241091/mood_app/workout_images/lv1qz5u4_download.jpg',
           intensityReason: 'Cables provide constant tension for pump work',
@@ -1613,16 +1660,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Overhead Cable Extensions",
-                    "sets": 6,
-                    "reps": "8",
                     "note": "standard reps",
+                    "reps": "8",
+                    "sets": 6,
                     "tutorialSlug": "cable_overhead_tricep_extension"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240894/mood_app/workout_images/k3gdq2dy_download_1_.jpg',
           intensityReason: 'Heavy loads with strict form build maximum strength',
@@ -1652,17 +1700,23 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Cable Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop overhead cable workout driving mechanical fatigue.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets.\nBattle Plan — Drop Cluster\n• Overhead Cable Extension\n• Set 1: 10 reps\n• Set 2: drop — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
               {
                 "type": "straight",
-                "movements": [],
+                "movements": [
+                  {
+                    "name": "Overhead Cable Extension",
+                    "note": "Set 1: 10 reps; Set 2: drop — 10 → drop ~20% → 8; Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6"
+                  }
+                ],
                 "label": "Drop Cluster",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240563/mood_app/workout_images/44n90zpn_OH_tri_ext.jpg',
           intensityReason: 'Cable drops extend time under tension past failure',
@@ -1701,16 +1755,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Rope Pushdowns",
-                    "sets": 4,
+                    "note": "burnout reps; Final set, squeeze to finish, hold full extension 12–15s",
                     "reps": "12",
-                    "note": "burnout reps; Final set: squeeze to finish — hold full extension 12–15s",
+                    "sets": 4,
                     "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241091/mood_app/workout_images/lv1qz5u4_download.jpg',
           intensityReason: 'Burnout with iso hold completely exhausts triceps',
@@ -1748,7 +1803,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rope Pushdown',
           duration: '10–12 min',
           description: 'Rope attachment builds triceps with simple tension',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60–75s between sets, take all of it.\n3 rounds\n• 10–12 Rope Pushdowns\nRest 60–75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60–75s between sets, take all of it.\n3 sets\n• 10–12 Rope Pushdowns\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1764,7 +1819,8 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241088/mood_app/workout_images/kn9gulrn_download_2_.jpg',
           intensityReason: 'Pushdowns teach elbow lockout form safely with traditional movements.',
@@ -1789,7 +1845,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Rope Ext',
           duration: '10–12 min',
           description: 'Cable overhead isolates stretch for stronger arms',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Overhead Rope Extensions\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 Overhead Rope Extensions\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1804,7 +1860,8 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240894/mood_app/workout_images/k3gdq2dy_download_1_.jpg',
           intensityReason: 'Overhead cable path increases long head tension',
@@ -1831,7 +1888,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Bar Ext',
           duration: '12–14 min',
           description: 'Straight bar hits triceps with longer stretch angle',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 75–90s between sets, take all of it.\n4 rounds\n• 8–10 Overhead Bar Extensions\nRest 75–90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 75–90s between sets, take all of it.\n4 sets\n• 8–10 Overhead Bar Extensions\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1846,7 +1903,8 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240887/mood_app/workout_images/fo2f287e_download_21_.jpg',
           intensityReason: 'Bar overhead creates continuous long head stress',
@@ -1871,7 +1929,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Negative Rope Ext',
           duration: '12–14 min',
           description: 'Slow eccentric rope reps increase hypertrophy load',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 75–90s between sets, take all of it.\n3 rounds\n• 8 Rope Overhead Extensions (3s eccentric)\nRest 75–90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 75–90s between sets, take all of it.\n3 sets\n• 8 Rope Overhead Extensions (3s eccentric)\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1887,7 +1945,8 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75–90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 75–90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240880/mood_app/workout_images/d111pjm2_download_2_.jpg',
           intensityReason: 'Three second lowers extend constant cable time',
@@ -1934,7 +1993,8 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 4 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241088/mood_app/workout_images/kn9gulrn_download_2_.jpg',
           intensityReason: 'Two grips build variety across pushdown fibers',
@@ -1982,7 +2042,8 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "21s: 7 reps in the bottom half, 7 in the top half, then 7 full reps — no rest inside the 21. 3 rounds — all 3 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240572/mood_app/workout_images/b4577jzi_cable_oh_ext.jpg',
           intensityReason: 'Seven seven seven partials overload triceps range',
@@ -2024,16 +2085,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Tricep Pushdowns",
-                    "sets": 4,
-                    "reps": "12",
                     "note": "standard reps",
+                    "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241086/mood_app/workout_images/ccill0t9_download_3_.jpg',
           intensityReason: 'Fixed path helps build strict elbow extension form',
@@ -2072,15 +2134,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pushdowns",
-                    "sets": 4,
+                    "note": "eccentric reps (3s return)",
                     "reps": "10",
-                    "note": "eccentric reps (3s return)"
+                    "sets": 4,
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "label": "Eccentric Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241098/mood_app/workout_images/yfoavc6k_download_2_.jpg',
           intensityReason: 'Slow eccentrics maximize triceps time under tension',
@@ -2119,15 +2183,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pushdowns",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold full extension 10s",
                     "reps": "10",
-                    "note": "standard reps; Final set: squeeze to finish — hold full extension 10s"
+                    "sets": 4,
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240568/mood_app/workout_images/7nj0ytab_tricep_push_down.jpg',
           intensityReason: 'Isometric finish maximizes triceps contraction',
@@ -2168,15 +2234,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pushdowns",
-                    "sets": 4,
+                    "note": "pause reps (1s at full extension)",
                     "reps": "10",
-                    "note": "pause reps (1s at full extension)"
+                    "sets": 4,
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241098/mood_app/workout_images/yfoavc6k_download_2_.jpg',
           intensityReason: 'Pauses eliminate rebound for pure elbow extension',
@@ -2215,15 +2283,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pushdowns",
-                    "sets": 4,
+                    "note": "burnout reps",
                     "reps": "15–20",
-                    "note": "burnout reps"
+                    "sets": 4,
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 15–20 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241086/mood_app/workout_images/ccill0t9_download_3_.jpg',
           intensityReason: 'Extended reps build endurance and pump',
@@ -2262,15 +2332,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pushdowns",
-                    "sets": 6,
+                    "note": "standard reps",
                     "reps": "10",
-                    "note": "standard reps"
+                    "sets": 6,
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "45–60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 10 — rest 45–60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240568/mood_app/workout_images/7nj0ytab_tricep_push_down.jpg',
           intensityReason: 'Short rest forces efficiency and stacks fatigue',
@@ -2311,15 +2383,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pushdowns",
-                    "sets": 6,
+                    "note": "standard reps",
                     "reps": "8",
-                    "note": "standard reps"
+                    "sets": 6,
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241086/mood_app/workout_images/ccill0t9_download_3_.jpg',
           intensityReason: 'Heavy loads with strict form build maximum strength',
@@ -2349,17 +2423,23 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pushdown Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop pushdown workout driving mechanical fatigue on a fixed handle.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets.\nBattle Plan — Drop Cluster\n• Triceps Pushdown\n• Set 1: 10 reps\n• Set 2: drop set — 10 → drop ~20% → 8\n• Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
               {
                 "type": "straight",
-                "movements": [],
+                "movements": [
+                  {
+                    "name": "Triceps Pushdown",
+                    "note": "Set 1: 10 reps; Set 2: drop set — 10 → drop ~20% → 8; Set 3: triple drop — 8 → drop ~15% → 6 → drop ~10% → 6"
+                  }
+                ],
                 "label": "Drop Cluster",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drop cluster — hit the reps, then strip ~15–20% and keep going with no rest; every drop is part of the same set. 3 working sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240568/mood_app/workout_images/7nj0ytab_tricep_push_down.jpg',
           intensityReason: 'Drop clusters extend time under tension past failure',
@@ -2398,15 +2478,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Pushdowns",
-                    "sets": 4,
+                    "note": "burnout reps; Final set, squeeze to finish, hold full extension 12–15s",
                     "reps": "12",
-                    "note": "burnout reps; Final set: squeeze to finish — hold full extension 12–15s"
+                    "sets": 4,
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241098/mood_app/workout_images/yfoavc6k_download_2_.jpg',
           intensityReason: 'Burnout with iso hold completely exhausts triceps',
@@ -2453,15 +2535,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Assisted Dips",
-                    "sets": 4,
                     "reps": "8–10",
+                    "sets": 4,
                     "tutorialSlug": "assisted_dips"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 8–10 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240800/mood_app/workout_images/0i8kr3ow_assisted_dips.jpg',
           intensityReason: 'Assistance allows proper form development',
@@ -2500,15 +2583,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Bench Dips",
-                    "sets": 4,
                     "reps": "12",
+                    "sets": 4,
                     "tutorialSlug": "bench_dips"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240900/mood_app/workout_images/pkwqrz0u_bdips.jpg',
           intensityReason: 'Bench position provides controlled bodyweight loading',
@@ -2547,16 +2631,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Dips",
-                    "sets": 4,
+                    "note": "Final set, squeeze to finish, hold top support 10s",
                     "reps": "8",
-                    "tutorialSlug": "dips",
-                    "note": "Final set: squeeze to finish — hold top support 10s"
+                    "sets": 4,
+                    "tutorialSlug": "dips"
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241092/mood_app/workout_images/o9irqfer_download_4_.jpg',
           intensityReason: 'Isometric hold maximizes triceps contraction',
@@ -2597,16 +2682,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Dips",
-                    "sets": 4,
-                    "reps": "8",
                     "note": "3s down",
+                    "reps": "8",
+                    "sets": 4,
                     "tutorialSlug": "dips"
                   }
                 ],
                 "label": "Eccentric Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241083/mood_app/workout_images/74stkm4f_download_3_.jpg',
           intensityReason: 'Slow eccentrics maximize triceps loading',
@@ -2644,14 +2730,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "4×AMRAP Dips",
+                    "name": "Dips",
+                    "reps": "AMRAP",
+                    "sets": 4,
                     "tutorialSlug": "dips"
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 4 sets of AMRAP — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241092/mood_app/workout_images/o9irqfer_download_4_.jpg',
           intensityReason: 'Extended reps build endurance and pump',
@@ -2690,20 +2779,22 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Dips",
-                    "sets": 4,
                     "reps": "8",
+                    "sets": 4,
                     "tutorialSlug": "dips"
                   },
                   {
                     "name": "Pushdowns",
+                    "note": "superset with",
                     "reps": "12",
-                    "note": "superset with"
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "label": "Superset",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240809/mood_app/workout_images/d13967iu_reg_dips.jpg',
           intensityReason: 'Compound + isolation maximizes triceps fatigue',
@@ -2744,15 +2835,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Weighted Dips",
-                    "sets": 6,
                     "reps": "6",
+                    "sets": 6,
                     "tutorialSlug": "dips"
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "6 sets of 6 — rest 120s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240816/mood_app/workout_images/qfzwrr6j_weighted_dips.jpg',
           intensityReason: 'Added weight builds serious pressing strength',
@@ -2782,7 +2874,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dip Drop Ladder',
           duration: '18–20 min',
           description: 'Bodyweight drop workout using assistance changes.',
-          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 3 sets of 6 — rest 120s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  6 weighted → bodyweight AMRAP → assisted AMRAP\nRest 120s',
+          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 3 sets of 6 — rest 120s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 sets:\n• Dip — 6 weighted → bodyweight AMRAP → assisted AMRAP\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2790,16 +2882,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Dip Drop Ladder",
-                    "reps": "6",
-                    "tutorialSlug": "dips"
+                    "name": "Dip",
+                    "reps": "6"
                   }
                 ],
                 "rounds": 3,
                 "label": "Drop Ladder",
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 3 sets of 6 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241083/mood_app/workout_images/74stkm4f_download_3_.jpg',
           intensityReason: 'Progressive drops extend set past failure',
@@ -2837,15 +2929,18 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "4×AMRAP Dips",
-                    "tutorialSlug": "dips",
-                    "note": "Final set: squeeze to finish — hold top 15s"
+                    "name": "Dips",
+                    "note": "Final set, squeeze to finish, hold top 15s",
+                    "reps": "AMRAP",
+                    "sets": 4,
+                    "tutorialSlug": "dips"
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. The hold is strict: locked position, squeezing hard, no drifting. 4 sets of AMRAP — rest 120s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241092/mood_app/workout_images/o9irqfer_download_4_.jpg',
           intensityReason: 'Burnout with iso hold completely exhausts triceps',
@@ -2892,15 +2987,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "TRX Tricep Extensions",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "10",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241084/mood_app/workout_images/8ci4ug40_trx_kneeling_tricep_extensions.jpg',
           intensityReason: 'Body angle controls resistance for progressive loading',
@@ -2939,15 +3035,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "TRX Extensions",
-                    "sets": 4,
+                    "note": "standard reps",
                     "reps": "12",
-                    "note": "standard reps"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241087/mood_app/workout_images/e9mzj704_download_4_.jpg',
           intensityReason: 'Upright angle reduces load for form development',
@@ -2986,15 +3083,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "TRX Extensions",
-                    "sets": 4,
+                    "note": "standard reps; Final set, squeeze to finish, hold arms fully straight 10s",
                     "reps": "8",
-                    "note": "standard reps; Final set: squeeze to finish — hold arms fully straight 10s"
+                    "sets": 4
                   }
                 ],
                 "label": "Standard + Isometric Finish",
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 60s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240565/mood_app/workout_images/4d87b909_trx_ext.jpg',
           intensityReason: 'Isometric finish maximizes triceps contraction',
@@ -3035,15 +3133,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "TRX Extensions",
-                    "sets": 4,
+                    "note": "eccentric reps (4s lower)",
                     "reps": "8",
-                    "note": "eccentric reps (4s lower)"
+                    "sets": 4
                   }
                 ],
                 "label": "Eccentric Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241087/mood_app/workout_images/e9mzj704_download_4_.jpg',
           intensityReason: 'Slow eccentrics maximize muscle fiber recruitment',
@@ -3082,15 +3181,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "TRX Extensions",
-                    "sets": 4,
+                    "note": "pause reps (1s bottom)",
                     "reps": "8",
-                    "note": "pause reps (1s bottom)"
+                    "sets": 4
                   }
                 ],
                 "label": "Pause Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241084/mood_app/workout_images/8ci4ug40_trx_kneeling_tricep_extensions.jpg',
           intensityReason: 'Pauses eliminate momentum for honest tension',
@@ -3128,14 +3228,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "4×AMRAP TRX Extensions",
-                    "reps": "burnout reps"
+                    "name": "TRX Extensions",
+                    "reps": "AMRAP",
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout Sets",
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 4 sets of AMRAP — rest 75s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240565/mood_app/workout_images/4d87b909_trx_ext.jpg',
           intensityReason: 'Extended reps build endurance and pump',
@@ -3176,15 +3278,16 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "TRX Extensions",
-                    "sets": 6,
+                    "note": "standard reps",
                     "reps": "6",
-                    "note": "standard reps"
+                    "sets": 6
                   }
                 ],
                 "label": "Standard Sets",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 6 — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240566/mood_app/workout_images/4x3zx4pl_trx_ext_2.jpg',
           intensityReason: 'Feet elevation dramatically increases bodyweight load',
@@ -3214,7 +3317,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'TRX Extension Drop-Angle Ladder',
           duration: '18–20 min',
           description: 'Angle-based drop workout using body position instead of weight.',
-          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 3 sets of 8 — rest 90s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  8 reps (feet elevated) → step forward → 8 reps → step forward → AMRAP\nRest 90s',
+          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 3 sets of 8 — rest 90s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 sets:\n• TRX Extension — 8 reps (feet elevated) → step forward → 8 reps → step forward → AMRAP\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3222,7 +3325,7 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "reps → step forward → 8 reps → step forward → AMRAP",
+                    "name": "TRX Extension",
                     "reps": "8"
                   }
                 ],
@@ -3230,7 +3333,8 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "label": "Drop Ladder",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241087/mood_app/workout_images/e9mzj704_download_4_.jpg',
           intensityReason: 'Angle changes extend set past failure without weight changes',
@@ -3268,15 +3372,17 @@ export const tricepsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "4×AMRAP TRX Extensions",
-                    "reps": "burnout reps",
-                    "note": "Final set: squeeze to finish — hold full extension 15s"
+                    "name": "TRX Extensions",
+                    "note": "Final set, squeeze to finish, hold full extension 15s",
+                    "reps": "AMRAP",
+                    "sets": 4
                   }
                 ],
                 "label": "Burnout + Isometric",
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. The hold is strict: locked position, squeezing hard, no drifting. 4 sets of AMRAP — rest 90s between sets."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241084/mood_app/workout_images/8ci4ug40_trx_kneeling_tricep_extensions.jpg',
           intensityReason: 'Burnout with iso hold completely exhausts triceps',

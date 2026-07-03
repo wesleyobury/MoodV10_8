@@ -20,16 +20,21 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "5 min",
-                    "name": "brisk walk"
+                    "name": "Brisk Walk"
+                  },
+                  {
+                    "duration": "1 min",
+                    "name": "Easy Jog + 1 Min Walk"
                   },
                   {
                     "duration": "5 min",
-                    "name": "easy walk"
+                    "name": "Easy Walk"
                   }
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "6 rounds — follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240858/mood_app/workout_images/z01f1fdc_download_4_.jpg',
           intensityReason: 'Short jog bouts lift heart rate gently while protecting joints.',
@@ -61,19 +66,20 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "5 min",
-                    "name": "easy jog"
+                    "name": "Easy Jog"
                   },
                   {
                     "duration": "15–20 min",
-                    "name": "continuous easy→steady"
+                    "name": "Continuous Easy→steady"
                   },
                   {
                     "duration": "3–5 min",
-                    "name": "walk"
+                    "name": "Walk"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240841/mood_app/workout_images/hi2nsiep_download_5_.jpg',
           intensityReason: 'Gradual pace rise improves aerobic economy with low stress.',
@@ -105,16 +111,21 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "4 min",
-                    "name": "brisk walk"
+                    "name": "Brisk Walk"
+                  },
+                  {
+                    "duration": "2 min",
+                    "name": "Run + 2 Min Walk"
                   },
                   {
                     "duration": "2–4 min",
-                    "name": "walk"
+                    "name": "Walk"
                   }
                 ],
                 "rounds": 6
               }
-            ]
+            ],
+            "instructions": "6 rounds — follow the 2 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240824/mood_app/workout_images/4842p5as_download_6_.jpg',
           intensityReason: 'Alternating run and walk develops endurance and steady rhythm.',
@@ -148,11 +159,11 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "8 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
                     "duration": "10–12 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
                     "duration": "8–10 min",
@@ -161,11 +172,12 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                   },
                   {
                     "duration": "4–5 min",
-                    "name": "easy"
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 4 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240858/mood_app/workout_images/z01f1fdc_download_4_.jpg',
           intensityReason: 'Late controlled tempo adds stress while preserving technique.',
@@ -197,35 +209,36 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "8 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
-                    "name": "hard/1 easy",
+                    "name": "Hard/1 Easy",
                     "reps": "1"
                   },
                   {
-                    "name": "hard/2 easy",
+                    "name": "Hard/2 Easy",
                     "reps": "2"
                   },
                   {
-                    "name": "hard/3 easy",
+                    "name": "Hard/3 Easy",
                     "reps": "3"
                   },
                   {
-                    "name": "hard/2 easy",
+                    "name": "Hard/2 Easy",
                     "reps": "2"
                   },
                   {
-                    "name": "hard/1 easy",
+                    "name": "Hard/1 Easy",
                     "reps": "1"
                   },
                   {
                     "duration": "5 min",
-                    "name": "easy"
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. follow the 7 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240841/mood_app/workout_images/hi2nsiep_download_5_.jpg',
           intensityReason: 'Variable surges elevate output and sharpen pacing control.',
@@ -257,20 +270,21 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "8–10 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
                     "duration": "20 min",
                     "intensity": "talk in phrases",
-                    "name": "steady"
+                    "name": "Steady"
                   },
                   {
                     "duration": "4–6 min",
-                    "name": "easy"
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240824/mood_app/workout_images/4842p5as_download_6_.jpg',
           intensityReason: 'Continuous sub-tempo builds durability and running economy.',
@@ -303,19 +317,20 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "min easy + 3x20s strides",
+                    "name": "Min Easy + 3x20s Strides",
                     "reps": "10"
                   },
                   {
-                    "name": "3x: 8 min threshold + 2 min easy"
+                    "name": "3x · 8 Min Threshold + 2 Min Easy"
                   },
                   {
-                    "name": "min easy",
+                    "name": "Min Easy",
                     "reps": "6–8"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240858/mood_app/workout_images/z01f1fdc_download_4_.jpg',
           intensityReason: 'Repeated threshold bouts raise LT while preserving form quality.',
@@ -347,18 +362,19 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "10 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
-                    "name": "10x: 1 min hard + 1 min easy"
+                    "name": "10x · 1 Min Hard + 1 Min Easy"
                   },
                   {
                     "duration": "8–10 min",
-                    "name": "easy"
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240841/mood_app/workout_images/hi2nsiep_download_5_.jpg',
           intensityReason: 'One-minute surges build power and aerobic sharpness efficiently.',
@@ -390,11 +406,11 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "10 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
                     "duration": "10 min",
-                    "name": "steady"
+                    "name": "Steady"
                   },
                   {
                     "duration": "10 min",
@@ -402,11 +418,12 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                   },
                   {
                     "duration": "8–10 min",
-                    "name": "easy"
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. follow the 4 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240824/mood_app/workout_images/4842p5as_download_6_.jpg',
           intensityReason: 'Stepwise intensity rise builds resilience and precise pacing.',
@@ -446,18 +463,19 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "8 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
-                    "name": "6x: 30s 90–110 RPM + 90s easy"
+                    "name": "6x · 30s 90–110 RPM + 90s easy"
                   },
                   {
                     "duration": "6–8 min",
-                    "name": "easy"
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240827/mood_app/workout_images/69v88tej_download_1_.jpg',
           intensityReason: 'Short spin-ups add leg speed with minimal joint loading.',
@@ -489,18 +507,19 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "6–8 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
-                    "name": "6x: 1 min RPE 6 + 1 min easy"
+                    "name": "6x · 1 min RPE 6 + 1 min easy"
                   },
                   {
                     "duration": "5–6 min",
-                    "name": "easy"
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240842/mood_app/workout_images/i40y65gs_download_2_.jpg',
           intensityReason: 'One-minute efforts lift heart rate safely and smoothly.',
@@ -523,29 +542,30 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rolling Ride',
           duration: '30–35 min',
           description: 'Sprinkle moderates to learn effort control and posture skills.',
-          battlePlan: 'Instructions: Follow the 3 timed segments in order, no skipping.\n• 10 min easy\n• Min moderate + 2 min easy — 3 × (3)\n• 5–8 min easy',
+          battlePlan: 'Instructions: Follow the 3 timed segments in order, no skipping.\n• 10 min easy\n• Intervals — 3 × (3 min moderate + 2 min easy)\n• 5–8 min easy',
           plan: {
-            "format": "strength",
+            "format": "interval",
             "blocks": [
               {
-                "type": "superset",
+                "type": "interval",
                 "movements": [
                   {
-                    "name": "min easy",
-                    "reps": "10"
+                    "duration": "10 min",
+                    "name": "Easy"
                   },
                   {
-                    "name": "min moderate + 2 min easy",
-                    "sets": 3,
-                    "reps": "3"
+                    "name": "Intervals",
+                    "reps": "3 min moderate + 2 min easy",
+                    "sets": 3
                   },
                   {
-                    "name": "min easy",
-                    "reps": "5–8"
+                    "duration": "5–8 min",
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240848/mood_app/workout_images/o68zu5hu_download_3_.jpg',
           intensityReason: 'Mostly easy riding with pick-ups enhances aerobic base.',
@@ -578,19 +598,20 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "min easy + 3x20s spin-ups",
+                    "name": "Min Easy + 3x20s Spin-ups",
                     "reps": "10"
                   },
                   {
-                    "name": "3x: 8 min RPE 7–8 + 3 min easy"
+                    "name": "3x · 8 min RPE 7–8 + 3 min easy"
                   },
                   {
-                    "name": "min easy",
+                    "name": "Min Easy",
                     "reps": "6–8"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240827/mood_app/workout_images/69v88tej_download_1_.jpg',
           intensityReason: 'Near-threshold work boosts power and repeatable endurance.',
@@ -621,19 +642,20 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "min easy",
+                    "name": "Min Easy",
                     "reps": "10"
                   },
                   {
-                    "name": "3x: x4 + 3 min easy"
+                    "name": "3x · X4 + 3 Min Easy"
                   },
                   {
-                    "name": "min easy",
+                    "name": "Min Easy",
                     "reps": "6–8"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240842/mood_app/workout_images/i40y65gs_download_2_.jpg',
           intensityReason: 'Fluctuating around threshold trains breath and control.',
@@ -665,18 +687,19 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "10 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
-                    "name": "5x: 2 min 60–70 RPM RPE 7 + 2 min easy"
+                    "name": "5x · 2 min 60–70 RPM RPE 7 + 2 min easy"
                   },
                   {
                     "duration": "6–8 min",
-                    "name": "easy"
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240848/mood_app/workout_images/o68zu5hu_download_3_.jpg',
           intensityReason: 'Low-cadence seated grinds build strength with safety.',
@@ -709,19 +732,20 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "min easy + 3x15s high cadence",
+                    "name": "Min Easy + 3x15s High Cadence",
                     "reps": "12"
                   },
                   {
-                    "name": "6x: 2 min RPE 9 + 2 min easy"
+                    "name": "6x · 2 min RPE 9 + 2 min easy"
                   },
                   {
-                    "name": "min easy",
+                    "name": "Min Easy",
                     "reps": "8–10"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240827/mood_app/workout_images/69v88tej_download_1_.jpg',
           intensityReason: 'Short hard reps raise aerobic ceiling with quality rest.',
@@ -753,35 +777,36 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "12 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
-                    "name": "hard + 4 easy",
+                    "name": "Hard + 4 Easy",
                     "reps": "4"
                   },
                   {
-                    "name": "hard + 6 easy",
+                    "name": "Hard + 6 Easy",
                     "reps": "6"
                   },
                   {
-                    "name": "hard + 8 easy",
+                    "name": "Hard + 8 Easy",
                     "reps": "8"
                   },
                   {
-                    "name": "hard + 6 easy",
+                    "name": "Hard + 6 Easy",
                     "reps": "6"
                   },
                   {
-                    "name": "hard + 4 easy",
+                    "name": "Hard + 4 Easy",
                     "reps": "4"
                   },
                   {
                     "duration": "6–8 min",
-                    "name": "easy"
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. follow the 7 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240842/mood_app/workout_images/i40y65gs_download_2_.jpg',
           intensityReason: 'Stepwise threshold sets build durable pacing control.',
@@ -813,18 +838,19 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "duration": "12 min",
-                    "name": "easy"
+                    "name": "Easy"
                   },
                   {
-                    "name": "10x: 30s RPE 9 + 90s easy"
+                    "name": "10x · 30s RPE 9 + 90s easy"
                   },
                   {
                     "duration": "8–10 min",
-                    "name": "easy"
+                    "name": "Easy"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240848/mood_app/workout_images/o68zu5hu_download_3_.jpg',
           intensityReason: 'High-torque sprints train snap and smooth transitions.',
@@ -855,7 +881,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Freestyle 25s Easy Pace',
           duration: '18–24 min',
           description: 'Easy 25s with generous rest emphasize comfort and clean form.',
-          battlePlan: 'Instructions: Freestyle, 30–45s rest: own pace if needed.\n• Freestyle, 30–45s rest — 10 × (25)\n• Backstroke easy, 30–45s rest — 4 × (25)\n• 50 easy Freestyle',
+          battlePlan: 'Instructions: Freestyle, 30–45s rest: own pace if needed.\n• Freestyle — 10 × 25 (30–45s rest)\n• Backstroke easy — 4 × 25 (30–45s rest)\n• 50 Easy Freestyle',
           plan: {
             "format": "strength",
             "blocks": [
@@ -863,22 +889,25 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Freestyle, 30–45s rest",
-                    "sets": 10,
-                    "reps": "25"
+                    "name": "Freestyle",
+                    "reps": "25",
+                    "rest": "30–45s",
+                    "sets": 10
                   },
                   {
-                    "name": "Backstroke easy, 30–45s rest",
-                    "sets": 4,
-                    "reps": "25"
+                    "name": "Backstroke easy",
+                    "reps": "25",
+                    "rest": "30–45s",
+                    "sets": 4
                   },
                   {
-                    "name": "easy Freestyle",
+                    "name": "Easy Freestyle",
                     "reps": "50"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Freestyle, 30–45s rest: own pace if needed."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240834/mood_app/workout_images/aj6v6kqd_fss.jpg',
           intensityReason: 'Very short repeats reduce fatigue and shoulder strain safely.',
@@ -901,7 +930,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Mixed 25s Own Pace',
           duration: '18–24 min',
           description: 'Simple free, back, breast 25s with long rest encourage skill.',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom. Freestyle, 30–45s rest: own pace.\n• Freestyle, 30–45s rest — 6 × (25)\n• Backstroke, 30–45s rest — 4 × (25)\n• Breaststroke, 40–60s rest — 4 × (25)\n• 50 easy choice',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom. Freestyle, 30–45s rest: own pace.\n• Freestyle — 6 × 25 (30–45s rest)\n• Backstroke — 4 × 25 (30–45s rest)\n• Breaststroke — 4 × 25 (40–60s rest)\n• 50 easy choice',
           plan: {
             "format": "strength",
             "blocks": [
@@ -909,27 +938,31 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Freestyle, 30–45s rest",
-                    "sets": 6,
-                    "reps": "25"
+                    "name": "Freestyle",
+                    "reps": "25",
+                    "rest": "30–45s",
+                    "sets": 6
                   },
                   {
-                    "name": "Backstroke, 30–45s rest",
-                    "sets": 4,
-                    "reps": "25"
+                    "name": "Backstroke",
+                    "reps": "25",
+                    "rest": "30–45s",
+                    "sets": 4
                   },
                   {
-                    "name": "Breaststroke, 40–60s rest",
-                    "sets": 4,
-                    "reps": "25"
+                    "name": "Breaststroke",
+                    "reps": "25",
+                    "rest": "40–60s",
+                    "sets": 4
                   },
                   {
-                    "name": "easy choice",
+                    "name": "Easy Choice",
                     "reps": "50"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom. Freestyle, 30–45s rest: own pace."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240838/mood_app/workout_images/ctmkdqkg_backs.jpg',
           intensityReason: 'Variety at self-selected pace builds comfort and confidence.',
@@ -952,7 +985,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Freestyle 50s Light',
           duration: '20–26 min',
           description: 'Easy-moderate 50s refine breathing rhythm and streamline feel.',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\n• Freestyle easy-moderate, 40–60s rest — 6 × (50)\n• Kick easy (choice), 30–45s rest — 4 × (25)\n• 50 easy Freestyle',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\n• Freestyle easy-moderate — 6 × 50 (40–60s rest)\n• Kick easy (choice) — 4 × 25 (30–45s rest)\n• 50 Easy Freestyle',
           plan: {
             "format": "strength",
             "blocks": [
@@ -960,22 +993,25 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Freestyle easy-moderate, 40–60s rest",
-                    "sets": 6,
-                    "reps": "50"
+                    "name": "Freestyle easy-moderate",
+                    "reps": "50",
+                    "rest": "40–60s",
+                    "sets": 6
                   },
                   {
-                    "name": "Kick easy , 30–45s rest",
-                    "sets": 4,
-                    "reps": "25"
+                    "name": "Kick easy",
+                    "reps": "25",
+                    "rest": "30–45s",
+                    "sets": 4
                   },
                   {
-                    "name": "easy Freestyle",
+                    "name": "Easy Freestyle",
                     "reps": "50"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240851/mood_app/workout_images/u6pkmpnl_fss2.jpg',
           intensityReason: 'Short 50s with rest build pacing awareness and ease strain.',
@@ -1000,7 +1036,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Free 50s Steady',
           duration: '24–32 min',
           description: 'Twelve 50s at relaxed pace build efficiency and control.',
-          battlePlan: 'Instructions: Freestyle steady, 25–45s rest: own pace ok.\n• Freestyle steady, 25–45s rest — 12 × (50)\n• 100 easy Freestyle',
+          battlePlan: 'Instructions: Freestyle steady, 25–45s rest: own pace ok.\n• Freestyle steady — 12 × 50 (25–45s rest)\n• 100 Easy Freestyle',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1008,17 +1044,19 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Freestyle steady, 25–45s rest",
-                    "sets": 12,
-                    "reps": "50"
+                    "name": "Freestyle steady",
+                    "reps": "50",
+                    "rest": "25–45s",
+                    "sets": 12
                   },
                   {
-                    "name": "easy Freestyle",
+                    "name": "Easy Freestyle",
                     "reps": "100"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Freestyle steady, 25–45s rest: own pace ok."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240853/mood_app/workout_images/w5dwgsls_download_23_.jpg',
           intensityReason: 'Steady 50s improve rhythm and base with flexible rests.',
@@ -1041,7 +1079,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Stroke Mix 50s Steady',
           duration: '26–34 min',
           description: 'Free, back, breast 50s improve posture and comfort evenly.',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\n• Freestyle steady, 25–40s rest — 6 × (50)\n• Backstroke steady, 30–45s rest — 4 × (50)\n• Breaststroke steady, 35–60s rest — 4 × (50)\n• 100 easy Freestyle',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\n• Freestyle steady — 6 × 50 (25–40s rest)\n• Backstroke steady — 4 × 50 (30–45s rest)\n• Breaststroke steady — 4 × 50 (35–60s rest)\n• 100 Easy Freestyle',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1049,27 +1087,31 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Freestyle steady, 25–40s rest",
-                    "sets": 6,
-                    "reps": "50"
+                    "name": "Freestyle steady",
+                    "reps": "50",
+                    "rest": "25–40s",
+                    "sets": 6
                   },
                   {
-                    "name": "Backstroke steady, 30–45s rest",
-                    "sets": 4,
-                    "reps": "50"
+                    "name": "Backstroke steady",
+                    "reps": "50",
+                    "rest": "30–45s",
+                    "sets": 4
                   },
                   {
-                    "name": "Breaststroke steady, 35–60s rest",
-                    "sets": 4,
-                    "reps": "50"
+                    "name": "Breaststroke steady",
+                    "reps": "50",
+                    "rest": "35–60s",
+                    "sets": 4
                   },
                   {
-                    "name": "easy Freestyle",
+                    "name": "Easy Freestyle",
                     "reps": "100"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240835/mood_app/workout_images/bh9k9ord_bs.jpg',
           intensityReason: 'Balanced stroke work builds coordination under control.',
@@ -1092,7 +1134,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Freestyle 100s Easy-Moderate',
           duration: '26–36 min',
           description: 'Six easy-moderate 100s train breathing and steady rhythm.',
-          battlePlan: 'Instructions: Freestyle easy-moderate, 45–75s rest: own pace.\n• Freestyle easy-moderate, 45–75s rest — 6 × (100)\n• 100 easy Freestyle',
+          battlePlan: 'Instructions: Freestyle easy-moderate, 45–75s rest: own pace.\n• Freestyle easy-moderate — 6 × 100 (45–75s rest)\n• 100 Easy Freestyle',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1100,17 +1142,19 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Freestyle easy-moderate, 45–75s rest",
-                    "sets": 6,
-                    "reps": "100"
+                    "name": "Freestyle easy-moderate",
+                    "reps": "100",
+                    "rest": "45–75s",
+                    "sets": 6
                   },
                   {
-                    "name": "easy Freestyle",
+                    "name": "Easy Freestyle",
                     "reps": "100"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Freestyle easy-moderate, 45–75s rest: own pace."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240851/mood_app/workout_images/u6pkmpnl_fss2.jpg',
           intensityReason: 'Longer 100s build pacing control without heavy fatigue.',
@@ -1135,7 +1179,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Free 100s Strong-Relaxed',
           duration: '30–40 min',
           description: 'Eight strong 100s emphasize clean catch and even pacing.',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\n• Freestyle strong, 45–75s rest — 8 × (100)\n• 200 easy Freestyle',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\n• Freestyle strong — 8 × 100 (45–75s rest)\n• 200 Easy Freestyle',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1143,17 +1187,19 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Freestyle strong, 45–75s rest",
-                    "sets": 8,
-                    "reps": "100"
+                    "name": "Freestyle strong",
+                    "reps": "100",
+                    "rest": "45–75s",
+                    "sets": 8
                   },
                   {
-                    "name": "easy Freestyle",
+                    "name": "Easy Freestyle",
                     "reps": "200"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240834/mood_app/workout_images/aj6v6kqd_fss.jpg',
           intensityReason: 'Firm 100s with rest sustain speed and technique quality.',
@@ -1176,7 +1222,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Mixed Strokes 100s',
           duration: '32–40 min',
           description: 'Free, back, breast 100s with rest enhance technical stability.',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\n• Freestyle, 40–60s — 4 × (100)\n• Backstroke, 45–75s — 3 × (100)\n• Breaststroke, 60–90s — 3 × (100)\n• 200 easy Freestyle',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\n• Freestyle — 4 × 100 (40–60s)\n• Backstroke — 3 × 100 (45–75s)\n• Breaststroke — 3 × 100 (60–90s)\n• 200 Easy Freestyle',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1184,27 +1230,28 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Freestyle, 40–60s",
-                    "sets": 4,
-                    "reps": "100"
+                    "name": "Freestyle",
+                    "reps": "100",
+                    "sets": 4
                   },
                   {
-                    "name": "Backstroke, 45–75s",
-                    "sets": 3,
-                    "reps": "100"
+                    "name": "Backstroke",
+                    "reps": "100",
+                    "sets": 3
                   },
                   {
-                    "name": "Breaststroke, 60–90s",
-                    "sets": 3,
-                    "reps": "100"
+                    "name": "Breaststroke",
+                    "reps": "100",
+                    "sets": 3
                   },
                   {
-                    "name": "easy Freestyle",
+                    "name": "Easy Freestyle",
                     "reps": "200"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240835/mood_app/workout_images/bh9k9ord_bs.jpg',
           intensityReason: 'Longer mixed repeats build resilience and balance safely.',
@@ -1227,12 +1274,12 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Free Ladder Own Pace',
           duration: '32–42 min',
           description: '50-100-150-100-50 builds rhythm with own-pace recovery.',
-          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\n• 50 Freestyle, 30–45s\n• 100 Freestyle, 45–75s\n• 150 Freestyle, 60–90s\n• 100 Freestyle, 45–75s\n• 50 Freestyle, 30–45s\n• 100 easy Freestyle',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\n• 50 Freestyle, 30–45s\n• 100 Freestyle, 45–75s\n• 150 Freestyle, 60–90s\n• 100 Freestyle, 45–75s\n• 50 Freestyle, 30–45s\n• 100 Easy Freestyle',
           plan: {
             "format": "strength",
             "blocks": [
               {
-                "type": "superset",
+                "type": "straight",
                 "movements": [
                   {
                     "name": "Freestyle, 30–45s",
@@ -1255,12 +1302,13 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                     "reps": "50"
                   },
                   {
-                    "name": "easy Freestyle",
+                    "name": "Easy Freestyle",
                     "reps": "100"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240853/mood_app/workout_images/w5dwgsls_download_23_.jpg',
           intensityReason: 'Progressing distances train pacing and efficiency steadily.',
@@ -1291,7 +1339,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hill Intro Mix',
           duration: '16–22 min',
           description: 'High knees, shuffles, jogs with walkbacks refine uphill form.',
-          battlePlan: 'Instructions: Uphill high knees: walk down. Uphill side shuffle L/R (alt): walk down. Uphill easy jog: walk down. Work top to bottom.\n• Uphill high knees — 4 × (~25yd)\n• Uphill side shuffle L/R (alt) — 4 × (~25yd)\n• Uphill easy jog — 4 × (~30yd)',
+          battlePlan: 'Instructions: Uphill high knees: walk down. Uphill side shuffle L/R (alt): walk down. Uphill easy jog: walk down. Work top to bottom.\n• Uphill High Knees — 4 × (~25yd)\n• Uphill Side Shuffle L/R (Alt) — 4 × (~25yd)\n• Uphill Easy Jog — 4 × (~30yd)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1299,23 +1347,24 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "yd uphill high knees",
-                    "sets": 4,
-                    "reps": "25"
+                    "name": "Uphill High Knees",
+                    "reps": "~25yd",
+                    "sets": 4
                   },
                   {
-                    "name": "yd uphill side shuffle L/R",
-                    "sets": 4,
-                    "reps": "25"
+                    "name": "Uphill Side Shuffle L/R",
+                    "reps": "~25yd",
+                    "sets": 4
                   },
                   {
-                    "name": "yd uphill easy jog",
-                    "sets": 4,
-                    "reps": "30"
+                    "name": "Uphill Easy Jog",
+                    "reps": "~30yd",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Uphill high knees: walk down. Uphill side shuffle L/R (alt): walk down. Uphill easy jog: walk down. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240833/mood_app/workout_images/904pke23_download_9_.jpg',
           intensityReason: 'Short uphill drills build coordination and confidence safely.',
@@ -1338,7 +1387,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hill Form Trio',
           duration: '16–22 min',
           description: 'Three drills uphill with walkbacks develop cadence control.',
-          battlePlan: 'Instructions: Uphill skips: walk down. Uphill marching high knees: walk down. Uphill backpedal: walk down. Work top to bottom.\n• Uphill skips — 4 × (~20yd)\n• Uphill marching high knees — 4 × (~20yd)\n• Uphill backpedal — 4 × (~20yd)',
+          battlePlan: 'Instructions: Uphill skips: walk down. Uphill marching high knees: walk down. Uphill backpedal: walk down. Work top to bottom.\n• Uphill Skips — 4 × (~20yd)\n• Uphill Marching High Knees — 4 × (~20yd)\n• Uphill Backpedal — 4 × (~20yd)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1346,23 +1395,24 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "yd uphill skips",
-                    "sets": 4,
-                    "reps": "20"
+                    "name": "Uphill Skips",
+                    "reps": "~20yd",
+                    "sets": 4
                   },
                   {
-                    "name": "yd uphill marching high knees",
-                    "sets": 4,
-                    "reps": "20"
+                    "name": "Uphill Marching High Knees",
+                    "reps": "~20yd",
+                    "sets": 4
                   },
                   {
-                    "name": "yd uphill backpedal",
-                    "sets": 4,
-                    "reps": "20"
+                    "name": "Uphill Backpedal",
+                    "reps": "~20yd",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Uphill skips: walk down. Uphill marching high knees: walk down. Uphill backpedal: walk down. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240840/mood_app/workout_images/fuxu9rk0_download_8_.jpg',
           intensityReason: 'Marching, skipping, backpedal build timing and balance.',
@@ -1385,7 +1435,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hill Stability Mix',
           duration: '18–24 min',
           description: 'Shuffle, karaoke, jog sequence improves control transitions.',
-          battlePlan: 'Instructions: 3 rounds — all 5 moves in order.\n• 3 rounds:\n\n• uphill side shuffle L — ~25yd\n• uphill side shuffle R — ~25yd\n• uphill karaoke — ~25yd, lead L\n• uphill karaoke — ~25yd, lead R\n• uphill easy jog — ~30yd\nWalk down between each',
+          battlePlan: 'Instructions: 3 rounds — all 5 moves in order.\n• 3 rounds:\n\n• Uphill Side Shuffle L — ~25yd\n• Uphill Side Shuffle R — ~25yd\n• Uphill Karaoke — ~25yd, Lead L\n• Uphill Karaoke — ~25yd, Lead R\n• Uphill Easy Jog — ~30yd\nWalk down between each',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1393,29 +1443,30 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "yd uphill side shuffle L",
-                    "reps": "25"
+                    "name": "Uphill Side Shuffle L",
+                    "reps": "~25yd"
                   },
                   {
-                    "name": "yd uphill side shuffle R",
-                    "reps": "25"
+                    "name": "Uphill Side Shuffle R",
+                    "reps": "~25yd"
                   },
                   {
-                    "name": "yd uphill karaoke",
-                    "reps": "25"
+                    "name": "Uphill Karaoke",
+                    "reps": "~25yd, Lead L"
                   },
                   {
-                    "name": "yd uphill karaoke",
-                    "reps": "25"
+                    "name": "Uphill Karaoke",
+                    "reps": "~25yd, Lead R"
                   },
                   {
-                    "name": "yd uphill easy jog",
-                    "reps": "30"
+                    "name": "Uphill Easy Jog",
+                    "reps": "~30yd"
                   }
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 5 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240850/mood_app/workout_images/ts9r3lf1_download_15_.jpg',
           intensityReason: 'Lateral and rotational steps enhance hip strength safely.',
@@ -1438,7 +1489,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Sprint-Only Intro',
           duration: '16–22 min',
           description: 'Repeat brief sprints with walkbacks to engrain mechanics.',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 8 sets of ~20–25yd — rest between sets. Uphill sprints: full walk down.\n• Uphill sprints — 8 × (~20–25yd)',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 8 sets of ~20–25yd — rest between sets. Uphill sprints: full walk down.\n• Uphill Sprints — 8 × (~20–25yd)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1446,13 +1497,14 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "yd uphill sprints, full walk down",
-                    "sets": 8,
-                    "reps": "20–25"
+                    "name": "Uphill Sprints",
+                    "reps": "~20–25yd",
+                    "sets": 8
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 8 sets of ~20–25yd — rest between sets. Uphill sprints: full walk down."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240831/mood_app/workout_images/8d9vosf3_download_12_.jpg',
           intensityReason: 'Very short incline sprints teach speed with low impact.',
@@ -1477,7 +1529,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hill Power Mix',
           duration: '18–24 min',
           description: 'Powerful jumps plus sprints develop rhythm and drive uphill.',
-          battlePlan: 'Instructions: Uphill bounds: walk down. Uphill skips for height: walk down. Uphill sprints: walk down. Work top to bottom.\n• Uphill bounds — 6 × (12–15)\n• Uphill skips for height — 6 × (~25–30yd)\n• Uphill sprints — 6 × (~25–30yd)',
+          battlePlan: 'Instructions: Uphill bounds: walk down. Uphill skips for height: walk down. Uphill sprints: walk down. Work top to bottom.\n• Uphill Bounds — 6 × (12–15)\n• Uphill Skips For Height — 6 × (~25–30yd)\n• Uphill Sprints — 6 × (~25–30yd)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1485,23 +1537,24 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "uphill bounds",
-                    "sets": 6,
-                    "reps": "12–15"
+                    "name": "Uphill Bounds",
+                    "reps": "12–15",
+                    "sets": 6
                   },
                   {
-                    "name": "yd uphill skips for height",
-                    "sets": 6,
-                    "reps": "25–30"
+                    "name": "Uphill Skips For Height",
+                    "reps": "~25–30yd",
+                    "sets": 6
                   },
                   {
-                    "name": "yd uphill sprints",
-                    "sets": 6,
-                    "reps": "25–30"
+                    "name": "Uphill Sprints",
+                    "reps": "~25–30yd",
+                    "sets": 6
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Uphill bounds: walk down. Uphill skips for height: walk down. Uphill sprints: walk down. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240859/mood_app/workout_images/zqqramht_download_13_.jpg',
           intensityReason: 'Bounds, skips, sprints build elastic strength safely.',
@@ -1524,7 +1577,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Agility Hill Circuit',
           duration: '20–26 min',
           description: 'Karaoke, shuffles, backpedal, sprints build coordination.',
-          battlePlan: 'Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. 4 rounds — all 6 moves in order.\n• 4 rounds:\n\n• uphill karaoke — ~30yd, lead L\n• uphill karaoke — ~30yd, lead R\n• uphill side shuffle L — ~25yd\n• uphill side shuffle R — ~25yd\n• uphill backpedal — ~25yd\n• uphill sprint — ~25yd\nWalk down between reps',
+          battlePlan: 'Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. 4 rounds — all 6 moves in order.\n• 4 rounds:\n\n• Uphill Karaoke — ~30yd, Lead L\n• Uphill Karaoke — ~30yd, Lead R\n• Uphill Side Shuffle L — ~25yd\n• Uphill Side Shuffle R — ~25yd\n• Uphill Backpedal — ~25yd\n• Uphill Sprint — ~25yd\nWalk down between reps',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1532,33 +1585,34 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "yd uphill karaoke",
-                    "reps": "30"
+                    "name": "Uphill Karaoke",
+                    "reps": "~30yd, Lead L"
                   },
                   {
-                    "name": "yd uphill karaoke",
-                    "reps": "30"
+                    "name": "Uphill Karaoke",
+                    "reps": "~30yd, Lead R"
                   },
                   {
-                    "name": "yd uphill side shuffle L",
-                    "reps": "25"
+                    "name": "Uphill Side Shuffle L",
+                    "reps": "~25yd"
                   },
                   {
-                    "name": "yd uphill side shuffle R",
-                    "reps": "25"
+                    "name": "Uphill Side Shuffle R",
+                    "reps": "~25yd"
                   },
                   {
-                    "name": "yd uphill backpedal",
-                    "reps": "25"
+                    "name": "Uphill Backpedal",
+                    "reps": "~25yd"
                   },
                   {
-                    "name": "yd uphill sprint",
-                    "reps": "25"
+                    "name": "Uphill Sprint",
+                    "reps": "~25yd"
                   }
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. 4 rounds — all 6 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240850/mood_app/workout_images/ts9r3lf1_download_15_.jpg',
           intensityReason: 'Lateral and rotational moves challenge balance safely.',
@@ -1581,33 +1635,30 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Strength Endurance Mix',
           duration: '20–26 min',
           description: 'Lunges, broad jumps, sprints reinforce controlled power.',
-          battlePlan: 'Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 6 rounds — all 3 moves in order.\n• 6 rounds:\n\n• uphill walking lunges — ~20yd\n6–8 uphill broad jumps (~20 yd)\n• uphill sprint — ~20yd\nWalk down recovery',
+          battlePlan: 'Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 6 rounds — all 3 moves in order.\n• 6 rounds:\n\n• Uphill Walking Lunges — ~20yd\n6–8 uphill broad jumps (~20 yd)\n• Uphill Sprint — ~20yd\nWalk down recovery',
           plan: {
-            "format": "strength",
+            "format": "circuit",
             "blocks": [
               {
-                "type": "superset",
+                "type": "circuit",
                 "movements": [
                   {
-                    "name": "Strength Endurance Mix",
-                    "reps": "6"
+                    "name": "Uphill Walking Lunges",
+                    "reps": "~20yd"
                   },
                   {
-                    "name": "yd uphill walking lunges",
-                    "reps": "20",
-                    "tutorialSlug": "walking_lunges"
-                  },
-                  {
-                    "name": "uphill broad jumps",
+                    "name": "Uphill Broad Jumps",
                     "reps": "6–8"
                   },
                   {
-                    "name": "yd uphill sprint",
-                    "reps": "20"
+                    "name": "Uphill Sprint",
+                    "reps": "~20yd"
                   }
-                ]
+                ],
+                "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 6 rounds — all 3 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240856/mood_app/workout_images/xyu6atdo_download_10_.jpg',
           intensityReason: 'Lunges and jumps pre-fatigue, then sprints build posture.',
@@ -1630,7 +1681,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Sprint-Only 30s',
           duration: '18–24 min',
           description: 'Ten uphill sprints at 30–40 yd build acceleration safely.',
-          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 10 sets of ~30–40yd — rest between sets. Uphill sprints: full walk down.\n• Uphill sprints — 10 × (~30–40yd)',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 10 sets of ~30–40yd — rest between sets. Uphill sprints: full walk down.\n• Uphill Sprints — 10 × (~30–40yd)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1638,13 +1689,14 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "yd uphill sprints, full walk down",
-                    "sets": 10,
-                    "reps": "30–40"
+                    "name": "Uphill Sprints",
+                    "reps": "~30–40yd",
+                    "sets": 10
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 10 sets of ~30–40yd — rest between sets. Uphill sprints: full walk down."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240831/mood_app/workout_images/8d9vosf3_download_12_.jpg',
           intensityReason: 'Short fast sprints improve power with full recovery.',
@@ -1669,7 +1721,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Mixed Hill Gauntlet',
           duration: '24–30 min',
           description: 'Sprints, knees, bounds, karaoke, shuffles train versatility.',
-          battlePlan: 'Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 3 rounds — all 5 moves in order.\n• 3 rounds:\n\n• uphill sprint — ~40yd\n• uphill high knees — ~30yd\n12–15 uphill bounds\n• uphill karaoke — ~30yd, each lead\n• uphill side shuffle — ~30yd, each\nWalk down between all',
+          battlePlan: 'Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 3 rounds — all 5 moves in order.\n• 3 rounds:\n\n• Uphill Sprint — ~40yd\n• Uphill High Knees — ~30yd\n12–15 uphill bounds\n• Uphill Karaoke — ~30yd, Each Lead\n• Uphill Side Shuffle — ~30yd, Each\nWalk down between all',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1677,29 +1729,30 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "yd uphill sprint",
-                    "reps": "40"
+                    "name": "Uphill Sprint",
+                    "reps": "~40yd"
                   },
                   {
-                    "name": "yd uphill high knees",
-                    "reps": "30"
+                    "name": "Uphill High Knees",
+                    "reps": "~30yd"
                   },
                   {
-                    "name": "uphill bounds",
+                    "name": "Uphill Bounds",
                     "reps": "12–15"
                   },
                   {
-                    "name": "yd uphill karaoke",
-                    "reps": "30"
+                    "name": "Uphill Karaoke",
+                    "reps": "~30yd, Each Lead"
                   },
                   {
-                    "name": "yd uphill side shuffle",
-                    "reps": "30"
+                    "name": "Uphill Side Shuffle",
+                    "reps": "~30yd, Each"
                   }
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 3 rounds — all 5 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240821/mood_app/workout_images/0c0jva1u_download_11_.jpg',
           intensityReason: 'Varied drills challenge stiffness, power, and precision.',
@@ -1722,32 +1775,30 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bear Crawl + Sprint',
           duration: '22–28 min',
           description: 'Crawl, backpedal, sprint rotations build control, quickness.',
-          battlePlan: 'Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 8 rounds — all 3 moves in order.\n• 8 rounds:\n\n• uphill bear crawl — ~15–20yd\n• uphill backpedal — ~20yd\n• uphill sprint — ~20–25yd\nWalk down recovery',
+          battlePlan: 'Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 8 rounds — all 3 moves in order.\n• 8 rounds:\n\n• Uphill Bear Crawl — ~15–20yd\n• Uphill Backpedal — ~20yd\n• Uphill Sprint — ~20–25yd\nWalk down recovery',
           plan: {
-            "format": "strength",
+            "format": "circuit",
             "blocks": [
               {
-                "type": "superset",
+                "type": "circuit",
                 "movements": [
                   {
-                    "name": "Bear Crawl + Sprint",
-                    "reps": "8"
+                    "name": "Uphill Bear Crawl",
+                    "reps": "~15–20yd"
                   },
                   {
-                    "name": "yd uphill bear crawl",
-                    "reps": "15–20"
+                    "name": "Uphill Backpedal",
+                    "reps": "~20yd"
                   },
                   {
-                    "name": "yd uphill backpedal",
-                    "reps": "20"
-                  },
-                  {
-                    "name": "yd uphill sprint",
-                    "reps": "20–25"
+                    "name": "Uphill Sprint",
+                    "reps": "~20–25yd"
                   }
-                ]
+                ],
+                "rounds": 8
               }
-            ]
+            ],
+            "instructions": "Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 8 rounds — all 3 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240837/mood_app/workout_images/cno97kue_download_14_.jpg',
           intensityReason: 'Crawling loads core; sprints add speed under fatigue.',
@@ -1770,32 +1821,30 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Jump + Sprint Mix',
           duration: '22–28 min',
           description: 'Skips, broad jumps, sprints build explosive rhythm safely.',
-          battlePlan: 'Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 6 rounds — all 3 moves in order.\n• 6 rounds:\n\n• uphill skips for distance — ~25yd\n6–8 uphill broad jumps (~20–25 yd)\n• uphill sprint — ~30yd\nWalk down',
+          battlePlan: 'Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 6 rounds — all 3 moves in order.\n• 6 rounds:\n\n• Uphill Skips For Distance — ~25yd\n6–8 uphill broad jumps (~20–25 yd)\n• Uphill Sprint — ~30yd\nWalk down',
           plan: {
-            "format": "strength",
+            "format": "circuit",
             "blocks": [
               {
-                "type": "superset",
+                "type": "circuit",
                 "movements": [
                   {
-                    "name": "Jump + Sprint Mix",
-                    "reps": "6"
+                    "name": "Uphill Skips For Distance",
+                    "reps": "~25yd"
                   },
                   {
-                    "name": "yd uphill skips for distance",
-                    "reps": "25"
-                  },
-                  {
-                    "name": "uphill broad jumps",
+                    "name": "Uphill Broad Jumps",
                     "reps": "6–8"
                   },
                   {
-                    "name": "yd uphill sprint",
-                    "reps": "30"
+                    "name": "Uphill Sprint",
+                    "reps": "~30yd"
                   }
-                ]
+                ],
+                "rounds": 6
               }
-            ]
+            ],
+            "instructions": "Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 6 rounds — all 3 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240859/mood_app/workout_images/zqqramht_download_13_.jpg',
           intensityReason: 'Jumps prime tissues; sprints reinforce fast mechanics.',
@@ -1818,7 +1867,7 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Sprint-Only 20s',
           duration: '18–24 min',
           description: 'Twelve 20–25 yd sprints prioritize high-quality starts.',
-          battlePlan: 'Instructions: 12 sets of ~20–25yd — rest between sets. Uphill sprints: full walk down.\n• Uphill sprints — 12 × (~20–25yd)',
+          battlePlan: 'Instructions: 12 sets of ~20–25yd — rest between sets. Uphill sprints: full walk down.\n• Uphill Sprints — 12 × (~20–25yd)',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1826,13 +1875,14 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "yd uphill sprints, full walk down",
-                    "sets": 12,
-                    "reps": "20–25"
+                    "name": "Uphill Sprints",
+                    "reps": "~20–25yd",
+                    "sets": 12
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "12 sets of ~20–25yd — rest between sets. Uphill sprints: full walk down."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240831/mood_app/workout_images/8d9vosf3_download_12_.jpg',
           intensityReason: 'Very short sprints train quickness with low cumulative load.',
@@ -1871,27 +1921,27 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "bench squats",
-                    "reps": "12",
-                    "tutorialSlug": "kb_squat"
+                    "name": "Bench Squats",
+                    "reps": "12"
                   },
                   {
-                    "name": "incline push-ups",
+                    "name": "Incline Push-ups",
                     "reps": "10"
                   },
                   {
-                    "name": "bench dips",
+                    "name": "Bench Dips",
                     "reps": "8",
                     "tutorialSlug": "bench_dips"
                   },
                   {
                     "duration": "60s",
-                    "name": "easy walk"
+                    "name": "Easy Walk"
                   }
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "3 rounds — follow the 4 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240819/mood_app/workout_images/0aaca0zk_download_16_.jpg',
           intensityReason: 'Simple bodyweight moves build strength with joint safety.',
@@ -1922,26 +1972,28 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "step-ups/side",
+                    "name": "Step-ups/side",
                     "reps": "10"
                   },
                   {
-                    "name": "bench rows",
-                    "reps": "8"
+                    "name": "Bench Rows",
+                    "reps": "8",
+                    "tutorialSlug": "barbell_row"
                   },
                   {
-                    "name": "bench dips",
+                    "name": "Bench Dips",
                     "reps": "8–10",
                     "tutorialSlug": "bench_dips"
                   },
                   {
-                    "name": "m easy jog",
-                    "reps": "150–200"
+                    "name": "Easy Jog",
+                    "reps": "~150–200m"
                   }
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — all 4 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240839/mood_app/workout_images/f9t1jnvw_download_17_.jpg',
           intensityReason: 'Alternating strength and jog sustains HR without spikes.',
@@ -1972,27 +2024,27 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "walking lunges/side",
-                    "reps": "8",
-                    "tutorialSlug": "walking_lunges"
+                    "name": "Walking Lunges/side",
+                    "reps": "8"
                   },
                   {
-                    "name": "incline push-ups",
+                    "name": "Incline Push-ups",
                     "reps": "8–10"
                   },
                   {
-                    "name": "bench dips",
+                    "name": "Bench Dips",
                     "reps": "8",
                     "tutorialSlug": "bench_dips"
                   },
                   {
                     "duration": "60s",
-                    "name": "easy walk"
+                    "name": "Easy Walk"
                   }
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — follow the 4 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240845/mood_app/workout_images/jzueym21_download_18_.jpg',
           intensityReason: 'Gentle pairing improves movement quality and stability.',
@@ -2025,31 +2077,33 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "bench rows",
+                    "name": "Bench Rows",
+                    "reps": "10",
+                    "tutorialSlug": "barbell_row"
+                  },
+                  {
+                    "name": "Push-ups",
                     "reps": "10"
                   },
                   {
-                    "name": "push-ups",
-                    "reps": "10"
-                  },
-                  {
-                    "name": "dips",
+                    "name": "Dips",
                     "reps": "10–12",
                     "tutorialSlug": "dips"
                   },
                   {
-                    "name": "step-ups/side",
+                    "name": "Step-ups/side",
                     "reps": "10"
                   },
                   {
-                    "name": "m run",
-                    "reps": "200"
+                    "name": "Run",
+                    "reps": "~200m"
                   }
                 ],
                 "rounds": 4,
                 "rest": "60–90s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 rounds — all 5 moves in order, then rest 60–90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240854/mood_app/workout_images/xmpcsqgf_download_22_.jpg',
           intensityReason: 'Balanced upper/lower work with runs sustains output.',
@@ -2074,31 +2128,32 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           description: 'Dips, jumps, push-ups, short runs cycle with planned rest.',
           battlePlan: 'Instructions: Start the work at the top of every minute — whatever\'s left of the minute is your rest. Falling behind? Trim reps, don\'t skip minutes. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Work top to bottom. EMOM for 20 minutes.\n\n• 10–12 dips\n• 10 bench jumps or step-ups/side\n• 10–12 push-ups\n• Run — ~200m',
           plan: {
-            "format": "interval",
+            "format": "strength",
             "blocks": [
               {
-                "type": "interval",
+                "type": "superset",
                 "movements": [
                   {
-                    "duration": "20 min",
-                    "name": "EMOM:"
-                  },
-                  {
-                    "name": "Min 1: 10–12 dips",
+                    "name": "Dips",
+                    "reps": "10–12",
                     "tutorialSlug": "dips"
                   },
                   {
-                    "name": "Min 2: 10 bench jumps or step-ups/side"
+                    "name": "Bench Jumps Or Step-ups/side",
+                    "reps": "10"
                   },
                   {
-                    "name": "Min 3: 10–12 push-ups"
+                    "name": "Push-ups",
+                    "reps": "10–12"
                   },
                   {
-                    "name": "Min 4: 200 m run"
+                    "name": "Run",
+                    "reps": "~200m"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Start the work at the top of every minute — whatever's left of the minute is your rest. Falling behind? Trim reps, don't skip minutes. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Work top to bottom. EMOM for 20 minutes."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240844/mood_app/workout_images/ixf6e9ex_download_20_.jpg',
           intensityReason: 'EMOM timing preserves quality while managing fatigue.',
@@ -2129,27 +2184,28 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "bench dips",
+                    "name": "Bench Dips",
                     "reps": "12",
                     "tutorialSlug": "bench_dips"
                   },
                   {
-                    "name": "air squats",
-                    "reps": "15",
-                    "tutorialSlug": "kb_squat"
+                    "name": "Air Squats",
+                    "reps": "15"
                   },
                   {
-                    "name": "bench rows",
-                    "reps": "10"
+                    "name": "Bench Rows",
+                    "reps": "10",
+                    "tutorialSlug": "barbell_row"
                   },
                   {
-                    "name": "m run",
-                    "reps": "200"
+                    "name": "Run",
+                    "reps": "~200m"
                   }
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 4 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240819/mood_app/workout_images/0aaca0zk_download_16_.jpg',
           intensityReason: 'Mixed calisthenics and light runs train steady output.',
@@ -2182,26 +2238,27 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "dips",
+                    "name": "Dips",
                     "reps": "15",
                     "tutorialSlug": "dips"
                   },
                   {
-                    "name": "decline push-ups",
+                    "name": "Decline Push-ups",
                     "reps": "12"
                   },
                   {
-                    "name": "bench jumps",
+                    "name": "Bench Jumps",
                     "reps": "12"
                   },
                   {
-                    "name": "m run",
-                    "reps": "300"
+                    "name": "Run",
+                    "reps": "~300m"
                   }
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 3 rounds — all 4 moves in order. Rest 90s between moves."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240844/mood_app/workout_images/ixf6e9ex_download_20_.jpg',
           intensityReason: 'Higher volumes with runs test posture and breathing.',
@@ -2226,25 +2283,21 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
           description: 'Alternate dips, push-ups with sprints and walkbacks.',
           battlePlan: 'Instructions: Start the work at the top of every minute — whatever\'s left of the minute is your rest. Falling behind? Trim reps, don\'t skip minutes. Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Work top to bottom. Alternating EMOM for 24 minutes.\n\n• Odd minutes, 12 dips + 10 push-ups\n• Even minutes, 2x 50 m sprint (walk back)',
           plan: {
-            "format": "interval",
+            "format": "strength",
             "blocks": [
               {
-                "type": "interval",
+                "type": "superset",
                 "movements": [
                   {
-                    "duration": "24 min",
-                    "name": "alternating EMOM:"
+                    "name": "Odd minutes, 12 dips + 10 push-ups"
                   },
                   {
-                    "name": "Odd: 12 dips + 10 push-ups",
-                    "tutorialSlug": "dips"
-                  },
-                  {
-                    "name": "Even: 2x 50 m sprint"
+                    "name": "Even minutes, 2x 50 m sprint"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Start the work at the top of every minute — whatever's left of the minute is your rest. Falling behind? Trim reps, don't skip minutes. Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Work top to bottom. Alternating EMOM for 24 minutes."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240854/mood_app/workout_images/xmpcsqgf_download_22_.jpg',
           intensityReason: 'Short sprints add intensity while EMOM preserves form.',
@@ -2275,26 +2328,28 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "dips",
+                    "name": "Dips",
                     "reps": "15",
                     "tutorialSlug": "dips"
                   },
                   {
-                    "name": "push-ups",
+                    "name": "Push-ups",
                     "reps": "12"
                   },
                   {
-                    "name": "burpees",
-                    "reps": "12"
+                    "name": "Burpees",
+                    "reps": "12",
+                    "tutorialSlug": "burpee_box_jump"
                   },
                   {
-                    "name": "m run",
-                    "reps": "200"
+                    "name": "Run",
+                    "reps": "~200m"
                   }
                 ],
                 "rounds": 4
               }
-            ]
+            ],
+            "instructions": "4 rounds — all 4 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240823/mood_app/workout_images/2o1s2i0l_download_19_.jpg',
           intensityReason: 'Pairing push patterns and runs increases sustained load.',
@@ -2333,27 +2388,28 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "laps easy jog",
+                    "name": "Laps Easy Jog",
                     "reps": "2"
                   },
                   {
-                    "name": "m high knees",
-                    "sets": 2,
-                    "reps": "40"
+                    "name": "High knees",
+                    "reps": "~40m",
+                    "sets": 2
                   },
                   {
-                    "name": "m A-skips",
-                    "sets": 2,
-                    "reps": "40"
+                    "name": "A-skips",
+                    "reps": "~40m",
+                    "sets": 2
                   },
                   {
-                    "name": "m relaxed strides",
-                    "sets": 4,
-                    "reps": "40"
+                    "name": "Relaxed strides",
+                    "reps": "~40m",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "High knees: walk back. A-skips: walk back. Relaxed strides: walk back. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240857/mood_app/workout_images/y6eufem1_download_28_.jpg',
           intensityReason: 'Short drills improve rhythm and posture with low impact.',
@@ -2384,27 +2440,28 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "laps easy jog",
+                    "name": "Laps Easy Jog",
                     "reps": "2"
                   },
                   {
-                    "name": "m bounds",
-                    "sets": 2,
-                    "reps": "40"
+                    "name": "Bounds",
+                    "reps": "~40m",
+                    "sets": 2
                   },
                   {
-                    "name": "m skips for height",
-                    "sets": 2,
-                    "reps": "40"
+                    "name": "Skips for height",
+                    "reps": "~40m",
+                    "sets": 2
                   },
                   {
-                    "name": "m straights moderate",
-                    "sets": 4,
-                    "reps": "60"
+                    "name": "Straights moderate",
+                    "reps": "~60m",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Bounds: walk back. Skips for height: walk back. Straights moderate: walk back. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240849/mood_app/workout_images/osnepsje_download_25_.jpg',
           intensityReason: 'Low-volume plyos enhance elasticity with control.',
@@ -2435,15 +2492,17 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "laps easy jog",
+                    "name": "Laps Easy Jog",
                     "reps": "2"
                   },
                   {
-                    "name": "8–10x30 m sprints, full walk back"
+                    "name": "Sprints",
+                    "reps": "8–10"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom. Sprints: ~30m each, full walk back."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240830/mood_app/workout_images/8chb1prv_download_29_.jpg',
           intensityReason: 'Very short sprints teach acceleration without overload.',
@@ -2474,27 +2533,28 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "laps easy jog",
+                    "name": "Laps Easy Jog",
                     "reps": "2"
                   },
                   {
-                    "name": "m curves easy",
-                    "sets": 2,
-                    "reps": "100"
+                    "name": "Curves easy",
+                    "reps": "~100m",
+                    "sets": 2
                   },
                   {
-                    "name": "m high knees",
-                    "sets": 2,
-                    "reps": "30"
+                    "name": "High knees",
+                    "reps": "~30m",
+                    "sets": 2
                   },
                   {
-                    "name": "m sprints",
-                    "sets": 4,
-                    "reps": "40"
+                    "name": "Sprints",
+                    "reps": "~40m",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Curves easy: straights walk. High knees: walk back. Sprints: walk back. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240847/mood_app/workout_images/kb9dg83f_download_30_.jpg',
           intensityReason: 'Curved running practice improves balance and control.',
@@ -2527,27 +2587,28 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "lap easy jog",
+                    "name": "Lap Easy Jog",
                     "reps": "1"
                   },
                   {
-                    "name": "m A-skips",
-                    "sets": 2,
-                    "reps": "40"
+                    "name": "A-skips",
+                    "reps": "~40m",
+                    "sets": 2
                   },
                   {
-                    "name": "m bounds",
-                    "sets": 2,
-                    "reps": "40"
+                    "name": "Bounds",
+                    "reps": "~40m",
+                    "sets": 2
                   },
                   {
-                    "name": "m @ 3–5k effort, walk 150 m",
-                    "sets": 4,
-                    "reps": "150"
+                    "name": "Track 150s",
+                    "reps": "~150m",
+                    "sets": 4
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom. @ 3–5k effort, walk 150 m."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240832/mood_app/workout_images/8s808afw_download_24_.jpg',
           intensityReason: 'Drills then 150s build speed endurance with form.',
@@ -2578,22 +2639,23 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "lap easy jog",
+                    "name": "Lap Easy Jog",
                     "reps": "1"
                   },
                   {
-                    "name": "m fast, walk back",
-                    "sets": 6,
-                    "reps": "40"
+                    "name": "Fast",
+                    "reps": "~40m",
+                    "sets": 6
                   },
                   {
-                    "name": "m fast, walk back",
-                    "sets": 6,
-                    "reps": "30"
+                    "name": "Fast",
+                    "reps": "~30m",
+                    "sets": 6
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom. Fast: walk back. Fast: walk back."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240830/mood_app/workout_images/8chb1prv_download_29_.jpg',
           intensityReason: 'Short sprints sharpen turnover with full recovery.',
@@ -2624,25 +2686,26 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "m high knees",
-                    "reps": "30"
+                    "name": "High Knees",
+                    "reps": "~30m, walk back"
                   },
                   {
-                    "name": "m A-skips",
-                    "reps": "30"
+                    "name": "A-skips",
+                    "reps": "~30m, walk back"
                   },
                   {
-                    "name": "m bounds",
-                    "reps": "30"
+                    "name": "Bounds",
+                    "reps": "~30m, walk back"
                   },
                   {
-                    "name": "m stride",
-                    "reps": "60"
+                    "name": "Stride",
+                    "reps": "~60m"
                   }
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 3 rounds — all 4 moves in order."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240857/mood_app/workout_images/y6eufem1_download_28_.jpg',
           intensityReason: 'Drills with strides build posture and elasticity safely.',
@@ -2673,12 +2736,13 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "laps: straights moderate-fast + curves easy jog",
-                    "reps": "8"
+                    "name": "Track laps",
+                    "reps": "~8 laps"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "8 laps: straights moderate-fast + curves easy jog."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240847/mood_app/workout_images/kb9dg83f_download_30_.jpg',
           intensityReason: 'Alternating straights and curves teaches rhythm control.',
@@ -2711,18 +2775,19 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "m fast, full walk back",
-                    "sets": 8,
-                    "reps": "40"
+                    "name": "Fast",
+                    "reps": "~40m",
+                    "sets": 8
                   },
                   {
-                    "name": "m relaxed fast, walk back",
-                    "sets": 6,
-                    "reps": "60"
+                    "name": "Relaxed fast",
+                    "reps": "~60m",
+                    "sets": 6
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Fast: full walk back. Relaxed fast: walk back. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240830/mood_app/workout_images/8chb1prv_download_29_.jpg',
           intensityReason: 'Short sprints and relaxed strides refine max velocity.',
@@ -2753,26 +2818,27 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "circuit",
                 "movements": [
                   {
-                    "name": "m high knees",
-                    "reps": "30"
+                    "name": "High Knees",
+                    "reps": "~30m, walk back"
                   },
                   {
-                    "name": "m A-skips",
-                    "reps": "30"
+                    "name": "A-skips",
+                    "reps": "~30m, walk back"
                   },
                   {
-                    "name": "m bounds",
-                    "reps": "30"
+                    "name": "Bounds",
+                    "reps": "~30m, walk back"
                   },
                   {
-                    "name": "m sprints, walk back",
-                    "sets": 2,
-                    "reps": "50"
+                    "name": "Sprints",
+                    "reps": "~50m",
+                    "sets": 2
                   }
                 ],
                 "rounds": 3
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. 3 rounds — all 4 moves in order. Sprints: walk back."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240832/mood_app/workout_images/8s808afw_download_24_.jpg',
           intensityReason: 'Pairing drills and sprints engrains efficient patterns.',
@@ -2803,17 +2869,17 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "4x curve fly-in + 50 m fast, walk 200 m",
-                    "tutorialSlug": "db_fly"
+                    "name": "4x Curve Fly-in + 50 M Fast, Walk 200 M"
                   },
                   {
-                    "name": "m sprints, full walk back",
-                    "sets": 8,
-                    "reps": "30"
+                    "name": "Sprints",
+                    "reps": "~30m",
+                    "sets": 8
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom. Sprints: full walk back."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240847/mood_app/workout_images/kb9dg83f_download_30_.jpg',
           intensityReason: 'Curve entries and short sprints develop balanced speed.',
@@ -2844,28 +2910,26 @@ export const outdoorRunWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "interval",
                 "movements": [
                   {
-                    "name": "Mixed Accels",
-                    "reps": "3"
+                    "name": "Fast, Walk Back",
+                    "reps": "~20m"
                   },
                   {
-                    "duration": "20 m",
-                    "name": "fast, walk back"
+                    "name": "Fast, Walk Back",
+                    "reps": "~30m"
                   },
                   {
-                    "duration": "30 m",
-                    "name": "fast, walk back"
-                  },
-                  {
-                    "duration": "40 m",
-                    "name": "fast, walk back"
+                    "name": "Fast, Walk Back",
+                    "reps": "~40m"
                   },
                   {
                     "duration": "2–3 min",
-                    "name": "walk between sets"
+                    "name": "Walk Between Sets"
                   }
-                ]
+                ],
+                "rounds": 3
               }
-            ]
+            ],
+            "instructions": "3 rounds — follow the 4 timed segments in order, no skipping."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240825/mood_app/workout_images/4l6rndq8_download_26_.jpg',
           intensityReason: 'Progressing distances train precise force application.',

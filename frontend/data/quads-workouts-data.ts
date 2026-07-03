@@ -10,7 +10,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Sissy Squat',
           duration: '10–12 min',
           description: 'Front held bar guides posture as quads take full load',
-          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Light Barbell Sissy Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 sets\n• 10–12 Light Barbell Sissy Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -26,7 +26,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 10–12 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/z4gtn2yh_bb%20sissy%20squat.png',
           intensityReason: 'Teaches quad isolation through knee forward motion',
@@ -51,7 +52,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Assisted Sissy Squat Hold',
           duration: '10–12 min',
           description: 'Static hold reinforces posture and leg strength',
-          battlePlan: 'Instructions: 3 sets of 6–8 — rest 75s between sets, take all of it.\n3 rounds\n• 6–8 Sissy Squats\n• Add 10s Hold each set\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 6–8 — rest 75s between sets, take all of it.\n3 sets\n• 6–8 Sissy Squats\n• Add 10s Hold each set\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -60,15 +61,16 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Sissy Squats",
+                    "note": "Add 10s Hold each set",
                     "reps": "6–8",
-                    "tutorialSlug": "kb_squat",
-                    "note": "Add 10s Hold each set"
+                    "tutorialSlug": "kb_squat"
                   }
                 ],
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 6–8 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/fwtkmsgm_bb%20sissy%20squat%202.png',
           intensityReason: 'Iso hold at squat bottom builds quad endurance',
@@ -93,7 +95,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Barbell Reverse Lunge',
           duration: '12–14 min',
           description: 'Reverse lunges building quad strength with stable controlled reps',
-          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 sets\n• Controlled Barbell Reverse Lunge — 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -109,7 +111,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/i4zgpwgm_bb%20lunge.png',
           intensityReason: 'Reverse lunges teach quad loading with stable balance',
@@ -127,7 +130,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported Barbell Step-Up',
           duration: '12–14 min',
           description: 'Step-ups building quad strength while improving balance control',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 sets\n• Supported Barbell Step-Up — 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -142,7 +145,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/cut2mtn3_bb%20step%20up.png',
           intensityReason: 'Lower box height builds quad strength with controlled balance',
@@ -160,7 +164,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Front Squat',
           duration: '12–14 min',
           description: 'Slow eccentric front squats building quad control and posture',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 reps (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 reps (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -176,7 +180,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/moogyxzc_bb%20front%20squat.png',
           intensityReason: 'Slow eccentric amplifies quad tension under controlled posture',
@@ -196,7 +201,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Sissy Squat',
           duration: '14–16 min',
           description: 'Adds weight to sissy squat for deeper hypertrophy',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Weighted Sissy Squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 sets\n• 8–10 Weighted Sissy Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -212,7 +217,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/z4gtn2yh_bb%20sissy%20squat.png',
           intensityReason: 'Front bar load progression maximizes quad stress',
@@ -237,7 +243,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Sissy Squat 1½ Reps',
           duration: '14–16 min',
           description: 'High tension squatting style grows endurance fast',
-          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Combo Reps (half + full = 1)\nRest 90s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Combo Reps (half + full = 1)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -245,15 +251,15 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Sissy Squat 1½ Reps",
-                    "reps": "8",
-                    "tutorialSlug": "kb_squat"
+                    "name": "Combo Reps",
+                    "reps": "8"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. 3 sets of 8 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/fwtkmsgm_bb%20sissy%20squat%202.png',
           intensityReason: 'Half+full rep sequence lengthens quad activation',
@@ -278,7 +284,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Foot Elevated Barbell Lunge',
           duration: '14–16 min',
           description: 'Elevated lunges increasing quad tension and range of motion',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 rounds\n• 8 per leg (3s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 sets\n• 8 per leg (3s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -294,7 +300,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/i4zgpwgm_bb%20lunge.png',
           intensityReason: 'Front-foot elevation deepens range and quad loading',
@@ -312,7 +319,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Rack Knee Drive Step-Up',
           duration: '14–16 min',
           description: 'Front-loaded step-ups increasing quad tension and balance demand',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 rounds\n• 8 per leg\nRest 120s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 sets\n• Front Rack Knee Drive Step-Up — 8 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -327,7 +334,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/cut2mtn3_bb%20step%20up.png',
           intensityReason: 'Front-rack load adds balance demand and full quad recruitment',
@@ -345,7 +353,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heel-Elevated Front Squat Pause',
           duration: '14–16 min',
           description: 'Paused front squats increasing quad loading and tension buildup',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 rounds\n• 6–8 reps (2s pause)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 sets\n• 6–8 reps (2s pause)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -361,7 +369,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest 120s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/moogyxzc_bb%20front%20squat.png',
           intensityReason: 'Heel elevation + pause biases load directly into the quads',
@@ -381,7 +390,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Hack Squat',
           duration: '16–18 min',
           description: 'Upright torso hack squat builds quads with tension',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Hack Squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 sets\n• 8–10 Hack Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -397,7 +406,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240636/mood_app/workout_images/3hob85xt_download_22_.jpg',
           intensityReason: 'Behind back hold redirects load heavily to quads',
@@ -443,7 +453,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "3 rounds — all 2 moves in order, then rest 120s."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/z4gtn2yh_bb%20sissy%20squat.png',
           intensityReason: 'Pairing front and back styles crushes quad fibers',
@@ -468,7 +479,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Walking Lunge Drop Set',
           duration: '16–18 min',
           description: 'Walking lunges extended with drops pushing quads near failure',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — all 2 moves in order, then rest 150s.\n3 rounds\n• 10 per leg\n• Lunge drop → 10\n• Drop → BW walking lunges\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 sets — all 2 moves in order, then rest 150s.\n3 sets\n• Barbell Walking Lunge — 10 per leg\n• Lunge drop → 10\n• Drop → BW walking lunges\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -476,16 +487,21 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Barbell Walking Lunge Drop Set",
+                    "name": "Barbell Walking Lunge",
                     "reps": "10",
-                    "tutorialSlug": "barbell_lunge",
-                    "note": "Drop → 10; Drop → BW walking lunges"
+                    "tutorialSlug": "barbell_lunge"
+                  },
+                  {
+                    "name": "Lunge drop → 10",
+                    "note": "Drop → BW walking lunges",
+                    "tutorialSlug": "barbell_lunge"
                   }
                 ],
                 "rounds": 3,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 sets — all 2 moves in order, then rest 150s."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/i4zgpwgm_bb%20lunge.png',
           intensityReason: 'Drop sets sustain quad effort past traditional failure',
@@ -503,7 +519,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Deficit Barbell Step-Up',
           duration: '16–18 min',
           description: 'Deficit step-ups increasing range, tension, and quad fatigue',
-          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6–8 per side — rest 150s between sets, take all of it.\n4 rounds\n• 6–8 per leg\nRest 150s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6–8 per side — rest 150s between sets, take all of it.\n4 sets\n• 6–8 per leg\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -518,7 +534,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6–8 per side — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/cut2mtn3_bb%20step%20up.png',
           intensityReason: 'Increased deficit deepens range and quad loading',
@@ -536,7 +553,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Squat 1.5 Reps',
           duration: '16–18 min',
           description: 'Extended-rep front squats driving relentless quad tension',
-          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 4 sets of 6–8 — rest 150s between sets, take all of it.\n4 rounds\n• 6–8 reps (1.5 reps)\nRest 150s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 4 sets of 6–8 — rest 150s between sets, take all of it.\n4 sets\n• 6–8 reps (1.5 reps)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -552,7 +569,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "150s"
               }
-            ]
+            ],
+            "instructions": "Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. 4 sets of 6–8 — rest 150s between sets, take all of it."
           },
           imageUrl: 'https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/moogyxzc_bb%20front%20squat.png',
           intensityReason: '1.5 reps double time spent in the deepest quad-loading range',
@@ -578,7 +596,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standard Leg Extension',
           duration: '10–12 min',
           description: 'Perfect intro for building controlled quad strength',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Leg Extensions\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 sets\n• 12–15 Leg Extensions\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -594,7 +612,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 60s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240641/mood_app/workout_images/er89oli2_download_23_.jpg',
           intensityReason: 'Isolates quads through safe guided flexion path',
@@ -619,7 +638,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Extension Hold',
           duration: '10–12 min',
           description: 'Builds mind muscle connection through iso tension',
-          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 75s between sets, take all of it.\n3 rounds\n• 8–10 Iso Hold Extensions (3s hold)\nRest 75s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 75s between sets, take all of it.\n3 sets\n• 8–10 Iso Hold Extensions (3s hold)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -634,7 +653,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "75s"
               }
-            ]
+            ],
+            "instructions": "The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240639/mood_app/workout_images/6hwlna7o_quad_ext.jpg',
           intensityReason: 'Holding peak strengthens quads safely under load',
@@ -659,7 +679,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Leg Extension',
           duration: '10–12 min',
           description: 'Smooth extensions building basic quad control',
-          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60–75s between sets, take all of it.\n3 rounds\n• 12–15 Leg Extensions\nRest 60–75s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60–75s between sets, take all of it.\n3 sets\n• 12–15 Leg Extensions\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -675,7 +695,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "60–75s"
               }
-            ]
+            ],
+            "instructions": "3 sets of 12–15 — rest 60–75s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240672/mood_app/workout_images/fnft7ru4_download_6_.jpg',
           intensityReason: 'Controlled movement builds foundational quad strength',
@@ -707,7 +728,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Extensions',
           duration: '14–16 min',
           description: 'Machine allows safe overload using strict form',
-          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Heavy Extensions\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 sets\n• 8–10 Heavy Extensions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -722,7 +743,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "4 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240641/mood_app/workout_images/er89oli2_download_23_.jpg',
           intensityReason: 'Progressive heavy loading maximizes quad growth',
@@ -747,7 +769,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep Leg Extensions',
           duration: '14–16 min',
           description: 'Longer muscle strain increases hypertrophy response',
-          battlePlan: 'Instructions: Every rep = one full rep plus a half rep in the hardest range before you finish. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Total Combo Reps\nRest 90s',
+          battlePlan: 'Instructions: Every rep = one full rep plus a half rep in the hardest range before you finish. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Total Combo Reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -762,7 +784,8 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Every rep = one full rep plus a half rep in the hardest range before you finish. 3 sets of 8–10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240639/mood_app/workout_images/6hwlna7o_quad_ext.jpg',
           intensityReason: 'Half+full rep cycle expands quad time under load',
@@ -787,7 +810,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Leg Extension',
           duration: '12–14 min',
           description: 'Paused reps reinforcing peak quad contraction',
-          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 90s between sets, take all of it.\n4 rounds\n• 10 Extensions (2s pause at top)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 90s between sets, take all of it.\n4 sets\n• 10 Extensions (2s pause at top)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -795,15 +818,15 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Pause Leg Extension",
-                    "reps": "10",
-                    "tutorialSlug": "quad_extension"
+                    "name": "Extensions",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 4,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240672/mood_app/workout_images/fnft7ru4_download_6_.jpg',
           intensityReason: 'Paused contractions maximize quad activation',
@@ -835,7 +858,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop Set Leg Extensions',
           duration: '16–18 min',
           description: 'Stripping load forces fibers to contract under fatigue',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Heavy Extensions\n• Drop 15–20% → 8 reps\n• Drop 15–20% → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it.\n3 sets\n• 10 Heavy Extensions\n• Drop 15–20% → 8 reps\n• Drop 15–20% → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -844,14 +867,15 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Heavy Extensions",
-                    "reps": "10",
-                    "note": "Drop 15–20% → 8 reps; Drop 15–20% → 8 reps"
+                    "note": "Drop 15–20% → 8 reps; Drop 15–20% → 8 reps",
+                    "reps": "10"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240641/mood_app/workout_images/er89oli2_download_23_.jpg',
           intensityReason: 'Dropsets extend effort for intense quad overload',
@@ -881,18 +905,23 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
             "format": "circuit",
             "blocks": [
               {
-                "type": "straight",
+                "type": "circuit",
                 "movements": [
                   {
                     "name": "Iso Hold at Extension",
-                    "reps": "10s",
-                    "note": "Immediately 10–12 Full Reps"
+                    "reps": "10s"
+                  },
+                  {
+                    "name": "Full Reps",
+                    "note": "immediately, no rest",
+                    "reps": "10–12"
                   }
                 ],
                 "rounds": 3,
                 "rest": "90s"
               }
-            ]
+            ],
+            "instructions": "Superset: the paired moves run back-to-back with zero rest — rest only after the pair. The hold is strict: locked position, squeezing hard, no drifting. 3 rounds — all 2 moves in order, then rest 90s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240639/mood_app/workout_images/6hwlna7o_quad_ext.jpg',
           intensityReason: 'Static hold plus reps maximizes quad endurance',
@@ -917,7 +946,7 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop Set Leg Extension',
           duration: '16–18 min',
           description: 'Extended quad isolation using fast weight drops',
-          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 8 Heavy Extensions\n• Extension drop → 10\n• Extension drop → 10\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• 8 Heavy Extensions\n• Extension drop → 10\n• Extension drop → 10\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -926,14 +955,20 @@ export const quadsWorkoutDatabase: EquipmentWorkouts[] = [
                 "movements": [
                   {
                     "name": "Heavy Extensions",
-                    "reps": "8",
-                    "note": "Drop → 10; Drop → 10"
+                    "reps": "8"
+                  },
+                  {
+                    "name": "Extension drop → 10"
+                  },
+                  {
+                    "name": "Extension drop → 10"
                   }
                 ],
                 "rounds": 3,
                 "rest": "120s"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240672/mood_app/workout_images/fnft7ru4_download_6_.jpg',
           intensityReason: 'Drop sets maximize quad fatigue and hypertrophy',

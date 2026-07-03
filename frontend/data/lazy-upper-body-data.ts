@@ -18,29 +18,31 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Machine Chest Press",
-                    "intensity": "RPE 4",
+                    "reps": "8–10",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Machine Lateral Raise",
-                    "intensity": "RPE 4",
+                    "reps": "10–12",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   },
                   {
-                    "name": "Rope Pressdown",
                     "intensity": "RPE 4",
+                    "name": "Rope Pressdown",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12"
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241122/mood_app/workout_images/tp8hgvtb_download_28_.jpg',
           intensityReason: 'Simple machines train chest, delts, tris with minimal setup.',
@@ -69,29 +71,30 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Machine Incline Chest Press",
-                    "intensity": "RPE 4",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Reverse Pec Deck",
-                    "intensity": "RPE 4",
+                    "reps": "12",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Overhead Rope Triceps",
                     "intensity": "RPE 4",
+                    "name": "Overhead Rope Triceps",
+                    "reps": "10–12",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241114/mood_app/workout_images/inhlehab_download_29_.jpg',
           intensityReason: 'Incline press pairs with rear delts and tris for balance.',
@@ -120,31 +123,32 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Machine Shoulder Press",
                     "intensity": "RPE 4",
+                    "name": "Machine Shoulder Press",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Pec Deck",
                     "intensity": "RPE 4",
+                    "name": "Pec Deck",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "pec_deck_fly"
                   },
                   {
-                    "name": "Assisted Dips",
                     "intensity": "RPE 4",
+                    "name": "Assisted Dips",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "assisted_dips"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241119/mood_app/workout_images/nj4fggwr_download_30_.jpg',
           intensityReason: 'Vertical press with fly and assisted dips keeps effort light.',
@@ -175,31 +179,32 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Machine Chest Press",
                     "intensity": "RPE 5",
+                    "name": "Machine Chest Press",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
-                    "name": "Incline Cable Fly",
                     "intensity": "RPE 5",
+                    "name": "Incline Cable Fly",
+                    "reps": "10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10",
                     "tutorialSlug": "cable_fly_low_to_high"
                   },
                   {
-                    "name": "Cable Y Raise",
                     "intensity": "RPE 5",
+                    "name": "Cable Y Raise",
+                    "reps": "12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12",
                     "tutorialSlug": "cable_lateral_raise"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241122/mood_app/workout_images/tp8hgvtb_download_28_.jpg',
           intensityReason: 'Strong press plus fly stretch and Y-raise for delt detail.',
@@ -228,29 +233,30 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Machine Shoulder Press",
                     "intensity": "RPE 5–6",
+                    "name": "Machine Shoulder Press",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Cable Upright Row",
-                    "intensity": "RPE 5",
+                    "reps": "10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10"
+                    "sets": 3
                   },
                   {
-                    "name": "Overhead Rope Triceps",
                     "intensity": "RPE 5",
+                    "name": "Overhead Rope Triceps",
+                    "reps": "10–12",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241119/mood_app/workout_images/nj4fggwr_download_30_.jpg',
           intensityReason: 'Shoulder press, upright row, overhead tris build balance.',
@@ -279,29 +285,31 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 5",
                     "name": "Machine Decline Chest Press",
-                    "intensity": "RPE 5",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Machine Lateral Raise",
-                    "intensity": "RPE 5",
+                    "reps": "12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Rope Pressdown",
                     "intensity": "RPE 5",
+                    "name": "Rope Pressdown",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12"
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241118/mood_app/workout_images/n6oa31c5_download_31_.jpg',
           intensityReason: 'Decline chest plus laterals and pressdowns target pressers.',
@@ -332,30 +340,32 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Machine Chest Press",
                     "intensity": "RPE 7",
-                    "sets": 1,
-                    "reps": "6"
+                    "name": "Machine Chest Press",
+                    "reps": "6",
+                    "sets": 1
                   },
                   {
-                    "name": "Incline Cable Fly",
                     "intensity": "RPE 6",
+                    "name": "Incline Cable Fly",
+                    "reps": "10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10",
                     "tutorialSlug": "cable_fly_low_to_high"
                   },
                   {
-                    "name": "Rope Pressdown",
                     "intensity": "RPE 6",
+                    "name": "Rope Pressdown",
+                    "reps": "10–12",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "10–12"
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ],
                 "rest": "90s; repeat for 3 total series"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Work top to bottom — rest 90s; repeat for 3 total series between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241122/mood_app/workout_images/tp8hgvtb_download_28_.jpg',
           intensityReason: 'Drop-set press boosts volume; fly and pushdown refine.',
@@ -388,22 +398,23 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                     "reps": "3"
                   },
                   {
-                    "name": "Reverse Pec Deck",
                     "intensity": "RPE 6",
+                    "name": "Reverse Pec Deck",
+                    "reps": "12",
                     "rest": "60–75s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Overhead Rope Triceps",
                     "intensity": "RPE 6",
+                    "name": "Overhead Rope Triceps",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241119/mood_app/workout_images/nj4fggwr_download_30_.jpg',
           intensityReason: 'Cluster presses maintain power while technique stays tidy.',
@@ -432,30 +443,32 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Fly",
                     "intensity": "RPE 6",
+                    "name": "Cable Fly",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_machine_fly"
                   },
                   {
-                    "name": "Machine Lateral Raise",
                     "intensity": "RPE 6",
+                    "name": "Machine Lateral Raise",
+                    "reps": "12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Rope Pressdown",
                     "intensity": "RPE 6",
+                    "name": "Rope Pressdown",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12"
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep = one full rep plus a half rep in the hardest range before you finish. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241113/mood_app/workout_images/bbb40x4e_download_32_.jpg',
           intensityReason: '1.5 fly increases tension; delts and tris support work.',
@@ -492,32 +505,33 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Lat Pulldown",
                     "intensity": "RPE 4",
+                    "name": "Lat Pulldown",
+                    "reps": "8–10",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "neutral_grip_lat_pulldown"
                   },
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 4",
+                    "name": "Seated Row",
+                    "reps": "8–10",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Cable Face Pull",
                     "intensity": "RPE 4",
+                    "name": "Cable Face Pull",
+                    "reps": "12–15",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12–15",
                     "tutorialSlug": "cable_face_pull"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241101/mood_app/workout_images/224yyt9s_download_34_.jpg',
           intensityReason: 'Pulldown, row, face pull cover back and biceps simply.',
@@ -546,31 +560,32 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Chest-Supported Row Machine",
                     "intensity": "RPE 4",
+                    "name": "Chest-Supported Row Machine",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "chest_supported_db_row"
                   },
                   {
-                    "name": "Cable Straight-Arm Pulldown",
                     "intensity": "RPE 4",
+                    "name": "Cable Straight-Arm Pulldown",
+                    "reps": "12",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Cable Curl",
                     "intensity": "RPE 4",
+                    "name": "Cable Curl",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241112/mood_app/workout_images/8wag7xpf_Screenshot_2025-12-04_at_12_00_14_AM.jpg',
           intensityReason: 'Supported rows reduce bracing and simplify posture.',
@@ -599,30 +614,32 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "High Cable Row",
                     "intensity": "RPE 4",
+                    "name": "High Cable Row",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "Reverse Pec Deck",
-                    "intensity": "RPE 4",
+                    "reps": "12",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Cable Curl",
                     "intensity": "RPE 4",
+                    "name": "Cable Curl",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241106/mood_app/workout_images/4gyd3y66_download_35_.jpg',
           intensityReason: 'Upper-back bias plus curls for balanced pulling day.',
@@ -650,34 +667,36 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
             "format": "strength",
             "blocks": [
               {
-                "type": "superset",
+                "type": "straight",
                 "movements": [
                   {
-                    "name": "Lat Pulldown",
                     "intensity": "RPE 5",
+                    "name": "Lat Pulldown",
+                    "reps": "8",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "neutral_grip_lat_pulldown"
                   },
                   {
-                    "name": "Cable Straight-Arm Pulldown",
                     "intensity": "RPE 5",
+                    "name": "Cable Straight-Arm Pulldown",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12"
+                    "tutorialSlug": "neutral_grip_lat_pulldown"
                   },
                   {
-                    "name": "Incline Cable Curl",
                     "intensity": "RPE 5",
+                    "name": "Incline Cable Curl",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "incline_db_curl"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241101/mood_app/workout_images/224yyt9s_download_34_.jpg',
           intensityReason: 'Vertical pull pairs with length-tension lat training.',
@@ -706,30 +725,31 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 5",
+                    "name": "Seated Row",
+                    "reps": "8",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Reverse Pec Deck",
                     "intensity": "RPE 5",
+                    "name": "Reverse Pec Deck",
+                    "reps": "12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Rope Hammer Curl",
                     "intensity": "RPE 5",
+                    "name": "Rope Hammer Curl",
+                    "reps": "10–12",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241109/mood_app/workout_images/51z4cigt_download_33_.jpg',
           intensityReason: 'Rows, rear delts, and hammers build the mid-back chain.',
@@ -758,29 +778,31 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "High Cable Row",
                     "intensity": "RPE 5–6",
+                    "name": "High Cable Row",
+                    "reps": "8",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Reverse Pec Deck",
-                    "intensity": "RPE 5",
+                    "reps": "12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Preacher Curl Machine",
                     "intensity": "RPE 5",
+                    "name": "Preacher Curl Machine",
+                    "reps": "10–12",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241111/mood_app/workout_images/5z9stzyy_Screenshot_2025-12-04_at_12_01_30_AM.jpg',
           intensityReason: 'High rows, rear delts, preacher curls cover pull angles.',
@@ -811,32 +833,33 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Lat Pulldown",
                     "intensity": "RPE 7",
-                    "sets": 1,
+                    "name": "Lat Pulldown",
                     "reps": "6",
+                    "sets": 1,
                     "tutorialSlug": "neutral_grip_lat_pulldown"
                   },
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 6",
+                    "name": "Seated Row",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Cable Curl",
                     "intensity": "RPE 6",
+                    "name": "Cable Curl",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ],
                 "rest": "90s; repeat for 3 total series"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom — rest 90s; repeat for 3 total series between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241101/mood_app/workout_images/224yyt9s_download_34_.jpg',
           intensityReason: 'Pulldown drops extend time under tension efficiently.',
@@ -870,23 +893,24 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                     "tutorialSlug": "chest_supported_db_row"
                   },
                   {
-                    "name": "Reverse Pec Deck",
                     "intensity": "RPE 6",
+                    "name": "Reverse Pec Deck",
+                    "reps": "12",
                     "rest": "60–75s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Incline Cable Curl",
                     "intensity": "RPE 6",
+                    "name": "Incline Cable Curl",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "incline_db_curl"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241106/mood_app/workout_images/4gyd3y66_download_35_.jpg',
           intensityReason: 'Row clusters sustain output with crisp scap control.',
@@ -915,30 +939,32 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Face Pull",
                     "intensity": "RPE 6",
+                    "name": "Cable Face Pull",
+                    "reps": "10–12",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_face_pull"
                   },
                   {
-                    "name": "High Cable Row",
                     "intensity": "RPE 6",
+                    "name": "High Cable Row",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
-                    "name": "Rope Hammer Curl",
                     "intensity": "RPE 6",
+                    "name": "Rope Hammer Curl",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Curl to the top, lower halfway, curl back up, then lower fully — that's ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241105/mood_app/workout_images/3mysq3rj_Screenshot_2025-12-04_at_12_02_09_AM.jpg',
           intensityReason: '1.5 face pulls intensify rear delts with safe load.',
@@ -975,37 +1001,39 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Machine Chest Press",
                     "intensity": "RPE 4",
+                    "name": "Machine Chest Press",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 4",
+                    "name": "Seated Row",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Machine Lateral Raise",
                     "intensity": "RPE 4",
+                    "name": "Machine Lateral Raise",
+                    "reps": "12",
                     "rest": "45–60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Rope Pressdown",
                     "intensity": "RPE 4",
+                    "name": "Rope Pressdown",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12"
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241102/mood_app/workout_images/2idat5d8_download_29_.jpg',
           intensityReason: 'Balanced machines load push and pull with few cues.',
@@ -1034,39 +1062,40 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Machine Shoulder Press",
                     "intensity": "RPE 4",
+                    "name": "Machine Shoulder Press",
+                    "reps": "8–10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "8–10"
+                    "sets": 3
                   },
                   {
-                    "name": "Lat Pulldown",
                     "intensity": "RPE 4",
+                    "name": "Lat Pulldown",
+                    "reps": "8–10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "neutral_grip_lat_pulldown"
                   },
                   {
-                    "name": "Pec Deck",
                     "intensity": "RPE 4",
+                    "name": "Pec Deck",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "pec_deck_fly"
                   },
                   {
-                    "name": "Cable Curl",
                     "intensity": "RPE 4",
+                    "name": "Cable Curl",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241117/mood_app/workout_images/kwgc495p_download_30_.jpg',
           intensityReason: 'Vertical press and pull with easy isolation finishers.',
@@ -1095,37 +1124,40 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 4",
                     "name": "Cable Chest Press",
-                    "intensity": "RPE 4",
+                    "reps": "10",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10"
+                    "sets": 3
                   },
                   {
+                    "intensity": "RPE 4",
                     "name": "High Cable Row",
-                    "intensity": "RPE 4",
+                    "reps": "10",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
-                    "name": "Cable Y Raise",
                     "intensity": "RPE 4",
+                    "name": "Cable Y Raise",
+                    "reps": "12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "12",
                     "tutorialSlug": "cable_lateral_raise"
                   },
                   {
-                    "name": "Rope Pressdown",
                     "intensity": "RPE 4",
+                    "name": "Rope Pressdown",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12"
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241108/mood_app/workout_images/4vnqx30z_download_32_.jpg',
           intensityReason: 'Cables guide paths and reduce setup, keeping it easy.',
@@ -1156,38 +1188,39 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Machine Chest Press",
                     "intensity": "RPE 5",
+                    "name": "Machine Chest Press",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 5",
+                    "name": "Seated Row",
+                    "reps": "8",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Machine Lateral Raise",
                     "intensity": "RPE 5",
+                    "name": "Machine Lateral Raise",
+                    "reps": "12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Cable Curl",
                     "intensity": "RPE 5",
+                    "name": "Cable Curl",
+                    "reps": "10–12",
                     "rest": "45–60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241102/mood_app/workout_images/2idat5d8_download_29_.jpg',
           intensityReason: 'Machines train push, pull, and delts with control.',
@@ -1216,38 +1249,40 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Machine Shoulder Press",
                     "intensity": "RPE 5–6",
+                    "name": "Machine Shoulder Press",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
-                    "name": "Lat Pulldown",
                     "intensity": "RPE 5",
+                    "name": "Lat Pulldown",
+                    "reps": "8",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8",
                     "tutorialSlug": "neutral_grip_lat_pulldown"
                   },
                   {
-                    "name": "Pec Deck",
                     "intensity": "RPE 5",
+                    "name": "Pec Deck",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "pec_deck_fly"
                   },
                   {
-                    "name": "Rope Pressdown",
                     "intensity": "RPE 5",
+                    "name": "Rope Pressdown",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12"
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241117/mood_app/workout_images/kwgc495p_download_30_.jpg',
           intensityReason: 'Overhead press and pulldown anchor simple accessory.',
@@ -1276,36 +1311,38 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
+                    "intensity": "RPE 5",
                     "name": "Cable Chest Press",
-                    "intensity": "RPE 5",
+                    "reps": "8",
                     "rest": "60–75s",
-                    "sets": 4,
-                    "reps": "8"
+                    "sets": 4
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "High Cable Row",
-                    "intensity": "RPE 5",
+                    "reps": "8",
                     "rest": "60–75s",
                     "sets": 4,
-                    "reps": "8"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
+                    "intensity": "RPE 5",
                     "name": "Reverse Pec Deck",
-                    "intensity": "RPE 5",
+                    "reps": "12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Overhead Rope Triceps",
                     "intensity": "RPE 5",
+                    "name": "Overhead Rope Triceps",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241104/mood_app/workout_images/2skt7b9o_Screenshot_2025-12-04_at_12_01_30_AM.jpg',
           intensityReason: 'Cable paths allow smooth arcs and moderate control.',
@@ -1336,37 +1373,38 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "straight",
                 "movements": [
                   {
-                    "name": "Machine Chest Press",
                     "intensity": "RPE 7",
-                    "sets": 1,
-                    "reps": "6"
+                    "name": "Machine Chest Press",
+                    "reps": "6",
+                    "sets": 1
                   },
                   {
-                    "name": "Seated Row",
                     "intensity": "RPE 7",
-                    "sets": 1,
+                    "name": "Seated Row",
                     "reps": "6",
+                    "sets": 1,
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Machine Lateral Raise",
                     "intensity": "RPE 6",
+                    "name": "Machine Lateral Raise",
+                    "reps": "12",
                     "rest": "60–75s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Cable Curl",
                     "intensity": "RPE 6",
+                    "name": "Cable Curl",
+                    "reps": "10–12",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "10–12",
                     "tutorialSlug": "cable_straight_bar_curl"
                   }
                 ],
                 "rest": "90s; repeat for 3 total series"
               }
-            ]
+            ],
+            "instructions": "Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom — rest 90s; repeat for 3 total series between exercises."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241121/mood_app/workout_images/tbt1jia8_download_35_.jpg',
           intensityReason: 'Drop sets increase volume without extra complexity.',
@@ -1404,22 +1442,24 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                     "tutorialSlug": "cable_rope_row"
                   },
                   {
-                    "name": "Reverse Pec Deck",
                     "intensity": "RPE 6",
+                    "name": "Reverse Pec Deck",
+                    "reps": "12",
                     "rest": "60–75s",
-                    "sets": 3,
-                    "reps": "12"
+                    "sets": 3
                   },
                   {
-                    "name": "Rope Pressdown",
                     "intensity": "RPE 6",
+                    "name": "Rope Pressdown",
+                    "reps": "10–12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "10–12"
+                    "tutorialSlug": "cable_rope_tricep_pushdown"
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Cluster set: split the reps with a short built-in rest so every rep stays explosive. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241100/mood_app/workout_images/12gt6fvb_download_2_.jpg',
           intensityReason: 'Cluster sets keep output high with preserved form.',
@@ -1448,38 +1488,40 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
                 "type": "superset",
                 "movements": [
                   {
-                    "name": "Cable Fly",
                     "intensity": "RPE 6",
+                    "name": "Cable Fly",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10",
                     "tutorialSlug": "cable_machine_fly"
                   },
                   {
-                    "name": "High Cable Row",
                     "intensity": "RPE 6",
+                    "name": "High Cable Row",
+                    "reps": "8–10",
                     "rest": "60–75s",
                     "sets": 3,
-                    "reps": "8–10"
+                    "tutorialSlug": "cable_face_pull"
                   },
                   {
-                    "name": "Cable Y Raise",
                     "intensity": "RPE 6",
+                    "name": "Cable Y Raise",
+                    "reps": "12",
                     "rest": "60s",
                     "sets": 3,
-                    "reps": "12",
                     "tutorialSlug": "cable_lateral_raise"
                   },
                   {
-                    "name": "Overhead Rope Triceps",
                     "intensity": "RPE 6",
+                    "name": "Overhead Rope Triceps",
+                    "reps": "10–12",
                     "rest": "60s",
-                    "sets": 3,
-                    "reps": "10–12"
+                    "sets": 3
                   }
                 ]
               }
-            ]
+            ],
+            "instructions": "Every rep = one full rep plus a half rep in the hardest range before you finish. Work top to bottom."
           },
           imageUrl: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770241115/mood_app/workout_images/jjomvfxr_download_1_.jpg',
           intensityReason: 'Midrange focus with cables adds tension at modest load.',
