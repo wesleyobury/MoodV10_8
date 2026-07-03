@@ -437,7 +437,7 @@ export default function WorkoutGuidanceScreen() {
   const getSessionElapsedSeconds = () =>
     workoutStartTsRef.current ? Math.floor((Date.now() - workoutStartTsRef.current) / 1000) : 0;
 
-  const handleStartPauseTimer = () => {
+  const handleStartPauseTimer = async () => {
     if (!isRunning) {
       // Guest gate: unauthenticated guests cannot start a workout session.
       // Prompt them to create an account instead of beginning the timer.
@@ -449,7 +449,7 @@ export default function WorkoutGuidanceScreen() {
       // Phase B free-tier gate: a fresh "Start Workout" tap must check the
       // subscription state. Founding members + active/in-trial users pass
       // through; free users get exactly one session, then the paywall.
-      if (!tryBeginWorkoutSession(canStartWorkout, openPaywall, token)) {
+      if (!(await tryBeginWorkoutSession(canStartWorkout, openPaywall, token))) {
         return;
       }
       Analytics.startWorkoutTapped(token, { allowed: true });
@@ -632,7 +632,7 @@ export default function WorkoutGuidanceScreen() {
   const handleCompletedWorkout = async () => {
     // Featured + other direct-to-guidance paths can progress via "Next
     // Workout" without ever tapping the timer Start button.
-    if (isSession && !isGuest && !tryBeginWorkoutSession(canStartWorkout, openPaywall, token)) {
+    if (isSession && !isGuest && !(await tryBeginWorkoutSession(canStartWorkout, openPaywall, token))) {
       return;
     }
 

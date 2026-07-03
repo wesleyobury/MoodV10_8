@@ -747,7 +747,7 @@ export default function FeaturedWorkoutDetail() {
     }
   };
 
-  const handleStartWorkout = () => {
+  const handleStartWorkout = async () => {
     if (exercises.length === 0) return;
 
     // Guest gate: guests can browse and build carts but cannot start a
@@ -757,7 +757,7 @@ export default function FeaturedWorkoutDetail() {
       setShowGuestPrompt(true);
       return;
     }
-    if (!tryBeginWorkoutSession(canStartWorkout, openPaywall, token)) {
+    if (!(await tryBeginWorkoutSession(canStartWorkout, openPaywall, token))) {
       return;
     }
     

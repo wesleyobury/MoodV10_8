@@ -853,7 +853,7 @@ export default function CartScreen() {
       setShowGuestPrompt(true);
       return;
     }
-    if (!tryBeginWorkoutSession(canStartWorkout, openPaywall, token)) {
+    if (!(await tryBeginWorkoutSession(canStartWorkout, openPaywall, token))) {
       return;
     }
 
