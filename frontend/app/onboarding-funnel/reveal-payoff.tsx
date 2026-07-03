@@ -115,7 +115,7 @@ export default function RevealPayoff() {
   // Live store prices (fallback to pinned strings off-device / pre-load) so the
   // fine print matches Apple's purchase sheet and localizes by storefront.
   const storePrices = useStorePrices();
-  const annualLabel = storePrices.annualDisplay ? `${storePrices.annualDisplay}/year` : '$79/year';
+  const annualLabel = storePrices.annualDisplay ? `${storePrices.annualDisplay}/year` : '$79.99/year';
   const monthlyLabel = storePrices.monthlyDisplay ? `${storePrices.monthlyDisplay}/month` : '$9.99/month';
   const [busy, setBusy] = useState<null | 'founding'>(null);
   const completedRef = useRef(false);
@@ -196,17 +196,20 @@ export default function RevealPayoff() {
     goWearables();
   }, [pendingTrigger, hasActiveAccess]);
 
-  // Soft Paywall #1 — same styled PaywallModal as Stage 2/3 (monthly + annual).
-  const handleOpenPaywall = (cta: 'subscribe' | 'start_free_trial') => {
+  // Soft Paywall #1 — every path opens the SAME single-step PaywallModal
+  // (plan picker + CTA). Subscribe / Trial buttons mirror ONLY the tapped
+  // button in the modal; founding "See all plans" shows both.
+  const handleOpenPaywall = (cta: 'subscribe' | 'start_free_trial' | 'see_all_plans') => {
     if (busy) return;
     Analytics.revealCtaTapped(token, { cta });
     paywallOpenedRef.current = true;
     hadAccessBeforePaywallRef.current = hasActiveAccess;
-    // The modal mirrors the button the user just tapped — one CTA, no
-    // redundant subscribe/trial pair.
-    openPaywall('post_onboarding_soft', {
-      preferredCta: cta === 'subscribe' ? 'subscribe_now' : 'start_free_trial',
-    });
+    openPaywall(
+      'post_onboarding_soft',
+      cta === 'see_all_plans'
+        ? undefined
+        : { preferredCta: cta === 'subscribe' ? 'subscribe_now' : 'start_free_trial' },
+    );
   };
 
   const handleRestore = async () => {
@@ -347,17 +350,32 @@ export default function RevealPayoff() {
             <Text style={styles.orText}>or</Text>
           </View>
 
-          {/* 10 Start free trial — SHARED */}
-          <TouchableOpacity
-            style={styles.trialBtn}
-            onPress={() => handleOpenPaywall('start_free_trial')}
-            disabled={!!busy}
-            activeOpacity={0.8}
-            testID="reveal-start-cta"
-            data-testid="reveal-start-cta"
-          >
-            <Text style={styles.trialBtnLabel}>Start my 7-day free trial</Text>
-          </TouchableOpacity>
+          {/* 10 Secondary slot — ONE text button in both variants, no pricing.
+              Standard: trial. Founding: "See all plans". Either way it opens
+              the same single-step PaywallModal where plans + prices live. */}
+          {isFoundingEligible ? (
+            <TouchableOpacity
+              style={styles.trialBtn}
+              onPress={() => handleOpenPaywall('see_all_plans')}
+              disabled={!!busy}
+              activeOpacity={0.8}
+              testID="reveal-see-plans-cta"
+              data-testid="reveal-see-plans-cta"
+            >
+              <Text style={styles.trialBtnLabel}>See all plans</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.trialBtn}
+              onPress={() => handleOpenPaywall('start_free_trial')}
+              disabled={!!busy}
+              activeOpacity={0.8}
+              testID="reveal-start-cta"
+              data-testid="reveal-start-cta"
+            >
+              <Text style={styles.trialBtnLabel}>Start my 7-day free trial</Text>
+            </TouchableOpacity>
+          )}
 
           {/* 11 Disclosure, trust, save-for-later, footer links — SHARED */}
           <StandardBottom
@@ -419,7 +437,7 @@ function StandardBottom({
 
 function Disclosure({
   trial,
-  annualLabel = '$79/year',
+  annualLabel = '$79.99/year',
   monthlyLabel = '$9.99/month',
 }: {
   trial: boolean;

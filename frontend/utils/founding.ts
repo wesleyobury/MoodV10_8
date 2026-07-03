@@ -2,7 +2,7 @@
  * MOOD V2 — founding-offer client helpers (Phase 2).
  */
 export const FOUNDING_PRICE_DISPLAY = '$39/year';
-export const STANDARD_ANNUAL_DISPLAY = '$79/year';
+export const STANDARD_ANNUAL_DISPLAY = '$79.99/year';
 
 // Session/persistence keys.
 export const FOUNDING_BANNER_COLLAPSED_KEY = '@mood_founding_banner_collapsed';

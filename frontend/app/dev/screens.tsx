@@ -132,6 +132,8 @@ export default function DevScreens() {
   const [movementMood, setMovementMood] = useState<MoodId>('explosive');
   const [equipMood, setEquipMood] = useState<MoodId>('calisthenics');
   const [revealVariant, setRevealVariant] = useState<Variant>('standard');
+  const [paywall2Variant, setPaywall2Variant] = useState<Variant>('standard');
+  const [paywall3Variant, setPaywall3Variant] = useState<Variant>('standard');
   const [cleared, setCleared] = useState(false);
 
   // Production: never expose this surface. Dev builds (__DEV__) and opted-in
@@ -157,6 +159,18 @@ export default function DevScreens() {
       pathname: '/onboarding-funnel/reveal-payoff' as any,
       params: revealVariant === 'founding' ? { __dev_mock_founding: 'true' } : {},
     });
+  };
+
+  // Arm (or clear) the founding-eligible entitlement mock, then fire the
+  // modal paywall trigger — mirrors goRevealPayoff so Soft #2 / Hard #3 can
+  // be previewed in both standard and founding branches.
+  const goModalPaywall = async (
+    trigger: 'post_achievement_close_soft' | 'generate_after_cap',
+    variant: Variant,
+  ) => {
+    await setDevMockFounding(variant === 'founding');
+    await refreshEntitlement();
+    openPaywall(trigger);
   };
 
   const fireRatingPrompt = () => {
@@ -216,12 +230,14 @@ export default function DevScreens() {
         <Row
           label="Soft Paywall #2 (post-workout)"
           route="openPaywall('post_achievement_close_soft')"
-          onPress={() => openPaywall('post_achievement_close_soft')}
+          onPress={() => goModalPaywall('post_achievement_close_soft', paywall2Variant)}
+          right={<DevSelect value={paywall2Variant} options={VARIANTS} onChange={setPaywall2Variant} />}
         />
         <Row
           label="Hard Paywall #3 (workout #2 / cap)"
           route="openPaywall('generate_after_cap')"
-          onPress={() => openPaywall('generate_after_cap')}
+          onPress={() => goModalPaywall('generate_after_cap', paywall3Variant)}
+          right={<DevSelect value={paywall3Variant} options={VARIANTS} onChange={setPaywall3Variant} />}
         />
 
         <SectionHeader title="Rating Prompt" />

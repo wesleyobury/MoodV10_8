@@ -105,7 +105,7 @@ export function FoundingOfferModal() {
               move out of free beta, you get the deal we&apos;ll never offer again:
             </Text>
             <Text style={styles.price}>$39/year, locked forever.</Text>
-            <Text style={styles.priceSub}>Standard pricing will be $79/year.</Text>
+            <Text style={styles.priceSub}>Standard pricing will be $79.99/year.</Text>
             <Text style={styles.window}>
               Claim within <Text style={styles.windowBold}>{daysLeft} day{daysLeft === 1 ? '' : 's'}</Text>. After that, standard pricing applies.
             </Text>

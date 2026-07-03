@@ -149,7 +149,7 @@ export default function TermsOfServiceScreen() {
           </Text>
           <View style={styles.bulletList}>
             <Text style={styles.bulletItem}>• MOOD Monthly — $9.99 per month</Text>
-            <Text style={styles.bulletItem}>• MOOD Annual — $79 per year</Text>
+            <Text style={styles.bulletItem}>• MOOD Annual — $79.99 per year</Text>
             <Text style={styles.bulletItem}>• Founding Member Annual — $39 per year</Text>
           </View>
           <Text style={styles.paragraph}>

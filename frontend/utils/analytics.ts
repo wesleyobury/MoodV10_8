@@ -807,7 +807,7 @@ export const Analytics = {
   paywallCtaTapped: (
     token: string | null,
     metadata: {
-      cta: 'start_free_trial' | 'subscribe_now' | 'claim_founding' | 'save_for_later' | 'maybe_later';
+      cta: 'start_free_trial' | 'subscribe_now' | 'claim_founding' | 'save_for_later' | 'maybe_later' | 'see_all_plans';
       trigger_source?: string;
       variant?: 'standard' | 'founding';
     }
