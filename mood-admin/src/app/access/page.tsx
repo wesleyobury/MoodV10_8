@@ -93,6 +93,10 @@ export default function AccessPage() {
       ios_store_url: config.ios_store_url || "",
       android_store_url: config.android_store_url || "",
       update_check_enabled: !!config.update_check_enabled,
+      welcome_video_enabled: !!config.welcome_video_enabled,
+      welcome_video_url: config.welcome_video_url || "",
+      welcome_video_thumbnail_url: config.welcome_video_thumbnail_url || "",
+      welcome_video_caption: config.welcome_video_caption || "",
     });
     if (res.data?.ok) {
       setResult({ type: "success", message: "App config saved." });
@@ -311,6 +315,60 @@ export default function AccessPage() {
                   type="text"
                   value={config.android_store_url}
                   onChange={(e) => setCfg({ android_store_url: e.target.value })}
+                  className={numField}
+                />
+              </div>
+            </div>
+
+            {/* Welcome video — DM sent to new signups */}
+            <div className="border-t border-border pt-4 space-y-4">
+              <div>
+                <h3 className="font-medium">Welcome video (new-signup DM)</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  When enabled, new users get this video from officialmoodapp instead of the text welcome.
+                  Upload the video to Cloudinary, paste the URL, and Save — no app build or backend deploy needed to swap it.
+                </p>
+              </div>
+
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={!!config.welcome_video_enabled}
+                  onChange={(e) => setCfg({ welcome_video_enabled: e.target.checked })}
+                  className="w-4 h-4 accent-primary"
+                />
+                <span className="font-medium">Send video welcome</span>
+              </label>
+
+              <div>
+                <label className="text-sm text-muted-foreground">Cloudinary video URL</label>
+                <input
+                  type="text"
+                  value={config.welcome_video_url || ""}
+                  onChange={(e) => setCfg({ welcome_video_url: e.target.value })}
+                  placeholder="https://res.cloudinary.com/.../welcome.mp4"
+                  className={numField}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-muted-foreground">Thumbnail URL (optional)</label>
+                <input
+                  type="text"
+                  value={config.welcome_video_thumbnail_url || ""}
+                  onChange={(e) => setCfg({ welcome_video_thumbnail_url: e.target.value })}
+                  placeholder="Poster image; blank = video's first frame"
+                  className={numField}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-muted-foreground">Caption (optional)</label>
+                <textarea
+                  value={config.welcome_video_caption || ""}
+                  onChange={(e) => setCfg({ welcome_video_caption: e.target.value })}
+                  rows={2}
+                  placeholder="Shown under the video in the DM"
                   className={numField}
                 />
               </div>

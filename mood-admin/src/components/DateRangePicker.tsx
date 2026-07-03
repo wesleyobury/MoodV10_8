@@ -10,19 +10,29 @@ interface DateRangePickerProps {
   onChange: (start: Date, end: Date) => void;
 }
 
-const presets = [
-  { label: "Last 7 days", days: 7 },
-  { label: "Last 14 days", days: 14 },
-  { label: "Last 30 days", days: 30 },
-  { label: "Last 90 days", days: 90 },
+const rolling = (days: number): [Date, Date] => {
+  const end = endOfDay(new Date());
+  return [startOfDay(subDays(end, days - 1)), end];
+};
+const singleDay = (daysAgo: number): [Date, Date] => {
+  const d = subDays(new Date(), daysAgo);
+  return [startOfDay(d), endOfDay(d)];
+};
+
+const presets: { label: string; range: () => [Date, Date] }[] = [
+  { label: "Today", range: () => singleDay(0) },
+  { label: "Yesterday", range: () => singleDay(1) },
+  { label: "Last 7 days", range: () => rolling(7) },
+  { label: "Last 14 days", range: () => rolling(14) },
+  { label: "Last 30 days", range: () => rolling(30) },
+  { label: "Last 90 days", range: () => rolling(90) },
 ];
 
 export function DateRangePicker({ startDate, endDate, onChange }: DateRangePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handlePreset = (days: number) => {
-    const end = endOfDay(new Date());
-    const start = startOfDay(subDays(end, days - 1));
+  const handlePreset = (range: () => [Date, Date]) => {
+    const [start, end] = range();
     onChange(start, end);
     setIsOpen(false);
   };
@@ -51,8 +61,8 @@ export function DateRangePicker({ startDate, endDate, onChange }: DateRangePicke
           <div className="absolute right-0 top-full mt-2 z-20 bg-card border border-border rounded-lg shadow-lg p-2 min-w-[180px]">
             {presets.map((preset) => (
               <button
-                key={preset.days}
-                onClick={() => handlePreset(preset.days)}
+                key={preset.label}
+                onClick={() => handlePreset(preset.range)}
                 className="w-full text-left px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
               >
                 {preset.label}

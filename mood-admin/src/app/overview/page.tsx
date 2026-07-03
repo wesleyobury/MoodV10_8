@@ -54,12 +54,14 @@ export default function OverviewPage() {
   const [newUsersData, setNewUsersData] = useState<TimeSeriesData | null>(null);
   const [workoutsData, setWorkoutsData] = useState<TimeSeriesData | null>(null);
   const [postsData, setPostsData] = useState<TimeSeriesData | null>(null);
+  const [completionData, setCompletionData] = useState<TimeSeriesData | null>(null);
   const [onboarding, setOnboarding] = useState<OnboardingData | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   // Chart settings state (per-chart customization)
   const [dauSettings, setDauSettings] = useState<ChartSettings>({ ...defaultChartSettings });
+  const [completionSettings, setCompletionSettings] = useState<ChartSettings>({ ...defaultChartSettings, chartType: "line" });
   const [newUsersSettings, setNewUsersSettings] = useState<ChartSettings>({ ...defaultChartSettings, chartType: "bar" });
   const [workoutsSettings, setWorkoutsSettings] = useState<ChartSettings>({ ...defaultChartSettings });
   const [postsSettings, setPostsSettings] = useState<ChartSettings>({ ...defaultChartSettings, chartType: "bar" });
@@ -85,7 +87,7 @@ export default function OverviewPage() {
       const includeInternal = filters.includeInternal;
       const period = filters.granularity;
       
-      const [statsRes, compRes, engRes, dauRes, usersRes, workoutsRes, postsRes, onboardingRes] = await Promise.all([
+      const [statsRes, compRes, engRes, dauRes, usersRes, workoutsRes, postsRes, onboardingRes, completionRes] = await Promise.all([
         api.getPlatformStats(days, includeInternal),
         api.getComparison(startStr, endStr),
         api.getEngagement(includeInternal),
@@ -94,6 +96,7 @@ export default function OverviewPage() {
         api.getTimeSeries("workouts_completed", period, days, includeInternal),
         api.getTimeSeries("posts_created", period, days, includeInternal),
         api.getOnboarding(startStr, endStr, includeInternal),
+        api.getTimeSeries("completion_rate", period, days, includeInternal),
       ]);
 
       if (statsRes.data) setStats(statsRes.data);
@@ -104,6 +107,7 @@ export default function OverviewPage() {
       if (workoutsRes.data) setWorkoutsData(workoutsRes.data);
       if (postsRes.data) setPostsData(postsRes.data);
       if (onboardingRes.data) setOnboarding(onboardingRes.data);
+      if (completionRes.data) setCompletionData(completionRes.data);
       
       setLoading(false);
     };
@@ -438,6 +442,21 @@ export default function OverviewPage() {
             showControls={true}
             chartSettings={postsSettings}
             onSettingsChange={setPostsSettings}
+          />
+        )}
+        {completionData && (
+          <TimeSeriesChart
+            title="Workout Completion Rate (%)"
+            data={completionData.labels.map((label, i) => ({
+              name: label,
+              value: completionData.values[i],
+            }))}
+            type="line"
+            color="hsl(var(--chart-5))"
+            metric="completion_rate"
+            showControls={true}
+            chartSettings={completionSettings}
+            onSettingsChange={setCompletionSettings}
           />
         )}
       </div>

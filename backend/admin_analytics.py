@@ -393,6 +393,167 @@ async def get_onboarding_analytics(
         }
 
 
+# ── Monetization / paywall funnel ────────────────────────────────────────────
+async def get_monetization_analytics(
+    db: AsyncIOMotorDatabase,
+    start_date: datetime,
+    end_date: datetime,
+    include_internal: bool = False,
+) -> Dict[str, Any]:
+    """Paywall + subscription analytics: the paywall funnel (viewed → plan
+    selected → purchase started → purchased), conversion by paywall stage and by
+    trigger, revenue, trials, founding-modal claim rate, plan mix, and churn."""
+    try:
+        excluded = set()
+        if not include_internal:
+            excluded = await get_internal_user_ids(db)
+        base_match: Dict[str, Any] = {"timestamp": {"$gte": start_date, "$lte": end_date}}
+        if excluded:
+            base_match["user_id"] = {"$nin": list(excluded)}
+
+        async def _count(ev: str) -> int:
+            return await db.user_events.count_documents({**base_match, "event_type": ev})
+
+        # Funnel — MOOD V2 monetization events (participants de-duped guest→auth).
+        viewed = await _onb_participants(db, base_match, "paywall_viewed")
+        selected = await _onb_participants(db, base_match, "plan_selected")
+        initiated = await _onb_participants(db, base_match, "purchase_initiated")
+        completed = await _onb_participants(db, base_match, "purchase_completed")
+
+        funnel_defs = [
+            ("Paywall viewed", viewed),
+            ("Plan selected", selected),
+            ("Purchase started", initiated),
+            ("Purchased", completed),
+        ]
+        funnel = []
+        prev = None
+        for i, (label, s) in enumerate(funnel_defs):
+            n = len(s)
+            if i == 0 or not prev:
+                converted, step_conv = n, 100.0
+            else:
+                converted = len(s & prev)
+                step_conv = round(converted / len(prev) * 100, 1) if prev else 0.0
+            funnel.append({
+                "label": label,
+                "unique": n,
+                "converted": converted,
+                "step_conversion": step_conv,
+                "pct_of_top": round(n / len(viewed) * 100, 1) if viewed else 0.0,
+            })
+            prev = s
+
+        viewed_n, completed_n = len(viewed), len(completed)
+        overall_conv = round(completed_n / viewed_n * 100, 1) if viewed_n else 0.0
+
+        # Revenue (sum of purchase_completed.revenue_usd).
+        rev_doc = await db.user_events.aggregate([
+            {"$match": {**base_match, "event_type": "purchase_completed"}},
+            {"$group": {"_id": None, "revenue": {"$sum": {"$ifNull": ["$metadata.revenue_usd", 0]}}}},
+        ]).to_list(1)
+        total_revenue = round(rev_doc[0]["revenue"], 2) if rev_doc else 0.0
+
+        trials = await _onb_participants(db, base_match, "trial_started")
+
+        # Conversion by paywall stage (#1/#2/#3): of people who saw that stage,
+        # how many purchased?
+        by_stage = []
+        for stage in (1, 2, 3):
+            v = await _onb_participants(db, base_match, "paywall_viewed", "metadata.stage", stage)
+            d = await _onb_participants(db, base_match, "paywall_dismissed", "metadata.stage", stage)
+            purchased = len(v & completed)
+            by_stage.append({
+                "stage": stage,
+                "viewed": len(v),
+                "dismissed": len(d),
+                "purchased": purchased,
+                "conversion": round(purchased / len(v) * 100, 1) if v else 0.0,
+            })
+
+        # Conversion by trigger — what moment drove the paywall, and did it convert?
+        trig_docs = await db.user_events.aggregate([
+            {"$match": {**base_match, "event_type": "paywall_viewed"}},
+            {"$group": {
+                "_id": {"$ifNull": ["$metadata.trigger", "$metadata.trigger_source"]},
+                "ppl": {"$addToSet": _ONB_PARTICIPANT},
+            }},
+        ]).to_list(200)
+        by_trigger = []
+        for d in trig_docs:
+            viewers = {p for p in d["ppl"] if p is not None}
+            purchased = len(viewers & completed)
+            by_trigger.append({
+                "trigger": str(d["_id"] or "unknown"),
+                "viewed": len(viewers),
+                "purchased": purchased,
+                "conversion": round(purchased / len(viewers) * 100, 1) if viewers else 0.0,
+            })
+        by_trigger.sort(key=lambda x: -x["viewed"])
+        by_trigger = by_trigger[:12]
+
+        # Plan mix — count + revenue per plan on purchase_completed.
+        plan_docs = await db.user_events.aggregate([
+            {"$match": {**base_match, "event_type": "purchase_completed"}},
+            {"$group": {
+                "_id": "$metadata.plan_id",
+                "count": {"$sum": 1},
+                "revenue": {"$sum": {"$ifNull": ["$metadata.revenue_usd", 0]}},
+            }},
+        ]).to_list(50)
+        plan_mix = sorted(
+            [{"plan": str(d["_id"] or "unknown"), "count": d["count"],
+              "revenue_usd": round(d["revenue"], 2)} for d in plan_docs],
+            key=lambda x: -x["count"],
+        )
+
+        # Founding-member modal claim rate.
+        f_shown = await _onb_participants(db, base_match, "founding_modal_shown")
+        f_shown |= await _onb_participants(db, base_match, "founding_member_modal_shown")
+        f_claimed = await _onb_participants(db, base_match, "founding_modal_claimed")
+        f_dismissed = await _onb_participants(db, base_match, "founding_modal_dismissed")
+
+        return {
+            "start_date": start_date.isoformat(),
+            "end_date": end_date.isoformat(),
+            "headline": {
+                "paywall_viewers": viewed_n,
+                "purchasers": completed_n,
+                "conversion_rate": overall_conv,
+                "revenue_usd": total_revenue,
+                "trials_started": len(trials),
+                "founding_claim_rate": round(len(f_claimed) / len(f_shown) * 100, 1) if f_shown else 0.0,
+            },
+            "funnel": funnel,
+            "by_stage": by_stage,
+            "by_trigger": by_trigger,
+            "plan_mix": plan_mix,
+            "founding": {
+                "shown": len(f_shown),
+                "claimed": len(f_claimed),
+                "dismissed": len(f_dismissed),
+                "claim_rate": round(len(f_claimed) / len(f_shown) * 100, 1) if f_shown else 0.0,
+            },
+            "churn": {
+                "trial_cancelled": await _count("trial_cancelled"),
+                "subscription_lapsed": await _count("subscription_lapsed"),
+                "purchase_failed": await _count("purchase_failed"),
+            },
+        }
+    except Exception as e:
+        logger.error(f"Error getting monetization analytics: {e}")
+        return {
+            "start_date": start_date.isoformat() if start_date else None,
+            "end_date": end_date.isoformat() if end_date else None,
+            "headline": {"paywall_viewers": 0, "purchasers": 0, "conversion_rate": 0,
+                         "revenue_usd": 0, "trials_started": 0, "founding_claim_rate": 0},
+            "funnel": [], "by_stage": [], "by_trigger": [], "plan_mix": [],
+            "founding": {"shown": 0, "claimed": 0, "dismissed": 0, "claim_rate": 0},
+            "churn": {"trial_cancelled": 0, "subscription_lapsed": 0, "purchase_failed": 0},
+            "error": str(e),
+        }
+
+
 def _get_step_label(step: str) -> str:
     """Get human-readable label for funnel step"""
     labels = {

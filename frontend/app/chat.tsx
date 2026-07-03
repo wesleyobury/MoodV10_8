@@ -20,6 +20,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 import { API_URL } from '../utils/apiConfig';
 import WorkoutShareMessageCard from '../components/WorkoutShareMessageCard';
+import WelcomeVideoMessage from '../components/WelcomeVideoMessage';
 
 interface Message {
   id: string;
@@ -209,6 +210,33 @@ export default function Chat() {
     const isOwnMessage = item.sender_id === user?.id;
     const showDate = index === 0 || 
       formatDate(item.created_at) !== formatDate(messages[index - 1].created_at);
+
+    // Welcome video attachment — render a video card (from officialmoodapp).
+    if (item.attachment_type === 'welcome_video' && item.attachment?.video_url) {
+      return (
+        <>
+          {showDate && (
+            <View style={styles.dateContainer}>
+              <Text style={styles.dateText}>{formatDate(item.created_at)}</Text>
+            </View>
+          )}
+          <WelcomeVideoMessage
+            videoUrl={item.attachment.video_url}
+            thumbnailUrl={item.attachment.thumbnail_url}
+            caption={item.attachment.caption || item.content}
+          />
+          <Text
+            style={[
+              styles.messageTime,
+              styles.otherMessageTime,
+              { alignSelf: 'flex-start', paddingHorizontal: 12 },
+            ]}
+          >
+            {formatTime(item.created_at)}
+          </Text>
+        </>
+      );
+    }
 
     // Workout share attachment — render premium card instead of bubble
     if (item.attachment_type === 'workout_share' && item.attachment) {

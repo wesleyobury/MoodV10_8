@@ -216,6 +216,18 @@ class ApiClient {
     return this.get<OnboardingData>(`/analytics/admin/onboarding?${params}`);
   }
 
+  async getMonetization(
+    start?: string,
+    end?: string,
+    includeInternal: boolean = false
+  ) {
+    const params = new URLSearchParams();
+    if (start) params.append("start", start);
+    if (end) params.append("end", end);
+    if (includeInternal) params.append("include_internal", "true");
+    return this.get<MonetizationData>(`/analytics/admin/monetization?${params}`);
+  }
+
   async getRetention(
     start?: string,
     end?: string,
@@ -397,6 +409,10 @@ export interface AppConfig {
   ios_store_url: string;
   android_store_url: string;
   update_check_enabled: boolean;
+  welcome_video_enabled?: boolean;
+  welcome_video_url?: string;
+  welcome_video_thumbnail_url?: string;
+  welcome_video_caption?: string;
   v2_launch_date?: string | null;
   updated_at?: string | null;
   updated_by?: string | null;
@@ -549,6 +565,52 @@ export interface OnboardingData {
   answers: OnboardingAnswers[];
   reveal_ctas: OnboardingCta[];
   abandonment: OnboardingAbandon[];
+  error?: string;
+}
+
+// ── Monetization / paywall ──
+export interface MonetizationFunnelStep {
+  label: string;
+  unique: number;
+  converted: number;
+  step_conversion: number;
+  pct_of_top: number;
+}
+export interface MonetizationStage {
+  stage: number;
+  viewed: number;
+  dismissed: number;
+  purchased: number;
+  conversion: number;
+}
+export interface MonetizationTrigger {
+  trigger: string;
+  viewed: number;
+  purchased: number;
+  conversion: number;
+}
+export interface MonetizationPlan {
+  plan: string;
+  count: number;
+  revenue_usd: number;
+}
+export interface MonetizationData {
+  start_date: string;
+  end_date: string;
+  headline: {
+    paywall_viewers: number;
+    purchasers: number;
+    conversion_rate: number;
+    revenue_usd: number;
+    trials_started: number;
+    founding_claim_rate: number;
+  };
+  funnel: MonetizationFunnelStep[];
+  by_stage: MonetizationStage[];
+  by_trigger: MonetizationTrigger[];
+  plan_mix: MonetizationPlan[];
+  founding: { shown: number; claimed: number; dismissed: number; claim_rate: number };
+  churn: { trial_cancelled: number; subscription_lapsed: number; purchase_failed: number };
   error?: string;
 }
 

@@ -136,6 +136,7 @@ import achievements as achievements_engine
 from admin_analytics import (
     get_funnel_analysis,
     get_onboarding_analytics,
+    get_monetization_analytics,
     get_retention_cohorts,
     search_users,
     get_user_timeline,
@@ -325,50 +326,73 @@ async def send_welcome_message(new_user_id: str):
         if new_user_id == admin_id:
             return
         
+        # Welcome-video config (managed from the admin dashboard, swappable
+        # without an app build). When enabled + a URL is set, the welcome DM is
+        # a video attachment; otherwise it's the text message.
+        cfg = await db.app_config.find_one({"_id": "app_config"}) or {}
+        use_video = bool(cfg.get("welcome_video_enabled")) and bool((cfg.get("welcome_video_url") or "").strip())
+        if use_video:
+            content = (cfg.get("welcome_video_caption") or "").strip()
+            attachment_type = "welcome_video"
+            attachment = {
+                "video_url": (cfg.get("welcome_video_url") or "").strip(),
+                "thumbnail_url": (cfg.get("welcome_video_thumbnail_url") or "").strip(),
+                "caption": content,
+            }
+            preview = (content[:50] + "...") if content else "📹 Welcome to MOOD"
+        else:
+            content = WELCOME_MESSAGE_TEXT
+            attachment_type = None
+            attachment = None
+            preview = WELCOME_MESSAGE_TEXT[:50] + "..."
+
         # Check if conversation already exists
         existing_conv = await db.conversations.find_one({
             "participants": {"$all": [admin_id, new_user_id]}
         })
-        
+
         if existing_conv:
-            # Conversation exists, check if welcome was already sent
+            # Conversation exists — skip if a welcome was already sent.
             welcome_exists = await db.messages.find_one({
                 "conversation_id": str(existing_conv["_id"]),
                 "sender_id": admin_id,
-                "content": {"$regex": "Welcome to MOOD"}
+                "$or": [{"is_welcome": True}, {"content": {"$regex": "Welcome to MOOD"}}],
             })
             if welcome_exists:
                 logger.info(f"Welcome message already sent to user {new_user_id}")
                 return
             conversation_id = str(existing_conv["_id"])
         else:
-            # Create new conversation
             conversation = {
                 "participants": [admin_id, new_user_id],
                 "created_at": datetime.now(timezone.utc),
                 "updated_at": datetime.now(timezone.utc),
-                "last_message": WELCOME_MESSAGE_TEXT[:50] + "...",
+                "last_message": preview,
                 "last_message_at": datetime.now(timezone.utc),
             }
             result = await db.conversations.insert_one(conversation)
             conversation_id = str(result.inserted_id)
-        
-        # Create the welcome message
+
+        # Create the welcome message (text, or a video attachment when set).
         message = {
             "conversation_id": conversation_id,
             "sender_id": admin_id,
-            "content": WELCOME_MESSAGE_TEXT,
+            "content": content,
             "created_at": datetime.now(timezone.utc),
             "read": False,
+            "is_welcome": True,
         }
+        if attachment_type:
+            message["attachment_type"] = attachment_type
+            message["attachment"] = attachment
         await db.messages.insert_one(message)
-        
+
         # Update conversation with last message
         await db.conversations.update_one(
             {"_id": ObjectId(conversation_id)},
             {
                 "$set": {
-                    "last_message": WELCOME_MESSAGE_TEXT[:50] + "...",
+                    "last_message": preview,
                     "last_message_at": datetime.now(timezone.utc),
                     "updated_at": datetime.now(timezone.utc),
                 }
@@ -2012,6 +2036,11 @@ DEFAULT_APP_CONFIG = {
     "ios_store_url": "",
     "android_store_url": "",
     "update_check_enabled": False,
+    # Welcome DM video (managed from the admin dashboard; no app build to swap).
+    "welcome_video_enabled": False,
+    "welcome_video_url": "",
+    "welcome_video_thumbnail_url": "",
+    "welcome_video_caption": "",
 }
 
 
@@ -2175,6 +2204,10 @@ class AppConfigUpdate(BaseModel):
     ios_store_url: Optional[str] = None
     android_store_url: Optional[str] = None
     update_check_enabled: Optional[bool] = None
+    welcome_video_enabled: Optional[bool] = None
+    welcome_video_url: Optional[str] = None
+    welcome_video_thumbnail_url: Optional[str] = None
+    welcome_video_caption: Optional[str] = None
 
 
 @api_router.get("/config")
@@ -2669,7 +2702,74 @@ async def get_time_series_analytics(
                 users_filter["is_internal"] = {"$ne": True}
             for row in await _agg_count_by_period(db.users, users_filter, "created_at"):
                 data_by_period[row["_id"]]["count"] = row["count"]
-        
+
+        elif metric_type == "paywall_views":
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "paywall_viewed"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+
+        elif metric_type == "trials_started":
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "trial_started"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+
+        elif metric_type == "purchases":
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "purchase_completed"}, "timestamp"
+            ):
+                data_by_period[row["_id"]]["count"] = row["count"]
+
+        elif metric_type == "revenue":
+            # Primary value = revenue (USD); secondary = number of purchases.
+            pipeline = [
+                {"$match": {**base_filter, "event_type": "purchase_completed"}},
+                {"$group": {
+                    "_id": {"$dateToString": {"format": mongo_date_format, "date": "$timestamp"}},
+                    "count": {"$sum": 1},
+                    "revenue": {"$sum": {"$ifNull": ["$metadata.revenue_usd", 0]}},
+                }},
+                {"$limit": max_buckets},
+            ]
+            for row in await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(max_buckets):
+                data_by_period[row["_id"]]["count"] = round(row.get("revenue", 0), 2)
+                data_by_period[row["_id"]]["value"] = row["count"]
+
+        elif metric_type == "completion_rate":
+            # Primary value = workouts_completed / workouts_started * 100 per bucket.
+            started, completed = {}, {}
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "workout_started"}, "timestamp"
+            ):
+                started[row["_id"]] = row["count"]
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "workout_completed"}, "timestamp"
+            ):
+                completed[row["_id"]] = row["count"]
+            for bucket in set(list(started.keys()) + list(completed.keys())):
+                s, c = started.get(bucket, 0), completed.get(bucket, 0)
+                data_by_period[bucket]["count"] = round(c / s * 100, 1) if s else 0
+                data_by_period[bucket]["value"] = c
+
+        elif metric_type == "onboarding_completion_rate":
+            # completed / entered onboarding per bucket (by onboarding events).
+            entered, done = {}, {}
+            for row in await _agg_count_by_period(
+                db.user_events,
+                {**base_filter, "event_type": "onboarding_step_viewed", "metadata.step": 1},
+                "timestamp",
+            ):
+                entered[row["_id"]] = row["count"]
+            for row in await _agg_count_by_period(
+                db.user_events, {**base_filter, "event_type": "onboarding_completed"}, "timestamp"
+            ):
+                done[row["_id"]] = row["count"]
+            for bucket in set(list(entered.keys()) + list(done.keys())):
+                e, d = entered.get(bucket, 0), done.get(bucket, 0)
+                data_by_period[bucket]["count"] = round(d / e * 100, 1) if e else 0
+                data_by_period[bucket]["value"] = d
+
         # Format response
         sorted_data = sorted(data_by_period.items(), key=lambda x: x[0])[-limit:]
         
@@ -3618,6 +3718,39 @@ async def get_onboarding_endpoint(
         return await get_onboarding_analytics(db, start_date, end_date, include_internal)
     except Exception as e:
         logger.error(f"Onboarding endpoint error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/analytics/admin/monetization")
+async def get_monetization_endpoint(
+    start: Optional[str] = None,
+    end: Optional[str] = None,
+    include_internal: bool = False,
+    current_user_id: str = Depends(require_admin)
+):
+    """
+    Paywall + subscription analytics: paywall funnel (viewed → plan selected →
+    purchase started → purchased), conversion by paywall stage and by trigger,
+    revenue, trials, founding-modal claim rate, plan mix, and churn.
+
+    Query params:
+    - start: ISO date string (default: 30 days ago)
+    - end: ISO date string (default: now)
+    - include_internal: Include internal/staff users (default: false)
+    """
+    try:
+        if end:
+            end_date = datetime.fromisoformat(end.replace('Z', '+00:00'))
+        else:
+            end_date = datetime.now(timezone.utc)
+        if start:
+            start_date = datetime.fromisoformat(start.replace('Z', '+00:00'))
+        else:
+            start_date = end_date - timedelta(days=30)
+
+        return await get_monetization_analytics(db, start_date, end_date, include_internal)
+    except Exception as e:
+        logger.error(f"Monetization endpoint error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
