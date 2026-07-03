@@ -10,7 +10,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standing DB Calf Raise',
           duration: '10–12 min',
           description: 'Simple standing lift for foundational calf development',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15–20 Standing Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 rounds\n• 15–20 Standing Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -51,7 +51,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated DB Calf Raise',
           duration: '10–12 min',
           description: 'Targets deeper calf muscle with stable seated form',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Seated Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Seated Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -92,7 +92,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Supported Calf Raise',
           duration: '8–10 min',
           description: 'Assisted calf raises improving balance and control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 rounds\n• 15 Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -140,7 +140,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single‑Leg DB Calf Raise',
           duration: '14–16 min',
           description: 'Isolates each calf for balanced strength and size',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10–12 per leg Single‑Leg Raises\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 75s between sets, take all of it.\n4 rounds\n• 10–12 per leg Single‑Leg Raises\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -181,7 +181,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Calf Raise (Tempo + Bodyweight)',
           duration: '14–16 min',
           description: 'Controlled tempo builds endurance and hypertrophy',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. control the lowering — the tempo is the point.\n3 rounds\n• 10–12 Tempo Calf Raises\n• 15 Bodyweight Calf Raises — immediately, no rest\nRest 75s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — all 2 moves in order, then rest 75s.\n3 rounds\n• 10–12 Tempo Calf Raises\n• 15 Bodyweight Calf Raises — immediately, no rest\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -224,7 +224,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Single-Leg Calf Raise',
           duration: '10–12 min',
           description: 'Unilateral raises increasing calf loading',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Raises per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10 per side — rest 75s between sets, take all of it.\n4 rounds\n• 10 Raises per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -272,7 +272,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Calf Raise (Drop Set)',
           duration: '16–18 min',
           description: 'Stripping load forces fibers to contract under fatigue',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -314,7 +314,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Calf Raise (Iso + Jumps)',
           duration: '16–18 min',
           description: 'Combo reps with iso hold completely crushes calves',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. holds are strict: locked position, no drifting.\n3 rounds\n• 12–15 Calf Raises\n• Finish with 10s Iso Hold at top\n• 10 Stiff Leg Jumps — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10s Iso Hold at top — it counts, don\'t skip it. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 12–15 Calf Raises\n• Finish with 10s Iso Hold at top\n• 10 Stiff Leg Jumps — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -356,7 +356,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Calf Raise Ladder',
           duration: '14–16 min',
           description: 'Descending ladder maximizing calf fatigue',
-          battlePlan: 'Instructions: Aim for 2–3 ladders — stop when quality drops. Leave 1–2 clean reps in the tank on every set.\n3 rounds\n• 20 → 15 → 10 Raises\nRest 120s',
+          battlePlan: 'Instructions: Aim for 2–3 ladders — stop when quality drops.\n3 rounds\n• 20 → 15 → 10 Raises\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -411,7 +411,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standing Barbell Calf Raise',
           duration: '10–12 min',
           description: 'Classic standing raise for overall calf development',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15–20 Standing Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 rounds\n• 15–20 Standing Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -452,7 +452,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Calf Raise (Elevated)',
           duration: '10–12 min',
           description: 'Plate under toes enhances calf muscle activation',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Elevated Calf Raises\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 75s between sets, take all of it.\n3 rounds\n• 12–15 Elevated Calf Raises\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -493,7 +493,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Standing Calf Raise',
           duration: '8–10 min',
           description: 'Standing calf raises building basic ankle strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Standing Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 rounds\n• 15 Standing Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -541,7 +541,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Calf Raise',
           duration: '14–16 min',
           description: 'Builds strength and control through isometric hold',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. control the lowering — the tempo is the point.\n4 rounds\n• 10–12 Pause Calf Raises\n• 15 Bodyweight Calf Raises — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 4 rounds — all 2 moves in order, then rest 90s.\n4 rounds\n• 10–12 Pause Calf Raises\n• 15 Bodyweight Calf Raises — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -583,7 +583,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Calf Raise (Tempo)',
           duration: '14–16 min',
           description: 'Controlled tempo builds endurance and hypertrophy',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 10–12 Tempo Calf Raises\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10–12 — rest 90s between sets, take all of it.\n3 rounds\n• 10–12 Tempo Calf Raises\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -624,7 +624,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Tempo Calf Raise',
           duration: '10–12 min',
           description: 'Slow eccentrics increasing calf time under tension',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 12 Calf Raises (3s eccentric)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 75s between sets, take all of it.\n4 rounds\n• 12 Calf Raises (3s eccentric)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -672,7 +672,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Calf Raise (Drop Set)',
           duration: '16–18 min',
           description: 'Stripping load forces fibers to contract under fatigue',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -714,7 +714,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Calf Raise (Iso + Jumps)',
           duration: '16–18 min',
           description: 'Combo reps with iso hold completely crushes calves',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. holds are strict: locked position, no drifting.\n3 rounds\n• 12–15 Calf Raises\n• Finish with 10s Iso Hold at top\n• 10 Stiff Leg Jumps — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10s Iso Hold at top — it counts, don\'t skip it. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 12–15 Calf Raises\n• Finish with 10s Iso Hold at top\n• 10 Stiff Leg Jumps — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -756,7 +756,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Calf Raise Drop Set',
           duration: '14–16 min',
           description: 'Extended standing raises using fast load reductions',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Heavy Raises\n• Raise drop → 12\n• Raise drop → 15\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 10 Heavy Raises\n• Raise drop → 12\n• Raise drop → 15\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -811,7 +811,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise (Neutral)',
           duration: '10–12 min',
           description: 'Basic press for foundational calf development',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15–20 Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 rounds\n• 15–20 Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -852,7 +852,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise (Toes Out)',
           duration: '10–12 min',
           description: 'Foot angle variation for balanced calf growth and stimulation',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Toes Out Calf Raises\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 75s between sets, take all of it.\n3 rounds\n• 12–15 Toes Out Calf Raises\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -893,7 +893,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise',
           duration: '8–10 min',
           description: 'Supported calf raises using leg press sled',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 rounds\n• 15 Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -941,7 +941,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single‑Leg Press Calf Raise',
           duration: '14–16 min',
           description: 'Isolates each calf for balanced strength and size',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10–12 per leg Single‑Leg Raises\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 90s between sets, take all of it.\n4 rounds\n• 10–12 per leg Single‑Leg Raises\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -982,7 +982,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise',
           duration: '14–16 min',
           description: 'Builds strength and control through isometric hold',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. control the lowering — the tempo is the point.\n3 rounds\n• 10–12 Pause Calf Raises\n• 15 Bodyweight Calf Raises — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 10–12 Pause Calf Raises\n• 15 Bodyweight Calf Raises — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1024,7 +1024,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Pause',
           duration: '10–12 min',
           description: 'Paused calf raises emphasizing top-end contraction',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 12 Raises (2s pause)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 12 — rest 75s between sets, take all of it.\n4 rounds\n• 12 Raises (2s pause)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1072,7 +1072,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise (Drop Set)',
           duration: '16–18 min',
           description: 'Stripping load forces fibers to contract under fatigue',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1114,7 +1114,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Raise (Iso + Jumps)',
           duration: '16–18 min',
           description: 'Combo reps with iso hold completely crushes calves',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. holds are strict: locked position, no drifting.\n3 rounds\n• 12–15 Calf Raises\n• Finish with 10s Iso Hold at top\n• 10 Stiff Leg Jumps — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10s Iso Hold at top — it counts, don\'t skip it. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 12–15 Calf Raises\n• Finish with 10s Iso Hold at top\n• 10 Stiff Leg Jumps — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1156,7 +1156,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Calf Drop Set',
           duration: '14–16 min',
           description: 'Extended calf sets using rapid sled weight drops',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Raises\n• Calf drop → 15\n• Calf drop → 20\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 10 Raises\n• Calf drop → 15\n• Calf drop → 20\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1211,7 +1211,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standing Calf Raise Machine',
           duration: '10–12 min',
           description: 'Basic standing raise for foundational calf development',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15–20 Standing Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 60s between sets, take all of it.\n3 rounds\n• 15–20 Standing Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1252,7 +1252,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Calf Raise Machine',
           duration: '10–12 min',
           description: 'Targets deeper calf muscle with stable seated form',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Seated Calf Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Seated Calf Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1293,7 +1293,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Calf Raise',
           duration: '8–10 min',
           description: 'Guided calf raises reinforcing full range control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Machine Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 60s between sets, take all of it.\n3 rounds\n• 15 Machine Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1341,7 +1341,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single‑Leg Calf Raise Machine',
           duration: '14–16 min',
           description: 'Isolates each calf for balanced strength and size',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10–12 per leg Single‑Leg Raises\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 10–12 per side — rest 75s between sets, take all of it.\n4 rounds\n• 10–12 per leg Single‑Leg Raises\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1382,7 +1382,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Calf Raise Machine',
           duration: '14–16 min',
           description: 'Builds strength and control through isometric hold',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. control the lowering — the tempo is the point.\n3 rounds\n• 10–12 Pause Calf Raises\n• 15 Bodyweight Calf Raises — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 10–12 Pause Calf Raises\n• 15 Bodyweight Calf Raises — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1424,7 +1424,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Machine Calf Raise',
           duration: '10–12 min',
           description: 'Paused raises reinforcing peak calf contraction',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 12 Raises (2s pause)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 12 — rest 75s between sets, take all of it.\n4 rounds\n• 12 Raises (2s pause)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1472,7 +1472,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Calf Raise Machine (Drop Set)',
           duration: '16–18 min',
           description: 'Stripping load forces fibers to contract under fatigue',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Heavy Calf Raises\n• Drop 15–20% → 10 reps\n• Drop 15–20% → 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1514,7 +1514,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Calf Raise Machine (Iso + Jumps)',
           duration: '16–18 min',
           description: 'Combo reps with iso hold completely crushes calves',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. holds are strict: locked position, no drifting.\n3 rounds\n• 12–15 Calf Raises\n• Finish with 10s Iso Hold at top\n• 10 Stiff Leg Jumps — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Cap every set with the finisher: 10s Iso Hold at top — it counts, don\'t skip it. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 12–15 Calf Raises\n• Finish with 10s Iso Hold at top\n• 10 Stiff Leg Jumps — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1556,7 +1556,7 @@ export const calvesWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Calf Burnout Set',
           duration: '14–16 min',
           description: 'High-rep calf raises pushing muscular endurance',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 25–30 Raises\nRest 120s',
+          battlePlan: 'Instructions: 3 sets of 25–30 — rest 120s between sets, take all of it.\n3 rounds\n• 25–30 Raises\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [

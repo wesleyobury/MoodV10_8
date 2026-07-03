@@ -10,7 +10,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell RDL',
           duration: '10–12 min',
           description: 'Teaches safe mechanics and stretch for hypertrophy',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Dumbbell RDLs\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Dumbbell RDLs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -51,7 +51,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Good Morning (Chest Hold)',
           duration: '10–12 min',
           description: 'Difficult lift, always start light and progress slowly',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 DB Good Mornings\nRest 75–90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 75–90s between sets, take all of it.\n3 rounds\n• 8–10 DB Good Mornings\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -92,7 +92,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Suitcase RDL',
           duration: '10–12 min',
           description: 'Single-side RDLs reinforcing hamstring control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 RDLs per side\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s between sets, take all of it.\n3 rounds\n• 10 RDLs per side\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -138,7 +138,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Hamstring Walkouts',
           duration: '10–12 min',
           description: 'Floor walkouts emphasizing eccentric hamstring control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6–8 Walkouts\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 6–8 — rest 75s between sets, take all of it.\n3 rounds\n• 6–8 Walkouts\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -185,7 +185,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Staggered‑Stance DB RDL',
           duration: '14–16 min',
           description: 'Single‑leg hinge balances strength across sides',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per side Staggered RDLs\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per side Staggered RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -226,7 +226,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Deficit RDL',
           duration: '14–16 min',
           description: 'Elevation increases hypertrophy by extended ROM',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Deficit DB RDLs\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Deficit DB RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -267,7 +267,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Staggered-Stance RDL',
           duration: '14–16 min',
           description: 'Rear-foot-light RDL emphasizing lead hamstring',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 RDLs per leg\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 rounds\n• 8 RDLs per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -315,7 +315,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused DB RDL',
           duration: '16–18 min',
           description: 'Burns hamstrings with static stress and strict tempo',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6–8 Paused DB RDLs\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 rounds\n• 6–8 Paused DB RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -356,7 +356,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep DB RDL Combo',
           duration: '16–18 min',
           description: 'Complex set multiplies time under hamstring tension',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Combo Reps (full + half = 1 rep)\nRest 90s',
+          battlePlan: 'Instructions: Every rep = one full rep plus a half rep in the hardest range before you finish. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Combo Reps (full + half = 1 rep)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -397,7 +397,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell RDL Triple Drop',
           duration: '18–20 min',
           description: 'Extended RDL sets using three rapid drops',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 RDLs\n• RDL drop → 6\n• RDL drop → 6\n• RDL drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 4 moves in order, then rest 150s.\n3 rounds\n• 8 RDLs\n• RDL drop → 6\n• RDL drop → 6\n• RDL drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -444,7 +444,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Long-Pause RDL',
           duration: '18–20 min',
           description: 'Paused RDLs strengthening stretched hamstrings',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6 RDLs (3s pause)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 150s between sets, take all of it.\n4 rounds\n• 6 RDLs (3s pause)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -498,7 +498,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell RDL',
           duration: '10–12 min',
           description: 'Fundamental builder, strengthen hinge with light loads',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Barbell RDLs\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10 — rest 75s between sets, take all of it.\n3 rounds\n• 10 Barbell RDLs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -539,7 +539,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Good Morning (Light!)',
           duration: '10–12 min',
           description: 'Hard lift, best done light for controlled practice',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Good Mornings\nRest 75–90s',
+          battlePlan: 'Instructions: 3 sets of 8 — rest 75–90s between sets, take all of it.\n3 rounds\n• 8 Good Mornings\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -580,7 +580,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Hip Hinge Good Morning',
           duration: '10–12 min',
           description: 'Light bar good mornings emphasizing hamstring stretch',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Good Mornings\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Good Mornings\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -626,7 +626,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Stiff-Leg Iso Hold',
           duration: '10–12 min',
           description: 'Isometric hinge holds reinforcing hamstring tension',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 20–30s Stiff-Leg Hold\nRest 75s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 20–30s — rest 75s between sets, take all of it.\n3 rounds\n• 20–30s Stiff-Leg Hold\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -673,7 +673,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Sumo Deadlift',
           duration: '14–16 min',
           description: 'Wide stance deadlift emphasizes inner hamstrings and glutes',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Sumo Deadlifts\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Sumo Deadlifts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -715,7 +715,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Pause RDL',
           duration: '14–16 min',
           description: 'Strict hold eliminates momentum, builds hamstring size',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 RDLs (2s pause at shin)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 RDLs (2s pause at shin)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -756,7 +756,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Deficit RDL',
           duration: '14–16 min',
           description: 'Creates extra tension through hamstring length ROM',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6–8 Deficit Barbell RDLs\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 6–8 — rest 90s between sets, take all of it.\n3 rounds\n• 6–8 Deficit Barbell RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -797,7 +797,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Tempo Good Morning',
           duration: '14–16 min',
           description: 'Slow-eccentric good mornings for time under tension',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 Good Mornings (3s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 120s between sets, take all of it.\n4 rounds\n• 8 Good Mornings (3s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -845,7 +845,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Tempo RDL',
           duration: '16–18 min',
           description: 'Strict controlled pace maximizes hypertrophy stimulus',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6 Tempo RDLs (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 90s between sets, take all of it.\n4 rounds\n• 6 Tempo RDLs (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -886,7 +886,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell RDL + Rack Pull Combo',
           duration: '16–18 min',
           description: 'Hamstring fatigue plus power finish explosively',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 RDLs\n• 4 Rack Pulls heavy\nRest 120s',
+          battlePlan: 'Instructions: 3 rounds — all 2 moves in order, then rest 120s.\n3 rounds\n• 6 RDLs\n• 4 Rack Pulls heavy\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -932,7 +932,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell RDL Drop Series',
           duration: '18–20 min',
           description: 'Extended RDL sets using multiple rapid drops',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 RDLs\n• Series drop → 6\n• Series drop → 6\nRest 150s',
+          battlePlan: 'Instructions: 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 6 RDLs\n• Series drop → 6\n• Series drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -979,7 +979,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Lengthened-Pause RDL',
           duration: '18–20 min',
           description: 'Paused RDLs emphasizing stretched hamstring strength',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 5–6 RDLs (2s pause)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 RDLs (2s pause)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1033,7 +1033,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Roman Chair Back Extension',
           duration: '10–12 min',
           description: 'Establish hinge mechanics for beginner lifters',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Back Extensions\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Back Extensions\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1074,7 +1074,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Roman Chair Good Morning',
           duration: '10–12 min',
           description: 'Strengthens core as hamstrings extend repeatedly',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Good Morning Reps (bodyweight)\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 60s between sets, take all of it.\n3 rounds\n• 12 Good Morning Reps (bodyweight)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1115,7 +1115,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hamstring-Bias Extension',
           duration: '10–12 min',
           description: 'Short-range extensions emphasizing hamstring stretch',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Extensions\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Extensions\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1160,7 +1160,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Hinge Hold',
           duration: '10–12 min',
           description: 'Static hinge holds reinforcing hamstring endurance',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 20–30s Hold\nRest 75s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 20–30s — rest 75s between sets, take all of it.\n3 rounds\n• 20–30s Hold\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1207,7 +1207,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Back Extension',
           duration: '14–16 min',
           description: 'Resistance progression builds hypertrophy effectively',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Weighted Back Extensions\nRest 75–90s',
+          battlePlan: 'Instructions: 4 sets of 10 — rest 75–90s between sets, take all of it.\n4 rounds\n• 10 Weighted Back Extensions\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1248,7 +1248,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single‑Leg Extension',
           duration: '14–16 min',
           description: 'Forces balance and greater range for each limb',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 per side\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 per side\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1288,7 +1288,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Extension + Pause',
           duration: '14–16 min',
           description: 'Extensions with pauses at stretched position',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 Extensions (2s pause)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 120s between sets, take all of it.\n4 rounds\n• 8 Extensions (2s pause)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1335,7 +1335,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Back Extension',
           duration: '16–18 min',
           description: 'Eliminates swing, prolongs posterior chain tension',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8 Paused Extensions\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Paused Extensions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1376,7 +1376,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Alternating Half + Full Extensions',
           duration: '16–18 min',
           description: 'Alternating range burns hamstrings under long tension',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Alternating Half + Full Extensions\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Alternating Half + Full Extensions\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1416,7 +1416,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Extension Drop Set',
           duration: '18–20 min',
           description: 'Extended posterior work using rapid drops',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Extensions\n• Extension drop → 8\n• Extension drop → 8\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 8 Extensions\n• Extension drop → 8\n• Extension drop → 8\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1462,7 +1462,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Long-Hold Extension Finisher',
           duration: '18–20 min',
           description: 'Isometric holds under heavy fatigue',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 30–40s Hold\nRest 150s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 30–40s — rest 150s between sets, take all of it.\n3 rounds\n• 30–40s Hold\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1515,7 +1515,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Leg Curl',
           duration: '10–12 min',
           description: 'Best beginner machine for full hamstring engagement',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Seated Leg Curls\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Seated Leg Curls\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1555,7 +1555,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lying Leg Curl',
           duration: '10–12 min',
           description: 'Fixed setup ensures strict hypertrophy contraction',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Lying Curls\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Lying Curls\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1595,7 +1595,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Curl Slow Return',
           duration: '10–12 min',
           description: 'Controlled curls emphasizing eccentric tension',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Curls\nRest 60s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Curls\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1640,7 +1640,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Iso Hold',
           duration: '10–12 min',
           description: 'Standard curls finished with static contraction',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 10 Curls + 10s Hold\nRest 75s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 75s between sets, take all of it.\n3 rounds\n• 10 Curls + 10s Hold\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1687,7 +1687,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Leg Curl',
           duration: '14–16 min',
           description: 'Increased weight overload boosts hypertrophy',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Heavy Curls\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Heavy Curls\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1727,7 +1727,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Leg Curl',
           duration: '14–16 min',
           description: 'Pausing at top peaks hamstring contraction force',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8–10 Pause Reps\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Pause Reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1767,7 +1767,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep Leg Curl',
           duration: '14–16 min',
           description: 'Partial-plus-full reps extending hamstring time',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 1½-rep Curls\nRest 90s',
+          battlePlan: 'Instructions: Curl to the top, lower halfway, curl back up, then lower fully — that\'s ONE rep. 4 sets — rest 90s between sets, take all of it.\n4 rounds\n• 10 1½-rep Curls\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1811,7 +1811,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Curl Drop Set',
           duration: '14–16 min',
           description: 'Extended curl sets using rapid load reductions',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Curls\n• Curl drop → 8\n• Curl drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 10 Curls\n• Curl drop → 8\n• Curl drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1859,7 +1859,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop‑Set Curl',
           duration: '16–18 min',
           description: 'Hamstrings stay under work far beyond normal set',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• 8 Heavy Curls\n• Drop 15–20% → 8 reps\n• Drop 15–20% → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Heavy Curls\n• Drop 15–20% → 8 reps\n• Drop 15–20% → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1900,7 +1900,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Iso Hold',
           duration: '16–18 min',
           description: 'Endurance builder combining iso with normal reps',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 8–10 Leg Curls\nFinish 10s Iso Hold @ top\nRest 90s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Leg Curls\nFinish 10s Iso Hold @ top\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1941,7 +1941,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Long-Eccentric Leg Curl',
           duration: '18–20 min',
           description: 'Slow eccentrics overloading hamstring length',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 Curls (5s eccentric)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 8 — rest 150s between sets, take all of it.\n4 rounds\n• 8 Curls (5s eccentric)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1986,7 +1986,7 @@ export const hamstringsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Triple Drop Curl Burnout',
           duration: '18–20 min',
           description: 'High-fatigue curls using three fast drops',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• Curl 10 → 8 → 8 → 8\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — rest 150s between sets, take all of it.\n3 rounds\n• Curl 10 → 8 → 8 → 8\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [

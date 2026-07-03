@@ -10,7 +10,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Alternating DB Curl Builder',
           duration: '12–14 min',
           description: 'Standard curl workout building foundational elbow-flexion strength.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Alternating Dumbbell Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Alternating Dumbbell Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -58,7 +58,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated DB Curl Control',
           duration: '12–14 min',
           description: 'Standard seated curl workout removing momentum.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Seated Dumbbell Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Seated Dumbbell Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -106,7 +106,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hammer Curl Builder',
           duration: '12–14 min',
           description: 'Standard neutral-grip curl workout targeting brachialis.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Hammer Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Hammer Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -154,7 +154,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Iso Finish',
           duration: '12–14 min',
           description: 'Standard curl workout with squeeze-to-finish at peak flexion.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Dumbbell Curl — standard reps\n• Final set, squeeze to finish, hold at top (elbow fully flexed) 8–10s\nRest 60s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Dumbbell Curl — standard reps\n• Final set, squeeze to finish, hold at top (elbow fully flexed) 8–10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -204,7 +204,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Incline DB Curl',
           duration: '14–16 min',
           description: 'Standard long-head curl workout using shoulder extension.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 Incline Dumbbell Curl — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Standard Sets\n• 4×10 Incline Dumbbell Curl — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -252,7 +252,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused DB Curl',
           duration: '14–16 min',
           description: 'Pause-rep curl workout removing momentum.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Dumbbell Curl — pause reps (1s halfway up)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Pause Sets\n• 4×10 Dumbbell Curl — pause reps (1s halfway up)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -300,7 +300,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Alternating Curl Burn Builder',
           duration: '15–17 min',
           description: 'Burnout-style curl workout extending time under tension.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×16 Alternating DB Curls — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 16 — rest 75s between sets.\nBattle Plan — Burnout Sets\n• 4×16 Alternating DB Curls — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -348,7 +348,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Hammer Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing supinated and neutral curls.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 Dumbbell Curl — standard reps\nsuperset with\n• 10 Hammer Curls\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises.\nBattle Plan — Superset\n• 4×10 Dumbbell Curl — standard reps\nsuperset with\n• 10 Hammer Curls\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -404,7 +404,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy DB Curl Builder',
           duration: '18–20 min',
           description: 'Standard heavy curl workout emphasizing load control.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 Dumbbell Curl — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets.\nBattle Plan — Standard Sets\n• 6×8 Dumbbell Curl — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -452,7 +452,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB Curl Drop Ladder',
           duration: '18–20 min',
           description: 'Multi-drop curl workout driving mechanical fatigue.',
-          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  10 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  10 reps → drop ~20% → 8 reps → drop ~15% → AMRAP\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -498,7 +498,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Incline Curl Burnout',
           duration: '18–20 min',
           description: 'Burnout long-head curl workout using stretch-bias.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15 Incline DB Curl — burnout reps\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 15 — rest 90s between sets.\nBattle Plan — Burnout Sets\n• 4×15 Incline DB Curl — burnout reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -546,7 +546,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '21s + Iso Finish',
           duration: '18–20 min',
           description: 'Partial-range burnout workout finishing with peak contraction hold.',
-          battlePlan: 'Instructions: 21s = 7 bottom-half reps + 7 top-half + 7 full — that is one set. on drops, reduce the load and continue without resting.\nBattle Plan — Burnout + Isometric\n• 3 rounds of 21s\n• Final set, squeeze to finish, hold top flex 10s\nRest 90s',
+          battlePlan: 'Instructions: 21s: 7 reps in the bottom half, 7 in the top half, then 7 full reps — no rest inside the 21. The hold is strict: locked position, squeezing hard, no drifting. 3 sets — rest 90s between sets, take all of it.\nBattle Plan — Burnout + Isometric\n• 3 rounds of 21s\n• Final set, squeeze to finish, hold top flex 10s\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -595,7 +595,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Bar Curl Builder',
           duration: '12–14 min',
           description: 'Standard barbell curl workout for joint-friendly loading.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 EZ Bar Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 EZ Bar Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -643,7 +643,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo EZ Curl',
           duration: '12–14 min',
           description: 'Eccentric-focused curl workout emphasizing control.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×10 EZ Curl — eccentric reps (3s down)\nRest 60s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 60s between sets.\nBattle Plan — Eccentric Sets\n• 4×10 EZ Curl — eccentric reps (3s down)\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -691,7 +691,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Close-Grip EZ Curl',
           duration: '12–14 min',
           description: 'Standard close-grip curl workout biasing long head.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Close-Grip EZ Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Close-Grip EZ Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -738,7 +738,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Iso Finish',
           duration: '12–14 min',
           description: 'Standard curl workout with squeeze-to-finish at peak flexion.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 EZ Curl — standard reps\n• Final set, squeeze to finish, hold bar at top 8–10s\nRest 60s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets.\nBattle Plan — Standard + Isometric Finish\n• 4×10 EZ Curl — standard reps\n• Final set, squeeze to finish, hold bar at top 8–10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -788,7 +788,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide-Grip EZ Curl',
           duration: '14–16 min',
           description: 'Standard curl workout biasing short head.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 Wide-Grip EZ Curl — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Standard Sets\n• 4×10 Wide-Grip EZ Curl — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -835,7 +835,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused EZ Curl',
           duration: '14–16 min',
           description: 'Pause-rep curl workout eliminating momentum.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 EZ Curl — pause reps (1s halfway)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Pause Sets\n• 4×10 EZ Curl — pause reps (1s halfway)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -883,7 +883,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Curl Burn Builder',
           duration: '15–17 min',
           description: 'Burnout curl workout emphasizing time under tension.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15 EZ Curl — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 15 — rest 75s between sets.\nBattle Plan — Burnout Sets\n• 4×15 EZ Curl — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -931,7 +931,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Reverse Curl Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing supinated and pronated grips.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 EZ Curl — standard reps\nsuperset with\n• 10 Reverse EZ Curls\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises.\nBattle Plan — Superset\n• 4×10 EZ Curl — standard reps\nsuperset with\n• 10 Reverse EZ Curls\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -986,7 +986,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy EZ Curl Builder',
           duration: '18–20 min',
           description: 'Standard heavy curl workout emphasizing control.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×6 EZ Curl — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 6 — rest 90s between sets.\nBattle Plan — Standard Sets\n• 6×6 EZ Curl — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1034,7 +1034,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Curl Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop curl workout driving fatigue safely.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6. On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1074,7 +1074,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'EZ Curl Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric curl workout.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×12 EZ Curl — burnout reps\n• Final set, squeeze to finish, hold top 10s\nRest 90s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets.\nBattle Plan — Burnout + Isometric\n• 4×12 EZ Curl — burnout reps\n• Final set, squeeze to finish, hold top 10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1122,7 +1122,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1.5-Rep EZ Curl',
           duration: '18–20 min',
           description: 'Partial-range curl workout extending time under tension.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×8 EZ Curl — 1.5 reps\nRest 90s',
+          battlePlan: 'Instructions: Curl to the top, lower halfway, curl back up, then lower fully — that\'s ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 8 — rest 90s between sets.\nBattle Plan — Standard Sets\n• 5×8 EZ Curl — 1.5 reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1178,7 +1178,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standing Cable Curl Builder',
           duration: '12–14 min',
           description: 'Standard cable curl workout emphasizing constant tension.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Standing Cable Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Standing Cable Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1225,7 +1225,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rope Cable Curl',
           duration: '12–14 min',
           description: 'Standard neutral-grip curl workout for elbow-friendly loading.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Rope Cable Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Rope Cable Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1273,7 +1273,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated Low Cable Curl',
           duration: '12–14 min',
           description: 'Standard seated curl workout removing momentum.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Seated Low Cable Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Seated Low Cable Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1320,7 +1320,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Iso Finish',
           duration: '12–14 min',
           description: 'Standard cable curl workout with squeeze-to-finish at peak flexion.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Cable Curl — standard reps\n• Final set, squeeze to finish, hold handle at full elbow flexion 8–10s\nRest 60s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Cable Curl — standard reps\n• Final set, squeeze to finish, hold handle at full elbow flexion 8–10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1370,7 +1370,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Incline Cable Curl',
           duration: '14–16 min',
           description: 'Standard long-head curl workout using shoulder extension.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 Incline Cable Curl — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Standard Sets\n• 4×10 Incline Cable Curl — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1418,7 +1418,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Cable Curl',
           duration: '14–16 min',
           description: 'Pause-rep cable curl workout eliminating momentum.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Cable Curl — pause reps (1s halfway)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Pause Sets\n• 4×10 Cable Curl — pause reps (1s halfway)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1466,7 +1466,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single-Arm Cable Curl Burn',
           duration: '15–17 min',
           description: 'Burnout-style unilateral curl workout for extended tension.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×14 Single-Arm Cable Curls — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 14 — rest 75s between sets.\nBattle Plan — Burnout Sets\n• 4×14 Single-Arm Cable Curls — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1513,7 +1513,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Face-Away Curl Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing front-facing and face-away curls.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 Cable Curl (facing stack) — standard reps\nsuperset with\n• 10 Face-Away Cable Curls\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises.\nBattle Plan — Superset\n• 4×10 Cable Curl (facing stack) — standard reps\nsuperset with\n• 10 Face-Away Cable Curls\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1568,7 +1568,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Cable Curl Builder',
           duration: '18–20 min',
           description: 'Standard heavy cable curl workout emphasizing control.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 Cable Curl — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets.\nBattle Plan — Standard Sets\n• 6×8 Cable Curl — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1616,7 +1616,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Curl Drop Ladder',
           duration: '18–20 min',
           description: 'Multi-drop cable curl workout driving mechanical fatigue.',
-          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  10 reps → drop ~15% → 8 reps → drop ~10% → AMRAP\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  10 reps → drop ~15% → 8 reps → drop ~10% → AMRAP\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1662,7 +1662,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Curl Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric cable curl workout.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×15 Cable Curl — burnout reps\n• Final set, squeeze to finish, hold at peak flexion 10s\nRest 90s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 15 — rest 90s between sets.\nBattle Plan — Burnout + Isometric\n• 4×15 Cable Curl — burnout reps\n• Final set, squeeze to finish, hold at peak flexion 10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1710,7 +1710,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1.5-Rep Cable Curl',
           duration: '18–20 min',
           description: 'Partial-range curl workout emphasizing the strongest range.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×8 Cable Curl — 1.5 reps\nRest 90s',
+          battlePlan: 'Instructions: Curl to the top, lower halfway, curl back up, then lower fully — that\'s ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 8 — rest 90s between sets.\nBattle Plan — Standard Sets\n• 5×8 Cable Curl — 1.5 reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1766,7 +1766,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Preacher Curl Builder',
           duration: '12–14 min',
           description: 'Standard preacher curl workout emphasizing strict elbow flexion.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Preacher Machine Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Preacher Machine Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1813,7 +1813,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Preacher Curl',
           duration: '12–14 min',
           description: 'Eccentric-focused preacher curl workout emphasizing control.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×10 Preacher Curl — eccentric reps (3s down)\nRest 60s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 60s between sets.\nBattle Plan — Eccentric Sets\n• 4×10 Preacher Curl — eccentric reps (3s down)\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1860,7 +1860,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Close-Grip Preacher Curl',
           duration: '12–14 min',
           description: 'Standard narrow-grip preacher curl biasing long head.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Close-Grip Preacher Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Close-Grip Preacher Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1907,7 +1907,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Iso Finish',
           duration: '12–14 min',
           description: 'Standard preacher curl workout with squeeze-to-finish at peak flexion.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Preacher Curl — standard reps\n• Final set, squeeze to finish, hold top 8–10s\nRest 60s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Preacher Curl — standard reps\n• Final set, squeeze to finish, hold top 8–10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1956,7 +1956,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Preacher Curl',
           duration: '14–16 min',
           description: 'Pause-rep preacher curl workout removing momentum.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Preacher Curl — pause reps (1s bottom)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Pause Sets\n• 4×10 Preacher Curl — pause reps (1s bottom)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2003,7 +2003,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide-Grip Preacher Curl',
           duration: '14–16 min',
           description: 'Standard preacher curl workout biasing short head.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 Wide-Grip Preacher Curl — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Standard Sets\n• 4×10 Wide-Grip Preacher Curl — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2050,7 +2050,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Preacher Burn Builder',
           duration: '15–17 min',
           description: 'Burnout preacher curl workout emphasizing time under tension.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15 Preacher Curl — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 15 — rest 75s between sets.\nBattle Plan — Burnout Sets\n• 4×15 Preacher Curl — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2097,7 +2097,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Full + Partial Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing full ROM with top-range preacher reps.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 Preacher Curl — standard reps\nsuperset with\n• 10 Top-Range Partial Preacher Curls\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises.\nBattle Plan — Superset\n• 4×10 Preacher Curl — standard reps\nsuperset with\n• 10 Top-Range Partial Preacher Curls\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2151,7 +2151,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Preacher Curl Builder',
           duration: '18–20 min',
           description: 'Standard heavy preacher curl workout emphasizing control.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 Preacher Curl — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets.\nBattle Plan — Standard Sets\n• 6×8 Preacher Curl — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2198,7 +2198,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Preacher Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop preacher curl workout driving fatigue.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6. On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2238,7 +2238,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Preacher Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric preacher curl workout.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×12 Preacher Curl — burnout reps\n• Final set, squeeze to finish, hold top 10s\nRest 90s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets.\nBattle Plan — Burnout + Isometric\n• 4×12 Preacher Curl — burnout reps\n• Final set, squeeze to finish, hold top 10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2285,7 +2285,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1.5-Rep Preacher Curl',
           duration: '18–20 min',
           description: 'Partial-range preacher curl workout increasing time under tension.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×8 Preacher Curl — 1.5 reps\nRest 90s',
+          battlePlan: 'Instructions: Curl to the top, lower halfway, curl back up, then lower fully — that\'s ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 8 — rest 90s between sets.\nBattle Plan — Standard Sets\n• 5×8 Preacher Curl — 1.5 reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2340,7 +2340,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Curl Builder',
           duration: '12–14 min',
           description: 'Standard machine curl workout for clean biceps isolation.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Machine Biceps Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Machine Biceps Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2387,7 +2387,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Machine Curl',
           duration: '12–14 min',
           description: 'Eccentric-focused machine curl workout emphasizing control.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×10 Machine Curl — eccentric reps (3s down)\nRest 60s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 60s between sets.\nBattle Plan — Eccentric Sets\n• 4×10 Machine Curl — eccentric reps (3s down)\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2434,7 +2434,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Close-Grip Machine Curl',
           duration: '12–14 min',
           description: 'Standard narrow-grip curl workout biasing long head.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×12 Close-Grip Machine Curl — standard reps\nRest 60s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 12 — rest 60s between sets.\nBattle Plan — Standard Sets\n• 4×12 Close-Grip Machine Curl — standard reps\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2481,7 +2481,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Iso Finish',
           duration: '12–14 min',
           description: 'Standard machine curl workout with squeeze-to-finish at peak flexion.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Machine Curl — standard reps\n• Final set, squeeze to finish, hold handles at top 8–10s\nRest 60s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 10 — rest 60s between sets.\nBattle Plan — Standard + Isometric Finish\n• 4×10 Machine Curl — standard reps\n• Final set, squeeze to finish, hold handles at top 8–10s\nRest 60s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2530,7 +2530,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Machine Curl',
           duration: '14–16 min',
           description: 'Pause-rep machine curl workout eliminating momentum.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Pause Sets\n• 4×10 Machine Curl — pause reps (1s halfway)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Pause Sets\n• 4×10 Machine Curl — pause reps (1s halfway)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2577,7 +2577,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide-Grip Machine Curl',
           duration: '14–16 min',
           description: 'Standard curl workout biasing short head.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×10 Wide-Grip Machine Curl — standard reps\nRest 75s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Standard Sets\n• 4×10 Wide-Grip Machine Curl — standard reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2624,7 +2624,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Curl Burn Builder',
           duration: '15–17 min',
           description: 'Burnout-style machine curl workout extending time under tension.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• 4×15 Machine Curl — burnout reps\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 15 — rest 75s between sets.\nBattle Plan — Burnout Sets\n• 4×15 Machine Curl — burnout reps\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2671,7 +2671,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Curl + Partial Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing full ROM with top-range partials.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×10 Machine Curl — standard reps\nsuperset with\n• 10 Top-Range Partial Curls\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Work top to bottom — rest 90s between exercises.\nBattle Plan — Superset\n• 4×10 Machine Curl — standard reps\nsuperset with\n• 10 Top-Range Partial Curls\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2725,7 +2725,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Machine Curl Builder',
           duration: '18–20 min',
           description: 'Standard heavy machine curl workout emphasizing strict form.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×8 Machine Curl — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 6 sets of 8 — rest 90s between sets.\nBattle Plan — Standard Sets\n• 6×8 Machine Curl — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2772,7 +2772,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Curl Drop Cluster',
           duration: '18–20 min',
           description: 'Multi-drop machine curl workout driving fatigue.',
-          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6. On drops, reduce the load and continue without resting.\nBattle Plan — Drop Cluster\nRest 90s',
+          battlePlan: 'Instructions: Set 1 — 10 reps. Set 2 — drop set — 10 → drop ~20% → 8. Set 3 — triple drop — 8 → drop ~15% → 6 → drop ~10% → 6.\nBattle Plan — Drop Cluster\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2812,7 +2812,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Curl Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric machine curl workout.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting. holds are strict: locked position, no drifting.\nBattle Plan — Burnout + Isometric\n• 4×12 Machine Curl — burnout reps\n• Final set, squeeze to finish, hold top 10s\nRest 90s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 12 — rest 90s between sets.\nBattle Plan — Burnout + Isometric\n• 4×12 Machine Curl — burnout reps\n• Final set, squeeze to finish, hold top 10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2859,7 +2859,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1.5-Rep Machine Curl',
           duration: '18–20 min',
           description: 'Partial-range machine curl workout increasing time under tension.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×8 Machine Curl — 1.5 reps\nRest 90s',
+          battlePlan: 'Instructions: Curl to the top, lower halfway, curl back up, then lower fully — that\'s ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. 5 sets of 8 — rest 90s between sets.\nBattle Plan — Standard Sets\n• 5×8 Machine Curl — 1.5 reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2914,7 +2914,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chin-Up Builder',
           duration: '12–14 min',
           description: 'Standard chin-up workout emphasizing elbow flexion under bodyweight.',
-          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure.\nBattle Plan — Standard Sets\n• Chin-Ups — 4 × (AMRAP)\nRest 90s',
+          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 4 sets of AMRAP — rest 90s between sets.\nBattle Plan — Standard Sets\n• Chin-Ups — 4 × (AMRAP)\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2960,7 +2960,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Band-Assisted Chin-Ups',
           duration: '12–14 min',
           description: 'Assisted bodyweight curl workout reducing load for clean reps.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 4×8–10 Assisted Chin-Ups — standard reps\nRest 90s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 8–10 — rest 90s between sets.\nBattle Plan — Standard Sets\n• 4×8–10 Assisted Chin-Ups — standard reps\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3008,7 +3008,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Negative Chin-Ups',
           duration: '12–14 min',
           description: 'Eccentric-focused bodyweight curl workout emphasizing control.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×5 Chin-Ups — eccentric reps (5s down)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 5 — rest 90s between sets.\nBattle Plan — Eccentric Sets\n• 4×5 Chin-Ups — eccentric reps (5s down)\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3056,7 +3056,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chin-Up Hold Finish',
           duration: '12–14 min',
           description: 'Standard chin-up workout with squeeze-to-finish at peak flexion.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBattle Plan — Standard + Isometric Finish\n• 4×6 Chin-Ups — standard reps\n• Final set, squeeze to finish, hold chin over bar 10s\nRest 90s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 6 — rest 90s between sets.\nBattle Plan — Standard + Isometric Finish\n• 4×6 Chin-Ups — standard reps\n• Final set, squeeze to finish, hold chin over bar 10s\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3106,7 +3106,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Chin-Ups',
           duration: '14–16 min',
           description: 'Tempo-controlled chin-up workout increasing time under tension.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\nBattle Plan — Eccentric Sets\n• 4×6 Chin-Ups — eccentric reps (3s down)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6 — rest 90s between sets.\nBattle Plan — Eccentric Sets\n• 4×6 Chin-Ups — eccentric reps (3s down)\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3154,7 +3154,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Close-Grip Chin-Ups',
           duration: '14–16 min',
           description: 'Grip-biased chin-up workout increasing elbow flexion demand.',
-          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure.\nBattle Plan — Standard Sets\n• Close-Grip Chin-Ups — 4 × (AMRAP)\nRest 90s',
+          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 4 sets of AMRAP — rest 90s between sets.\nBattle Plan — Standard Sets\n• Close-Grip Chin-Ups — 4 × (AMRAP)\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3200,7 +3200,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chin-Up Burn Builder',
           duration: '15–17 min',
           description: 'Burnout-style chin-up workout extending fatigue.',
-          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Burnout Sets\n• Chin-Ups — 5 × (AMRAP)\nRest 75s',
+          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 5 sets of AMRAP — rest 75s between sets.\nBattle Plan — Burnout Sets\n• Chin-Ups — 5 × (AMRAP)\nRest 75s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3246,7 +3246,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chin-Up + Iso Hang Contrast',
           duration: '15–17 min',
           description: 'Superset workout pairing reps with isometric holds.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\nBattle Plan — Superset\n• 4×6 Chin-Ups — standard reps\nsuperset with\n• 20s Flexed-Arm Hang\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. The hold is strict: locked position, squeezing hard, no drifting. Work top to bottom — rest 90s between exercises.\nBattle Plan — Superset\n• 4×6 Chin-Ups — standard reps\nsuperset with\n• 20s Flexed-Arm Hang\nRest 90s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3301,7 +3301,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Chin-Up Builder',
           duration: '18–20 min',
           description: 'Standard weighted chin-up workout for advanced biceps loading.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 6×5 Weighted Chin-Ups — standard reps\nRest 120s',
+          battlePlan: 'Instructions: 6 sets of 5 — rest 120s between sets.\nBattle Plan — Standard Sets\n• 6×5 Weighted Chin-Ups — standard reps\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3349,7 +3349,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Chin-Up Drop Ladder',
           duration: '18–20 min',
           description: 'Multi-drop bodyweight workout driving fatigue.',
-          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  5 weighted reps → remove weight → AMRAP bodyweight → band-assist AMRAP\nRest 120s',
+          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. 3 sets of 5 — rest 120s between sets, take all of it.\nBattle Plan — Drop Ladder\n• 3 rounds:\n  5 weighted reps → remove weight → AMRAP bodyweight → band-assist AMRAP\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3396,7 +3396,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Chin-Up Burnout Hold',
           duration: '18–20 min',
           description: 'Burnout + isometric chin-up workout.',
-          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure. on drops, reduce the load and continue without resting.\nBattle Plan — Burnout + Isometric\n• Chin-Ups — 4 × (AMRAP)\n• Final set, squeeze to finish, hold top 10–15s\nRest 120s',
+          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. The hold is strict: locked position, squeezing hard, no drifting. 4 sets of AMRAP — rest 120s between sets.\nBattle Plan — Burnout + Isometric\n• Chin-Ups — 4 × (AMRAP)\n• Final set, squeeze to finish, hold top 10–15s\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -3443,7 +3443,7 @@ export const bicepsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1.5-Rep Chin-Ups',
           duration: '18–20 min',
           description: 'Partial-range chin-up workout increasing time under tension.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBattle Plan — Standard Sets\n• 5×4 Chin-Ups — 1.5 reps\nRest 120s',
+          battlePlan: 'Instructions: Every rep = one full rep plus a half rep in the hardest range before you finish. 5 sets of 4 — rest 120s between sets.\nBattle Plan — Standard Sets\n• 5×4 Chin-Ups — 1.5 reps\nRest 120s',
           plan: {
             "format": "strength",
             "blocks": [

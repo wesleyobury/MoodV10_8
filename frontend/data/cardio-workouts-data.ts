@@ -11,7 +11,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Walk & Jog Mixer',
           duration: '20 min',
           description: 'Walk-jog intervals alternating between\n3.5-5.2 mph for beginner endurance.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 5 min walk (3.5 mph)\n• 3 min jog (5 mph)\n• 2 min walk (3 mph)\n• 4 min jog (5.2 mph)\n• 3 min walk (3.5 mph)\n• 3 min jog (5 mph)',
+          battlePlan: 'Instructions: Follow the 6 timed segments in order, no skipping.\n• 5 min walk (3.5 mph)\n• 3 min jog (5 mph)\n• 2 min walk (3 mph)\n• 4 min jog (5.2 mph)\n• 3 min walk (3.5 mph)\n• 3 min jog (5 mph)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -74,7 +74,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Rolling Hills',
           duration: '20 min',
           description: 'Incline walking progression from 3% to 6%\ngrade for building leg strength safely.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 3 min walk (3.5 mph)\n• 4 min incline walk (3.8 mph, 4% incline)\n• 2 min walk (3.5 mph)\n• 5 min incline walk (4 mph, 6% incline)\n• 3 min walk (3.5 mph)\n• 3 min incline walk (3.8 mph, 3% incline)',
+          battlePlan: 'Instructions: Follow the 6 timed segments in order, no skipping.\n• 3 min walk (3.5 mph)\n• 4 min incline walk (3.8 mph, 4% incline)\n• 2 min walk (3.5 mph)\n• 5 min incline walk (4 mph, 6% incline)\n• 3 min walk (3.5 mph)\n• 3 min incline walk (3.8 mph, 3% incline)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -139,7 +139,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Speed Ladder',
           duration: '25 min',
           description: 'Speed intervals from 5.5-7.5 mph with\nincline recovery walks. 3 rounds total.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 3 min jog (5.5 mph)\n• 2 min run (6.5 mph)\n• 1 min fast run (7.5 mph)\n• 2 min walk (3.5 mph, incline 3%)\n• repeat 3x\n• finish with 3 min jog (5.5 mph)',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Cap every set with the finisher: 3 min jog (5.5 mph) — it counts, don\'t skip it. 3 rounds — follow the 4 timed segments in order, no skipping.\n• 3 min jog (5.5 mph)\n• 2 min run (6.5 mph)\n• 1 min fast run (7.5 mph)\n• 2 min walk (3.5 mph, incline 3%)\n• 3 rounds:\n• finish with 3 min jog (5.5 mph)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -193,7 +193,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Incline Intervals',
           duration: '22 min',
           description: 'Incline running intervals at consistent\npace with varying elevation. 5 rounds total.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 2 min run (6.0 mph, incline 1%)\n• 1 min run (6.0 mph, incline 5%)\n• 2 min walk (3.5 mph, incline 2%)\n• Repeat 5x\n• Finish with 3 min walk (3.0 mph)',
+          battlePlan: 'Instructions: Cap every set with the finisher: 3 min walk (3.0 mph) — it counts, don\'t skip it. 5 rounds — follow the 3 timed segments in order, no skipping.\n• 2 min run (6.0 mph, incline 1%)\n• 1 min run (6.0 mph, incline 5%)\n• 2 min walk (3.5 mph, incline 2%)\n• 5 rounds:\n• Finish with 3 min walk (3.0 mph)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -244,7 +244,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Sprint Pyramid',
           duration: '28 min',
           description: 'Pyramid sprints from 30s to 1 min\nat 9+ mph with jog recoveries.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 2 min jog (6.0 mph)\n• 30 sec sprint (9.0 mph)\n• 1 min jog\n• 45 sec sprint\n• 1 min jog\n• 1 min sprint\n• 2 min jog\n• repeat pyramid\n• finish with 5 min incline walk (4.0 mph, incline 8%)',
+          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. Cap every set with the finisher: 5 min incline walk (4.0 mph, incline 8%) — it counts, don\'t skip it. follow the 7 timed segments in order, no skipping.\n• 2 min jog (6.0 mph)\n• 30 sec sprint (9.0 mph)\n• 1 min jog\n• 45 sec sprint\n• 1 min jog\n• 1 min sprint\n• 2 min jog\n• repeat pyramid\n• finish with 5 min incline walk (4.0 mph, incline 8%)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -308,7 +308,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Tempo & Hill Challenge',
           duration: '35 min',
           description: 'Sustained tempo running with hill\nsprints and incline walks for recovery.\n ',
-          battlePlan: 'Instructions: Min hill sprints: 8.0 mph, incline 6%, 1 min walk between. Control the lowering — the tempo is the point.\n• 5 min warm-up (jog)\n• 10 min tempo run (7.0 mph, incline 2%)\n• Min hill sprints — 5 × (1)\n• 5 min cool-down',
+          battlePlan: 'Instructions: Min hill sprints: 8.0 mph, incline 6%, 1 min walk between.\n• 5 min warm-up (jog)\n• 10 min tempo run (7.0 mph, incline 2%)\n• Min hill sprints — 5 × (1)\n• 5 min cool-down',
           plan: {
             "format": "strength",
             "blocks": [
@@ -366,7 +366,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Resistance Rounds',
           duration: '18 min',
           description: 'Resistance intervals from easy to moderate\nwith 4 rounds of progressive intensity.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 3 min easy (resistance 3)\n• 2 min moderate (resistance 6)\n• 1 min fast (resistance 4)\n• repeat 4x\n• finish with 3 min easy (resistance 2)',
+          battlePlan: 'Instructions: Cap every set with the finisher: 3 min easy (resistance 2) — it counts, don\'t skip it. 4 rounds — follow the 3 timed segments in order, no skipping.\n• 3 min easy (resistance 3)\n• 2 min moderate (resistance 6)\n• 1 min fast (resistance 4)\n• 4 rounds:\n• finish with 3 min easy (resistance 2)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -415,7 +415,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Cadence Play',
           duration: '16 min',
           description: 'RPM variations from 50-70 with steady,\nfast, and moderate pace changes.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 2 min steady (RPM 55)\n• 1 min fast (RPM 70)\n• 2 min moderate (RPM 60)\n• 1 min slow (RPM 50, resistance 5)\n• repeat 3x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — follow the 4 timed segments in order, no skipping.\n• 2 min steady (RPM 55)\n• 1 min fast (RPM 70)\n• 2 min moderate (RPM 60)\n• 1 min slow (RPM 50, resistance 5)\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -471,7 +471,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Climb & Sprint',
           duration: '25 min',
           description: 'High resistance climbs alternating\nwith low resistance sprints at 80+ RPM.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 2 min moderate (resistance 5)\n• 1 min climb (resistance 10)\n• 1 min sprint (resistance 4, RPM 80+)\n• repeat 5x\n• finish with 3 min easy',
+          battlePlan: 'Instructions: Cap every set with the finisher: 3 min easy — it counts, don\'t skip it. 5 rounds — follow the 3 timed segments in order, no skipping.\n• 2 min moderate (resistance 5)\n• 1 min climb (resistance 10)\n• 1 min sprint (resistance 4, RPM 80+)\n• 5 rounds:\n• finish with 3 min easy',
           plan: {
             "format": "interval",
             "blocks": [
@@ -520,7 +520,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Reverse & Forward',
           duration: '18 min',
           description: 'Forward and reverse elliptical intervals\nwith sprint finishes for muscle balance.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 3 min forward (resistance 6)\n• 2 min reverse (resistance 4)\n• 1 min sprint (forward, resistance 5)\n• repeat 4x\n• finish with 2 min easy',
+          battlePlan: 'Instructions: Cap every set with the finisher: 2 min easy — it counts, don\'t skip it. 4 rounds — follow the 3 timed segments in order, no skipping.\n• 3 min forward (resistance 6)\n• 2 min reverse (resistance 4)\n• 1 min sprint (forward, resistance 5)\n• 4 rounds:\n• finish with 2 min easy',
           plan: {
             "format": "interval",
             "blocks": [
@@ -571,7 +571,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Tabata Elliptical',
           duration: '24 min',
           description: 'Tabata protocol with 20s max effort\nand 10s recovery. 3 complete cycles.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n• 8 rounds: 20 sec max effort (resistance 8)\n• 10 sec easy (resistance 3)\n• 2 min recovery\n• repeat for 3 cycles',
+          battlePlan: 'Instructions: Tabata: 20 seconds truly all-out, 10 seconds off. The last rounds should feel barely finishable. 8 rounds — follow the 2 timed segments in order, no skipping.\n• 8 rounds: 20 sec max effort (resistance 8)\n• 10 sec easy (resistance 3)\n• 2 min recovery\n• repeat for 3 cycles',
           plan: {
             "format": "interval",
             "blocks": [
@@ -615,7 +615,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Endurance Builder',
           duration: '35 min',
           description: 'Long ride with varied intensities tests endurance.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 5 min easy\n• 10 min moderate (resistance 6)\n• 5 min hard (resistance 8)\n• 5 min reverse (resistance 5)\n• 5 min fast (resistance 4, RPM 75+)\n• 5 min cool-down',
+          battlePlan: 'Instructions: Follow the 6 timed segments in order, no skipping.\n• 5 min easy\n• 10 min moderate (resistance 6)\n• 5 min hard (resistance 8)\n• 5 min reverse (resistance 5)\n• 5 min fast (resistance 4, RPM 75+)\n• 5 min cool-down',
           plan: {
             "format": "interval",
             "blocks": [
@@ -684,7 +684,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Speed & Resistance Mix',
           duration: '12 min',
           description: 'Upper body intervals mixing easy, moderate,\nand fast paces with resistance changes.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 2 min easy (resistance 2)\n• 1 min moderate (resistance 4)\n• 1 min fast (resistance 2)\n• repeat 3x\n• finish with 2 min easy',
+          battlePlan: 'Instructions: Cap every set with the finisher: 2 min easy — it counts, don\'t skip it. 3 rounds — follow the 3 timed segments in order, no skipping.\n• 2 min easy (resistance 2)\n• 1 min moderate (resistance 4)\n• 1 min fast (resistance 2)\n• 3 rounds:\n• finish with 2 min easy',
           plan: {
             "format": "interval",
             "blocks": [
@@ -733,7 +733,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Interval Builder',
           duration: '15 min',
           description: 'Upper body intervals with forward and\nreverse cycling patterns. 3 complete rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 1 min easy\n• 1 min moderate\n• 30 sec fast\n• 1 min easy\n• 1 min reverse\n• repeat 3x',
+          battlePlan: 'Instructions: 3 rounds — follow the 5 timed segments in order, no skipping.\n• 1 min easy\n• 1 min moderate\n• 30 sec fast\n• 1 min easy\n• 1 min reverse\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -789,7 +789,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Pyramid Challenge',
           duration: '18 min',
           description: 'Pyramid intensity progression from easy\nto hard and back down. 3 complete cycles.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 1 min easy\n• 1 min moderate\n• 1 min hard\n• 1 min moderate\n• 1 min easy\n• repeat 3x',
+          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. 3 rounds — follow the 5 timed segments in order, no skipping.\n• 1 min easy\n• 1 min moderate\n• 1 min hard\n• 1 min moderate\n• 1 min easy\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -843,7 +843,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Reverse & Forward (UBE)',
           duration: '20 min',
           description: 'Alternating forward and reverse cycling\nwith sprint intervals. 4 complete rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 2 min forward (resistance 5)\n• 1 min reverse (resistance 3)\n• 1 min sprint (forward, resistance 4)\n• repeat 4x',
+          battlePlan: 'Instructions: 4 rounds — follow the 3 timed segments in order, no skipping.\n• 2 min forward (resistance 5)\n• 1 min reverse (resistance 3)\n• 1 min sprint (forward, resistance 4)\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -894,7 +894,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'HIIT Sprints',
           duration: '20 min',
           description: 'High-intensity arm cycling with 30s max\neffort and recovery periods. 10 rounds total.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 30 sec max effort (resistance 8)\n• 1 min easy (resistance 3)\n• repeat 10x\n• finish with 5 min moderate',
+          battlePlan: 'Instructions: Cap every set with the finisher: 5 min moderate — it counts, don\'t skip it. 10 rounds — follow the 2 timed segments in order, no skipping.\n• 30 sec max effort (resistance 8)\n• 1 min easy (resistance 3)\n• 10 rounds:\n• finish with 5 min moderate',
           plan: {
             "format": "interval",
             "blocks": [
@@ -938,7 +938,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Endurance & Power',
           duration: '25 min',
           description: 'Extended endurance with sprint intervals\nand reverse cycling for complete training.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 5 min moderate\n• Sec sprint (resistance 10) with 30 sec easy — 10 × (30)\n• 5 min reverse\n• 5 min cool-down',
+          battlePlan: 'Instructions: Sprints are max effort — the recovery pace should feel almost too easy. Protect the quality of every sprint. follow the 4 timed segments in order, no skipping.\n• 5 min moderate\n• Sec sprint (resistance 10) with 30 sec easy — 10 × (30)\n• 5 min reverse\n• 5 min cool-down',
           plan: {
             "format": "strength",
             "blocks": [
@@ -996,7 +996,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Rolling Ride',
           duration: '20 min',
           description: 'Easy to moderate resistance intervals\nwith 4 rounds of progressive intensity.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 3 min easy (resistance 2)\n• 2 min moderate (resistance 5)\n• 1 min fast (resistance 3)\n• repeat 4x',
+          battlePlan: 'Instructions: 4 rounds — follow the 3 timed segments in order, no skipping.\n• 3 min easy (resistance 2)\n• 2 min moderate (resistance 5)\n• 1 min fast (resistance 3)\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1045,7 +1045,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Cadence Intervals',
           duration: '18 min',
           description: 'Cadence training from 60-90 RPM with\nsteady, fast, and moderate intervals.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 2 min steady (70 RPM)\n• 1 min fast (90 RPM)\n• 2 min moderate (80 RPM)\n• 1 min slow (60 RPM, resistance 6)\n• repeat 3x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — follow the 4 timed segments in order, no skipping.\n• 2 min steady (70 RPM)\n• 1 min fast (90 RPM)\n• 2 min moderate (80 RPM)\n• 1 min slow (60 RPM, resistance 6)\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1101,7 +1101,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hill & Sprint',
           duration: '25 min',
           description: 'High resistance hill climbs alternating\nwith sprint intervals at 100+ RPM.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 2 min moderate (resistance 6)\n• 1 min hill (resistance 10)\n• 1 min sprint (resistance 4, 100+ RPM)\n• repeat 5x',
+          battlePlan: 'Instructions: 5 rounds — follow the 3 timed segments in order, no skipping.\n• 2 min moderate (resistance 6)\n• 1 min hill (resistance 10)\n• 1 min sprint (resistance 4, 100+ RPM)\n• 5 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1150,7 +1150,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Pyramid Ride',
           duration: '30 min',
           description: 'Pyramid intensity progression from easy\nto hard and back down. 3 complete rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 3 min easy\n• 2 min moderate\n• 1 min hard\n• 2 min moderate\n• 3 min easy\n• repeat 3x',
+          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. 3 rounds — follow the 5 timed segments in order, no skipping.\n• 3 min easy\n• 2 min moderate\n• 1 min hard\n• 2 min moderate\n• 3 min easy\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1206,7 +1206,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Tabata Bike',
           duration: '24 min',
           description: 'Tabata protocol with 20s max effort\nand 10s recovery. 3 complete cycles.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n• 8 rounds: 20 sec max effort (resistance 8)\n• 10 sec easy (resistance 3)\n• 2 min recovery\n• repeat for 3 cycles',
+          battlePlan: 'Instructions: Tabata: 20 seconds truly all-out, 10 seconds off. The last rounds should feel barely finishable. 8 rounds — follow the 2 timed segments in order, no skipping.\n• 8 rounds: 20 sec max effort (resistance 8)\n• 10 sec easy (resistance 3)\n• 2 min recovery\n• repeat for 3 cycles',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1250,7 +1250,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Endurance & Power (Bike)',
           duration: '35 min',
           description: 'Long ride with challenges tests endurance and power.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 5 min easy\n• 10 min moderate (resistance 7)\n• 5 min hard (resistance 10)\n• 5 min fast (resistance 5, RPM 80+)\n• 5 min reverse (resistance 6)\n• 5 min cool-down',
+          battlePlan: 'Instructions: Follow the 6 timed segments in order, no skipping.\n• 5 min easy\n• 10 min moderate (resistance 7)\n• 5 min hard (resistance 10)\n• 5 min fast (resistance 5, RPM 80+)\n• 5 min reverse (resistance 6)\n• 5 min cool-down',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1319,7 +1319,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Intro Intervals',
           duration: '12 min',
           description: 'Easy intervals with 30s moderate\nand fast bursts. 4 complete rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 1 min easy\n• 30 sec moderate\n• 1 min easy\n• 30 sec fast\n• repeat 4x',
+          battlePlan: 'Instructions: 4 rounds — follow the 4 timed segments in order, no skipping.\n• 1 min easy\n• 30 sec moderate\n• 1 min easy\n• 30 sec fast\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1369,7 +1369,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Resistance Play (Assault)',
           duration: '15 min',
           description: 'Resistance progression with easy, moderate,\nand fast intervals. 3 complete cycles.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 2 min easy\n• 1 min moderate (increase resistance)\n• 1 min fast\n• repeat 3x\n• finish with 2 min easy',
+          battlePlan: 'Instructions: Cap every set with the finisher: 2 min easy — it counts, don\'t skip it. 3 rounds — follow the 3 timed segments in order, no skipping.\n• 2 min easy\n• 1 min moderate (increase resistance)\n• 1 min fast\n• 3 rounds:\n• finish with 2 min easy',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1418,7 +1418,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Sprint & Recover',
           duration: '18 min',
           description: '20s sprint intervals with 40s recovery.\n10 rounds plus 5min moderate finish.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 20 sec sprint\n• 40 sec easy\n• repeat 10x\n• 5 min moderate',
+          battlePlan: 'Instructions: Sprints are max effort — the recovery pace should feel almost too easy. Protect the quality of every sprint. 10 rounds — follow the 3 timed segments in order, no skipping.\n• 20 sec sprint\n• 40 sec easy\n• 10 rounds:\n• 5 min moderate',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1464,7 +1464,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Ladder Intervals',
           duration: '20 min',
           description: 'Progressive sprint ladder from 30s to 1min\nwith equal recovery periods between.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 30 sec sprint\n• 1 min easy\n• 45 sec sprint\n• 1 min easy\n• 1 min sprint\n• 1 min easy\n• repeat sequence',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Sprints are max effort — the recovery pace should feel almost too easy. Protect the quality of every sprint. follow the 6 timed segments in order, no skipping.\n• 30 sec sprint\n• 1 min easy\n• 45 sec sprint\n• 1 min easy\n• 1 min sprint\n• 1 min easy\n• repeat sequence',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1524,7 +1524,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Tabata Assault',
           duration: '16 min',
           description: 'Tabata protocol with 20s max effort\nand 10s rest. 2 complete cycles.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n• 8 rounds: 20 sec max effort\n• 10 sec rest\n• 2 min easy\n• repeat for 2 cycles',
+          battlePlan: 'Instructions: Tabata: 20 seconds truly all-out, 10 seconds off. The last rounds should feel barely finishable. 8 rounds — follow the 2 timed segments in order, no skipping.\n• 8 rounds: 20 sec max effort\n• 10 sec rest\n• 2 min easy\n• repeat for 2 cycles',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1567,7 +1567,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'EMOM Challenge',
           duration: '20 min',
           description: 'Every minute on the minute sprints\nwith variable recovery time.\n ',
-          battlePlan: 'Instructions: EMOM — a new interval starts every minute. EMOM: start fresh at the top of every minute, rest whatever time is left.\n• 20 sec sprint\n• 40 sec moderate\n• repeat for 20 min',
+          battlePlan: 'Instructions: EMOM — a new interval starts every minute. follow the 2 timed segments in order, no skipping.\n• 20 sec sprint\n• 40 sec moderate\n• repeat for 20 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1616,7 +1616,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Row & Rest',
           duration: '12 min',
           description: 'Easy rowing intervals with 30s moderate\nand fast bursts. 4 complete rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 1 min easy\n• 30 sec moderate\n• 1 min easy\n• 30 sec fast\n• repeat 4x',
+          battlePlan: 'Instructions: Sprints are max effort — the recovery pace should feel almost too easy. Protect the quality of every sprint. 4 rounds — follow the 4 timed segments in order, no skipping.\n• 1 min easy\n• 30 sec moderate\n• 1 min easy\n• 30 sec fast\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1666,7 +1666,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Stroke Play',
           duration: '15 min',
           description: 'Stroke rate variations from 20-28 SPM\nwith steady, fast, and slow phases.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 2 min steady (22 SPM)\n• 1 min fast (28 SPM)\n• 2 min slow (20 SPM)\n• repeat 3x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — follow the 3 timed segments in order, no skipping.\n• 2 min steady (22 SPM)\n• 1 min fast (28 SPM)\n• 2 min slow (20 SPM)\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1717,7 +1717,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Power Intervals',
           duration: '20 min',
           description: 'Power intervals alternating hard, moderate,\nand recovery strokes. 4 complete rounds.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 1 min hard (28 SPM)\n• 2 min moderate (24 SPM)\n• 1 min slow (20 SPM)\n• repeat 4x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 rounds — follow the 3 timed segments in order, no skipping.\n• 1 min hard (28 SPM)\n• 2 min moderate (24 SPM)\n• 1 min slow (20 SPM)\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1766,7 +1766,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Pyramid Row',
           duration: '25 min',
           description: 'Progressive pyramid from 1-3 minutes\neasy/hard pairs, then descending back.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 1 min easy\n• 1 min hard\n• 2 min easy\n• 2 min hard\n• 3 min easy\n• 3 min hard\n• then back down',
+          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. follow the 6 timed segments in order, no skipping.\n• 1 min easy\n• 1 min hard\n• 2 min easy\n• 2 min hard\n• 3 min easy\n• 3 min hard\n• then back down',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1826,7 +1826,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Sprint & Recover (Row)',
           duration: '20 min',
           description: 'Sprint intervals at 32 SPM with moderate\nrecovery strokes. 10 complete rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 30 sec sprint (32 SPM)\n• 1 min moderate (24 SPM)\n• repeat 10x',
+          battlePlan: 'Instructions: Sprints are max effort — the recovery pace should feel almost too easy. Protect the quality of every sprint. 10 rounds — follow the 2 timed segments in order, no skipping.\n• 30 sec sprint (32 SPM)\n• 1 min moderate (24 SPM)\n• 10 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1870,7 +1870,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Endurance Builder (Row)',
           duration: '30 min',
           description: 'Progressive endurance build from easy\nto fast pace with structured progression.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 5 min easy\n• 10 min moderate\n• 5 min hard\n• 5 min fast\n• 5 min cool-down',
+          battlePlan: 'Instructions: Follow the 5 timed segments in order, no skipping.\n• 5 min easy\n• 10 min moderate\n• 5 min hard\n• 5 min fast\n• 5 min cool-down',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1931,7 +1931,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Step & Recover',
           duration: '12 min',
           description: 'Easy stepping intervals with 30s moderate\nand fast bursts. 4 complete rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 1 min easy\n• 30 sec moderate\n• 1 min easy\n• 30 sec fast\n• repeat 4x',
+          battlePlan: 'Instructions: 4 rounds — follow the 4 timed segments in order, no skipping.\n• 1 min easy\n• 30 sec moderate\n• 1 min easy\n• 30 sec fast\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1981,7 +1981,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Pace Changer',
           duration: '15 min',
           description: 'Steady pace with double-step intervals\nfor variety and challenge. 3 rounds total.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 2 min steady\n• 1 min double step (skip a step)\n• 2 min slow\n• repeat 3x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — follow the 3 timed segments in order, no skipping.\n• 2 min steady\n• 1 min double step (skip a step)\n• 2 min slow\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2030,7 +2030,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Interval Climb',
           duration: '20 min',
           description: 'Fast intervals with moderate recovery\nand side step challenges. 4 rounds total.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 1 min fast\n• 2 min moderate\n• 1 min side step (face sideways)\n• repeat 4x',
+          battlePlan: 'Instructions: 4 rounds — follow the 3 timed segments in order, no skipping.\n• 1 min fast\n• 2 min moderate\n• 1 min side step (face sideways)\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2077,7 +2077,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Hill Climb',
           duration: '25 min',
           description: 'Hill climb progression with moderate, fast,\nand double step variations. 5 rounds total.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 2 min moderate\n• 1 min fast\n• 1 min slow\n• 1 min double step\n• repeat 5x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 5 rounds — follow the 4 timed segments in order, no skipping.\n• 2 min moderate\n• 1 min fast\n• 1 min slow\n• 1 min double step\n• 5 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2129,7 +2129,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Speed & Endurance',
           duration: '30 min',
           description: 'Advanced stepping with varied patterns. 5 rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 2 min fast\n• 1 min side step\n• 1 min double step\n• 2 min moderate\n• repeat 5x',
+          battlePlan: 'Instructions: 5 rounds — follow the 4 timed segments in order, no skipping.\n• 2 min fast\n• 1 min side step\n• 1 min double step\n• 2 min moderate\n• 5 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2179,7 +2179,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'HIIT Steps',
           duration: '20 min',
           description: 'HIIT intervals with sprint and skip-step\nalternating with recovery periods. 5 rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 30 sec sprint\n• 90 sec moderate\n• 30 sec skip-step\n• 90 sec easy\n• repeat 5x',
+          battlePlan: 'Instructions: Sprints are max effort — the recovery pace should feel almost too easy. Protect the quality of every sprint. 5 rounds — follow the 4 timed segments in order, no skipping.\n• 30 sec sprint\n• 90 sec moderate\n• 30 sec skip-step\n• 90 sec easy\n• 5 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2237,7 +2237,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Ski & Glide',
           duration: '12 min',
           description: 'Easy skiing intervals with 30s moderate\nand fast bursts. 4 complete rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 1 min easy\n• 30 sec moderate\n• 1 min easy\n• 30 sec fast\n• repeat 4x',
+          battlePlan: 'Instructions: Sprints are max effort — the recovery pace should feel almost too easy. Protect the quality of every sprint. 4 rounds — follow the 4 timed segments in order, no skipping.\n• 1 min easy\n• 30 sec moderate\n• 1 min easy\n• 30 sec fast\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2287,7 +2287,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Resistance Play (Ski)',
           duration: '15 min',
           description: 'Resistance variations from light to moderate\nwith steady, moderate, and slow phases.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 2 min steady (resistance 3)\n• 1 min moderate (resistance 5)\n• 2 min slow (resistance 2)\n• repeat 3x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — follow the 3 timed segments in order, no skipping.\n• 2 min steady (resistance 3)\n• 1 min moderate (resistance 5)\n• 2 min slow (resistance 2)\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2338,7 +2338,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Interval Ski',
           duration: '18 min',
           description: 'Skiing intervals alternating hard, moderate,\nand slow intensities. 4 complete rounds.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 1 min hard\n• 2 min moderate\n• 1 min slow\n• repeat 4x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 rounds — follow the 3 timed segments in order, no skipping.\n• 1 min hard\n• 2 min moderate\n• 1 min slow\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2384,7 +2384,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Pyramid Ski',
           duration: '20 min',
           description: 'Pyramid skiing building from 1-3 minutes\neasy/hard pairs with progressive intensity.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 1 min easy\n• 1 min hard\n• 2 min easy\n• 2 min hard\n• 3 min easy\n• 3 min hard',
+          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. follow the 6 timed segments in order, no skipping.\n• 1 min easy\n• 1 min hard\n• 2 min easy\n• 2 min hard\n• 3 min easy\n• 3 min hard',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2443,7 +2443,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Sprint & Recover (Ski)',
           duration: '20 min',
           description: 'High-intensity ski sprints with moderate\nrecovery periods. 10 complete rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 30 sec sprint\n• 1 min moderate\n• repeat 10x',
+          battlePlan: 'Instructions: Sprints are max effort — the recovery pace should feel almost too easy. Protect the quality of every sprint. 10 rounds — follow the 2 timed segments in order, no skipping.\n• 30 sec sprint\n• 1 min moderate\n• 10 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2485,7 +2485,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'HIIT Ski',
           duration: '16 min',
           description: 'Tabata protocol with 20s max effort\nand 10s rest. 2 complete cycles.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n• 8 rounds\n• 20 sec max effort\n• 10 sec rest\n• Rest for two minutes\n• Repeat for 2 cycles',
+          battlePlan: 'Instructions: Tabata: 20 seconds truly all-out, 10 seconds off. The last rounds should feel barely finishable. 8 rounds — follow the 2 timed segments in order, no skipping.\n• 8 rounds\n• 20 sec max effort\n• 10 sec rest\n• Rest for two minutes\n• Repeat for 2 cycles',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2537,7 +2537,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Walk & Jog',
           duration: '12 min',
           description: 'Basic walk-jog intervals alternating\nbetween 2min walks and 1min jogs. 2 cycles.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 2 min walk\n• 1 min jog\n• 2 min walk\n• 1 min jog\n• repeat 2x',
+          battlePlan: 'Instructions: 2 rounds — follow the 4 timed segments in order, no skipping.\n• 2 min walk\n• 1 min jog\n• 2 min walk\n• 1 min jog\n• 2 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2587,7 +2587,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Speed Play',
           duration: '15 min',
           description: 'Speed variation training with walking,\njogging, and fast walking. 4 rounds total.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 1 min walk\n• 30 sec jog\n• 1 min walk\n• 30 sec fast walk\n• repeat 4x',
+          battlePlan: 'Instructions: 4 rounds — follow the 4 timed segments in order, no skipping.\n• 1 min walk\n• 30 sec jog\n• 1 min walk\n• 30 sec fast walk\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2639,7 +2639,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Interval Run',
           duration: '18 min',
           description: 'Running intervals with recovery walks. 3 cycles.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 1 min run\n• 2 min walk\n• 1 min fast run\n• 2 min walk\n• repeat 3x',
+          battlePlan: 'Instructions: 3 rounds — follow the 4 timed segments in order, no skipping.\n• 1 min run\n• 2 min walk\n• 1 min fast run\n• 2 min walk\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2689,7 +2689,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Pyramid Pace',
           duration: '20 min',
           description: 'Pyramid pace progression from walk to\nrun and back down. 3 complete cycles.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 1 min walk\n• 1 min jog\n• 1 min run\n• 1 min jog\n• 1 min walk\n• repeat 3x',
+          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. 3 rounds — follow the 5 timed segments in order, no skipping.\n• 1 min walk\n• 1 min jog\n• 1 min run\n• 1 min jog\n• 1 min walk\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2745,7 +2745,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Sprint Intervals',
           duration: '20 min',
           description: 'High-intensity sprint intervals with 20s\nall-out effort and 40s recovery. 15 rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 20 sec sprint\n• 40 sec walk\n• repeat 15x',
+          battlePlan: 'Instructions: Sprints are max effort — the recovery pace should feel almost too easy. Protect the quality of every sprint. 15 rounds — follow the 2 timed segments in order, no skipping.\n• 20 sec sprint\n• 40 sec walk\n• 15 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2787,7 +2787,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'EMOM Challenge (Curve)',
           duration: '15 min',
           description: 'Every minute sprint challenge with 20s\nall-out effort and 40s jog recovery.\n ',
-          battlePlan: 'Instructions: EMOM — a new interval starts every minute. EMOM: start fresh at the top of every minute, rest whatever time is left.\n• 20 sec sprint\n• 40 sec moderate jog\n• repeat for 15 min',
+          battlePlan: 'Instructions: EMOM — a new interval starts every minute. follow the 2 timed segments in order, no skipping.\n• 20 sec sprint\n• 40 sec moderate jog\n• repeat for 15 min',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2836,7 +2836,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Combo Builder',
           duration: '10 min',
           description: 'Basic punch combinations with jab-cross\nand jab-cross-hook patterns. 5 rounds total.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 30 sec jab-cross\n• 30 sec rest\n• 30 sec jab-cross-hook\n• 30 sec rest\n• repeat 5x',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 5 rounds — follow the 4 timed segments in order, no skipping.\n• 30 sec jab-cross\n• 30 sec rest\n• 30 sec jab-cross-hook\n• 30 sec rest\n• 5 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2886,7 +2886,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Movement Mix',
           duration: '12 min',
           description: 'Light punching combined with footwork\nand movement around the bag. 4 rounds.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 30 sec light punches\n• 30 sec footwork (move around bag)\n• 30 sec rest\n• repeat 4x',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 rounds — follow the 3 timed segments in order, no skipping.\n• 30 sec light punches\n• 30 sec footwork (move around bag)\n• 30 sec rest\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2935,7 +2935,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Power Rounds',
           duration: '15 min',
           description: 'Complex combos with power punches. 4 rounds.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 1 min combos (jab-cross-hook-uppercut)\n• 30 sec rest\n• 1 min power punches\n• 30 sec rest\n• repeat 4x',
+          battlePlan: 'Instructions: 4 rounds — follow the 4 timed segments in order, no skipping.\n• 1 min combos (jab-cross-hook-uppercut)\n• 30 sec rest\n• 1 min power punches\n• 30 sec rest\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2986,7 +2986,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Speed & Defense',
           duration: '16 min',
           description: 'Speed punching combined with defensive\nslips and ducks movements. 6 rounds total.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 30 sec fast punches\n• 30 sec slips/ducks\n• 30 sec rest\n• repeat 6x',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 6 rounds — follow the 3 timed segments in order, no skipping.\n• 30 sec fast punches\n• 30 sec slips/ducks\n• 30 sec rest\n• 6 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3034,7 +3034,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'HIIT Boxing',
           duration: '20 min',
           description: 'High-intensity boxing with 45s max effort\ncombos and minimal rest. 15 rounds total.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 45 sec max effort combos\n• 15 sec rest\n• repeat 15x',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 15 rounds — follow the 2 timed segments in order, no skipping.\n• 45 sec max effort combos\n• 15 sec rest\n• 15 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3076,7 +3076,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Endurance Rounds',
           duration: '20 min',
           description: 'Extended rounds with all-out effort and defense. 3 cycles.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 2 min all-out\n• 1 min rest\n• 2 min footwork & defense\n• 1 min rest\n• repeat 3x',
+          battlePlan: 'Instructions: 3 rounds — follow the 4 timed segments in order, no skipping.\n• 2 min all-out\n• 1 min rest\n• 2 min footwork & defense\n• 1 min rest\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3134,7 +3134,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Climb & Rest',
           duration: '10 min',
           description: 'Basic climbing intervals with equal\nwork and rest periods. 5 rounds total.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 1 min climb\n• 1 min rest\n• repeat 5x',
+          battlePlan: 'Instructions: 5 rounds — follow the 2 timed segments in order, no skipping.\n• 1 min climb\n• 1 min rest\n• 5 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3176,7 +3176,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Pace Play',
           duration: '12 min',
           description: 'Progressive pace climbing from slow\nto fast with recovery periods. 3 rounds.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 30 sec slow\n• 30 sec moderate\n• 30 sec fast\n• 30 sec rest\n• repeat 3x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — follow the 4 timed segments in order, no skipping.\n• 30 sec slow\n• 30 sec moderate\n• 30 sec fast\n• 30 sec rest\n• 3 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3228,7 +3228,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Interval Climb (Climber)',
           duration: '15 min',
           description: 'Sustained intervals challenge full-body endurance. 5 rounds.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 1 min hard\n• 1 min moderate\n• 1 min slow\n• repeat 5x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 5 rounds — follow the 3 timed segments in order, no skipping.\n• 1 min hard\n• 1 min moderate\n• 1 min slow\n• 5 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3274,7 +3274,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Ladder Climb',
           duration: '18 min',
           description: 'Mixed pace climbing with fast, moderate,\nand slow intervals. 6 complete rounds.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 30 sec fast\n• 1 min moderate\n• 30 sec slow\n• repeat 6x',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Own the lowering — count the seconds down, then move normally on the way up. 6 rounds — follow the 3 timed segments in order, no skipping.\n• 30 sec fast\n• 1 min moderate\n• 30 sec slow\n• 6 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3322,7 +3322,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Sprint & Recover (Climber)',
           duration: '20 min',
           description: 'High-intensity climbing sprints with 20s\nall-out effort and 40s recovery. 15 rounds.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 20 sec sprint\n• 40 sec moderate\n• repeat 15x',
+          battlePlan: 'Instructions: Sprints are max effort — the recovery pace should feel almost too easy. Protect the quality of every sprint. 15 rounds — follow the 2 timed segments in order, no skipping.\n• 20 sec sprint\n• 40 sec moderate\n• 15 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3364,7 +3364,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Endurance Climb',
           duration: '20 min',
           description: 'Hard climbing efforts alternating with\nmoderate recovery periods for endurance.\n ',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n• 2 min hard\n• 1 min moderate\n• repeat 6x',
+          battlePlan: 'Instructions: 6 rounds — follow the 2 timed segments in order, no skipping.\n• 2 min hard\n• 1 min moderate\n• 6 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3414,7 +3414,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Jump & Rest',
           duration: '10 min',
           description: 'Basic jump rope intervals with equal\nwork and rest periods. 10 rounds total.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 30 sec jump\n• 30 sec rest\n• repeat 10x',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 10 rounds — follow the 2 timed segments in order, no skipping.\n• 30 sec jump\n• 30 sec rest\n• 10 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3456,7 +3456,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Step Touch',
           duration: '12 min',
           description: 'Basic jumps alternating with step touch\nfootwork practice and rest periods.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 30 sec basic jump\n• 30 sec step touch (no rope)\n• 30 sec basic jump\n• 30 sec rest\n• repeat 4x',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 rounds — follow the 4 timed segments in order, no skipping.\n• 30 sec basic jump\n• 30 sec step touch (no rope)\n• 30 sec basic jump\n• 30 sec rest\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3509,7 +3509,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Combo Jumps',
           duration: '15 min',
           description: 'Combination jumping patterns with basic,\nalternate foot, and double bounce styles.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 1 min basic jump\n• 30 sec alternate foot\n• 30 sec double bounce\n• 1 min rest\n• repeat 4x',
+          battlePlan: 'Instructions: 4 rounds — follow the 4 timed segments in order, no skipping.\n• 1 min basic jump\n• 30 sec alternate foot\n• 30 sec double bounce\n• 1 min rest\n• 4 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3559,7 +3559,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Speed Intervals',
           duration: '18 min',
           description: 'High-intensity intervals with 45s fast\njumping and 15s recovery. 12 rounds total.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n• 45 sec fast jump\n• 15 sec slow jump\n• repeat 12x',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Every rep at full intent — reset your stance between reps; speed beats load. 12 rounds — follow the 2 timed segments in order, no skipping.\n• 45 sec fast jump\n• 15 sec slow jump\n• 12 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3603,7 +3603,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'HIIT Rope',
           duration: '20 min',
           description: 'Maximum speed HIIT intervals with 30s\nall-out effort and 10s rest. 20 rounds.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 30 sec max speed\n• 10 sec rest\n• repeat 20x',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 20 rounds — follow the 2 timed segments in order, no skipping.\n• 30 sec max speed\n• 10 sec rest\n• 20 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3645,7 +3645,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Complex Patterns',
           duration: '18 min',
           description: 'Advanced techniques including cross-over,\ndouble under, and basic patterns. 6 rounds.\n ',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n• 1 min cross-over\n• 1 min double under\n• 1 min basic jump\n• repeat 6x',
+          battlePlan: 'Instructions: 6 rounds — follow the 3 timed segments in order, no skipping.\n• 1 min cross-over\n• 1 min double under\n• 1 min basic jump\n• 6 rounds:',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3700,7 +3700,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Band Cardio Circuit',
           duration: '12–15 min',
           description: 'Full-body circuit: banded squats, rows, and chest presses.\n\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 3 rounds:\n• 10 banded squats (band around lower thighs, just above knees)\n• 10 band rows (anchor band at chest height, pull toward torso)\n• 10 band chest presses (anchor band behind you at chest level, press forward)\n• Rest 1 min\nFinish with stretching',
+          battlePlan: 'Instructions: Cap every set with the finisher: stretching — it counts, don\'t skip it. 3 rounds — follow the 3 timed segments in order, no skipping.\nPerform 3 rounds:\n• 10 banded squats (band around lower thighs, just above knees)\n• 10 band rows (anchor band at chest height, pull toward torso)\n• 10 band chest presses (anchor band behind you at chest level, press forward)\n• Rest 1 min\nFinish with stretching',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3749,7 +3749,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Band Walks & Presses',
           duration: '12–15 min',
           description: 'Lower body and upper body: lateral walks and overhead presses.\n\n ',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nPerform 4 rounds:\n• 10 lateral walks (each direction with band around ankles)\n• 8 overhead presses (hold band overhead, press arms apart)\n• 6 band pull-aparts (at chest level)\n• Rest 75 sec\nFinish with stretching',
+          battlePlan: 'Instructions: Cap every set with the finisher: stretching — it counts, don\'t skip it. 4 rounds — follow the 3 timed segments in order, no skipping.\nPerform 4 rounds:\n• 10 lateral walks (each direction with band around ankles)\n• 8 overhead presses (hold band overhead, press arms apart)\n• 6 band pull-aparts (at chest level)\n• Rest 75 sec\nFinish with stretching',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3801,7 +3801,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Band Tabata',
           duration: '16 min',
           description: 'Tabata: squat jumps, push-ups, rows, and mountain climbers.\n\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 Tabata rounds (20 sec work, 10 sec rest):\n• Band squat jumps — round 1\n• Band-assisted push-ups — round 2\n• Band rows — round 3\n• Mountain climbers with band — round 4\nRest 2 min between rounds',
+          battlePlan: 'Instructions: Tabata: 20 seconds truly all-out, 10 seconds off. The last rounds should feel barely finishable. 4 rounds — follow the 4 timed segments in order, no skipping.\nPerform 4 Tabata rounds (20 sec work, 10 sec rest):\n• Band squat jumps — round 1\n• Band-assisted push-ups — round 2\n• Band rows — round 3\n• Mountain climbers with band — round 4\nRest 2 min between rounds',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3849,7 +3849,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Band Sprint Circuit',
           duration: '20–22 min',
           description: 'Sprint circuit: squat jumps, band sprints, and push-ups.\n\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 5 rounds:\n• 10 band squat jumps (band around thighs)\n• band sprints — ~20m, attached to anchor\n• 8 band-assisted push-ups\n• Rest 90 sec\nFinish when all rounds complete',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 5 rounds — follow the 3 timed segments in order, no skipping.\nPerform 5 rounds:\n• 10 band squat jumps (band around thighs)\n• band sprints — ~20m, attached to anchor\n• 8 band-assisted push-ups\n• Rest 90 sec\nFinish when all rounds complete',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3901,7 +3901,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Band Complex',
           duration: '20–22 min',
           description: 'Full-body complex: squat jumps, push-ups, sprints, and burpees.\n\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\nPerform 4 rounds:\n• 12 band squat jumps\n• 10 band-assisted push-ups\n• band sprints — ~20m\n• 8 band burpees (band around ankles)\n• Rest 2 min\nFinish with stretching',
+          battlePlan: 'Instructions: Cap every set with the finisher: stretching — it counts, don\'t skip it. 4 rounds — follow the 4 timed segments in order, no skipping.\nPerform 4 rounds:\n• 12 band squat jumps\n• 10 band-assisted push-ups\n• band sprints — ~20m\n• 8 band burpees (band around ankles)\n• Rest 2 min\nFinish with stretching',
           plan: {
             "format": "interval",
             "blocks": [
@@ -3954,7 +3954,7 @@ export const cardioWorkoutsDatabase: EquipmentWorkouts[] = [
           name: 'Band & Plyo Circuit',
           duration: '20–22 min',
           description: 'Plyometric circuit: jump lunges, mountain climbers, rows, and push-ups.\n\n ',
-          battlePlan: 'Instructions: AMRAP = as many quality reps as possible — stop 1–2 shy of failure.\nAMRAP for 20 minutes:\n• 10 jump lunges with band (band around ankles)\n• 20 mountain climbers with band around feet\n• 15 band rows\n• 8 explosive push-ups with band\nScore total rounds + reps',
+          battlePlan: 'Instructions: AMRAP: keep moving through the reps with clean form — rest only when form would break, and log your total. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nAMRAP for 20 minutes:\n• 10 jump lunges with band (band around ankles)\n• 20 mountain climbers with band around feet\n• 15 band rows\n• 8 explosive push-ups with band\nScore total rounds + reps',
           plan: {
             "format": "strength",
             "blocks": [

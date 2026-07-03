@@ -10,7 +10,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standard Crunch',
           duration: '8–10 min',
           description: 'Simple crunch develops mind-muscle connection safely for beginner abs.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Crunches\nRest 45s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 45s between sets, take all of it.\n3 rounds\n• 12–15 Crunches\nRest 45s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -51,7 +51,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Forearm Plank Hold',
           duration: '8–10 min',
           description: 'Teaches proper core bracing and builds strong foundational abdominal stability..\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 3 × 20–30s Plank Holds\nRest 45s',
+          battlePlan: 'Instructions: 3 sets of 20–30s — rest 45s between sets, take all of it.\n3 rounds\n• 3 × 20–30s Plank Holds\nRest 45s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -93,7 +93,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Knee Tuck Crunch Circuit',
           duration: '8–10 min',
           description: 'Fast-paced floor circuit to build beginner ab endurance.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Crunches\n• 12 Knee Tucks\n• 20 Alt Toe Taps\nRest 45s',
+          battlePlan: 'Instructions: 3 rounds — all 3 moves in order, then rest 45s.\n3 rounds\n• 15 Crunches\n• 12 Knee Tucks\n• 20 Alt Toe Taps\nRest 45s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -143,7 +143,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'High-Tempo Crunch Ladder',
           duration: '8–10 min',
           description: 'Simple but spicy crunch-based density workout.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 20 Crunches\n• 15 Crunches\n• 10 Crunches\nRest 30–45s',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Own the lowering — count the seconds down, then move normally on the way up. 4 rounds — all 3 moves in order, then rest 30–45s.\n4 rounds\n• 20 Crunches\n• 15 Crunches\n• 10 Crunches\nRest 30–45s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -196,7 +196,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'V Up',
           duration: '10–12 min',
           description: 'Challenging bodyweight drill effectively targets the entire abdominal wall..\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10–12 V Ups\nRest 60–75s',
+          battlePlan: 'Instructions: 4 sets of 10–12 — rest 60–75s between sets, take all of it.\n4 rounds\n• 10–12 V Ups\nRest 60–75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -237,7 +237,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bicycle Crunch',
           duration: '10–12 min',
           description: 'Builds rotational endurance and activates entire core musculature effectively..\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 per side Bicycle Crunches\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 60s between sets, take all of it.\n3 rounds\n• 12 per side Bicycle Crunches\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -278,7 +278,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'V-Up & Oblique Crunch Circuit',
           duration: '10–12 min',
           description: 'Fast circuit hitting upper, lower, and obliques.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 V-Ups\n• 16 Oblique Crunches (8/side)\n• 30 Alt Toe Taps\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — all 3 moves in order, then rest 60s.\n3 rounds\n• 12 V-Ups\n• 16 Oblique Crunches (8/side)\n• 30 Alt Toe Taps\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -328,7 +328,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Sit-Up Density Burner',
           duration: '10–12 min',
           description: 'Minimal rest sit-up progression for ab stamina.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Sit-Ups\n• 12 Sit-Ups\n• 10 Sit-Ups\nRest 60s',
+          battlePlan: 'Instructions: 3 rounds — all 3 moves in order, then rest 60s.\n3 rounds\n• 15 Sit-Ups\n• 12 Sit-Ups\n• 10 Sit-Ups\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -381,7 +381,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Leg Raise (Bar)',
           duration: '12–14 min',
           description: 'Very challenging hanging movement requiring strength and controlled execution..\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Hanging Leg Raises\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Hanging Leg Raises\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -422,7 +422,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hollow Body + Pike Jump',
           duration: '12–14 min',
           description: 'Brutal hybrid workout testing both dynamic and static abdominal strength capacity..\n ',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. holds are strict: locked position, no drifting.\n3 rounds\n• 20s Hollow Hold\n• 8 Stiff Leg Pike Jumps — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 20s Hollow Hold\n• 8 Stiff Leg Pike Jumps — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -464,7 +464,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hanging Leg Raise Speed Sets',
           duration: '12–14 min',
           description: 'Fast, controlled hanging reps drive intense lower-ab fatigue.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Hanging Leg Raises\n• 8 Hanging Knee-to-Chest\nRest 75–90s',
+          battlePlan: 'Instructions: 4 rounds — all 2 moves in order, then rest 75–90s.\n4 rounds\n• 10 Hanging Leg Raises\n• 8 Hanging Knee-to-Chest\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -508,7 +508,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dragon Flag + V-Up Finisher',
           duration: '12–14 min',
           description: 'Brutal pairing of eccentric strength and speed.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n3 rounds\n• 4–6 Dragon Flag Negatives\n• 12 V-Ups — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 4–6 Dragon Flag Negatives\n• 12 V-Ups — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -557,7 +557,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wall Assisted Rollout',
           duration: '8–10 min',
           description: 'Lets true beginners practice safe core extension with wall support assistance..\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Wall Rollouts\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Wall Rollouts\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -597,7 +597,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Short Range Rollout',
           duration: '8–10 min',
           description: 'Builds starter strength to prepare for full extensions.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Short Rollouts\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Short Rollouts\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -637,7 +637,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Eccentric-Only Kneeling Rollouts',
           duration: '8–10 min',
           description: 'Negative-only rollouts building anti-extension strength safely.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8–10 Eccentric Rollouts\nRest 60s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8–10 — rest 60s between sets, take all of it.\n3 rounds\n• 8–10 Eccentric Rollouts\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -679,7 +679,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Full Ab Rollout',
           duration: '10–12 min',
           description: 'Long stretch motion challenges anterior abs strongly.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Full Rollouts\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 8 — rest 75s between sets, take all of it.\n4 rounds\n• 8 Full Rollouts\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -719,7 +719,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rollout + Plank Hold',
           duration: '12–14 min',
           description: 'Pair movement rollout and plank for total ab burn.\n ',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 8 Rollouts\n• 20s Plank Hold\nRest 75s',
+          battlePlan: 'Instructions: 3 rounds — all 2 moves in order, then rest 75s.\n3 rounds\n• 8 Rollouts\n• 20s Plank Hold\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -764,7 +764,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Offset-Hand Kneeling Rollouts',
           duration: '10–12 min',
           description: 'Staggered hand position increases anti-rotation demand.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per side Offset Rollouts\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 75s between sets, take all of it.\n4 rounds\n• 8 per side Offset Rollouts\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -806,7 +806,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Standing Rollout',
           duration: '12–14 min',
           description: 'Requires elite bracing strength and anterior stability.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 5–6 Standing Rollouts\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 5–6 — rest 90s between sets, take all of it.\n3 rounds\n• 5–6 Standing Rollouts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -847,7 +847,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rollout with 3s Eccentric',
           duration: '12–14 min',
           description: '3s descend rollout punishes abs with strict tempo.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 6–8 Slow Eccentric Rollouts (3s down)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 6–8 — rest 90s between sets, take all of it.\n3 rounds\n• 6–8 Slow Eccentric Rollouts (3s down)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -887,7 +887,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Mid-Range Rollouts',
           duration: '12–14 min',
           description: 'Rollouts paused halfway to maximize core tension.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 6–8 Paused Rollouts (2s mid-range)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 6–8 — rest 90s between sets, take all of it.\n3 rounds\n• 6–8 Paused Rollouts (2s mid-range)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -935,7 +935,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Crunch (Light)',
           duration: '8–10 min',
           description: 'Builds abdominal control using small guided resisted spinal flexion movement..\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Light Crunches\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Light Crunches\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -976,7 +976,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Machine Crunch Pause',
           duration: '8–10 min',
           description: 'Isometric crunch teaches control and endurance reps.\n ',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 10 Crunches (2s hold)\nRest 75s',
+          battlePlan: 'Instructions: Dead-stop pause — kill all momentum at the pause point before finishing the rep. The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 75s between sets, take all of it.\n3 rounds\n• 10 Crunches (2s hold)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1017,7 +1017,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Eccentric Machine Crunch',
           duration: '8–10 min',
           description: 'Controlled crunch emphasizing lengthened ab tension.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 10 Slow Eccentric Crunches (4s down)\nRest 60s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 60s between sets, take all of it.\n3 rounds\n• 10 Slow Eccentric Crunches (4s down)\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1060,7 +1060,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Crunch',
           duration: '10–12 min',
           description: 'Machine allows safe progressive overload to abs.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Heavy Crunches\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Heavy Crunches\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1101,7 +1101,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Crunch + Leg Raise',
           duration: '12–14 min',
           description: 'Isolation combo burns abdominal wall comprehensively.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Crunches\n• 10 Hanging Leg Raises\nRest 90s',
+          battlePlan: 'Instructions: 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 8 Crunches\n• 10 Hanging Leg Raises\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1146,7 +1146,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Top-Half Machine Crunch Pulses',
           duration: '10–12 min',
           description: 'Partial-range crunch focused on peak contraction.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 15 Top-Half Pulses\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 15 — rest 75s between sets, take all of it.\n4 rounds\n• 15 Top-Half Pulses\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1189,7 +1189,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop Set Crunch',
           duration: '12–14 min',
           description: 'Extended time under tension breaks ab plateaus.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Heavy Crunches\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Heavy Crunches\n• Drop → 8 reps\n• Drop → 8 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1231,7 +1231,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso Crunch + Flutter Kicks',
           duration: '12–14 min',
           description: 'Extended tension exercise strengthens abs endurance.\n ',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. holds are strict: locked position, no drifting.\n3 rounds\n• 8 Crunches + 10s Hold\n• 15 Flutter Kicks — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. The hold is strict: locked position, squeezing hard, no drifting. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 8 Crunches + 10s Hold\n• 15 Flutter Kicks — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1273,7 +1273,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Iso-Hold Machine Crunch Ladder',
           duration: '12–14 min',
           description: 'Progressive isometric holds layered with reps.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• 8 Crunches + Hold (5s/8s/10s/12s)\nRest 90s',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. The hold is strict: locked position, squeezing hard, no drifting. 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 Crunches + Hold (5s/8s/10s/12s)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1322,7 +1322,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Knee Raise',
           duration: '8–10 min',
           description: 'Controlled movement isolates lower ab recruitment.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Knee Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60s between sets, take all of it.\n3 rounds\n• 10–12 Knee Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1363,7 +1363,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Straight Leg Hold',
           duration: '8–10 min',
           description: 'Lockout position burns abs for lower focus stability.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15s Holds\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 15s — rest 75s between sets, take all of it.\n3 rounds\n• 15s Holds\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1403,7 +1403,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Alternating Knee Raises',
           duration: '8–10 min',
           description: 'Unilateral knee lifts improving control and reducing swing.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 per side Alternating Knee Raises\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 60s between sets, take all of it.\n3 rounds\n• 12 per side Alternating Knee Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1445,7 +1445,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Straight Leg Raise',
           duration: '10–12 min',
           description: 'Builds strength in lower abs with stable path control.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Leg Raises\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Leg Raises\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1485,7 +1485,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Knee Raise + Twist',
           duration: '12–14 min',
           description: 'Hits lower abs and sides in one combined superset.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per side Knee Raise Twist\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per side Knee Raise Twist\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1525,7 +1525,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Extended-Knee Raises (45°)',
           duration: '10–12 min',
           description: 'Partial straight-leg raises increasing lever length.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Extended-Knee Raises\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 10 — rest 75s between sets, take all of it.\n4 rounds\n• 10 Extended-Knee Raises\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1567,7 +1567,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Leg Raise',
           duration: '12–14 min',
           description: 'Dumbbell held securely between feet amplifies difficulty and muscle activation..\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Weighted Leg Raises\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Weighted Leg Raises\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1607,7 +1607,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Raise + Slow Eccentric',
           duration: '12–14 min',
           description: 'Builds more strength with controlled negative reps.\n ',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8–10 Leg Raises (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Leg Raises (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1647,7 +1647,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'L-Sit Hold (Captain\'s Chair)',
           duration: '12–14 min',
           description: 'Static compression hold demanding full core tension.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n4 rounds\n• Max L-Sit Hold\nRest 90s',
+          battlePlan: 'Instructions: 4 sets — rest 90s between sets, take all of it.\n4 rounds\n• Max L-Sit Hold\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1695,7 +1695,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bodyweight Side Bend',
           duration: '8–10 min',
           description: 'Learns lateral bending to build oblique connection.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 per side Side Bends\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s between sets, take all of it.\n3 rounds\n• 10 per side Side Bends\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1736,7 +1736,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported Crunch',
           duration: '8–10 min',
           description: 'Controlled entry drill targets upper ab connection.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Supported Crunches\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60s between sets, take all of it.\n3 rounds\n• 10–12 Supported Crunches\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1777,7 +1777,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Anti-Extension Neutral Hold',
           duration: '8–10 min',
           description: 'Static trunk hold resisting spinal extension.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 20–30s Holds\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 20–30s — rest 60s between sets, take all of it.\n3 rounds\n• 20–30s Holds\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1819,7 +1819,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Side Bend',
           duration: '10–12 min',
           description: 'Builds oblique thickness with controlled weighted reps.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 per side Weighted Bends\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8–10 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 per side Weighted Bends\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1860,7 +1860,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Oblique Twist Sit Up',
           duration: '12–14 min',
           description: 'Twisting sit up enhances rotational ab engagement.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per side Twisting Sit Ups\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per side Twisting Sit Ups\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1901,7 +1901,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Alternating Reach Extensions',
           duration: '10–12 min',
           description: 'Controlled reach adding anti-rotation demand.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per side Alternating Reaches\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 75s between sets, take all of it.\n4 rounds\n• 8 per side Alternating Reaches\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1943,7 +1943,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Sit Up',
           duration: '12–14 min',
           description: 'Progressive overload thickens abs via weighted and controlled sit ups.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Weighted Sit Ups\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Weighted Sit Ups\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1984,7 +1984,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Sit Up with 3s Hold Top',
           duration: '12–14 min',
           description: 'Hold then release makes sit up much more demanding.\n ',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 8 Sit Ups (3s hold top)\nRest 90s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Sit Ups (3s hold top)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2025,7 +2025,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Anti-Rotation Hold',
           duration: '12–14 min',
           description: 'Static hold resisting rotation under load.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 20–30s per side Weighted Holds\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 20–30s per side — rest 90s between sets, take all of it.\n4 rounds\n• 20–30s per side Weighted Holds\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2073,7 +2073,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'MB Crunch',
           duration: '8–10 min',
           description: 'Beginner crunch builds control with small resistance.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 MB Crunches\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 60s between sets, take all of it.\n3 rounds\n• 12 MB Crunches\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2114,7 +2114,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Seated MB Twist',
           duration: '8–10 min',
           description: 'Dynamic twisting strengthens side core stability.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 per side Twists\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 75s between sets, take all of it.\n3 rounds\n• 10 per side Twists\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2154,7 +2154,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'MB Dead Bug Press',
           duration: '8–10 min',
           description: 'Dead bug variation adding anterior load.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 per side MB Dead Bugs\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 60s between sets, take all of it.\n3 rounds\n• 10 per side MB Dead Bugs\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2196,7 +2196,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'MB Overhead Sit Up',
           duration: '10–12 min',
           description: 'Long lever increases core demand and stretch tension.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 MB Sit Ups\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 MB Sit Ups\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2237,7 +2237,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'MB Slam + Plank Hold',
           duration: '12–14 min',
           description: 'Dynamic then static pairing builds full capacity.\n ',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 8 MB Slams\n• 25s Plank Hold\nRest 90s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 8 MB Slams\n• 25s Plank Hold\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2282,7 +2282,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'MB Sit-Up to Press-Out',
           duration: '10–12 min',
           description: 'Sit-up finishing with press to extend tension.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 MB Sit-Up Press-Outs\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 10 — rest 75s between sets, take all of it.\n4 rounds\n• 10 MB Sit-Up Press-Outs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2325,7 +2325,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'MB V Sit Twist',
           duration: '12–14 min',
           description: 'Heavy core load combining balance and twist with med ball.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 per side V Twists\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 90s between sets, take all of it.\n3 rounds\n• 10 per side V Twists\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2366,7 +2366,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'MB Slam + Toe Touch Finisher',
           duration: '12–14 min',
           description: 'Brutal pairing challenges power and contraction.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 MB Slams\n• 10 MB Toe Touches\nRest 90s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 8 MB Slams\n• 10 MB Toe Touches\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2411,7 +2411,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'MB Overhead Hold Flutter Kicks',
           duration: '12–14 min',
           description: 'Long-lever flutter kicks under overhead load.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 20 Flutter Kicks (MB overhead)\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 20 — rest 90s between sets, take all of it.\n4 rounds\n• 20 Flutter Kicks (MB overhead)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2459,7 +2459,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Decline Sit Up (Bodyweight)',
           duration: '8–10 min',
           description: 'Bodyweight baseline drill builds control and strength.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Decline Sit Ups\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 60s between sets, take all of it.\n3 rounds\n• 10–12 Decline Sit Ups\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2500,7 +2500,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Decline Crunch',
           duration: '8–10 min',
           description: 'Works midline without excessive torso movement.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Decline Crunches\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 75s between sets, take all of it.\n3 rounds\n• 12–15 Decline Crunches\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2541,7 +2541,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Flat Bench Crunch',
           duration: '8–10 min',
           description: 'Flat bench crunch focusing on controlled spinal flexion.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Flat Bench Crunches\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 Flat Bench Crunches\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2584,7 +2584,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Sit Up',
           duration: '10–12 min',
           description: 'Strengthens core wall with consistent loaded work.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Sit Ups w/ Plate\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 Sit Ups w/ Plate\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2625,7 +2625,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Twisting Sit Up',
           duration: '12–14 min',
           description: 'Full abs trained with twist motion superset strategy.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per side Twisting Sit Ups\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per side Twisting Sit Ups\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2666,7 +2666,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Arms-Overhead Decline Sit-Ups',
           duration: '10–12 min',
           description: 'Long-lever sit-up increasing difficulty without weight.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Arms-Overhead Sit-Ups\nRest 75s',
+          battlePlan: 'Instructions: 4 sets of 10 — rest 75s between sets, take all of it.\n4 rounds\n• 10 Arms-Overhead Sit-Ups\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2709,7 +2709,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep Sit Up',
           duration: '12–14 min',
           description: 'Time under tension drill builds durability fully while adding strength.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Combo Reps (half+full =1)\nRest 90s',
+          battlePlan: 'Instructions: Sit all the way up, lower halfway down, come back up, then lower fully — that whole sequence is ONE rep. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Combo Reps (half+full =1)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2750,7 +2750,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Decline Sit Up + Flutter Kicks',
           duration: '12–14 min',
           description: 'Powerful finisher blends flexion and endurance set.\n ',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n3 rounds\n• 8 Decline Sit Ups\n• 15 Flutter Kicks — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 3 rounds — all 2 moves in order, then rest 90s.\n3 rounds\n• 8 Decline Sit Ups\n• 15 Flutter Kicks — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2792,7 +2792,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Decline Sit Up',
           duration: '12–14 min',
           description: 'Weighted movement builds advanced ab strength capacity.\n ',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Weighted Sit Ups\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Weighted Sit Ups\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2833,7 +2833,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Offset Load Decline Sit-Ups',
           duration: '12–14 min',
           description: 'Anti-rotation sit-ups using unbalanced loading.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per side Offset Sit-Ups\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per side Offset Sit-Ups\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2882,7 +2882,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported Hanging Knee Raises',
           duration: '8–10 min',
           description: 'Assisted knee raises to learn hanging core control.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Supported Hanging Knee Raises\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 60s between sets, take all of it.\n3 rounds\n• 8–10 Supported Hanging Knee Raises\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2922,7 +2922,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Alternating Assisted Knee Lifts',
           duration: '8–10 min',
           description: 'Single-knee lifts to reduce load and improve control.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 per side Alternating Assisted Knee Lifts\nRest 60s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 6 per side — rest 60s between sets, take all of it.\n3 rounds\n• 6 per side Alternating Assisted Knee Lifts\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2962,7 +2962,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Knee Raise Holds (Short)',
           duration: '8–10 min',
           description: 'Brief knee raise holds to practice ab activation.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 6 Knee Raises with 1s Hold\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 6 — rest 60s between sets, take all of it.\n3 rounds\n• 6 Knee Raises with 1s Hold\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3005,7 +3005,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Straight-Leg Raises (45°)',
           duration: '10–12 min',
           description: 'Straight-leg raises stopping below parallel for control.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Straight-Leg Raises to ~45°\nRest 75–90s',
+          battlePlan: 'Instructions: 4 sets of 8 — rest 75–90s between sets, take all of it.\n4 rounds\n• 8 Straight-Leg Raises to ~45°\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3045,7 +3045,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Raise → Knee Tuck Combo',
           duration: '10–12 min',
           description: 'Combo reps extend time under tension in one set.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n3 rounds\n• 6 Straight-Leg Raises\n• 6 Knee Tucks — immediately, no rest\nRest 75s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 3 rounds — all 2 moves in order, then rest 75s.\n3 rounds\n• 6 Straight-Leg Raises\n• 6 Knee Tucks — immediately, no rest\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3086,7 +3086,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Slow Hanging Knee-to-Chest',
           duration: '10–12 min',
           description: 'Controlled knee-to-chest raises with slow negatives.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Knee-to-Chest Raises (3s down)\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 75s between sets, take all of it.\n3 rounds\n• 10 Knee-to-Chest Raises (3s down)\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3128,7 +3128,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Weighted Hanging Leg Raises',
           duration: '12–14 min',
           description: 'Loaded leg raises to overload lower ab strength.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Weighted Straight-Leg Raises\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 Weighted Straight-Leg Raises\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3168,7 +3168,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Toes-to-Bar (Slow Eccentric)',
           duration: '12–14 min',
           description: 'Full-range toes-to-bar with extended eccentric.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 6–8 Toes-to-Bar (3–4s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 6–8 — rest 90s between sets, take all of it.\n3 rounds\n• 6–8 Toes-to-Bar (3–4s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3209,7 +3209,7 @@ export const absWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Lever Reps',
           duration: '12–14 min',
           description: 'Dynamic front lever reps without full parallel holds.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 4–6 Front Lever Reps (tuck, advanced tuck, or band-assisted)\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 4–6 — rest 90s between sets, take all of it.\n4 rounds\n• 4–6 Front Lever Reps (tuck, advanced tuck, or band-assisted)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [

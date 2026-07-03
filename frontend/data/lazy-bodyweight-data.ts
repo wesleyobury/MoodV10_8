@@ -10,7 +10,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Easy Walk Intervals',
           duration: '8–10 min',
           description: 'Easy base with brief brisk pops; smooth steps and breaths.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 2 min Easy Walk (RPE 3)\n• 1 min Brisk Walk (RPE 4)\nNo extra rest; repeat sequence continuously',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 rounds — follow the 2 timed segments in order, no skipping.\n3 rounds\n• 2 min Easy Walk (RPE 3)\n• 1 min Brisk Walk (RPE 4)\nNo extra rest; repeat sequence continuously',
           plan: {
             "format": "interval",
             "blocks": [
@@ -51,7 +51,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Incline Cruise',
           duration: '8–10 min',
           description: 'Steady incline walk; relaxed shoulders; even cadence.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n1 set\n• 8–10 min Walk @ 3–5% incline (RPE 3–4)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n1 set\n• 8–10 min Walk @ 3–5% incline (RPE 3–4)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -92,7 +92,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Brisk Walk Pops',
           duration: '10–12 min',
           description: 'Easy base with 30s surges; smooth recoveries between.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 2 min Easy (RPE 3)\n• 30s Brisk (RPE 5)\n• 30s Easy (RPE 3) to reset, then repeat',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 rounds — follow the 3 timed segments in order, no skipping.\n4 rounds\n• 2 min Easy (RPE 3)\n• 30s Brisk (RPE 5)\n• 30s Easy (RPE 3) to reset, then repeat',
           plan: {
             "format": "interval",
             "blocks": [
@@ -138,7 +138,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Incline Switch-Ups',
           duration: '10–12 min',
           description: 'Change incline each minute; maintain easy comfortable pace.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n10–12 min continuous\nThen alternate each minute: 2% → 5% → 3% → 6% … (RPE 4–5)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 1 timed segment in order, no skipping.\n10–12 min continuous\nThen alternate each minute: 2% → 5% → 3% → 6% … (RPE 4–5)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -177,7 +177,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Walk–Jog Sprinkle',
           duration: '12–14 min',
           description: 'Easy walk base with tiny jog sprinkles and soft landings.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n4 rounds\n• 2 min Easy Walk (RPE 3)\n• 30–45s Easy Jog (RPE 5–6)\nRepeat back-to-back; no extra rest',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 rounds — follow the 2 timed segments in order, no skipping.\n4 rounds\n• 2 min Easy Walk (RPE 3)\n• 30–45s Easy Jog (RPE 5–6)\nRepeat back-to-back; no extra rest',
           plan: {
             "format": "interval",
             "blocks": [
@@ -219,7 +219,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Hill Breeze',
           duration: '12–14 min',
           description: 'One-minute hill efforts with flat recoveries; breathe calm.',
-          battlePlan: 'Instructions: Each round is one cycle. Leave 1–2 clean reps in the tank on every set.\n6 rounds continuous\n• 1 min @ 5–6% (RPE 5)\n• 1 min flat (RPE 3–4)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — follow the 2 timed segments in order, no skipping. Each round is one cycle.\n6 rounds continuous\n• 1 min @ 5–6% (RPE 5)\n• 1 min flat (RPE 3–4)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -268,7 +268,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Cruise Spin',
           duration: '8–10 min',
           description: 'Light resistance 80–90 rpm; shoulders relaxed and tall.',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n1 set\n• 8–10 min Easy Spin (RPE 3)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n1 set\n• 8–10 min Easy Spin (RPE 3)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -307,7 +307,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Cadence Teasers',
           duration: '8–10 min',
           description: 'Easy spin punctuated by quick fast-leg bursts; reset easy.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n3 rounds\n• 2 min Easy (RPE 3)\n• 20s Fast Legs / 40s Easy (repeat 1× = 1 block)\nComplete both intervals back-to-back to finish each round',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 rounds — follow the 2 timed segments in order, no skipping.\n3 rounds\n• 2 min Easy (RPE 3)\n• 20s Fast Legs / 40s Easy (repeat 1× = 1 block)\nComplete both intervals back-to-back to finish each round',
           plan: {
             "format": "interval",
             "blocks": [
@@ -350,7 +350,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Gear Nudge',
           duration: '10–12 min',
           description: 'Alternate light and moderate minutes at steady cadence.',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n10–12 min continuous\n• 1 min Light (RPE 3)\n• 1 min Moderate (RPE 5)\nRepeat sequence',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping.\n10–12 min continuous\n• 1 min Light (RPE 3)\n• 1 min Moderate (RPE 5)\nRepeat sequence',
           plan: {
             "format": "interval",
             "blocks": [
@@ -395,7 +395,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Mini Surges',
           duration: '10–12 min',
           description: 'Thirty-second surge, ninety seconds easy; smooth cycles.',
-          battlePlan: 'Instructions: Each round is one cycle. Leave 1–2 clean reps in the tank on every set.\n6 rounds continuous\n• 30s Surge (RPE 6)\n• 90s Easy (RPE 3)',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 2 moves in order. Each round is one cycle.\n6 rounds continuous\n• 30s Surge (RPE 6)\n• 90s Easy (RPE 3)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -436,7 +436,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Pyramid Spin',
           duration: '12–14 min',
           description: '1–2–3–2–1 @ RPE 5 with 1-min easy recoveries between.',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n1 set\n• 2 min Easy\n• 1 min @ RPE 5 → 1 min Easy\n• 2 min @ RPE 5 → 1 min Easy\n• 3 min @ RPE 5 → 1 min Easy\n• 2 min @ RPE 5 → 1 min Easy\n• 1 min @ RPE 5 → 2 min Easy finish',
+          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 7 timed segments in order, no skipping.\n1 set\n• 2 min Easy\n• 1 min @ RPE 5 → 1 min Easy\n• 2 min @ RPE 5 → 1 min Easy\n• 3 min @ RPE 5 → 1 min Easy\n• 2 min @ RPE 5 → 1 min Easy\n• 1 min @ RPE 5 → 2 min Easy finish',
           plan: {
             "format": "interval",
             "blocks": [
@@ -494,7 +494,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Stand Sprinkles',
           duration: '12–14 min',
           description: 'Seated easy with short stands; return to seat smoothly.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 2 min Easy (RPE 3)\n• 15–20s Standing (RPE 6)\nRepeat; no extra rest between rounds',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 rounds — follow the 2 timed segments in order, no skipping.\n5 rounds\n• 2 min Easy (RPE 3)\n• 15–20s Standing (RPE 6)\nRepeat; no extra rest between rounds',
           plan: {
             "format": "interval",
             "blocks": [
@@ -544,7 +544,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Glide Easy',
           duration: '8–10 min',
           description: 'Light resistance; smooth strides; relaxed upright posture.',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n1 set\n• 8–10 min Easy Glide (RPE 3)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n1 set\n• 8–10 min Easy Glide (RPE 3)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -583,7 +583,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Stride Pops',
           duration: '8–10 min',
           description: '20s quicker strides with 40s easy glides; repeat calm.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n3 rounds\n• 2 min Easy\n• 3 × (20s Quick, 40s Easy) done back-to-back\nRecovery is the 40s Easy within each trio',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 3 rounds — follow the 3 timed segments in order, no skipping.\n3 rounds\n• 2 min Easy\n• 3 × (20s Quick, 40s Easy) done back-to-back\nRecovery is the 40s Easy within each trio',
           plan: {
             "format": "interval",
             "blocks": [
@@ -626,7 +626,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Ramp Waves',
           duration: '10–12 min',
           description: 'Alternate low and high ramp minutes; steady cadence.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n10–12 min continuous\n• 1 min Low Ramp (RPE 3–4)\n• 1 min High Ramp (RPE 5)\nRepeat sequence',
+          battlePlan: 'Instructions: Waves: each round runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping.\n10–12 min continuous\n• 1 min Low Ramp (RPE 3–4)\n• 1 min High Ramp (RPE 5)\nRepeat sequence',
           plan: {
             "format": "interval",
             "blocks": [
@@ -671,7 +671,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Push–Pull Focus',
           duration: '10–12 min',
           description: '30s arm focus paired with 60s easy stride; smooth flow.',
-          battlePlan: 'Instructions: Each round is one cycle. Leave 1–2 clean reps in the tank on every set.\n6 rounds continuous\n• 30s Arm Focus (RPE 5)\n• 60s Easy (RPE 3)',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 2 moves in order. Each round is one cycle.\n6 rounds continuous\n• 30s Arm Focus (RPE 5)\n• 60s Easy (RPE 3)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -712,7 +712,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Sprinkle',
           duration: '12–14 min',
           description: 'Two minutes easy then one-minute tempo; repeat smooth.',
-          battlePlan: 'Instructions: Each round is one cycle. Control the lowering — the tempo is the point.\n5 rounds continuous\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 6)',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 rounds — follow the 2 timed segments in order, no skipping. Each round is one cycle.\n5 rounds continuous\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 6)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -753,7 +753,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Ramp Pyramid',
           duration: '12–14 min',
           description: 'Climb every two minutes; descend smoothly to finish.',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n1 set\n• 2 min Easy\n• 2 min Ramp 3 → 2 min Ramp 6 → 2 min Ramp 9\n• 2 min Ramp 6 → 2 min Ramp 3\n• 2 min Easy',
+          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. follow the 5 timed segments in order, no skipping.\n1 set\n• 2 min Easy\n• 2 min Ramp 3 → 2 min Ramp 6 → 2 min Ramp 9\n• 2 min Ramp 6 → 2 min Ramp 3\n• 2 min Easy',
           plan: {
             "format": "interval",
             "blocks": [
@@ -811,7 +811,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Easy Steps',
           duration: '8–10 min',
           description: 'Low level, smooth steps, light hands, steady breathing.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n1 set\n• 8–10 min Level 1–3 (RPE 3)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n1 set\n• 8–10 min Level 1–3 (RPE 3)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -850,7 +850,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Step and Pause',
           duration: '8–10 min',
           description: 'Two minutes steady work with 30s very easy reset bouts.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 2 min Steady (RPE 4)\n• 30s Very Easy (RPE 2–3)\nRepeat continuous; no extra rest',
+          battlePlan: 'Instructions: Dead-stop pause — kill all momentum at the pause point before finishing the rep. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 rounds — follow the 2 timed segments in order, no skipping.\n3 rounds\n• 2 min Steady (RPE 4)\n• 30s Very Easy (RPE 2–3)\nRepeat continuous; no extra rest',
           plan: {
             "format": "interval",
             "blocks": [
@@ -894,7 +894,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Alternating Cadence',
           duration: '10–12 min',
           description: 'One minute brisk stepping, one minute easy; repeat flow.',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n10–12 min continuous\n• 1 min Brisk (RPE 5)\n• 1 min Easy (RPE 3)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping.\n10–12 min continuous\n• 1 min Brisk (RPE 5)\n• 1 min Easy (RPE 3)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -938,7 +938,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Two-Step Rhythm',
           duration: '10–12 min',
           description: 'Insert five double-steps at 30s mark each minute set.',
-          battlePlan: 'Instructions: Each round is one cycle. At 30s within each minute, perform 5 double-steps. Leave 1–2 clean reps in the tank on every set.\n6 rounds\n• 1 min Normal Steps (RPE 4)',
+          battlePlan: 'Instructions: Each round is one cycle. At 30s within each minute, perform 5 double-steps.\n6 rounds\n• 1 min Normal Steps (RPE 4)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -979,7 +979,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Side-Step Sprinkle',
           duration: '12–14 min',
           description: 'Mostly forward steps with 30s lateral work each minute.',
-          battlePlan: 'Instructions: Each round is one cycle. Leave 1–2 clean reps in the tank on every set.\n6 rounds\n• 90s Forward (RPE 4)\n• 30s Side-Steps L/R (RPE 5)',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 2 moves in order. Each round is one cycle.\n6 rounds\n• 90s Forward (RPE 4)\n• 30s Side-Steps L/R (RPE 5)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1018,7 +1018,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Mini Climb Waves',
           duration: '12–14 min',
           description: 'Two minutes level 3–4, one minute level 5–6; repeat flow.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 2 min Level 3–4 (RPE 4)\n• 1 min Level 5–6 (RPE 6)',
+          battlePlan: 'Instructions: Waves: each round runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 rounds — follow the 2 timed segments in order, no skipping.\n4 rounds\n• 2 min Level 3–4 (RPE 4)\n• 1 min Level 5–6 (RPE 6)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1067,7 +1067,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Easy Row Flow',
           duration: '8–10 min',
           description: 'Smooth 18–20 spm, gentle pressure, relaxed breathing.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n1 set\n• 8–10 min @ 18–20 spm, RPE 3',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n1 set\n• 8–10 min @ 18–20 spm, RPE 3',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1105,7 +1105,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Pick Drill Lite',
           duration: '8–10 min',
           description: 'Arms-only, arms+body, then full strokes; crisp sequence.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n1 set\n• 2 min Arms-only (RPE 2–3)\n• 3 min Arms+Body (RPE 3)\n• 3–5 min Full Stroke (RPE 3–4)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 4 timed segments in order, no skipping.\n1 set\n• 2 min Arms-only (RPE 2–3)\n• 3 min Arms+Body (RPE 3)\n• 3–5 min Full Stroke (RPE 3–4)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1156,7 +1156,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Rate Pops',
           duration: '10–12 min',
           description: 'One minute 18 spm, 30s 24 spm; smooth easy pressure.',
-          battlePlan: 'Instructions: Each round is one cycle. Leave 1–2 clean reps in the tank on every set.\n6 rounds continuous\n• 1 min @ 18 spm (RPE 3–4)\n• 30s @ 24 spm (RPE 5)\n• 30s @ 18 spm reset',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — follow the 3 timed segments in order, no skipping. Each round is one cycle.\n6 rounds continuous\n• 1 min @ 18 spm (RPE 3–4)\n• 30s @ 24 spm (RPE 5)\n• 30s @ 18 spm reset',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1201,7 +1201,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Technique Tempo',
           duration: '10–12 min',
           description: 'Two minutes easy, one-minute tempo; controlled repeats.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 5)\nNo extra rest; continuous flow',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 rounds — follow the 2 timed segments in order, no skipping.\n4 rounds\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 5)\nNo extra rest; continuous flow',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1244,7 +1244,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: '500m Sprinkle',
           duration: '12–14 min',
           description: 'Easy row blocks surrounding one controlled 500m piece.',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n1 set\n• 4 min Easy (RPE 3)\n• Steady — ~500m, RPE 6\n• 4–6 min Easy (RPE 3)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 4 timed segments in order, no skipping.\n1 set\n• 4 min Easy (RPE 3)\n• Steady — ~500m, RPE 6\n• 4–6 min Easy (RPE 3)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1293,7 +1293,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Ladder Rate',
           duration: '12–14 min',
           description: '2 min each at 18, 20, 22 spm, then descend back down.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n1 set\n• 2 min @ 18 spm → 2 @ 20 → 2 @ 22\n• Rate 2 @ 20 → 2 @ 18\nAll at RPE 4–5 max',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 4 timed segments in order, no skipping.\n1 set\n• 2 min @ 18 spm → 2 @ 20 → 2 @ 22\n• Rate 2 @ 20 → 2 @ 18\nAll at RPE 4–5 max',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1345,7 +1345,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Easy Glide Pulls',
           duration: '8–10 min',
           description: 'Smooth hinge and arm drive; stable cadence; calm breath.',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n1 set\n• 8–10 min Easy (RPE 3)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n1 set\n• 8–10 min Easy (RPE 3)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1385,7 +1385,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Pull Pops',
           duration: '8–10 min',
           description: '15s quicker pulls with 45s easy glides; repeat smooth.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. control the lowering — the tempo is the point.\n3 rounds\n• 2 min Easy\n• 3 × (15s Quick, 45s Easy) back-to-back\nThe 45s Easy is the rest; no extra pause',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — follow the 3 timed segments in order, no skipping.\n3 rounds\n• 2 min Easy\n• 3 × (15s Quick, 45s Easy) back-to-back\nThe 45s Easy is the rest; no extra pause',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1428,7 +1428,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Rate Waves',
           duration: '10–12 min',
           description: 'Alternate 1 min @ 20 spm and 1 min @ 24 spm; easy power.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n10–12 min continuous\n• 1 min @ 20 spm (RPE 3–4)\n• 1 min @ 24 spm (RPE 5)',
+          battlePlan: 'Instructions: Waves: each round runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping.\n10–12 min continuous\n• 1 min @ 20 spm (RPE 3–4)\n• 1 min @ 24 spm (RPE 5)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1472,7 +1472,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Hinge Focus',
           duration: '10–12 min',
           description: '30s hinge-led pulls with 60s easy glide; repeat calm.',
-          battlePlan: 'Instructions: Each round is one cycle. Leave 1–2 clean reps in the tank on every set.\n6 rounds continuous\n• 30s Focus (RPE 5)\n• 60s Easy (RPE 3)',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 2 moves in order. Each round is one cycle.\n6 rounds continuous\n• 30s Focus (RPE 5)\n• 60s Easy (RPE 3)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1513,7 +1513,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Short Effort Ladder',
           duration: '12–14 min',
           description: '20–30–40s pulls with equal easy; keep stroke smooth.',
-          battlePlan: 'Instructions: Each round is one cycle. Leave 1–2 clean reps in the tank on every set.\n3 rounds continuous\n• 20s Pull / 20s Easy\n• 30s Pull / 30s Easy\n• 40s Pull / 40s Easy',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. 3 rounds — all 3 moves in order. Each round is one cycle.\n3 rounds continuous\n• 20s Pull / 20s Easy\n• 30s Pull / 30s Easy\n• 40s Pull / 40s Easy',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1559,7 +1559,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Technique Tempo (SkiErg)',
           duration: '12–14 min',
           description: '2 min easy then 1 min tempo pulls; repeat smoothly.',
-          battlePlan: 'Instructions: Each round is one cycle. Control the lowering — the tempo is the point.\n5 rounds continuous\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 6)',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 rounds — follow the 2 timed segments in order, no skipping. Each round is one cycle.\n5 rounds continuous\n• 2 min Easy (RPE 3)\n• 1 min Tempo (RPE 6)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1608,7 +1608,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Easy Singles',
           duration: '6–8 min',
           description: 'Simple singles; short contacts; relaxed quiet shoulders.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 40s Jump / 20s Rest (RPE 3–4)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 sets of 40s — rest between sets, take all of it.\n3 rounds\n• 40s Jump / 20s Rest (RPE 3–4)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1643,7 +1643,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Box Step Rope',
           duration: '6–8 min',
           description: 'Alternating steps under rope; easy beat; relaxed flow.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 45s Step Rope / 15s Rest (RPE 3–4)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 3 sets of 45s — rest between sets, take all of it.\n3 rounds\n• 45s Step Rope / 15s Rest (RPE 3–4)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1680,7 +1680,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Singles',
           duration: '8–10 min',
           description: '50s steady singles and 10s rest; repeat calm rhythm.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n8–10 min\n• 50s Jump / 10s Rest (RPE 5)',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n8–10 min\n• 50s Jump / 10s Rest (RPE 5)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1719,7 +1719,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Side-to-Side Steps',
           duration: '8–10 min',
           description: 'Small side shuffles under rope; smooth even rhythm.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 40s Lateral Steps / 20s Rest (RPE 4–5)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 sets of 40s — rest between sets, take all of it.\n5 rounds\n• 40s Lateral Steps / 20s Rest (RPE 4–5)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1756,7 +1756,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Mixed Rhythm',
           duration: '10–12 min',
           description: '40s singles plus 20s fast singles; high cadence for appropriate challenge',
-          battlePlan: 'Instructions: Each round is one cycle. Leave 1–2 clean reps in the tank on every set.\n6 rounds\n• 40s Singles (RPE 4)\n• 20s Fast Singles (RPE 6)\n• 30s Easy Rest between cycles',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 3 moves in order. Each round is one cycle.\n6 rounds\n• 40s Singles (RPE 4)\n• 20s Fast Singles (RPE 6)\n• 30s Easy Rest between cycles',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1799,7 +1799,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Sprinkle Doubles',
           duration: '10–12 min',
           description: 'Singles base with 5–10 double-unders sprinkled in calmly.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 60s Singles; add 5–10 DU anywhere (RPE 5–6)\n• 30–45s Rest',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 5 sets of 60s — rest between sets, take all of it.\n5 rounds\n• 60s Singles; add 5–10 DU anywhere (RPE 5–6)\n• 30–45s Rest',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1842,7 +1842,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Step-Ups Easy',
           duration: '8–10 min',
           description: 'Steady step-ups; alternate leads; smooth controlled pace.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n1 set\n• 8–10 min Continuous Step-Ups (RPE 3–4)',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n1 set\n• 8–10 min Continuous Step-Ups (RPE 3–4)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -1881,7 +1881,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Low Box Squat-to-Stand',
           duration: '8–10 min',
           description: 'Light tap to box; stand tall; relaxed smooth rhythm.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 60s Squat-to-Stand\n• 30s Easy Step-Ups\nNo extra rest',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 3 rounds — all 2 moves in order.\n3 rounds\n• 60s Squat-to-Stand\n• 30s Easy Step-Ups\nNo extra rest',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1923,7 +1923,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Step-Up + Knee',
           duration: '10–12 min',
           description: 'Step-up with gentle knee lift; alternate legs; control.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 60s Step-Up + Knee (RPE 5)\n• 60s Easy Step-Ups (RPE 3–4)',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 4 rounds — all 2 moves in order.\n4 rounds\n• 60s Step-Up + Knee (RPE 5)\n• 60s Easy Step-Ups (RPE 3–4)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1962,7 +1962,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Box Squat Pulses',
           duration: '10–12 min',
           description: 'Tap box, two pulses, stand tall; repeat with control.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 45s Squat 2-Pulse + Stand\n• 45s Step-Ups Easy\nRepeat flow',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 rounds — all 2 moves in order.\n4 rounds\n• 45s Squat 2-Pulse + Stand\n• 45s Step-Ups Easy\nRepeat flow',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2005,7 +2005,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Low Box Jumps',
           duration: '12–14 min',
           description: 'Small jumps; quiet sticks; step down; reset each rep.',
-          battlePlan: 'Instructions: Rest 30s between moves. One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 30s Box Jumps (low)\n• 60s Step-Ups Easy',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Every rep at full intent — reset your stance between reps; speed beats load. 5 rounds — all 2 moves in order. Rest 30s between moves.\n5 rounds\n• 30s Box Jumps (low)\n• 60s Step-Ups Easy',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2045,7 +2045,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Box Jump Clusters',
           duration: '12–14 min',
           description: 'Two jumps, 10s rest, two jumps; step down always.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• Cluster, 2 Jumps → 10s rest → 2 Jumps\n• Then 60s Easy Step-Ups\nRepeat; total RPE 5–6',
+          battlePlan: 'Instructions: Cluster set: 2 Jumps → 10s rest → 2 Jumps — the built-in mini-rest keeps every rep explosive, don\'t cut it short. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 5 sets of 4 — rest between sets, take all of it.\n5 rounds\n• 4 Jumps — cluster style\n• Then 60s Easy Step-Ups\nRepeat; total RPE 5–6',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2089,7 +2089,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Easy Body Circuit A',
           duration: '10–12 min',
           description: 'Squats, wall pushups, glute bridges, dead bugs; steady.',
-          battlePlan: 'Instructions: Rest 30s between moves. One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 30s Squats\n• 30s Wall Pushups\n• 30s Glute Bridges\n• 30s Dead Bug',
+          battlePlan: 'Instructions: 3 rounds — all 4 moves in order. Rest 30s between moves.\n3 rounds\n• 30s Squats\n• 30s Wall Pushups\n• 30s Glute Bridges\n• 30s Dead Bug',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2137,7 +2137,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Easy Body Circuit B',
           duration: '10–12 min',
           description: 'Reverse lunges, plank, hip hinges, calf raises; calm.',
-          battlePlan: 'Instructions: Rest 30s between moves. One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 30s Reverse Lunges (alt)\n• 30s Forearm Plank\n• 30s Hip Hinge Good Mornings\n• 30s Calf Raises',
+          battlePlan: 'Instructions: 3 rounds — all 4 moves in order. Rest 30s between moves.\n3 rounds\n• 30s Reverse Lunges (alt)\n• 30s Forearm Plank\n• 30s Hip Hinge Good Mornings\n• 30s Calf Raises',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2186,7 +2186,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Core + Hips Flow',
           duration: '10–13 min',
           description: 'Bird dogs, side planks, clamshells, hollow holds; smooth.',
-          battlePlan: 'Instructions: Rest 60s between moves. Holds are strict: locked position, no drifting.\n2 rounds\n• 30s Bird Dogs (alt)\n• 30s Side Plank L\n• 30s Side Plank R\n• 30s Clamshells L\n• 30s Clamshells R\n• 30s Hollow Hold',
+          battlePlan: 'Instructions: 2 rounds — all 6 moves in order. Rest 60s between moves.\n2 rounds\n• 30s Bird Dogs (alt)\n• 30s Side Plank L\n• 30s Side Plank R\n• 30s Clamshells L\n• 30s Clamshells R\n• 30s Hollow Hold',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2247,7 +2247,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Low-Bounce Burner',
           duration: '10–12 min',
           description: 'Step-back lunges, knee pushups, squat holds, core.',
-          battlePlan: 'Instructions: Rest 30s between moves. Holds are strict: locked position, no drifting.\n3 rounds\n• 30s Step-Back Lunges (alt)\n• 30s Incline or Knee Pushups\n• 30s Squat Hold (comfortable depth)\n• 30s Dead Bug',
+          battlePlan: 'Instructions: 3 rounds — follow the 4 timed segments in order, no skipping. Rest 30s between moves.\n3 rounds\n• 30s Step-Back Lunges (alt)\n• 30s Incline or Knee Pushups\n• 30s Squat Hold (comfortable depth)\n• 30s Dead Bug',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2303,7 +2303,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Lazy Sweat A',
           duration: '12–15 min',
           description: 'Squats, pushups, alternating lunges, plank; steady flow.',
-          battlePlan: 'Instructions: Rest 30s between moves. One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 40s Squats\n• 30s Pushups (incline if needed)\n• 40s Alternating Lunges\n• 30s Forearm Plank',
+          battlePlan: 'Instructions: 3 rounds — follow the 4 timed segments in order, no skipping. Rest 30s between moves.\n3 rounds\n• 40s Squats\n• 30s Pushups (incline if needed)\n• 40s Alternating Lunges\n• 30s Forearm Plank',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2357,7 +2357,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Lazy Sweat B',
           duration: '12–15 min',
           description: 'Good mornings, reverse lunges, dead bugs, side planks.',
-          battlePlan: 'Instructions: Rest 30s between moves. One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 40s Hip Hinge Good Mornings\n• 40s Reverse Lunges (alt)\n• 30s Dead Bug\n• 30s Side Plank (switch at 15s)',
+          battlePlan: 'Instructions: 3 rounds — all 4 moves in order. Rest 30s between moves.\n3 rounds\n• 40s Hip Hinge Good Mornings\n• 40s Reverse Lunges (alt)\n• 30s Dead Bug\n• 30s Side Plank (switch at 15s)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2406,7 +2406,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Low Hop Mix',
           duration: '12–15 min',
           description: 'Small squat hops, step-back lunges, pushups, hollow.',
-          battlePlan: 'Instructions: Rest 30s between moves. Holds are strict: locked position, no drifting.\n3 rounds\n• 30s Small Squat Hops (or Squats)\n• 40s Step-Back Lunges (alt)\n• 30s Pushups\n• 30s Hollow Hold',
+          battlePlan: 'Instructions: 3 rounds — all 4 moves in order. Rest 30s between moves.\n3 rounds\n• 30s Small Squat Hops (or Squats)\n• 40s Step-Back Lunges (alt)\n• 30s Pushups\n• 30s Hollow Hold',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2455,7 +2455,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Core + Shoulders',
           duration: '12–15 min',
           description: 'Plank taps, pike holds, dead bugs, scapular pushups.',
-          battlePlan: 'Instructions: Rest 30s between moves. Holds are strict: locked position, no drifting.\n3 rounds\n• 30s High Plank Shoulder Taps\n• 20–30s Pike Hold (hips high)\n• 30s Dead Bug\n• 30s Scapular Pushups',
+          battlePlan: 'Instructions: 3 rounds — all 4 moves in order. Rest 30s between moves.\n3 rounds\n• 30s High Plank Shoulder Taps\n• 20–30s Pike Hold (hips high)\n• 30s Dead Bug\n• 30s Scapular Pushups',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2505,7 +2505,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Jump Flow A',
           duration: '15–18 min',
           description: 'Jump squats, alternating lunges, pushups, plank; flow.',
-          battlePlan: 'Instructions: Rest 30s between moves. One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 20s Jump Squats → 40s Squats\n• 40s Alternating Lunges\n• 30s Pushups\n• 30s Plank',
+          battlePlan: 'Instructions: 4 rounds — all 4 moves in order. Rest 30s between moves.\n4 rounds\n• 20s Jump Squats → 40s Squats\n• 40s Alternating Lunges\n• 30s Pushups\n• 30s Plank',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2554,7 +2554,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Burpee Sprinkle',
           duration: '15–18 min',
           description: 'Few burpees per minute; squats and core fill remaining.',
-          battlePlan: 'Instructions: EMOM for 12 minutes. EMOM: start fresh at the top of every minute, rest whatever time is left. holds are strict: locked position, no drifting.\n• Odd minutes, 4–6 Burpees, then Squats till minute\n• Even minutes, 20s Hollow Hold, then Lunges till minute',
+          battlePlan: 'Instructions: Start the work at the top of every minute — whatever\'s left of the minute is your rest. Falling behind? Trim reps, don\'t skip minutes. Work top to bottom. EMOM for 12 minutes.\n• Odd minutes, 4–6 Burpees, then Squats till minute\n• Even minutes, 20s Hollow Hold, then Lunges till minute',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2593,7 +2593,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Push–Core Ladder',
           duration: '15–18 min',
           description: 'Pushups and V-ups ladder; lunges fill rest time segments.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\n1 set flow\n• 6 Pushups → 10 V-ups\n• 8 Pushups → 12 V-ups\n• 10 Pushups → 14 V-ups\n• Between rungs, 20s Alternating Lunges',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Work top to bottom.\n1 set flow\n• 6 Pushups → 10 V-ups\n• 8 Pushups → 12 V-ups\n• 10 Pushups → 14 V-ups\n• Between rungs, 20s Alternating Lunges',
           plan: {
             "format": "strength",
             "blocks": [
@@ -2642,7 +2642,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Jump Flow B',
           duration: '15–18 min',
           description: 'Split jumps, squat jumps, pike shoulder taps, planks.',
-          battlePlan: 'Instructions: Rest 30s between moves. One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 20s Split Jumps → 40s Reverse Lunges\n• 20s Squat Jumps → 40s Squats\n• 30s Pike Shoulder Taps\n• 30s Side Plank (switch at 15s)',
+          battlePlan: 'Instructions: 4 rounds — all 4 moves in order. Rest 30s between moves.\n4 rounds\n• 20s Split Jumps → 40s Reverse Lunges\n• 20s Squat Jumps → 40s Squats\n• 30s Pike Shoulder Taps\n• 30s Side Plank (switch at 15s)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2699,7 +2699,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Breeze Pedal',
           duration: '8–10 min',
           description: 'Light pace, gentle arm swing, calm nasal–mouth breathing.',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n1 set\n• 8–10 min Easy (RPE 3)',
+          battlePlan: 'Instructions: Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 2 timed segments in order, no skipping.\n1 set\n• 8–10 min Easy (RPE 3)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2738,7 +2738,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Short Spins',
           duration: '8–10 min',
           description: '20s quick spin with 40s easy reset; repeat smoothly.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. control the lowering — the tempo is the point.\n3 rounds\n• 2 min Easy\n• 3 × (20s Quick, 40s Easy) back-to-back\nThe 40s Easy is the rest; no extra pause',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 rounds — follow the 3 timed segments in order, no skipping.\n3 rounds\n• 2 min Easy\n• 3 × (20s Quick, 40s Easy) back-to-back\nThe 40s Easy is the rest; no extra pause',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2781,7 +2781,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Cadence Waves',
           duration: '10–12 min',
           description: 'One minute brisk, one minute easy; repeat balanced.',
-          battlePlan: 'Instructions: Follow the timed blocks in order — hit the effort level, not a pace.\n10–12 min continuous\n• 1 min Brisk (RPE 5)\n• 1 min Easy (RPE 3)',
+          battlePlan: 'Instructions: Waves: each round runs the rep scheme (e.g. 3-2-1) building load slightly across the wave — reset fully between waves. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. follow the 3 timed segments in order, no skipping.\n10–12 min continuous\n• 1 min Brisk (RPE 5)\n• 1 min Easy (RPE 3)',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2825,7 +2825,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Gear Nudge (Assault)',
           duration: '10–12 min',
           description: '90s easy then 30s firmer push; repeat controlled cycles.',
-          battlePlan: 'Instructions: Each round is one cycle. Leave 1–2 clean reps in the tank on every set.\n6 rounds continuous\n• 90s Easy (RPE 3)\n• 30s Push (RPE 6)',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — all 2 moves in order. Each round is one cycle.\n6 rounds continuous\n• 90s Easy (RPE 3)\n• 30s Push (RPE 6)',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2866,7 +2866,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Mini-Tabata Lite',
           duration: '12–14 min',
           description: '6 rounds 10s hard/20s easy with long easy bookends.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n1 set\n• 4 min Easy\n• 6 rounds: 10s Hard (RPE 7) / 20s Easy\n• 4–6 min Easy finish',
+          battlePlan: 'Instructions: Tabata: 20 seconds truly all-out, 10 seconds off. The last rounds should feel barely finishable. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. 6 rounds — follow the 3 timed segments in order, no skipping.\n1 set\n• 4 min Easy\n• 6 rounds: 10s Hard (RPE 7) / 20s Easy\n• 4–6 min Easy finish',
           plan: {
             "format": "interval",
             "blocks": [
@@ -2909,7 +2909,7 @@ export const lazyBodyweightDatabase: EquipmentWorkouts[] = [
           name: 'Pyramid Sprinkle',
           duration: '12–14 min',
           description: '20–30–40s push with equal easy; relaxed steady cadence.',
-          battlePlan: 'Instructions: Each round is one cycle. Leave 1–2 clean reps in the tank on every set.\n3 rounds continuous\n• 20s Push / 20s Easy\n• 30s Push / 30s Easy\n• 40s Push / 40s Easy',
+          battlePlan: 'Instructions: Pyramid: climb the effort/reps up then back down — the middle is the peak, pace for it. 3 rounds — all 3 moves in order. Each round is one cycle.\n3 rounds continuous\n• 20s Push / 20s Easy\n• 30s Push / 30s Easy\n• 40s Push / 40s Easy',
           plan: {
             "format": "circuit",
             "blocks": [

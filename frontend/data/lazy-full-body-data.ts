@@ -10,7 +10,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Push Start',
           duration: '22–28 min',
           description: 'Leg press foundation, chest press next, core crunch close.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLeg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nMachine Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nLeg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nMachine Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -63,7 +63,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Push',
           duration: '22–28 min',
           description: 'Hack squats first, shoulder press next, anti-rotation core.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nHack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nMachine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nCable Anti-Rotation Hold or Dead Bug\n• 3 × 20–30s/side (RPE 4), 45s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nHack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nMachine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nCable Anti-Rotation Hold or Dead Bug\n• 3 × 20–30s/side (RPE 4), 45s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -115,7 +115,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Smith Push',
           duration: '22–28 min',
           description: 'Smith back squat, Smith bench press, plank for bracing.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSmith Back Squat\n• 3 × 8–10 (RPE 4), 60–75s rest\nSmith Machine Bench Press\n• 3 × 8–10 (RPE 4), 60s rest\nFront Plank\n• 3 × 20–40s (RPE 4), 45s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nSmith Back Squat\n• 3 × 8–10 (RPE 4), 60–75s rest\nSmith Machine Bench Press\n• 3 × 8–10 (RPE 4), 60s rest\nFront Plank\n• 3 × 20–40s (RPE 4), 45s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -170,7 +170,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Press Lines',
           duration: '28–35 min',
           description: 'Leg press volume, chest press sets, cable crunch closer.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLeg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nMachine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nLeg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nMachine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -223,7 +223,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Stack (Full Body Push)',
           duration: '28–35 min',
           description: 'Hack squats, shoulder press sequence, Pallof press core.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nMachine Shoulder Press\n• 4 × 8 (RPE 5), 60–75s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nHack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nMachine Shoulder Press\n• 4 × 8 (RPE 5), 60–75s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -275,7 +275,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Smith Lines (Push)',
           duration: '28–35 min',
           description: 'Smith squat series, Smith bench sets, hanging knees finish.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSmith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith Machine Bench Press\n• 4 × 8 (RPE 5), 60–75s rest\nHanging Knee Raise\n• 3 × 10–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nSmith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith Machine Bench Press\n• 4 × 8 (RPE 5), 60–75s rest\nHanging Knee Raise\n• 3 × 10–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -330,7 +330,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Push Drop',
           duration: '35–42 min',
           description: 'Leg press plus chest press drops, then controlled abs.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nLeg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 2–3 total series\nMachine Chest Press\n• 1 × 6–8 heavy (RPE 7) → drop 15% → 1 × 6–8 (RPE 6)\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom — rest 90s; repeat for 2–3 total series between exercises.\nLeg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 2–3 total series\nMachine Chest Press\n• 1 × 6–8 heavy (RPE 7) → drop 15% → 1 × 6–8 (RPE 6)\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -383,7 +383,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cluster Push',
           duration: '35–42 min',
           description: 'Hack clusters, Smith bench clusters, chops for core.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSmith Machine Bench Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Cluster set: split the reps with a short built-in rest so every rep stays explosive. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom.\nHack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSmith Machine Bench Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -429,7 +429,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Midrange Push',
           duration: '35–42 min',
           description: 'Cable goblet 1.5s, incline fly 1.5s, anti-rotation hold.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nCable Goblet Squat (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nIncline Cable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom.\nCable Goblet Squat (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nIncline Cable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -490,7 +490,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Pull Start',
           duration: '22–28 min',
           description: 'Seated curls or RDL, row machine, core with Pallof.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSmith RDL or Seated Leg Curl (machine)\n• 3 × 10 (RPE 4), 60s rest\nSeated Row (neutral)\n• 3 × 8–10 (RPE 4), 60s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nSmith RDL or Seated Leg Curl (machine)\n• 3 × 10 (RPE 4), 60s rest\nSeated Row (neutral)\n• 3 × 8–10 (RPE 4), 60s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -543,7 +543,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Pull',
           duration: '22–28 min',
           description: '45° back extension, pulldown, dead bug or cable core.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBack Extension (45°, machine)\n• 3 × 10–12 (RPE 4), 60s rest\nLat Pulldown\n• 3 × 8–10 (RPE 4), 60s rest\nDead Bug or Cable Anti-Rotation Hold\n• 3 × 20–30s/side (RPE 4), 45s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nBack Extension (45°, machine)\n• 3 × 10–12 (RPE 4), 60s rest\nLat Pulldown\n• 3 × 8–10 (RPE 4), 60s rest\nDead Bug or Cable Anti-Rotation Hold\n• 3 × 20–30s/side (RPE 4), 45s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -595,7 +595,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cable Pull',
           duration: '22–28 min',
           description: 'Pull-throughs, high cable row, crunches to complete.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Pull-Through\n• 3 × 10–12 (RPE 4), 60s rest\nHigh Cable Row\n• 3 × 10 (RPE 4), 60s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nCable Pull-Through\n• 3 × 10–12 (RPE 4), 60s rest\nHigh Cable Row\n• 3 × 10 (RPE 4), 60s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -650,7 +650,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Hinge Lines',
           duration: '28–35 min',
           description: 'Smith RDLs, seated rows, anti-rotation core to finish.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nSmith RDL\n• 4 × 8 (RPE 5–6), 75s rest\nSeated Row (neutral)\n• 4 × 8 (RPE 5), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nSmith RDL\n• 4 × 8 (RPE 5–6), 75s rest\nSeated Row (neutral)\n• 4 × 8 (RPE 5), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -703,7 +703,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Lines',
           duration: '28–35 min',
           description: 'Machine back extensions, pulldowns, cable crunch sets.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nBack Extension (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nBack Extension (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nCable Crunch (kneeling)\n• 3 × 12–15 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -757,7 +757,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cable Lines',
           duration: '28–35 min',
           description: 'Pull-through volume, high rows, chops for anti-rotation.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Pull-Through\n• 4 × 10 (RPE 5), 60–75s rest\nHigh Cable Row\n• 4 × 8–10 (RPE 5), 60–75s rest\nLow-to-High Cable Chop\n• 3 × 8–10/side (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nCable Pull-Through\n• 4 × 10 (RPE 5), 60–75s rest\nHigh Cable Row\n• 4 × 8–10 (RPE 5), 60–75s rest\nLow-to-High Cable Chop\n• 3 × 8–10/side (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -811,7 +811,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Pull Drop',
           duration: '35–42 min',
           description: 'Curl or pulldown drops, rows next, core bracing finish.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nSeated Leg Curl (machine) or Lat Pulldown\n• 1 × 8–10 heavy (RPE 7) → drop 15% → 1 × 8–10 (RPE 6)\n• Rest 90s; repeat for 2–3 total series\nSeated Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom — rest 90s; repeat for 2–3 total series between exercises.\nSeated Leg Curl (machine) or Lat Pulldown\n• 1 × 8–10 heavy (RPE 7) → drop 15% → 1 × 8–10 (RPE 6)\n• Rest 90s; repeat for 2–3 total series\nSeated Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -863,7 +863,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cluster Pull',
           duration: '35–42 min',
           description: 'Smith RDL clusters, chest-supported row, cable chops.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSmith RDL\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nChest-Supported Row Machine\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Cluster set: split the reps with a short built-in rest so every rep stays explosive. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom.\nSmith RDL\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nChest-Supported Row Machine\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -913,7 +913,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Midrange Pull (Full Body)',
           duration: '35–42 min',
           description: 'Back extension 1.5s, high rows, anti-rotation hold close.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nBack Extension (1.5 reps, machine)\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Every rep = one full rep plus a half rep in the hardest range before you finish. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom.\nBack Extension (1.5 reps, machine)\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -973,7 +973,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Simple Body',
           duration: '25–32 min',
           description: 'Leg press, chest press, row machine, Pallof core finish.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLeg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nMachine Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nSeated Row (neutral)\n• 3 × 8–10 (RPE 4), 60s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nLeg Press (machine)\n• 3 × 10–12 (RPE 4), 60s rest\nMachine Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nSeated Row (neutral)\n• 3 × 8–10 (RPE 4), 60s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1033,7 +1033,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Body',
           duration: '25–32 min',
           description: 'Hack squat, shoulder press, pulldown, anti-rotation core.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nHack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nMachine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nLat Pulldown\n• 3 × 8–10 (RPE 4), 60s rest\nCable Anti-Rotation Hold\n• 3 × 20–30s/side (RPE 4), 45s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nHack Squat (machine)\n• 3 × 8–10 (RPE 4), 60s rest\nMachine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nLat Pulldown\n• 3 × 8–10 (RPE 4), 60s rest\nCable Anti-Rotation Hold\n• 3 × 20–30s/side (RPE 4), 45s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1093,7 +1093,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cable Body',
           duration: '25–32 min',
           description: 'Cable goblet squat, chest press, high row, cable chops.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Goblet Squat (low cable)\n• 3 × 10–12 (RPE 4), 60s rest\nCable Chest Press\n• 3 × 10 (RPE 4), 60s rest\nHigh Cable Row\n• 3 × 10 (RPE 4), 60s rest\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nCable Goblet Squat (low cable)\n• 3 × 10–12 (RPE 4), 60s rest\nCable Chest Press\n• 3 × 10 (RPE 4), 60s rest\nHigh Cable Row\n• 3 × 10 (RPE 4), 60s rest\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1154,7 +1154,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Balanced Body',
           duration: '32–40 min',
           description: 'Leg press, chest press, seated row, overhead Pallof.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLeg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nMachine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nSeated Row (neutral)\n• 4 × 8 (RPE 5), 60–75s rest\nCable Overhead Pallof\n• 3 × 10–12/side (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nLeg Press (machine)\n• 4 × 10 (RPE 5), 60–75s rest\nMachine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nSeated Row (neutral)\n• 4 × 8 (RPE 5), 60–75s rest\nCable Overhead Pallof\n• 3 × 10–12/side (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1214,7 +1214,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Lines (Mix)',
           duration: '32–40 min',
           description: 'Hack squat, shoulder press, pulldown series, core hold.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\nHack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nMachine Shoulder Press\n• 4 × 8 (RPE 5), 60–75s rest\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nHack Squat (machine)\n• 4 × 8 (RPE 5–6), 75s rest\nMachine Shoulder Press\n• 4 × 8 (RPE 5), 60–75s rest\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nCable Anti-Rotation Hold\n• 3 × 25–35s/side (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1274,7 +1274,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Smith Lines (Mix)',
           duration: '32–40 min',
           description: 'Smith squat, Smith bench, row machine, cable chops.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSmith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith Machine Bench Press\n• 4 × 8 (RPE 5), 60–75s rest\nChest-Supported Row Machine\n• 3 × 8–10 (RPE 5), 60–75s rest\nLow-to-High Cable Chop\n• 3 × 8–10/side (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nSmith Back Squat\n• 4 × 8 (RPE 5–6), 75s rest\nSmith Machine Bench Press\n• 4 × 8 (RPE 5), 60–75s rest\nChest-Supported Row Machine\n• 3 × 8–10 (RPE 5), 60–75s rest\nLow-to-High Cable Chop\n• 3 × 8–10/side (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1336,7 +1336,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Drop Body',
           duration: '40–50 min',
           description: 'Leg press drop, chest press drop, rows, Pallof finish.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nLeg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 2–3 total series\nMachine Chest Press\n• 1 × 6–8 heavy (RPE 7) → drop 15% → 1 × 6–8 (RPE 6)\nSeated Row (neutral)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom — rest 90s; repeat for 2–3 total series between exercises.\nLeg Press (machine)\n• 1 × 8 heavy (RPE 7) → drop 15% → 1 × 8 (RPE 6) → drop 15% → 1 × 8 (RPE 6)\n• Rest 90s; repeat for 2–3 total series\nMachine Chest Press\n• 1 × 6–8 heavy (RPE 7) → drop 15% → 1 × 6–8 (RPE 6)\nSeated Row (neutral)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Pallof Press\n• 3 × 10–12/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1397,7 +1397,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cluster Body',
           duration: '40–50 min',
           description: 'Hack clusters, Smith bench clusters, rows, cable chops.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSmith Machine Bench Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Cluster set: split the reps with a short built-in rest so every rep stays explosive. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom.\nHack Squat (machine)\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSmith Machine Bench Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh-to-Low Cable Chop\n• 3 × 8–10/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1450,7 +1450,7 @@ export const lazyFullBodyDatabase: EquipmentWorkouts[] = [
           name: 'Midrange Body',
           duration: '40–50 min',
           description: 'Goblet 1.5s, cable fly 1.5s, high rows, overhead Pallof.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Goblet Squat (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Overhead Pallof\n• 3 × 10–12/side (RPE 6), 45–60s rest',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. Complete ALL reps on one side before switching — no alternating unless written. Work top to bottom.\nCable Goblet Squat (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Overhead Pallof\n• 3 × 10–12/side (RPE 6), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [

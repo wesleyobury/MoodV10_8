@@ -388,13 +388,23 @@ async def auto_seed_featured_workouts():
     try:
         existing_count = await db.featured_workouts.count_documents({})
         
-        # Check if we have the correct workouts by checking titles
+        # Compare CONTENT, not just titles — a battle-plan or copy edit with an
+        # unchanged title must still trigger replacement on deploy.
+        def _content_sig(workouts):
+            parts = []
+            for w in sorted(workouts, key=lambda x: x.get("title", "")):
+                for e in sorted(w.get("exercises", []), key=lambda x: x.get("order", 0)):
+                    parts.append(f'{w.get("title")}|{e.get("name")}|{e.get("battlePlan")}|{e.get("description")}')
+            return hash("\n".join(parts))
         expected_titles = {w["title"] for w in PREVIEW_FEATURED_WORKOUTS}
         existing_workouts = await db.featured_workouts.find({}).to_list(100)
         existing_titles = {w.get("title") for w in existing_workouts}
         
-        # If titles don't match, we need to force replace
-        needs_replacement = not expected_titles.issubset(existing_titles)
+        # Replace when titles OR content differ
+        needs_replacement = (
+            not expected_titles.issubset(existing_titles)
+            or _content_sig(PREVIEW_FEATURED_WORKOUTS) != _content_sig(existing_workouts)
+        )
         
         if existing_count < len(PREVIEW_FEATURED_WORKOUTS) or needs_replacement:
             logger.info(f"🌱 Auto-seeding featured workouts (found {existing_count}, titles match: {not needs_replacement})")

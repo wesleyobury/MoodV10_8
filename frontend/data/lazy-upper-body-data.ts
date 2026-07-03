@@ -10,7 +10,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Push Starter',
           duration: '15–18 min',
           description: 'Press first, laterals next, rope pressdowns finish smoothly.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Chest Press\n• 3 × 8–10 (RPE 4), 45–60s rest\nMachine Lateral Raise\n• 3 × 10–12 (RPE 4), 45–60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nMachine Chest Press\n• 3 × 8–10 (RPE 4), 45–60s rest\nMachine Lateral Raise\n• 3 × 10–12 (RPE 4), 45–60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -61,7 +61,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Incline Balance',
           duration: '15–18 min',
           description: 'Light incline press, reverse fly, overhead triceps closer.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Incline Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nReverse Pec Deck\n• 3 × 12 (RPE 4), 45–60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nMachine Incline Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nReverse Pec Deck\n• 3 × 12 (RPE 4), 45–60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -112,7 +112,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Ease',
           duration: '15–18 min',
           description: 'Shoulder press, pec-deck squeeze, dip assist to finish clean.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nPec Deck\n• 3 × 10–12 (RPE 4), 60s rest\nAssisted Dips\n• 3 × 8–10 (RPE 4), 60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nMachine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nPec Deck\n• 3 × 10–12 (RPE 4), 60s rest\nAssisted Dips\n• 3 × 8–10 (RPE 4), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -167,7 +167,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Press Arc',
           duration: '20–25 min',
           description: 'Machine press, incline cable fly, cable Y-raise to polish.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nIncline Cable Fly\n• 3 × 10 (RPE 5), 60s rest\nCable Y Raise\n• 3 × 12 (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nMachine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nIncline Cable Fly\n• 3 × 10 (RPE 5), 60s rest\nCable Y Raise\n• 3 × 12 (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -220,7 +220,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Overhead Line',
           duration: '20–25 min',
           description: 'Press for delts, upright row adds caps, overhead tris finish.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Shoulder Press\n• 4 × 8 (RPE 5–6), 60–75s rest\nCable Upright Row (wide)\n• 3 × 10 (RPE 5), 60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nMachine Shoulder Press\n• 4 × 8 (RPE 5–6), 60–75s rest\nCable Upright Row (wide)\n• 3 × 10 (RPE 5), 60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -271,7 +271,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Lower Line',
           duration: '20–25 min',
           description: 'Decline press base, medial delts next, rope pressdowns close.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Decline Chest Press\n• 3 × 8–10 (RPE 5), 60s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 5), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nMachine Decline Chest Press\n• 3 × 8–10 (RPE 5), 60s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 5), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -324,7 +324,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Drop Drive',
           duration: '25–30 min',
           description: 'Heavy press drops, incline fly control, rope finishers.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nMachine Chest Press\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nIncline Cable Fly\n• 3 × 10 (RPE 6), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 6), 60–75s rest',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Work top to bottom — rest 90s; repeat for 3 total series between exercises.\nMachine Chest Press\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nIncline Cable Fly\n• 3 × 10 (RPE 6), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 6), 60–75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -376,7 +376,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cluster Overhead',
           duration: '25–30 min',
           description: 'Shoulder press clusters; rear delts next; overhead tris close.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Shoulder Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nReverse Pec Deck\n• 3 × 12 (RPE 6), 60–75s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Cluster set: split the reps with a short built-in rest so every rep stays explosive. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nMachine Shoulder Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nReverse Pec Deck\n• 3 × 12 (RPE 6), 60–75s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -424,7 +424,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Midrange Squeeze',
           duration: '25–30 min',
           description: 'Cable fly one-and-a-halfs; laterals and rope pressdowns.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 6), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Every rep = one full rep plus a half rep in the hardest range before you finish. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nCable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 6), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -484,7 +484,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Pull Primer',
           duration: '15–18 min',
           description: 'Lats first, mid-back next, rear delts and posture finish.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLat Pulldown (wide or neutral)\n• 3 × 8–10 (RPE 4), 45–60s rest\nSeated Row (neutral)\n• 3 × 8–10 (RPE 4), 45–60s rest\nCable Face Pull\n• 3 × 12–15 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nLat Pulldown (wide or neutral)\n• 3 × 8–10 (RPE 4), 45–60s rest\nSeated Row (neutral)\n• 3 × 8–10 (RPE 4), 45–60s rest\nCable Face Pull\n• 3 × 12–15 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -538,7 +538,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Chest-Supported',
           duration: '15–18 min',
           description: 'Row machine, straight-arm pulldown, cable curls finish.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nChest-Supported Row Machine\n• 3 × 8–10 (RPE 4), 60s rest\nCable Straight-Arm Pulldown\n• 3 × 12 (RPE 4), 45–60s rest\nCable Curl (EZ or rope)\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nChest-Supported Row Machine\n• 3 × 8–10 (RPE 4), 60s rest\nCable Straight-Arm Pulldown\n• 3 × 12 (RPE 4), 45–60s rest\nCable Curl (EZ or rope)\n• 3 × 10–12 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -591,7 +591,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'High Line',
           duration: '15–18 min',
           description: 'High cable row, reverse pec deck, cable curls sequence.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHigh Cable Row\n• 3 × 8–10 (RPE 4), 60s rest\nReverse Pec Deck\n• 3 × 12 (RPE 4), 45–60s rest\nCable Curl\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nHigh Cable Row\n• 3 × 8–10 (RPE 4), 60s rest\nReverse Pec Deck\n• 3 × 12 (RPE 4), 45–60s rest\nCable Curl\n• 3 × 10–12 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -645,7 +645,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Lat Ladder',
           duration: '20–25 min',
           description: 'Pulldown work, straight-arm sweeps, incline cable curls.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nCable Straight-Arm Pulldown\n• 3 × 10–12 (RPE 5), 60s rest\nIncline Cable Curl (low to high)\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nCable Straight-Arm Pulldown\n• 3 × 10–12 (RPE 5), 60s rest\nIncline Cable Curl (low to high)\n• 3 × 10–12 (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -698,7 +698,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Midback Focus',
           duration: '20–25 min',
           description: 'Neutral rows, reverse fly sets, rope hammer curls finish.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nSeated Row (neutral)\n• 4 × 8 (RPE 5), 60–75s rest\nReverse Pec Deck\n• 3 × 12 (RPE 5), 60s rest\nRope Hammer Curl\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nSeated Row (neutral)\n• 4 × 8 (RPE 5), 60–75s rest\nReverse Pec Deck\n• 3 × 12 (RPE 5), 60s rest\nRope Hammer Curl\n• 3 × 10–12 (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -750,7 +750,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'High Row Line',
           duration: '20–25 min',
           description: 'High cable rows, reverse pec deck, preacher curl machine.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nHigh Cable Row\n• 4 × 8 (RPE 5–6), 60–75s rest\nReverse Pec Deck\n• 3 × 12 (RPE 5), 60s rest\nPreacher Curl Machine\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nHigh Cable Row\n• 4 × 8 (RPE 5–6), 60–75s rest\nReverse Pec Deck\n• 3 × 12 (RPE 5), 60s rest\nPreacher Curl Machine\n• 3 × 10–12 (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -803,7 +803,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Drop Pull',
           duration: '25–30 min',
           description: 'Heavy pulldown drops, rows next, cable curls to close.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nLat Pulldown\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSeated Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Curl\n• 3 × 10–12 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom — rest 90s; repeat for 3 total series between exercises.\nLat Pulldown\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSeated Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Curl\n• 3 × 10–12 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -857,7 +857,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cluster Row',
           duration: '25–30 min',
           description: 'Cluster rows, rear delts after, incline cable curls finish.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nChest-Supported Row Machine\n• 3 clusters: 4 + 4 + 4 (15s between), 90s between clusters\nReverse Pec Deck\n• 3 × 12 (RPE 6), 60–75s rest\nIncline Cable Curl\n• 3 × 10–12 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Cluster set: split the reps with a short built-in rest so every rep stays explosive. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nChest-Supported Row Machine\n• 3 clusters: 4 + 4 + 4 (15s between), 90s between clusters\nReverse Pec Deck\n• 3 × 12 (RPE 6), 60–75s rest\nIncline Cable Curl\n• 3 × 10–12 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -907,7 +907,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Midrange Pull',
           duration: '25–30 min',
           description: 'Face pull 1.5 reps, high rows next, rope hammer curls.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Face Pull (1.5 reps)\n• 3 × 10–12 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nRope Hammer Curl\n• 3 × 10–12 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Curl to the top, lower halfway, curl back up, then lower fully — that\'s ONE rep. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nCable Face Pull (1.5 reps)\n• 3 × 10–12 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nRope Hammer Curl\n• 3 × 10–12 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -967,7 +967,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Simple Push–Pull',
           duration: '15–18 min',
           description: 'Chest press, row, laterals, pressdowns for simple flow.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nSeated Row\n• 3 × 8–10 (RPE 4), 60s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 4), 45–60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nMachine Chest Press\n• 3 × 8–10 (RPE 4), 60s rest\nSeated Row\n• 3 × 8–10 (RPE 4), 60s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 4), 45–60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1026,7 +1026,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Pair',
           duration: '15–18 min',
           description: 'Shoulder press, pulldown, pec deck, cable curls lineup.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nLat Pulldown\n• 3 × 8–10 (RPE 4), 60s rest\nPec Deck\n• 3 × 10–12 (RPE 4), 60s rest\nCable Curl\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nMachine Shoulder Press\n• 3 × 8–10 (RPE 4), 60s rest\nLat Pulldown\n• 3 × 8–10 (RPE 4), 60s rest\nPec Deck\n• 3 × 10–12 (RPE 4), 60s rest\nCable Curl\n• 3 × 10–12 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1087,7 +1087,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cable Flow',
           duration: '15–18 min',
           description: 'Cable press, high row, Y-raises, rope triceps to finish.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Chest Press\n• 3 × 10 (RPE 4), 60s rest\nHigh Cable Row\n• 3 × 10 (RPE 4), 60s rest\nCable Y Raise\n• 3 × 12 (RPE 4), 45–60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 4), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nCable Chest Press\n• 3 × 10 (RPE 4), 60s rest\nHigh Cable Row\n• 3 × 10 (RPE 4), 60s rest\nCable Y Raise\n• 3 × 12 (RPE 4), 45–60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 4), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1148,7 +1148,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Balanced Lines',
           duration: '20–25 min',
           description: 'Chest press, row, lateral raise, curls; clean sequence.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nSeated Row\n• 4 × 8 (RPE 5), 60–75s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 5), 60s rest\nCable Curl\n• 3 × 10–12 (RPE 5), 45–60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nMachine Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nSeated Row\n• 4 × 8 (RPE 5), 60–75s rest\nMachine Lateral Raise\n• 3 × 12 (RPE 5), 60s rest\nCable Curl\n• 3 × 10–12 (RPE 5), 45–60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1208,7 +1208,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Vertical Stack',
           duration: '20–25 min',
           description: 'Shoulder press, pulldown, pec deck, rope tris; tidy flow.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Shoulder Press\n• 4 × 8 (RPE 5–6), 60–75s rest\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nPec Deck\n• 3 × 10–12 (RPE 5), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nMachine Shoulder Press\n• 4 × 8 (RPE 5–6), 60–75s rest\nLat Pulldown\n• 4 × 8 (RPE 5), 60–75s rest\nPec Deck\n• 3 × 10–12 (RPE 5), 60s rest\nRope Pressdown\n• 3 × 10–12 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1268,7 +1268,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cable Circuitry',
           duration: '20–25 min',
           description: 'Cable press, high row, rear delts, overhead tris polish.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nHigh Cable Row\n• 4 × 8 (RPE 5), 60–75s rest\nReverse Pec Deck\n• 3 × 12 (RPE 5), 60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 5), 60s rest',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nCable Chest Press\n• 4 × 8 (RPE 5), 60–75s rest\nHigh Cable Row\n• 4 × 8 (RPE 5), 60–75s rest\nReverse Pec Deck\n• 3 × 12 (RPE 5), 60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 5), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1328,7 +1328,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Push–Pull Drops',
           duration: '25–30 min',
           description: 'Chest and row drops, then laterals and cable curls.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\nMachine Chest Press\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSeated Row\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nMachine Lateral Raise\n• 3 × 12 (RPE 6), 60–75s rest\nCable Curl\n• 3 × 10–12 (RPE 6), 60–75s rest',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom — rest 90s; repeat for 3 total series between exercises.\nMachine Chest Press\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nSeated Row\n• 1 × 6 heavy (RPE 7) → drop 15% → 1 × 6 (RPE 6) → drop 15% → 1 × 6 (RPE 6)\n• Rest 90s; repeat for 3 total series\nMachine Lateral Raise\n• 3 × 12 (RPE 6), 60–75s rest\nCable Curl\n• 3 × 10–12 (RPE 6), 60–75s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1387,7 +1387,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cluster Stack',
           duration: '25–30 min',
           description: 'Press and row clusters, then rear delts and rope tris.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nMachine Chest Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSeated Row\n• 3 clusters: 4 + 4 + 4 (15s between), 90s between clusters\nReverse Pec Deck\n• 3 × 12 (RPE 6), 60–75s rest\nRope Pressdown\n• 3 × 10–12 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Cluster set: split the reps with a short built-in rest so every rep stays explosive. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nMachine Chest Press\n• 3 clusters: 3 + 3 + 3 (15s between), 90s between clusters\nSeated Row\n• 3 clusters: 4 + 4 + 4 (15s between), 90s between clusters\nReverse Pec Deck\n• 3 × 12 (RPE 6), 60–75s rest\nRope Pressdown\n• 3 × 10–12 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1440,7 +1440,7 @@ export const lazyUpperBodyDatabase: EquipmentWorkouts[] = [
           name: 'Cable Finish',
           duration: '25–30 min',
           description: 'Fly 1.5s, high rows, Y raises, overhead triceps finisher.',
-          battlePlan: 'Instructions: Leave 1–2 clean reps in the tank on every set.\nCable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Y Raise\n• 3 × 12 (RPE 6), 60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 6), 60s rest',
+          battlePlan: 'Instructions: Every rep = one full rep plus a half rep in the hardest range before you finish. Work top to bottom.\nCable Fly (1.5 reps)\n• 3 × 8–10 (RPE 6), 60–75s rest\nHigh Cable Row\n• 3 × 8–10 (RPE 6), 60–75s rest\nCable Y Raise\n• 3 × 12 (RPE 6), 60s rest\nOverhead Rope Triceps\n• 3 × 10–12 (RPE 6), 60s rest',
           plan: {
             "format": "strength",
             "blocks": [

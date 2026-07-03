@@ -10,7 +10,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Goblet Squat',
           duration: '10–12 min',
           description: 'Simple squat variation teaches control and balance with front load support.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10-12 goblet squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 rounds\n• 10-12 goblet squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -51,7 +51,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'DB RDL',
           duration: '10–12 min',
           description: 'Dumbbell hinge builds strength safely for beginners with proper form.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8-10 dumbbell RDLs\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 8-10 — rest 75s between sets, take all of it.\n3 rounds\n• 8-10 dumbbell RDLs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -92,7 +92,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Box Goblet Squat',
           duration: '10–12 min',
           description: 'Box-guided goblet squats reinforce depth and control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Box Goblet Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Box Goblet Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -138,7 +138,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported Reverse Lunge',
           duration: '10–12 min',
           description: 'Assisted lunges reduce balance demand for beginners',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per leg Reverse Lunges\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per leg Reverse Lunges\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -184,7 +184,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Supported Step-Ups',
           duration: '10–12 min',
           description: 'Step-ups with light support to build balance, control, and rhythm.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per leg\nRest 75s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -229,7 +229,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Walking Lunge',
           duration: '10–12 min',
           description: 'Forward lunges focusing on balance, rhythm, and controlled reps.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8–10 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8–10 per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -276,7 +276,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bulgarian Split Squat',
           duration: '14–16 min',
           description: 'Advanced split squat builds quads and glute drive with elevated rear foot.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8-10 bulgarian split squats per leg\nRest 75-90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 75-90s between sets, take all of it.\n4 rounds\n• 8-10 bulgarian split squats per leg\nRest 75-90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -317,7 +317,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Lateral Lunge',
           duration: '14–16 min',
           description: 'Trains quads, glutes, and groin through lateral range of motion.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per side Lateral Lunges\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per side Lateral Lunges\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -358,7 +358,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front-Foot Elevated Split Squat',
           duration: '14–16 min',
           description: 'Elevated front foot increases quad loading and depth',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per leg Split Squats\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg Split Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -404,7 +404,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Dumbbell Squat Drop Set',
           duration: '14–16 min',
           description: 'Squats extended using fast dumbbell weight drops',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 DB Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 8 DB Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -451,7 +451,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Step-Ups',
           duration: '14–16 min',
           description: 'Step-ups using slow eccentrics to increase tension and control.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per leg (3s down)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg (3s down)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -496,7 +496,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Walking Lunge Pulses',
           duration: '14–16 min',
           description: 'Walking lunges extended with pulses for added tension and burn.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per leg + 3 pulses\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per leg + 3 pulses\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -541,7 +541,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Goblet Squat Tempo',
           duration: '14–16 min',
           description: 'Goblet squats using slow eccentrics to build quad control.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10–12 reps\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10–12 — rest 90s between sets, take all of it.\n4 rounds\n• 10–12 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -589,7 +589,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Squat + RDL Superset',
           duration: '16–18 min',
           description: 'Superset floods quads + hamstrings with volume for complete development.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 DB Squats\n• 8 DB RDLs\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 4 rounds — all 2 moves in order, then rest 90s.\n4 rounds\n• 8 DB Squats\n• 8 DB RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -635,7 +635,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Squat Iso Hold + Pulses',
           duration: '16–18 min',
           description: 'Brutal high tension squat burns and builds depth strength.',
-          battlePlan: 'Instructions: Holds are strict: locked position, no drifting.\n3 rounds\n• 10 Squats + 10s Hold + 6 Pulses\nRest 90s',
+          battlePlan: 'Instructions: The hold is strict: locked position, squeezing hard, no drifting. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Squats + 10s Hold + 6 Pulses\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -676,7 +676,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Double Dumbbell Front Squat',
           duration: '16–18 min',
           description: 'Front-loaded squats demanding core and quad strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 Front Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 rounds\n• 6–8 Front Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -722,7 +722,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bulgarian Split Squat Burnout',
           duration: '16–18 min',
           description: 'High-fatigue unilateral squat finisher for quads',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 Bulgarian Split Squats per leg\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12–15 per side — rest 120s between sets, take all of it.\n3 rounds\n• 12–15 Bulgarian Split Squats per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -768,7 +768,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Explosive Step-Up + Eccentric Return',
           duration: '16–18 min',
           description: 'Explosive step-ups paired with slow controlled eccentric returns.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 per leg\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 rounds\n• 6 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -813,7 +813,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Walking Lunge Drop Set',
           duration: '16–18 min',
           description: 'Continuous lunges extended with weight drops to near failure.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 per leg\n• Lunge drop → 10\n• Drop → BW to failure\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 rounds — all 2 moves in order, then rest 120s.\n3 rounds\n• 10 per leg\n• Lunge drop → 10\n• Drop → BW to failure\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -859,7 +859,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Goblet Squat 1.5 Reps',
           duration: '16–18 min',
           description: 'Goblet squats using 1.5 reps to increase time under tension.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 reps\nRest 120s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -913,7 +913,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat',
           duration: '10–12 min',
           description: 'Classic barbell squat lays foundation for leg strength and control.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8-10 back squats\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8-10 — rest 90s between sets, take all of it.\n3 rounds\n• 8-10 back squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -954,7 +954,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Reverse Lunge',
           duration: '10–12 min',
           description: 'Reverse lunge reduces strain while building single leg strength.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per leg Reverse Lunges\nRest 75-90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75-90s between sets, take all of it.\n3 rounds\n• 8 per leg Reverse Lunges\nRest 75-90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -996,7 +996,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rack RDL',
           duration: '10–12 min',
           description: 'Beginner hinge teaches depth and hamstring control with barbell.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8-10 rack rdls\nRest 75-90s',
+          battlePlan: 'Instructions: 3 sets of 8-10 — rest 75-90s between sets, take all of it.\n3 rounds\n• 8-10 rack rdls\nRest 75-90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1037,7 +1037,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Box Back Squat',
           duration: '12–14 min',
           description: 'Box-guided squats reinforcing depth and control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Box Back Squats\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Box Back Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1083,7 +1083,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Back Squat',
           duration: '12–14 min',
           description: 'Slow eccentric squats building confidence and control',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8 Back Squats (3s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 120s between sets, take all of it.\n3 rounds\n• 8 Back Squats (3s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1129,7 +1129,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Zercher Box Squat',
           duration: '12–14 min',
           description: 'Zercher squats using box support to reinforce depth and control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 reps\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1175,7 +1175,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Static Lunge',
           duration: '12–14 min',
           description: 'Stationary lunges focusing on balance, control, and positioning',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1221,7 +1221,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bodyweight Jump Squat',
           duration: '10–12 min',
           description: 'Jump squats introducing explosive movement with safe mechanics',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 reps\nRest 75s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 8–10 — rest 75s between sets, take all of it.\n3 rounds\n• 8–10 reps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1269,7 +1269,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Squat',
           duration: '14–16 min',
           description: 'Front squat builds quads while demanding upright posture.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6-8 front squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 6-8 — rest 90s between sets, take all of it.\n4 rounds\n• 6-8 front squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1311,7 +1311,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Bulgarian Split Squat',
           duration: '14–16 min',
           description: 'Advanced unilateral builder with deeper range and balance challenge.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8-10 bulgarians per side\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 bulgarians per side\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1352,7 +1352,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Rack Deficit RDL',
           duration: '14–16 min',
           description: 'Longer range hinge boosts hamstring hypertrophy with elevated position.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8-10 deficit rdls\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8-10 — rest 90s between sets, take all of it.\n3 rounds\n• 8-10 deficit rdls\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1393,7 +1393,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Front Squat',
           duration: '14–16 min',
           description: 'Front-loaded squats increasing quad and core demand',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 Front Squats\nRest 150s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 150s between sets, take all of it.\n4 rounds\n• 6–8 Front Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1439,7 +1439,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat Drop Set',
           duration: '16–18 min',
           description: 'Squats extended with rapid plate reductions',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Back Squats\n• Squat drop → 6\n• Squat drop → 6\nRest 180s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 180s.\n3 rounds\n• 6 Back Squats\n• Squat drop → 6\n• Squat drop → 6\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1486,7 +1486,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Zercher Squat',
           duration: '14–16 min',
           description: 'Zercher squats with slow eccentrics increasing tension and control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 reps\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 rounds\n• 6–8 reps\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1532,7 +1532,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Walking Lunge',
           duration: '14–16 min',
           description: 'Loaded walking lunges building unilateral strength and control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per leg\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 rounds\n• 8 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1578,7 +1578,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Jump Squat Repeats',
           duration: '14–16 min',
           description: 'Repeated jump squats improving power output and endurance',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 reps\nRest 90s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 10 — rest 90s between sets, take all of it.\n4 rounds\n• 10 reps\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1626,7 +1626,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Back Squat',
           duration: '16–18 min',
           description: 'Keeps muscles under control in deepest range with bottom pause.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6 Pause Back Squats\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 90s between sets, take all of it.\n4 rounds\n• 6 Pause Back Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1667,7 +1667,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Walking Lunges',
           duration: '16–18 min',
           description: 'Combination of strength, balance, and conditioning challenge.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 20 steps total Walking Lunges\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 20 — rest 90s between sets, take all of it.\n3 rounds\n• 20 steps total Walking Lunges\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1708,7 +1708,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Squat + RDL Superset',
           duration: '16–18 min',
           description: 'Hybrid superset crushes quads, glutes, and hamstrings together.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 Back Squats\n• 6 Rack RDLs\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 4 rounds — all 2 moves in order, then rest 90s.\n4 rounds\n• 6 Back Squats\n• 6 Rack RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1754,7 +1754,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Back Squat',
           duration: '18–20 min',
           description: 'Low-rep squats emphasizing maximal strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 3–5 Back Squats\nRest 180s',
+          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 rounds\n• 3–5 Back Squats\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1800,7 +1800,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Back Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep finisher driving full leg fatigue',
-          battlePlan: 'Instructions: Aim for 2–3 rounds — stop when quality drops. One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15–20 Back Squats\nRest 180s',
+          battlePlan: 'Instructions: Aim for 2–3 rounds — stop when quality drops.\n3 rounds\n• 15–20 Back Squats\nRest 180s',
           plan: {
             "format": "strength",
             "blocks": [
@@ -1849,7 +1849,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Zercher Pause Squat',
           duration: '16–18 min',
           description: 'Paused Zercher squats building strength in the bottom position',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5–6 reps\nRest 150s',
+          battlePlan: 'Instructions: Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 reps\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1895,7 +1895,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Barbell Lunge Burnout',
           duration: '16–18 min',
           description: 'High-rep lunges pushing full leg fatigue and endurance output',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 per leg\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 12 per side — rest 120s between sets, take all of it.\n3 rounds\n• 12 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1941,7 +1941,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Jump Squat Clusters',
           duration: '16–18 min',
           description: 'Clustered jump squats maintaining power output under fatigue',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• Clusters 5 + 5 + 5\nRest 120s',
+          battlePlan: 'Instructions: 4 sets — rest 120s between sets, take all of it.\n4 rounds\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -1994,7 +1994,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Leg Press',
           duration: '10–12 min',
           description: 'Basic press builds safety, posture, and control with machine support.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10-12 neutral leg press\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 rounds\n• 10-12 neutral leg press\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2035,7 +2035,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Narrow Stance Press',
           duration: '10–12 min',
           description: 'Targets quads more directly in safe range of motion.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10-12 narrow stance press\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 rounds\n• 10-12 narrow stance press\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2075,7 +2075,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Paused Leg Press + Iso Hold',
           duration: '10–12 min',
           description: 'Controlled leg press reps with pauses and static finish',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done. control the lowering — the tempo is the point.\n3 rounds\n• 10 Leg Press Reps (2s pause at bottom)\n• Immediately 20–30s Iso Hold (halfway up sled)\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Leg Press Reps (2s pause at bottom)\n• Immediately 20–30s Iso Hold (halfway up sled)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2122,7 +2122,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Leg Press',
           duration: '10–12 min',
           description: 'Controlled leg press emphasizing slow negatives',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 12 Leg Press (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 12 — rest 90s between sets, take all of it.\n3 rounds\n• 12 Leg Press (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2170,7 +2170,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Glute Press',
           duration: '14–16 min',
           description: 'Outside placement recruits posterior chain harder than narrow stance.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8-10 wide stance press\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 wide stance press\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2210,7 +2210,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Single Leg Press',
           duration: '14–16 min',
           description: 'One leg at a time reduces imbalances in strength development.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per leg Single Leg Press\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg Single Leg Press\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2251,7 +2251,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Pause Reps',
           duration: '14–16 min',
           description: 'Paused reps strengthening bottom-range leg drive',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8–10 Leg Press (2s pause)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 Leg Press (2s pause)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2297,7 +2297,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Drop Ladder',
           duration: '14–16 min',
           description: 'Progressive drops extending quad fatigue',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 reps\n• Press drop → 10\n• Press drop → 10\nRest 150s',
+          battlePlan: 'Instructions: Ladder: work down the rungs — the reps drop as fatigue climbs. Rest only between rungs. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 10 reps\n• Press drop → 10\n• Press drop → 10\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2346,7 +2346,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Drop Set Press',
           duration: '16–18 min',
           description: 'Extends time under tension with progressive load reduction.',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• 8 Heavy Press → Drop x2 (6–8 reps each)\nRest 90s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets of 8 — rest 90s between sets, take all of it.\n3 rounds\n• 8 Heavy Press → Drop x2 (6–8 reps each)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2386,7 +2386,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Press',
           duration: '16–18 min',
           description: 'Pausing forces muscles to do all the hard work without momentum.',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 8 Leg Press Reps (2s pause at bottom)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 90s between sets, take all of it.\n4 rounds\n• 8 Leg Press Reps (2s pause at bottom)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2427,7 +2427,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Low-Rep Leg Press',
           duration: '16–18 min',
           description: 'Max-strength leg pressing with heavy loads',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 5–6 Leg Press\nRest 150s',
+          battlePlan: 'Instructions: 5 sets of 5–6 — rest 150s between sets, take all of it.\n5 rounds\n• 5–6 Leg Press\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2473,7 +2473,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Leg Press Burnout',
           duration: '18–20 min',
           description: 'High-rep finisher driving complete quad exhaustion',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 20–25 Leg Press\nRest 150s',
+          battlePlan: 'Instructions: 3 sets of 20–25 — rest 150s between sets, take all of it.\n3 rounds\n• 20–25 Leg Press\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2527,7 +2527,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Hack Squat',
           duration: '10–12 min',
           description: 'Basic hack squat introduces form and confidence with machine guidance.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10-12 hack squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 rounds\n• 10-12 hack squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2568,7 +2568,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Narrow Hack Squat',
           duration: '10–12 min',
           description: 'Builds quad dominant strength with stable machine support.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8-10 narrow hack squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 8-10 — rest 75s between sets, take all of it.\n3 rounds\n• 8-10 narrow hack squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2609,7 +2609,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Hack Squat',
           duration: '10–12 min',
           description: 'Machine-guided squat emphasizing depth and quad control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Hack Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Hack Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2655,7 +2655,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hack Squat Pause Reps',
           duration: '10–12 min',
           description: 'Paused squats building strength out of the bottom',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8–10 Hack Squats (2s pause)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Hack Squats (2s pause)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2703,7 +2703,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Hack Squat',
           duration: '14–16 min',
           description: 'Trains posterior chain through deeper ROM with wide stance.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8-10 wide hack squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 wide hack squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2744,7 +2744,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hack Squat Calf Raise',
           duration: '14–16 min',
           description: 'Doubles lower leg work without switching machines for efficiency.',
-          battlePlan: 'Instructions: Supersets are back-to-back — no rest until the pair is done.\n4 rounds\n• 8 Hack Squats\n• 12 Hack Calf Raises — immediately, no rest\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 4 rounds — all 2 moves in order, then rest 90s.\n4 rounds\n• 8 Hack Squats\n• 12 Hack Calf Raises — immediately, no rest\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2786,7 +2786,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hack Squat Drop Set',
           duration: '14–16 min',
           description: 'Extended squat sets using rapid weight reductions',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Hack Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 8 Hack Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2833,7 +2833,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heel-Elevated Hack Squat',
           duration: '14–16 min',
           description: 'Quad-biased squats using heel elevation',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Hack Squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 rounds\n• 8–10 Hack Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2879,7 +2879,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Reverse Hack Squat',
           duration: '14–16 min',
           description: 'Reverse-facing hack squat emphasizing glutes and quads',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Reverse Hack Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 Reverse Hack Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2927,7 +2927,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep Hack Squat',
           duration: '16–18 min',
           description: 'Blends controlled pulses with full ROM squatting for hypertrophy.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6-8 hack squats (1 full + ½ rep = 1 rep)\nRest 90s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 3 sets of 6-8 — rest 90s between sets, take all of it.\n3 rounds\n• 6-8 hack squats (1 full + ½ rep = 1 rep)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -2968,7 +2968,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Reverse Hack Squat',
           duration: '16–18 min',
           description: 'Reverse stance hack builds posterior chain strength and development.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8-10 reverse hack squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 reverse hack squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3009,7 +3009,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Hack Squat',
           duration: '16–18 min',
           description: 'Low-rep squats emphasizing maximal quad strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5–6 Hack Squats\nRest 150s',
+          battlePlan: 'Instructions: 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 Hack Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3055,7 +3055,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Hack Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep finisher for complete quad exhaustion',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15–20 Hack Squats\nRest 150s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 150s between sets, take all of it.\n3 rounds\n• 15–20 Hack Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3101,7 +3101,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Reverse Hack Squat',
           duration: '16–18 min',
           description: 'Heavy reverse hack squats for maximal leg loading',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5–6 Reverse Hack Squats\nRest 150s',
+          battlePlan: 'Instructions: 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 Reverse Hack Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3155,7 +3155,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Squat',
           duration: '10–12 min',
           description: 'Cable tension mimics goblet squat with safety and control.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10-12 cable squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10-12 — rest 75s between sets, take all of it.\n3 rounds\n• 10-12 cable squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3196,7 +3196,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Step Through',
           duration: '10–12 min',
           description: 'Crossover cable step engages quads + glutes together with unilateral work.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per side Step Throughs\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per side Step Throughs\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3236,7 +3236,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Goblet Squat',
           duration: '10–12 min',
           description: 'Front-loaded squats using cable tension for stability',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12 Cable Goblet Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 12 — rest 75s between sets, take all of it.\n3 rounds\n• 12 Cable Goblet Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3282,7 +3282,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Reverse Lunge',
           duration: '10–12 min',
           description: 'Assisted reverse lunges reducing balance demands',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Reverse Lunges per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 Reverse Lunges per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3330,7 +3330,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable RDL',
           duration: '14–16 min',
           description: 'Cable variation keeps constant load on posterior chain throughout ROM.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8-10 cable rdls\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 8-10 — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 cable rdls\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3371,7 +3371,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Split Squat',
           duration: '14–16 min',
           description: 'Great hypertrophy builder with guided constant tension throughout movement.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8-10 cable split squats per leg\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8-10 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8-10 cable split squats per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3412,7 +3412,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Squat to Row',
           duration: '14–16 min',
           description: 'Squat-to-row pattern integrating legs and upper back',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Squat to Rows\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 8 — rest 120s between sets, take all of it.\n4 rounds\n• 8 Squat to Rows\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3458,7 +3458,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Romanian Deadlift',
           duration: '14–16 min',
           description: 'Hip hinge emphasizing hamstrings under constant tension',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 Cable RDLs\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 10 — rest 120s between sets, take all of it.\n4 rounds\n• 10 Cable RDLs\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3506,7 +3506,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Front Squat',
           duration: '16–18 min',
           description: 'Replicates barbell front squat with cable constant tension loading.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6-8 heavy cable front squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 6-8 — rest 90s between sets, take all of it.\n4 rounds\n• 6-8 heavy cable front squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3547,7 +3547,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Squat to RDL',
           duration: '16–18 min',
           description: 'Superset blend targets both push + hinge chains with constant tension.',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Cable Squats\n• 8 Cable RDLs\nRest 90s',
+          battlePlan: 'Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. 4 rounds — all 2 moves in order, then rest 90s.\n4 rounds\n• 8 Cable Squats\n• 8 Cable RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3593,7 +3593,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Squat Drop Set',
           duration: '18–20 min',
           description: 'Extended squats using rapid cable weight reductions',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 Cable Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 10 Cable Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3640,7 +3640,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Cable Split Squat Advanced',
           duration: '18–20 min',
           description: 'Front-loaded split squats emphasizing unilateral strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Split Squats per leg\nRest 150s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 150s between sets, take all of it.\n4 rounds\n• 8 Split Squats per leg\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3694,7 +3694,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Trap Bar Deadlift Squat',
           duration: '10–12 min',
           description: 'Full‑body squat/deadlift hybrid builds foundation',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Deadlift‑Style Trap Bar Squats\nRest 75–90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 75–90s between sets, take all of it.\n3 rounds\n• 8–10 Deadlift‑Style Trap Bar Squats\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3735,7 +3735,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Neutral Grip Trap Bar Squat',
           duration: '10–12 min',
           description: 'Neutral foot placement encourages steady control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Neutral Squats\nRest 75–90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 75–90s between sets, take all of it.\n3 rounds\n• 8–10 Neutral Squats\nRest 75–90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3776,7 +3776,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Trap Bar Deadlift',
           duration: '12–14 min',
           description: 'Neutral-grip deadlifts reducing spinal stress',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Trap Bar Deadlifts\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Trap Bar Deadlifts\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3822,7 +3822,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Trap Bar Deadlift',
           duration: '12–14 min',
           description: 'Controlled deadlifts emphasizing slow eccentrics',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8 Trap Bar Deadlifts (3s eccentric)\nRest 120s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 8 — rest 120s between sets, take all of it.\n3 rounds\n• 8 Trap Bar Deadlifts (3s eccentric)\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3870,7 +3870,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Wide Stance Trap Bar Squat',
           duration: '14–16 min',
           description: 'Builds hip strength and glute drive through stance',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 Wide Stance Squats\nRest 90s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 rounds\n• 6–8 Wide Stance Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3911,7 +3911,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Trap Bar Squat',
           duration: '14–16 min',
           description: 'Slow descent builds control and hypertrophy for greater muscle growth',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6–8 Squats (3–4s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 6–8 — rest 90s between sets, take all of it.\n4 rounds\n• 6–8 Squats (3–4s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3952,7 +3952,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Trap Bar Drop Set',
           duration: '14–16 min',
           description: 'Deadlifts extended using fast weight reductions',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Deadlifts\n• Bar drop → 6\n• Bar drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 6 Deadlifts\n• Bar drop → 6\n• Bar drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -3999,7 +3999,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Trap Bar Pause Deadlift',
           duration: '14–16 min',
           description: 'Paused deadlifts strengthening bottom position',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 5–6 Deadlifts (2s pause)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 Deadlifts (2s pause)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4047,7 +4047,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pause Trap Bar Squat',
           duration: '16–18 min',
           description: 'Builds stability and power out of squat bottom',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 6 Paused Squats (2s)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 6 — rest 90s between sets, take all of it.\n4 rounds\n• 6 Paused Squats (2s)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4088,7 +4088,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: '1½ Rep Trap Bar Squat',
           duration: '16–18 min',
           description: 'Doubles workload while keeping constant tension',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6–8 1½ Rep Trap Bar Squats\nRest 90s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 3 sets — rest 90s between sets, take all of it.\n3 rounds\n• 6–8 1½ Rep Trap Bar Squats\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4128,7 +4128,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Trap Bar Deadlift',
           duration: '18–20 min',
           description: 'Max-load deadlifts emphasizing total leg power',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 3–5 Deadlifts\nRest 180s',
+          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 rounds\n• 3–5 Deadlifts\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4174,7 +4174,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Trap Bar Burnout Pulls',
           duration: '18–20 min',
           description: 'High-rep finisher driving leg exhaustion',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15 Deadlifts\nRest 180s',
+          battlePlan: 'Instructions: 3 sets of 15 — rest 180s between sets, take all of it.\n3 rounds\n• 15 Deadlifts\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4228,7 +4228,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Standard Squat',
           duration: '10–12 min',
           description: 'Controlled full-range squats building leg foundation',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4274,7 +4274,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Pit Shark Squat',
           duration: '10–12 min',
           description: 'Slow eccentrics reinforcing squat control',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4320,7 +4320,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Pause Squat',
           duration: '10–12 min',
           description: 'Paused squats strengthening bottom position',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8–10 Squats (2s pause)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Squats (2s pause)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4366,7 +4366,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Step-Ups',
           duration: '10–12 min',
           description: 'Elevated step-ups emphasizing unilateral leg drive',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Step-Ups per leg\nRest 75s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 Step-Ups per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4413,7 +4413,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Pit Shark Squat',
           duration: '14–16 min',
           description: 'Lower-rep squats emphasizing leg strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 rounds\n• 6–8 Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4459,7 +4459,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Romanian Deadlift',
           duration: '14–16 min',
           description: 'Hip hinge emphasizing hamstrings and glutes',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 RDLs\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 RDLs\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4505,7 +4505,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Drop Set Squat',
           duration: '14–16 min',
           description: 'Extended squat sets using fast load reductions',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4552,7 +4552,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Jump Squat',
           duration: '14–16 min',
           description: 'Light explosive squats developing leg power',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6–8 Jump Squats\nRest 120s',
+          battlePlan: 'Instructions: 3 sets of 6–8 — rest 120s between sets, take all of it.\n3 rounds\n• 6–8 Jump Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4598,7 +4598,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Step-Ups',
           duration: '14–16 min',
           description: 'Belt-loaded step-ups reducing spinal load while training legs',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4645,7 +4645,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Max-Load Pit Shark Squat',
           duration: '18–20 min',
           description: 'Heavy squats for maximal leg strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 3–5 Squats\nRest 180s',
+          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 rounds\n• 3–5 Squats\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4691,7 +4691,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Pit Shark RDL',
           duration: '18–20 min',
           description: 'Loaded hinges emphasizing posterior chain strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 RDLs\nRest 150s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 150s between sets, take all of it.\n4 rounds\n• 6–8 RDLs\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4737,7 +4737,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Triple Drop Squat',
           duration: '18–20 min',
           description: 'Extended triple-drop squats for total exhaustion',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 Squats\n• Squat drop → 6\n• Squat drop → 6\n• Squat drop → 6\nRest 180s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 4 moves in order, then rest 180s.\n3 rounds\n• 6 Squats\n• Squat drop → 6\n• Squat drop → 6\n• Squat drop → 6\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4784,7 +4784,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Jump Squat Burnout',
           duration: '18–20 min',
           description: 'Explosive jump squats performed under fatigue',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8–10 Jump Squats\nRest 150s',
+          battlePlan: 'Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 3 sets of 8–10 — rest 150s between sets, take all of it.\n3 rounds\n• 8–10 Jump Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4830,7 +4830,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pit Shark Step-Up Pulses',
           duration: '16–18 min',
           description: 'Step-ups extended with pulses to increase tension and fatigue',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 per leg + 3 pulses\nRest 120s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 rounds\n• 6 per leg + 3 pulses\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4883,7 +4883,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Standard Squat',
           duration: '10–12 min',
           description: 'Guided squats reinforcing consistent movement path',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4929,7 +4929,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Smith Squat',
           duration: '10–12 min',
           description: 'Slow eccentrics building leg control',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -4975,7 +4975,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Reverse Lunge',
           duration: '10–12 min',
           description: 'Guided lunges reducing balance demand',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Lunges per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 Lunges per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5020,7 +5020,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Romanian Deadlift',
           duration: '10–12 min',
           description: 'Guided hip hinge emphasizing hamstring stretch',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10 RDLs\nRest 90s',
+          battlePlan: 'Instructions: 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 RDLs\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5066,7 +5066,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Supported Step-Ups',
           duration: '10–12 min',
           description: 'Guided step-ups using bar support to assist balance and control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per leg\nRest 75s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5113,7 +5113,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Front Squat',
           duration: '14–16 min',
           description: 'Front-loaded squats emphasizing quads and core',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 Front Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 6–8 — rest 120s between sets, take all of it.\n4 rounds\n• 6–8 Front Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5159,7 +5159,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Split Squat',
           duration: '14–16 min',
           description: 'Stationary split squats with guided bar path',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 Split Squats per leg\nRest 120s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 120s between sets, take all of it.\n4 rounds\n• 8 Split Squats per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5205,7 +5205,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Squat Drop Set',
           duration: '14–16 min',
           description: 'Extended squats using fast load reductions',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5252,7 +5252,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Jump Squat',
           duration: '14–16 min',
           description: 'Explosive squats using Smith track for safety',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 5–6 Jump Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 5–6 — rest 120s between sets, take all of it.\n4 rounds\n• 5–6 Jump Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5298,7 +5298,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Step-Ups Tempo',
           duration: '14–16 min',
           description: 'Step-ups using controlled tempo for increased tension',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5345,7 +5345,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Smith Squat',
           duration: '18–20 min',
           description: 'Heavy guided squats emphasizing maximal strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 3–5 Squats\nRest 180s',
+          battlePlan: 'Instructions: 5 sets of 3–5 — rest 180s between sets, take all of it.\n5 rounds\n• 3–5 Squats\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5391,7 +5391,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Pause Squat',
           duration: '16–18 min',
           description: 'Paused squats reinforcing bottom-end strength',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n4 rounds\n• 5–6 Squats (2s pause)\nRest 150s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 5–6 — rest 150s between sets, take all of it.\n4 rounds\n• 5–6 Squats (2s pause)\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5437,7 +5437,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith RDL Drop Set',
           duration: '18–20 min',
           description: 'Hinges extended with rapid load reductions',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 6 RDLs\n• RDL drop → 6\n• RDL drop → 6\nRest 150s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 150s.\n3 rounds\n• 6 RDLs\n• RDL drop → 6\n• RDL drop → 6\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5484,7 +5484,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep finisher for total leg fatigue',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 20 Squats\nRest 180s',
+          battlePlan: 'Instructions: 3 sets of 20 — rest 180s between sets, take all of it.\n3 rounds\n• 20 Squats\nRest 180s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5530,7 +5530,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Smith Step-Up Drive',
           duration: '16–18 min',
           description: 'Explosive step-ups focusing on power and control under load',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 per leg\nRest 120s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 rounds\n• 6 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5583,7 +5583,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Static Lunge',
           duration: '10–12 min',
           description: 'Stationary lunges building balance, control, and movement confidence',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per leg\nRest 75s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5616,7 +5616,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Supported Step-Up',
           duration: '10–12 min',
           description: 'Step-ups using light support to build balance and coordination',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 per leg\nRest 75s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 8 per side — rest 75s between sets, take all of it.\n3 rounds\n• 8 per leg\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5649,7 +5649,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Controlled Swing',
           duration: '10–12 min',
           description: 'Basic swings building hip hinge mechanics and coordination',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 12–15 reps\nRest 60s',
+          battlePlan: 'Instructions: 3 sets of 12–15 — rest 60s between sets, take all of it.\n3 rounds\n• 12–15 reps\nRest 60s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5683,7 +5683,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Deadlift',
           duration: '10–12 min',
           description: 'Basic hinge movement building posterior chain strength safely',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 reps\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 reps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5718,7 +5718,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Walking Lunge',
           duration: '14–16 min',
           description: 'Walking lunges building unilateral strength and continuous tension',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per leg\nRest 90s',
+          battlePlan: 'Instructions: Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5751,7 +5751,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Step-Up Tempo',
           duration: '14–16 min',
           description: 'Step-ups with slow eccentrics increasing tension and control',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8 per leg (3s down)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. 4 sets of 8 per side — rest 90s between sets, take all of it.\n4 rounds\n• 8 per leg (3s down)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5784,7 +5784,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Swing Tempo',
           duration: '14–16 min',
           description: 'Swings with controlled returns increasing time under tension',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 12 reps\nRest 75s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 12 — rest 75s between sets, take all of it.\n4 rounds\n• 12 reps\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5818,7 +5818,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Deadlift Tempo',
           duration: '14–16 min',
           description: 'Deadlifts with slow eccentrics increasing time under tension',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 10 reps (3s down)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 4 sets of 10 — rest 90s between sets, take all of it.\n4 rounds\n• 10 reps (3s down)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5853,7 +5853,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Walking Lunge Drop Set',
           duration: '16–18 min',
           description: 'Continuous lunges extended with weight drops to near failure',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• 10 per leg → Drop → 10 → Drop → BW\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. Complete ALL reps on one side before switching — no alternating unless written. 3 sets of 10 per side — rest 120s between sets, take all of it.\n3 rounds\n• 10 per leg → Drop → 10 → Drop → BW\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5886,7 +5886,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Explosive Step-Up',
           duration: '16–18 min',
           description: 'Explosive step-ups building power and high-output strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6 per leg\nRest 120s',
+          battlePlan: 'Instructions: Drive through the heel of the TOP foot — the bottom leg is along for the ride. Control the step down. Complete ALL reps on one side before switching — no alternating unless written. 4 sets of 6 per side — rest 120s between sets, take all of it.\n4 rounds\n• 6 per leg\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5919,7 +5919,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Swing Intervals',
           duration: '16–18 min',
           description: 'High-output swings performed in timed explosive intervals',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 20s on / 20s off\nRest 90s',
+          battlePlan: 'Instructions: 5 sets of 20s — rest 90s between sets, take all of it.\n5 rounds\n• 20s on / 20s off\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5952,7 +5952,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'KB Deadlift Drop Set',
           duration: '16–18 min',
           description: 'Deadlifts extended with weight drops pushing toward failure',
-          battlePlan: 'Instructions: On drops, reduce the load and continue without resting.\n3 rounds\n• Deadlift 8 → drop → 8 → drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — rest 120s between sets, take all of it.\n3 rounds\n• Deadlift 8 → drop → 8 → drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -5992,7 +5992,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Controlled Pendulum Squat',
           duration: '10–12 min',
           description: 'Machine-guided squats emphasizing control and depth',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 10–12 Pendulum Squats\nRest 75s',
+          battlePlan: 'Instructions: 3 sets of 10–12 — rest 75s between sets, take all of it.\n3 rounds\n• 10–12 Pendulum Squats\nRest 75s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6026,7 +6026,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendulum Squat Pause',
           duration: '10–12 min',
           description: 'Paused reps improving bottom control',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 8–10 Squats (2s pause)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 rounds\n• 8–10 Squats (2s pause)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6060,7 +6060,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Tempo Pendulum Squat',
           duration: '10–12 min',
           description: 'Slow eccentric squats building tension',
-          battlePlan: 'Instructions: Control the lowering — the tempo is the point.\n3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
+          battlePlan: 'Instructions: Own the lowering — count the seconds down, then move normally on the way up. 3 sets of 10 — rest 90s between sets, take all of it.\n3 rounds\n• 10 Squats (3s eccentric)\nRest 90s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6096,7 +6096,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendulum Squat Drop Set',
           duration: '14–16 min',
           description: 'Extended squat sets using rapid weight drops',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
+          battlePlan: 'Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 rounds — all 3 moves in order, then rest 120s.\n3 rounds\n• 8 Squats\n• Squat drop → 8\n• Squat drop → 8\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6131,7 +6131,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heel-Elevated Pendulum Squat',
           duration: '14–16 min',
           description: 'Quad-biased squats using heel elevation',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 8–10 Squats\nRest 120s',
+          battlePlan: 'Instructions: 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 Squats\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6165,7 +6165,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendulum Squat Pulses',
           duration: '14–16 min',
           description: 'Squats extended with bottom pulses',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 8 Squats + 5 pulses\nRest 120s',
+          battlePlan: 'Instructions: 3 sets of 8 — rest 120s between sets, take all of it.\n3 rounds\n• 8 Squats + 5 pulses\nRest 120s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6201,7 +6201,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Heavy Pendulum Squat',
           duration: '16–18 min',
           description: 'Low-rep squats emphasizing maximal strength',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n5 rounds\n• 5–6 Squats\nRest 150s',
+          battlePlan: 'Instructions: 5 sets of 5–6 — rest 150s between sets, take all of it.\n5 rounds\n• 5–6 Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6235,7 +6235,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendulum Squat Burnout',
           duration: '18–20 min',
           description: 'High-rep finisher driving full quad fatigue',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n3 rounds\n• 15–20 Squats\nRest 150s',
+          battlePlan: 'Instructions: 3 sets of 15–20 — rest 150s between sets, take all of it.\n3 rounds\n• 15–20 Squats\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
@@ -6269,7 +6269,7 @@ export const compoundLegsWorkoutDatabase: EquipmentWorkouts[] = [
           name: 'Pendulum Squat 1.5 Reps',
           duration: '18–20 min',
           description: 'Extended reps increasing time under tension',
-          battlePlan: 'Instructions: One round = every move in order; rest between rounds, not between moves.\n4 rounds\n• 6–8 1.5-rep Squat Reps\nRest 150s',
+          battlePlan: 'Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that\'s ONE rep. The half rep stays in the bottom, where it burns. 4 sets — rest 150s between sets, take all of it.\n4 rounds\n• 6–8 1.5-rep Squat Reps\nRest 150s',
           plan: {
             "format": "circuit",
             "blocks": [
