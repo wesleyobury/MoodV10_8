@@ -50,6 +50,7 @@ import {
 } from '../modules/mood-storekit/src';
 
 type Plan = 'annual' | 'monthly';
+type PaywallCta = 'start_free_trial' | 'subscribe_now';
 
 const ANNUAL_PRICE_LABEL = '$79/year';
 const ANNUAL_MONTHLY_BREAKDOWN = '$6.58/mo';
@@ -104,6 +105,7 @@ export function PaywallModal() {
   const { token, entitlement, user, refreshSubscriptionState } = useAuth();
   const { claimFounding } = useFoundingPurchase();
   const [plan, setPlan] = useState<Plan>('annual');
+  const [selectedStandardCta, setSelectedStandardCta] = useState<PaywallCta | null>(null);
   const [foundingBusy, setFoundingBusy] = useState(false);
   const [purchaseBusy, setPurchaseBusy] = useState(false);
   const visible = pendingTrigger !== null;
@@ -126,6 +128,16 @@ export function PaywallModal() {
   const annualMonthlyBreakdown = storePrices.annualPerMonthDisplay ? `${storePrices.annualPerMonthDisplay}/mo` : ANNUAL_MONTHLY_BREAKDOWN;
   const annualSavingsBadge = storePrices.annualSavingsPct ? `Save ${storePrices.annualSavingsPct}%` : ANNUAL_SAVINGS_BADGE;
   const selectedPlanPriceLabel = plan === 'annual' ? annualPriceLabel : monthlyPriceLabel;
+  const effectivePaywallCta = preferredPaywallCta ?? selectedStandardCta;
+  const shouldShowChoiceStep =
+    !isFoundingOffer && preferredPaywallCta == null && selectedStandardCta == null;
+  const shouldShowPlanStep = isFoundingOffer || effectivePaywallCta != null;
+
+  useEffect(() => {
+    if (visible) {
+      setSelectedStandardCta(null);
+    }
+  }, [visible, pendingTrigger]);
 
   // Fire view event whenever the modal mounts with a fresh trigger.
   // Also persist the trigger to the user record so Apple's eventual
@@ -205,17 +217,39 @@ export function PaywallModal() {
     }
   }, [pendingTrigger]);
 
-  const handleStartTrial = async (ctaName: 'start_free_trial' | 'subscribe_now' = 'start_free_trial') => {
-    // Launch-critical: which CTA was tapped (the single biggest funnel gap).
+  const handleChooseStandardCta = (ctaName: PaywallCta) => {
     Analytics.paywallCtaTapped(token, {
       cta: ctaName,
       trigger_source: pendingTrigger ?? 'unknown',
       variant: isFoundingWindow ? 'founding' : 'standard',
     });
+    setSelectedStandardCta(ctaName);
+  };
+
+  const handleBackToChoice = () => {
+    if (preferredPaywallCta == null) {
+      setSelectedStandardCta(null);
+    }
+  };
+
+  const handleStartTrial = async (
+    ctaName: PaywallCta = 'start_free_trial',
+    opts?: { logCtaTap?: boolean },
+  ) => {
+    // Launch-critical: which CTA was tapped (the single biggest funnel gap).
+    if (opts?.logCtaTap !== false) {
+      Analytics.paywallCtaTapped(token, {
+        cta: ctaName,
+        trigger_source: pendingTrigger ?? 'unknown',
+        variant: isFoundingWindow ? 'founding' : 'standard',
+      });
+    }
     // Tag the trial start with the originating paywall trigger. The same
     // attribution sticks through `subscription_purchased` via
     // `lastConversionTrigger` + server-side `subscription.last_trigger_source`.
-    Analytics.trialStarted(token, { plan, trigger_source: pendingTrigger ?? 'unknown' });
+    if (ctaName === 'start_free_trial') {
+      Analytics.trialStarted(token, { plan, trigger_source: pendingTrigger ?? 'unknown' });
+    }
 
     const productID = productIDForPlan(planForStore, ctaName);
     const appAccountToken = appAccountTokenForUserId(user?.id);
@@ -346,7 +380,13 @@ export function PaywallModal() {
   /** 1a — plan card tapped. */
   const handlePlanSelect = (next: Plan) => {
     setPlan(next);
-    const pid = next === 'annual' ? YEARLY_TRIAL_PRODUCT_ID : MONTHLY_TRIAL_PRODUCT_ID;
+    const nextPlanForStore = next === 'annual' ? 'yearly' : 'monthly';
+    const pid =
+      effectivePaywallCta === 'subscribe_now'
+        ? productIDForPlan(nextPlanForStore, 'subscribe_now')
+        : next === 'annual'
+          ? YEARLY_TRIAL_PRODUCT_ID
+          : MONTHLY_TRIAL_PRODUCT_ID;
     Analytics.planSelected(token, { plan_id: pid, stage });
   };
 
@@ -477,7 +517,7 @@ export function PaywallModal() {
                   data-testid="paywall-start-trial"
                 >
                   <Text style={styles.trialBtnLabel}>
-                    Start 7 days free — then {selectedPlanPriceLabel}
+                    Start 7 Days Free — then {selectedPlanPriceLabel}
                   </Text>
                 </TouchableOpacity>
 
@@ -487,34 +527,84 @@ export function PaywallModal() {
               </>
             )}
 
-            <View style={styles.plans}>
-              <PlanCard
-                selected={plan === 'annual'}
-                onPress={() => handlePlanSelect('annual')}
-                label="Annual"
-                price={annualPriceLabel}
-                trailing={annualMonthlyBreakdown}
-                badge={annualSavingsBadge}
-                testID="paywall-plan-annual"
-              />
-              <PlanCard
-                selected={plan === 'monthly'}
-                onPress={() => handlePlanSelect('monthly')}
-                label="Monthly"
-                price={monthlyPriceLabel}
-                testID="paywall-plan-monthly"
-              />
-            </View>
+            {!isFoundingOffer && shouldShowChoiceStep && (
+              <View style={styles.choicePanel}>
+                <TouchableOpacity
+                  style={styles.cta}
+                  onPress={() => handleChooseStandardCta('subscribe_now')}
+                  testID="paywall-choice-subscribe-now"
+                  data-testid="paywall-choice-subscribe-now"
+                >
+                  <LinearGradient
+                    colors={[...BRAND_GRADIENT]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.ctaGradient}
+                  >
+                    <Text style={styles.ctaLabel}>Subscribe Now</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
 
-            {!isFoundingOffer && (
+                <View style={styles.orDivider}>
+                  <Text style={styles.orText}>or</Text>
+                </View>
+
+                <TouchableOpacity
+                  style={styles.trialBtn}
+                  onPress={() => handleChooseStandardCta('start_free_trial')}
+                  activeOpacity={0.8}
+                  testID="paywall-choice-start-trial"
+                  data-testid="paywall-choice-start-trial"
+                >
+                  <Text style={styles.trialBtnLabel}>Start 7 Days Free</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {shouldShowPlanStep && (
+              <View style={styles.planStep}>
+                {!isFoundingOffer && preferredPaywallCta == null && (
+                  <TouchableOpacity
+                    style={styles.backToChoice}
+                    onPress={handleBackToChoice}
+                    activeOpacity={0.8}
+                    testID="paywall-back-to-choice"
+                    data-testid="paywall-back-to-choice"
+                  >
+                    <Ionicons name="chevron-back" size={16} color={COLORS.textTertiary} />
+                    <Text style={styles.backToChoiceText}>Back</Text>
+                  </TouchableOpacity>
+                )}
+
+                <View style={styles.plans}>
+                  <PlanCard
+                    selected={plan === 'annual'}
+                    onPress={() => handlePlanSelect('annual')}
+                    label="Annual"
+                    price={annualPriceLabel}
+                    trailing={annualMonthlyBreakdown}
+                    badge={annualSavingsBadge}
+                    testID="paywall-plan-annual"
+                  />
+                  <PlanCard
+                    selected={plan === 'monthly'}
+                    onPress={() => handlePlanSelect('monthly')}
+                    label="Monthly"
+                    price={monthlyPriceLabel}
+                    testID="paywall-plan-monthly"
+                  />
+                </View>
+              </View>
+            )}
+
+            {!isFoundingOffer && effectivePaywallCta && (
               <>
-                {/* Primary — mirrors the CTA the user tapped to get here.
-                    preferredPaywallCta 'start_free_trial' → single trial CTA;
-                    'subscribe_now' or unset → Subscribe Now primary. */}
-                {preferredPaywallCta === 'start_free_trial' ? (
+                {effectivePaywallCta === 'start_free_trial' ? (
                   <TouchableOpacity
                     style={styles.cta}
-                    onPress={() => handleStartTrial('start_free_trial')}
+                    onPress={() => handleStartTrial('start_free_trial', {
+                      logCtaTap: preferredPaywallCta != null,
+                    })}
                     testID="paywall-start-trial"
                     data-testid="paywall-start-trial"
                   >
@@ -524,15 +614,15 @@ export function PaywallModal() {
                       end={{ x: 1, y: 0 }}
                       style={styles.ctaGradient}
                     >
-                      <Text style={styles.ctaLabel}>
-                        Start 7 days free — then {selectedPlanPriceLabel}
-                      </Text>
+                      <Text style={styles.ctaLabel}>Start 7 Days Free</Text>
                     </LinearGradient>
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
                     style={styles.cta}
-                    onPress={() => handleStartTrial('subscribe_now')}
+                    onPress={() => handleStartTrial('subscribe_now', {
+                      logCtaTap: preferredPaywallCta != null,
+                    })}
                     testID="paywall-subscribe-now"
                     data-testid="paywall-subscribe-now"
                   >
@@ -547,29 +637,8 @@ export function PaywallModal() {
                   </TouchableOpacity>
                 )}
 
-                {/* Stages 2/3 open without a preference → keep the secondary
-                    trial path. When the opener specified a CTA, show ONE. */}
-                {preferredPaywallCta == null && (
-                  <>
-                    <View style={styles.orDivider}>
-                      <Text style={styles.orText}>or</Text>
-                    </View>
-                    <TouchableOpacity
-                      style={styles.trialBtn}
-                      onPress={() => handleStartTrial('start_free_trial')}
-                      activeOpacity={0.8}
-                      testID="paywall-start-trial"
-                      data-testid="paywall-start-trial"
-                    >
-                      <Text style={styles.trialBtnLabel}>
-                        Start 7 days free — then {selectedPlanPriceLabel}
-                      </Text>
-                    </TouchableOpacity>
-                  </>
-                )}
-
                 <Text style={styles.ctaCaption}>
-                  {preferredPaywallCta === 'subscribe_now' ? '7-day free trial applies automatically · ' : ''}
+                  {effectivePaywallCta === 'start_free_trial' ? `7 days free, then ${selectedPlanPriceLabel} · ` : `${selectedPlanPriceLabel} billed today · `}
                   {plan === 'annual' ? `${annualMonthlyBreakdown} equivalent · ` : ''}Cancel anytime in Settings.
                 </Text>
               </>
@@ -786,6 +855,25 @@ const styles = StyleSheet.create({
   },
   plans: {
     marginBottom: 8,
+  },
+  choicePanel: {
+    marginBottom: 8,
+  },
+  planStep: {
+    marginBottom: 2,
+  },
+  backToChoice: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingVertical: 6,
+    marginBottom: 2,
+  },
+  backToChoiceText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: COLORS.textTertiary,
   },
   planCard: {
     flexDirection: 'row',
