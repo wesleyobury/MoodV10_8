@@ -45,6 +45,7 @@ import { Analytics } from '../../utils/analytics';
 import { useFoundingPurchase } from '../../hooks/useFoundingPurchase';
 import { foundingDaysRemaining } from '../../utils/founding';
 import { isStoreKitAvailable, restorePurchases } from '../../modules/mood-storekit/src';
+import { useStorePrices } from '../../hooks/useStorePrices';
 
 const MANAGE_SUBS_URL = 'https://apps.apple.com/account/subscriptions';
 const PAGE_BG = '#0A0A0A'; // must equal COLORS.bg so the hero fade has no seam
@@ -111,9 +112,17 @@ export default function RevealPayoff() {
   const { user, token, entitlement, refreshEntitlement } = useAuth();
   const { openPaywall, pendingTrigger, hasActiveAccess } = useSubscription();
   const { claimFounding } = useFoundingPurchase();
+  // Live store prices (fallback to pinned strings off-device / pre-load) so the
+  // fine print matches Apple's purchase sheet and localizes by storefront.
+  const storePrices = useStorePrices();
+  const annualLabel = storePrices.annualDisplay ? `${storePrices.annualDisplay}/year` : '$79/year';
+  const monthlyLabel = storePrices.monthlyDisplay ? `${storePrices.monthlyDisplay}/month` : '$9.99/month';
   const [busy, setBusy] = useState<null | 'founding'>(null);
   const completedRef = useRef(false);
   const paywallOpenedRef = useRef(false);
+  // Snapshot of access at the moment the paywall is opened, so we can tell a
+  // real conversion (access newly gained) apart from a plain dismiss.
+  const hadAccessBeforePaywallRef = useRef(false);
   const { height: windowHeight } = useWindowDimensions();
   const screenH = windowHeight;
   const heroHeight = Math.max(screenH * HERO_HEIGHT_RATIO, HERO_MIN_HEIGHT);
@@ -167,10 +176,22 @@ export default function RevealPayoff() {
 
   const goWearables = () => router.replace(WEARABLES_ROUTE);
 
-  // After Soft Paywall #1 closes with an active subscription, continue the funnel.
+  // Advance the funnel ONLY when Soft Paywall #1 actually converted — i.e.
+  // access was newly gained while the modal was open (a real purchase / trial).
+  // A plain dismiss or a cancelled Apple sheet leaves access unchanged, so the
+  // user returns here and must Subscribe, Start Trial, or tap "Try my first
+  // workout — free" to move on. (Previously any ambient `hasActiveAccess` —
+  // including a leftover sandbox sub or the old dev auto-grant — pushed the
+  // user straight into wearables on close.)
   useEffect(() => {
     if (!paywallOpenedRef.current || pendingTrigger) return;
-    if (!hasActiveAccess) return;
+    const convertedNow = hasActiveAccess && !hadAccessBeforePaywallRef.current;
+    if (!convertedNow) {
+      // Closed without converting — stay on Paywall #1. Reset the latch so a
+      // later real purchase can still trigger the advance.
+      paywallOpenedRef.current = false;
+      return;
+    }
     fireCompleted();
     goWearables();
   }, [pendingTrigger, hasActiveAccess]);
@@ -180,6 +201,7 @@ export default function RevealPayoff() {
     if (busy) return;
     Analytics.revealCtaTapped(token, { cta });
     paywallOpenedRef.current = true;
+    hadAccessBeforePaywallRef.current = hasActiveAccess;
     // The modal mirrors the button the user just tapped — one CTA, no
     // redundant subscribe/trial pair.
     openPaywall('post_onboarding_soft', {
@@ -285,7 +307,7 @@ export default function RevealPayoff() {
                 <Ionicons name="flash" size={16} color={COLORS.accent} />
                 <Text style={styles.foundingBannerText}>
                   Founding pricing — <Text style={styles.bold}>$39/yr locked forever</Text>. Standard pricing
-                  will be $79/year. Available for {daysLeft} more day{daysLeft === 1 ? '' : 's'}.
+                  will be {annualLabel}. Available for {daysLeft} more day{daysLeft === 1 ? '' : 's'}.
                 </Text>
               </View>
             ) : (
@@ -338,18 +360,33 @@ export default function RevealPayoff() {
           </TouchableOpacity>
 
           {/* 11 Disclosure, trust, save-for-later, footer links — SHARED */}
-          <StandardBottom onSkip={handleSkip} onRestore={handleRestore} />
+          <StandardBottom
+            onSkip={handleSkip}
+            onRestore={handleRestore}
+            annualLabel={annualLabel}
+            monthlyLabel={monthlyLabel}
+          />
         </View>
       </ScrollView>
     </View>
   );
 }
 
-function StandardBottom({ onSkip, onRestore }: { onSkip: () => void; onRestore: () => void }) {
+function StandardBottom({
+  onSkip,
+  onRestore,
+  annualLabel,
+  monthlyLabel,
+}: {
+  onSkip: () => void;
+  onRestore: () => void;
+  annualLabel: string;
+  monthlyLabel: string;
+}) {
   const router = useRouter();
   return (
     <>
-      <Disclosure trial />
+      <Disclosure trial annualLabel={annualLabel} monthlyLabel={monthlyLabel} />
 
       <View style={styles.trustRow}>
         <Ionicons name="lock-closed" size={12} color={COLORS.textTertiary} />
@@ -380,12 +417,20 @@ function StandardBottom({ onSkip, onRestore }: { onSkip: () => void; onRestore: 
   );
 }
 
-function Disclosure({ trial }: { trial: boolean }) {
+function Disclosure({
+  trial,
+  annualLabel = '$79/year',
+  monthlyLabel = '$9.99/month',
+}: {
+  trial: boolean;
+  annualLabel?: string;
+  monthlyLabel?: string;
+}) {
   const router = useRouter();
   return (
     <Text style={styles.disclosure}>
       {trial
-        ? '7 days free, then $79/year or $9.99/month — your choice on the next screen. Auto-renews unless cancelled at least 24 hours before the trial ends. '
+        ? `7 days free, then ${annualLabel} or ${monthlyLabel} — your choice on the next screen. Auto-renews unless cancelled at least 24 hours before the trial ends. `
         : '$39.00/year, auto-renews unless cancelled at least 24 hours before renewal. '}
       <Text style={styles.link} onPress={() => Linking.openURL(MANAGE_SUBS_URL)}>Manage subscription</Text>
       <Text> · </Text>

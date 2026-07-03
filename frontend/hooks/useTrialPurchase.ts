@@ -5,7 +5,8 @@
  * native sheet) — it must NOT open MOOD's PaywallModal. Apple decides
  * introductory-offer eligibility; MOOD never pre-labels trial vs paid.
  *
- * Web/Expo Go (no native StoreKit): optimistic local flip so QA can proceed.
+ * Web/Expo Go (no native StoreKit): DEV-only optimistic flip so QA can
+ * proceed; production returns an error rather than granting access.
  */
 import { useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
@@ -29,9 +30,15 @@ export function useTrialPurchase() {
       Analytics.trialStarted(token, { plan: 'monthly', trigger_source: triggerSource });
 
       if (!isStoreKitAvailable()) {
-        setStatus('in_trial');
-        await refreshSubscriptionState();
-        return 'success';
+        // DEV/QA convenience only (web preview / Expo Go). In production we
+        // must NOT grant a trial without a real StoreKit/Play transaction —
+        // return an error so the caller surfaces it instead of unlocking.
+        if (__DEV__) {
+          setStatus('in_trial');
+          await refreshSubscriptionState();
+          return 'success';
+        }
+        return 'error';
       }
 
       try {

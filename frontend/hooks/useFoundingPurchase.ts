@@ -38,11 +38,18 @@ export function useFoundingPurchase() {
       Analytics.purchaseInitiated(token, { plan_id: sku });
 
       if (!isStoreKitAvailable()) {
-        Analytics.foundingMemberClaimed(token, { revenue_usd: 39 });
-        Analytics.purchaseCompleted(token, { plan_id: sku, revenue_usd: 39, is_trial: false });
-        setStatus('active');
-        await refreshSubscriptionState();
-        return 'success';
+        // DEV/QA convenience only (web preview / Expo Go). In production we must
+        // NOT grant founding access without a real transaction — return an error
+        // so the caller surfaces it instead of unlocking the app for free.
+        if (__DEV__) {
+          Analytics.foundingMemberClaimed(token, { revenue_usd: 39 });
+          Analytics.purchaseCompleted(token, { plan_id: sku, revenue_usd: 39, is_trial: false });
+          setStatus('active');
+          await refreshSubscriptionState();
+          return 'success';
+        }
+        Analytics.purchaseFailed(token, { plan_id: sku, failure_reason: 'unknown' });
+        return 'error';
       }
 
       try {

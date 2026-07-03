@@ -16,6 +16,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Linking,
   Modal,
   Pressable,
@@ -34,6 +35,7 @@ import { useSubscription, markPostFirstWorkoutPaywallShown, STAGE_2_PAYWALL_TRIG
 import { Analytics } from '../utils/analytics';
 import { useAuth } from '../contexts/AuthContext';
 import { useFoundingPurchase } from '../hooks/useFoundingPurchase';
+import { useStorePrices } from '../hooks/useStorePrices';
 import { apiFetch } from '../utils/api';
 import { validateSubscriptionTransaction } from '../hooks/subscription/subscriptionApi';
 import { getLatestSubscriptionEntitlement } from '../hooks/subscription/subscriptionSync';
@@ -113,6 +115,15 @@ export function PaywallModal() {
     !entitlement?.founding_pricing_claimed &&
     !!entitlement?.founding_window_active;
   const planProductId = plan === 'annual' ? YEARLY_PRODUCT_ID : MONTHLY_PRODUCT_ID;
+
+  // Live prices from the store (falls back to pinned labels off-device / pre-load)
+  // so the UI never shows a price that differs from Apple's purchase sheet.
+  const storePrices = useStorePrices();
+  const annualPriceLabel = storePrices.annualDisplay ? `${storePrices.annualDisplay}/year` : ANNUAL_PRICE_LABEL;
+  const monthlyPriceLabel = storePrices.monthlyDisplay ? `${storePrices.monthlyDisplay}/month` : MONTHLY_PRICE_LABEL;
+  const annualMonthlyBreakdown = storePrices.annualPerMonthDisplay ? `${storePrices.annualPerMonthDisplay}/mo` : ANNUAL_MONTHLY_BREAKDOWN;
+  const annualSavingsBadge = storePrices.annualSavingsPct ? `Save ${storePrices.annualSavingsPct}%` : ANNUAL_SAVINGS_BADGE;
+  const selectedPlanPriceLabel = plan === 'annual' ? annualPriceLabel : monthlyPriceLabel;
 
   // Fire view event whenever the modal mounts with a fresh trigger.
   // Also persist the trigger to the user record so Apple's eventual
@@ -209,13 +220,23 @@ export function PaywallModal() {
     // 1a — StoreKit/Play purchase sheet about to open.
     Analytics.purchaseInitiated(token, { plan_id: productID, stage });
 
-    // Web preview / Expo Go / Android — no native StoreKit. Optimistically
-    // flip the local state so QA on these surfaces still proceeds. The
-    // real iOS build hits the native StoreKit sheet below.
+    // No native store module (web preview / Expo Go / a build where the
+    // module failed to link). In DEV we optimistically flip local state so QA
+    // on those surfaces can proceed. In PRODUCTION we must NEVER grant access
+    // without a real transaction — doing so let users past the paywall (and
+    // opened every downstream gate) without paying. Surface an error instead.
     if (!isStoreKitAvailable()) {
-      Analytics.purchaseCompleted(token, { plan_id: productID, is_trial: true });
-      setStatus('in_trial');
-      dismissPaywall();
+      if (__DEV__) {
+        Analytics.purchaseCompleted(token, { plan_id: productID, is_trial: true });
+        setStatus('in_trial');
+        dismissPaywall();
+      } else {
+        Analytics.purchaseFailed(token, { plan_id: productID, failure_reason: 'unknown' });
+        Alert.alert(
+          'Purchases unavailable',
+          'We couldn’t reach the App Store just now. Please check your connection and try again.',
+        );
+      }
       return;
     }
 
@@ -453,7 +474,7 @@ export function PaywallModal() {
                   data-testid="paywall-start-trial"
                 >
                   <Text style={styles.trialBtnLabel}>
-                    Start 7 days free — then {plan === 'annual' ? ANNUAL_PRICE_LABEL : MONTHLY_PRICE_LABEL}
+                    Start 7 days free — then {selectedPlanPriceLabel}
                   </Text>
                 </TouchableOpacity>
 
@@ -468,16 +489,16 @@ export function PaywallModal() {
                 selected={plan === 'annual'}
                 onPress={() => handlePlanSelect('annual')}
                 label="Annual"
-                price={ANNUAL_PRICE_LABEL}
-                trailing={ANNUAL_MONTHLY_BREAKDOWN}
-                badge={ANNUAL_SAVINGS_BADGE}
+                price={annualPriceLabel}
+                trailing={annualMonthlyBreakdown}
+                badge={annualSavingsBadge}
                 testID="paywall-plan-annual"
               />
               <PlanCard
                 selected={plan === 'monthly'}
                 onPress={() => handlePlanSelect('monthly')}
                 label="Monthly"
-                price={MONTHLY_PRICE_LABEL}
+                price={monthlyPriceLabel}
                 testID="paywall-plan-monthly"
               />
             </View>
@@ -501,7 +522,7 @@ export function PaywallModal() {
                       style={styles.ctaGradient}
                     >
                       <Text style={styles.ctaLabel}>
-                        Start 7 days free — then {plan === 'annual' ? ANNUAL_PRICE_LABEL : MONTHLY_PRICE_LABEL}
+                        Start 7 days free — then {selectedPlanPriceLabel}
                       </Text>
                     </LinearGradient>
                   </TouchableOpacity>
@@ -538,7 +559,7 @@ export function PaywallModal() {
                       data-testid="paywall-start-trial"
                     >
                       <Text style={styles.trialBtnLabel}>
-                        Start 7 days free — then {plan === 'annual' ? ANNUAL_PRICE_LABEL : MONTHLY_PRICE_LABEL}
+                        Start 7 days free — then {selectedPlanPriceLabel}
                       </Text>
                     </TouchableOpacity>
                   </>
@@ -546,7 +567,7 @@ export function PaywallModal() {
 
                 <Text style={styles.ctaCaption}>
                   {preferredPaywallCta === 'subscribe_now' ? '7-day free trial applies automatically · ' : ''}
-                  {plan === 'annual' ? `${ANNUAL_MONTHLY_BREAKDOWN} equivalent · ` : ''}Cancel anytime in Settings.
+                  {plan === 'annual' ? `${annualMonthlyBreakdown} equivalent · ` : ''}Cancel anytime in Settings.
                 </Text>
               </>
             )}
@@ -634,9 +655,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.surface,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    paddingTop: 20,
+    paddingTop: 16,
     paddingHorizontal: 24,
-    maxHeight: '92%',
+    maxHeight: '94%',
     overflow: 'hidden',
   },
   purchaseBusyOverlay: {
@@ -676,20 +697,20 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   footer: {
-    paddingTop: 6,
+    paddingTop: 4,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: 'rgba(255,255,255,0.06)',
   },
   header: {
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 4,
   },
   iconRing: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     overflow: 'hidden',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   iconRingGradient: {
     flex: 1,
@@ -704,12 +725,12 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   headline: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: '700',
     color: COLORS.textPrimary,
     letterSpacing: -0.4,
     textAlign: 'center',
-    marginBottom: 6,
+    marginBottom: 4,
   },
   subhead: {
     fontSize: 14,
@@ -725,7 +746,7 @@ const styles = StyleSheet.create({
   bulletRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 5,
   },
   bulletDot: {
     width: 5,
@@ -746,8 +767,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    marginTop: 2,
-    marginBottom: 10,
+    marginTop: 6,
+    marginBottom: 6,
   },
   groupDividerLine: {
     flex: 1,
@@ -761,19 +782,19 @@ const styles = StyleSheet.create({
     letterSpacing: 1.3,
   },
   plans: {
-    marginBottom: 12,
+    marginBottom: 8,
   },
   planCard: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 12,
+    paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 12,
     backgroundColor: COLORS.surfaceElevated,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.08)',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   planCardSelected: {
     borderColor: COLORS.accent,
@@ -846,7 +867,7 @@ const styles = StyleSheet.create({
   cta: {
     borderRadius: 12,
     overflow: 'hidden',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   ctaGradient: {
     paddingVertical: 16,
@@ -888,7 +909,7 @@ const styles = StyleSheet.create({
   orDivider: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    paddingVertical: 4,
   },
   orText: {
     fontSize: 12,
@@ -896,11 +917,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   trialBtn: {
-    paddingVertical: 14,
+    paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 48,
-    marginBottom: 6,
+    minHeight: 44,
+    marginBottom: 2,
   },
   trialBtnLabel: {
     fontSize: 15,
@@ -912,13 +933,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.textTertiary,
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 6,
   },
   disclosure: {
     fontSize: 10,
     lineHeight: 15,
     color: COLORS.textTertiary,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   linkRow: {
     flexDirection: 'row',
