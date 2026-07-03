@@ -32,7 +32,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import { maybeRequestReview } from '../utils/ratingPrompt';
-import Toast from '../components/Toast';
+import ConfettiToast from '../components/ConfettiToast';
 import ImageCropModal from '../components/ImageCropModal';
 import GuestPromptModal from '../components/GuestPromptModal';
 import VideoFrameSelector from '../components/VideoFrameSelector';
@@ -353,7 +353,19 @@ export default function CreatePost() {
   // Success animation state (inline button animation like 'Add workout')
   const [cardSaved, setCardSaved] = useState(false);
   const [saveScaleAnim] = useState(new Animated.Value(1));
-  
+  // Gentle upward bob for the "populates the cards above" pointer.
+  const pointerBounce = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pointerBounce, { toValue: -3, duration: 650, useNativeDriver: true }),
+        Animated.timing(pointerBounce, { toValue: 0, duration: 650, useNativeDriver: true }),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [pointerBounce]);
+
   // Transparent card ref for Instagram export
   const transparentCardRef = useRef(null);
   const [isExportingToInstagram, setIsExportingToInstagram] = useState(false);
@@ -368,6 +380,16 @@ export default function CreatePost() {
   useEffect(() => { onboardingRef.current = onboarding; }, [onboarding]);
   const [completionTipActive, setCompletionTipActive] = useState(false);
   const completionTipTriggeredRef = useRef(false);
+  const completionTipActiveRef = useRef(false);
+
+  // First-workout congrats state — declared BEFORE the coach-mark trigger
+  // effect below, which sequences itself against congratsVisible.
+  const [congratsVisible, setCongratsVisible] = useState(false);
+  const [completionToastVisible, setCompletionToastVisible] = useState(false);
+  const congratsCheckedRef = useRef(false);
+  const congratsWasShownRef = useRef(false);
+  // Entrance pop for the congrats content — Modal fade alone reads as lag.
+  const congratsAnim = useRef(new Animated.Value(0)).current;
 
   // Refs for measuring target positions so the overlay can align pointers accurately
   const mediaRowRef = useRef<View>(null);
@@ -380,8 +402,13 @@ export default function CreatePost() {
     ig: { x: number; y: number; w: number; h: number } | null;
   }>({ media: null, stats: null, ig: null });
 
+  // IMPORTANT sequencing: the coach-mark overlay is a Modal, and iOS
+  // deadlocks when two Modals present simultaneously (the overlay ends up
+  // invisible but still swallowing touches — the "frozen" share screen).
+  // The tip may only fire once the congrats modal is fully out of the way.
   useEffect(() => {
     if (completionTipTriggeredRef.current) return;
+    if (congratsVisible) return; // effect re-runs when it closes
     const timer = setTimeout(() => {
       if (completionTipTriggeredRef.current) return;
       const ob = onboardingRef.current;
@@ -397,15 +424,17 @@ export default function CreatePost() {
         measure(igButtonRef, 'ig');
 
         completionTipTriggeredRef.current = true;
+        completionTipActiveRef.current = true;
         setCompletionTipActive(true);
         ob.trackShown('completion_share');
       }
-    }, 800);
+    }, congratsWasShownRef.current ? 500 : 800);
     return () => clearTimeout(timer);
-  }, []);
+  }, [congratsVisible]);
 
   const completeCompletionTip = (action: 'tap' | 'dismiss' | 'never') => {
     if (!completionTipActive) return;
+    completionTipActiveRef.current = false;
     setCompletionTipActive(false);
     if (action === 'tap') onboarding.markCompleted('completion_share');
     else if (action === 'dismiss') onboarding.markDismissed('completion_share');
@@ -603,9 +632,7 @@ export default function CreatePost() {
   // The very first completed workout gets a one-time congrats modal that
   // explains this achievement screen; every completion after that gets a
   // small toast instead. One-shot flag persisted per device.
-  const [congratsVisible, setCongratsVisible] = useState(false);
-  const [completionToastVisible, setCompletionToastVisible] = useState(false);
-  const congratsCheckedRef = useRef(false);
+  // (congrats state declared earlier, above the coach-mark trigger effect)
   useEffect(() => {
     if (!params.workoutStats || congratsCheckedRef.current) return;
     congratsCheckedRef.current = true;
@@ -619,10 +646,14 @@ export default function CreatePost() {
         const serverCount = user?.workouts_count ?? 0;
         if (!shown && serverCount <= 1) {
           await AsyncStorage.setItem(FLAG, 'true');
+          congratsWasShownRef.current = true;
           setCongratsVisible(true);
         } else {
           if (!shown) await AsyncStorage.setItem(FLAG, 'true');
-          setCompletionToastVisible(true);
+          // Never race the coach-mark modal; skip if tips are on screen.
+          setTimeout(() => {
+            if (!completionTipActiveRef.current) setCompletionToastVisible(true);
+          }, 600);
         }
       } catch {
         // Never block the share screen on the congrats bookkeeping.
@@ -2147,18 +2178,23 @@ export default function CreatePost() {
                     </TouchableOpacity>
                   </Animated.View>
 
-                  {/* Equipment name on/off — same format as Save, with a
-                      radio bubble that fills when active */}
+                  {/* Equipment name on/off — matches the Save button exactly:
+                      neutral active state + checkmark when on, outline bubble
+                      when off. */}
                   <TouchableOpacity
                     testID="equipment-toggle"
                     onPress={() => setShowEquipment(prev => !prev)}
                     style={[
                       styles.saveCardButton,
-                      showEquipment && styles.saveCardButtonSaved,
+                      showEquipment && styles.saveCardButtonSavedNeutral,
                     ]}
                     activeOpacity={0.7}
                   >
-                    <View style={[styles.equipBubble, showEquipment && styles.equipBubbleOn]} />
+                    {showEquipment ? (
+                      <Ionicons name="checkmark" size={16} color="#FFFFFF" />
+                    ) : (
+                      <View style={styles.equipBubble} />
+                    )}
                     <Text style={styles.saveButtonText}>Equip</Text>
                   </TouchableOpacity>
                 </View>
@@ -2222,25 +2258,42 @@ export default function CreatePost() {
               <View style={styles.statsPanel} ref={editableStatsRowRef} collapsable={false}>
                 <View style={styles.statsPanelHeader}>
                   <Text style={styles.statsPanelTitle}>Your numbers</Text>
-                  {sessionCaloriesFromWearable != null ? (
-                    <View style={styles.statsPanelBadge}>
-                      <Ionicons name="checkmark-circle" size={13} color="#3CD070" />
-                      <Text style={styles.statsPanelBadgeLive}>
-                        Live · Apple Health
-                        {sessionLabel ? ` · ${sessionLabel}` : lastWorkoutLabel ? ` · ${lastWorkoutLabel}` : ''}
-                      </Text>
+                  <View style={styles.statusLegend}>
+                    <View style={styles.statusLegendItem}>
+                      <View style={[styles.statusDot, styles.statusDotSynced]} />
+                      <Text style={styles.statusLegendText}>Synced</Text>
                     </View>
-                  ) : (
-                    <View style={styles.statsPanelBadge}>
-                      <Text style={styles.statsPanelBadgeEst}>* estimated</Text>
+                    <View style={styles.statusLegendItem}>
+                      <View style={[styles.statusDot, styles.statusDotEst]} />
+                      <Text style={styles.statusLegendText}>Estimate</Text>
                     </View>
-                  )}
+                    <View style={styles.statusLegendItem}>
+                      <View style={[styles.statusDot, styles.statusDotBlank]} />
+                      <Text style={styles.statusLegendText}>None</Text>
+                    </View>
+                  </View>
                 </View>
+
+                {/* On-brand animated pointer — these numbers drive the cards
+                    shown above. */}
+                <Animated.View
+                  style={[styles.populatesNote, { transform: [{ translateY: pointerBounce }] }]}
+                  pointerEvents="none"
+                >
+                  <Ionicons name="arrow-up" size={13} color="#F4C316" />
+                  <Text style={styles.populatesNoteText}>These populate the cards above</Text>
+                </Animated.View>
+
+                {/* Your time & calories — tap to fine-tune. The status dot marks
+                    each as synced from a wearable or an estimate. */}
                 <View style={styles.editableStatsRow}>
                   <View style={styles.editableStat}>
-                    <Text style={styles.editableStatLabel}>MIN</Text>
+                    <View style={styles.editableStatLabelRow}>
+                      <View style={[styles.statusDot, sessionCaloriesFromWearable != null ? styles.statusDotSynced : styles.statusDotEst]} />
+                      <Text style={[styles.editableStatLabel, sessionCaloriesFromWearable == null && styles.editableStatLabelEst]}>MIN</Text>
+                    </View>
                     <TextInput
-                      style={styles.editableStatInput}
+                      style={[styles.editableStatInput, sessionCaloriesFromWearable == null && styles.editableStatInputEst]}
                       value={editedDuration !== undefined ? String(editedDuration) : String(workoutStats.totalDuration)}
                       onChangeText={(text) => {
                         if (text === '') {
@@ -2256,7 +2309,28 @@ export default function CreatePost() {
                     />
                   </View>
                   <View style={styles.editableStat}>
-                    <Text style={styles.editableStatLabel}>MIN GOAL</Text>
+                    <View style={styles.editableStatLabelRow}>
+                      <View style={[styles.statusDot, sessionCaloriesFromWearable != null ? styles.statusDotSynced : styles.statusDotEst]} />
+                      <Text style={[styles.editableStatLabel, sessionCaloriesFromWearable == null && styles.editableStatLabelEst]}>CAL</Text>
+                    </View>
+                    <TextInput
+                      style={[styles.editableStatInput, sessionCaloriesFromWearable == null && styles.editableStatInputEst]}
+                      value={editedCalories !== undefined ? String(editedCalories) : String(Math.round(workoutStats.totalDuration * 8))}
+                      onChangeText={(text) => {
+                        if (text === '') {
+                          setEditedCalories(0);
+                        } else {
+                          const num = parseInt(text, 10);
+                          if (!isNaN(num)) setEditedCalories(num);
+                        }
+                      }}
+                      keyboardType="numeric"
+                      maxLength={4}
+                      selectTextOnFocus
+                    />
+                  </View>
+                  <View style={styles.editableStat}>
+                    <Text style={[styles.editableStatLabel, styles.goalLabel]}>MIN GOAL</Text>
                     <TextInput
                       style={styles.editableStatInput}
                       value={String(minuteTarget)}
@@ -2277,27 +2351,7 @@ export default function CreatePost() {
                     />
                   </View>
                   <View style={styles.editableStat}>
-                    <Text style={[styles.editableStatLabel, sessionCaloriesFromWearable == null && styles.editableStatLabelEst]}>
-                      {sessionCaloriesFromWearable == null ? 'CAL *' : 'CAL'}
-                    </Text>
-                    <TextInput
-                      style={[styles.editableStatInput, sessionCaloriesFromWearable == null && styles.editableStatInputEst]}
-                      value={editedCalories !== undefined ? String(editedCalories) : String(Math.round(workoutStats.totalDuration * 8))}
-                      onChangeText={(text) => {
-                        if (text === '') {
-                          setEditedCalories(0);
-                        } else {
-                          const num = parseInt(text, 10);
-                          if (!isNaN(num)) setEditedCalories(num);
-                        }
-                      }}
-                      keyboardType="numeric"
-                      maxLength={4}
-                      selectTextOnFocus
-                    />
-                  </View>
-                  <View style={styles.editableStat}>
-                    <Text style={styles.editableStatLabel}>CAL GOAL</Text>
+                    <Text style={[styles.editableStatLabel, styles.goalLabel]}>CAL GOAL</Text>
                     <TextInput
                       style={styles.editableStatInput}
                       value={String(calorieTarget)}
@@ -2319,28 +2373,33 @@ export default function CreatePost() {
                   </View>
                 </View>
 
-                {/* Synced metrics — read-only. Always visible so the block
-                    has a stable shape; unsynced values render as em-dashes. */}
+                {/* Wearable metrics — read-only. Synced from Apple Health, or
+                    blank when there's no data. Always visible for a stable
+                    shape; the status dot + em-dash mark the blank state. */}
                 <View style={styles.syncedMetricsRow}>
                   <View style={styles.syncedMetric}>
+                    <View style={[styles.statusDot, heartRateRealStats ? styles.statusDotSynced : styles.statusDotBlank]} />
                     <Text style={[styles.syncedMetricVal, !heartRateRealStats && styles.syncedMetricValMuted]}>
                       {heartRateRealStats ? heartRateRealStats.peak : '—'}
                     </Text>
                     <Text style={styles.syncedMetricKey}>MAX HR</Text>
                   </View>
                   <View style={styles.syncedMetric}>
+                    <View style={[styles.statusDot, heartRateRealStats ? styles.statusDotSynced : styles.statusDotBlank]} />
                     <Text style={[styles.syncedMetricVal, !heartRateRealStats && styles.syncedMetricValMuted]}>
                       {heartRateRealStats ? heartRateRealStats.avg : '—'}
                     </Text>
                     <Text style={styles.syncedMetricKey}>AVG HR</Text>
                   </View>
                   <View style={styles.syncedMetric}>
+                    <View style={[styles.statusDot, sessionStepsFromWearable != null ? styles.statusDotSynced : styles.statusDotBlank]} />
                     <Text style={[styles.syncedMetricVal, sessionStepsFromWearable == null && styles.syncedMetricValMuted]}>
                       {sessionStepsFromWearable != null ? sessionStepsFromWearable : '—'}
                     </Text>
                     <Text style={styles.syncedMetricKey}>STEPS</Text>
                   </View>
                   <View style={styles.syncedMetric}>
+                    <View style={[styles.statusDot, sessionHrvFromWearable != null ? styles.statusDotSynced : styles.statusDotBlank]} />
                     <Text style={[styles.syncedMetricVal, sessionHrvFromWearable == null && styles.syncedMetricValMuted]}>
                       {sessionHrvFromWearable != null ? sessionHrvFromWearable : '—'}
                     </Text>
@@ -2350,7 +2409,7 @@ export default function CreatePost() {
 
                 <Text style={styles.statsPanelFootnote}>
                   {sessionCaloriesFromWearable != null
-                    ? 'Calories are real Apple Health data'
+                    ? `Synced from Apple Health${sessionLabel ? ` · ${sessionLabel}` : lastWorkoutLabel ? ` · ${lastWorkoutLabel}` : ''}`
                     : '* estimated — sync Apple Health to replace with real numbers'}
                 </Text>
                 <Text style={styles.statsPanelFootnote}>
@@ -2667,6 +2726,15 @@ export default function CreatePost() {
         visible={congratsVisible}
         transparent
         animationType="fade"
+        onShow={() => {
+          congratsAnim.setValue(0);
+          Animated.spring(congratsAnim, {
+            toValue: 1,
+            friction: 7,
+            tension: 60,
+            useNativeDriver: true,
+          }).start();
+        }}
         onRequestClose={() => setCongratsVisible(false)}
       >
         <View style={styles.congratsBackdrop}>
@@ -2681,7 +2749,18 @@ export default function CreatePost() {
             <View style={[styles.congratsStar, { top: '44%', left: '82%' }]} />
           </View>
 
-          <View style={styles.congratsContent}>
+          <Animated.View
+            style={[
+              styles.congratsContent,
+              {
+                opacity: congratsAnim,
+                transform: [
+                  { scale: congratsAnim.interpolate({ inputRange: [0, 1], outputRange: [0.94, 1] }) },
+                  { translateY: congratsAnim.interpolate({ inputRange: [0, 1], outputRange: [14, 0] }) },
+                ],
+              },
+            ]}
+          >
             <View style={styles.congratsHairline} />
             <Text style={styles.congratsEyebrow}>FIRST WORKOUT COMPLETE</Text>
             <Text style={styles.congratsTitle}>One down.</Text>
@@ -2711,16 +2790,16 @@ export default function CreatePost() {
                 <Text style={styles.congratsCtaLabel}>See my card</Text>
               </LinearGradient>
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         </View>
       </Modal>
 
-      {/* Completion toast — every workout after the first. */}
-      <Toast
-        message="Workout complete — nice work"
+      {/* Completion toast — every workout after the first. On-brand confetti. */}
+      <ConfettiToast
+        message="Congrats, workout completed!"
         visible={completionToastVisible}
         onHide={() => setCompletionToastVisible(false)}
-        duration={2200}
+        duration={2600}
       />
 
       {/* Instagram Hand-off Modal — replaces system Alert; has X to dismiss. */}
@@ -2860,7 +2939,7 @@ export default function CreatePost() {
 
       {/* Onboarding Overlay — Tip 3 (Share Your Achievement walkthrough) */}
       <OnboardingOverlay
-        visible={completionTipActive}
+        visible={completionTipActive && !congratsVisible}
         onTapAnywhere={() => completeCompletionTip('tap')}
         onNeverShow={() => completeCompletionTip('never')}
         targets={[
@@ -3018,6 +3097,58 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '700',
     color: '#E0A03A',
+  },
+  // ── Metric status system: synced (green) · estimate (amber) · none (gray) ──
+  statusLegend: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  statusLegendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  statusLegendText: {
+    fontSize: 9,
+    fontWeight: '600',
+    letterSpacing: 0.2,
+    color: 'rgba(255,255,255,0.5)',
+  },
+  statusDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+  },
+  statusDotSynced: {
+    backgroundColor: '#3CD070',
+  },
+  statusDotEst: {
+    backgroundColor: '#E0A03A',
+  },
+  statusDotBlank: {
+    backgroundColor: 'rgba(255,255,255,0.28)',
+  },
+  populatesNote: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    gap: 6,
+    marginBottom: 12,
+  },
+  populatesNoteText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: 'rgba(244,195,22,0.9)',
+    letterSpacing: 0.2,
+  },
+  editableStatLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  goalLabel: {
+    color: 'rgba(255,255,255,0.3)',
   },
   syncedMetricsRow: {
     flexDirection: 'row',
