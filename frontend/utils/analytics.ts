@@ -713,7 +713,7 @@ export const Analytics = {
     token: string | null,
     metadata: {
       plan_id?: string;
-      failure_reason: 'user_cancelled' | 'payment_declined' | 'network' | 'unknown';
+      failure_reason: 'user_cancelled' | 'payment_declined' | 'network' | 'server_validation_rejected' | 'unknown';
     }
   ) =>
     token
