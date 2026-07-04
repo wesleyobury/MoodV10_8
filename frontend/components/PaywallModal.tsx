@@ -73,6 +73,22 @@ const COMMUNITY_BULLETS = [
   'Access to an amazing, driven community',
 ];
 
+/**
+ * Human-readable message from a failed /api/subscription/validate call.
+ * The backend returns detail as either a string or {error, message} — e.g.
+ * 403/409 when the Apple subscription is already linked to a DIFFERENT MOOD
+ * profile. Surfacing this is critical: Apple's sheet succeeds, so without it
+ * the user sees "success" while the server never granted access.
+ */
+function validationFailureMessage(error: unknown): string {
+  if (typeof error === 'string' && error.trim()) return error;
+  if (error && typeof error === 'object') {
+    const msg = (error as { message?: unknown }).message;
+    if (typeof msg === 'string' && msg.trim()) return msg;
+  }
+  return 'Your Apple purchase went through, but we couldn’t link it to this MOOD account. If you subscribed on another MOOD profile, log into that profile and tap Restore Purchases.';
+}
+
 const APPLE_DISCLOSURE =
   'Payment will be charged to your Apple ID account at the confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period.';
 
@@ -262,6 +278,20 @@ export function PaywallModal() {
           let isTrial = false;
           if (token) {
             const validateRes = await validateSubscriptionTransaction(token, result);
+            if (!validateRes.ok) {
+              // Server REFUSED to grant access (e.g. this Apple subscription
+              // is linked to another MOOD profile). Do NOT show success or
+              // dismiss — tell the user exactly what's wrong.
+              Analytics.purchaseFailed(token, {
+                plan_id: result.productID,
+                failure_reason: 'server_validation_rejected',
+              });
+              Alert.alert(
+                'Purchase not linked',
+                validationFailureMessage(validateRes.error),
+              );
+              return;
+            }
             isTrial = validateRes.data?.status === 'in_trial';
             await refreshSubscriptionState();
           }
@@ -317,7 +347,14 @@ export function PaywallModal() {
         });
         const latest = await getLatestSubscriptionEntitlement();
         if (latest) {
-          await validateSubscriptionTransaction(token, latest);
+          const validateRes = await validateSubscriptionTransaction(token, latest);
+          if (!validateRes.ok) {
+            Alert.alert(
+              'Restore not linked',
+              validationFailureMessage(validateRes.error),
+            );
+            return;
+          }
         }
         await refreshSubscriptionState();
         dismissPaywall();
