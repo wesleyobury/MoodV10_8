@@ -25,15 +25,17 @@ export async function tryBeginWorkoutSession(
   openPaywall: (trigger?: PaywallTrigger) => void,
   token: string | null,
 ): Promise<boolean> {
-  if (!canStartWorkout) {
-    openHardPaywall(openPaywall, token);
-    return false;
+  if (!token) {
+    if (!canStartWorkout) {
+      openHardPaywall(openPaywall, token);
+      return false;
+    }
+    return true;
   }
 
   // Server-side gate is the source of truth for returning users and second
-  // workout attempts. Local state is only a fast pre-check.
-  if (!token) return true;
-
+  // workout attempts. Local state is only a fallback for signed-out/dev flows;
+  // using it first can trap a newly-subscribed user behind stale Paywall #3.
   const res = await apiFetch<{ can_start: boolean }>('/api/workouts/start', {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}` },
@@ -42,12 +44,14 @@ export async function tryBeginWorkoutSession(
   if (res.ok && res.data?.can_start !== false) return true;
 
   if (res.status === 402) {
+    console.warn('[Paywall] /api/workouts/start blocked', res.error);
     openHardPaywall(openPaywall, token);
-  } else {
-    Alert.alert(
-      'Couldn’t verify access',
-      'Please check your connection and try again.',
-    );
+    return false;
   }
+
+  Alert.alert(
+    'Couldn’t verify access',
+    'Please check your connection and try again.',
+  );
   return false;
 }

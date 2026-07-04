@@ -292,7 +292,20 @@ export function PaywallModal() {
               );
               return;
             }
-            isTrial = validateRes.data?.status === 'in_trial';
+            const serverStatus = validateRes.data?.status;
+            if (serverStatus !== 'active' && serverStatus !== 'in_trial') {
+              Analytics.purchaseFailed(token, {
+                plan_id: result.productID,
+                failure_reason: 'server_validation_rejected',
+              });
+              Alert.alert(
+                'Subscription not active',
+                'Apple returned the purchase, but this MOOD account does not have an active subscription yet. Please try Restore Purchases or check the subscription status in the App Store.',
+              );
+              return;
+            }
+
+            isTrial = serverStatus === 'in_trial';
             await refreshSubscriptionState();
           }
           Analytics.subscriptionPurchased(token, {

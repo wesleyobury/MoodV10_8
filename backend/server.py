@@ -2120,12 +2120,28 @@ async def start_workout_gate(current_user_id: str = Depends(get_current_user)):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     is_admin, _ = is_admin_effective_sync(user)
+    access, reason = has_full_access(user, is_admin)
+    remaining = free_workouts_remaining(user)
     if not can_start_workout(user, is_admin):
+        sub_mirror = subscription_mirror_for_client(user)
         raise HTTPException(
             status_code=402,
-            detail={"error": "payment_required", "trigger": "start_workout_after_free_session"},
+            detail={
+                "error": "payment_required",
+                "trigger": "start_workout_after_free_session",
+                "has_full_access": access,
+                "reason": reason.value,
+                "free_workouts_remaining": remaining,
+                **sub_mirror,
+            },
         )
-    return {"ok": True, "can_start": True, "free_workouts_remaining": free_workouts_remaining(user)}
+    return {
+        "ok": True,
+        "can_start": True,
+        "has_full_access": access,
+        "reason": reason.value,
+        "free_workouts_remaining": remaining,
+    }
 
 
 # ── Comp accounts (admin-grantable lifetime access) ───────────────────────

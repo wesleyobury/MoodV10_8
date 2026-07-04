@@ -447,6 +447,8 @@ def build_subscriptions_router(
             "ok": True,
             "status": status_value,
             "plan": plan,
+            "product_id": product_id,
+            "has_full_access": status_value in ("active", "in_trial"),
             "trigger_source": trigger_source,
         }
 
