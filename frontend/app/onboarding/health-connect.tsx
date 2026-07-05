@@ -11,6 +11,7 @@ import { useRouter } from 'expo-router';
 import {
   ActivityIndicator,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -103,9 +104,13 @@ export default function HealthConnectScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <View style={styles.spacer} />
-
-      <View style={styles.content}>
+      {/* Scrollable content + fixed footer: content can never render
+          behind the buttons regardless of device height. */}
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.iconRing}>
           <Ionicons name="pulse" size={28} color="#FFD700" />
         </View>
@@ -132,12 +137,18 @@ export default function HealthConnectScreen() {
           ))}
         </View>
 
+        <Text style={styles.usageNote}>
+          You&apos;ll see this data as your daily snapshot on the Home screen,
+          as live heart rate during workout sessions, and as stats added to
+          each completed workout.
+        </Text>
+
         <Text style={styles.healthKitNotice}>
           {Platform.OS === 'ios'
-            ? 'This feature is powered by Apple HealthKit. See your synced data in Settings → Wearable Data. Change access anytime in the iOS Health app.'
-            : 'This feature is powered by Health Connect. See your synced data in Settings → Wearable Data. Change access anytime in Health Connect settings.'}
+            ? 'Powered by Apple HealthKit. View your synced data in Settings → Wearable Data. Change access anytime in the iOS Health app.'
+            : 'Powered by Health Connect. View your synced data in Settings → Wearable Data. Change access anytime in Health Connect settings.'}
         </Text>
-      </View>
+      </ScrollView>
 
       <View style={styles.footer}>
         <TouchableOpacity
@@ -181,8 +192,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     paddingHorizontal: 28,
   },
-  spacer: { flex: 0.15 },
   content: { flex: 1 },
+  contentContainer: { paddingTop: 32, paddingBottom: 24 },
   iconRing: {
     width: 64,
     height: 64,
@@ -192,7 +203,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,215,0,0.35)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 32,
+    marginBottom: 24,
   },
   title: {
     fontSize: 32,
@@ -206,7 +217,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 26,
     color: 'rgba(255,255,255,0.72)',
-    marginBottom: 28,
+    marginBottom: 20,
   },
   bulletsHeader: {
     fontSize: 13,
@@ -216,17 +227,23 @@ const styles = StyleSheet.create({
     letterSpacing: 0.8,
     marginBottom: 12,
   },
+  usageNote: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: 'rgba(255,255,255,0.60)',
+    marginTop: 16,
+  },
   healthKitNotice: {
     fontSize: 13,
     lineHeight: 19,
     color: 'rgba(255,255,255,0.45)',
-    marginTop: 20,
+    marginTop: 14,
   },
   bullets: { marginTop: 4 },
   bulletRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 10,
   },
   bulletUse: {
     marginLeft: 'auto',
