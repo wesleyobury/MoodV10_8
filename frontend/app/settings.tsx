@@ -28,9 +28,22 @@ import {
   getSubscribeCtaCopy,
   getSubscriptionDisplayLabels,
 } from '../hooks/subscription/subscriptionState';
+import { validateSubscriptionTransaction } from '../hooks/subscription/subscriptionApi';
+import { getLatestSubscriptionEntitlement } from '../hooks/subscription/subscriptionSync';
+import {
+  isStoreKitAvailable,
+  restorePurchases as storeKitRestore,
+} from '../modules/mood-storekit/src';
 import { loadUserAge, saveUserAge } from '../utils/workoutSessionStorage';
 import { Analytics, isAnalyticsOptedOut, setAnalyticsOptOut } from '../utils/analytics';
 import { getNotificationStatus, openNotificationSettings, initNotifications, type NotifStatus } from '../utils/notifications';
+import {
+  billingUnavailableMessage,
+  billingValidationFailureMessage,
+  manageSubscriptionLabel,
+  noRestorablePurchasesMessage,
+  openSubscriptionManagement,
+} from '../utils/billingPlatform';
 import BackButton from '../components/BackButton';
 
 import { API_URL } from '../utils/apiConfig';
@@ -88,6 +101,7 @@ export default function Settings() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+  const [restoreBusy, setRestoreBusy] = useState(false);
 
   // Push notification state — derived from OS permission + persisted token
   const [notifStatus, setNotifStatus] = useState<NotifStatus>({ permission: 'undetermined', pushToken: null, registeredWithBackend: false });
@@ -249,6 +263,46 @@ export default function Settings() {
       }
     } catch (error) {
       Alert.alert('Error', 'Unable to open the link. Please try again.');
+    }
+  };
+
+  const handleRestorePurchases = async () => {
+    Analytics.settingsRestorePurchasesTapped(token, {});
+    if (restoreBusy) return;
+    if (!isStoreKitAvailable()) {
+      Alert.alert('Purchases unavailable', billingUnavailableMessage);
+      return;
+    }
+
+    setRestoreBusy(true);
+    try {
+      const entitlements = await storeKitRestore();
+      if (entitlements.length === 0) {
+        await refreshSubscriptionState();
+        Alert.alert('No purchases found', noRestorablePurchasesMessage());
+        return;
+      }
+
+      const latest = await getLatestSubscriptionEntitlement();
+      const restored = latest ?? entitlements[0];
+      if (restored && token) {
+        const validateRes = await validateSubscriptionTransaction(token, restored);
+        if (!validateRes.ok) {
+          Alert.alert('Restore not linked', billingValidationFailureMessage(validateRes.error));
+          return;
+        }
+      }
+
+      Analytics.restorePurchasesCompleted(token, {
+        restored_plan_id: restored?.productID,
+      });
+      await refreshSubscriptionState();
+      Alert.alert('Subscription restored', 'Your active subscription has been synced.');
+    } catch (err) {
+      console.error('Restore purchases failed', err);
+      Alert.alert('Restore failed', 'We could not restore purchases right now. Please try again.');
+    } finally {
+      setRestoreBusy(false);
     }
   };
 
@@ -457,16 +511,12 @@ export default function Settings() {
             <TouchableOpacity
               style={styles.settingsItem}
               data-testid="settings-manage-subscription"
-              onPress={() => {
-                // Apple's universal deep-link surface for the user's
-                // active App Store subscriptions list.
-                Linking.openURL('https://apps.apple.com/account/subscriptions').catch(() => { });
-              }}
+              onPress={() => openSubscriptionManagement().catch(() => { })}
             >
               <View style={styles.settingsItemLeft}>
                 <Ionicons name="cog-outline" size={20} color="#FFD700" />
                 <View style={styles.settingsItemTextCol}>
-                  <Text style={styles.settingsItemText}>Manage in App Store</Text>
+                  <Text style={styles.settingsItemText}>{manageSubscriptionLabel}</Text>
                   <Text style={styles.settingsItemSubtext}>Change plan, cancel, or update billing</Text>
                 </View>
               </View>
@@ -494,13 +544,15 @@ export default function Settings() {
           <TouchableOpacity
             style={styles.settingsItem}
             data-testid="settings-restore-purchases"
-            onPress={() => {
-              // PHASE C — wire to `Transaction.currentEntitlements`.
-              Analytics.settingsRestorePurchasesTapped(token, {});
-            }}
+            onPress={handleRestorePurchases}
+            disabled={restoreBusy}
           >
             <View style={styles.settingsItemLeft}>
-              <Ionicons name="refresh-outline" size={20} color="#FFD700" />
+              {restoreBusy ? (
+                <ActivityIndicator size="small" color="#FFD700" />
+              ) : (
+                <Ionicons name="refresh-outline" size={20} color="#FFD700" />
+              )}
               <View style={styles.settingsItemTextCol}>
                 <Text style={styles.settingsItemText}>Restore Purchases</Text>
                 <Text style={styles.settingsItemSubtext}>Re-sync your active subscription</Text>
@@ -541,8 +593,8 @@ export default function Settings() {
                   </Text>
                   <Text style={styles.settingsItemSubtext}>
                     {healthStatus === 'determined'
-                      ? 'Recovery metrics connected'
-                      : 'Read 5 recovery metrics to personalize workouts'}
+                      ? `Connected via ${Platform.OS === 'ios' ? 'Apple Health (HealthKit)' : 'Health Connect'}`
+                      : `Uses ${Platform.OS === 'ios' ? 'Apple HealthKit' : 'Health Connect'} to read 5 recovery metrics`}
                   </Text>
                 </View>
               </View>
@@ -561,7 +613,7 @@ export default function Settings() {
           )}
 
           <Text style={styles.healthFooter}>
-            MOOD reads 5 metrics. We never write, sell, or share your health data.
+            {`MOOD uses ${Platform.OS === 'ios' ? 'Apple HealthKit' : 'Health Connect'} to read 5 metrics. We never write, sell, or share your health data.`}
           </Text>
 
           {/* Wearable Data drill-down — surfaces every tracked metric in

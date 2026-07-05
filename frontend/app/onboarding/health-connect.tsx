@@ -1,14 +1,16 @@
 /**
  * Onboarding — Screen B. Permission connect / Maybe later.
  *
- *   "5 metrics. Read-only. Never sold. Never used for ads."
- *   [Connect]      → native HealthKit sheet → tabs
+ *   "Connect Apple Health." — explicitly names Apple Health / HealthKit
+ *   (Health Connect on Android) per App Review Guideline 2.5.1.
+ *   [Connect Apple Health] → native HealthKit sheet → tabs
  *   [Maybe later]  → tabs (user can connect later from Settings)
  */
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
 import {
   ActivityIndicator,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -23,6 +25,11 @@ import { markWorkoutHandoffPending } from '../../utils/onboardingFunnelDefer';
 import { WearablesSuccessState } from '../../components/WearablesSuccessState';
 import { useAuth } from '../../contexts/AuthContext';
 import { Analytics } from '../../utils/analytics';
+
+// Guideline 2.5.1 — Apple requires HealthKit functionality to be clearly
+// identified in the UI, so name the framework explicitly per platform.
+const HEALTH_PLATFORM = Platform.OS === 'ios' ? 'Apple Health (HealthKit)' : 'Health Connect';
+const HEALTH_PLATFORM_SHORT = Platform.OS === 'ios' ? 'Apple Health' : 'Health Connect';
 
 const BULLETS = [
   'Resting heart rate',
@@ -98,11 +105,16 @@ export default function HealthConnectScreen() {
           <Ionicons name="pulse" size={28} color="#FFD700" />
         </View>
 
-        <Text style={styles.title}>5 metrics.{'\n'}Read-only.</Text>
+        <Text style={styles.title}>Connect{'\n'}{HEALTH_PLATFORM_SHORT}.</Text>
 
         <Text style={styles.body}>
-          Never sold. Never used for ads. MOOD reads only what&apos;s needed to
-          personalize your workouts.
+          MOOD uses {HEALTH_PLATFORM} to read the 5 metrics below and
+          personalize your workouts. Read-only. Never sold. Never used for
+          ads.
+        </Text>
+
+        <Text style={styles.bulletsHeader}>
+          MOOD reads from {HEALTH_PLATFORM_SHORT}:
         </Text>
 
         <View style={styles.bullets}>
@@ -113,6 +125,12 @@ export default function HealthConnectScreen() {
             </View>
           ))}
         </View>
+
+        <Text style={styles.healthKitNotice}>
+          {Platform.OS === 'ios'
+            ? 'This feature is powered by Apple HealthKit. You can change access anytime in the iOS Health app or Settings.'
+            : 'This feature is powered by Health Connect. You can change access anytime in Health Connect settings.'}
+        </Text>
       </View>
 
       <View style={styles.footer}>
@@ -131,7 +149,9 @@ export default function HealthConnectScreen() {
             {busy ? (
               <ActivityIndicator color="#0c0c0c" />
             ) : (
-              <Text style={styles.primaryButtonText}>Connect</Text>
+              <Text style={styles.primaryButtonText}>
+                Connect {HEALTH_PLATFORM_SHORT}
+              </Text>
             )}
           </LinearGradient>
         </TouchableOpacity>
@@ -181,6 +201,20 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     color: 'rgba(255,255,255,0.72)',
     marginBottom: 28,
+  },
+  bulletsHeader: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.55)',
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+    marginBottom: 12,
+  },
+  healthKitNotice: {
+    fontSize: 13,
+    lineHeight: 19,
+    color: 'rgba(255,255,255,0.45)',
+    marginTop: 20,
   },
   bullets: { marginTop: 4 },
   bulletRow: {
