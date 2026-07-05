@@ -17,7 +17,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Linking,
   Modal,
   Pressable,
   ScrollView,
@@ -39,6 +38,15 @@ import { useStorePrices } from '../hooks/useStorePrices';
 import { apiFetch } from '../utils/api';
 import { validateSubscriptionTransaction } from '../hooks/subscription/subscriptionApi';
 import { getLatestSubscriptionEntitlement } from '../hooks/subscription/subscriptionSync';
+import {
+  billingDisclosure,
+  billingUnavailableMessage,
+  billingValidationFailureMessage,
+  manageSubscriptionLabel,
+  noRestorablePurchasesMessage,
+  openSubscriptionManagement,
+  subscriptionNotActiveMessage,
+} from '../utils/billingPlatform';
 import {
   MONTHLY_TRIAL_PRODUCT_ID,
   YEARLY_TRIAL_PRODUCT_ID,
@@ -76,21 +84,11 @@ const COMMUNITY_BULLETS = [
 /**
  * Human-readable message from a failed /api/subscription/validate call.
  * The backend returns detail as either a string or {error, message} — e.g.
- * 403/409 when the Apple subscription is already linked to a DIFFERENT MOOD
- * profile. Surfacing this is critical: Apple's sheet succeeds, so without it
+ * 403/409 when the store subscription is already linked to a DIFFERENT MOOD
+ * profile. Surfacing this is critical: the native sheet succeeds, so without it
  * the user sees "success" while the server never granted access.
  */
-function validationFailureMessage(error: unknown): string {
-  if (typeof error === 'string' && error.trim()) return error;
-  if (error && typeof error === 'object') {
-    const msg = (error as { message?: unknown }).message;
-    if (typeof msg === 'string' && msg.trim()) return msg;
-  }
-  return 'Your Apple purchase went through, but we couldn’t link it to this MOOD account. If you subscribed on another MOOD profile, log into that profile and tap Restore Purchases.';
-}
-
-const APPLE_DISCLOSURE =
-  'Payment will be charged to your Apple ID account at the confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period.';
+const validationFailureMessage = billingValidationFailureMessage;
 
 /**
  * MOOD V2 1a — map a paywall trigger to its funnel STAGE (1 Soft-onboarding,
@@ -260,7 +258,7 @@ export function PaywallModal() {
         Analytics.purchaseFailed(token, { plan_id: productID, failure_reason: 'unknown' });
         Alert.alert(
           'Purchases unavailable',
-          'We couldn’t reach the App Store just now. Please check your connection and try again.',
+          billingUnavailableMessage,
         );
       }
       return;
@@ -279,7 +277,7 @@ export function PaywallModal() {
           if (token) {
             const validateRes = await validateSubscriptionTransaction(token, result);
             if (!validateRes.ok) {
-              // Server REFUSED to grant access (e.g. this Apple subscription
+              // Server REFUSED to grant access (e.g. this store subscription
               // is linked to another MOOD profile). Do NOT show success or
               // dismiss — tell the user exactly what's wrong.
               Analytics.purchaseFailed(token, {
@@ -300,7 +298,7 @@ export function PaywallModal() {
               });
               Alert.alert(
                 'Subscription not active',
-                'Apple returned the purchase, but this MOOD account does not have an active subscription yet. Please try Restore Purchases or check the subscription status in the App Store.',
+                subscriptionNotActiveMessage(),
               );
               return;
             }
@@ -322,14 +320,14 @@ export function PaywallModal() {
           setPurchaseBusy(false);
         }
       } else if (result.status === 'cancelled') {
-        // User dismissed Apple's sheet — leave the paywall up so they can
+        // User dismissed the native store sheet — leave the paywall up so they can
         // retry or close manually.
         Analytics.purchaseFailed(token, { plan_id: productID, failure_reason: 'user_cancelled' });
       } else {
         Analytics.purchaseFailed(token, { plan_id: productID, failure_reason: 'unknown' });
       }
     } catch (err) {
-      console.error('StoreKit purchase failed', err);
+      console.error('Store purchase failed', err);
       Analytics.purchaseFailed(token, { plan_id: productID, failure_reason: 'unknown' });
     }
   };
@@ -350,30 +348,40 @@ export function PaywallModal() {
   const handleRestore = async () => {
     Analytics.subscriptionRestored(token, { source: 'paywall' });
     Analytics.restorePurchasesClicked(token, { source: 'paywall' });
-    if (!isStoreKitAvailable()) return;
+    if (!isStoreKitAvailable()) {
+      Alert.alert('Purchases unavailable', billingUnavailableMessage);
+      return;
+    }
     setPurchaseBusy(true);
     try {
       const entitlements = await storeKitRestore();
+      if (entitlements.length === 0) {
+        Alert.alert('No purchases found', noRestorablePurchasesMessage());
+        return;
+      }
       if (entitlements.length > 0 && token) {
-        Analytics.restorePurchasesCompleted(token, {
-          restored_plan_id: entitlements[0]?.productID,
-        });
         const latest = await getLatestSubscriptionEntitlement();
-        if (latest) {
-          const validateRes = await validateSubscriptionTransaction(token, latest);
-          if (!validateRes.ok) {
-            Alert.alert(
-              'Restore not linked',
-              validationFailureMessage(validateRes.error),
-            );
-            return;
-          }
+        const restored = latest ?? entitlements[0];
+        if (!restored) {
+          Alert.alert('No purchases found', noRestorablePurchasesMessage());
+          return;
+        }
+        Analytics.restorePurchasesCompleted(token, {
+          restored_plan_id: restored.productID,
+        });
+        const validateRes = await validateSubscriptionTransaction(token, restored);
+        if (!validateRes.ok) {
+          Alert.alert(
+            'Restore not linked',
+            validationFailureMessage(validateRes.error),
+          );
+          return;
         }
         await refreshSubscriptionState();
         dismissPaywall();
       }
     } catch (err) {
-      console.error('StoreKit restore failed', err);
+      console.error('Store restore failed', err);
     } finally {
       setPurchaseBusy(false);
     }
@@ -413,7 +421,7 @@ export function PaywallModal() {
   };
 
   const handleManageBilling = () => {
-    Linking.openURL('https://apps.apple.com/account/subscriptions').catch(() => { });
+    openSubscriptionManagement().catch(() => { });
   };
 
   return (
@@ -616,7 +624,7 @@ export function PaywallModal() {
                   : `Subscribe today for ${selectedPlanPriceLabel}${plan === 'annual' ? ` (${annualMonthlyBreakdown})` : ''}, or try 7 days free first. Cancel anytime in Settings.`}
             </Text>
 
-            <Text style={styles.disclosure}>{APPLE_DISCLOSURE}</Text>
+            <Text style={styles.disclosure}>{billingDisclosure}</Text>
 
             <View style={styles.linkRow}>
               <LinkButton label="Privacy Policy" onPress={() => handleOpenLink('privacy')} />
@@ -627,7 +635,7 @@ export function PaywallModal() {
             </View>
 
             <TouchableOpacity onPress={handleManageBilling} style={styles.manageRow}>
-              <Text style={styles.manageText}>Manage subscription in App Store</Text>
+              <Text style={styles.manageText}>{manageSubscriptionLabel}</Text>
             </TouchableOpacity>
           </View>
         </View>

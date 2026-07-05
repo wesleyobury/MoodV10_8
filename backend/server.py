@@ -169,6 +169,7 @@ from workout_drafts import (
     ensure_workout_drafts_indexes,
 )
 from subscriptions import build_subscriptions_router
+from google_play_verifier import verifier_config_status as google_play_verifier_config_status
 from sync_hero_images import sync_featured_hero_images
 from entitlement import (
     has_full_access,
@@ -13969,6 +13970,15 @@ async def startup_db_client():
     """Start background services on app startup"""
     # Log environment info
     logger.info(f"🌍 Environment: APP_ENV={APP_ENV}, IS_STAGING={IS_STAGING}")
+    play_ready, play_message = google_play_verifier_config_status()
+    if play_ready:
+        logger.info(f"✅ Google Play subscription verifier {play_message}")
+    else:
+        logger.warning(
+            "⚠️ Google Play subscription verifier not ready: %s. "
+            "Android purchases will fail closed until this is configured.",
+            play_message,
+        )
     
     # Create/verify MongoDB indexes for analytics performance
     try:

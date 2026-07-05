@@ -20,7 +20,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
-  Linking,
+  ImageSourcePropType,
   ScrollView,
   StyleSheet,
   Text,
@@ -46,8 +46,8 @@ import { useFoundingPurchase } from '../../hooks/useFoundingPurchase';
 import { foundingDaysRemaining } from '../../utils/founding';
 import { isStoreKitAvailable, restorePurchases } from '../../modules/mood-storekit/src';
 import { useStorePrices } from '../../hooks/useStorePrices';
+import { openSubscriptionManagement } from '../../utils/billingPlatform';
 
-const MANAGE_SUBS_URL = 'https://apps.apple.com/account/subscriptions';
 const PAGE_BG = '#0A0A0A'; // must equal COLORS.bg so the hero fade has no seam
 
 // === SHARED LAYOUT CONSTANTS (used by BOTH variants — never redefined) ===
@@ -61,7 +61,7 @@ const CAROUSEL_HEIGHT = 144; // fixed so card swaps never shift anything below
 const SWAP_SLOT_HEIGHT = 70;
 
 // Mood-specific payoff hero photos. 'lazy' reuses the sweat hero per design.
-const HERO_IMAGES: Record<MoodId, ReturnType<typeof require>> = {
+const HERO_IMAGES: Record<MoodId, ImageSourcePropType> = {
   sweat: require('../../assets/images/payoff/payoff-sweat.png'),
   muscle: require('../../assets/images/payoff/payoff-muscle.png'),
   explosive: require('../../assets/images/payoff/payoff-explosive.png'),
@@ -215,7 +215,7 @@ export default function RevealPayoff() {
   const handleRestore = async () => {
     Analytics.revealCtaTapped(token, { cta: 'restore_purchase' });
     if (!isStoreKitAvailable()) {
-      Linking.openURL(MANAGE_SUBS_URL);
+      openSubscriptionManagement().catch(() => { });
       return;
     }
     try {
@@ -271,14 +271,14 @@ export default function RevealPayoff() {
           <LinearGradient
             colors={['rgba(0,0,0,0.45)', 'transparent']}
             locations={[0, 0.28]}
-            style={StyleSheet.absoluteFill}
+            style={StyleSheet.absoluteFillObject}
             pointerEvents="none"
           />
           {/* Bottom fade — image melts into the page background (#0A0A0A) */}
           <LinearGradient
             colors={['transparent', 'transparent', 'rgba(10,10,10,0.85)', PAGE_BG]}
             locations={[0, 0.45, 0.82, 1]}
-            style={StyleSheet.absoluteFill}
+            style={StyleSheet.absoluteFillObject}
             pointerEvents="none"
           />
 
@@ -336,7 +336,7 @@ export default function RevealPayoff() {
             testID={primaryTestID}
             data-testid={primaryTestID}
           >
-            <LinearGradient colors={BRAND_GRADIENT} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+            <LinearGradient colors={[...BRAND_GRADIENT]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
               {primaryBusy ? (
                 <ActivityIndicator color={COLORS.accentInk} />
               ) : (
@@ -450,7 +450,7 @@ function Disclosure({
       {trial
         ? `7 days free, then ${annualLabel} or ${monthlyLabel} — your choice on the next screen. Auto-renews unless cancelled at least 24 hours before the trial ends. `
         : '$39.00/year, auto-renews unless cancelled at least 24 hours before renewal. '}
-      <Text style={styles.link} onPress={() => Linking.openURL(MANAGE_SUBS_URL)}>Manage subscription</Text>
+      <Text style={styles.link} onPress={() => openSubscriptionManagement().catch(() => { })}>Manage subscription</Text>
       <Text> · </Text>
       <Text style={styles.link} onPress={() => router.push('/terms-of-service')}>Terms</Text>
       <Text> · </Text>

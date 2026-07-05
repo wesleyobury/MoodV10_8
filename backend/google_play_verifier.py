@@ -81,6 +81,26 @@ def package_name() -> str:
     return os.environ.get("GOOGLE_PLAY_PACKAGE_NAME", _DEFAULT_PACKAGE)
 
 
+def verifier_config_status() -> Tuple[bool, str]:
+    """Return whether Google Play verification has enough config to run.
+
+    This is intentionally lighter than `get_play_service()`: startup can log a
+    clear warning without building the API client or touching secrets unless a
+    purchase actually needs verification.
+    """
+    if not _LIB_AVAILABLE:
+        return False, "google-api-python-client/google-auth dependencies unavailable"
+    raw = os.environ.get("GOOGLE_PLAY_SERVICE_ACCOUNT_JSON", "").strip()
+    path = os.environ.get("GOOGLE_PLAY_SERVICE_ACCOUNT_FILE", "").strip()
+    if not raw and not path:
+        return False, "missing GOOGLE_PLAY_SERVICE_ACCOUNT_JSON or GOOGLE_PLAY_SERVICE_ACCOUNT_FILE"
+    if path and not raw and not os.path.isfile(path):
+        return False, f"GOOGLE_PLAY_SERVICE_ACCOUNT_FILE not found: {path}"
+    if not os.environ.get("GOOGLE_PLAY_PACKAGE_NAME"):
+        return True, f"configured with default package {package_name()}"
+    return True, f"configured for package {package_name()}"
+
+
 def _load_credentials():
     """Load the service-account credential from JSON string or file, else None."""
     raw = os.environ.get("GOOGLE_PLAY_SERVICE_ACCOUNT_JSON", "").strip()

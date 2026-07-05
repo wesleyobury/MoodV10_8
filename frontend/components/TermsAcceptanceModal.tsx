@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { billingProcessorName, billingStoreName } from '../utils/billingPlatform';
 
 interface TermsAcceptanceModalProps {
   visible: boolean;
@@ -142,7 +143,7 @@ export default function TermsAcceptanceModal({
             <View style={styles.eulaSection}>
               <Text style={styles.eulaSectionTitle}>6. Subscriptions & Billing</Text>
               <Text style={styles.eulaText}>
-                The App offers auto-renewing subscriptions through Apple. All billing is handled by Apple, and Apple processes your payment information.
+                The App offers auto-renewing subscriptions through {billingStoreName}. All billing is handled by {billingProcessorName}, and {billingProcessorName} processes your payment information.
               </Text>
               <Text style={styles.eulaText}>
                 Subscription options may include:
@@ -153,10 +154,10 @@ export default function TermsAcceptanceModal({
                 <Text style={styles.bulletItem}>• Founding Member Annual — $39 per year</Text>
               </View>
               <Text style={styles.eulaText}>
-                Subscriptions renew automatically unless canceled at least 24 hours before the end of the current billing period. Manage and cancel subscriptions through your Apple ID account settings.
+                Subscriptions renew automatically unless canceled at least 24 hours before the end of the current billing period. Manage and cancel subscriptions through your {billingStoreName} account settings.
               </Text>
               <Text style={styles.eulaText}>
-                We may receive subscription status and entitlement information from Apple so we can grant access to premium features, but we do not receive your payment credentials.
+                We may receive subscription status and entitlement information from {billingProcessorName} so we can grant access to premium features, but we do not receive your payment credentials.
               </Text>
             </View>
 

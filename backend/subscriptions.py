@@ -131,9 +131,8 @@ class SubscriptionTriggerRecord(BaseModel):
 
 class SubscriptionValidateRequest(BaseModel):
     """
-    Phase C — Foreground purchase reconciliation. The native StoreKit2
-    layer hands us the signed JWS from `Product.purchase()` (or from a
-    `Transaction.updates` event for renewals).
+    Phase C — Foreground purchase reconciliation. iOS sends the StoreKit2 JWS;
+    Android sends the opaque Play purchase token in `signed_payload`.
     """
     signed_payload: str
     product_id: str
@@ -151,8 +150,8 @@ class SubscriptionValidateRequest(BaseModel):
 class SubscriptionSyncRequest(BaseModel):
     """
     App-open receipt sync. When `has_active_entitlement` is true the client
-    forwards the latest StoreKit entitlement JWS; when false the device has
-    no active subscription and we mark any prior subscription lapsed.
+    forwards the latest store entitlement; when false the device has no active
+    subscription and we mark any prior subscription lapsed.
     """
     has_active_entitlement: bool = True
     signed_payload: Optional[str] = None
@@ -203,10 +202,12 @@ def _reconcile_from_payload(payload) -> tuple[str, Dict[str, Optional[str]]]:
                  against the Play Developer API.
     """
     if _is_google_platform(getattr(payload, "platform", None)):
-        return resolve_subscription_from_purchase_token(
+        status, fields = resolve_subscription_from_purchase_token(
             getattr(payload, "signed_payload", None),
             fallback_product_id=getattr(payload, "product_id", None),
         )
+        fields["app_account_token"] = getattr(payload, "app_account_token", None)
+        return status, fields
     status, fields = resolve_subscription_from_receipt(
         payload.signed_payload,
         fallback_product_id=getattr(payload, "product_id", None),
@@ -247,18 +248,18 @@ def app_account_token_for_user_id(user_id: str) -> Optional[str]:
     return f"{raw[0:8]}-{raw[8:12]}-{raw[12:16]}-{raw[16:20]}-{raw[20:32]}"
 
 
-async def assert_apple_transaction_account_allowed(
+async def assert_store_transaction_account_allowed(
     db,
     current_user_id: str,
     payload,
-    apple_fields: Dict[str, Optional[str]],
+    store_fields: Dict[str, Optional[str]],
 ) -> None:
-    """Prevent one Apple subscription from silently unlocking another profile."""
-    if _is_google_platform(getattr(payload, "platform", None)):
-        return
+    """Prevent one store subscription from silently unlocking another profile."""
+    is_google = _is_google_platform(getattr(payload, "platform", None))
+    store_label = "Google Play" if is_google else "Apple"
 
     incoming_token = (
-        apple_fields.get("app_account_token") or getattr(payload, "app_account_token", None)
+        store_fields.get("app_account_token") or getattr(payload, "app_account_token", None)
     )
     expected_token = app_account_token_for_user_id(current_user_id)
     if incoming_token and expected_token and incoming_token.lower() != expected_token.lower():
@@ -266,14 +267,16 @@ async def assert_apple_transaction_account_allowed(
             status_code=403,
             detail={
                 "error": "subscription_belongs_to_different_account",
-                "message": "This Apple subscription is linked to a different MOOD profile.",
+                "message": f"This {store_label} subscription is linked to a different MOOD profile.",
             },
         )
 
     original_transaction_id = (
-        apple_fields.get("original_transaction_id")
+        store_fields.get("original_transaction_id")
         or getattr(payload, "original_transaction_id", None)
     )
+    if is_google and not original_transaction_id:
+        original_transaction_id = getattr(payload, "signed_payload", None)
     if not original_transaction_id:
         return
 
@@ -289,7 +292,7 @@ async def assert_apple_transaction_account_allowed(
             status_code=409,
             detail={
                 "error": "subscription_already_linked",
-                "message": "This Apple subscription is already linked to another MOOD profile.",
+                "message": f"This {store_label} subscription is already linked to another MOOD profile.",
             },
         )
 
@@ -383,9 +386,9 @@ def build_subscriptions_router(
         payload: SubscriptionValidateRequest,
         current_user_id: str = Depends(get_current_user),
     ):
-        status_value, apple_fields = _reconcile_from_payload(payload)
-        await assert_apple_transaction_account_allowed(db, current_user_id, payload, apple_fields)
-        product_id = normalize_product_id(apple_fields.get("product_id") or payload.product_id)
+        status_value, store_fields = _reconcile_from_payload(payload)
+        await assert_store_transaction_account_allowed(db, current_user_id, payload, store_fields)
+        product_id = normalize_product_id(store_fields.get("product_id") or payload.product_id)
         plan = plan_for_product(product_id)
         if not plan:
             logger.warning(
@@ -401,11 +404,11 @@ def build_subscriptions_router(
             product_id=product_id,
             plan=plan,
             status=status_value,
-            transaction_id=apple_fields.get("transaction_id"),
-            original_transaction_id=apple_fields.get("original_transaction_id"),
-            purchase_date=apple_fields.get("purchase_date"),
-            expiration_date=apple_fields.get("expiration_date"),
-            app_account_token=apple_fields.get("app_account_token"),
+            transaction_id=store_fields.get("transaction_id"),
+            original_transaction_id=store_fields.get("original_transaction_id"),
+            purchase_date=store_fields.get("purchase_date"),
+            expiration_date=store_fields.get("expiration_date"),
+            app_account_token=store_fields.get("app_account_token"),
             consume_trigger=True,
         )
 
@@ -440,7 +443,7 @@ def build_subscriptions_router(
             plan=plan,
             revenue_usd=PRODUCT_PRICE_USD.get(product_id),
             source=analytics_source_for(payload.platform),
-            txn_key=apple_fields.get("original_transaction_id") or apple_fields.get("transaction_id"),
+            txn_key=store_fields.get("original_transaction_id") or store_fields.get("transaction_id"),
         )
 
         return {
@@ -504,9 +507,9 @@ def build_subscriptions_router(
                 detail="product_id and signed_payload required when has_active_entitlement is true",
             )
 
-        status_value, apple_fields = _reconcile_from_payload(payload)
-        await assert_apple_transaction_account_allowed(db, current_user_id, payload, apple_fields)
-        product_id = normalize_product_id(apple_fields.get("product_id") or payload.product_id)
+        status_value, store_fields = _reconcile_from_payload(payload)
+        await assert_store_transaction_account_allowed(db, current_user_id, payload, store_fields)
+        product_id = normalize_product_id(store_fields.get("product_id") or payload.product_id)
         plan = plan_for_product(product_id)
         if not plan:
             logger.warning(
@@ -522,11 +525,11 @@ def build_subscriptions_router(
             product_id=product_id,
             plan=plan,
             status=status_value,
-            transaction_id=apple_fields.get("transaction_id"),
-            original_transaction_id=apple_fields.get("original_transaction_id"),
-            purchase_date=apple_fields.get("purchase_date"),
-            expiration_date=apple_fields.get("expiration_date"),
-            app_account_token=apple_fields.get("app_account_token"),
+            transaction_id=store_fields.get("transaction_id"),
+            original_transaction_id=store_fields.get("original_transaction_id"),
+            purchase_date=store_fields.get("purchase_date"),
+            expiration_date=store_fields.get("expiration_date"),
+            app_account_token=store_fields.get("app_account_token"),
             consume_trigger=False,
         )
 

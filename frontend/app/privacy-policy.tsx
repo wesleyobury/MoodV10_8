@@ -10,6 +10,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { billingProcessorName, billingStoreName } from '../utils/billingPlatform';
 
 export default function PrivacyPolicyScreen() {
   const router = useRouter();
@@ -312,10 +313,10 @@ export default function PrivacyPolicyScreen() {
 
           <Text style={styles.subTitle}>6.3 Subscription & Payments Data</Text>
           <Text style={styles.paragraph}>
-            Our app offers auto-renewable subscriptions. Payment processing is handled by Apple, and we do not receive or store your Apple payment credentials. We may receive subscription status and entitlement information from Apple to enable your access to premium content.
+            Our app offers auto-renewable subscriptions. Payment processing is handled by {billingProcessorName} through {billingStoreName}, and we do not receive or store your payment credentials. We may receive subscription status and entitlement information from {billingProcessorName} to enable your access to premium content.
           </Text>
           <Text style={styles.paragraph}>
-            Third parties that may process your data in connection with subscriptions, analytics, crash reporting, and entitlement validation include our backend service providers, analytics/crash reporting providers, and Apple App Store services. These providers are contractually restricted from using your data for purposes other than providing services to MOOD.
+            Third parties that may process your data in connection with subscriptions, analytics, crash reporting, and entitlement validation include our backend service providers, analytics/crash reporting providers, and {billingStoreName} services. These providers are contractually restricted from using your data for purposes other than providing services to MOOD.
           </Text>
 
           <Text style={styles.subTitle}>6.4 Legal Requirements</Text>

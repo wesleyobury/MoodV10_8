@@ -1,6 +1,7 @@
 import type { Entitlement } from '../../contexts/AuthContext';
 import type { SubscriptionStatus } from '../../contexts/SubscriptionContext';
 import { mapServerStatusToLocal, type ServerSubscriptionStatus } from './mapSubscriptionStatus';
+import { billingStoreName } from '../../utils/billingPlatform';
 
 /**
  * Derive UI subscription status from server entitlement (single source of truth).
@@ -27,7 +28,7 @@ export function resolveSubscriptionStatus(
   return mapped ?? 'none';
 }
 
-/** Settings / paywall CTA copy — Apple decides trial eligibility at purchase time. */
+/** Settings / paywall CTA copy — the store decides trial eligibility at purchase time. */
 export function getSubscribeCtaCopy(status: SubscriptionStatus): {
   title: string;
   subtitle: string;
@@ -40,7 +41,7 @@ export function getSubscribeCtaCopy(status: SubscriptionStatus): {
   }
   return {
     title: 'Subscribe to MOOD Premium',
-    subtitle: 'Trial offers, if eligible, appear at App Store checkout.',
+    subtitle: `Trial offers, if eligible, appear at ${billingStoreName} checkout.`,
   };
 }
 
@@ -57,7 +58,7 @@ export function getSubscriptionDisplayLabels(status: SubscriptionStatus): {
     case 'active':
       return {
         title: 'MOOD Premium',
-        subtitle: 'Renews automatically. Cancel anytime in the App Store.',
+        subtitle: `Renews automatically. Cancel anytime in ${billingStoreName}.`,
       };
     case 'lapsed':
       return {

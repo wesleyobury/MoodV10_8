@@ -10,6 +10,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { billingProcessorName, billingStoreName } from '../utils/billingPlatform';
 
 export default function TermsOfServiceScreen() {
   const router = useRouter();
@@ -145,7 +146,7 @@ export default function TermsOfServiceScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Subscriptions & Billing</Text>
           <Text style={styles.paragraph}>
-            MOOD offers the following auto-renewable subscriptions through Apple:
+            MOOD offers the following auto-renewable subscriptions through {billingStoreName}:
           </Text>
           <View style={styles.bulletList}>
             <Text style={styles.bulletItem}>• MOOD Monthly — $9.99 per month</Text>
@@ -156,7 +157,7 @@ export default function TermsOfServiceScreen() {
             These subscriptions auto-renew unless canceled at least 24 hours before the end of the current billing period. Renewal charges occur within 24 hours before the period ends.
           </Text>
           <Text style={styles.paragraph}>
-            All payment processing is handled by Apple. We do not receive or store your credit card or payment credentials. Manage and cancel your subscriptions through your Apple ID account settings in the App Store.
+            All payment processing is handled by {billingProcessorName}. We do not receive or store your credit card or payment credentials. Manage and cancel your subscriptions through your {billingStoreName} account settings.
           </Text>
           <Text style={styles.paragraph}>
             Your subscription status is shared with our backend to provide access to premium content and entitlement services.

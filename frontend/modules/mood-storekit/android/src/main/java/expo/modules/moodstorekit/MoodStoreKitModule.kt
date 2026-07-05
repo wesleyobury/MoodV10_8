@@ -60,6 +60,11 @@ class MoodStoreKitModule : Module() {
 
   private var billingClient: BillingClient? = null
 
+  private val trialProductIds = setOf(
+    "com.mood.subscription.monthly",
+    "com.mood.subscription.annual"
+  )
+
   /**
    * Purchases initiated via `purchase()` resolve asynchronously through the
    * PurchasesUpdatedListener, so we stash the pending promise keyed by the
@@ -159,7 +164,7 @@ class MoodStoreKitModule : Module() {
             promise.reject("E_STOREKIT_NO_PRODUCT", "Product $productID not found", null)
             return@launch
           }
-          val offerToken = product.subscriptionOfferDetails?.firstOrNull()?.offerToken
+          val offerToken = selectOffer(product, productID)?.offerToken
           if (offerToken == null) {
             promise.reject("E_STOREKIT_NO_OFFER", "No subscription offer for $productID", null)
             return@launch
@@ -300,7 +305,7 @@ class MoodStoreKitModule : Module() {
   }
 
   private fun serializeProduct(product: ProductDetails): Map<String, Any?> {
-    val offer = product.subscriptionOfferDetails?.firstOrNull()
+    val offer = selectOffer(product, product.productId)
     // The last pricing phase is the recurring/base price; earlier phases are
     // intro/trial offers. Use the last phase for the headline display price.
     val phase = offer?.pricingPhases?.pricingPhaseList?.lastOrNull()
@@ -316,6 +321,30 @@ class MoodStoreKitModule : Module() {
       // per-product flag — expose false to match the iOS field's meaning.
       "isFamilyShareable" to false
     )
+  }
+
+  private fun selectOffer(
+    product: ProductDetails,
+    productID: String
+  ): ProductDetails.SubscriptionOfferDetails? {
+    val offers = product.subscriptionOfferDetails ?: return null
+    if (offers.isEmpty()) return null
+
+    val wantsTrialOffer = trialProductIds.contains(productID)
+    return offers.firstOrNull { offerLooksTrial(it) == wantsTrialOffer }
+      ?: offers.firstOrNull { !offerLooksTrial(it) }
+      ?: offers.first()
+  }
+
+  private fun offerLooksTrial(offer: ProductDetails.SubscriptionOfferDetails): Boolean {
+    val offerId = offer.offerId?.lowercase(Locale.US) ?: ""
+    val basePlanId = offer.basePlanId.lowercase(Locale.US)
+    val tags = offer.offerTags.map { it.lowercase(Locale.US) }
+    val hasFreePhase = offer.pricingPhases.pricingPhaseList.any { it.priceAmountMicros == 0L }
+    return hasFreePhase ||
+      offerId.contains("trial") ||
+      basePlanId.contains("trial") ||
+      tags.any { it.contains("trial") }
   }
 
   private fun serializeTransaction(purchase: Purchase): Map<String, Any?> {
