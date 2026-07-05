@@ -594,7 +594,7 @@ export default function Settings() {
                   <Text style={styles.settingsItemSubtext}>
                     {healthStatus === 'determined'
                       ? `Connected via ${Platform.OS === 'ios' ? 'Apple Health (HealthKit)' : 'Health Connect'}`
-                      : `Uses ${Platform.OS === 'ios' ? 'Apple HealthKit' : 'Health Connect'} to read 5 recovery metrics`}
+                      : `Uses ${Platform.OS === 'ios' ? 'Apple HealthKit' : 'Health Connect'} to read recovery & workout metrics`}
                   </Text>
                 </View>
               </View>
@@ -613,7 +613,7 @@ export default function Settings() {
           )}
 
           <Text style={styles.healthFooter}>
-            {`MOOD uses ${Platform.OS === 'ios' ? 'Apple HealthKit' : 'Health Connect'} to read 5 metrics. We never write, sell, or share your health data.`}
+            {`MOOD uses ${Platform.OS === 'ios' ? 'Apple HealthKit' : 'Health Connect'} to read heart rate, HRV, sleep, active energy, steps, and workouts. We never write, sell, or share your health data.`}
           </Text>
 
           {/* Wearable Data drill-down — surfaces every tracked metric in

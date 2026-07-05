@@ -31,12 +31,17 @@ import { Analytics } from '../../utils/analytics';
 const HEALTH_PLATFORM = Platform.OS === 'ios' ? 'Apple Health (HealthKit)' : 'Health Connect';
 const HEALTH_PLATFORM_SHORT = Platform.OS === 'ios' ? 'Apple Health' : 'Health Connect';
 
-const BULLETS = [
-  'Resting heart rate',
-  'Heart rate variability',
-  'Sleep (last night)',
-  'Active energy (yesterday)',
-  'Steps (yesterday)',
+// Must match the native read set exactly (7 types) — see
+// modules/mood-healthkit/{ios/MoodHealthKitModule.swift,android/.../MoodHealthKitModule.kt}.
+// Each entry pairs the metric with where it's used in the app.
+const BULLETS: { label: string; use: string }[] = [
+  { label: 'Resting heart rate', use: 'daily snapshot' },
+  { label: 'Heart rate variability', use: 'workout stats' },
+  { label: 'Sleep (last night)', use: 'daily snapshot' },
+  { label: 'Active energy', use: 'daily snapshot' },
+  { label: 'Steps', use: 'daily snapshot' },
+  { label: 'Heart rate (live)', use: 'workout sessions' },
+  { label: 'Workout history', use: 'last-workout stats' },
 ];
 
 export default function HealthConnectScreen() {
@@ -108,7 +113,7 @@ export default function HealthConnectScreen() {
         <Text style={styles.title}>Connect{'\n'}{HEALTH_PLATFORM_SHORT}.</Text>
 
         <Text style={styles.body}>
-          MOOD uses {HEALTH_PLATFORM} to read the 5 metrics below and
+          MOOD uses {HEALTH_PLATFORM} to read the health data below and
           personalize your workouts. Read-only. Never sold. Never used for
           ads.
         </Text>
@@ -118,18 +123,19 @@ export default function HealthConnectScreen() {
         </Text>
 
         <View style={styles.bullets}>
-          {BULLETS.map((label) => (
+          {BULLETS.map(({ label, use }) => (
             <View key={label} style={styles.bulletRow}>
               <View style={styles.bulletDot} />
               <Text style={styles.bulletLabel}>{label}</Text>
+              <Text style={styles.bulletUse}>{use}</Text>
             </View>
           ))}
         </View>
 
         <Text style={styles.healthKitNotice}>
           {Platform.OS === 'ios'
-            ? 'This feature is powered by Apple HealthKit. You can change access anytime in the iOS Health app or Settings.'
-            : 'This feature is powered by Health Connect. You can change access anytime in Health Connect settings.'}
+            ? 'This feature is powered by Apple HealthKit. See your synced data in Settings → Wearable Data. Change access anytime in the iOS Health app.'
+            : 'This feature is powered by Health Connect. See your synced data in Settings → Wearable Data. Change access anytime in Health Connect settings.'}
         </Text>
       </View>
 
@@ -221,6 +227,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
+  },
+  bulletUse: {
+    marginLeft: 'auto',
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.40)',
   },
   bulletDot: {
     width: 4,
