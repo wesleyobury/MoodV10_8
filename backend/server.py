@@ -544,7 +544,7 @@ CURRENT_TERMS_VERSION = "2025-01-19"
 # every startup and is idempotent (only flips False→True, never demotes
 # existing founders), so bumping the cutoff forward additively flips any
 # accounts created between the old and new cutoffs into Founding Members.
-FOUNDING_MEMBER_CUTOFF = datetime(2026, 7, 2, 0, 0, 0, tzinfo=timezone.utc)
+FOUNDING_MEMBER_CUTOFF = datetime(2026, 7, 7, 5, 0, 0, tzinfo=timezone.utc)
 
 # Cloudinary Configuration
 cloudinary.config(
@@ -14200,9 +14200,10 @@ async def startup_db_client():
 
     # Phase D — Founding Member migration (Part 9 of the v1.0 paid launch).
     # Flips `founding_member = true` for every user account whose `created_at`
-    # precedes the FOUNDING_MEMBER_CUTOFF (now 2026-05-26 00:00 UTC; bumped
-    # forward from 2026-05-14 per product decision on 2026-05-26 so signups
-    # through 2026-05-25 are still grandfathered onto the lifetime tier).
+    # precedes the FOUNDING_MEMBER_CUTOFF (now 2026-07-07 05:00 UTC = midnight
+    # CDT at the end of V2 App Store launch day; bumped per product decision on
+    # 2026-07-06 so the entire pre-launch base PLUS day-one signups are
+    # grandfathered into the founding offer).
     # Idempotent — skipped on accounts that are already flagged. Bumping the
     # cutoff forward additively flips any new accounts in the widened window
     # to Founding Member on next startup.
