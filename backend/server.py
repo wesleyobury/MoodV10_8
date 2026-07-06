@@ -2256,6 +2256,77 @@ async def update_app_config(update: AppConfigUpdate, admin_id: str = Depends(req
     return {"ok": True}
 
 
+@api_router.post("/admin/founding-window/migrate")
+async def run_founding_window_migration(commit: bool = False,
+                                        admin_id: str = Depends(require_admin)):
+    """Admin-only: run the V2 founding-window migration in-process (same logic
+    as scripts/migrate_founding_window.py, for hosts without shell/DB access).
+
+    Stamps `founding_window_expires_at = now + 14d` on founding members that
+    don't have one, and persists `v2_launch_date` to app_config. Idempotent:
+    never moves an expiry once set. Call with ?commit=false (default) for a
+    dry-run that only reports counts.
+    """
+    window_days = 14
+    launch_date = datetime.now(timezone.utc)
+    window_expires = launch_date + timedelta(days=window_days)
+
+    needs_window_query = {
+        "founding_member": True,
+        "$or": [
+            {"founding_window_expires_at": {"$exists": False}},
+            {"founding_window_expires_at": None},
+        ],
+    }
+    total_users = await db.users.count_documents({})
+    total_founding = await db.users.count_documents({"founding_member": True})
+    needs_window = await db.users.count_documents(needs_window_query)
+
+    result = {
+        "dry_run": not commit,
+        "total_users": total_users,
+        "founding_members": total_founding,
+        "needing_window_stamp": needs_window,
+        "launch_date": launch_date.isoformat(),
+        "window_expires": window_expires.isoformat(),
+        "modified": 0,
+    }
+
+    if commit:
+        update_result = await db.users.update_many(
+            needs_window_query,
+            {"$set": {
+                "founding_window_expires_at": window_expires,
+                "founding_pricing_claimed": False,
+            }},
+        )
+        # Anchor the global window to the FIRST commit only — re-runs (e.g. to
+        # stamp day-one stragglers) must not move the launch date / extend it.
+        existing_config = await db.app_config.find_one({"_id": "app_config"})
+        if not (existing_config and existing_config.get("v2_launch_date")):
+            await db.app_config.update_one(
+                {"_id": "app_config"},
+                {"$set": {"v2_launch_date": launch_date}},
+                upsert=True,
+            )
+        else:
+            result["launch_date"] = (
+                existing_config["v2_launch_date"].isoformat()
+                if isinstance(existing_config["v2_launch_date"], datetime)
+                else existing_config["v2_launch_date"]
+            )
+        result["modified"] = update_result.modified_count
+        logger.info(
+            f"🏁 Founding window migration committed by admin {admin_id}: "
+            f"stamped {update_result.modified_count} users, expires {window_expires.isoformat()}"
+        )
+
+    await log_admin_action(admin_id, "founding_window_migrate",
+                           "/admin/founding-window/migrate",
+                           result, 200, "committed" if commit else "dry_run")
+    return result
+
+
 # Auth Tracking Endpoints
 
 @api_router.get("/auth/sessions")
