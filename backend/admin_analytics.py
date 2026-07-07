@@ -15,6 +15,12 @@ from bson import ObjectId
 import logging
 from collections import defaultdict
 
+from product_pricing import (
+    price_for_plan,
+    monthly_price_for_plan,
+    STORE_COMMISSION_RATE,
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -447,12 +453,41 @@ async def get_monetization_analytics(
         viewed_n, completed_n = len(viewed), len(completed)
         overall_conv = round(completed_n / viewed_n * 100, 1) if viewed_n else 0.0
 
-        # Revenue (sum of purchase_completed.revenue_usd).
-        rev_doc = await db.user_events.aggregate([
-            {"$match": {**base_match, "event_type": "purchase_completed"}},
-            {"$group": {"_id": None, "revenue": {"$sum": {"$ifNull": ["$metadata.revenue_usd", 0]}}}},
-        ]).to_list(1)
-        total_revenue = round(rev_doc[0]["revenue"], 2) if rev_doc else 0.0
+        # Revenue — client `purchase_completed` events do NOT carry
+        # `metadata.revenue_usd` (only server-side `subscription_started` does),
+        # so we price each purchase from its `metadata.plan_id` via the shared
+        # SKU→price map (product_pricing.py). Real money only: exclude free-trial
+        # starts (is_trial) and comped accounts (is_comp), and de-dupe repeat /
+        # duplicate purchase_completed events to one per (participant, plan).
+        paid_match = {
+            **base_match,
+            "event_type": "purchase_completed",
+            "metadata.is_trial": {"$ne": True},
+            "metadata.is_comp": {"$ne": True},
+        }
+        paid_docs = await db.user_events.aggregate([
+            {"$match": paid_match},
+            {"$group": {"_id": {"p": _ONB_PARTICIPANT, "plan": "$metadata.plan_id"}}},
+            {"$group": {"_id": "$_id.plan", "count": {"$sum": 1},
+                        "buyers": {"$addToSet": "$_id.p"}}},
+        ]).to_list(100)
+        total_revenue = round(sum(price_for_plan(d["_id"]) * d["count"] for d in paid_docs), 2)
+        paying_customers = len({p for d in paid_docs for p in d["buyers"] if p is not None})
+        # Net revenue = gross minus the App/Play store commission (see
+        # product_pricing.STORE_COMMISSION_RATE).
+        net_revenue = round(total_revenue * (1.0 - STORE_COMMISSION_RATE), 2)
+
+        # MRR — monthly-recurring revenue from the CURRENT active paid subscriber
+        # base (a live snapshot, independent of the selected date range). Annual
+        # plans are normalised to a monthly figure. Excludes trials/comps/internal.
+        mrr_docs = await db.users.aggregate([
+            {"$match": {"subscription.status": "active",
+                        "is_comp": {"$ne": True}, "is_internal": {"$ne": True}}},
+            {"$group": {"_id": "$subscription.product_id", "count": {"$sum": 1}}},
+        ]).to_list(50)
+        active_subscribers = sum(d["count"] for d in mrr_docs)
+        mrr = round(sum(monthly_price_for_plan(d["_id"]) * d["count"] for d in mrr_docs), 2)
+        arr = round(mrr * 12, 2)
 
         trials = await _onb_participants(db, base_match, "trial_started")
 
@@ -492,35 +527,45 @@ async def get_monetization_analytics(
         by_trigger.sort(key=lambda x: -x["viewed"])
         by_trigger = by_trigger[:12]
 
-        # Plan mix — count + revenue per plan on purchase_completed.
-        plan_docs = await db.user_events.aggregate([
-            {"$match": {**base_match, "event_type": "purchase_completed"}},
-            {"$group": {
-                "_id": "$metadata.plan_id",
-                "count": {"$sum": 1},
-                "revenue": {"$sum": {"$ifNull": ["$metadata.revenue_usd", 0]}},
-            }},
-        ]).to_list(50)
+        # Plan mix — unique paying customers + priced revenue per plan (same
+        # de-duped, paid-only basis as total revenue above).
         plan_mix = sorted(
             [{"plan": str(d["_id"] or "unknown"), "count": d["count"],
-              "revenue_usd": round(d["revenue"], 2)} for d in plan_docs],
-            key=lambda x: -x["count"],
+              "revenue_usd": round(price_for_plan(d["_id"]) * d["count"], 2)}
+             for d in paid_docs],
+            key=lambda x: -x["revenue_usd"],
         )
 
         # Founding-member modal claim rate.
+        # The app fires several event-name variants for the same founding-member
+        # surface, so union them all. `founding_member_offer_shown` (the primary
+        # shown event from analytics.ts) was previously missing from the shown
+        # set, which let claim_rate exceed 100%.
         f_shown = await _onb_participants(db, base_match, "founding_modal_shown")
         f_shown |= await _onb_participants(db, base_match, "founding_member_modal_shown")
+        f_shown |= await _onb_participants(db, base_match, "founding_member_offer_shown")
         f_claimed = await _onb_participants(db, base_match, "founding_modal_claimed")
+        f_claimed |= await _onb_participants(db, base_match, "founding_member_claimed")
         f_dismissed = await _onb_participants(db, base_match, "founding_modal_dismissed")
+        f_dismissed |= await _onb_participants(db, base_match, "founding_member_dismissed")
+        # A claimer was, by definition, shown the offer — guarantees rate ≤ 100%
+        # even if their shown-event is out of range or under a legacy name.
+        f_shown |= f_claimed
 
         return {
             "start_date": start_date.isoformat(),
             "end_date": end_date.isoformat(),
+            "store_commission_rate": STORE_COMMISSION_RATE,
             "headline": {
                 "paywall_viewers": viewed_n,
                 "purchasers": completed_n,
+                "paying_customers": paying_customers,
                 "conversion_rate": overall_conv,
                 "revenue_usd": total_revenue,
+                "net_revenue_usd": net_revenue,
+                "mrr_usd": mrr,
+                "arr_usd": arr,
+                "active_subscribers": active_subscribers,
                 "trials_started": len(trials),
                 "founding_claim_rate": round(len(f_claimed) / len(f_shown) * 100, 1) if f_shown else 0.0,
             },
@@ -545,8 +590,11 @@ async def get_monetization_analytics(
         return {
             "start_date": start_date.isoformat() if start_date else None,
             "end_date": end_date.isoformat() if end_date else None,
-            "headline": {"paywall_viewers": 0, "purchasers": 0, "conversion_rate": 0,
-                         "revenue_usd": 0, "trials_started": 0, "founding_claim_rate": 0},
+            "store_commission_rate": STORE_COMMISSION_RATE,
+            "headline": {"paywall_viewers": 0, "purchasers": 0, "paying_customers": 0,
+                         "conversion_rate": 0, "revenue_usd": 0, "net_revenue_usd": 0,
+                         "mrr_usd": 0, "arr_usd": 0, "active_subscribers": 0,
+                         "trials_started": 0, "founding_claim_rate": 0},
             "funnel": [], "by_stage": [], "by_trigger": [], "plan_mix": [],
             "founding": {"shown": 0, "claimed": 0, "dismissed": 0, "claim_rate": 0},
             "churn": {"trial_cancelled": 0, "subscription_lapsed": 0, "purchase_failed": 0},

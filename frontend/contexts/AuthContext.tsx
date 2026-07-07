@@ -68,6 +68,9 @@ interface AuthContextType {
   refreshEntitlement: () => Promise<void>;
   /** Parallel refresh of /users/me + /me/entitlement — call after any IAP event. */
   refreshSubscriptionState: () => Promise<void>;
+  redeemCreatorCode: (
+    code: string
+  ) => Promise<{ ok: boolean; reason?: string; creator_name?: string }>;
   continueAsGuest: () => void;
   exitGuestMode: () => void;
   acceptTerms: () => Promise<void>;
@@ -653,6 +656,38 @@ export function AuthProvider({ children }: AuthProviderProps) {
     await refreshSubscriptionFromServer(refreshUser, refreshEntitlement);
   }, [refreshUser, refreshEntitlement]);
 
+  // Redeem a creator comp code. Provider-agnostic (works for email/Google/
+  // Apple-Hide-My-Email accounts) because it runs after auth, keyed to the
+  // signed-in user — not their email. On success we refresh entitlement +
+  // user so any paywall clears immediately.
+  const redeemCreatorCode = useCallback(
+    async (
+      code: string
+    ): Promise<{ ok: boolean; reason?: string; creator_name?: string }> => {
+      try {
+        const storedToken = token || (await secureStorage.get(AUTH_TOKEN_KEY));
+        if (!storedToken) return { ok: false, reason: 'not_authenticated' };
+        const res = await apiFetch<{ ok: boolean; reason?: string; creator_name?: string }>(
+          '/api/codes/redeem',
+          {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${storedToken}` },
+            body: JSON.stringify({ code: (code || '').trim() }),
+          }
+        );
+        if (res.ok && res.data?.ok) {
+          await Promise.all([refreshEntitlement(), refreshUser()]);
+          return { ok: true, reason: res.data.reason, creator_name: res.data.creator_name };
+        }
+        return { ok: false, reason: res.data?.reason || 'invalid' };
+      } catch (e) {
+        console.log('redeemCreatorCode failed:', e);
+        return { ok: false, reason: 'error' };
+      }
+    },
+    [token, refreshEntitlement, refreshUser]
+  );
+
   // Accept terms of service - called when user agrees to terms
   const acceptTerms = async () => {
     if (!token) {
@@ -718,6 +753,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     entitlement,
     refreshEntitlement,
     refreshSubscriptionState,
+    redeemCreatorCode,
     continueAsGuest,
     exitGuestMode,
     acceptTerms,

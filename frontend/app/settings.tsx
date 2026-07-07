@@ -45,6 +45,7 @@ import {
   openSubscriptionManagement,
 } from '../utils/billingPlatform';
 import BackButton from '../components/BackButton';
+import CreatorCodeModal from '../components/CreatorCodeModal';
 
 import { API_URL } from '../utils/apiConfig';
 import { navigateToLoginAfterSessionEnd } from '../utils/navigateToLoginAfterSessionEnd';
@@ -61,7 +62,7 @@ const EXTERNAL_URLS = {
 export default function Settings() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { token, logout, user, updateUser, refreshSubscriptionState } = useAuth();
+  const { token, logout, user, updateUser, refreshSubscriptionState, entitlement } = useAuth();
   const { status: healthStatus, available: healthAvailable, requestPermissions: requestHealthPermissions } = useHealth();
   const { status: subscriptionStatus, hasActiveAccess, openPaywall } = useSubscription();
 
@@ -93,6 +94,7 @@ export default function Settings() {
 
   // Credentials modal state
   const [showCredentialsModal, setShowCredentialsModal] = useState(false);
+  const [showCreatorCodeModal, setShowCreatorCodeModal] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newUsername, setNewUsername] = useState('');
   const [newEmail, setNewEmail] = useState('');
@@ -483,6 +485,22 @@ export default function Settings() {
             </View>
             <Ionicons name="chevron-forward" size={18} color='#666' />
           </TouchableOpacity>
+
+          {!entitlement?.has_full_access && (
+            <TouchableOpacity
+              style={styles.settingsItem}
+              onPress={() => setShowCreatorCodeModal(true)}
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="ticket-outline" size={20} color="#FFD700" />
+                <View>
+                  <Text style={styles.settingsItemText}>Redeem creator code</Text>
+                  <Text style={styles.settingsItemSubtext}>Unlock full access with a creator code</Text>
+                </View>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color='#666' />
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Subscription Section — Phase E paid launch (Part 11). */}
@@ -1084,6 +1102,20 @@ export default function Settings() {
           </ScrollView>
         </SafeAreaView>
       </Modal>
+
+      <CreatorCodeModal
+        visible={showCreatorCodeModal}
+        onClose={() => setShowCreatorCodeModal(false)}
+        onRedeemed={(creatorName) => {
+          setShowCreatorCodeModal(false);
+          Alert.alert(
+            "You're all set",
+            creatorName
+              ? `Full access unlocked — thanks to ${creatorName}'s code.`
+              : 'Full access unlocked.'
+          );
+        }}
+      />
 
       {/* Change Credentials Modal */}
       <Modal

@@ -30,29 +30,19 @@ def _is_google_platform(platform: Optional[str]) -> bool:
     """True when a validate/sync request originated on Android/Google Play."""
     return (platform or "").strip().lower() in ("google", "android", "play")
 
-# ── App Store Connect product identifiers ───────────────────────────────────
-PRODUCT_ANNUAL = "com.mood.subscription.annual"
-PRODUCT_MONTHLY = "com.mood.subscription.monthly"
-PRODUCT_ANNUAL_PAID = "com.mood.subscription.annual.paid"
-PRODUCT_MONTHLY_PAID = "com.mood.subscription.monthly.paid"
-PRODUCT_FOUNDING_ANNUAL = "com.mood.subscription.founding_annual"
-
-ALL_PRODUCT_IDS = (
+# ── App Store Connect product identifiers + prices ──────────────────────────
+# Sourced from product_pricing.py (shared with admin revenue analytics) so the
+# SKU→price map has a single source of truth and can never drift apart.
+from product_pricing import (  # noqa: E402
     PRODUCT_ANNUAL,
     PRODUCT_MONTHLY,
     PRODUCT_ANNUAL_PAID,
     PRODUCT_MONTHLY_PAID,
     PRODUCT_FOUNDING_ANNUAL,
+    ALL_PRODUCT_IDS,
+    PRODUCT_PRICE_USD,
+    price_for_plan,
 )
-
-# Display prices (USD) per SKU — gross list price for funnel analytics.
-PRODUCT_PRICE_USD = {
-    PRODUCT_ANNUAL: 79.0,
-    PRODUCT_MONTHLY: 9.99,
-    PRODUCT_ANNUAL_PAID: 79.0,
-    PRODUCT_MONTHLY_PAID: 9.99,
-    PRODUCT_FOUNDING_ANNUAL: 39.0,
-}
 
 
 # ── New-subscription Discord alert ──────────────────────────────────────────

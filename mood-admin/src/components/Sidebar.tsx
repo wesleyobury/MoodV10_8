@@ -16,6 +16,8 @@ import {
   KeyRound,
   Rocket,
   DollarSign,
+  CreditCard,
+  Download,
 } from "lucide-react";
 
 const navItems = [
@@ -23,7 +25,9 @@ const navItems = [
   { href: "/insights", label: "Insights", icon: Lightbulb },
   { href: "/onboarding", label: "Onboarding", icon: Rocket },
   { href: "/funnels", label: "Funnels", icon: GitBranch },
+  { href: "/acquisition", label: "Acquisition", icon: Download },
   { href: "/monetization", label: "Monetization", icon: DollarSign },
+  { href: "/subscribers", label: "Subscribers", icon: CreditCard },
   { href: "/retention", label: "Retention", icon: BarChart3 },
   { href: "/features", label: "Features", icon: BarChart3 },
   { href: "/social", label: "Social", icon: Heart },

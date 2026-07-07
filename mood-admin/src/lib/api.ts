@@ -380,6 +380,64 @@ class ApiClient {
     );
   }
 
+  // ── Creator comp codes ───────────────────────────────────────────────
+  async listCreatorCodes() {
+    return this.get<{ codes: CreatorCode[]; total: number }>("/admin/creator-codes");
+  }
+
+  async createCreatorCode(payload: {
+    creator_name: string;
+    code?: string;
+    creator_contact?: string;
+    note?: string;
+    max_redemptions?: number;
+  }) {
+    return this.post<{ ok: boolean; code: string }>("/admin/creator-codes", payload);
+  }
+
+  async revokeCreatorCode(code: string, revokeAccess = false) {
+    const qs = revokeAccess ? "?revoke_access=true" : "";
+    return this.delete<{ ok: boolean; revoked_users: number }>(
+      `/admin/creator-codes/${encodeURIComponent(code)}${qs}`
+    );
+  }
+
+  // ── Subscriber directory (the "who paid" list) ──────────────────────
+  async getSubscribers(
+    options: {
+      status?: "all" | "active" | "trial" | "comp" | "lapsed";
+      limit?: number;
+      skip?: number;
+      search?: string;
+      includeInternal?: boolean;
+    } = {}
+  ) {
+    const params = new URLSearchParams();
+    params.append("status", options.status || "all");
+    params.append("limit", String(options.limit ?? 200));
+    params.append("skip", String(options.skip ?? 0));
+    if (options.search) params.append("search", options.search);
+    if (options.includeInternal) params.append("include_internal", "true");
+    return this.get<SubscribersData>(`/analytics/admin/subscribers?${params}`);
+  }
+
+  // ── Acquisition funnel (downloads → signup → trial → paid) ──────────
+  async getAcquisition(start?: string, end?: string, includeInternal: boolean = false) {
+    const params = new URLSearchParams();
+    if (start) params.append("start", start);
+    if (end) params.append("end", end);
+    if (includeInternal) params.append("include_internal", "true");
+    return this.get<AcquisitionData>(`/analytics/admin/acquisition?${params}`);
+  }
+
+  async getStoreMetricsStatus() {
+    return this.get<StoreMetricsStatus>("/analytics/admin/store-metrics/status");
+  }
+
+  async syncStoreMetrics(days: number = 14) {
+    return this.post<StoreSyncResult>(`/analytics/admin/store-metrics/sync?days=${days}`, {});
+  }
+
   // ── MOOD V2 Phase 1: Forced-update / app config ──────────────────────
   async getAppConfig() {
     return this.get<AppConfig>("/config");
@@ -398,6 +456,25 @@ export interface CompUser {
   avatar?: string;
   comp_granted_at: string | null;
   comp_granted_by?: string | null;
+}
+
+export interface CreatorCodeRedemption {
+  username: string;
+  email: string;
+  user_id: string;
+  redeemed_at: string | null;
+}
+
+export interface CreatorCode {
+  code: string;
+  creator_name: string;
+  creator_contact: string;
+  note: string;
+  active: boolean;
+  max_redemptions: number;
+  redemption_count: number;
+  redemptions: CreatorCodeRedemption[];
+  created_at: string | null;
 }
 
 export interface AppConfig {
@@ -419,6 +496,113 @@ export interface AppConfig {
 }
 
 export const api = new ApiClient();
+
+export interface AcquisitionStage {
+  key: "downloads" | "signups" | "trials" | "paid";
+  label: string;
+  value: number;
+  from_prev_pct: number;
+  pct_of_top: number;
+}
+
+export interface StorePlatformStatus {
+  configured: boolean;
+  [k: string]: unknown;
+}
+
+export interface AcquisitionDownloads {
+  total: number;
+  by_platform: { apple?: number; google?: number };
+  series: { date: string; apple: number; google: number; total: number }[];
+  days_with_data: number;
+  configured: { apple?: boolean; google?: boolean };
+  status: { apple?: StorePlatformStatus; google?: StorePlatformStatus };
+  last_synced_date: string | null;
+}
+
+export interface AcquisitionData {
+  start_date: string;
+  end_date: string;
+  stages: AcquisitionStage[];
+  downloads: AcquisitionDownloads;
+  conversions: {
+    download_to_signup?: number;
+    signup_to_trial?: number;
+    trial_to_paid?: number;
+    signup_to_paid?: number;
+    download_to_paid?: number;
+  };
+  paid_split: {
+    trial_converted?: number;
+    direct?: number;
+    trial_converted_pct?: number;
+    direct_pct?: number;
+  };
+  counts: { downloads?: number; signups?: number; trials?: number; paid?: number };
+  notes?: string[];
+  error?: string;
+}
+
+export interface StoreMetricsStatus {
+  configured: { apple?: boolean; google?: boolean };
+  status: { apple?: StorePlatformStatus; google?: StorePlatformStatus };
+  last_synced_date: string | null;
+  days_with_data_30d: number;
+}
+
+export interface StoreSyncResult {
+  synced: { platform: string; date: string; downloads: number }[];
+  skipped: { apple: number; google: number };
+  errors: { platform: string; date: string; error: string }[];
+  configured: { apple?: boolean; google?: boolean };
+  ran_at: string;
+}
+
+export type SubscriberStatus = "active" | "trial" | "comp" | "lapsed";
+
+export interface SubscriberRow {
+  user_id: string;
+  username: string;
+  email: string;
+  avatar: string;
+  status: SubscriberStatus;
+  raw_status: string | null;
+  plan: string | null;
+  product_id: string | null;
+  price_usd: number;
+  net_price_usd: number;
+  mrr_usd: number;
+  purchase_date: string | null;
+  expiration_date: string | null;
+  last_validated_at: string | null;
+  founding_member: boolean;
+  is_comp: boolean;
+  platform: string;
+  created_at: string | null;
+}
+
+export interface SubscribersSummary {
+  total: number;
+  active: number;
+  trial: number;
+  comp: number;
+  lapsed: number;
+  founding_members: number;
+  active_annual: number;
+  active_monthly: number;
+  mrr_usd: number;
+  net_mrr_usd: number;
+}
+
+export interface SubscribersData {
+  summary: SubscribersSummary;
+  subscribers: SubscriberRow[];
+  total: number;
+  status: string;
+  limit: number;
+  skip: number;
+  error?: string;
+}
 
 // Types
 export interface EngagementData {
@@ -597,11 +781,17 @@ export interface MonetizationPlan {
 export interface MonetizationData {
   start_date: string;
   end_date: string;
+  store_commission_rate: number;
   headline: {
     paywall_viewers: number;
     purchasers: number;
+    paying_customers: number;
     conversion_rate: number;
     revenue_usd: number;
+    net_revenue_usd: number;
+    mrr_usd: number;
+    arr_usd: number;
+    active_subscribers: number;
     trials_started: number;
     founding_claim_rate: number;
   };

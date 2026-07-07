@@ -143,6 +143,13 @@ from admin_analytics import (
     get_comparison_stats,
     get_engagement_metrics,
 )
+from subscriber_directory import get_subscribers_directory
+from acquisition_funnel import get_acquisition_funnel
+import store_metrics
+from store_metrics_worker import (
+    start_store_metrics_worker,
+    stop_store_metrics_worker,
+)
 from content_moderation import (
     check_content,
     filter_content,
@@ -2211,6 +2218,210 @@ async def list_comp_users(admin_id: str = Depends(require_admin)):
     return {"users": users, "total": len(users)}
 
 
+# ── Creator comp codes (per-creator, provider-agnostic comp) ──────────────
+# A creator code is a second way to flip `is_comp` (the entitlement flag in
+# entitlement.py stays the source of truth). Unlike an emailed grant, a code
+# is redeemed by the creator from inside the app AFTER they sign in — so it
+# works no matter how they authenticated (email, Google, or Apple w/ Hide My
+# Email). Each code is per-creator and single-use by default, so it can't be
+# leaked to hand out free access. Redemptions are recorded for attribution.
+
+# Unambiguous alphabet (no O/0/I/1/L) for generated codes.
+_CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
+
+
+def _normalize_code(raw: str) -> str:
+    """Codes are case/space-insensitive on input; stored uppercased + trimmed."""
+    return re.sub(r"\s+", "", (raw or "")).strip().upper()
+
+
+def _slug_for_code(name: str) -> str:
+    return re.sub(r"[^A-Za-z0-9]", "", (name or "")).upper()[:12]
+
+
+async def _generate_unique_creator_code(creator_name: str) -> str:
+    """Prefer a memorable code from the creator's name (MOOD-STEPH); fall back
+    to a random suffix on collision."""
+    base = _slug_for_code(creator_name) or "CREATOR"
+    candidate = f"MOOD-{base}"
+    for _ in range(25):
+        if not await db.creator_codes.find_one({"code": candidate}):
+            return candidate
+        suffix = "".join(secrets.choice(_CODE_ALPHABET) for _ in range(3))
+        candidate = f"MOOD-{base}-{suffix}"
+    return "MOOD-" + "".join(secrets.choice(_CODE_ALPHABET) for _ in range(6))
+
+
+class CreatorCodeCreate(BaseModel):
+    creator_name: str
+    code: Optional[str] = None            # omit to auto-generate from name
+    creator_contact: Optional[str] = None  # optional: their email/handle, for your records
+    note: Optional[str] = None
+    max_redemptions: int = 1
+
+
+class CodeRedeem(BaseModel):
+    code: str
+
+
+@api_router.post("/admin/creator-codes")
+async def create_creator_code(payload: CreatorCodeCreate, admin_id: str = Depends(require_admin)):
+    """Create a per-creator comp code. If `code` is omitted, one is generated
+    from the creator's name (e.g. MOOD-STEPH). Redeeming it grants is_comp."""
+    now = datetime.now(timezone.utc)
+    if payload.code:
+        code = _normalize_code(payload.code)
+        if not code:
+            raise HTTPException(status_code=400, detail="Invalid code")
+        if await db.creator_codes.find_one({"code": code}):
+            raise HTTPException(status_code=409, detail="Code already exists")
+    else:
+        code = await _generate_unique_creator_code(payload.creator_name)
+
+    doc = {
+        "code": code,
+        "creator_name": (payload.creator_name or "").strip(),
+        "creator_contact": (payload.creator_contact or "").strip(),
+        "note": (payload.note or "").strip(),
+        "max_redemptions": max(1, int(payload.max_redemptions or 1)),
+        "redemption_count": 0,
+        "redemptions": [],
+        "active": True,
+        "created_at": now,
+        "created_by": admin_id,
+    }
+    await db.creator_codes.insert_one(doc)
+    await log_admin_action(admin_id, "create_creator_code", "/admin/creator-codes",
+                           {"code": code, "creator_name": payload.creator_name}, 200, "created")
+    return {"ok": True, "code": code}
+
+
+@api_router.get("/admin/creator-codes")
+async def list_creator_codes(admin_id: str = Depends(require_admin)):
+    """List all creator codes with redemption info for the admin dashboard."""
+    docs = await db.creator_codes.find().sort("created_at", -1).to_list(1000)
+    codes = []
+    for d in docs:
+        created = d.get("created_at")
+        codes.append({
+            "code": d.get("code"),
+            "creator_name": d.get("creator_name", ""),
+            "creator_contact": d.get("creator_contact", ""),
+            "note": d.get("note", ""),
+            "active": bool(d.get("active", True)),
+            "max_redemptions": int(d.get("max_redemptions", 1)),
+            "redemption_count": int(d.get("redemption_count", 0)),
+            "redemptions": [
+                {
+                    "username": r.get("username", ""),
+                    "email": r.get("email", ""),
+                    "user_id": r.get("user_id", ""),
+                    "redeemed_at": r.get("redeemed_at").isoformat()
+                    if isinstance(r.get("redeemed_at"), datetime) else r.get("redeemed_at"),
+                }
+                for r in (d.get("redemptions") or [])
+            ],
+            "created_at": created.isoformat() if isinstance(created, datetime) else created,
+        })
+    return {"codes": codes, "total": len(codes)}
+
+
+@api_router.delete("/admin/creator-codes/{code}")
+async def revoke_creator_code(code: str, revoke_access: bool = False,
+                              admin_id: str = Depends(require_admin)):
+    """Deactivate a code so it can no longer be redeemed. Does NOT revoke comp
+    already granted to creators who redeemed it, unless revoke_access=true."""
+    now = datetime.now(timezone.utc)
+    norm = _normalize_code(code)
+    result = await db.creator_codes.update_one(
+        {"code": norm},
+        {"$set": {"active": False, "revoked_at": now, "revoked_by": admin_id}},
+    )
+    ok = result.matched_count > 0
+    revoked_users = 0
+    if ok and revoke_access:
+        doc = await db.creator_codes.find_one({"code": norm})
+        ids = []
+        for r in (doc.get("redemptions") or []):
+            try:
+                ids.append(ObjectId(r["user_id"]))
+            except Exception:
+                pass
+        if ids:
+            res2 = await db.users.update_many(
+                {"_id": {"$in": ids}, "comp_code": norm},
+                {"$set": {"is_comp": False, "comp_revoked_at": now, "comp_revoked_by": admin_id}},
+            )
+            revoked_users = res2.modified_count
+    await log_admin_action(admin_id, "revoke_creator_code", f"/admin/creator-codes/{norm}",
+                           {"code": norm, "revoke_access": revoke_access}, 200 if ok else 404,
+                           f"deactivated;{revoked_users}_users_revoked" if ok else "code_not_found")
+    return {"ok": ok, "revoked_users": revoked_users}
+
+
+@api_router.post("/codes/redeem")
+async def redeem_creator_code(payload: CodeRedeem, current_user_id: str = Depends(get_current_user)):
+    """Authenticated user redeems a creator code → grants lifetime comp access.
+    Provider-agnostic: works no matter how the user signed in. Idempotent for
+    the same user; capped by max_redemptions across users."""
+    code = _normalize_code(payload.code)
+    if not code:
+        return {"ok": False, "reason": "invalid"}
+
+    doc = await db.creator_codes.find_one({"code": code})
+    if not doc or not doc.get("active", True):
+        return {"ok": False, "reason": "invalid"}
+
+    now = datetime.now(timezone.utc)
+    user_oid = ObjectId(current_user_id)
+    user = await db.users.find_one({"_id": user_oid})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Same user re-redeeming: idempotent, don't double-count.
+    if any(r.get("user_id") == current_user_id for r in (doc.get("redemptions") or [])):
+        await db.users.update_one(
+            {"_id": user_oid},
+            {"$set": {"is_comp": True, "comp_source": "creator_code", "comp_code": code},
+             "$unset": {"comp_revoked_at": "", "comp_revoked_by": ""}},
+        )
+        return {"ok": True, "reason": "already", "creator_name": doc.get("creator_name", "")}
+
+    # Atomically claim a redemption slot (guards the cap under races).
+    claim = await db.creator_codes.update_one(
+        {"code": code, "active": True,
+         "$expr": {"$lt": ["$redemption_count", "$max_redemptions"]}},
+        {"$inc": {"redemption_count": 1},
+         "$push": {"redemptions": {
+             "user_id": current_user_id,
+             "username": user.get("username", ""),
+             "email": user.get("email", ""),
+             "redeemed_at": now,
+         }}},
+    )
+    if claim.modified_count == 0:
+        return {"ok": False, "reason": "exhausted"}
+
+    # Grant comp (same fields as admin grant_comp, plus code attribution).
+    await db.users.update_one(
+        {"_id": user_oid},
+        {"$set": {
+            "is_comp": True,
+            "comp_granted_at": now,
+            "comp_granted_by": f"code:{code}",
+            "comp_source": "creator_code",
+            "comp_code": code,
+        },
+         "$unset": {"comp_revoked_at": "", "comp_revoked_by": ""}},
+    )
+    try:
+        await track_user_event(db, current_user_id, "creator_code_redeemed",
+                               {"code": code, "creator_name": doc.get("creator_name", "")})
+    except Exception:
+        pass
+    return {"ok": True, "reason": "granted", "creator_name": doc.get("creator_name", "")}
+
+
 # ── Forced-update config (public read + admin write) ──────────────────────
 class AppConfigUpdate(BaseModel):
     min_supported_build_ios: Optional[int] = None
@@ -2666,10 +2877,10 @@ async def get_time_series_analytics(
     
     # Determine time grouping
     if period == "month":
-        days_back = 365
+        days_back = max(365, limit)
         date_format = "%Y-%m"
     elif period == "week":
-        days_back = 180
+        days_back = max(180, limit)
         date_format = "%Y-W%V"
     else:  # day
         days_back = 30 if limit <= 30 else limit
@@ -2811,18 +3022,32 @@ async def get_time_series_analytics(
 
         elif metric_type == "revenue":
             # Primary value = revenue (USD); secondary = number of purchases.
+            # purchase_completed carries no revenue_usd, so price each purchase
+            # from metadata.plan_id (product_pricing.py). Real money only
+            # (exclude trials + comps) and de-dupe to one per (buyer, plan, bucket).
+            from product_pricing import price_for_plan
+            _participant = {"$ifNull": ["$user_id", {"$ifNull": ["$merged_to_user_id", "$device_id"]}]}
             pipeline = [
-                {"$match": {**base_filter, "event_type": "purchase_completed"}},
-                {"$group": {
-                    "_id": {"$dateToString": {"format": mongo_date_format, "date": "$timestamp"}},
-                    "count": {"$sum": 1},
-                    "revenue": {"$sum": {"$ifNull": ["$metadata.revenue_usd", 0]}},
+                {"$match": {**base_filter, "event_type": "purchase_completed",
+                            "metadata.is_trial": {"$ne": True},
+                            "metadata.is_comp": {"$ne": True}}},
+                {"$group": {  # de-dupe repeat purchase_completed events
+                    "_id": {
+                        "bucket": {"$dateToString": {"format": mongo_date_format, "date": "$timestamp"}},
+                        "buyer": _participant,
+                        "plan": "$metadata.plan_id",
+                    },
+                }},
+                {"$group": {  # collect the de-duped plans per bucket
+                    "_id": "$_id.bucket",
+                    "plans": {"$push": "$_id.plan"},
                 }},
                 {"$limit": max_buckets},
             ]
             for row in await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(max_buckets):
-                data_by_period[row["_id"]]["count"] = round(row.get("revenue", 0), 2)
-                data_by_period[row["_id"]]["value"] = row["count"]
+                revenue = round(sum(price_for_plan(p) for p in row["plans"]), 2)
+                data_by_period[row["_id"]]["count"] = revenue
+                data_by_period[row["_id"]]["value"] = len(row["plans"])
 
         elif metric_type == "completion_rate":
             # Primary value = workouts_completed / workouts_started * 100 per bucket.
@@ -3839,6 +4064,107 @@ async def get_monetization_endpoint(
         return await get_monetization_analytics(db, start_date, end_date, include_internal)
     except Exception as e:
         logger.error(f"Monetization endpoint error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/analytics/admin/subscribers")
+async def get_subscribers_endpoint(
+    status: str = "all",          # all | active | trial | comp | lapsed
+    limit: int = 200,
+    skip: int = 0,
+    search: Optional[str] = None,
+    include_internal: bool = False,
+    current_user_id: str = Depends(require_admin)
+):
+    """
+    Named subscriber directory — the "who paid" list behind the aggregate
+    Monetization numbers.
+
+    Returns a summary (active / trial / comp / lapsed counts, founding members,
+    MRR) plus a paginated list of individual subscribers with plan, price,
+    purchase/expiration dates, and status.
+
+    Query params:
+    - status: filter rows by derived status (default: all)
+    - limit / skip: pagination (default 200 / 0)
+    - search: case-insensitive match on username or email
+    - include_internal: include internal/staff accounts (default: false)
+    """
+    try:
+        return await get_subscribers_directory(
+            db,
+            status=status,
+            limit=limit,
+            skip=skip,
+            include_internal=include_internal,
+            search=search,
+        )
+    except Exception as e:
+        logger.error(f"Subscribers endpoint error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/analytics/admin/acquisition")
+async def get_acquisition_endpoint(
+    start: Optional[str] = None,
+    end: Optional[str] = None,
+    include_internal: bool = False,
+    current_user_id: str = Depends(require_admin)
+):
+    """
+    Acquisition funnel: Downloads (App Store + Google Play) → Signups → Free
+    trials → Paid subscribers, with per-stage conversion and the split between
+    trial-converted and straight-to-paid subscribers.
+
+    Query params:
+    - start / end: ISO date strings (default: last 30 days)
+    - include_internal: include internal/staff accounts (default: false)
+    """
+    try:
+        if end:
+            end_date = datetime.fromisoformat(end.replace('Z', '+00:00'))
+        else:
+            end_date = datetime.now(timezone.utc)
+        if start:
+            start_date = datetime.fromisoformat(start.replace('Z', '+00:00'))
+        else:
+            start_date = end_date - timedelta(days=30)
+        return await get_acquisition_funnel(db, start_date, end_date, include_internal)
+    except Exception as e:
+        logger.error(f"Acquisition endpoint error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/analytics/admin/store-metrics/status")
+async def get_store_metrics_status_endpoint(
+    current_user_id: str = Depends(require_admin)
+):
+    """Config + coverage snapshot for store download reporting (no secrets)."""
+    try:
+        end_date = datetime.now(timezone.utc)
+        start_date = end_date - timedelta(days=30)
+        data = await store_metrics.get_downloads_in_range(db, start_date, end_date)
+        return {
+            "configured": data.get("configured", {}),
+            "status": data.get("status", {}),
+            "last_synced_date": data.get("last_synced_date"),
+            "days_with_data_30d": data.get("days_with_data", 0),
+        }
+    except Exception as e:
+        logger.error(f"Store-metrics status error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.post("/analytics/admin/store-metrics/sync")
+async def sync_store_metrics_endpoint(
+    days: int = 14,
+    current_user_id: str = Depends(require_admin)
+):
+    """Manually trigger a pull of the last `days` days of store downloads."""
+    try:
+        return await store_metrics.sync_store_metrics(db, days=days)
+    except Exception as e:
+        logger.error(f"Store-metrics sync error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -14064,6 +14390,9 @@ async def startup_db_client():
         await db.users.create_index([("username", 1)])
         await db.users.create_index([("email", 1)])
 
+        # Creator comp codes — unique code lookup for redemption.
+        await db.creator_codes.create_index([("code", 1)], unique=True)
+
         # Onboarding tips backfill — reset tip states for ALL users to 'unseen'
         # so the redesigned tips re-fire for everyone. v3 bump is paired with
         # the Tip 2 redesign (bottom-floating popup) + Tip 3 forced-placement.
@@ -14194,6 +14523,13 @@ async def startup_db_client():
         logger.info("🚀 Notification worker started successfully")
     except Exception as e:
         logger.error(f"Failed to start notification worker: {e}")
+
+    # Start store-metrics (downloads/installs) sync worker
+    try:
+        await start_store_metrics_worker(db)
+        logger.info("📊 Store-metrics worker started successfully")
+    except Exception as e:
+        logger.error(f"Failed to start store-metrics worker: {e}")
     
     # Migration: fix None values in notification_settings
     # These cause silent push send failures (not None → True in Python)
@@ -14313,6 +14649,13 @@ async def shutdown_db_client():
         logger.info("🛑 Notification worker stopped")
     except Exception as e:
         logger.error(f"Error stopping notification worker: {e}")
+
+    # Stop store-metrics worker
+    try:
+        await stop_store_metrics_worker()
+        logger.info("🛑 Store-metrics worker stopped")
+    except Exception as e:
+        logger.error(f"Error stopping store-metrics worker: {e}")
     
     # Close database connection
     client.close()

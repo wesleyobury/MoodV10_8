@@ -222,10 +222,17 @@ export default function OverviewPage() {
       {engagement && (
         <div className="bg-card border border-border rounded-lg p-4">
           <h3 className="text-sm font-medium text-muted-foreground mb-4 flex items-center gap-2">
-            Active Users & Stickiness
-            <Tooltip content="Engagement metrics based on app_session_start events. DAU/MAU indicates how often users return." />
+            Users & Stickiness
+            <Tooltip content="Total Users is all-time (lifetime). DAU/WAU/MAU are rolling windows from app_session_start events and are not affected by the date range." />
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1">
+                <p className="text-2xl font-bold text-primary">{(stats?.total_users ?? 0).toLocaleString()}</p>
+                <Tooltip content="All-time registered users (lifetime — not affected by the date range)." />
+              </div>
+              <p className="text-sm text-muted-foreground">Total Users</p>
+            </div>
             <div className="text-center">
               <div className="flex items-center justify-center gap-1">
                 <p className="text-2xl font-bold">{engagement.dau}</p>
@@ -272,13 +279,13 @@ export default function OverviewPage() {
       {/* KPI Cards - Row 1 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <KPICard
-          title="Daily Active Users"
-          value={getMetric("active_users")?.current || stats?.daily_active_users || 0}
+          title="Active Users"
+          value={getMetric("active_users")?.current ?? stats?.daily_active_users ?? 0}
           previousValue={getMetric("active_users")?.previous}
           changePercent={getMetric("active_users")?.change_pct}
           trend={getMetric("active_users")?.trend}
           icon={<Users className="h-4 w-4" />}
-          tooltip={METRIC_TOOLTIPS.activeUsers}
+          tooltip="Unique users active in the selected date range. (Today's DAU is in the Users & Stickiness panel above.)"
           onClick={() => handleKPIClick("active_users")}
         />
         <KPICard

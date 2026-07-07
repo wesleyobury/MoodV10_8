@@ -29,6 +29,8 @@ const DATE_PRESETS = [
   { label: "Last 14 days", days: 14 },
   { label: "Last 30 days", days: 30 },
   { label: "Last 90 days", days: 90 },
+  { label: "Last 12 months", days: 365 },
+  { label: "All time", days: 3650 },
 ];
 
 const GRANULARITY_OPTIONS = [
@@ -44,7 +46,11 @@ export function GlobalFilterBar({ filters, onChange }: GlobalFilterBarProps) {
   const handlePreset = (days: number) => {
     const end = endOfDay(new Date());
     const start = startOfDay(subDays(end, days - 1));
-    onChange({ ...filters, startDate: start, endDate: end });
+    // Auto-pick granularity so long ranges don't render thousands of daily
+    // points (e.g. "All time" → weekly). Users can still override below.
+    const granularity: GlobalFilters["granularity"] =
+      days <= 2 ? "hour" : days <= 120 ? "day" : "week";
+    onChange({ ...filters, startDate: start, endDate: end, granularity });
     setDateDropdownOpen(false);
   };
 

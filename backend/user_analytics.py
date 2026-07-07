@@ -625,13 +625,35 @@ async def get_admin_analytics(
         active_users_list = await db.user_events.distinct("user_id", active_query)
         active_users = len([u for u in active_users_list if u not in excluded_user_ids])
         
-        # Daily active users (today)
-        dau_query = {"timestamp": {"$gte": today}}
+        # Daily active users — unique users active in the last 24h via
+        # app_session_start. Matches the /engagement endpoint's DAU exactly so
+        # the Overview KPI and the stickiness panel can never disagree. (Was
+        # "any event since UTC-midnight", which under-counted early in the day.)
+        day_ago = datetime.now(timezone.utc) - timedelta(days=1)
+        dau_query = {"event_type": "app_session_start", "timestamp": {"$gte": day_ago}}
         if excluded_user_ids:
             dau_query["user_id"] = {"$nin": list(excluded_user_ids)}
         dau_list = await db.user_events.distinct("user_id", dau_query)
         dau = len([u for u in dau_list if u not in excluded_user_ids])
-        
+
+        # Retention — period-over-period return rate: of users active in the
+        # previous `days` window, how many returned in the current window.
+        # Bounded 0-100. (Replaces active/total, which could exceed 100% because
+        # events reference user_ids no longer present in the users collection.)
+        prev_start = start_date - timedelta(days=days)
+        _ret_cur_q = {"event_type": "app_session_start", "timestamp": {"$gte": start_date}}
+        _ret_prev_q = {"event_type": "app_session_start",
+                       "timestamp": {"$gte": prev_start, "$lt": start_date}}
+        if excluded_user_ids:
+            _ret_cur_q["user_id"] = {"$nin": list(excluded_user_ids)}
+            _ret_prev_q["user_id"] = {"$nin": list(excluded_user_ids)}
+        _cur_active = set(await db.user_events.distinct("user_id", _ret_cur_q))
+        _prev_active = set(await db.user_events.distinct("user_id", _ret_prev_q))
+        retention_rate = (
+            round(len(_cur_active & _prev_active) / len(_prev_active) * 100, 2)
+            if _prev_active else 0.0
+        )
+
         # Helper for counting events
         async def count_events(event_type: str) -> int:
             query = {
@@ -805,7 +827,7 @@ async def get_admin_analytics(
             "workouts_added_to_cart": workouts_added_to_cart,
             "workouts_removed_from_cart": workouts_removed_from_cart,
             "cart_views": cart_views,
-            "retention_rate": round((active_users / total_users * 100), 2) if total_users > 0 else 0,
+            "retention_rate": retention_rate,
             "average_workouts_per_active_user": round(total_workouts_completed / active_users, 2) if active_users > 0 else 0,
             "popular_mood_categories": [
                 {"mood": m["_id"], "count": m["count"]}

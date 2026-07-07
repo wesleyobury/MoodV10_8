@@ -100,13 +100,22 @@ export default function MonetizationPage() {
       )}
 
       {/* Headline KPIs */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <KPICard title="Paywall Viewers" value={data?.headline.paywall_viewers || 0} icon={<Users className="h-4 w-4" />} tooltip="Unique users who saw a paywall in this range." />
-        <KPICard title="Purchasers" value={data?.headline.purchasers || 0} icon={<CreditCard className="h-4 w-4" />} tooltip="Unique users who completed a purchase." />
+        <KPICard title="Purchasers" value={data?.headline.purchasers || 0} icon={<CreditCard className="h-4 w-4" />} tooltip="Unique users who completed the purchase flow — includes free-trial starts, so this is ≥ Paying Customers." />
+        <KPICard title="Paying Customers" value={data?.headline.paying_customers || 0} icon={<CreditCard className="h-4 w-4" />} tooltip="Unique users who made a paid (non-trial, non-comp) purchase. This is the real paying-customer count." />
         <KPICard title="Conversion" value={data?.headline.conversion_rate || 0} format="percentage" icon={<Percent className="h-4 w-4" />} tooltip="Purchasers ÷ paywall viewers." />
-        <KPICard title="Revenue" value={usd(data?.headline.revenue_usd || 0)} icon={<DollarSign className="h-4 w-4" />} tooltip="Sum of purchase_completed.revenue_usd." />
+        <KPICard title="Revenue (gross)" value={usd(data?.headline.revenue_usd || 0)} icon={<DollarSign className="h-4 w-4" />} tooltip="Gross bookings: paid purchases priced from plan_id (list price), de-duped and excluding trials + comps." />
+        <KPICard title="Net Revenue" value={usd(data?.headline.net_revenue_usd || 0)} icon={<DollarSign className="h-4 w-4" />} tooltip={`Take-home after the ${Math.round((data?.store_commission_rate ?? 0.15) * 100)}% App/Play store commission. Adjust STORE_COMMISSION_RATE in product_pricing.py if you're not on the Small Business Program.`} />
         <KPICard title="Trials Started" value={data?.headline.trials_started || 0} icon={<TrendingUp className="h-4 w-4" />} tooltip="Unique users who started a free trial." />
         <KPICard title="Founding Claim" value={data?.headline.founding_claim_rate || 0} format="percentage" icon={<Sparkles className="h-4 w-4" />} tooltip="Founding-modal claimed ÷ shown." />
+      </div>
+
+      {/* Recurring revenue snapshot (live subscriber base — range-independent) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <KPICard title="MRR" value={usd(data?.headline.mrr_usd || 0)} icon={<TrendingUp className="h-4 w-4" />} tooltip="Monthly recurring revenue from active paid subscriptions (annual plans ÷ 12). Live snapshot — not affected by the date range." />
+        <KPICard title="ARR" value={usd(data?.headline.arr_usd || 0)} icon={<TrendingUp className="h-4 w-4" />} tooltip="Annual recurring revenue (MRR × 12)." />
+        <KPICard title="Active Subscribers" value={data?.headline.active_subscribers || 0} icon={<Users className="h-4 w-4" />} tooltip="Users with an active paid subscription right now (excludes trials, comps, internal)." />
       </div>
 
       {/* Paywall funnel */}
@@ -117,7 +126,7 @@ export default function MonetizationPage() {
         <div className="bg-card border border-border rounded-lg overflow-hidden">
           <div className="p-4 border-b border-border">
             <h3 className="font-medium">Conversion by paywall stage</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">Of users who saw each hard-paywall stage, how many purchased.</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Of users who saw each hard-paywall stage, how many purchased. A buyer who saw multiple stages is counted in each — so this column can sum to more than total Purchasers.</p>
           </div>
           <table className="w-full">
             <thead>

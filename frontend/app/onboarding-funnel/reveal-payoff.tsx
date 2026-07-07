@@ -47,6 +47,7 @@ import { foundingDaysRemaining } from '../../utils/founding';
 import { isStoreKitAvailable, restorePurchases } from '../../modules/mood-storekit/src';
 import { useStorePrices } from '../../hooks/useStorePrices';
 import { openSubscriptionManagement } from '../../utils/billingPlatform';
+import CreatorCodeModal from '../../components/CreatorCodeModal';
 
 const PAGE_BG = '#0A0A0A'; // must equal COLORS.bg so the hero fade has no seam
 
@@ -118,6 +119,7 @@ export default function RevealPayoff() {
   const annualLabel = storePrices.annualDisplay ? `${storePrices.annualDisplay}/year` : '$79.99/year';
   const monthlyLabel = storePrices.monthlyDisplay ? `${storePrices.monthlyDisplay}/month` : '$9.99/month';
   const [busy, setBusy] = useState<null | 'founding'>(null);
+  const [showCodeModal, setShowCodeModal] = useState(false);
   const completedRef = useRef(false);
   const paywallOpenedRef = useRef(false);
   // Snapshot of access at the moment the paywall is opened, so we can tell a
@@ -381,11 +383,23 @@ export default function RevealPayoff() {
           <StandardBottom
             onSkip={handleSkip}
             onRestore={handleRestore}
+            onCreatorCode={() => setShowCodeModal(true)}
             annualLabel={annualLabel}
             monthlyLabel={monthlyLabel}
           />
         </View>
       </ScrollView>
+
+      <CreatorCodeModal
+        visible={showCodeModal}
+        onClose={() => setShowCodeModal(false)}
+        onRedeemed={() => {
+          setShowCodeModal(false);
+          Analytics.revealCtaTapped(token, { cta: 'creator_code_redeemed' });
+          fireCompleted();
+          goWearables();
+        }}
+      />
     </View>
   );
 }
@@ -393,11 +407,13 @@ export default function RevealPayoff() {
 function StandardBottom({
   onSkip,
   onRestore,
+  onCreatorCode,
   annualLabel,
   monthlyLabel,
 }: {
   onSkip: () => void;
   onRestore: () => void;
+  onCreatorCode: () => void;
   annualLabel: string;
   monthlyLabel: string;
 }) {
@@ -423,6 +439,16 @@ function StandardBottom({
           <Text style={styles.tertiaryCtaLabel}>Try my first workout — free</Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity
+        onPress={onCreatorCode}
+        activeOpacity={0.7}
+        style={styles.creatorCodeRow}
+        testID="reveal-creator-code-cta"
+      >
+        <Ionicons name="ticket-outline" size={13} color={COLORS.textTertiary} />
+        <Text style={styles.creatorCodeText}>Have a creator code?</Text>
+      </TouchableOpacity>
 
       <Text style={styles.legalRow}>
         <Text style={styles.link} onPress={onRestore}>Restore Purchase</Text>
@@ -656,4 +682,17 @@ const styles = StyleSheet.create({
   legalRow: { fontSize: 11, color: COLORS.textTertiary, textAlign: 'center', marginTop: 14 },
   link: { color: COLORS.textSecondary, textDecorationLine: 'underline' },
   bold: { color: COLORS.accent, fontWeight: '700' },
+  creatorCodeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
+    marginTop: 16,
+    paddingVertical: 4,
+  },
+  creatorCodeText: {
+    fontSize: 12,
+    color: COLORS.textTertiary,
+    textDecorationLine: 'underline',
+  },
 });
