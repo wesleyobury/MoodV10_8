@@ -582,7 +582,17 @@ async def get_monetization_analytics(
             "churn": {
                 "trial_cancelled": await _count("trial_cancelled"),
                 "subscription_lapsed": await _count("subscription_lapsed"),
-                "purchase_failed": await _count("purchase_failed"),
+                # Real payment failures only. A user backing out of the native
+                # store sheet (failure_reason == "user_cancelled") is checkout
+                # abandonment, not a failure, so it's surfaced separately.
+                "purchase_failed": await db.user_events.count_documents({
+                    **base_match, "event_type": "purchase_failed",
+                    "metadata.failure_reason": {"$ne": "user_cancelled"},
+                }),
+                "checkout_abandoned": await db.user_events.count_documents({
+                    **base_match, "event_type": "purchase_failed",
+                    "metadata.failure_reason": "user_cancelled",
+                }),
             },
         }
     except Exception as e:
@@ -597,7 +607,74 @@ async def get_monetization_analytics(
                          "trials_started": 0, "founding_claim_rate": 0},
             "funnel": [], "by_stage": [], "by_trigger": [], "plan_mix": [],
             "founding": {"shown": 0, "claimed": 0, "dismissed": 0, "claim_rate": 0},
-            "churn": {"trial_cancelled": 0, "subscription_lapsed": 0, "purchase_failed": 0},
+            "churn": {"trial_cancelled": 0, "subscription_lapsed": 0, "purchase_failed": 0,
+                      "checkout_abandoned": 0},
+            "error": str(e),
+        }
+
+
+async def get_live_snapshot(
+    db: AsyncIOMotorDatabase,
+    include_internal: bool = False,
+) -> Dict[str, Any]:
+    """At-a-glance live counters for the dashboard header: sign-ups, installs,
+    active free trials, and active paid subscriptions — each with a 'today'
+    delta (since 00:00 UTC). A snapshot of current state, not a date range."""
+    try:
+        now = datetime.now(timezone.utc)
+        today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+
+        excluded = set()
+        user_filter: Dict[str, Any] = {}
+        paid_flags: Dict[str, Any] = {}
+        ev_filter: Dict[str, Any] = {}
+        if not include_internal:
+            excluded = await get_internal_user_ids(db)
+            user_filter = {"is_internal": {"$ne": True}}
+            paid_flags = {"is_internal": {"$ne": True}, "is_comp": {"$ne": True}}
+            if excluded:
+                ev_filter = {"user_id": {"$nin": list(excluded)}}
+
+        # Sign-ups (registered accounts).
+        signups_total = await db.users.count_documents(user_filter)
+        signups_today = await db.users.count_documents({**user_filter, "created_at": {"$gte": today}})
+
+        # Downloads — real App Store Connect / Play Console numbers, synced daily
+        # by the store_metrics module (there is no in-app download event).
+        import store_metrics
+        _dl = await store_metrics.get_downloads_in_range(
+            db, datetime(2020, 1, 1, tzinfo=timezone.utc), now)
+        downloads_total = int(_dl.get("total", 0) or 0)
+        _today_str = today.date().isoformat()
+        downloads_today = next(
+            (s.get("total", 0) for s in _dl.get("series", []) if s.get("date") == _today_str), 0)
+        downloads_synced = bool(_dl.get("last_synced_date"))
+
+        # Active free trials + trials started today.
+        trials_active = await db.users.count_documents({**paid_flags, "subscription.status": "in_trial"})
+        trials_today = await db.user_events.count_documents({
+            **ev_filter, "event_type": "trial_started", "timestamp": {"$gte": today}})
+
+        # Active paid subscriptions + new subscriptions started today.
+        subs_active = await db.users.count_documents({**paid_flags, "subscription.status": "active"})
+        subs_today = await db.user_events.count_documents({
+            **ev_filter, "event_type": "subscription_started", "timestamp": {"$gte": today}})
+
+        return {
+            "signups": {"total": signups_total, "today": signups_today},
+            "downloads": {"total": downloads_total, "today": downloads_today, "synced": downloads_synced},
+            "trials": {"active": trials_active, "today": trials_today},
+            "subscriptions": {"active": subs_active, "today": subs_today},
+            "computed_at": now.isoformat(),
+        }
+    except Exception as e:
+        logger.error(f"Error getting live snapshot: {e}")
+        return {
+            "signups": {"total": 0, "today": 0},
+            "downloads": {"total": 0, "today": 0, "synced": False},
+            "trials": {"active": 0, "today": 0},
+            "subscriptions": {"active": 0, "today": 0},
+            "computed_at": datetime.now(timezone.utc).isoformat(),
             "error": str(e),
         }
 

@@ -131,6 +131,11 @@ class ApiClient {
     return this.get<EngagementData>(`/analytics/admin/engagement${params}`);
   }
 
+  async getLiveSnapshot(includeInternal: boolean = false) {
+    const params = includeInternal ? "?include_internal=true" : "";
+    return this.get<LiveSnapshotData>(`/analytics/admin/live-snapshot${params}`);
+  }
+
   async getPlatformStats(days: number = 30, includeInternal: boolean = false) {
     const params = new URLSearchParams();
     params.append("days", days.toString());
@@ -402,6 +407,35 @@ class ApiClient {
     );
   }
 
+  // ── Creator applications (apply → approve → sign) ────────────────────
+  async listCreatorApplications(status?: CreatorAppStatus | "all") {
+    const qs = status ? `?status=${status}` : "";
+    return this.get<CreatorApplicationsData>(`/admin/creator-applications${qs}`);
+  }
+
+  async approveCreatorApplication(
+    id: string,
+    payload: { code?: string; tier?: string; note?: string } = {}
+  ) {
+    return this.post<{ ok: boolean; code: string; sign_link: string; emailed: boolean }>(
+      `/admin/creator-applications/${encodeURIComponent(id)}/approve`,
+      payload
+    );
+  }
+
+  async rejectCreatorApplication(id: string) {
+    return this.post<{ ok: boolean }>(
+      `/admin/creator-applications/${encodeURIComponent(id)}/reject`,
+      {}
+    );
+  }
+
+  async getCreatorSignature(id: string) {
+    return this.get<{ id: string; signature_image: string }>(
+      `/admin/creator-applications/${encodeURIComponent(id)}/signature`
+    );
+  }
+
   // ── Subscriber directory (the "who paid" list) ──────────────────────
   async getSubscribers(
     options: {
@@ -475,6 +509,41 @@ export interface CreatorCode {
   redemption_count: number;
   redemptions: CreatorCodeRedemption[];
   created_at: string | null;
+}
+
+export type CreatorAppStatus = "pending" | "approved" | "signed" | "rejected";
+
+export interface CreatorApplication {
+  id: string;
+  name: string;
+  email: string;
+  instagram: string;
+  tiktok: string;
+  instagram_url: string;
+  tiktok_url: string;
+  audience: string;
+  niche: string;
+  link: string;
+  why: string;
+  status: CreatorAppStatus;
+  code: string;
+  sign_link: string;
+  tier: string;
+  payout_method: string;
+  payout_handle: string;
+  signature_name: string;
+  agreement_version: string;
+  has_signature: boolean;
+  source: string;
+  created_at: string | null;
+  approved_at: string | null;
+  signed_at: string | null;
+}
+
+export interface CreatorApplicationsData {
+  applications: CreatorApplication[];
+  total: number;
+  counts: Record<CreatorAppStatus, number>;
 }
 
 export interface AppConfig {
@@ -613,6 +682,15 @@ export interface EngagementData {
   wau_mau_ratio: number;
   computed_at: string;
   note: string;
+}
+
+export interface LiveSnapshotData {
+  signups: { total: number; today: number };
+  downloads: { total: number; today: number; synced: boolean };
+  trials: { active: number; today: number };
+  subscriptions: { active: number; today: number };
+  computed_at: string;
+  error?: string;
 }
 
 export interface DataFreshnessData {
@@ -800,7 +878,7 @@ export interface MonetizationData {
   by_trigger: MonetizationTrigger[];
   plan_mix: MonetizationPlan[];
   founding: { shown: number; claimed: number; dismissed: number; claim_rate: number };
-  churn: { trial_cancelled: number; subscription_lapsed: number; purchase_failed: number };
+  churn: { trial_cancelled: number; subscription_lapsed: number; purchase_failed: number; checkout_abandoned: number };
   error?: string;
 }
 

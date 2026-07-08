@@ -18,6 +18,7 @@ import {
   DollarSign,
   CreditCard,
   Download,
+  UserPlus,
 } from "lucide-react";
 
 const navItems = [
@@ -31,6 +32,7 @@ const navItems = [
   { href: "/retention", label: "Retention", icon: BarChart3 },
   { href: "/features", label: "Features", icon: BarChart3 },
   { href: "/social", label: "Social", icon: Heart },
+  { href: "/creators", label: "Creators", icon: UserPlus },
   { href: "/users", label: "Users", icon: Search },
   { href: "/access", label: "Access", icon: KeyRound },
   { href: "/ops", label: "Ops", icon: Settings },

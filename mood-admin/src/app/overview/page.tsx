@@ -11,6 +11,7 @@ import { DrilldownDrawer } from "@/components/DrilldownDrawer";
 import { ChartSettings } from "@/components/ChartControls";
 import { SavedViewsDropdown } from "@/components/SavedViewsDropdown";
 import { InsightsCard } from "@/components/InsightsCard";
+import { LiveSnapshot } from "@/components/LiveSnapshot";
 import { METRIC_TOOLTIPS, Tooltip } from "@/components/Tooltip";
 import { format } from "date-fns";
 import {
@@ -211,6 +212,9 @@ export default function OverviewPage() {
           onSaveView={handleSaveView}
         />
       </div>
+
+      {/* Live snapshot — range-independent, auto-refreshing */}
+      <LiveSnapshot includeInternal={filters.includeInternal} />
 
       {/* Global Filter Bar */}
       <GlobalFilterBar filters={filters} onChange={setFilters} />

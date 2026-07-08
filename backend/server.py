@@ -142,6 +142,7 @@ from admin_analytics import (
     get_user_timeline,
     get_comparison_stats,
     get_engagement_metrics,
+    get_live_snapshot,
 )
 from subscriber_directory import get_subscribers_directory
 from acquisition_funnel import get_acquisition_funnel
@@ -3640,6 +3641,16 @@ async def get_engagement_metrics_endpoint(
     - include_internal: Include internal users (default: false)
     """
     return await get_engagement_metrics(db, include_internal)
+
+
+@api_router.get("/analytics/admin/live-snapshot")
+async def get_live_snapshot_endpoint(
+    include_internal: bool = False,
+    current_user_id: str = Depends(require_admin)
+):
+    """Live at-a-glance counters for the dashboard header: sign-ups, downloads,
+    active free trials, and active paid subscriptions (each with a today delta)."""
+    return await get_live_snapshot(db, include_internal)
 
 
 @api_router.get("/analytics/admin/data-freshness")
@@ -14276,6 +14287,419 @@ api_router.include_router(
         is_founding_window_open,
     )
 )
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Creator Partner Program — applications, approvals & signed agreements
+#
+# Flow: the public site (officialmood.app) posts applications to
+# POST /api/creator-applications → admins review & approve in the MOOD Admin
+# dashboard → approval mints a creator comp code (reusing the existing
+# creator-codes flow) and emails the creator a personalized link to sign the
+# Creator Partner Agreement → the sign page posts the signature back here.
+# Everything reuses existing helpers: require_admin, _generate_unique_creator_code,
+# resend email, log_admin_action.
+# ─────────────────────────────────────────────────────────────────────────────
+import urllib.parse as _urlparse
+
+CREATOR_SIGN_BASE = os.environ.get("CREATOR_SIGN_BASE", "https://officialmood.app/sign.html")
+CREATOR_NOTIFY_EMAIL = os.environ.get("CREATOR_NOTIFY_EMAIL", "wes@officialmoodapp.com")
+
+# Single source of truth for the terms a creator signs (bump the version if terms change).
+CREATOR_AGREEMENT_VERSION = "2026-07-07"
+CREATOR_AGREEMENT_TERMS = {
+    "version": CREATOR_AGREEMENT_VERSION,
+    "base_weekly_usd": 25,
+    "base_monthly_usd": 100,
+    "per_paid_signup_usd": 10,
+    "oneoff_story_usd": 5,
+    "oneoff_reel_usd": 20,
+    "membership_value_monthly_usd": 9.99,
+    "content_license_months": 6,
+    "payout_schedule": "as soon as you post your last deliverable, via PayPal / Venmo / Apple Pay / Zelle",
+}
+
+
+def _clean_handle(handle: str) -> str:
+    """Normalize a social handle to '@name' (accepts a full profile URL too)."""
+    if not handle:
+        return ""
+    h = handle.strip()
+    if h.startswith("http"):
+        h = h.rstrip("/").split("/")[-1]
+    h = h.lstrip("@").strip()
+    return ("@" + h) if h else ""
+
+
+def _handle_to_url(platform: str, handle: str) -> str:
+    """Build a clean profile URL from a raw @handle or URL. '' if blank."""
+    if not handle:
+        return ""
+    h = handle.strip()
+    if h.startswith("http://") or h.startswith("https://"):
+        return h
+    h = h.lstrip("@").strip().strip("/")
+    if not h:
+        return ""
+    if platform == "instagram":
+        return f"https://instagram.com/{h}"
+    if platform == "tiktok":
+        return f"https://tiktok.com/@{h}"
+    return h
+
+
+def _iso(v):
+    return v.isoformat() if isinstance(v, datetime) else v
+
+
+def _shape_application(d: dict) -> dict:
+    ig = d.get("instagram", "")
+    tt = d.get("tiktok", "")
+    return {
+        "id": d.get("id"),
+        "name": d.get("name", ""),
+        "email": d.get("email", ""),
+        "instagram": ig,
+        "tiktok": tt,
+        "instagram_url": d.get("instagram_url") or _handle_to_url("instagram", ig),
+        "tiktok_url": d.get("tiktok_url") or _handle_to_url("tiktok", tt),
+        "audience": d.get("audience", ""),
+        "niche": d.get("niche", ""),
+        "link": d.get("link", ""),
+        "why": d.get("why", ""),
+        "status": d.get("status", "pending"),
+        "code": d.get("code", ""),
+        "sign_link": d.get("sign_link", ""),
+        "tier": d.get("tier", ""),
+        "payout_method": d.get("payout_method", ""),
+        "payout_handle": d.get("payout_handle", ""),
+        "signature_name": d.get("signature_name", ""),
+        "agreement_version": d.get("agreement_version", ""),
+        "has_signature": bool(d.get("has_signature")),
+        "source": d.get("source", ""),
+        "created_at": _iso(d.get("created_at")),
+        "approved_at": _iso(d.get("approved_at")),
+        "signed_at": _iso(d.get("signed_at")),
+    }
+
+
+def _build_sign_link(doc: dict, code: str, tier: Optional[str] = None) -> str:
+    params = {"app": doc.get("id"), "code": code, "name": doc.get("name", "")}
+    if doc.get("email"):
+        params["email"] = doc["email"]
+    if doc.get("instagram"):
+        params["ig"] = doc["instagram"]
+    if doc.get("tiktok"):
+        params["tt"] = doc["tiktok"]
+    if tier:
+        params["tier"] = tier
+    sep = "&" if "?" in CREATOR_SIGN_BASE else "?"
+    return CREATOR_SIGN_BASE + sep + _urlparse.urlencode(params)
+
+
+class CreatorApplicationCreate(BaseModel):
+    name: str
+    email: str
+    instagram: Optional[str] = None
+    tiktok: Optional[str] = None
+    audience: Optional[str] = None
+    niche: Optional[str] = None
+    link: Optional[str] = None
+    why: Optional[str] = None
+    source: Optional[str] = "website"
+
+
+class CreatorApplicationApprove(BaseModel):
+    code: Optional[str] = None       # omit to auto-generate from the creator's name
+    tier: Optional[str] = None       # "weekly" | "monthly" | "oneoff"
+    note: Optional[str] = None
+
+
+class CreatorAgreementSign(BaseModel):
+    signature_name: str              # typed full legal name = the e-signature
+    agreed: bool
+    tier: Optional[str] = None
+    payout_method: Optional[str] = None
+    payout_handle: Optional[str] = None
+    instagram: Optional[str] = None
+    tiktok: Optional[str] = None
+    signature_image: Optional[str] = None   # PNG data URL from the draw pad (optional)
+    user_agent: Optional[str] = None
+
+
+async def _send_creator_email(recipient: str, subject: str, html: str) -> bool:
+    """Best-effort transactional email via Resend (same transport as password resets)."""
+    if not recipient:
+        return False
+    if not resend.api_key:
+        logger.error("RESEND_API_KEY not configured; skipping creator email.")
+        return False
+    try:
+        await asyncio.to_thread(resend.Emails.send, {
+            "from": SENDER_EMAIL, "to": [recipient], "subject": subject, "html": html,
+        })
+        return True
+    except Exception as e:
+        logger.error(f"📧 creator email to {recipient} failed: {e}")
+        return False
+
+
+def _creator_email_shell(inner: str) -> str:
+    return (
+        '<div style="background:#0a0a0c;padding:28px;font-family:Arial,Helvetica,sans-serif;">'
+        '<div style="max-width:560px;margin:0 auto;background:#141416;border:1px solid #23232a;border-radius:16px;padding:28px;">'
+        '<div style="font-size:22px;font-weight:800;color:#FFCE22;letter-spacing:.04em;margin-bottom:16px;">MOOD</div>'
+        + inner +
+        '<div style="margin-top:24px;border-top:1px solid #23232a;padding-top:14px;color:#6b6b70;font-size:12px;">'
+        'Official MOOD App LLC &middot; Colorado &middot; officialmood.app</div>'
+        '</div></div>'
+    )
+
+
+def _apply_notify_html(doc: dict) -> str:
+    rows = "".join(
+        f'<tr><td style="color:#8a8a90;padding:2px 12px 2px 0;">{k}</td>'
+        f'<td style="color:#e8e8ea;">{(v or "—")}</td></tr>'
+        for k, v in [
+            ("Name", doc.get("name")), ("Email", doc.get("email")),
+            ("Instagram", doc.get("instagram")), ("TikTok", doc.get("tiktok")),
+            ("Audience", doc.get("audience")), ("Niche", doc.get("niche")),
+            ("Link", doc.get("link")), ("Why", doc.get("why")),
+        ]
+    )
+    inner = (
+        '<div style="color:#fff;font-size:17px;font-weight:700;margin-bottom:6px;">New creator application</div>'
+        '<div style="color:#a0a0a6;font-size:14px;margin-bottom:14px;">Review &amp; approve in the MOOD Admin dashboard &rarr; Creators.</div>'
+        f'<table style="font-size:14px;border-collapse:collapse;">{rows}</table>'
+    )
+    return _creator_email_shell(inner)
+
+
+def _approved_html(doc: dict, code: str, sign_link: str) -> str:
+    first = (doc.get("name", "") or "creator").split(" ")[0] or "creator"
+    inner = (
+        f'<div style="color:#fff;font-size:20px;font-weight:700;margin-bottom:8px;">You&rsquo;re in, {first} &#127881;</div>'
+        '<div style="color:#c9c9cf;font-size:15px;line-height:22px;margin-bottom:18px;">'
+        'Welcome to the MOOD Creator Partner Program. One quick step: review and sign your agreement. '
+        'It takes about a minute.</div>'
+        f'<div style="text-align:center;margin:22px 0;"><a href="{sign_link}" '
+        'style="display:inline-block;background:#FFCE22;color:#1a1400;text-decoration:none;font-weight:700;'
+        'font-size:16px;padding:14px 30px;border-radius:999px;">Review &amp; sign the agreement</a></div>'
+        f'<div style="color:#8a8a90;font-size:13px;line-height:20px;">Your creator code is '
+        f'<b style="color:#FFCE22;">{code}</b>. After you sign, put your personal link in your bio so your '
+        'signups get credited to you.</div>'
+        f'<div style="color:#6b6b70;font-size:12px;margin-top:14px;word-break:break-all;">If the button doesn&rsquo;t '
+        f'work, paste this into your browser: {sign_link}</div>'
+    )
+    return _creator_email_shell(inner)
+
+
+def _signed_summary_rows(doc: dict) -> str:
+    fields = [
+        ("Name", doc.get("name")), ("Email", doc.get("email")),
+        ("Instagram", doc.get("instagram")), ("TikTok", doc.get("tiktok")),
+        ("Creator code", doc.get("code")), ("Tier", doc.get("tier")),
+        ("Payout", f'{doc.get("payout_method","")} {doc.get("payout_handle","")}'.strip()),
+        ("Signed by", doc.get("signature_name")),
+        ("Signed at", _iso(doc.get("signed_at"))),
+        ("Agreement", doc.get("agreement_version") or CREATOR_AGREEMENT_VERSION),
+    ]
+    return "".join(
+        f'<tr><td style="color:#8a8a90;padding:2px 12px 2px 0;">{k}</td>'
+        f'<td style="color:#e8e8ea;">{(v or "—")}</td></tr>' for k, v in fields
+    )
+
+
+def _signed_admin_html(doc: dict) -> str:
+    inner = (
+        '<div style="color:#fff;font-size:18px;font-weight:700;margin-bottom:10px;">Agreement signed &#10003;</div>'
+        f'<table style="font-size:14px;border-collapse:collapse;">{_signed_summary_rows(doc)}</table>'
+    )
+    return _creator_email_shell(inner)
+
+
+def _signed_creator_html(doc: dict) -> str:
+    t = CREATOR_AGREEMENT_TERMS
+    first = (doc.get("name", "") or "creator").split(" ")[0] or "creator"
+    inner = (
+        f'<div style="color:#fff;font-size:19px;font-weight:700;margin-bottom:8px;">Thanks, {first} &#128153;</div>'
+        '<div style="color:#c9c9cf;font-size:15px;line-height:22px;margin-bottom:16px;">'
+        'Your MOOD Creator Partner Agreement is signed and on file. Here&rsquo;s your copy:</div>'
+        f'<table style="font-size:14px;border-collapse:collapse;">{_signed_summary_rows(doc)}</table>'
+        '<div style="color:#8a8a90;font-size:13px;line-height:20px;margin-top:16px;">'
+        f'Base ${t["base_weekly_usd"]}/wk (or ${t["base_monthly_usd"]}/mo) &middot; ${t["per_paid_signup_usd"]} per paid '
+        f'signup &middot; paid out {t["payout_schedule"]}. You keep ownership of your content; MOOD may reuse or boost '
+        f'it for {t["content_license_months"]} months, with credit.</div>'
+    )
+    return _creator_email_shell(inner)
+
+
+@api_router.post("/creator-applications")
+async def submit_creator_application(payload: CreatorApplicationCreate):
+    """PUBLIC: the officialmood.app apply form posts here. Lands as 'pending'."""
+    name = (payload.name or "").strip()
+    email = (payload.email or "").strip()
+    if not name or not email:
+        raise HTTPException(status_code=400, detail="Name and email are required")
+    now = datetime.now(timezone.utc)
+    app_id = uuid.uuid4().hex[:12]
+    ig = _clean_handle(payload.instagram or "")
+    tt = _clean_handle(payload.tiktok or "")
+    doc = {
+        "id": app_id, "name": name, "email": email,
+        "instagram": ig, "tiktok": tt,
+        "instagram_url": _handle_to_url("instagram", ig),
+        "tiktok_url": _handle_to_url("tiktok", tt),
+        "audience": (payload.audience or "").strip(),
+        "niche": (payload.niche or "").strip(),
+        "link": (payload.link or "").strip(),
+        "why": (payload.why or "").strip(),
+        "status": "pending",
+        "source": (payload.source or "website").strip(),
+        "created_at": now,
+    }
+    await db.creator_applications.insert_one(doc)
+    await _send_creator_email(CREATOR_NOTIFY_EMAIL, f"New creator application: {name}", _apply_notify_html(doc))
+    return {"ok": True, "id": app_id}
+
+
+@api_router.get("/admin/creator-applications")
+async def list_creator_applications(status: Optional[str] = None, admin_id: str = Depends(require_admin)):
+    """ADMIN: list applications (optionally filtered by status) for the dashboard."""
+    q = {}
+    if status and status != "all":
+        q["status"] = status
+    docs = await db.creator_applications.find(q).sort("created_at", -1).to_list(1000)
+    counts = {}
+    for s in ("pending", "approved", "signed", "rejected"):
+        counts[s] = await db.creator_applications.count_documents({"status": s})
+    return {"applications": [_shape_application(d) for d in docs], "total": len(docs), "counts": counts}
+
+
+@api_router.post("/admin/creator-applications/{app_id}/approve")
+async def approve_creator_application(app_id: str, payload: CreatorApplicationApprove,
+                                      admin_id: str = Depends(require_admin)):
+    """ADMIN: approve → mint/reuse a creator code, email the creator their sign link."""
+    doc = await db.creator_applications.find_one({"id": app_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Application not found")
+    now = datetime.now(timezone.utc)
+    code = doc.get("code") or ""
+    if payload.code:
+        code = _normalize_code(payload.code)
+        if not code:
+            raise HTTPException(status_code=400, detail="Invalid code")
+        existing = await db.creator_codes.find_one({"code": code})
+        if existing and (existing.get("creator_contact") or "") != (doc.get("email") or ""):
+            raise HTTPException(status_code=409, detail="Code already exists")
+    if not code:
+        code = await _generate_unique_creator_code(doc.get("name") or "CREATOR")
+    if not await db.creator_codes.find_one({"code": code}):
+        await db.creator_codes.insert_one({
+            "code": code, "creator_name": doc.get("name", ""),
+            "creator_contact": doc.get("email", ""),
+            "note": f"Auto-created on creator approval ({app_id})",
+            "max_redemptions": 1, "redemption_count": 0, "redemptions": [],
+            "active": True, "created_at": now, "created_by": admin_id,
+        })
+    sign_link = _build_sign_link(doc, code, payload.tier)
+    await db.creator_applications.update_one({"id": app_id}, {"$set": {
+        "status": "approved", "code": code,
+        "tier": payload.tier or doc.get("tier", ""),
+        "approved_at": now, "approved_by": admin_id, "sign_link": sign_link,
+    }})
+    emailed = await _send_creator_email(doc.get("email"),
+                                        "You’re in — sign your MOOD Creator Agreement",
+                                        _approved_html(doc, code, sign_link))
+    await log_admin_action(admin_id, "approve_creator_application",
+                           f"/admin/creator-applications/{app_id}/approve",
+                           {"code": code}, 200, "approved")
+    return {"ok": True, "code": code, "sign_link": sign_link, "emailed": emailed}
+
+
+@api_router.post("/admin/creator-applications/{app_id}/reject")
+async def reject_creator_application(app_id: str, admin_id: str = Depends(require_admin)):
+    """ADMIN: mark an application rejected (no email is sent)."""
+    res = await db.creator_applications.update_one(
+        {"id": app_id},
+        {"$set": {"status": "rejected", "rejected_at": datetime.now(timezone.utc), "rejected_by": admin_id}},
+    )
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Application not found")
+    await log_admin_action(admin_id, "reject_creator_application",
+                           f"/admin/creator-applications/{app_id}/reject", None, 200, "rejected")
+    return {"ok": True}
+
+
+@api_router.get("/admin/creator-applications/{app_id}/signature")
+async def get_creator_signature(app_id: str, admin_id: str = Depends(require_admin)):
+    """ADMIN: fetch the drawn-signature PNG data URL for a signed agreement."""
+    sig = await db.creator_agreement_signatures.find_one({"id": app_id})
+    return {"id": app_id, "signature_image": (sig or {}).get("signature_image", "")}
+
+
+@api_router.get("/creator-applications/{app_id}/agreement")
+async def get_agreement_context(app_id: str):
+    """PUBLIC: the sign page loads this to validate the link + prefill fields."""
+    doc = await db.creator_applications.find_one({"id": app_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="This signing link is not valid.")
+    status = doc.get("status", "pending")
+    return {
+        "id": doc.get("id"), "name": doc.get("name", ""), "email": doc.get("email", ""),
+        "instagram": doc.get("instagram", ""), "tiktok": doc.get("tiktok", ""),
+        "code": doc.get("code", ""), "tier": doc.get("tier", ""),
+        "status": status, "already_signed": status == "signed",
+        "signed_at": _iso(doc.get("signed_at")),
+        "terms": CREATOR_AGREEMENT_TERMS,
+    }
+
+
+@api_router.post("/creator-applications/{app_id}/sign")
+async def sign_creator_agreement(app_id: str, payload: CreatorAgreementSign, request: Request):
+    """PUBLIC: the sign page posts the signature here. Stores it + emails both parties."""
+    doc = await db.creator_applications.find_one({"id": app_id})
+    if not doc:
+        raise HTTPException(status_code=404, detail="This signing link is not valid.")
+    if not payload.agreed or not (payload.signature_name or "").strip():
+        raise HTTPException(status_code=400, detail="Type your full name and check the agree box to sign.")
+    if doc.get("status") == "signed":
+        return {"ok": True, "already_signed": True}
+    now = datetime.now(timezone.utc)
+    ip = request.client.host if request.client else None
+    update = {
+        "status": "signed", "signed_at": now,
+        "signature_name": payload.signature_name.strip(),
+        "agreement_version": CREATOR_AGREEMENT_VERSION,
+        "tier": payload.tier or doc.get("tier", ""),
+        "payout_method": (payload.payout_method or "").strip(),
+        "payout_handle": (payload.payout_handle or "").strip(),
+        "signed_ip": ip,
+        "signed_user_agent": (payload.user_agent or "")[:400],
+        "has_signature": bool(payload.signature_image),
+    }
+    if payload.instagram:
+        ig = _clean_handle(payload.instagram)
+        update["instagram"] = ig
+        update["instagram_url"] = _handle_to_url("instagram", ig)
+    if payload.tiktok:
+        tt = _clean_handle(payload.tiktok)
+        update["tiktok"] = tt
+        update["tiktok_url"] = _handle_to_url("tiktok", tt)
+    await db.creator_applications.update_one({"id": app_id}, {"$set": update})
+    if payload.signature_image:
+        await db.creator_agreement_signatures.update_one(
+            {"id": app_id},
+            {"$set": {"id": app_id, "signature_image": payload.signature_image, "signed_at": now}},
+            upsert=True,
+        )
+    merged = {**doc, **update}
+    await _send_creator_email(CREATOR_NOTIFY_EMAIL,
+                              f"Signed: {doc.get('name','')} — MOOD Creator Agreement",
+                              _signed_admin_html(merged))
+    await _send_creator_email(doc.get("email"), "Your signed MOOD Creator Agreement",
+                              _signed_creator_html(merged))
+    return {"ok": True}
+
 
 # Include router in main app
 app.include_router(api_router)

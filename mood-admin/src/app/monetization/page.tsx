@@ -8,6 +8,7 @@ import { TimeSeriesChart } from "@/components/charts/TimeSeriesChart";
 import { KPICard } from "@/components/KPICard";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { CSVExport } from "@/components/CSVExport";
+import { Tooltip } from "@/components/Tooltip";
 import { subDays, format } from "date-fns";
 import { redirect } from "next/navigation";
 import { DollarSign, CreditCard, Percent, TrendingUp, Sparkles, Users } from "lucide-react";
@@ -223,7 +224,8 @@ export default function MonetizationPage() {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between"><span className="text-muted-foreground">Trials cancelled</span><span className="font-mono text-red-400">{(data?.churn.trial_cancelled || 0).toLocaleString()}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Subscriptions lapsed</span><span className="font-mono text-red-400">{(data?.churn.subscription_lapsed || 0).toLocaleString()}</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Purchases failed</span><span className="font-mono text-red-400">{(data?.churn.purchase_failed || 0).toLocaleString()}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Payment failed</span><span className="font-mono text-red-400">{(data?.churn.purchase_failed || 0).toLocaleString()}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Checkout abandoned <Tooltip content="Users who opened the store sheet then backed out (failure_reason = user_cancelled). Not a failure — a checkout-abandonment signal." /></span><span className="font-mono text-muted-foreground">{(data?.churn.checkout_abandoned || 0).toLocaleString()}</span></div>
           </div>
         </div>
       </div>
