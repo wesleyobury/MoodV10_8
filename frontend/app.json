@@ -2,7 +2,7 @@
   "expo": {
     "name": "MOOD",
     "slug": "mood-fitness-app",
-    "version": "1.2.1",
+    "version": "2.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "moodapp",
@@ -11,7 +11,7 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.official.moodapp",
-      "buildNumber": "68",
+      "buildNumber": "79",
       "supportsTablet": true,
       "infoPlist": {
         "CFBundleDisplayName": "MOOD",
