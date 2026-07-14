@@ -14303,6 +14303,27 @@ import urllib.parse as _urlparse
 
 CREATOR_SIGN_BASE = os.environ.get("CREATOR_SIGN_BASE", "https://officialmood.app/sign.html")
 CREATOR_NOTIFY_EMAIL = os.environ.get("CREATOR_NOTIFY_EMAIL", "wes@officialmoodapp.com")
+# Creator emails: default to the domain already verified in Resend (SENDER_EMAIL) so sending
+# never breaks. To use a friendlier from-name/address, set CREATOR_FROM_EMAIL to
+# "Name <address@your-verified-domain>" — the address MUST be on a Resend-verified domain.
+# Reply-to can be any address (no verification needed), so replies reach your real inbox.
+CREATOR_FROM_EMAIL = os.environ.get("CREATOR_FROM_EMAIL", "Wes at MOOD <wes@contact.officialmood.app>")
+CREATOR_REPLY_TO = os.environ.get("CREATOR_REPLY_TO", "wes@officialmoodapp.com")
+# Base App Store URL for a creator's personal bio link. The creator's code is appended
+# as Apple's campaign token (ct). If you have an App Store Connect provider token, set
+# CREATOR_STORE_BASE to include &pt=<token>&mt=8 for full campaign attribution.
+CREATOR_STORE_BASE = os.environ.get(
+    "CREATOR_STORE_BASE",
+    "https://apps.apple.com/us/app/official-mood-app/id6756556024",
+)
+
+
+def _build_store_link(code: str) -> str:
+    """A creator's personal App Store link (bio link) with their code as the campaign token."""
+    if not code:
+        return CREATOR_STORE_BASE
+    sep = "&" if "?" in CREATOR_STORE_BASE else "?"
+    return f"{CREATOR_STORE_BASE}{sep}ct={_urlparse.quote(code)}"
 
 # Single source of truth for the terms a creator signs (bump the version if terms change).
 CREATOR_AGREEMENT_VERSION = "2026-07-07"
@@ -14369,6 +14390,7 @@ def _shape_application(d: dict) -> dict:
         "status": d.get("status", "pending"),
         "code": d.get("code", ""),
         "sign_link": d.get("sign_link", ""),
+        "store_link": d.get("store_link", "") or _build_store_link(d.get("code", "")),
         "tier": d.get("tier", ""),
         "payout_method": d.get("payout_method", ""),
         "payout_handle": d.get("payout_handle", ""),
@@ -14426,8 +14448,24 @@ class CreatorAgreementSign(BaseModel):
     user_agent: Optional[str] = None
 
 
+def _html_to_text(html: str) -> str:
+    """Rough plain-text version of an email body. A text/plain part improves inbox
+    placement (Gmail is likelier to file button-heavy HTML-only mail under Promotions)."""
+    import re as _re
+    text = _re.sub(r"(?is)<(script|style).*?</\1>", "", html)
+    text = _re.sub(r"(?i)<br\s*/?>", "\n", text)
+    text = _re.sub(r"(?i)</(p|div|tr|h[1-6]|li)>", "\n", text)
+    text = _re.sub(r"<[^>]+>", "", text)
+    text = (text.replace("&amp;", "&").replace("&middot;", "·").replace("&rarr;", "→")
+                .replace("&rsquo;", "’").replace("&#127881;", "").replace("&#128153;", "")
+                .replace("&#10003;", "✓").replace("&nbsp;", " "))
+    text = _re.sub(r"\n\s*\n\s*\n+", "\n\n", text)
+    return "\n".join(line.strip() for line in text.splitlines()).strip()
+
+
 async def _send_creator_email(recipient: str, subject: str, html: str) -> bool:
-    """Best-effort transactional email via Resend (same transport as password resets)."""
+    """Best-effort transactional email via Resend. Sends from a real personal address
+    with a reply-to and a plain-text part for better deliverability."""
     if not recipient:
         return False
     if not resend.api_key:
@@ -14435,7 +14473,12 @@ async def _send_creator_email(recipient: str, subject: str, html: str) -> bool:
         return False
     try:
         await asyncio.to_thread(resend.Emails.send, {
-            "from": SENDER_EMAIL, "to": [recipient], "subject": subject, "html": html,
+            "from": CREATOR_FROM_EMAIL,
+            "to": [recipient],
+            "reply_to": CREATOR_REPLY_TO,
+            "subject": subject,
+            "html": html,
+            "text": _html_to_text(html),
         })
         return True
     except Exception as e:
@@ -14474,21 +14517,23 @@ def _apply_notify_html(doc: dict) -> str:
     return _creator_email_shell(inner)
 
 
-def _approved_html(doc: dict, code: str, sign_link: str) -> str:
-    first = (doc.get("name", "") or "creator").split(" ")[0] or "creator"
+def _approved_html(doc: dict, code: str, sign_link: str, store_link: str) -> str:
+    first = (doc.get("name", "") or "there").split(" ")[0] or "there"
     inner = (
-        f'<div style="color:#fff;font-size:20px;font-weight:700;margin-bottom:8px;">You&rsquo;re in, {first} &#127881;</div>'
-        '<div style="color:#c9c9cf;font-size:15px;line-height:22px;margin-bottom:18px;">'
-        'Welcome to the MOOD Creator Partner Program. One quick step: review and sign your agreement. '
-        'It takes about a minute.</div>'
-        f'<div style="text-align:center;margin:22px 0;"><a href="{sign_link}" '
-        'style="display:inline-block;background:#FFCE22;color:#1a1400;text-decoration:none;font-weight:700;'
-        'font-size:16px;padding:14px 30px;border-radius:999px;">Review &amp; sign the agreement</a></div>'
-        f'<div style="color:#8a8a90;font-size:13px;line-height:20px;">Your creator code is '
-        f'<b style="color:#FFCE22;">{code}</b>. After you sign, put your personal link in your bio so your '
-        'signups get credited to you.</div>'
-        f'<div style="color:#6b6b70;font-size:12px;margin-top:14px;word-break:break-all;">If the button doesn&rsquo;t '
-        f'work, paste this into your browser: {sign_link}</div>'
+        '<div style="color:#e8e8ea;font-size:15px;line-height:23px;">'
+        f'Hi {first},<br><br>'
+        'You&rsquo;re in the MOOD Creator Partner Program &mdash; welcome. One quick step: review and '
+        'sign your agreement (takes about a minute):<br><br>'
+        f'<a href="{sign_link}" style="color:#B8860B;font-weight:600;">Review &amp; sign your agreement &rarr;</a><br>'
+        f'<span style="color:#8a8a90;font-size:12.5px;word-break:break-all;">or paste this into your browser: {sign_link}</span>'
+        '<br><br>'
+        f'<b>Your creator code:</b> {code}<br>'
+        '<b>Your personal App Store link</b> (put this in your bio &mdash; it credits your signups to you):<br>'
+        f'<a href="{store_link}" style="color:#B8860B;font-weight:600;word-break:break-all;">{store_link}</a>'
+        '<br><br>'
+        'Include your link + a strong CTA in every piece. Just reply here if you have any questions.<br><br>'
+        '&mdash; Wes'
+        '</div>'
     )
     return _creator_email_shell(inner)
 
@@ -14498,6 +14543,7 @@ def _signed_summary_rows(doc: dict) -> str:
         ("Name", doc.get("name")), ("Email", doc.get("email")),
         ("Instagram", doc.get("instagram")), ("TikTok", doc.get("tiktok")),
         ("Creator code", doc.get("code")), ("Tier", doc.get("tier")),
+        ("Bio / App Store link", doc.get("store_link") or _build_store_link(doc.get("code", ""))),
         ("Payout", f'{doc.get("payout_method","")} {doc.get("payout_handle","")}'.strip()),
         ("Signed by", doc.get("signature_name")),
         ("Signed at", _iso(doc.get("signed_at"))),
@@ -14602,18 +14648,21 @@ async def approve_creator_application(app_id: str, payload: CreatorApplicationAp
             "active": True, "created_at": now, "created_by": admin_id,
         })
     sign_link = _build_sign_link(doc, code, payload.tier)
+    store_link = _build_store_link(code)
     await db.creator_applications.update_one({"id": app_id}, {"$set": {
         "status": "approved", "code": code,
         "tier": payload.tier or doc.get("tier", ""),
-        "approved_at": now, "approved_by": admin_id, "sign_link": sign_link,
+        "approved_at": now, "approved_by": admin_id,
+        "sign_link": sign_link, "store_link": store_link,
     }})
     emailed = await _send_creator_email(doc.get("email"),
                                         "You’re in — sign your MOOD Creator Agreement",
-                                        _approved_html(doc, code, sign_link))
+                                        _approved_html(doc, code, sign_link, store_link))
     await log_admin_action(admin_id, "approve_creator_application",
                            f"/admin/creator-applications/{app_id}/approve",
                            {"code": code}, 200, "approved")
-    return {"ok": True, "code": code, "sign_link": sign_link, "emailed": emailed}
+    return {"ok": True, "code": code, "sign_link": sign_link,
+            "store_link": store_link, "emailed": emailed}
 
 
 @api_router.post("/admin/creator-applications/{app_id}/reject")
