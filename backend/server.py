@@ -14489,11 +14489,12 @@ async def _send_creator_email(recipient: str, subject: str, html: str) -> bool:
 
 def _creator_email_shell(inner: str) -> str:
     return (
-        '<div style="background:#0a0a0c;padding:28px;font-family:Arial,Helvetica,sans-serif;">'
-        '<div style="max-width:560px;margin:0 auto;background:#141416;border:1px solid #23232a;border-radius:16px;padding:28px;">'
-        '<div style="font-size:22px;font-weight:800;color:#FFCE22;letter-spacing:.04em;margin-bottom:16px;">MOOD</div>'
+        '<div style="background:#f4f4f5;padding:32px 16px;font-family:-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;">'
+        '<div style="max-width:520px;margin:0 auto;background:#ffffff;border:1px solid #ececee;border-radius:14px;padding:34px 32px;">'
+        '<div style="font-size:18px;font-weight:800;letter-spacing:1.5px;color:#111111;">MOOD</div>'
+        '<div style="width:26px;height:3px;background:#FFCE22;border-radius:2px;margin:7px 0 24px 0;"></div>'
         + inner +
-        '<div style="margin-top:24px;border-top:1px solid #23232a;padding-top:14px;color:#6b6b70;font-size:12px;">'
+        '<div style="margin-top:30px;border-top:1px solid #efefef;padding-top:16px;color:#9a9a9a;font-size:12px;line-height:18px;">'
         'Official MOOD App LLC &middot; Colorado &middot; officialmood.app</div>'
         '</div></div>'
     )
@@ -14501,8 +14502,8 @@ def _creator_email_shell(inner: str) -> str:
 
 def _apply_notify_html(doc: dict) -> str:
     rows = "".join(
-        f'<tr><td style="color:#8a8a90;padding:2px 12px 2px 0;">{k}</td>'
-        f'<td style="color:#e8e8ea;">{(v or "—")}</td></tr>'
+        f'<tr><td style="color:#8a8a8a;padding:3px 14px 3px 0;vertical-align:top;">{k}</td>'
+        f'<td style="color:#333333;padding:3px 0;">{(v or "—")}</td></tr>'
         for k, v in [
             ("Name", doc.get("name")), ("Email", doc.get("email")),
             ("Instagram", doc.get("instagram")), ("TikTok", doc.get("tiktok")),
@@ -14511,8 +14512,8 @@ def _apply_notify_html(doc: dict) -> str:
         ]
     )
     inner = (
-        '<div style="color:#fff;font-size:17px;font-weight:700;margin-bottom:6px;">New creator application</div>'
-        '<div style="color:#a0a0a6;font-size:14px;margin-bottom:14px;">Review &amp; approve in the MOOD Admin dashboard &rarr; Creators.</div>'
+        '<div style="color:#111111;font-size:17px;font-weight:700;margin-bottom:6px;">New creator application</div>'
+        '<div style="color:#8a8a8a;font-size:14px;margin-bottom:16px;">Review &amp; approve in the MOOD Admin dashboard &rarr; Creators.</div>'
         f'<table style="font-size:14px;border-collapse:collapse;">{rows}</table>'
     )
     return _creator_email_shell(inner)
@@ -14522,12 +14523,12 @@ def _apply_confirm_html(doc: dict) -> str:
     """Short confirmation sent to the applicant right after they submit."""
     first = (doc.get("name", "") or "there").split(" ")[0] or "there"
     inner = (
-        '<div style="color:#e8e8ea;font-size:15px;line-height:23px;">'
+        '<div style="color:#333333;font-size:15px;line-height:24px;">'
         f'Hi {first},<br><br>'
         'Thanks for applying to the MOOD Creator Partner Program &mdash; we&rsquo;ve got your application '
         'and we&rsquo;ll reply soon with next steps.<br><br>'
-        'While you wait, grab MOOD here: '
-        f'<a href="{CREATOR_STORE_BASE}" style="color:#B8860B;font-weight:600;">{CREATOR_STORE_BASE}</a><br><br>'
+        'While you wait, you can '
+        f'<a href="{CREATOR_STORE_BASE}" style="color:#B8860B;font-weight:600;">download MOOD here</a>.<br><br>'
         'Questions? Just reply to this email.<br><br>&mdash; Wes'
         '</div>'
     )
@@ -14536,38 +14537,13 @@ def _apply_confirm_html(doc: dict) -> str:
 
 def _approved_html(doc: dict, code: str, sign_link: str, store_link: str) -> str:
     first = (doc.get("name", "") or "there").split(" ")[0] or "there"
-    lbl = "color:#fff;font-weight:700;"
-    lnk = "color:#B8860B;font-weight:600;"
     inner = (
-        '<div style="color:#e8e8ea;font-size:15px;line-height:23px;">'
-        f'Hey {first} &mdash; great to have you on board, I really appreciate it.<br><br>'
-        'MOOD 2.0 is live (the full premium version), and you&rsquo;ve got it free:<br>'
-        '1) Download MOOD and sign up.<br>'
-        '2) Enter your creator code &mdash; during onboarding tap &ldquo;Have a creator code?&rdquo; on the '
-        'subscribe screen, or anytime under Settings &rarr; Redeem creator code. Access unlocks instantly.<br><br>'
-        f'<span style="{lbl}">One quick step first</span> &mdash; review &amp; sign your agreement (about a minute):<br>'
-        f'<a href="{sign_link}" style="{lnk}">Review &amp; sign your agreement &rarr;</a><br>'
-        f'<span style="color:#8a8a90;font-size:12.5px;word-break:break-all;">or paste this: {sign_link}</span><br><br>'
-        f'<span style="{lbl}">Your code &amp; link</span><br>'
-        f'Creator code (for your own free access): <b>{code}</b><br>'
-        'Your custom link (this is what your audience signs up through &mdash; it earns you $10 per paid signup):<br>'
-        f'<a href="{store_link}" style="{lnk}word-break:break-all;">{store_link}</a><br>'
-        'Heads up: your code is just for your own access &mdash; your audience signs up through your custom link.<br><br>'
-        f'<span style="{lbl}">Pay</span><br>'
-        '&bull; $25/week base + $10 per paid signup through your link<br>'
-        '&bull; or $20 per reel + $10 per paid signup, no base<br>'
-        '&bull; Payouts as soon as you post your last deliverable (PayPal / Venmo / Apple Pay / Zelle)<br>'
-        '&bull; Signups are tracked through your custom link &mdash; I&rsquo;m building a dashboard you&rsquo;ll see too<br><br>'
-        f'<span style="{lbl}">Weekly deliverables</span><br>'
-        '&bull; 1 IG/TikTok reel<br>'
-        '&bull; At least 1 IG story with the MOOD overlay + your custom link<br>'
-        '&bull; 2 posts inside the MOOD app<br><br>'
-        f'<span style="{lbl}">Notes</span><br>'
-        '&bull; Include your custom link + a strong CTA in every piece<br>'
-        '&bull; No pressure to put the link in your bio, but that&rsquo;s what earns you $10 per paid signup &mdash; somewhere visible helps<br>'
-        '&bull; MOOD may reuse or boost your content on our channels for 6 months, with credit<br><br>'
-        'I&rsquo;d love to get you sharing content ASAP &mdash; I&rsquo;m ramping up on content starting today, so the sooner '
-        'you deliver, the sooner you get paid.<br><br>'
+        '<div style="color:#333333;font-size:15px;line-height:24px;">'
+        f'Hey {first} &mdash; you&rsquo;re in! Welcome aboard, I really appreciate it.<br><br>'
+        'One quick step: review &amp; sign your agreement (takes about a minute).<br><br>'
+        f'<a href="{sign_link}" style="color:#B8860B;font-weight:600;">Review &amp; sign your agreement &rarr;</a><br><br>'
+        'The moment you sign, I&rsquo;ll send your creator code, your custom link, and everything to get '
+        'started &mdash; how to unlock your free MOOD, what to post, and how you get paid.<br><br>'
         'Reply here anytime.<br>&mdash; Wes'
         '</div>'
     )
@@ -14586,31 +14562,50 @@ def _signed_summary_rows(doc: dict) -> str:
         ("Agreement", doc.get("agreement_version") or CREATOR_AGREEMENT_VERSION),
     ]
     return "".join(
-        f'<tr><td style="color:#8a8a90;padding:2px 12px 2px 0;">{k}</td>'
-        f'<td style="color:#e8e8ea;">{(v or "—")}</td></tr>' for k, v in fields
+        f'<tr><td style="color:#8a8a8a;padding:3px 14px 3px 0;vertical-align:top;">{k}</td>'
+        f'<td style="color:#333333;padding:3px 0;">{(v or "—")}</td></tr>' for k, v in fields
     )
 
 
 def _signed_admin_html(doc: dict) -> str:
     inner = (
-        '<div style="color:#fff;font-size:18px;font-weight:700;margin-bottom:10px;">Agreement signed &#10003;</div>'
+        '<div style="color:#111111;font-size:18px;font-weight:700;margin-bottom:10px;">Agreement signed &#10003;</div>'
         f'<table style="font-size:14px;border-collapse:collapse;">{_signed_summary_rows(doc)}</table>'
     )
     return _creator_email_shell(inner)
 
 
 def _signed_creator_html(doc: dict) -> str:
-    t = CREATOR_AGREEMENT_TERMS
-    first = (doc.get("name", "") or "creator").split(" ")[0] or "creator"
+    first = (doc.get("name", "") or "there").split(" ")[0] or "there"
+    code = doc.get("code", "")
+    store_link = doc.get("store_link") or _build_store_link(code)
+    signed_at = _iso(doc.get("signed_at")) or ""
     inner = (
-        f'<div style="color:#fff;font-size:19px;font-weight:700;margin-bottom:8px;">Thanks, {first} &#128153;</div>'
-        '<div style="color:#c9c9cf;font-size:15px;line-height:22px;margin-bottom:16px;">'
-        'Your MOOD Creator Partner Agreement is signed and on file. Here&rsquo;s your copy:</div>'
-        f'<table style="font-size:14px;border-collapse:collapse;">{_signed_summary_rows(doc)}</table>'
-        '<div style="color:#8a8a90;font-size:13px;line-height:20px;margin-top:16px;">'
-        f'Base ${t["base_weekly_usd"]}/wk (or ${t["base_monthly_usd"]}/mo) &middot; ${t["per_paid_signup_usd"]} per paid '
-        f'signup &middot; paid out {t["payout_schedule"]}. You keep ownership of your content; MOOD may reuse or boost '
-        f'it for {t["content_license_months"]} months, with credit.</div>'
+        '<div style="color:#333333;font-size:15px;line-height:24px;">'
+        f'You&rsquo;re all set, {first} &mdash; thanks for signing. Here&rsquo;s everything to get started.<br><br>'
+        '<span style="color:#111111;font-weight:700;">Unlock your free MOOD 2.0</span><br>'
+        'Download MOOD, sign up, and enter your creator code &mdash; during onboarding tap &ldquo;Have a creator '
+        'code?&rdquo; on the subscribe screen, or anytime under Settings &rarr; Redeem creator code. Access '
+        'unlocks instantly.<br><br>'
+        '<span style="color:#111111;font-weight:700;">Your code &amp; link</span><br>'
+        f'Creator code (your own free access): <b>{code}</b><br>'
+        'Your custom link (your audience signs up through this &mdash; it earns you $10 per paid signup):<br>'
+        f'<a href="{store_link}" style="color:#B8860B;font-weight:600;word-break:break-all;">{store_link}</a><br>'
+        'Your code is just for your own access &mdash; your audience signs up through your link.<br><br>'
+        '<span style="color:#111111;font-weight:700;">Weekly deliverables</span><br>'
+        '&bull; 1 IG/TikTok reel<br>'
+        '&bull; At least 1 IG story with the MOOD overlay + your custom link<br>'
+        '&bull; 2 posts inside the MOOD app<br><br>'
+        '<span style="color:#111111;font-weight:700;">Pay</span><br>'
+        '&bull; $25/week base + $10 per paid signup, or $20 per reel + $10 per paid signup (no base)<br>'
+        '&bull; Payouts as soon as you post your last deliverable (PayPal / Venmo / Apple Pay / Zelle)<br><br>'
+        '<span style="color:#111111;font-weight:700;">Notes</span><br>'
+        '&bull; Include your custom link + a strong CTA in every piece<br>'
+        '&bull; MOOD may reuse or boost your content for 6 months, with credit<br><br>'
+        'I&rsquo;d love to get you posting ASAP &mdash; the sooner you deliver, the sooner you get paid. '
+        'Reply anytime.<br>&mdash; Wes'
+        f'<div style="color:#9a9a9a;font-size:12px;margin-top:18px;">Signed {signed_at}. This email is your copy.</div>'
+        '</div>'
     )
     return _creator_email_shell(inner)
 
@@ -14783,7 +14778,7 @@ async def sign_creator_agreement(app_id: str, payload: CreatorAgreementSign, req
     await _send_creator_email(CREATOR_NOTIFY_EMAIL,
                               f"Signed: {doc.get('name','')} — MOOD Creator Agreement",
                               _signed_admin_html(merged))
-    await _send_creator_email(doc.get("email"), "Your signed MOOD Creator Agreement",
+    await _send_creator_email(doc.get("email"), "You’re all set — here’s everything to start",
                               _signed_creator_html(merged))
     return {"ok": True}
 
