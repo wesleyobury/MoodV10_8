@@ -14517,6 +14517,22 @@ def _apply_notify_html(doc: dict) -> str:
     return _creator_email_shell(inner)
 
 
+def _apply_confirm_html(doc: dict) -> str:
+    """Short confirmation sent to the applicant right after they submit."""
+    first = (doc.get("name", "") or "there").split(" ")[0] or "there"
+    inner = (
+        '<div style="color:#e8e8ea;font-size:15px;line-height:23px;">'
+        f'Hi {first},<br><br>'
+        'Thanks for applying to the MOOD Creator Partner Program &mdash; we&rsquo;ve got your application '
+        'and we&rsquo;ll reply soon with next steps.<br><br>'
+        'While you wait, grab MOOD here: '
+        f'<a href="{CREATOR_STORE_BASE}" style="color:#B8860B;font-weight:600;">{CREATOR_STORE_BASE}</a><br><br>'
+        'Questions? Just reply to this email.<br><br>&mdash; Wes'
+        '</div>'
+    )
+    return _creator_email_shell(inner)
+
+
 def _approved_html(doc: dict, code: str, sign_link: str, store_link: str) -> str:
     first = (doc.get("name", "") or "there").split(" ")[0] or "there"
     inner = (
@@ -14605,6 +14621,7 @@ async def submit_creator_application(payload: CreatorApplicationCreate):
     }
     await db.creator_applications.insert_one(doc)
     await _send_creator_email(CREATOR_NOTIFY_EMAIL, f"New creator application: {name}", _apply_notify_html(doc))
+    await _send_creator_email(email, "Thanks for applying to MOOD", _apply_confirm_html(doc))
     return {"ok": True, "id": app_id}
 
 
