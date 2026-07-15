@@ -436,6 +436,20 @@ class ApiClient {
     );
   }
 
+  async addCreator(payload: {
+    name: string;
+    email: string;
+    instagram?: string;
+    tiktok?: string;
+    tier?: string;
+    code?: string;
+  }) {
+    return this.post<{ ok: boolean; id: string; code: string; sign_link: string; emailed: boolean }>(
+      "/admin/creator-applications",
+      payload
+    );
+  }
+
   // ── Subscriber directory (the "who paid" list) ──────────────────────
   async getSubscribers(
     options: {

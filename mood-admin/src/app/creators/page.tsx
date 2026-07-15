@@ -69,6 +69,50 @@ export default function CreatorsPage() {
   const [copied, setCopied] = useState<string | null>(null);
   const [signature, setSignature] = useState<{ name: string; image: string } | null>(null);
 
+  // Add-creator form
+  const [showAdd, setShowAdd] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [addForm, setAddForm] = useState({
+    name: "",
+    email: "",
+    instagram: "",
+    tiktok: "",
+    tier: "weekly",
+    code: "",
+  });
+
+  const handleAdd = async () => {
+    if (!addForm.name.trim() || !addForm.email.trim()) {
+      setResult({ type: "error", message: "Name and email are required." });
+      return;
+    }
+    setAdding(true);
+    setResult(null);
+    const res = await api.addCreator({
+      name: addForm.name.trim(),
+      email: addForm.email.trim(),
+      instagram: addForm.instagram.trim() || undefined,
+      tiktok: addForm.tiktok.trim() || undefined,
+      tier: addForm.tier || undefined,
+      code: addForm.code.trim() || undefined,
+    });
+    if (res.data?.ok) {
+      setResult({
+        type: "success",
+        message: `Added ${addForm.name} — code ${res.data.code}. ${
+          res.data.emailed ? "Welcome + sign link emailed." : "Email not sent (check Resend key)."
+        }`,
+      });
+      setAddForm({ name: "", email: "", instagram: "", tiktok: "", tier: "weekly", code: "" });
+      setShowAdd(false);
+      setFilter("approved");
+      await load();
+    } else {
+      setResult({ type: "error", message: res.error || "Failed to add creator." });
+    }
+    setAdding(false);
+  };
+
   useEffect(() => {
     if (!isLoading && (!isAuthenticated || !isAdmin)) redirect("/");
   }, [isLoading, isAuthenticated, isAdmin]);
@@ -195,13 +239,21 @@ export default function CreatorsPage() {
             Review applicants, approve to mint a code and email their sign link, and track signed agreements.
           </p>
         </div>
-        <button
-          onClick={load}
-          className="text-muted-foreground hover:text-foreground transition-colors"
-          title="Refresh"
-        >
-          <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => { setShowAdd((v) => !v); setResult(null); }}
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors text-sm"
+          >
+            <UserPlus className="h-4 w-4" /> Add creator
+          </button>
+          <button
+            onClick={load}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            title="Refresh"
+          >
+            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+          </button>
+        </div>
       </div>
 
       {result && (
@@ -220,6 +272,69 @@ export default function CreatorsPage() {
           <p className={result.type === "success" ? "text-green-500" : "text-red-500"}>
             {result.message}
           </p>
+        </div>
+      )}
+
+      {/* Add creator form */}
+      {showAdd && (
+        <div className="bg-card border border-border rounded-lg p-5">
+          <h2 className="font-medium mb-1">Add a creator</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            For someone you&apos;ve already brought on — this creates them as <b>Approved</b> and emails
+            their welcome + sign link right away. No application step, no &quot;thanks for applying&quot; email.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs text-muted-foreground">Name</label>
+              <input value={addForm.name} onChange={(e) => setAddForm({ ...addForm, name: e.target.value })}
+                placeholder="First Last"
+                className="w-full mt-1 px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring text-sm" />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground">Email</label>
+              <input value={addForm.email} onChange={(e) => setAddForm({ ...addForm, email: e.target.value })}
+                placeholder="creator@email.com"
+                className="w-full mt-1 px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring text-sm" />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground">Instagram (optional)</label>
+              <input value={addForm.instagram} onChange={(e) => setAddForm({ ...addForm, instagram: e.target.value })}
+                placeholder="@handle"
+                className="w-full mt-1 px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring text-sm" />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground">TikTok (optional)</label>
+              <input value={addForm.tiktok} onChange={(e) => setAddForm({ ...addForm, tiktok: e.target.value })}
+                placeholder="@handle"
+                className="w-full mt-1 px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring text-sm" />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground">Tier</label>
+              <select value={addForm.tier} onChange={(e) => setAddForm({ ...addForm, tier: e.target.value })}
+                className="w-full mt-1 px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring text-sm">
+                <option value="weekly">Weekly · $25/wk</option>
+                <option value="monthly">Monthly · $100/mo</option>
+                <option value="oneoff">One-off (per piece)</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground">Custom code (optional)</label>
+              <input value={addForm.code} onChange={(e) => setAddForm({ ...addForm, code: e.target.value })}
+                placeholder="auto: MOOD-NAME"
+                className="w-full mt-1 px-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring text-sm" />
+            </div>
+          </div>
+          <div className="flex gap-2 mt-4">
+            <button onClick={handleAdd} disabled={adding}
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors text-sm">
+              <CheckCircle className="h-4 w-4" />
+              {adding ? "Adding…" : "Add & email welcome"}
+            </button>
+            <button onClick={() => setShowAdd(false)}
+              className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Cancel
+            </button>
+          </div>
         </div>
       )}
 

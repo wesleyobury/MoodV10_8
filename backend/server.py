@@ -14436,6 +14436,19 @@ class CreatorApplicationApprove(BaseModel):
     note: Optional[str] = None
 
 
+class CreatorAdminCreate(BaseModel):
+    name: str
+    email: str
+    instagram: Optional[str] = None
+    tiktok: Optional[str] = None
+    tier: Optional[str] = None
+    code: Optional[str] = None        # omit to auto-generate
+    audience: Optional[str] = None
+    niche: Optional[str] = None
+    link: Optional[str] = None
+    why: Optional[str] = None
+
+
 class CreatorAgreementSign(BaseModel):
     signature_name: str              # typed full legal name = the e-signature
     agreed: bool
@@ -14653,6 +14666,64 @@ async def list_creator_applications(status: Optional[str] = None, admin_id: str 
     for s in ("pending", "approved", "signed", "rejected"):
         counts[s] = await db.creator_applications.count_documents({"status": s})
     return {"applications": [_shape_application(d) for d in docs], "total": len(docs), "counts": counts}
+
+
+@api_router.post("/admin/creator-applications")
+async def admin_add_creator(payload: CreatorAdminCreate, admin_id: str = Depends(require_admin)):
+    """ADMIN: add a creator you already know — creates the application AND approves it in one
+    step (mints a code + emails the welcome/sign link). No applicant confirmation is sent."""
+    name = (payload.name or "").strip()
+    email = (payload.email or "").strip()
+    if not name or not email:
+        raise HTTPException(status_code=400, detail="Name and email are required")
+    now = datetime.now(timezone.utc)
+    app_id = uuid.uuid4().hex[:12]
+    ig = _clean_handle(payload.instagram or "")
+    tt = _clean_handle(payload.tiktok or "")
+    # Resolve/mint the code first, so a bad custom code fails before anything is inserted.
+    code = ""
+    if payload.code:
+        code = _normalize_code(payload.code)
+        if not code:
+            raise HTTPException(status_code=400, detail="Invalid code")
+        existing = await db.creator_codes.find_one({"code": code})
+        if existing and (existing.get("creator_contact") or "") != email:
+            raise HTTPException(status_code=409, detail="Code already exists")
+    if not code:
+        code = await _generate_unique_creator_code(name)
+    doc = {
+        "id": app_id, "name": name, "email": email,
+        "instagram": ig, "tiktok": tt,
+        "instagram_url": _handle_to_url("instagram", ig),
+        "tiktok_url": _handle_to_url("tiktok", tt),
+        "audience": (payload.audience or "").strip(),
+        "niche": (payload.niche or "").strip(),
+        "link": (payload.link or "").strip(),
+        "why": (payload.why or "").strip(),
+        "source": "admin",
+    }
+    sign_link = _build_sign_link(doc, code, payload.tier)
+    store_link = _build_store_link(code)
+    doc.update({
+        "status": "approved", "code": code, "tier": payload.tier or "",
+        "created_at": now, "approved_at": now, "approved_by": admin_id,
+        "sign_link": sign_link, "store_link": store_link,
+    })
+    await db.creator_applications.insert_one(doc)
+    if not await db.creator_codes.find_one({"code": code}):
+        await db.creator_codes.insert_one({
+            "code": code, "creator_name": name, "creator_contact": email,
+            "note": f"Auto-created on admin add ({app_id})",
+            "max_redemptions": 1, "redemption_count": 0, "redemptions": [],
+            "active": True, "created_at": now, "created_by": admin_id,
+        })
+    first_name = name.split(" ")[0].strip()
+    subject = f"{first_name} x MOOD collab" if first_name else "You’re in — welcome to MOOD"
+    emailed = await _send_creator_email(email, subject, _approved_html(doc, code, sign_link, store_link))
+    await log_admin_action(admin_id, "admin_add_creator", "/admin/creator-applications",
+                           {"code": code, "email": email}, 200, "added+approved")
+    return {"ok": True, "id": app_id, "code": code, "sign_link": sign_link,
+            "store_link": store_link, "emailed": emailed}
 
 
 @api_router.post("/admin/creator-applications/{app_id}/approve")
