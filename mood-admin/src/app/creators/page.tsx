@@ -347,6 +347,20 @@ export default function CreatorsPage() {
                             )}
                           </button>
                         )}
+                        {a.store_link && (
+                          <button
+                            onClick={() => copy(`bio-${a.id}`, a.store_link)}
+                            className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-muted/60 hover:bg-muted"
+                            title="Copy the creator's App Store bio link"
+                          >
+                            {copied === `bio-${a.id}` ? "Copied" : "Copy bio link"}
+                            {copied === `bio-${a.id}` ? (
+                              <Check className="h-3 w-3 text-green-500" />
+                            ) : (
+                              <Copy className="h-3 w-3" />
+                            )}
+                          </button>
+                        )}
                         {a.status === "signed" && (
                           <>
                             <span className="text-muted-foreground">
