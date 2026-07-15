@@ -14458,7 +14458,8 @@ def _html_to_text(html: str) -> str:
     text = _re.sub(r"<[^>]+>", "", text)
     text = (text.replace("&amp;", "&").replace("&middot;", "·").replace("&rarr;", "→")
                 .replace("&rsquo;", "’").replace("&#127881;", "").replace("&#128153;", "")
-                .replace("&#10003;", "✓").replace("&nbsp;", " "))
+                .replace("&#10003;", "✓").replace("&nbsp;", " ").replace("&mdash;", "—")
+                .replace("&bull;", "•").replace("&ldquo;", "“").replace("&rdquo;", "”"))
     text = _re.sub(r"\n\s*\n\s*\n+", "\n\n", text)
     return "\n".join(line.strip() for line in text.splitlines()).strip()
 
@@ -14535,20 +14536,39 @@ def _apply_confirm_html(doc: dict) -> str:
 
 def _approved_html(doc: dict, code: str, sign_link: str, store_link: str) -> str:
     first = (doc.get("name", "") or "there").split(" ")[0] or "there"
+    lbl = "color:#fff;font-weight:700;"
+    lnk = "color:#B8860B;font-weight:600;"
     inner = (
         '<div style="color:#e8e8ea;font-size:15px;line-height:23px;">'
-        f'Hi {first},<br><br>'
-        'You&rsquo;re in the MOOD Creator Partner Program &mdash; welcome. One quick step: review and '
-        'sign your agreement (takes about a minute):<br><br>'
-        f'<a href="{sign_link}" style="color:#B8860B;font-weight:600;">Review &amp; sign your agreement &rarr;</a><br>'
-        f'<span style="color:#8a8a90;font-size:12.5px;word-break:break-all;">or paste this into your browser: {sign_link}</span>'
-        '<br><br>'
-        f'<b>Your creator code:</b> {code}<br>'
-        '<b>Your personal App Store link</b> (put this in your bio &mdash; it credits your signups to you):<br>'
-        f'<a href="{store_link}" style="color:#B8860B;font-weight:600;word-break:break-all;">{store_link}</a>'
-        '<br><br>'
-        'Include your link + a strong CTA in every piece. Just reply here if you have any questions.<br><br>'
-        '&mdash; Wes'
+        f'Hey {first} &mdash; great to have you on board, I really appreciate it.<br><br>'
+        'MOOD 2.0 is live (the full premium version), and you&rsquo;ve got it free:<br>'
+        '1) Download MOOD and sign up.<br>'
+        '2) Enter your creator code &mdash; during onboarding tap &ldquo;Have a creator code?&rdquo; on the '
+        'subscribe screen, or anytime under Settings &rarr; Redeem creator code. Access unlocks instantly.<br><br>'
+        f'<span style="{lbl}">One quick step first</span> &mdash; review &amp; sign your agreement (about a minute):<br>'
+        f'<a href="{sign_link}" style="{lnk}">Review &amp; sign your agreement &rarr;</a><br>'
+        f'<span style="color:#8a8a90;font-size:12.5px;word-break:break-all;">or paste this: {sign_link}</span><br><br>'
+        f'<span style="{lbl}">Your code &amp; link</span><br>'
+        f'Creator code (for your own free access): <b>{code}</b><br>'
+        'Your custom link (this is what your audience signs up through &mdash; it earns you $10 per paid signup):<br>'
+        f'<a href="{store_link}" style="{lnk}word-break:break-all;">{store_link}</a><br>'
+        'Heads up: your code is just for your own access &mdash; your audience signs up through your custom link.<br><br>'
+        f'<span style="{lbl}">Pay</span><br>'
+        '&bull; $25/week base + $10 per paid signup through your link<br>'
+        '&bull; or $20 per reel + $10 per paid signup, no base<br>'
+        '&bull; Payouts as soon as you post your last deliverable (PayPal / Venmo / Apple Pay / Zelle)<br>'
+        '&bull; Signups are tracked through your custom link &mdash; I&rsquo;m building a dashboard you&rsquo;ll see too<br><br>'
+        f'<span style="{lbl}">Weekly deliverables</span><br>'
+        '&bull; 1 IG/TikTok reel<br>'
+        '&bull; At least 1 IG story with the MOOD overlay + your custom link<br>'
+        '&bull; 2 posts inside the MOOD app<br><br>'
+        f'<span style="{lbl}">Notes</span><br>'
+        '&bull; Include your custom link + a strong CTA in every piece<br>'
+        '&bull; No pressure to put the link in your bio, but that&rsquo;s what earns you $10 per paid signup &mdash; somewhere visible helps<br>'
+        '&bull; MOOD may reuse or boost your content on our channels for 6 months, with credit<br><br>'
+        'I&rsquo;d love to get you sharing content ASAP &mdash; I&rsquo;m ramping up on content starting today, so the sooner '
+        'you deliver, the sooner you get paid.<br><br>'
+        'Reply here anytime.<br>&mdash; Wes'
         '</div>'
     )
     return _creator_email_shell(inner)
@@ -14672,8 +14692,9 @@ async def approve_creator_application(app_id: str, payload: CreatorApplicationAp
         "approved_at": now, "approved_by": admin_id,
         "sign_link": sign_link, "store_link": store_link,
     }})
-    emailed = await _send_creator_email(doc.get("email"),
-                                        "You’re in — sign your MOOD Creator Agreement",
+    first_name = (doc.get("name", "") or "").split(" ")[0].strip()
+    subject = f"{first_name} x MOOD collab" if first_name else "You’re in — welcome to MOOD"
+    emailed = await _send_creator_email(doc.get("email"), subject,
                                         _approved_html(doc, code, sign_link, store_link))
     await log_admin_action(admin_id, "approve_creator_application",
                            f"/admin/creator-applications/{app_id}/approve",
