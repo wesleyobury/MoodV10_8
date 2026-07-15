@@ -14529,6 +14529,8 @@ def _apply_confirm_html(doc: dict) -> str:
         'and we&rsquo;ll reply soon with next steps.<br><br>'
         'While you wait, you can '
         f'<a href="{CREATOR_STORE_BASE}" style="color:#B8860B;font-weight:600;">download MOOD here</a>.<br><br>'
+        'One heads-up: your approval email may land in your <b>Promotions</b> or <b>Spam</b> tab &mdash; keep '
+        'an eye out for it, and dragging it into your main inbox helps the next ones arrive there.<br><br>'
         'Questions? Just reply to this email.<br><br>&mdash; Wes'
         '</div>'
     )
