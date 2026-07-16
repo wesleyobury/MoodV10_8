@@ -90,12 +90,14 @@ class ApiClient {
 
   // Auth endpoints
   async login(username: string, password: string) {
-    const result = await this.post<{ token: string; user_id: string }>(
+    const result = await this.post<{ access_token?: string; token?: string; user_id: string }>(
       "/auth/login",
       { username, password }
     );
-    if (result.data?.token) {
-      this.setToken(result.data.token);
+    // Backend returns the JWT as `access_token`; keep `token` as a fallback.
+    const authToken = result.data?.access_token ?? result.data?.token;
+    if (authToken) {
+      this.setToken(authToken);
     }
     return result;
   }
