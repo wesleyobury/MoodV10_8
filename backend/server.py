@@ -147,6 +147,7 @@ from admin_analytics import (
 from subscriber_directory import get_subscribers_directory
 from acquisition_funnel import get_acquisition_funnel
 import store_metrics
+import app_store_connect
 from store_metrics_worker import (
     start_store_metrics_worker,
     stop_store_metrics_worker,
@@ -2882,7 +2883,7 @@ async def get_time_series_analytics(
         date_format = "%Y-%m"
     elif period == "week":
         days_back = max(180, limit)
-        date_format = "%Y-W%V"
+        date_format = "%G-W%V"
     else:  # day
         days_back = 30 if limit <= 30 else limit
         date_format = "%Y-%m-%d"
@@ -2922,9 +2923,14 @@ async def get_time_series_analytics(
             return await coll.aggregate(pipeline, allowDiskUse=True).to_list(max_buckets)
         
         if metric_type == "active_users":
-            # Count unique users per period using $addToSet at DB level
+            # Count unique users per period using $addToSet at DB level.
+            # Require a real user_id: guest events carry user_id null/missing,
+            # which would otherwise add a null bucket member and inflate counts.
+            _au_user_filter = {"$ne": None}
+            if excluded_user_ids:
+                _au_user_filter["$nin"] = list(excluded_user_ids)
             pipeline = [
-                {"$match": base_filter},
+                {"$match": {**base_filter, "user_id": _au_user_filter}},
                 {"$group": {
                     "_id": {"$dateToString": {"format": mongo_date_format, "date": "$timestamp"}},
                     "users": {"$addToSet": "$user_id"},
@@ -3243,6 +3249,7 @@ async def get_new_users_endpoint(
 async def get_signup_trend_endpoint(
     period: str = "day",  # day, week, month
     limit: int = 30,
+    include_internal: bool = False,
     current_user_id: str = Depends(require_admin)
 ):
     """Get user signup trends grouped by day, week, or month"""
@@ -3252,7 +3259,7 @@ async def get_signup_trend_endpoint(
             date_format = "%Y-%m"
             days_back = 365
         elif period == "week":
-            date_format = "%Y-W%V"
+            date_format = "%G-W%V"
             days_back = 180
         else:  # day
             date_format = "%Y-%m-%d"
@@ -3262,8 +3269,11 @@ async def get_signup_trend_endpoint(
         
         # Group at DB level using aggregation (avoid loading all users into memory)
         mongo_date_format = "%G-W%V" if period == "week" else date_format
+        signup_match = {"created_at": {"$gte": cutoff}}
+        if not include_internal:
+            signup_match["is_internal"] = {"$ne": True}
         pipeline = [
-            {"$match": {"created_at": {"$gte": cutoff}}},
+            {"$match": signup_match},
             {"$group": {
                 "_id": {"$dateToString": {"format": mongo_date_format, "date": "$created_at"}},
                 "count": {"$sum": 1},
@@ -3719,7 +3729,7 @@ async def get_workout_engagement_chart(
             # Group by week number
             group_id = {
                 "$concat": [
-                    {"$toString": {"$year": "$timestamp"}},
+                    {"$toString": {"$isoWeekYear": "$timestamp"}},
                     "-W",
                     {"$toString": {"$isoWeek": "$timestamp"}}
                 ]
@@ -4176,6 +4186,226 @@ async def sync_store_metrics_endpoint(
         return await store_metrics.sync_store_metrics(db, days=days)
     except Exception as e:
         logger.error(f"Store-metrics sync error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ── App Store adapter endpoints (dashboard App Store section) ────────────────
+# Thin adapters over the existing store_metrics collection + sync machinery,
+# shaped to the admin dashboard's AppStoreDownloadsData / AppStoreComparisonData
+# / AppStoreSyncResult types. No new App Store client code — Apple data comes
+# from app_store_connect.py via the store_metrics sync.
+
+def _asc_missing_env() -> list:
+    """Unset ASC_* env var names, derived from config_status() has_* booleans."""
+    cs = app_store_connect.config_status()
+    missing = []
+    if not cs.get("has_issuer_id"):
+        missing.append("ASC_ISSUER_ID")
+    if not cs.get("has_vendor_number"):
+        missing.append("ASC_VENDOR_NUMBER")
+    if not cs.get("has_private_key"):
+        missing.append("ASC_PRIVATE_KEY or ASC_PRIVATE_KEY_PATH")
+    return missing
+
+
+def _appstore_bucket_format(period: str) -> str:
+    if period == "month":
+        return "%Y-%m"
+    if period == "week":
+        return "%G-W%V"
+    return "%Y-%m-%d"
+
+
+def _appstore_display_label(bucket_key: str, period: str) -> str:
+    """Format a raw bucket key like the dashboard's other time series."""
+    try:
+        if period == "month":
+            return datetime.strptime(bucket_key, "%Y-%m").strftime("%b '%y")
+        if period == "week":
+            return f"W{bucket_key.split('W')[1]}"
+        return datetime.strptime(bucket_key, "%Y-%m-%d").strftime("%m/%d")
+    except Exception:
+        return bucket_key
+
+
+def _coerce_store_metric_date(value):
+    """store_metrics docs store date as 'YYYY-MM-DD' or datetime; return naive dt."""
+    if isinstance(value, datetime):
+        if value.tzinfo is not None:
+            return value.astimezone(timezone.utc).replace(tzinfo=None)
+        return value
+    if isinstance(value, str) and value:
+        try:
+            return datetime.strptime(value[:10], "%Y-%m-%d")
+        except ValueError:
+            return None
+    return None
+
+
+def _iso_str_or_none(value):
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if isinstance(value, str) and value:
+        return value
+    return None
+
+
+async def _apple_download_buckets(days: int, period: str):
+    """Bucketed apple downloads from store_metrics. Returns (buckets, days_cached, last_synced_at)."""
+    fmt = _appstore_bucket_format(period)
+    cutoff = None
+    if days and days > 0:
+        cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=days)
+    docs = await db.store_metrics.find({"platform": "apple"}).to_list(20000)
+    buckets = {}
+    dates_seen = set()
+    last_synced_at = None
+    for doc in docs:
+        d = _coerce_store_metric_date(doc.get("date"))
+        if d is None:
+            continue
+        fetched = _iso_str_or_none(doc.get("fetched_at")) or _iso_str_or_none(doc.get("updated_at"))
+        if fetched and (last_synced_at is None or fetched > last_synced_at):
+            last_synced_at = fetched
+        if cutoff is not None and d < cutoff:
+            continue
+        key = d.strftime(fmt)
+        buckets[key] = buckets.get(key, 0) + int(doc.get("downloads") or 0)
+        dates_seen.add(d.strftime("%Y-%m-%d"))
+    return buckets, len(dates_seen), last_synced_at
+
+
+@api_router.get("/analytics/admin/appstore/downloads")
+async def get_appstore_downloads_endpoint(
+    days: int = 30,
+    period: str = "day",
+    current_user_id: str = Depends(require_admin)
+):
+    """App Store download units (Apple Sales reports) bucketed by period. days=0 = all cached."""
+    try:
+        missing = _asc_missing_env()
+        configured = app_store_connect.is_configured()
+        buckets, days_cached, last_synced_at = await _apple_download_buckets(days, period)
+        labels = sorted(buckets.keys())
+        values = [buckets[k] for k in labels]
+        if not configured:
+            note = "App Store Connect reporting is not configured; showing cached data only."
+        else:
+            note = "App Units from Apple's daily Sales reports; the most recent day(s) may not be reported yet."
+        return {
+            "configured": configured,
+            "missing": missing,
+            "labels": labels,
+            "values": values,
+            "total": sum(values),
+            "days_cached": days_cached,
+            "last_synced_at": last_synced_at,
+            "note": note,
+        }
+    except Exception as e:
+        logger.error(f"App Store downloads endpoint error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/analytics/admin/appstore/comparison")
+async def get_appstore_comparison_endpoint(
+    days: int = 30,
+    period: str = "day",
+    current_user_id: str = Depends(require_admin)
+):
+    """App Store downloads vs tracked first opens (first guest_session_started per device)."""
+    try:
+        missing = _asc_missing_env()
+        configured = app_store_connect.is_configured()
+        effective_days = days if days and days > 0 else 3650
+        fmt = _appstore_bucket_format(period)
+        cutoff = datetime.now(timezone.utc) - timedelta(days=effective_days)
+
+        # Apple downloads, bucketed on the store_metrics doc date.
+        dl_buckets, _days_cached, last_synced_at = await _apple_download_buckets(effective_days, period)
+
+        # First opens: earliest guest_session_started per device, bucketed by first-seen.
+        pipeline = [
+            {"$match": {
+                "event_type": "guest_session_started",
+                "device_id": {"$exists": True, "$ne": None},
+            }},
+            {"$group": {"_id": "$device_id", "first_seen": {"$min": "$timestamp"}}},
+            {"$match": {"first_seen": {"$gte": cutoff}}},
+            {"$group": {
+                "_id": {"$dateToString": {"format": fmt, "date": "$first_seen"}},
+                "count": {"$sum": 1},
+            }},
+        ]
+        fo_buckets = {}
+        for row in await db.user_events.aggregate(pipeline, allowDiskUse=True).to_list(5000):
+            if row.get("_id"):
+                fo_buckets[row["_id"]] = row["count"]
+
+        bucket_keys = sorted(set(dl_buckets.keys()) | set(fo_buckets.keys()))
+        labels = [_appstore_display_label(k, period) for k in bucket_keys]
+        appstore_downloads = [dl_buckets.get(k) for k in bucket_keys]  # None = no report cached
+        first_opens = [fo_buckets.get(k, 0) for k in bucket_keys]
+
+        return {
+            "configured": configured,
+            "missing": missing,
+            "labels": labels,
+            "appstore_downloads": appstore_downloads,
+            "first_opens": first_opens,
+            "appstore_total": sum(v for v in appstore_downloads if v is not None),
+            "first_opens_total": sum(first_opens),
+            "last_synced_at": last_synced_at,
+            "note": "First opens = first guest_session_started per device. Apple buckets with no cached report are null.",
+        }
+    except Exception as e:
+        logger.error(f"App Store comparison endpoint error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.post("/analytics/admin/appstore/sync")
+async def sync_appstore_endpoint(
+    days: int = 30,
+    current_user_id: str = Depends(require_admin)
+):
+    """Sync the trailing N days of App Store sales reports (capped at 365)."""
+    try:
+        missing = _asc_missing_env()
+        if not app_store_connect.is_configured():
+            return {"configured": False, "missing": missing}
+
+        days = min(max(days, 1), 365)
+        result = await store_metrics.sync_store_metrics(db, days=days)
+
+        # store_metrics.sync_store_metrics returns:
+        #   {"synced": [{platform, date, downloads}, ...],
+        #    "skipped": {"apple": n, "google": n},
+        #    "errors": [{platform, date, error}, ...], ...}
+        # The dashboard's App Store card is Apple-focused, so report apple counts.
+        synced_list = result.get("synced") or []
+        apple_synced = sum(
+            1 for s in synced_list
+            if isinstance(s, dict) and s.get("platform", "apple") == "apple"
+        )
+        skipped = result.get("skipped")
+        apple_skipped = (
+            int(skipped.get("apple", 0)) if isinstance(skipped, dict)
+            else int(skipped or 0)
+        )
+        errors = result.get("errors") or []
+        error_count = len(errors) if isinstance(errors, list) else int(errors or 0)
+
+        return {
+            "configured": True,
+            "synced": apple_synced,
+            "skipped": apple_skipped,
+            # Days Apple hasn't published yet aren't itemized by the sync
+            # routine (data None → silently skipped), so this stays empty.
+            "not_ready_yet": [],
+            "errors": error_count,
+        }
+    except Exception as e:
+        logger.error(f"App Store sync endpoint error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -7060,7 +7290,7 @@ async def get_chart_data(
         date_format = "%Y-%m"
     elif period == "week":
         days_back = min(days, 180)
-        date_format = "%Y-W%V"
+        date_format = "%G-W%V"
     else:
         days_back = min(days, 90)
         date_format = "%Y-%m-%d"

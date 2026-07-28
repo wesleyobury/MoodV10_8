@@ -134,7 +134,10 @@ async def get_funnel_analysis(
                 "step": step,
                 "step_index": i,
                 "step_label": _get_step_label(step),
-                "unique_users": len(user_ids),
+                # Cumulative: users who traversed every step up to and including
+                # this one. Raw per-step reach is kept in raw_unique_users.
+                "unique_users": len(converted_users),
+                "raw_unique_users": len(user_ids),
                 "converted_users": len(converted_users) if i > 0 else len(user_ids),
                 "dropped_users": len(dropped_users),
                 "conversion_rate": conversion_rate,
@@ -151,7 +154,9 @@ async def get_funnel_analysis(
                 step_data["dropped_user_ids"] = dropped_sample
             
             funnel_data.append(step_data)
-            previous_users = user_ids
+            # Carry the cumulative intersected set forward so conversion is
+            # measured against users who actually traversed the funnel so far.
+            previous_users = converted_users
         
         # Calculate overall funnel conversion
         if funnel_data and len(funnel_data) >= 2:
@@ -796,8 +801,32 @@ async def get_retention_cohorts(
                 "cohort_size": cohort_size,
                 "retention": {}
             }
-            
+
+            # Parse the cohort period start so cells the cohort hasn't reached
+            # yet can be emitted as null instead of a diluting 0%.
+            try:
+                if cohort_period == "month":
+                    _cohort_start = datetime.strptime(cohort_key, "%Y-%m")
+                else:
+                    _cohort_start = datetime.strptime(cohort_key, "%Y-%m-%d")
+            except ValueError:
+                _cohort_start = None
+            _now_naive = datetime.now(timezone.utc).replace(tzinfo=None)
+
             for day in retention_days:
+                # Cohort too young to have reached day D: null cell, no DB work.
+                if _cohort_start is not None and _cohort_start + timedelta(days=day) > _now_naive:
+                    cohort_retention["retention"][f"D{day}"] = {
+                        "retained": None,
+                        "percentage": None
+                    }
+                    heatmap_data.append({
+                        "cohort": cohort_key,
+                        "day": f"D{day}",
+                        "value": None
+                    })
+                    continue
+
                 retained_count = 0
                 
                 for user_data in cohort_users:
@@ -836,7 +865,13 @@ async def get_retention_cohorts(
         avg_retention = {}
         for day in retention_days:
             day_key = f"D{day}"
-            values = [c["retention"].get(day_key, {}).get("percentage", 0) for c in cohort_results]
+            # Exclude null cells (cohorts that haven't reached day D yet).
+            values = [
+                v for v in (
+                    c["retention"].get(day_key, {}).get("percentage")
+                    for c in cohort_results
+                ) if v is not None
+            ]
             avg_retention[day_key] = round(sum(values) / len(values), 1) if values else 0
         
         return {
