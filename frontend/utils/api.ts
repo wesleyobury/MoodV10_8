@@ -20,6 +20,75 @@ export interface ApiResponse<T = any> {
   error: string | null;
   status: number;
   ok: boolean;
+  /** True when the request never reached the server (offline / timeout / DNS).
+   *  Callers should show a connection message, NOT treat it as a server "no". */
+  isNetworkError?: boolean;
+}
+
+export interface ApiFetchOptions extends RequestInit {
+  /** Abort the request after this many ms. Default 12000. Pass 0 to disable
+   *  (e.g. large uploads that legitimately take a while). */
+  timeoutMs?: number;
+  /** Extra attempts after a network failure/timeout. Defaults to 1 for GETs
+   *  (safe to repeat) and 0 for everything else (don't double-submit). */
+  retries?: number;
+}
+
+export const NETWORK_ERROR_MESSAGE =
+  'Connection problem — check your internet and try again.';
+
+/* ────────────────────────────────────────────────────────────────────────
+ * Connectivity signal (no NetInfo — that native module isn't in the shipped
+ * binary, so it can't be added over-the-air). Instead we infer connectivity
+ * from real request outcomes: 2+ consecutive network failures → "offline",
+ * first success → "online". ConnectionBanner subscribes to this.
+ * ──────────────────────────────────────────────────────────────────────── */
+type NetworkStatusListener = (offline: boolean) => void;
+const networkListeners = new Set<NetworkStatusListener>();
+let consecutiveNetworkErrors = 0;
+let reportedOffline = false;
+
+export function subscribeNetworkStatus(listener: NetworkStatusListener): () => void {
+  networkListeners.add(listener);
+  listener(reportedOffline);
+  return () => {
+    networkListeners.delete(listener);
+  };
+}
+
+function reportNetworkResult(failed: boolean): void {
+  consecutiveNetworkErrors = failed ? consecutiveNetworkErrors + 1 : 0;
+  const offline = consecutiveNetworkErrors >= 2;
+  if (offline !== reportedOffline) {
+    reportedOffline = offline;
+    networkListeners.forEach((l) => {
+      try {
+        l(offline);
+      } catch {}
+    });
+  }
+}
+
+const DEFAULT_TIMEOUT_MS = 12000;
+
+/**
+ * fetch() with a hard timeout via AbortController. Poor connections
+ * previously hung requests indefinitely, which users experience as the
+ * app "freezing" behind a spinner that never resolves.
+ */
+export async function fetchWithTimeout(
+  url: string,
+  options: RequestInit = {},
+  timeoutMs: number = DEFAULT_TIMEOUT_MS
+): Promise<Response> {
+  if (!timeoutMs) return fetch(url, options);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 /** Shape returned by `/api/auth/login` and `/api/auth/register`. */
@@ -39,9 +108,14 @@ export interface AuthTokenResponse {
  */
 export async function apiFetch<T = any>(
   path: string,
-  options: RequestInit = {}
+  options: ApiFetchOptions = {}
 ): Promise<ApiResponse<T>> {
   const url = `${API_URL}${path}`;
+  const { timeoutMs = DEFAULT_TIMEOUT_MS, retries, ...fetchOptions } = options;
+  const method = (fetchOptions.method || 'GET').toUpperCase();
+  // GETs are idempotent → retry once by default. Mutations are not → never
+  // auto-retry unless the caller explicitly opts in.
+  const maxRetries = retries ?? (method === 'GET' ? 1 : 0);
   
   console.log(`📡 API Request: ${options.method || 'GET'} ${url}`);
   
@@ -52,11 +126,11 @@ export async function apiFetch<T = any>(
       if (!refreshToken) return null;
 
       console.log('🔁 Attempting token refresh...');
-      const refreshRes = await fetch(`${API_URL}/api/auth/refresh`, {
+      const refreshRes = await fetchWithTimeout(`${API_URL}/api/auth/refresh`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refresh_token: refreshToken }),
-      });
+      }, timeoutMs);
 
       const refreshText = await refreshRes.text();
       let refreshJson: any = null;
@@ -87,14 +161,36 @@ export async function apiFetch<T = any>(
     }
   };
 
+  // Attempt the request, retrying on network failure/timeout for idempotent
+  // calls. A brief backoff gives flaky connections a moment to recover.
+  const doFetch = async (): Promise<Response> => {
+    let lastErr: any;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        if (attempt > 0) {
+          console.log(`🔄 Retry ${attempt}/${maxRetries}: ${method} ${url}`);
+          await new Promise((r) => setTimeout(r, 800));
+        }
+        return await fetchWithTimeout(
+          url,
+          {
+            ...fetchOptions,
+            headers: {
+              'Content-Type': 'application/json',
+              ...fetchOptions.headers,
+            },
+          },
+          timeoutMs
+        );
+      } catch (e) {
+        lastErr = e;
+      }
+    }
+    throw lastErr;
+  };
+
   try {
-    let res = await fetch(url, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-    });
+    let res = await doFetch();
 
     // Always read as text first - this avoids JSON parse errors
     let text = await res.text();
@@ -114,14 +210,14 @@ export async function apiFetch<T = any>(
         const newAccess = await tryRefreshOnce();
         if (newAccess) {
           // retry original request with new Authorization header
-          const retryRes = await fetch(url, {
-            ...options,
+          const retryRes = await fetchWithTimeout(url, {
+            ...fetchOptions,
             headers: {
               'Content-Type': 'application/json',
-              ...options.headers,
+              ...fetchOptions.headers,
               'Authorization': `Bearer ${newAccess}`,
             },
-          });
+          }, timeoutMs);
 
           const retryText = await retryRes.text();
           let retryJson: T | null = null;
@@ -146,7 +242,9 @@ export async function apiFetch<T = any>(
         `HTTP ${res.status}`;
 
       console.error(`❌ API Error: ${res.status} - ${errorMessage}`);
-      
+      // The server responded (even if with an error) → we're online.
+      reportNetworkResult(false);
+
       return {
         data: null,
         error: errorMessage,
@@ -156,7 +254,8 @@ export async function apiFetch<T = any>(
     }
 
     console.log(`✅ API Success: ${res.status}`);
-    
+    reportNetworkResult(false);
+
     return {
       data: json,
       error: null,
@@ -164,15 +263,19 @@ export async function apiFetch<T = any>(
       ok: true,
     };
   } catch (networkError: any) {
-    // Network or other fetch errors
-    const errorMessage = networkError?.message || 'Network request failed';
-    console.error(`🌐 Network Error: ${errorMessage}`);
-    
+    // Network or other fetch errors — the request never reached the server.
+    const isTimeout = networkError?.name === 'AbortError';
+    console.error(
+      `🌐 Network Error (${isTimeout ? 'timeout' : 'unreachable'}): ${networkError?.message || networkError}`
+    );
+    reportNetworkResult(true);
+
     return {
       data: null,
-      error: errorMessage,
+      error: NETWORK_ERROR_MESSAGE,
       status: 0,
       ok: false,
+      isNetworkError: true,
     };
   }
 }

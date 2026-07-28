@@ -24,6 +24,7 @@ import { useSubscription } from '../contexts/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
 import { useFoundingPurchase } from '../hooks/useFoundingPurchase';
 import { foundingDaysRemaining } from '../utils/founding';
+import { useUpdateGateState } from './ForceUpdateGate';
 
 // Per-session latch (resets on app restart = new session).
 let shownThisSession = false;
@@ -33,6 +34,7 @@ export function FoundingOfferModal() {
   const { pendingTrigger } = useSubscription();
   const { claimFounding } = useFoundingPurchase();
   const pathname = usePathname();
+  const updateGateState = useUpdateGateState();
   const [visible, setVisible] = useState(false);
   const [busy, setBusy] = useState(false);
   const firedRef = useRef(false);
@@ -53,8 +55,18 @@ export function FoundingOfferModal() {
     if (pendingTrigger) setVisible(false);
   }, [pendingTrigger]);
 
+  // If the forced-update wall comes down, get out of its way — a native
+  // Modal renders above the blocked overlay and would otherwise cover it.
+  useEffect(() => {
+    if (updateGateState === 'blocked') setVisible(false);
+  }, [updateGateState]);
+
   useEffect(() => {
     if (!token || inOnboarding) return;
+    // Don't present a native modal until the update check has resolved —
+    // if the check comes back 'blocked' one frame later, the dismiss/present
+    // race with the update wall can leave the screen black on iOS.
+    if (updateGateState !== 'ok' && updateGateState !== 'soft_prompt') return;
     // Soft Paywall #2 takes priority over the founding launch modal.
     if (pendingTrigger) return;
     if (eligible && !shownThisSession && !firedRef.current) {
@@ -65,7 +77,7 @@ export function FoundingOfferModal() {
       // 1c — canonical founding-offer-shown event for the funnel.
       Analytics.foundingMemberOfferShown(token, { days_remaining_in_window: daysLeft });
     }
-  }, [token, eligible, daysLeft, inOnboarding, pendingTrigger]);
+  }, [token, eligible, daysLeft, inOnboarding, pendingTrigger, updateGateState]);
 
   const handleRemindLater = () => {
     setVisible(false);

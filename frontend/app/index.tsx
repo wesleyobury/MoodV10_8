@@ -135,8 +135,11 @@ const DevPaywallTrigger = () => {
 export default function Welcome() {
   const insets = useSafeAreaInsets();
   const segments = useSegments();
-  const { token, isLoading, user } = useAuth();
+  const { token, isLoading, user, refreshUser } = useAuth();
   const [redirectChecked, setRedirectChecked] = useState(false);
+  // Guards against double replace() when the fallback timer fires and the
+  // user profile loads a moment later (effect re-runs on user?.id).
+  const redirectedRef = useRef(false);
 
   // Track whether the landing page was shown to an unauthenticated user.
   // If true and token later becomes truthy (registration from a child screen
@@ -162,17 +165,40 @@ export default function Welcome() {
       return;
     }
     if (landingShownRef.current) return;
-    if (!user?.id) return;
-    (async () => {
-      const completed = await readHasCompletedFunnel(user.id);
-      if (completed) {
+    if (redirectedRef.current) return;
+    if (!user?.id) {
+      // Token restored optimistically (offline / slow backend on cold start)
+      // but /users/me hasn't resolved, so `user` is null. Previously we
+      // returned here with redirectChecked=false — a permanent black screen
+      // if the profile never loaded. Instead: kick a background refetch and,
+      // if the profile still isn't here shortly, proceed into the app
+      // optimistically (the token exists; backend enforces everything else).
+      refreshUser().catch(() => {});
+      const fallback = setTimeout(() => {
+        if (redirectedRef.current) return;
+        redirectedRef.current = true;
         router.replace('/(tabs)');
-      } else {
-        router.replace('/onboarding-funnel/intro');
+        setRedirectChecked(true);
+      }, 3000);
+      return () => clearTimeout(fallback);
+    }
+    (async () => {
+      if (redirectedRef.current) return;
+      redirectedRef.current = true;
+      try {
+        const completed = await readHasCompletedFunnel(user.id);
+        if (completed) {
+          router.replace('/(tabs)');
+        } else {
+          router.replace('/onboarding-funnel/intro');
+        }
+      } catch {
+        // Never strand the user on the black placeholder.
+        router.replace('/(tabs)');
       }
       setRedirectChecked(true);
     })();
-  }, [token, isLoading, user?.id, segments]);
+  }, [token, isLoading, user?.id, segments, refreshUser]);
 
   // Video background fade-in
   const videoRef = useRef<Video>(null);

@@ -1,6 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { reportClientError } from '../utils/errorReporter';
 
 interface Props {
   children: ReactNode;
@@ -34,6 +35,12 @@ class ErrorBoundary extends Component<Props, State> {
     console.error('🚨 Error stack:', error?.stack);
     console.error('🚨 Component stack:', errorInfo?.componentStack);
     this.setState({ errorInfo });
+    // Phase 3 telemetry — render crashes land in the admin error log.
+    reportClientError(error, {
+      isFatal: true,
+      source: 'error_boundary',
+      extra: { component_stack: (errorInfo?.componentStack || '').slice(0, 2000) },
+    });
   }
 
   handleRetry = () => {

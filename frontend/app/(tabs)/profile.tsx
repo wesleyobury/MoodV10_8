@@ -39,6 +39,7 @@ import { BRAND_GRADIENT } from '../../constants/brand';
 
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
+import { readCache, writeCache } from '../../utils/dataCache';
 const { width } = Dimensions.get('window');
 
 
@@ -284,6 +285,28 @@ export default function Profile() {
     }
   }, [activeTab, token, authUser?.id]);
 
+  // Stale-while-revalidate: paint the profile header from the last-known
+  // data immediately; fetchUserProfile refreshes it in the background.
+  useEffect(() => {
+    if (!authUser?.id) return;
+    let cancelled = false;
+    (async () => {
+      const cached = await readCache<{ user: typeof user; stats: UserStats }>(
+        `profile:${authUser.id}`
+      );
+      if (cancelled || !cached) return;
+      // 'current-user' is the placeholder initial state — real data wins.
+      setUser((prev) => (prev.id !== 'current-user' ? prev : cached.user));
+      setStats((prev) =>
+        prev.workouts || prev.followers || prev.following ? prev : cached.stats
+      );
+      setLoadingProfile(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [authUser?.id]);
+
   const fetchUserProfile = async () => {
     if (!token) {
       console.log('No token available for profile');
@@ -311,20 +334,24 @@ export default function Profile() {
           avatarUrl = avatarUrl.startsWith('/') ? `${API_URL}${avatarUrl}` : `${API_URL}/api/uploads/${avatarUrl}`;
         }
         
-        setUser({
+        const freshUser = {
           id: data.id,
           username: data.username,
           name: data.name || data.username,
           bio: data.bio || '',
           avatar: avatarUrl,
           isVerified: false,
-        });
-        setStats({
+        };
+        const freshStats = {
           workouts: data.workouts_count || 0,
           followers: data.followers_count || 0,
           following: data.following_count || 0,
           streak: data.current_streak || 0,
-        });
+        };
+        setUser(freshUser);
+        setStats(freshStats);
+        // Persist for instant render on next open (stale-while-revalidate).
+        writeCache(`profile:${data.id}`, { user: freshUser, stats: freshStats });
         // Also update the AuthContext with the fetched data
         updateUser({
           username: data.username,

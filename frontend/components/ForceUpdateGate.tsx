@@ -7,9 +7,8 @@
  * a dismissible "update available" banner. Fails OPEN (network/server error
  * lets the user in; the backend still enforces entitlement on action).
  */
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, createContext, useContext } from 'react';
 import {
-  Modal,
   View,
   Text,
   Pressable,
@@ -22,6 +21,18 @@ import { getRunningBuildNumber } from '../utils/version';
 import { apiFetch } from '../utils/api';
 
 type UpdateState = 'checking' | 'ok' | 'soft_prompt' | 'blocked';
+
+/**
+ * Exposes the gate's resolved state so sibling launch surfaces (e.g. the
+ * founding-offer modal) can hold off presenting native modals until we know
+ * the user isn't about to be blocked. Presenting a native Modal and then
+ * tearing it down in the same frame the blocked screen appears causes an
+ * iOS modal-presentation race that leaves the screen black.
+ */
+const UpdateGateContext = createContext<UpdateState>('checking');
+export function useUpdateGateState(): UpdateState {
+  return useContext(UpdateGateContext);
+}
 
 interface AppConfig {
   min_supported_build_ios: number;
@@ -86,11 +97,18 @@ export function ForceUpdateGate({ children }: { children: React.ReactNode }) {
   }, [config]);
 
   // While checking, render the app (don't block startup on a network call).
-  // The blocking modal overlays once we know the user is on a retired build.
-  if (state === 'blocked') {
-    return (
-      <Modal visible transparent={false} animationType="fade" statusBarTranslucent>
-        <View style={styles.blockedContainer}>
+  // When blocked, keep the app tree MOUNTED and paint a full-screen overlay
+  // on top instead of unmounting children + presenting a native Modal.
+  // Unmounting mid-launch tears down any native modal a sibling gate just
+  // presented (founding offer, paywall) while this one presents — an iOS
+  // modal race that intermittently leaves a black screen. A plain absolute-
+  // fill View can't race and can't fail to present. Touches don't pass
+  // through, so the app underneath is still effectively locked.
+  return (
+    <UpdateGateContext.Provider value={state}>
+      {children}
+      {state === 'blocked' && (
+        <View style={[StyleSheet.absoluteFill, styles.blockedContainer]}>
           <View style={styles.brandWrap}>
             <Text style={styles.brand}>MOOD</Text>
             <Text style={styles.brandSub}>FITNESS</Text>
@@ -107,13 +125,7 @@ export function ForceUpdateGate({ children }: { children: React.ReactNode }) {
             <Text style={styles.buttonText}>Update Now</Text>
           </Pressable>
         </View>
-      </Modal>
-    );
-  }
-
-  return (
-    <>
-      {children}
+      )}
       {state === 'soft_prompt' && !bannerDismissed && (
         <View style={[styles.banner, { paddingTop: insets.top + 8 }]}>
           <Pressable style={styles.bannerBody} onPress={openStore}>
@@ -128,7 +140,7 @@ export function ForceUpdateGate({ children }: { children: React.ReactNode }) {
           </Pressable>
         </View>
       )}
-    </>
+    </UpdateGateContext.Provider>
   );
 }
 
@@ -136,11 +148,12 @@ const GOLD = '#E8B84B';
 
 const styles = StyleSheet.create({
   blockedContainer: {
-    flex: 1,
     backgroundColor: '#0a0a0a',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 32,
+    zIndex: 9999,
+    elevation: 9999,
   },
   brandWrap: {
     alignItems: 'center',

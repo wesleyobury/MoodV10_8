@@ -1011,13 +1011,25 @@ export default function CreatePost() {
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
         const asset = result.assets[0];
-        
+
         // Check video duration if available
         if (asset.duration && asset.duration > 30000) { // 30 seconds in ms
           showAlert('Video Too Long', 'Please select a video under 30 seconds');
           return;
         }
-        
+
+        // Size guard — high-bitrate camera footage (DSLR imports etc.) can be
+        // hundreds of MB even under 30s. Warn up front instead of letting the
+        // upload fail after a long wait.
+        const MAX_VIDEO_BYTES = 300 * 1024 * 1024; // 300MB
+        if (asset.fileSize && asset.fileSize > MAX_VIDEO_BYTES) {
+          showAlert(
+            'Video Too Large',
+            `This video is ${Math.round(asset.fileSize / 1e6)}MB — the limit is 300MB. Videos imported from cameras are often very high quality; try trimming it or exporting a smaller version.`
+          );
+          return;
+        }
+
         const newMedia: MediaItem = { uri: asset.uri, type: 'video' };
         const newIndex = selectedMedia.length;
         const updatedMedia = [...selectedMedia, newMedia].slice(0, maxMedia);
@@ -1467,9 +1479,13 @@ export default function CreatePost() {
     }
   };
 
-  const uploadMedia = async (): Promise<{urls: string[], coverUrls: {[key: number]: string}}> => {
+  const uploadMedia = async (): Promise<{urls: string[], coverUrls: {[key: number]: string}, failures: string[]}> => {
     const uploadedUrls: string[] = [];
     const coverUrls: {[key: number]: string} = {};
+    // Per-item failure reasons. handleCreatePost ABORTS the post if any media
+    // failed — the old behavior silently published the post without its media,
+    // which made upload failures invisible to users.
+    const failures: string[] = [];
     const totalSteps = selectedMedia.length + (hasStatsCard ? 1 : 0) + 1; // media + card + post creation
     let currentStep = 0;
     
@@ -1589,15 +1605,21 @@ export default function CreatePost() {
         } else {
           const errorText = await uploadResponse.text();
           console.error('Upload failed:', uploadResponse.status, errorText);
+          failures.push(
+            `${mediaItem.type === 'video' ? 'Video' : 'Photo'} ${i + 1}: server error ${uploadResponse.status} — ${errorText.slice(0, 200)}`
+          );
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error uploading media:', error);
+        failures.push(
+          `${mediaItem.type === 'video' ? 'Video' : 'Photo'} ${i + 1}: ${error?.message || String(error)}`
+        );
       }
     }
 
     console.log('All uploaded URLs:', uploadedUrls);
     console.log('Cover URLs:', coverUrls);
-    return { urls: uploadedUrls, coverUrls };
+    return { urls: uploadedUrls, coverUrls, failures };
   };
 
   const handleCreatePost = async () => {
@@ -1619,6 +1641,19 @@ export default function CreatePost() {
       const coverUrls = uploadResult.coverUrls;
       console.log('Uploaded media:', mediaUrls);
       console.log('Cover URLs:', coverUrls);
+
+      // ABORT if any media failed to upload — never publish a post that's
+      // silently missing the media the user attached. Surface the real error
+      // so failures are diagnosable instead of invisible.
+      if (uploadResult.failures.length > 0) {
+        setUploading(false);
+        setUploadProgress(0);
+        showAlert(
+          'Upload Failed',
+          `${uploadResult.failures.length} of your media file${uploadResult.failures.length === 1 ? '' : 's'} didn't upload, so the post wasn't published. Please try again.\n\n${uploadResult.failures[0]}`
+        );
+        return;
+      }
       
       // Capture and upload workout card if it exists
       if (hasStatsCard && workoutStats) {

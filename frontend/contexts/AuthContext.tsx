@@ -5,7 +5,7 @@ import { trackEvent, aliasGuestToUser, GuestAnalytics } from '../utils/analytics
 import TermsAcceptanceModal from '../components/TermsAcceptanceModal';
 import { resetNotificationSession } from '../utils/notificationUtils';
 import { API_URL, validateApiConfig } from '../utils/apiConfig';
-import { apiFetch, AuthTokenResponse } from '../utils/api';
+import { apiFetch, AuthTokenResponse, fetchWithTimeout } from '../utils/api';
 import { secureStorage, AUTH_TOKEN_KEY, AUTH_REFRESH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY, AUTH_TOKEN_LAST_VALIDATED_KEY } from '../utils/secureStorage';
 import { DEV_MOCKS_ENABLED, getDevMockEntitlement } from '../utils/devMocks';
 import { refreshSubscriptionFromServer } from '../hooks/subscription/subscriptionState';
@@ -280,11 +280,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const fetchCurrentUser = async (authToken: string): Promise<User | null> => {
     try {
-      const response = await fetch(`${API_URL}/api/users/me`, {
+      // Timeout so a stalled connection can't hang login/registration flows
+      // that await this call.
+      const response = await fetchWithTimeout(`${API_URL}/api/users/me`, {
         headers: {
           'Authorization': `Bearer ${authToken}`,
         },
-      });
+      }, 12000);
 
       if (response.ok) {
         const userData = await response.json();

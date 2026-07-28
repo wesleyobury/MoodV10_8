@@ -30,6 +30,12 @@ import AppBootstrap from '../components/AppBootstrap';
 import { ForceUpdateGate } from '../components/ForceUpdateGate';
 import { AddWorkoutCoachmarkProvider } from '../components/AddWorkoutCoachmark';
 import { FoundingOfferModal } from '../components/FoundingOfferModal';
+import { ConnectionBanner } from '../components/ConnectionBanner';
+import { installErrorReporter } from '../utils/errorReporter';
+
+// Phase 3 — lightweight crash telemetry (reports unhandled JS errors to the
+// backend). Installed at module load so it catches errors from app startup.
+installErrorReporter();
 
 // Keep splash screen visible while we load
 SplashScreen.preventAutoHideAsync().catch(() => {
@@ -195,6 +201,7 @@ function AppContent() {
         <FunnelEntryGate />
         <ProfilePicPromptGate />
         <PaywallModal />
+        <ConnectionBanner />
       </AddWorkoutCoachmarkProvider>
     </ForceUpdateGate>
   );

@@ -21,6 +21,7 @@ import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinea
 import TermsPrivacyConsentModal from '../../components/TermsPrivacyConsentModal';
 import { useAuth } from '../../contexts/AuthContext';
 import { API_URL } from '../../utils/apiConfig';
+import { NETWORK_ERROR_MESSAGE } from '../../utils/api';
 import { AUTH_TOKEN_KEY, secureStorage } from '../../utils/secureStorage';
 
 const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
@@ -367,7 +368,15 @@ export default function Login() {
       await login(username.trim(), password);
       router.replace('/(tabs)');
     } catch (error: any) {
-      Alert.alert('Login Failed', error.message || 'Please check your credentials');
+      // Distinguish "couldn't reach the server" from "server said no".
+      // Previously a dropped connection surfaced as "check your credentials",
+      // sending users off to reset perfectly good passwords.
+      const message = error?.message || '';
+      if (message === NETWORK_ERROR_MESSAGE || /network|timeout|abort/i.test(message)) {
+        Alert.alert('Connection Problem', NETWORK_ERROR_MESSAGE);
+      } else {
+        Alert.alert('Login Failed', message || 'Please check your username and password.');
+      }
     } finally {
       setIsLoading(false);
     }

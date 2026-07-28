@@ -8916,18 +8916,34 @@ async def upload_file(
             "unique_filename": True,
         }
         
-        # For videos, generate thumbnail eagerly
+        # For videos, generate thumbnail eagerly.
+        # eager_async=True: synchronous eager transforms fail/time out on
+        # large files (e.g. high-bitrate DSLR footage). The thumbnail URL
+        # fallback below is an on-the-fly transform, so nothing user-facing
+        # waits on the async job.
         if is_video:
             upload_options["eager"] = [
                 {"format": "jpg", "transformation": [{"start_offset": "2", "width": 400, "height": 400, "crop": "fill"}]}
             ]
-            upload_options["eager_async"] = False
-        
-        # Upload to Cloudinary
-        result = cloudinary.uploader.upload(
-            file_content,
-            **upload_options
-        )
+            upload_options["eager_async"] = True
+
+        # Upload to Cloudinary. The standard upload API rejects files over
+        # ~100MB; large videos (DSLR/Nikon clips) must go through the chunked
+        # upload_large API instead.
+        LARGE_UPLOAD_THRESHOLD = 90 * 1024 * 1024  # 90MB
+        if is_video and len(file_content) > LARGE_UPLOAD_THRESHOLD:
+            import io
+            logger.info(f"📤 Large video ({len(file_content)/1e6:.0f}MB) — using chunked upload")
+            result = cloudinary.uploader.upload_large(
+                io.BytesIO(file_content),
+                chunk_size=20_000_000,
+                **upload_options
+            )
+        else:
+            result = cloudinary.uploader.upload(
+                file_content,
+                **upload_options
+            )
         
         # Get the secure URL (permanent, non-expiring)
         secure_url = result.get("secure_url")
@@ -11123,6 +11139,64 @@ async def root():
 @api_router.get("/health")
 async def health_check():
     return {"status": "healthy", "database": "connected"}
+
+
+# ── Phase 3 — lightweight client error telemetry ──────────────────────────
+# The app POSTs unhandled JS errors here (utils/errorReporter.ts). No auth:
+# crashes often happen before/without a session, and losing those reports
+# defeats the purpose. Abuse is bounded by payload caps, per-doc size limits,
+# and a capped collection query surface (admin endpoint below).
+
+class ClientErrorReport(BaseModel):
+    message: str
+    stack: Optional[str] = None
+    is_fatal: bool = False
+    source: Optional[str] = None
+    platform: Optional[str] = None
+    os_version: Optional[Any] = None
+    app_version: Optional[str] = None
+    native_build: Optional[str] = None
+    extra: Optional[dict] = None
+
+
+@api_router.post("/client-errors")
+async def report_client_error(report: ClientErrorReport):
+    """Store a client-side error report (best-effort, always returns ok)."""
+    try:
+        doc = {
+            "message": (report.message or "")[:500],
+            "stack": (report.stack or "")[:4000],
+            "is_fatal": bool(report.is_fatal),
+            "source": (report.source or "unknown")[:50],
+            "platform": (report.platform or "unknown")[:20],
+            "os_version": str(report.os_version or "")[:30],
+            "app_version": (report.app_version or "")[:20],
+            "native_build": (report.native_build or "")[:20],
+            "extra": report.extra if isinstance(report.extra, dict) else {},
+            "created_at": datetime.now(timezone.utc),
+        }
+        await db.client_errors.insert_one(doc)
+    except Exception as e:
+        logger.warning(f"client-error ingest failed: {e}")
+    return {"ok": True}
+
+
+@api_router.get("/admin/client-errors")
+async def list_client_errors(
+    limit: int = 100,
+    fatal_only: bool = False,
+    admin_user_id: str = Depends(require_admin),
+):
+    """Most recent client error reports, newest first (admin only)."""
+    query: dict = {"is_fatal": True} if fatal_only else {}
+    cursor = (
+        db.client_errors.find(query, {"_id": 0})
+        .sort("created_at", -1)
+        .limit(max(1, min(limit, 500)))
+    )
+    errors = await cursor.to_list(length=500)
+    total = await db.client_errors.count_documents({})
+    return {"total": total, "errors": errors}
 
 @api_router.get("/meta")
 async def get_meta():

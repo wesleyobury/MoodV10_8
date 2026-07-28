@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
+import { optimizedImageUrl } from '../utils/imageUrl';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -66,7 +67,7 @@ const ImageCarousel = memo(({ images }: ImageCarouselProps) => {
         {images.map((imageUrl, index) => (
           <View key={`${imageUrl}-${index}`} style={styles.imageContainer}>
             <Image
-              source={imageUrl}
+              source={optimizedImageUrl(imageUrl, 1080)}
               style={styles.image}
               contentFit="cover"
               transition={200}

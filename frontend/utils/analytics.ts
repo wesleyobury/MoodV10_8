@@ -13,11 +13,75 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import * as Localization from 'expo-localization';
 import { API_URL } from './apiConfig';
+import { fetchWithTimeout } from './api';
 import { dispatch as dispatchToProviders } from './analyticsProvider';
 
 // Storage keys
 const GUEST_DEVICE_ID_KEY = 'guest_device_id';
 const ANALYTICS_OPT_OUT_KEY = '@mood_analytics_opt_out';
+
+/* ────────────────────────────────────────────────────────────────────────
+ * Background event queue.
+ *
+ * Analytics used to fire a network request the instant each event happened
+ * (difficulty tap, equipment tap, ...). On poor connections those requests
+ * piled up and competed with user-facing calls (workout generation, feed),
+ * making the app feel laggy or frozen. Events now enqueue instantly and a
+ * background loop drains them one at a time with a timeout. Best-effort by
+ * design: on failure an event is dropped, never retried at the user's cost.
+ * ──────────────────────────────────────────────────────────────────────── */
+interface QueuedAnalyticsEvent {
+  url: string;
+  headers: Record<string, string>;
+  body: Record<string, any>;
+}
+
+const eventQueue: QueuedAnalyticsEvent[] = [];
+const MAX_QUEUE_LENGTH = 100;
+const FLUSH_DELAY_MS = 3000;
+const SEND_TIMEOUT_MS = 8000;
+let flushTimer: ReturnType<typeof setTimeout> | null = null;
+let flushing = false;
+
+function enqueueEvent(evt: QueuedAnalyticsEvent): void {
+  eventQueue.push(evt);
+  if (eventQueue.length > MAX_QUEUE_LENGTH) eventQueue.shift(); // drop oldest
+  scheduleFlush();
+}
+
+function scheduleFlush(): void {
+  if (flushTimer || flushing) return;
+  flushTimer = setTimeout(() => {
+    flushTimer = null;
+    void flushEventQueue();
+  }, FLUSH_DELAY_MS);
+}
+
+async function flushEventQueue(): Promise<void> {
+  if (flushing) return;
+  flushing = true;
+  try {
+    while (eventQueue.length > 0) {
+      const evt = eventQueue.shift()!;
+      try {
+        await fetchWithTimeout(
+          evt.url,
+          {
+            method: 'POST',
+            headers: evt.headers,
+            body: JSON.stringify(evt.body),
+          },
+          SEND_TIMEOUT_MS
+        );
+      } catch {
+        // Best-effort: drop the event and move on.
+      }
+    }
+  } finally {
+    flushing = false;
+    if (eventQueue.length > 0) scheduleFlush();
+  }
+}
 
 /**
  * Check if user has opted out of non-essential analytics
@@ -105,23 +169,21 @@ export const trackEvent = async (
       }
     }
 
-    const response = await fetch(`${API_URL}/api/analytics/track`, {
-      method: 'POST',
+    // Timestamp is stamped NOW (enqueue time), so batched delivery a few
+    // seconds later doesn't skew event times.
+    enqueueEvent({
+      url: `${API_URL}/api/analytics/track`,
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      body: {
         event_type: eventType,
         event_timestamp_utc: getUTCTimestamp(),
         user_timezone: getUserTimezone(),
         metadata: metadata || {}
-      })
+      }
     });
-    
-    if (!response.ok) {
-      console.log(`Analytics tracking failed for ${eventType}:`, response.status);
-    }
 
     // Phase G — fan-out to any externally-registered providers (PostHog /
     // Segment / etc.). Today no providers are registered, so this is a
@@ -154,23 +216,19 @@ export const trackGuestEvent = async (
 
     const deviceId = await getOrCreateDeviceId();
     
-    const response = await fetch(`${API_URL}/api/analytics/track/guest`, {
-      method: 'POST',
+    enqueueEvent({
+      url: `${API_URL}/api/analytics/track/guest`,
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      body: {
         event_type: eventType,
         device_id: deviceId,
         event_timestamp_utc: getUTCTimestamp(),
         user_timezone: getUserTimezone(),
         metadata: { ...metadata, is_guest: true }
-      })
+      }
     });
-    
-    if (!response.ok) {
-      console.log(`Guest analytics tracking failed for ${eventType}:`, response.status);
-    }
 
     // Phase G — same provider fan-out for guest events (the funnel runs
     // pre-login, so PostHog/Segment also need to see these).
@@ -189,13 +247,13 @@ export const aliasGuestToUser = async (token: string): Promise<number> => {
   try {
     const deviceId = await getOrCreateDeviceId();
     
-    const response = await fetch(`${API_URL}/api/analytics/alias?device_id=${encodeURIComponent(deviceId)}`, {
+    const response = await fetchWithTimeout(`${API_URL}/api/analytics/alias?device_id=${encodeURIComponent(deviceId)}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
-    });
+    }, 12000);
     
     if (response.ok) {
       const data = await response.json();

@@ -39,6 +39,7 @@ import { prefetchVideoStart } from '../../utils/mediaPrefetch';
 import LiveFeed from '../../components/LiveFeed';
 
 import { API_URL } from '../../utils/apiConfig';
+import { readCache, writeCache } from '../../utils/dataCache';
 import { formatNotificationTime } from '../../utils/notificationUtils';
 
 interface Author {
@@ -322,6 +323,23 @@ export default function Explore() {
     return () => shimmerLoop.stop();
   }, [shimmerAnim]);
 
+  // Stale-while-revalidate: hydrate the feed from the last-known posts so
+  // the screen renders instantly, while fetchPosts refreshes in background.
+  const feedCacheKey = `feed:${isGuest || !token ? 'public' : user?.id || 'auth'}`;
+  const cacheHydratedRef = useRef(false);
+  useEffect(() => {
+    if (cacheHydratedRef.current) return;
+    cacheHydratedRef.current = true;
+    (async () => {
+      const cached = await readCache<Post[]>(feedCacheKey);
+      if (cached && cached.length > 0) {
+        // Only hydrate if the network hasn't beaten us to it.
+        setPosts((prev) => (prev.length === 0 ? cached : prev));
+        setLoading(false);
+      }
+    })();
+  }, [feedCacheKey]);
+
   useEffect(() => {
     // Fetch posts for both authenticated users and guests
     // Skip post fetch on Live tab (LiveFeed manages its own data)
@@ -425,6 +443,8 @@ export default function Explore() {
         } else {
           setPosts(postsWithSaveStatus);
           setHasMore(true);
+          // Persist first page for instant render on next open.
+          writeCache(feedCacheKey, postsWithSaveStatus.slice(0, 20));
         }
         
         // Prefetch images for next batch

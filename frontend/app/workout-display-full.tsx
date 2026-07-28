@@ -15,6 +15,7 @@ import { SafeLinearGradient as LinearGradient } from '../components/SafeLinearGr
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TextWithTermLinks } from '../components/TermDefinitionPopup';
+import { optimizedImageUrl } from '../utils/imageUrl';
 
 const { width } = Dimensions.get('window');
 
@@ -819,7 +820,7 @@ const WorkoutCard = ({ equipment, icon, workouts, difficulty, difficultyColor, o
       {/* Workout Image */}
       <View style={styles.workoutImageContainer}>
         <Image 
-          source={{ uri: item.imageUrl }}
+          source={{ uri: optimizedImageUrl(item.imageUrl, 800) }}
           style={styles.workoutImage}
           resizeMode="cover"
         />

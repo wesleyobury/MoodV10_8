@@ -5,10 +5,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Image,
   FlatList,
   Animated,
 } from 'react-native';
+import { Image } from 'expo-image';
+import { optimizedImageUrl } from '../utils/imageUrl';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -127,9 +128,11 @@ const WorkoutCard = React.memo(({
       {/* Workout Image */}
       <View style={styles.workoutImageContainer}>
         <Image
-          source={{ uri: item.imageUrl }}
+          source={{ uri: optimizedImageUrl(item.imageUrl, 800) }}
           style={styles.workoutImage}
-          resizeMode="cover"
+          contentFit="cover"
+          cachePolicy="memory-disk"
+          transition={150}
         />
         <LinearGradient
           colors={['transparent', 'rgba(0,0,0,0.8)']}
