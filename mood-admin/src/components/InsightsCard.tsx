@@ -149,7 +149,7 @@ export function InsightsCard({ className }: InsightsCardProps) {
               )}
             >
               <div
-                className="p-4 cursor-pointer hover:bg-accent/30"
+                className="group p-4 cursor-pointer hover:bg-accent/30"
                 onClick={() => setExpandedId(isExpanded ? null : insight.id)}
               >
                 <div className="flex items-start gap-3">

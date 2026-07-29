@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
+import { useFilters } from "@/lib/filter-context";
 import { api, OnboardingData } from "@/lib/api";
 import { FunnelChart } from "@/components/charts/FunnelChart";
-import { DateRangePicker } from "@/components/DateRangePicker";
+import { FilterBar } from "@/components/FilterBar";
 import { CSVExport } from "@/components/CSVExport";
-import { subDays, format } from "date-fns";
+import { Tooltip, METRIC_TOOLTIPS } from "@/components/Tooltip";
 import { redirect } from "next/navigation";
 
 // snake_case / kebab answers → readable label
@@ -18,10 +19,8 @@ const fmtMs = (ms: number) =>
 
 export default function OnboardingPage() {
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const { includeInternal, startDateStr, endDateStr } = useFilters();
   const [data, setData] = useState<OnboardingData | null>(null);
-  const [startDate, setStartDate] = useState(subDays(new Date(), 30));
-  const [endDate, setEndDate] = useState(new Date());
-  const [includeInternal, setIncludeInternal] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,16 +29,19 @@ export default function OnboardingPage() {
 
   useEffect(() => {
     if (!isAuthenticated || !isAdmin) return;
+    let cancelled = false;
     const fetchData = async () => {
       setLoading(true);
-      const start = format(startDate, "yyyy-MM-dd");
-      const end = format(endDate, "yyyy-MM-dd");
-      const res = await api.getOnboarding(start, end, includeInternal);
+      const res = await api.getOnboarding(startDateStr, endDateStr, includeInternal);
+      if (cancelled) return;
       if (res.data) setData(res.data);
       setLoading(false);
     };
     fetchData();
-  }, [isAuthenticated, isAdmin, startDate, endDate, includeInternal]);
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, isAdmin, startDateStr, endDateStr, includeInternal]);
 
   const funnelChartData = (data?.funnel || []).map((s) => ({
     name: s.label,
@@ -86,23 +88,10 @@ export default function OnboardingPage() {
             The post-signup funnel — every screen from intro to reveal, tracked per signed-in user.
           </p>
         </div>
-        <div className="flex items-center gap-4">
-          <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
-            <input
-              type="checkbox"
-              checked={includeInternal}
-              onChange={(e) => setIncludeInternal(e.target.checked)}
-              className="accent-primary"
-            />
-            Include internal
-          </label>
-          <CSVExport
-            data={exportRows}
-            filename={`onboarding-${format(startDate, "yyyy-MM-dd")}-${format(endDate, "yyyy-MM-dd")}.csv`}
-          />
-          <DateRangePicker startDate={startDate} endDate={endDate} onChange={(s, e) => { setStartDate(s); setEndDate(e); }} />
-        </div>
+        <CSVExport data={exportRows} filename={`onboarding-${startDateStr}-${endDateStr}.csv`} />
       </div>
+
+      <FilterBar showGranularity={false} />
 
       {data?.error && (
         <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg p-3 text-sm">
@@ -113,19 +102,31 @@ export default function OnboardingPage() {
       {/* Headline KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-sm text-muted-foreground">Entered onboarding</p>
+          <div className="flex items-center gap-1.5">
+            <p className="text-sm text-muted-foreground">Entered onboarding</p>
+            <Tooltip content="Unique users with any onboarding event at the first funnel step in the selected period." />
+          </div>
           <p className="text-2xl font-bold">{(data?.entry_participants || 0).toLocaleString()}</p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-sm text-muted-foreground">Completed</p>
+          <div className="flex items-center gap-1.5">
+            <p className="text-sm text-muted-foreground">Completed</p>
+            <Tooltip content="Unique users who reached the final onboarding step in the selected period." />
+          </div>
           <p className="text-2xl font-bold">{(data?.completed_participants || 0).toLocaleString()}</p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-sm text-muted-foreground">Completion rate</p>
+          <div className="flex items-center gap-1.5">
+            <p className="text-sm text-muted-foreground">Completion rate</p>
+            <Tooltip content={METRIC_TOOLTIPS.onboardingCompletion} />
+          </div>
           <p className="text-2xl font-bold text-green-500">{(data?.overall_completion_rate || 0).toFixed(1)}%</p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-sm text-muted-foreground">Biggest drop-off</p>
+          <div className="flex items-center gap-1.5">
+            <p className="text-sm text-muted-foreground">Biggest drop-off</p>
+            <Tooltip content="The step (after entry) that loses the largest share of users versus the previous step." />
+          </div>
           {biggestDrop ? (
             <>
               <p className="text-2xl font-bold text-red-500">{biggestDrop.step_dropoff.toFixed(1)}%</p>

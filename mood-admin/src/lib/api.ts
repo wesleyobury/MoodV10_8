@@ -90,14 +90,12 @@ class ApiClient {
 
   // Auth endpoints
   async login(username: string, password: string) {
-    const result = await this.post<{ access_token?: string; token?: string; user_id: string }>(
+    const result = await this.post<{ token: string; user_id: string }>(
       "/auth/login",
       { username, password }
     );
-    // Backend returns the JWT as `access_token`; keep `token` as a fallback.
-    const authToken = result.data?.access_token ?? result.data?.token;
-    if (authToken) {
-      this.setToken(authToken);
+    if (result.data?.token) {
+      this.setToken(result.data.token);
     }
     return result;
   }
@@ -188,6 +186,45 @@ class ApiClient {
   async getInsights(includeInternal: boolean = false) {
     const params = includeInternal ? "?include_internal=true" : "";
     return this.get<InsightsResponse>(`/analytics/admin/insights${params}`);
+  }
+
+  /**
+   * Platform totals (total users, first opens / unique guest devices,
+   * guest conversions). days=0 means "all time".
+   */
+  async getComprehensiveStats(days: number = 0) {
+    const params = new URLSearchParams();
+    params.append("days", days.toString());
+    return this.get<ComprehensiveStats>(
+      `/analytics/admin/comprehensive-stats?${params}`
+    );
+  }
+
+  /** App Store download units from Apple's Sales reports. days=0 = all cached. */
+  async getAppStoreDownloads(days: number = 0, period: string = "day") {
+    const params = new URLSearchParams();
+    params.append("days", days.toString());
+    params.append("period", period);
+    return this.get<AppStoreDownloadsData>(
+      `/analytics/admin/appstore/downloads?${params}`
+    );
+  }
+
+  /** App Store downloads vs tracked first opens, bucketed identically. */
+  async getAppStoreComparison(days: number = 30, period: string = "day") {
+    const params = new URLSearchParams();
+    params.append("days", days.toString());
+    params.append("period", period);
+    return this.get<AppStoreComparisonData>(
+      `/analytics/admin/appstore/comparison?${params}`
+    );
+  }
+
+  /** Manually sync/backfill the trailing N days of App Store sales reports. */
+  async syncAppStore(days: number = 30) {
+    return this.post<AppStoreSyncResult>(
+      `/analytics/admin/appstore/sync?days=${days}`
+    );
   }
 
   async getComparison(start?: string, end?: string) {
@@ -1264,4 +1301,51 @@ export interface SavedViewCreate {
   view_type: "overview" | "funnel" | "retention" | "custom";
   config: SavedViewConfig;
   is_default?: boolean;
+}
+
+// Platform totals from /analytics/admin/comprehensive-stats.
+// Only the fields the dashboard actually uses are typed here; the endpoint
+// returns more. NOTE: this endpoint does not exclude internal users.
+export interface ComprehensiveStats {
+  total_users?: number;
+  new_users?: number;
+  guest_signins?: number;
+  unique_guest_devices?: number;
+  guest_conversions?: number;
+  total_sessions?: number;
+  [key: string]: unknown;
+}
+
+// --- App Store Connect integration ---
+export interface AppStoreDownloadsData {
+  configured: boolean;
+  missing: string[];
+  labels?: string[];
+  values?: number[];
+  total?: number;
+  days_cached?: number;
+  last_synced_at?: string | null;
+  note?: string;
+}
+
+export interface AppStoreComparisonData {
+  configured: boolean;
+  missing: string[];
+  labels: string[];
+  /** null for days Apple hasn't reported yet */
+  appstore_downloads: (number | null)[];
+  first_opens: number[];
+  appstore_total: number;
+  first_opens_total: number;
+  last_synced_at?: string | null;
+  note?: string;
+}
+
+export interface AppStoreSyncResult {
+  configured: boolean;
+  missing?: string[];
+  synced?: number;
+  skipped?: number;
+  not_ready_yet?: string[];
+  errors?: number;
 }

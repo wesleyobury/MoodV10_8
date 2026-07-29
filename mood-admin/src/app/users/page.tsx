@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { api, UserSearchResult, UserTimelineData, UserLifecycleData } from "@/lib/api";
 import { CSVExport } from "@/components/CSVExport";
-import { redirect } from "next/navigation";
+import { Tooltip } from "@/components/Tooltip";
+import { redirect, useSearchParams } from "next/navigation";
 import {
   Search,
   User,
@@ -31,8 +32,9 @@ const LIFECYCLE_STAGES: Record<string, { label: string; color: string; icon: Rea
   churned: { label: "Churned", color: "bg-red-500", icon: <TrendingDown className="h-4 w-4" /> },
 };
 
-export default function UsersPage() {
+function UsersPageContent() {
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<UserSearchResult | null>(null);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
@@ -48,15 +50,29 @@ export default function UsersPage() {
     }
   }, [isLoading, isAuthenticated, isAdmin]);
 
-  const handleSearch = async () => {
-    if (searchQuery.length < 2) return;
+  const runSearch = async (query: string) => {
+    if (query.length < 2) return;
     setLoading(true);
-    const result = await api.searchUsers(searchQuery);
+    const result = await api.searchUsers(query);
     if (result.data) {
       setSearchResults(result.data);
     }
     setLoading(false);
   };
+
+  const handleSearch = () => runSearch(searchQuery);
+
+  // Prefill from ?q= (drilldown drawer links here as /users?q={id}) and run
+  // the search once auth is confirmed.
+  useEffect(() => {
+    if (!isAuthenticated || !isAdmin) return;
+    const q = searchParams.get("q");
+    if (q && q.length >= 2) {
+      setSearchQuery(q);
+      runSearch(q);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isAdmin, searchParams]);
 
   const handleSelectUser = async (userId: string) => {
     setSelectedUser(userId);
@@ -272,19 +288,31 @@ export default function UsersPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                   <div className="text-center">
                     <p className="text-2xl font-bold">{userLifecycle.current_streak}</p>
-                    <p className="text-sm text-muted-foreground">Current Streak</p>
+                    <div className="flex items-center justify-center gap-1">
+                      <p className="text-sm text-muted-foreground">Current Streak</p>
+                      <Tooltip content="Consecutive days with a completed workout, as stored on the user record." />
+                    </div>
                   </div>
                   <div className="text-center">
                     <p className="text-2xl font-bold">{userLifecycle.lifetime_stats.total_workouts_completed}</p>
-                    <p className="text-sm text-muted-foreground">Total Workouts</p>
+                    <div className="flex items-center justify-center gap-1">
+                      <p className="text-sm text-muted-foreground">Total Workouts</p>
+                      <Tooltip content="Lifetime workout_completed events for this user (repeats counted)." />
+                    </div>
                   </div>
                   <div className="text-center">
                     <p className="text-2xl font-bold">{userLifecycle.lifetime_stats.completion_rate}%</p>
-                    <p className="text-sm text-muted-foreground">Completion Rate</p>
+                    <div className="flex items-center justify-center gap-1">
+                      <p className="text-sm text-muted-foreground">Completion Rate</p>
+                      <Tooltip content="Lifetime workouts completed ÷ workouts started for this user." />
+                    </div>
                   </div>
                   <div className="text-center">
                     <p className="text-2xl font-bold">{userLifecycle.lifecycle.account_age_days}d</p>
-                    <p className="text-sm text-muted-foreground">Account Age</p>
+                    <div className="flex items-center justify-center gap-1">
+                      <p className="text-sm text-muted-foreground">Account Age</p>
+                      <Tooltip content="Days since the account was created." />
+                    </div>
                   </div>
                 </div>
 
@@ -484,5 +512,23 @@ export default function UsersPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Next 14 requires useSearchParams to live under a Suspense boundary.
+export default function UsersPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <UsersPageContent />
+    </Suspense>
   );
 }

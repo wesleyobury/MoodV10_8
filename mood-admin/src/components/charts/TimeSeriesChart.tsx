@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -16,7 +15,6 @@ import {
   Legend,
 } from "recharts";
 import { MousePointer2 } from "lucide-react";
-import { ChartControls, ChartSettings } from "@/components/ChartControls";
 
 interface ChartData {
   name: string;
@@ -35,10 +33,8 @@ interface TimeSeriesChartProps {
   // Drilldown support
   metric?: string;
   onChartClick?: (metric: string, dateLabel: string) => void;
-  // Custom controls support
-  showControls?: boolean;
-  chartSettings?: ChartSettings;
-  onSettingsChange?: (settings: ChartSettings) => void;
+  /** Clamp the y-axis (e.g. [0, 100] for percentage series). */
+  yDomain?: [number, number];
 }
 
 export function TimeSeriesChart({
@@ -50,31 +46,15 @@ export function TimeSeriesChart({
   height = 300,
   metric,
   onChartClick,
-  showControls = false,
-  chartSettings,
-  onSettingsChange,
+  yDomain,
 }: TimeSeriesChartProps) {
   const isClickable = !!metric && !!onChartClick;
 
-  // Apply cumulative transformation if enabled
-  const chartData = useMemo(() => {
-    if (!chartSettings?.showCumulative) return data;
-    
-    let cumulative = 0;
-    let cumulativePrev = 0;
-    return data.map((item) => {
-      cumulative += item.value;
-      if (item.previousValue !== undefined) {
-        cumulativePrev += item.previousValue;
-        return { ...item, value: cumulative, previousValue: cumulativePrev };
-      }
-      return { ...item, value: cumulative };
-    });
-  }, [data, chartSettings?.showCumulative]);
+  const chartData = data;
 
   // Determine effective chart type and comparison mode
-  const effectiveType = chartSettings?.chartType || type;
-  const effectiveShowPrevious = chartSettings?.showPrevious ?? showPrevious;
+  const effectiveType = type;
+  const effectiveShowPrevious = showPrevious;
 
   const handleClick = (chartData: { activeLabel?: string }) => {
     if (isClickable && chartData?.activeLabel && metric) {
@@ -103,6 +83,7 @@ export function TimeSeriesChart({
             <YAxis
               tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
               axisLine={{ stroke: "hsl(var(--border))" }}
+              domain={yDomain}
             />
             <Tooltip
               contentStyle={{
@@ -147,6 +128,7 @@ export function TimeSeriesChart({
             <YAxis
               tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
               axisLine={{ stroke: "hsl(var(--border))" }}
+              domain={yDomain}
             />
             <Tooltip
               contentStyle={{
@@ -192,6 +174,7 @@ export function TimeSeriesChart({
             <YAxis
               tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
               axisLine={{ stroke: "hsl(var(--border))" }}
+              domain={yDomain}
             />
             <Tooltip
               contentStyle={{
@@ -233,9 +216,6 @@ export function TimeSeriesChart({
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
-          {chartSettings?.showCumulative && (
-            <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded">Cumulative</span>
-          )}
           {isClickable && (
             <span className="flex items-center gap-1 text-xs text-muted-foreground">
               <MousePointer2 className="h-3 w-3" />
@@ -243,12 +223,6 @@ export function TimeSeriesChart({
             </span>
           )}
         </div>
-        {showControls && chartSettings && onSettingsChange && (
-          <ChartControls
-            settings={chartSettings}
-            onChange={onSettingsChange}
-          />
-        )}
       </div>
       <ResponsiveContainer width="100%" height={height}>
         {renderChart()}

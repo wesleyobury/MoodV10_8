@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
+import { useFilters } from "@/lib/filter-context";
 import { api, MonetizationData, TimeSeriesData } from "@/lib/api";
 import { FunnelChart } from "@/components/charts/FunnelChart";
 import { TimeSeriesChart } from "@/components/charts/TimeSeriesChart";
 import { KPICard } from "@/components/KPICard";
-import { DateRangePicker } from "@/components/DateRangePicker";
+import { FilterBar } from "@/components/FilterBar";
 import { CSVExport } from "@/components/CSVExport";
-import { Tooltip } from "@/components/Tooltip";
-import { subDays, format } from "date-fns";
+import { Tooltip, METRIC_TOOLTIPS } from "@/components/Tooltip";
 import { redirect } from "next/navigation";
 import { DollarSign, CreditCard, Percent, TrendingUp, Sparkles, Users } from "lucide-react";
 
@@ -19,11 +19,9 @@ const usd = (n: number) => `$${(n || 0).toLocaleString(undefined, { maximumFract
 
 export default function MonetizationPage() {
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const { days, granularity, includeInternal, startDateStr, endDateStr } = useFilters();
   const [data, setData] = useState<MonetizationData | null>(null);
   const [revenue, setRevenue] = useState<TimeSeriesData | null>(null);
-  const [startDate, setStartDate] = useState(subDays(new Date(), 30));
-  const [endDate, setEndDate] = useState(new Date());
-  const [includeInternal, setIncludeInternal] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,21 +30,23 @@ export default function MonetizationPage() {
 
   useEffect(() => {
     if (!isAuthenticated || !isAdmin) return;
+    let cancelled = false;
     const fetchData = async () => {
       setLoading(true);
-      const start = format(startDate, "yyyy-MM-dd");
-      const end = format(endDate, "yyyy-MM-dd");
-      const days = Math.max(1, Math.round((endDate.getTime() - startDate.getTime()) / 86400000) + 1);
       const [monRes, revRes] = await Promise.all([
-        api.getMonetization(start, end, includeInternal),
-        api.getTimeSeries("revenue", "day", days, includeInternal),
+        api.getMonetization(startDateStr, endDateStr, includeInternal),
+        api.getTimeSeries("revenue", granularity, days, includeInternal),
       ]);
+      if (cancelled) return;
       if (monRes.data) setData(monRes.data);
       if (revRes.data) setRevenue(revRes.data);
       setLoading(false);
     };
     fetchData();
-  }, [isAuthenticated, isAdmin, startDate, endDate, includeInternal]);
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, isAdmin, startDateStr, endDateStr, days, granularity, includeInternal]);
 
   const funnelData = (data?.funnel || []).map((s) => ({
     name: s.label,
@@ -86,15 +86,10 @@ export default function MonetizationPage() {
           <h1 className="text-2xl font-bold">Monetization</h1>
           <p className="text-muted-foreground">Paywall conversion, revenue, trials, and churn.</p>
         </div>
-        <div className="flex items-center gap-4">
-          <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
-            <input type="checkbox" checked={includeInternal} onChange={(e) => setIncludeInternal(e.target.checked)} className="accent-primary" />
-            Include internal
-          </label>
-          <CSVExport data={exportRows} filename={`monetization-${format(startDate, "yyyy-MM-dd")}-${format(endDate, "yyyy-MM-dd")}.csv`} />
-          <DateRangePicker startDate={startDate} endDate={endDate} onChange={(s, e) => { setStartDate(s); setEndDate(e); }} />
-        </div>
+        <CSVExport data={exportRows} filename={`monetization-${startDateStr}-${endDateStr}.csv`} />
       </div>
+
+      <FilterBar />
 
       {data?.error && (
         <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg p-3 text-sm">Error: {data.error}</div>
@@ -108,7 +103,7 @@ export default function MonetizationPage() {
         <KPICard title="Conversion" value={data?.headline.conversion_rate || 0} format="percentage" icon={<Percent className="h-4 w-4" />} tooltip="Purchasers ÷ paywall viewers." />
         <KPICard title="Revenue (gross)" value={usd(data?.headline.revenue_usd || 0)} icon={<DollarSign className="h-4 w-4" />} tooltip="Gross bookings: paid purchases priced from plan_id (list price), de-duped and excluding trials + comps." />
         <KPICard title="Net Revenue" value={usd(data?.headline.net_revenue_usd || 0)} icon={<DollarSign className="h-4 w-4" />} tooltip={`Take-home after the ${Math.round((data?.store_commission_rate ?? 0.15) * 100)}% App/Play store commission. Adjust STORE_COMMISSION_RATE in product_pricing.py if you're not on the Small Business Program.`} />
-        <KPICard title="Trials Started" value={data?.headline.trials_started || 0} icon={<TrendingUp className="h-4 w-4" />} tooltip="Unique users who started a free trial." />
+        <KPICard title="Trials Started" value={data?.headline.trials_started || 0} icon={<TrendingUp className="h-4 w-4" />} tooltip={METRIC_TOOLTIPS.freeTrials} />
         <KPICard title="Founding Claim" value={data?.headline.founding_claim_rate || 0} format="percentage" icon={<Sparkles className="h-4 w-4" />} tooltip="Founding-modal claimed ÷ shown." />
       </div>
 
@@ -116,7 +111,7 @@ export default function MonetizationPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <KPICard title="MRR" value={usd(data?.headline.mrr_usd || 0)} icon={<TrendingUp className="h-4 w-4" />} tooltip="Monthly recurring revenue from active paid subscriptions (annual plans ÷ 12). Live snapshot — not affected by the date range." />
         <KPICard title="ARR" value={usd(data?.headline.arr_usd || 0)} icon={<TrendingUp className="h-4 w-4" />} tooltip="Annual recurring revenue (MRR × 12)." />
-        <KPICard title="Active Subscribers" value={data?.headline.active_subscribers || 0} icon={<Users className="h-4 w-4" />} tooltip="Users with an active paid subscription right now (excludes trials, comps, internal)." />
+        <KPICard title="Active Subscribers" value={data?.headline.active_subscribers || 0} icon={<Users className="h-4 w-4" />} tooltip={METRIC_TOOLTIPS.activeSubscriptions} />
       </div>
 
       {/* Paywall funnel */}

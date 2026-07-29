@@ -26,7 +26,7 @@ export function DrilldownDrawer({
   value,
   dateLabel,
 }: DrilldownDrawerProps) {
-  const { filters } = useFilters();
+  const { filters, startDate, endDate } = useFilters();
   const [activeTab, setActiveTab] = useState<TabType>("users");
   const [users, setUsers] = useState<DrilldownUser[]>([]);
   const [events, setEvents] = useState<DrilldownEvent[]>([]);
@@ -36,8 +36,8 @@ export function DrilldownDrawer({
   const [page, setPage] = useState(0);
   const pageSize = 20;
 
-  const startStr = format(filters.startDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
-  const endStr = format(filters.endDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+  const startStr = format(startDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+  const endStr = format(endDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
 
   const fetchUsers = useCallback(async () => {
     setLoading(true);
@@ -127,7 +127,7 @@ export function DrilldownDrawer({
           <div>
             <h2 className="text-lg font-semibold">{metricLabel}</h2>
             <p className="text-sm text-muted-foreground">
-              {dateLabel || `${format(filters.startDate, "MMM d")} - ${format(filters.endDate, "MMM d, yyyy")}`}
+              {dateLabel || `${format(startDate, "MMM d")} - ${format(endDate, "MMM d, yyyy")}`}
               {value && <span className="ml-2">• {value}</span>}
             </p>
           </div>

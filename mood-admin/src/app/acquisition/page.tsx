@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
+import { useFilters } from "@/lib/filter-context";
 import { api, AcquisitionData } from "@/lib/api";
 import { FunnelChart } from "@/components/charts/FunnelChart";
 import { KPICard } from "@/components/KPICard";
-import { DateRangePicker } from "@/components/DateRangePicker";
-import { subDays, format } from "date-fns";
+import { FilterBar } from "@/components/FilterBar";
 import { redirect } from "next/navigation";
 import {
   Download,
@@ -25,10 +25,8 @@ const num = (n: number | undefined) => (n ?? 0).toLocaleString();
 
 export default function AcquisitionPage() {
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const { startDateStr, endDateStr, includeInternal } = useFilters();
   const [data, setData] = useState<AcquisitionData | null>(null);
-  const [startDate, setStartDate] = useState(subDays(new Date(), 30));
-  const [endDate, setEndDate] = useState(new Date());
-  const [includeInternal, setIncludeInternal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
 
@@ -38,12 +36,10 @@ export default function AcquisitionPage() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const start = format(startDate, "yyyy-MM-dd");
-    const end = format(endDate, "yyyy-MM-dd");
-    const res = await api.getAcquisition(start, end, includeInternal);
+    const res = await api.getAcquisition(startDateStr, endDateStr, includeInternal);
     if (res.data) setData(res.data);
     setLoading(false);
-  }, [startDate, endDate, includeInternal]);
+  }, [startDateStr, endDateStr, includeInternal]);
 
   useEffect(() => {
     if (isAuthenticated && isAdmin) fetchData();
@@ -91,15 +87,6 @@ export default function AcquisitionPage() {
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
-            <input
-              type="checkbox"
-              checked={includeInternal}
-              onChange={(e) => setIncludeInternal(e.target.checked)}
-              className="accent-primary"
-            />
-            Include internal
-          </label>
           <button
             onClick={handleSync}
             disabled={syncing}
@@ -109,16 +96,10 @@ export default function AcquisitionPage() {
             <RefreshCw className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`} />
             {syncing ? "Syncing…" : "Sync downloads"}
           </button>
-          <DateRangePicker
-            startDate={startDate}
-            endDate={endDate}
-            onChange={(s, e) => {
-              setStartDate(s);
-              setEndDate(e);
-            }}
-          />
         </div>
       </div>
+
+      <FilterBar showGranularity={false} />
 
       {data?.error && (
         <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg p-3 text-sm">
