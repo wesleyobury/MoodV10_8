@@ -14647,8 +14647,59 @@ async def admin_test_push(
     notif_count = await db.notifications.count_documents({"user_id": user_id})
     unread_count = await db.notifications.count_documents({"user_id": user_id, "read_at": None})
 
+    # V2.1 — the answers we kept guessing at, returned inline.
+    #
+    # This endpoint proved the TRANSPORT works (token -> Expo -> APNs receipt ok)
+    # but said nothing about why a notification created through
+    # create_notification might not reach the device. Three things decide that:
+    # the preference toggles, whether quiet hours is closed for this user RIGHT
+    # NOW, and whether the push was actually dispatched (delivered_push_at).
+    # Without them, each hypothesis costs a full round trip.
+    notification_service = get_notification_service(db)
+    try:
+        user_settings = await notification_service.get_user_settings(user_id)
+        settings_diag = {
+            "notifications_enabled": user_settings.get("notifications_enabled"),
+            "messages_enabled": user_settings.get("messages_enabled"),
+            "announcements_enabled": user_settings.get("announcements_enabled"),
+            "quiet_hours_enabled": user_settings.get("quiet_hours_enabled"),
+            "quiet_hours_start": user_settings.get("quiet_hours_start"),
+            "quiet_hours_end": user_settings.get("quiet_hours_end"),
+            "timezone": user_settings.get("timezone"),
+            # The decisive one: does the gate evaluate closed at this instant?
+            "in_quiet_hours_right_now": notification_service._is_in_quiet_hours(user_settings),
+        }
+    except Exception as e:
+        settings_diag = {"error": str(e)}
+
+    # Recent rows WITH delivered_push_at — separates "push never dispatched"
+    # (null) from "Expo accepted it but iOS did not display" (timestamp present).
+    try:
+        recent = await db.notifications.find(
+            {"user_id": user_id},
+            {"type": 1, "title": 1, "created_at": 1, "delivered_push_at": 1, "read_at": 1},
+        ).sort("created_at", -1).to_list(6)
+
+        def _iso(v):
+            return v.isoformat() if hasattr(v, "isoformat") else v
+
+        recent_notifs = [
+            {
+                "type": r.get("type"),
+                "title": r.get("title"),
+                "created_at": _iso(r.get("created_at")),
+                "delivered_push_at": _iso(r.get("delivered_push_at")),
+                "read": r.get("read_at") is not None,
+            }
+            for r in recent
+        ]
+    except Exception as e:
+        recent_notifs = [{"error": str(e)}]
+
     return {
         "success": len(ticket_errors) == 0,
+        "settings_diagnostics": settings_diag,
+        "recent_notifications": recent_notifs,
         "user_id": user_id,
         "username": user.get("username"),
         "tokens_found": len(push_tokens),
