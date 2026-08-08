@@ -45,6 +45,10 @@ import { API_URL } from '../../utils/apiConfig';
 import { useSubscription } from '../../contexts/SubscriptionContext';
 import { useDrafts, type WorkoutDraft } from '../../contexts/DraftsContext';
 
+// Brand gold per frontend/CLAUDE.md — soft ambient gold, not the harsher
+// #FFD700 that has crept into parts of the codebase.
+const BRAND_GOLD = '#F4C316';
+
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CAROUSEL_PADDING = 16;
 const CARD_GAP = 12;
@@ -1313,22 +1317,21 @@ export default function WorkoutsHome() {
               router.push(((draft?.resume_route || resumable.resume_route) as any) || '/cart');
             }}
           >
-            <View style={styles.resumeIcon}>
-              <Ionicons name="play" size={16} color="#0c0c0c" />
-            </View>
+            {/* `barbell-outline`, not `play`. A filled gold play triangle read as
+                "watch a video" — the wrong promise for a saved workout build.
+                A thin-stroke outline mark in brand gold on a dark surface is
+                the treatment CLAUDE.md explicitly allows, and it says
+                "workout" instead of "media". */}
+            <Ionicons name="barbell-outline" size={19} color={BRAND_GOLD} />
             <View style={{ flex: 1 }}>
               <Text style={styles.resumeTitle}>Pick up where you left off</Text>
               <Text style={styles.resumeSubtitle} numberOfLines={1}>
-                {/* Drafts now start at intensity confirm, so a resumable build
-                    often has no exercises yet. Say which one it is (the draft
-                    title carries mood + intensity) rather than the meaningless
-                    "Your saved build". */}
                 {`${resumable.generated_workout?.length ?? 0} exercise${
                   (resumable.generated_workout?.length ?? 0) === 1 ? '' : 's'
                 } ready`}
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color="rgba(255,255,255,0.4)" />
+            <Ionicons name="chevron-forward" size={15} color="rgba(255,255,255,0.25)" />
           </TouchableOpacity>
         )}
 
@@ -1533,32 +1536,25 @@ const styles = StyleSheet.create({
   resumeCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 13,
     marginHorizontal: 20,
     marginBottom: 12,
-    padding: 14,
+    // Slightly more vertical room than horizontal — the Wallet/TV+ proportion.
+    paddingVertical: 15,
+    paddingHorizontal: 16,
     borderRadius: 14,
-    // NOTE — do NOT use a translucent gold wash (rgba(255,215,0,0.0x)) as a
-    // surface fill anywhere in this app. Gold is reserved for marks: the
-    // wordmark, medallions, accents, and active state. As a large background
-    // tint it muddies to olive against #0c0c0c and fights the brand lockup.
-    // Neutral surface + a neutral hairline is the house treatment; see
-    // CLAUDE.md "Colour rules".
-    backgroundColor: 'rgba(255,255,255,0.05)',
+    // NOTE — never a translucent gold wash (rgba(255,215,0,0.0x)) as a surface
+    // fill. Gold is a MARK colour only. See CLAUDE.md "Design rules".
+    // Dialled down from 0.05/0.10: at this width the card should read as a
+    // recessed shelf, not a raised button competing with the stat tiles.
+    backgroundColor: 'rgba(255,255,255,0.035)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.10)',
+    borderColor: 'rgba(255,255,255,0.07)',
   },
-  resumeIcon: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    // Gold as a small MARK is correct — it's the affordance, not the surface.
-    backgroundColor: '#FFD700',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  resumeTitle: { fontSize: 14, fontWeight: '700', color: '#fff' },
-  resumeSubtitle: { fontSize: 12, color: 'rgba(255,255,255,0.55)', marginTop: 2 },
+  // Brand tokens from CLAUDE.md rather than #fff / #FFD700, so this matches the
+  // stated palette instead of drifting a second set of values.
+  resumeTitle: { fontSize: 13.5, fontWeight: '600', color: '#F3F3F3', letterSpacing: 0.1 },
+  resumeSubtitle: { fontSize: 11.5, color: '#8D8D90', marginTop: 3 },
   allowanceChip: {
     flexDirection: 'row',
     alignItems: 'center',
