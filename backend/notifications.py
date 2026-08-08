@@ -465,6 +465,10 @@ class NotificationService:
                         image_url=image_url,
                         metadata=metadata,
                         event_key=dedupe_key,
+                        # Both were always available here; they simply were not
+                        # being passed through.
+                        entity_id=entity_id,
+                        actor_id=actor_id,
                     )
                     logger.info(f"🔔 PUSH-PATH: _send_push_notification returned={push_result} for type={notification_type.value} user={user_id[:8]}...")
                 except Exception as push_err:
@@ -572,8 +576,23 @@ class NotificationService:
         image_url: Optional[str] = None,
         metadata: Optional[dict] = None,
         event_key: Optional[str] = None,
+        entity_id: Optional[str] = None,
+        actor_id: Optional[str] = None,
     ) -> bool:
-        """Send push notification via Expo Push API with idempotency check"""
+        """Send push notification via Expo Push API with idempotency check.
+
+        CRITICAL FIX — `entity_id` and `actor_id` were referenced in the data
+        payload below but were never parameters of this function and never
+        assigned inside it. Every call therefore raised
+        `NameError: name 'entity_id' is not defined`, and because
+        create_notification wraps this call in a bare `except Exception`, the
+        failure was logged and swallowed. Net effect: EVERY push routed through
+        create_notification silently did nothing — messages, likes, comments,
+        follows, featured workouts, and all re-engagement campaigns. The only
+        working path was /admin/test-push, which calls the Expo API directly and
+        bypasses this function, which is exactly why a test push arrived while
+        nothing else ever did.
+        """
         logger.info(f"🔔 SEND-PUSH: ENTER type={notification_type.value} user={user_id[:8]}... event_key={event_key}")
         
         # Idempotency: skip if this exact event was already pushed to this user
