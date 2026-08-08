@@ -653,6 +653,15 @@ class NotificationService:
                 except Exception as e:
                     logger.warning(f"Could not fetch workout meta for push data: {e}")
 
+        # V2.1 — badge count on the payload, so the iOS app-icon badge is correct
+        # the moment the push lands rather than only after the app is opened and
+        # BadgeContext syncs. The notification row is inserted before this runs,
+        # so the unread count already includes the one being delivered.
+        try:
+            badge_count = await self.get_unread_count(user_id)
+        except Exception:
+            badge_count = None
+
         # Build push messages
         messages = []
         for token in tokens:
@@ -664,6 +673,8 @@ class NotificationService:
                 "sound": "default",
                 "priority": "high",
             }
+            if badge_count is not None:
+                message["badge"] = badge_count
             
             # Add category/actions based on type
             if notification_type == NotificationType.MESSAGE:

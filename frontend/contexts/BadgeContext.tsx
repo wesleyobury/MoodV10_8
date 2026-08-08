@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import { API_URL } from '../utils/apiConfig';
+import * as Notifications from 'expo-notifications';
 
 /**
  * SERVER-AUTHORITATIVE BADGE CONTEXT
@@ -218,6 +219,26 @@ export function BadgeProvider({ children, token, isGuest }: BadgeProviderProps) 
 
   // Calculate total badge count (notifications + messages for Explore tab)
   const totalBadgeCount = unreadNotifications + unreadMessages;
+
+  // V2.1 — apply the count to the iOS app-icon badge (the red dot).
+  //
+  // `totalBadgeCount` was already computed here and used only for in-app tab
+  // badges; setBadgeCountAsync was never called anywhere in the app, so the
+  // home-screen icon never showed anything. Driving it from this context means
+  // the badge is correct for notifications that arrive WITHOUT a push (in-app
+  // events, a poll picking up something new) and clears itself the moment
+  // markAllNotificationsRead drops the count to 0.
+  //
+  // Android is a no-op unless the launcher supports it — expo-notifications
+  // handles that difference, so no platform branch is needed here.
+  useEffect(() => {
+    if (isGuest || !token) {
+      // Signed out: never leave a stale count on someone else's home screen.
+      Notifications.setBadgeCountAsync(0).catch(() => {});
+      return;
+    }
+    Notifications.setBadgeCountAsync(totalBadgeCount).catch(() => {});
+  }, [totalBadgeCount, isGuest, token]);
 
   const value: BadgeContextType = {
     unreadNotifications,
