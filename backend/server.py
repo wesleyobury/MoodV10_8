@@ -14506,7 +14506,11 @@ class WorkoutReminderPush(BaseModel):
     custom_message: Optional[str] = None  # None = random from library
 
 class TestPushRequest(BaseModel):
-    user_id: str
+    # V2.1 — accept EITHER. Requiring a raw Mongo ObjectId made the one
+    # purpose-built push diagnostic unusable without a DB query first, which is
+    # exactly the wrong friction on a "why is push silent" investigation.
+    user_id: Optional[str] = None
+    username: Optional[str] = None
     title: Optional[str] = "MOOD Test Push"
     body: Optional[str] = "If you see this, push notifications are working."
 
@@ -14522,12 +14526,25 @@ async def admin_test_push(
     if not await is_admin_allowed(current_user_id):
         raise HTTPException(status_code=403, detail="Admin access required")
 
-    user_id = data.user_id
-
-    # 1. Look up user
-    user = await db.users.find_one({"_id": ObjectId(user_id)})
-    if not user:
-        return {"success": False, "error": "User not found", "user_id": user_id}
+    # 1. Resolve the target — by username (case-insensitive, tolerates '@') or id.
+    if data.username:
+        handle = data.username.strip().lstrip("@")
+        user = await db.users.find_one(
+            {"username": {"$regex": f"^{re.escape(handle)}$", "$options": "i"}}
+        )
+        if not user:
+            return {"success": False, "error": f"No user with username '{handle}'"}
+        user_id = str(user["_id"])
+    elif data.user_id:
+        user_id = data.user_id
+        try:
+            user = await db.users.find_one({"_id": ObjectId(user_id)})
+        except Exception:
+            return {"success": False, "error": f"'{user_id}' is not a valid user id"}
+        if not user:
+            return {"success": False, "error": "User not found", "user_id": user_id}
+    else:
+        return {"success": False, "error": "Provide either username or user_id"}
 
     # 2. Look up stored device tokens
     tokens_cursor = db.device_tokens.find({"user_id": user_id, "is_valid": True})
