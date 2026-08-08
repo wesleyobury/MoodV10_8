@@ -62,6 +62,9 @@ class NotificationType(str, Enum):
     # System
     WHILE_AWAY_DIGEST = "while_away_digest"
 
+    # Admin-authored broadcast with fully custom title/body (V2.1).
+    CUSTOM = "custom"
+
 
 # Premium copy library for featured suggestions
 SUGGESTION_COPY_LIBRARY = [
@@ -87,19 +90,41 @@ SUGGESTION_COPY_LIBRARY = [
     "Just press start.",
 ]
 
-# Deep link URL schemes
+# Deep link URL schemes.
+#
+# V2.1 — two bugs fixed here at once:
+#
+#  1. SCHEME. Every link used to be `mood://`, but frontend/app.json declares
+#     `"scheme": "moodapp"` and there is no native override (managed workflow).
+#     `mood://` was never a registered scheme, so Linking.openURL() rejected
+#     EVERY one of these links. Only featured_workout survived, because its
+#     client handler navigates via router.push() and ignores the URL entirely.
+#
+#  2. PATHS. `app/` is a FLAT expo-router tree — there is no `post/[id]`,
+#     `chat/[id]`, `home`, or `notifications` route, and `/cart/{id}` does not
+#     exist (only bare `/cart`). Every path below now points at a route that
+#     actually exists, with the same query params the in-app inbox uses
+#     (app/notifications-inbox.tsx handleDeepLink), which is the one navigation
+#     path in the app known to work.
+#
+# NOTE: the client no longer *depends* on these strings to navigate — the tap
+# handler switches on `data.type` and calls router.push (see
+# frontend/utils/notifications.ts). These remain the canonical link for the
+# notification record, cold-start URL handling, and email/external use.
 DEEP_LINK_SCHEMES = {
-    NotificationType.LIKE: "mood://post/{entity_id}",  # Open the liked post
-    NotificationType.COMMENT: "mood://post/{entity_id}",  # Open the commented post
-    NotificationType.FOLLOW: "mood://notifications",  # Go to notifications tab
-    NotificationType.MENTION: "mood://post/{entity_id}",  # Open the mentioned post
-    NotificationType.REPLY: "mood://post/{entity_id}",  # Open the replied post
-    NotificationType.MESSAGE: "mood://chat/{entity_id}",
-    NotificationType.FEATURED_WORKOUT: "mood://cart/{entity_id}",  # Go directly to cart
-    NotificationType.WORKOUT_REMINDER: "mood://home",  # Go to home
-    NotificationType.FEATURED_SUGGESTION: "mood://home",  # Go to home
-    NotificationType.FOLLOWING_DIGEST: "mood://notifications",
-    NotificationType.WHILE_AWAY_DIGEST: "mood://notifications",
+    NotificationType.LIKE: "moodapp:///post-detail?postId={entity_id}",
+    NotificationType.COMMENT: "moodapp:///post-detail?postId={entity_id}",
+    NotificationType.FOLLOW: "moodapp:///user-profile?userId={actor_id}",
+    NotificationType.MENTION: "moodapp:///post-detail?postId={entity_id}",
+    NotificationType.REPLY: "moodapp:///post-detail?postId={entity_id}",
+    NotificationType.MESSAGE: "moodapp:///chat-detail?conversationId={entity_id}",
+    NotificationType.MESSAGE_REQUEST: "moodapp:///chat-detail?conversationId={entity_id}",
+    NotificationType.FEATURED_WORKOUT: "moodapp:///cart?featuredId={entity_id}",
+    NotificationType.WORKOUT_REMINDER: "moodapp:///",
+    NotificationType.FEATURED_SUGGESTION: "moodapp:///",
+    NotificationType.FOLLOWING_DIGEST: "moodapp:///notifications-inbox",
+    NotificationType.WHILE_AWAY_DIGEST: "moodapp:///notifications-inbox",
+    NotificationType.CUSTOM: "moodapp:///",
 }
 
 
@@ -241,6 +266,9 @@ class NotificationService:
             "following_digest_enabled": _bool(settings.get("following_digest_enabled"), True),
             "following_digest_frequency": _str(settings.get("following_digest_frequency"), "daily"),
             "featured_suggestions_enabled": _bool(settings.get("featured_suggestions_enabled"), True),
+            # V2.1 — gates admin-authored CUSTOM broadcasts. Defaults True so
+            # existing users (who have no settings doc at all) still receive them.
+            "announcements_enabled": _bool(settings.get("announcements_enabled"), True),
             "quiet_hours_enabled": _bool(settings.get("quiet_hours_enabled"), False),
             "quiet_hours_start": _str(settings.get("quiet_hours_start"), "22:00"),
             "quiet_hours_end": _str(settings.get("quiet_hours_end"), "08:00"),
@@ -264,6 +292,7 @@ class NotificationService:
             "following_digest_enabled": True,
             "following_digest_frequency": "daily",
             "featured_suggestions_enabled": True,
+            "announcements_enabled": True,
             "quiet_hours_enabled": False,
             "quiet_hours_start": "22:00",
             "quiet_hours_end": "08:00",
@@ -281,7 +310,8 @@ class NotificationService:
             "comments_enabled", "comments_from_following_only", "messages_enabled",
             "follows_enabled", "workout_reminders_enabled",
             "featured_workouts_enabled", "following_digest_enabled", "following_digest_frequency",
-            "featured_suggestions_enabled", "quiet_hours_enabled", "quiet_hours_start",
+            "featured_suggestions_enabled", "announcements_enabled",
+            "quiet_hours_enabled", "quiet_hours_start",
             "quiet_hours_end", "digest_time", "timezone"
         ]
         
@@ -313,12 +343,18 @@ class NotificationService:
         metadata: Optional[dict] = None,
         group_key: Optional[str] = None,
         dedupe_key: Optional[str] = None,
-        send_push: bool = True
+        send_push: bool = True,
+        deep_link: Optional[str] = None,
     ) -> Optional[str]:
         """
         Create a notification and optionally send push.
         dedupe_key: if provided and a notification with this key already exists
                     for the same user, skip creation (prevents spam from rapid re-likes etc).
+        deep_link: explicit override. When None (the default, and every legacy
+                   caller) the link is derived from the type via
+                   DEEP_LINK_SCHEMES exactly as before. Admin-authored custom
+                   broadcasts need to point anywhere, and there was previously
+                   no way to pass a link in at all.
         Returns notification ID or None if not created.
         """
         now = datetime.now(timezone.utc)
@@ -343,6 +379,7 @@ class NotificationService:
             NotificationType.FEATURED_WORKOUT: "featured_workouts_enabled",
             NotificationType.FEATURED_SUGGESTION: "featured_suggestions_enabled",
             NotificationType.FOLLOWING_DIGEST: "following_digest_enabled",
+            NotificationType.CUSTOM: "announcements_enabled",
         }
         
         setting_key = type_setting_map.get(notification_type)
@@ -373,8 +410,9 @@ class NotificationService:
                 logger.info(f"TRACE-NOTIF: type={notification_type.value} entity_id={entity_id} actor={actor_id} recipient={user_id} decision=SKIPPED reason=idempotency dedupe_key={dedupe_key}")
                 return str(existing["_id"])
         
-        # Generate deep link
-        deep_link = self._generate_deep_link(notification_type, actor_id, entity_id)
+        # Generate deep link (unless the caller supplied an explicit override)
+        if not deep_link:
+            deep_link = self._generate_deep_link(notification_type, actor_id, entity_id)
         
         # Create notification document
         notification_doc = {
@@ -448,7 +486,7 @@ class NotificationService:
         entity_id: Optional[str]
     ) -> str:
         """Generate deep link URL for notification"""
-        template = DEEP_LINK_SCHEMES.get(notification_type, "mood://")
+        template = DEEP_LINK_SCHEMES.get(notification_type, "moodapp:///")
         
         deep_link = template
         if "{entity_id}" in deep_link and entity_id:
@@ -565,15 +603,22 @@ class NotificationService:
             "notification_id": notification_id,
             "type": notification_type.value,
             "deep_link": deep_link,
+            # V2.1 — always ship the ids so the client can route on `type`
+            # alone. It previously had to scrape them out of the deep-link
+            # string, which only worked for one link shape.
+            "entityId": entity_id or "",
+            "actorId": actor_id or "",
         }
 
         # Enrich engagement pushes (like, comment, follow, mention) with
         # actor + target info so the mobile client can route properly
         if notification_type in [NotificationType.LIKE, NotificationType.COMMENT, NotificationType.MENTION, NotificationType.REPLY]:
-            # Extract entity_id from the deep link (format: mood://post/{entity_id})
-            entity_from_link = deep_link.rsplit("/", 1)[-1] if "/" in deep_link else ""
+            # V2.1: read entity_id directly instead of scraping the last path
+            # segment off the deep link. The old rsplit("/") only happened to
+            # work for the legacy `mood://post/{entity_id}` shape and silently
+            # produced garbage for any query-param link.
             data_payload["targetType"] = "post"
-            data_payload["targetId"] = entity_from_link
+            data_payload["targetId"] = entity_id or ""
 
         # Enrich featured_workout pushes with workout context so the
         # mobile client can populate the cart directly from the push data
@@ -581,37 +626,32 @@ class NotificationService:
             workout_id = metadata.get("workout_id")
             data_payload["workoutId"] = workout_id
             data_payload["workoutTitle"] = metadata.get("workout_name", "")
-            # Fetch the full workout doc to include exercise cart items
+            # V2.1 — send a REFERENCE, not the cart itself.
+            #
+            # This used to embed up to 10 fully-populated exercises inline
+            # (name/description/battlePlan/moodTips each). Two bugs:
+            #   1. TRUNCATION: exercises[:10] silently dropped the rest, and the
+            #      client skips its uncapped fetch whenever cartItems is
+            #      non-empty (app/cart.tsx) — so an 11+ exercise workout pushed
+            #      a quietly incomplete cart.
+            #   2. SIZE: APNs/FCM cap the data payload around 4KB. Ten rich
+            #      exercises blow past that, and nothing here checked, so sends
+            #      could be rejected or truncated by the transport.
+            # The client already has a fetch-by-id fallback
+            # (POST /api/featured/workouts/batch), which is now the only path —
+            # it is uncapped, always current, and a few hundred bytes on the wire.
             if workout_id:
                 try:
                     workout_doc = await self.db.featured_workouts.find_one(
                         {"_id": ObjectId(workout_id)},
-                        {"_id": 0}
+                        {"_id": 0, "heroImageUrl": 1, "exercises": 1},
                     )
-                    if workout_doc and "exercises" in workout_doc:
-                        # Include full exercise data for cart + workout session screens
-                        cart_items = []
-                        for ex in workout_doc["exercises"][:10]:  # cap at 10 for payload size
-                            cart_items.append({
-                                "id": ex.get("exerciseId") or ex.get("id") or ex.get("name", ""),
-                                "name": ex.get("name", ""),
-                                "duration": ex.get("duration", ""),
-                                "description": ex.get("description", ""),
-                                "battlePlan": ex.get("battlePlan", ""),
-                                "imageUrl": ex.get("imageUrl") or ex.get("image_url", ""),
-                                "intensityReason": ex.get("intensityReason", ""),
-                                "equipment": ex.get("equipment", "None"),
-                                "difficulty": ex.get("difficulty", ""),
-                                "workoutType": ex.get("workoutType", ""),
-                                "moodCard": ex.get("moodCard", ""),
-                                "moodTips": ex.get("moodTips", []),
-                            })
-                        data_payload["cartItems"] = cart_items
-                        # Also include workout-level hero image
+                    if workout_doc:
                         if workout_doc.get("heroImageUrl"):
                             data_payload["heroImageUrl"] = workout_doc["heroImageUrl"]
+                        data_payload["exerciseCount"] = len(workout_doc.get("exercises") or [])
                 except Exception as e:
-                    logger.warning(f"Could not fetch workout exercises for push data: {e}")
+                    logger.warning(f"Could not fetch workout meta for push data: {e}")
 
         # Build push messages
         messages = []
@@ -1252,7 +1292,8 @@ class NotificationService:
         self,
         user_id: str,
         custom_message: Optional[str] = None,
-        actor_id: Optional[str] = None
+        actor_id: Optional[str] = None,
+        custom_title: Optional[str] = None,
     ) -> Optional[str]:
         """Trigger a workout reminder notification with motivational copy"""
         import random
@@ -1267,7 +1308,8 @@ class NotificationService:
         return await self.create_notification(
             user_id=user_id,
             notification_type=NotificationType.WORKOUT_REMINDER,
-            title="Time to Move",
+            # V2.1 — was hardcoded "Time to Move" with no way to override.
+            title=custom_title or "Time to Move",
             body=copy,
             actor_id=actor_id,
             dedupe_key=f"workout_reminder:{user_id}:{datetime.now(timezone.utc).strftime('%Y%m%d')}",
@@ -1282,9 +1324,17 @@ class NotificationService:
         workout_image: Optional[str] = None,
         custom_title: Optional[str] = None,
         custom_body: Optional[str] = None,
-        actor_id: Optional[str] = None
+        actor_id: Optional[str] = None,
+        dedupe_suffix: Optional[str] = None,
     ) -> Optional[str]:
         """Trigger notification for a new featured workout drop.
+
+        dedupe_suffix (V2.1): the dedupe key used to be
+        `featured_workout:{workout_id}:{user_id}` with NO time component, and
+        the dedupe lookup has no time window — so a given workout could be
+        pushed to a given user exactly once, forever. Re-promoting the same
+        workout later was silently a no-op. Callers now pass a per-blast tag to
+        scope idempotency to one send instead of to all of history.
         
         If custom_title/custom_body are provided, use them exactly (authored copy).
         Otherwise, use workout_name as title and random body from copy library.
@@ -1294,7 +1344,10 @@ class NotificationService:
         if not actor_id:
             actor_id = await self.get_admin_user_id()
         
-        deep_link = f"mood://cart?featuredId={workout_id}"
+        # Cosmetic only — this value is passed to build_push_content, whose
+        # `data` return is discarded. Kept consistent with DEEP_LINK_SCHEMES so
+        # the dead `mood://` scheme isn't left lying around as a trap.
+        deep_link = f"moodapp:///cart?featuredId={workout_id}"
 
         if custom_title and custom_body:
             title = custom_title
@@ -1321,7 +1374,11 @@ class NotificationService:
             entity_id=workout_id,
             entity_type="featured_workout",
             image_url=workout_image,
-            dedupe_key=f"featured_workout:{workout_id}:{user_id}",
+            dedupe_key=(
+                f"featured_workout:{workout_id}:{user_id}:{dedupe_suffix}"
+                if dedupe_suffix
+                else f"featured_workout:{workout_id}:{user_id}"
+            ),
             metadata={
                 "workout_name": workout_name,
                 "workout_id": workout_id,
@@ -1333,7 +1390,8 @@ class NotificationService:
         self,
         user_id: str,
         custom_copy: Optional[str] = None,
-        actor_id: Optional[str] = None
+        actor_id: Optional[str] = None,
+        custom_title: Optional[str] = None,
     ) -> Optional[str]:
         """Trigger a featured suggestion push with motivational copy"""
         import random
@@ -1348,7 +1406,8 @@ class NotificationService:
         return await self.create_notification(
             user_id=user_id,
             notification_type=NotificationType.FEATURED_SUGGESTION,
-            title="MOOD",
+            # V2.1 — was hardcoded "MOOD" with no way to override.
+            title=custom_title or "MOOD",
             body=copy,
             actor_id=actor_id,
             dedupe_key=f"featured_suggestion:{user_id}:{datetime.now(timezone.utc).strftime('%Y%m%d%H')}",
@@ -1408,7 +1467,8 @@ class NotificationService:
         self,
         custom_copy: Optional[str] = None,
         target_user_ids: Optional[List[str]] = None,
-        sender_user_id: Optional[str] = None
+        sender_user_id: Optional[str] = None,
+        custom_title: Optional[str] = None,
     ) -> int:
         """
         Admin function: Send featured suggestion to all users
@@ -1442,14 +1502,220 @@ class NotificationService:
             result = await self.trigger_featured_suggestion(
                 user_id=user_id,
                 custom_copy=copy,
-                actor_id=actor_id
+                actor_id=actor_id,
+                custom_title=custom_title,
             )
             if result:
                 count += 1
         
         logger.info(f"📢 Sent featured suggestion to {count} users")
         return count
-    
+
+    # ----------------------------------------
+    # RE-ENGAGEMENT NUDGES (V2.1)
+    # ----------------------------------------
+
+    # One re-engagement push per user per day, across ALL campaigns. Without
+    # this a user could qualify for day-4 + streak-at-risk + win-back on the
+    # same day and get three pushes; for an app whose promise is "doesn't yell
+    # at you" that is the fastest possible route to a disabled-notifications
+    # setting.
+    REENGAGEMENT_DAILY_CAP = 1
+
+    async def reengagement_campaign_ever_sent(self, user_id: str, campaign: str) -> bool:
+        """Has this user EVER received this campaign?
+
+        V2.1 — needed because the dedupe key is scoped to the day
+        (reengage:<campaign>:<uid>:<YYYYMMDD>), which makes a campaign idempotent
+        per day but NOT per lifetime. The activation windows span two days each
+        (age_days in (2,3) and (4,5)), so a user who was reachable on both days
+        received the identical push twice in a row. The two-day window exists to
+        catch someone whose 17:00 local sweep was missed — it was never meant to
+        repeat the message.
+        """
+        return await self.db.notifications.count_documents({
+            "user_id": user_id,
+            "metadata.campaign": campaign,
+        }, limit=1) > 0
+
+    async def _reengagement_sent_today(self, user_id: str) -> int:
+        """How many re-engagement pushes this user has already had today (UTC)."""
+        start_of_day = datetime.now(timezone.utc).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+        return await self.db.notifications.count_documents({
+            "user_id": user_id,
+            "metadata.reengagement": True,
+            "created_at": {"$gte": start_of_day},
+        })
+
+    async def trigger_reengagement_nudge(
+        self,
+        user_id: str,
+        campaign: str,
+        title: str,
+        body: str,
+        actor_id: Optional[str] = None,
+        respect_daily_cap: bool = True,
+    ) -> Optional[str]:
+        """Send one re-engagement push.
+
+        Rides NotificationType.WORKOUT_REMINDER so it honours the existing
+        `workout_reminders_enabled` preference and quiet hours rather than
+        introducing a category users can't turn off. `campaign` scopes the
+        dedupe key, so each campaign can fire at most once per user per day and
+        a worker restart mid-pass cannot double-send.
+        """
+        if respect_daily_cap:
+            already = await self._reengagement_sent_today(user_id)
+            if already >= self.REENGAGEMENT_DAILY_CAP:
+                logger.info(
+                    f"TRACE-NOTIF: campaign={campaign} recipient={user_id} "
+                    f"decision=SKIPPED reason=daily_cap({already})"
+                )
+                return None
+
+        if not actor_id:
+            actor_id = await self.get_admin_user_id()
+
+        day = datetime.now(timezone.utc).strftime("%Y%m%d")
+        return await self.create_notification(
+            user_id=user_id,
+            notification_type=NotificationType.WORKOUT_REMINDER,
+            title=title,
+            body=body,
+            actor_id=actor_id,
+            dedupe_key=f"reengage:{campaign}:{user_id}:{day}",
+            metadata={
+                "reengagement": True,
+                "campaign": campaign,
+                "copy_variant": body,
+            },
+        )
+
+    # ----------------------------------------
+    # CUSTOM ADMIN BROADCAST (V2.1)
+    # ----------------------------------------
+
+    RECIPIENT_FETCH_CAP = 10000
+
+    async def send_custom_broadcast(
+        self,
+        title: str,
+        body: str,
+        deep_link: Optional[str] = None,
+        target_user_ids: Optional[List[str]] = None,
+        sender_user_id: Optional[str] = None,
+        featured_workout_id: Optional[str] = None,
+        dedupe_tag: Optional[str] = None,
+    ) -> dict:
+        """
+        Admin broadcast with a fully custom title AND body.
+
+        Two modes, chosen by `featured_workout_id`:
+
+        * WITHOUT a workout -> NotificationType.CUSTOM. Honours the
+          `announcements_enabled` preference. `deep_link` may point anywhere;
+          omit it to land the user on the home screen.
+
+        * WITH a workout -> NotificationType.FEATURED_WORKOUT, so the push
+          rides the one client tap-handler that is fully implemented: it
+          hydrates the cart from the workout id and drops the user on /cart,
+          one tap from Begin Workout. The admin still controls title and body.
+          Honours `featured_workouts_enabled`.
+
+        Returns a delivery report rather than a bare count, because a blast
+        that silently reached 3 of 500 people is indistinguishable from success
+        otherwise.
+        """
+        actor_id = sender_user_id or await self.get_admin_user_id()
+
+        workout_name = ""
+        if featured_workout_id:
+            workout_doc = await self.db.featured_workouts.find_one(
+                {"_id": ObjectId(featured_workout_id)}
+            )
+            if not workout_doc:
+                raise ValueError(f"Featured workout {featured_workout_id} not found")
+            if not (workout_doc.get("exercises") or []):
+                raise ValueError("Refusing to send: that featured workout has no exercises (empty cart)")
+            workout_name = workout_doc.get("title") or ""
+
+        if target_user_ids:
+            users = await self.db.users.find(
+                {"_id": {"$in": [ObjectId(uid) for uid in target_user_ids]}}
+            ).to_list(self.RECIPIENT_FETCH_CAP + 1)
+        else:
+            users = await self.db.users.find(
+                {"is_banned": {"$ne": True}}
+            ).to_list(self.RECIPIENT_FETCH_CAP + 1)
+
+        # The pre-existing fan-outs silently truncate at 10k with no signal.
+        # Surface it instead of pretending the send was complete.
+        truncated = len(users) > self.RECIPIENT_FETCH_CAP
+        if truncated:
+            users = users[: self.RECIPIENT_FETCH_CAP]
+            logger.warning(
+                "send_custom_broadcast: recipient list truncated at %s — "
+                "some users were NOT sent this push",
+                self.RECIPIENT_FETCH_CAP,
+            )
+
+        # Stamp one tag for the whole blast so create_notification's dedupe key
+        # makes this send idempotent — a retry after a timeout re-targets the
+        # same users without double-notifying anyone who already got it.
+        tag = dedupe_tag or f"broadcast:{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+
+        sent = 0
+        skipped = 0
+        failed = 0
+        for user in users:
+            user_id = str(user["_id"])
+            try:
+                if featured_workout_id:
+                    result = await self.trigger_featured_workout_notification(
+                        user_id=user_id,
+                        workout_id=featured_workout_id,
+                        workout_name=workout_name,
+                        custom_title=title,
+                        custom_body=body,
+                        actor_id=actor_id,
+                        dedupe_suffix=tag,
+                    )
+                else:
+                    result = await self.create_notification(
+                        user_id=user_id,
+                        notification_type=NotificationType.CUSTOM,
+                        title=title,
+                        body=body,
+                        actor_id=actor_id,
+                        deep_link=deep_link or None,
+                        dedupe_key=f"{tag}:{user_id}",
+                        metadata={"broadcast_tag": tag, "authored_by": actor_id},
+                    )
+                if result:
+                    sent += 1
+                else:
+                    # create_notification returns None for opted-out users.
+                    skipped += 1
+            except Exception as e:
+                failed += 1
+                logger.error(f"send_custom_broadcast: failed for user {user_id}: {e}")
+
+        logger.info(
+            "📢 Custom broadcast '%s': sent=%s skipped_opted_out=%s failed=%s considered=%s",
+            title, sent, skipped, failed, len(users),
+        )
+        return {
+            "sent": sent,
+            "skipped_opted_out": skipped,
+            "failed": failed,
+            "considered": len(users),
+            "truncated": truncated,
+            "broadcast_tag": tag,
+            "mode": "featured_workout_cart" if featured_workout_id else "custom",
+        }
+
     # ----------------------------------------
     # ANALYTICS TRACKING
     # ----------------------------------------

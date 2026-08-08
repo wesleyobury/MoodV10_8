@@ -35,7 +35,15 @@ export default function AdminPushNotifications() {
   const [loading, setLoading] = useState(true);
   
   // Push form state
-  const [pushType, setPushType] = useState<'featured_workout' | 'featured_suggestion'>('featured_suggestion');
+  const [pushType, setPushType] = useState<'featured_workout' | 'featured_suggestion' | 'custom'>('featured_suggestion');
+  // V2.1 custom-push composer: attach a built cart to a fully authored push.
+  const [attachCart, setAttachCart] = useState(false);
+  // V2.1 — audience selection. The composer previously had no targeting at all:
+  // every custom push went to every non-banned user, so an announcement meant
+  // for one segment (pricing news for non-subscribers) could not be sent
+  // without spamming paying customers with an offer they already have.
+  const [segment, setSegment] = useState<string>('all');
+  const [segments, setSegments] = useState<{ segment: string; description: string; size?: number }[]>([]);
   const [selectedWorkout, setSelectedWorkout] = useState<FeaturedWorkout | null>(null);
   const [customCopy, setCustomCopy] = useState('');
   const [customTitle, setCustomTitle] = useState('');
@@ -54,10 +62,19 @@ export default function AdminPushNotifications() {
   }, [token, user]);
 
   useEffect(() => {
-    if (isAuthorized && pushType === 'featured_workout') {
+    if (isAuthorized) {
+      // Live segment sizes, so a blast can be sized BEFORE it goes out.
+      fetch(`${API_URL}/api/admin/notifications/segments`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(r => (r.ok ? r.json() : null))
+        .then(d => { if (d?.segments) setSegments(d.segments); })
+        .catch(() => {});
+    }
+    if (isAuthorized && (pushType === 'featured_workout' || (pushType === 'custom' && attachCart))) {
       fetchFeaturedWorkouts();
     }
-  }, [isAuthorized, pushType]);
+  }, [isAuthorized, pushType, attachCart]);
 
   const checkAuthorization = async () => {
     if (!token || !user) {
@@ -124,15 +141,35 @@ export default function AdminPushNotifications() {
       Alert.alert('Error', 'Please select a featured workout');
       return;
     }
+    if (pushType === 'custom') {
+      if (!customTitle.trim() || !customBody.trim()) {
+        Alert.alert('Error', 'A custom push needs both a title and a body');
+        return;
+      }
+      if (attachCart && !selectedWorkout) {
+        Alert.alert('Error', 'Pick a workout to attach, or turn off "Attach a cart"');
+        return;
+      }
+    }
 
     setSending(true);
     
     try {
-      const endpoint = pushType === 'featured_workout' 
-        ? '/api/admin/notifications/featured-workout'
-        : '/api/admin/notifications/featured-suggestion';
+      const endpoint =
+        pushType === 'custom'
+          ? '/api/admin/notifications/custom'
+          : pushType === 'featured_workout'
+          ? '/api/admin/notifications/featured-workout'
+          : '/api/admin/notifications/featured-suggestion';
       
-      const body = pushType === 'featured_workout'
+      const body = pushType === 'custom'
+        ? {
+            title: customTitle.trim(),
+            body: customBody.trim(),
+            featured_workout_id: attachCart && selectedWorkout ? selectedWorkout.id : null,
+            segment,
+          }
+        : pushType === 'featured_workout'
         ? { 
             workout_id: selectedWorkout!.id, 
             workout_name: selectedWorkout!.name,
@@ -155,13 +192,17 @@ export default function AdminPushNotifications() {
         const data = await response.json();
         Alert.alert(
           'Success',
-          `${data.notifications_sent} notifications sent!`,
+          // The custom endpoint returns a full delivery report (sent /
+          // opted-out / failed) rather than a bare count, so a blast that
+          // reached almost nobody can't read as a success.
+          data.message || `${data.notifications_sent} notifications sent!`,
           [{ text: 'OK', onPress: () => {
             setSelectedWorkout(null);
             setCustomCopy('');
             setCustomTitle('');
             setCustomBody('');
             setSelectedCopyIndex(null);
+            setAttachCart(false);
           }}]
         );
       } else {
@@ -254,11 +295,108 @@ export default function AdminPushNotifications() {
                 Featured Workout
               </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.typeButton,
+                pushType === 'custom' && styles.typeButtonActive,
+              ]}
+              onPress={() => setPushType('custom')}
+            >
+              <Ionicons
+                name="create"
+                size={20}
+                color={pushType === 'custom' ? '#0c0c0c' : '#888'}
+              />
+              <Text style={[
+                styles.typeButtonText,
+                pushType === 'custom' && styles.typeButtonTextActive,
+              ]}>
+                Custom
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
 
-        {/* Featured Workout Selection */}
-        {pushType === 'featured_workout' && (
+        {/* ── Custom composer (V2.1) ───────────────────────────── */}
+        {pushType === 'custom' && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Title</Text>
+            <TextInput
+              style={styles.customCopyInput}
+              placeholder="Notification title"
+              placeholderTextColor="#666"
+              value={customTitle}
+              onChangeText={setCustomTitle}
+              maxLength={120}
+            />
+            <Text style={styles.charCount}>{customTitle.length}/120</Text>
+
+            <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Body</Text>
+            <TextInput
+              style={[styles.customCopyInput, styles.customBodyInput]}
+              placeholder="Notification body"
+              placeholderTextColor="#666"
+              value={customBody}
+              onChangeText={setCustomBody}
+              maxLength={400}
+              multiline
+            />
+            <Text style={styles.charCount}>{customBody.length}/400</Text>
+
+            <Text style={styles.segLabel}>Audience</Text>
+            <View style={styles.segWrap}>
+              {(segments.length
+                ? segments
+                : [{ segment: 'all', description: 'Every non-banned user.' }]
+              ).map(sg => {
+                const active = segment === sg.segment;
+                return (
+                  <TouchableOpacity
+                    key={sg.segment}
+                    style={[styles.segChip, active && styles.segChipOn]}
+                    onPress={() => setSegment(sg.segment)}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={[styles.segChipText, active && styles.segChipTextOn]}>
+                      {sg.segment.replace(/_/g, ' ')}
+                      {typeof sg.size === 'number' ? `  ${sg.size}` : ''}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            <Text style={styles.attachHint}>
+              {segments.find(x => x.segment === segment)?.description || ''}
+            </Text>
+
+            <TouchableOpacity
+              style={styles.attachRow}
+              onPress={() => {
+                const next = !attachCart;
+                setAttachCart(next);
+                if (!next) setSelectedWorkout(null);
+              }}
+              activeOpacity={0.7}
+            >
+              <Ionicons
+                name={attachCart ? 'checkbox' : 'square-outline'}
+                size={22}
+                color={attachCart ? '#FFD700' : '#666'}
+              />
+              <View style={{ flex: 1, marginLeft: 12 }}>
+                <Text style={styles.attachLabel}>Attach a cart</Text>
+                <Text style={styles.attachHint}>
+                  Tapping the notification opens the app with this workout
+                  preloaded, one tap from Begin Workout.
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Featured Workout Selection — also the cart picker for custom pushes */}
+        {(pushType === 'featured_workout' || (pushType === 'custom' && attachCart)) && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Select Featured Workout</Text>
             {loadingWorkouts ? (
@@ -370,18 +508,28 @@ export default function AdminPushNotifications() {
                 />
               </View>
               <Text style={styles.previewTitle}>
-                {pushType === 'featured_workout' 
+                {pushType === 'custom'
+                  ? (customTitle || 'Your title')
+                  : pushType === 'featured_workout'
                   ? (customTitle || (selectedWorkout ? selectedWorkout.name : 'New Featured Workout'))
                   : 'MOOD'}
               </Text>
             </View>
             <Text style={styles.previewBody}>
-              {pushType === 'featured_workout' 
+              {pushType === 'custom'
+                ? (customBody || 'Your body text')
+                : pushType === 'featured_workout' 
                 ? (customBody || (selectedWorkout ? `"${selectedWorkout.name}" just dropped` : 'Select a workout above'))
                 : (customCopy || 'Select a message above')}
             </Text>
             <Text style={styles.previewDeepLink}>
-              {pushType === 'featured_workout' 
+              {pushType === 'custom'
+                ? (attachCart
+                    ? (selectedWorkout
+                        ? `→ Opens cart preloaded with "${selectedWorkout.name}"`
+                        : '→ Pick a workout to attach')
+                    : '→ Opens home screen')
+                : pushType === 'featured_workout' 
                 ? '→ Opens workout cart' 
                 : '→ Opens home screen'}
             </Text>
@@ -392,7 +540,13 @@ export default function AdminPushNotifications() {
         <TouchableOpacity
           style={[styles.sendButton, sending && styles.sendButtonDisabled]}
           onPress={sendPush}
-          disabled={sending || (pushType === 'featured_workout' && !selectedWorkout) || (pushType === 'featured_suggestion' && !customCopy)}
+          disabled={
+            sending ||
+            (pushType === 'featured_workout' && !selectedWorkout) ||
+            (pushType === 'featured_suggestion' && !customCopy) ||
+            (pushType === 'custom' &&
+              (!customTitle.trim() || !customBody.trim() || (attachCart && !selectedWorkout)))
+          }
         >
           <LinearGradient
             colors={['#FFD700', '#FFA500']}
@@ -658,6 +812,48 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#0c0c0c',
+  },
+  charCount: {
+    fontSize: 11,
+    color: '#666',
+    textAlign: 'right',
+    marginTop: 6,
+  },
+  customBodyInput: {
+    minHeight: 90,
+    textAlignVertical: 'top',
+    paddingTop: 12,
+  },
+  attachRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 24,
+    padding: 14,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  segLabel: { fontSize: 13, fontWeight: '700', color: '#fff', marginTop: 18, marginBottom: 8 },
+  segWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  segChip: {
+    paddingVertical: 7, paddingHorizontal: 12, borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)',
+  },
+  segChipOn: { backgroundColor: 'rgba(255,215,0,0.14)', borderColor: 'rgba(255,215,0,0.5)' },
+  segChipText: { fontSize: 12, fontWeight: '600', color: 'rgba(255,255,255,0.7)', textTransform: 'capitalize' },
+  segChipTextOn: { color: '#FFD700' },
+  attachLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  attachHint: {
+    fontSize: 12,
+    color: '#888',
+    marginTop: 4,
+    lineHeight: 17,
   },
   disclaimer: {
     fontSize: 12,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   View,
@@ -10,6 +10,10 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
 import { BlurView } from 'expo-blur';
+import { useOnboardingFunnel } from '../contexts/OnboardingFunnelContext';
+import { recommendedIntensity } from '../utils/onboardingPersonalization';
+import { usePathname } from 'expo-router';
+import { useDrafts } from '../contexts/DraftsContext';
 
 export type IntensityLevel = 'beginner' | 'intermediate' | 'advanced';
 
@@ -60,14 +64,62 @@ export default function IntensitySelectionModal({
   moodTitle = 'Workout',
   remainingUses = 3,
 }: IntensitySelectionModalProps) {
-  const [selectedIntensity, setSelectedIntensity] = useState<IntensityLevel | null>(null);
+  // V2.1 — read the funnel answers here rather than threading a prop through
+  // the six screens that open this modal (body-parts, workout-type,
+  // lazy-training-type, explosiveness-type, calisthenics-equipment, ...).
+  // OnboardingFunnelProvider is mounted app-wide in app/_layout.tsx, so this is
+  // safe from anywhere and keeps all six call sites untouched.
+  const { answers } = useOnboardingFunnel();
+  const { currentDraftId, beginDraft } = useDrafts();
+  const pathname = usePathname();
+  const recommended = recommendedIntensity(answers.fitnessLevel, answers.workoutLength);
+
+  const [selectedIntensity, setSelectedIntensity] = useState<IntensityLevel | null>(recommended);
+
+  // Pre-select on every open. This modal stays mounted and toggles `visible`,
+  // so a mount-time initial value alone would go stale after the first use.
+  //
+  // The point of this: selectedIntensity used to start at null EVERY session,
+  // so Confirm was dead and the user faced a cold three-way decision before
+  // every single workout. The daily choice is the product and stays fully
+  // intact — this only decides where it starts, so accepting is one tap and
+  // overriding is one tap.
+  useEffect(() => {
+    if (visible) setSelectedIntensity(recommended);
+  }, [visible, recommended]);
 
   // Generation is fast — close immediately and let the screen take over.
   // No blocking "building your workouts" overlay.
   const handleConfirm = () => {
     if (!selectedIntensity) return;
     const intensity = selectedIntensity;
-    setSelectedIntensity(null);
+
+    // V2.1 — START THE SAVED BUILD HERE, not at the cart.
+    //
+    // Previously the draft was created in cart.tsx on first entry with items,
+    // which meant everything a user did BEFORE reaching the cart — choosing a
+    // mood, an intensity, body parts, equipment, a training type — was thrown
+    // away if they dropped off mid-build. Anyone who bailed during selection
+    // left no trace and had nothing to come back to.
+    //
+    // This modal is the one choke point every mood flow passes through (all six
+    // selection screens open it), and by this moment we already know mood +
+    // intensity — enough for a titled, resumable build. resume_route is then
+    // kept current by DraftRouteTracker as they advance, and the cart patches in
+    // the generated workout once it exists.
+    //
+    // Fire-and-forget: a failed draft write must never block the user's tap.
+    if (!currentDraftId) {
+      beginDraft({
+        moodCategory: moodTitle || 'Workout',
+        moodCard: moodTitle || null,
+        preferenceInputs: { intensity },
+        resumeRoute: pathname || undefined,
+        resumeParams: {},
+      }).catch(() => {});
+    }
+
+    setSelectedIntensity(recommended);
     onClose();
     Promise.resolve(onSelectIntensity(intensity)).catch(() => {});
   };
@@ -77,7 +129,7 @@ export default function IntensitySelectionModal({
   };
 
   const handleClose = () => {
-    setSelectedIntensity(null);
+    setSelectedIntensity(recommended);
     onClose();
   };
 
@@ -131,6 +183,9 @@ export default function IntensitySelectionModal({
                       {option.title}
                     </Text>
                     <Text style={styles.optionSubtitle}>{option.subtitle}</Text>
+                    {recommended === option.id && (
+                      <Text style={styles.recommendedNote}>Ideal for your fitness level</Text>
+                    )}
                   </View>
                   <View style={styles.optionDuration}>
                     <Text style={styles.durationText}>{option.duration}</Text>
@@ -304,6 +359,13 @@ const styles = StyleSheet.create({
   },
   optionTitleSelected: {
     color: '#FFFFFF',
+  },
+  recommendedNote: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#FFD700',
+    marginTop: 3,
+    letterSpacing: 0.2,
   },
   optionSubtitle: {
     fontSize: 12,

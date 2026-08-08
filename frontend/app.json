@@ -30,7 +30,7 @@
     },
     "android": {
       "package": "com.official.moodapp",
-      "versionCode": 8,
+      "versionCode": 10,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"

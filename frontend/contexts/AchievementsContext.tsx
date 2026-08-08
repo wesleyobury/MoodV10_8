@@ -35,6 +35,7 @@ import {
   Easing,
   AppState,
   Platform,
+  type AppStateStatus,
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -123,10 +124,29 @@ export function AchievementsProvider({ children }: { children: React.ReactNode }
   // Queue of earned-but-not-yet-celebrated defs waiting for the gate to open
   const queueRef = useRef<AchievementDef[]>([]);
 
-  // Reset the per-session cap whenever the app returns to the foreground.
+  // Reset the per-session cap when the app returns to the foreground from a
+  // genuine background state.
+  //
+  // V2.1 — BUG FIX. This listened for a bare `s === 'active'` with no
+  // previous-state guard, so ANY transient inactive->active bounce reopened the
+  // one-toast-per-session gate: the system share sheet, an Instagram openURL, a
+  // MediaLibrary permission prompt, the StoreReview prompt, a screenshot, even
+  // pulling down Control Center. Because queueRef is a persistent multi-badge
+  // queue that drains one badge per "session" and is never cleared, each bounce
+  // popped another toast — which is why tapping a card on the profile Cards tab
+  // (-> workout modal -> Share Achievement -> /create-post, which fires several
+  // of those native surfaces, then lands back on home where useFocusEffect
+  // calls refresh()) reliably produced another badge celebration.
+  //
+  // app/_layout.tsx:52-60 already does this correctly; this now matches it.
+  const appStateRef = useRef<AppStateStatus>(AppState.currentState);
   useEffect(() => {
-    const sub = AppState.addEventListener('change', (s) => {
-      if (s === 'active') sessionShownRef.current = false;
+    const sub = AppState.addEventListener('change', (next: AppStateStatus) => {
+      const cameFromBackground = /inactive|background/.test(appStateRef.current);
+      if (cameFromBackground && next === 'active') {
+        sessionShownRef.current = false;
+      }
+      appStateRef.current = next;
     });
     return () => sub.remove();
   }, []);
@@ -143,6 +163,8 @@ export function AchievementsProvider({ children }: { children: React.ReactNode }
       setActiveToast(null);
     }
   }, [pendingTrigger, activeToast]);
+
+  const dismissToast = useCallback(() => setActiveToast(null), []);
 
   const gateOpen = useCallback(() => {
     return (
@@ -258,6 +280,11 @@ export function AchievementsProvider({ children }: { children: React.ReactNode }
     if (token && !isGuest) {
       refresh();
     } else {
+      // V2.1 — the queue and the per-session cap survived a logout, so badges
+      // queued for one account could surface for whoever signed in next.
+      queueRef.current = [];
+      sessionShownRef.current = false;
+      setsLoadedRef.current = false;
       setEarnedIds([]);
       setSignals(EMPTY_SIGNALS);
       setActiveToast(null);
@@ -284,10 +311,14 @@ export function AchievementsProvider({ children }: { children: React.ReactNode }
   return (
     <AchievementsContext.Provider value={value}>
       {children}
-      <AchievementToastHost
-        def={activeToast}
-        onDismiss={() => setActiveToast(null)}
-      />
+      {/* V2.1 — onDismiss must be a STABLE reference. It was an inline arrow, so
+          `animateOut` (which closes over it) got a fresh identity on every
+          provider render, and the toast-host effect that depends on animateOut
+          re-ran each time — replaying the entrance animation and restarting the
+          4.2s auto-hide timer. One refresh() produces several provider renders
+          (setLoading, setSignals, setEarnedIds), so a single toast visibly
+          re-fired and could outlive its own dismiss window. */}
+      <AchievementToastHost def={activeToast} onDismiss={dismissToast} />
     </AchievementsContext.Provider>
   );
 }
@@ -307,12 +338,14 @@ function AchievementToastHost({
   const scale = useRef(new Animated.Value(0.96)).current;
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const animateOutRef = useRef<() => void>(() => {});
   const animateOut = useCallback(() => {
     Animated.parallel([
       Animated.timing(opacity, { toValue: 0, duration: 220, useNativeDriver: true }),
       Animated.timing(translateY, { toValue: -16, duration: 220, useNativeDriver: true }),
     ]).start(() => onDismiss());
   }, [opacity, translateY, onDismiss]);
+  animateOutRef.current = animateOut;
 
   useEffect(() => {
     if (!def) return;
@@ -325,11 +358,16 @@ function AchievementToastHost({
       Animated.spring(scale, { toValue: 1, useNativeDriver: true, damping: 12, stiffness: 150 }),
     ]).start();
 
-    hideTimer.current = setTimeout(animateOut, 4200);
+    hideTimer.current = setTimeout(() => animateOutRef.current(), 4200);
     return () => {
       if (hideTimer.current) clearTimeout(hideTimer.current);
     };
-  }, [def, opacity, translateY, scale, animateOut]);
+    // Keyed on def?.id only. Including `animateOut` (or the animated values)
+    // meant a re-render could restart the entrance animation for a toast that
+    // was already on screen; the timer reads the latest callback via a ref
+    // instead, so behaviour stays current without re-triggering the animation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [def?.id]);
 
   if (!def) return null;
 

@@ -11,9 +11,6 @@ import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
-import com.android.billingclient.api.acknowledgePurchase
-import com.android.billingclient.api.queryProductDetails
-import com.android.billingclient.api.queryPurchasesAsync
 import expo.modules.kotlin.Promise
 import expo.modules.kotlin.exception.Exceptions
 import expo.modules.kotlin.modules.Module
@@ -30,6 +27,7 @@ import java.util.Locale
 import java.util.TimeZone
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /**
  * MOOD Google Play Billing bridge — the Android counterpart to the iOS
@@ -44,6 +42,12 @@ import kotlin.coroutines.resume
  *   • restorePurchases()        — queryPurchasesAsync(SUBS)
  *   • currentEntitlements()     — queryPurchasesAsync(SUBS), acknowledged only
  *   • onTransactionUpdate event — PurchasesUpdatedListener (in-app changes)
+ *
+ * We depend on the PLAIN `billing` (Java) artifact rather than `billing-ktx`,
+ * because the ktx add-on ships Kotlin metadata newer than Expo SDK 54 / RN
+ * 0.81's Kotlin compiler can read. So the callback-based Billing APIs are
+ * wrapped in coroutines here (queryProductDetailsSuspend / queryPurchasesSuspend
+ * / acknowledgeSuspend) instead of using the ktx suspend extensions.
  *
  * KEY DIFFERENCE FROM iOS (see the Android-Parity plan §2.3): Google Play does
  * NOT return a self-verifiable signed payload. `signedPayload` on Android
@@ -131,8 +135,8 @@ class MoodStoreKitModule : Module() {
           val params = QueryProductDetailsParams.newBuilder()
             .setProductList(productList)
             .build()
-          val details = billingClient!!.queryProductDetails(params)
-          val payload = details.productDetailsList?.map { serializeProduct(it) } ?: emptyList()
+          val details = queryProductDetailsSuspend(params)
+          val payload = details.map { serializeProduct(it) }
           promise.resolve(payload)
         } catch (e: Throwable) {
           promise.reject("E_STOREKIT_PRODUCTS", e.message ?: "getProducts failed", e)
@@ -158,8 +162,8 @@ class MoodStoreKitModule : Module() {
               )
             )
             .build()
-          val details = billingClient!!.queryProductDetails(productParams)
-          val product = details.productDetailsList?.firstOrNull()
+          val details = queryProductDetailsSuspend(productParams)
+          val product = details.firstOrNull()
           if (product == null) {
             promise.reject("E_STOREKIT_NO_PRODUCT", "Product $productID not found", null)
             return@launch
@@ -215,6 +219,62 @@ class MoodStoreKitModule : Module() {
     }
   }
 
+  // MARK: - Coroutine wrappers around Billing's callback APIs
+  // (plain `billing` artifact has no suspend extensions — we provide our own)
+
+  private suspend fun queryProductDetailsSuspend(
+    params: QueryProductDetailsParams
+  ): List<ProductDetails> = suspendCancellableCoroutine { cont ->
+    val client = billingClient ?: run {
+      cont.resumeWithException(IllegalStateException("BillingClient not initialised"))
+      return@suspendCancellableCoroutine
+    }
+    client.queryProductDetailsAsync(params) { result, queryResult ->
+      if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+        if (cont.isActive) cont.resume(queryResult.productDetailsList)
+      } else if (cont.isActive) {
+        cont.resumeWithException(
+          IllegalStateException("queryProductDetails failed: ${result.debugMessage}")
+        )
+      }
+    }
+  }
+
+  private suspend fun queryPurchasesSuspend(): List<Purchase> {
+    val params = QueryPurchasesParams.newBuilder()
+      .setProductType(BillingClient.ProductType.SUBS)
+      .build()
+    return suspendCancellableCoroutine { cont ->
+      val client = billingClient ?: run {
+        cont.resumeWithException(IllegalStateException("BillingClient not initialised"))
+        return@suspendCancellableCoroutine
+      }
+      client.queryPurchasesAsync(params) { result, purchases ->
+        if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+          if (cont.isActive) cont.resume(purchases)
+        } else if (cont.isActive) {
+          cont.resumeWithException(
+            IllegalStateException("queryPurchases failed: ${result.debugMessage}")
+          )
+        }
+      }
+    }
+  }
+
+  private suspend fun acknowledgeSuspend(token: String): Unit =
+    suspendCancellableCoroutine { cont ->
+      val client = billingClient ?: run {
+        if (cont.isActive) cont.resume(Unit)
+        return@suspendCancellableCoroutine
+      }
+      val params = AcknowledgePurchaseParams.newBuilder()
+        .setPurchaseToken(token)
+        .build()
+      client.acknowledgePurchase(params) { _ ->
+        if (cont.isActive) cont.resume(Unit)
+      }
+    }
+
   // MARK: - Helpers
 
   private val context
@@ -231,7 +291,9 @@ class MoodStoreKitModule : Module() {
             if (cont.isActive) cont.resume(Unit)
           } else {
             if (cont.isActive) {
-              cont.cancel(IllegalStateException("Billing setup failed: ${result.debugMessage}"))
+              cont.resumeWithException(
+                IllegalStateException("Billing setup failed: ${result.debugMessage}")
+              )
             }
           }
         }
@@ -256,10 +318,7 @@ class MoodStoreKitModule : Module() {
     // Acknowledge if not already — Google auto-refunds unacknowledged purchases.
     if (!purchase.isAcknowledged) {
       try {
-        val ackParams = AcknowledgePurchaseParams.newBuilder()
-          .setPurchaseToken(purchase.purchaseToken)
-          .build()
-        billingClient?.acknowledgePurchase(ackParams)
+        acknowledgeSuspend(purchase.purchaseToken)
       } catch (_: Throwable) {
         // Non-fatal here; the backend can also acknowledge via the Play
         // Developer API after server-side verification.
@@ -269,11 +328,9 @@ class MoodStoreKitModule : Module() {
     val txn = serializeTransaction(purchase)
 
     // Resolve any foreground purchase() promise waiting on these product ids.
-    var resolvedForeground = false
     purchase.products.forEach { pid ->
       pendingPurchases.remove(pid)?.let {
         it.resolve(HashMap(txn).apply { put("status", "success") })
-        resolvedForeground = true
       }
     }
 
@@ -281,20 +338,14 @@ class MoodStoreKitModule : Module() {
     // so the JS reconciliation loop stays consistent whether or not a
     // foreground promise was in flight.
     sendEvent("onTransactionUpdate", txn)
-    if (!resolvedForeground) {
-      // no-op: event already sent
-    }
   }
 
   /** Shared body for restorePurchases() and currentEntitlements(). */
   private suspend fun resolveEntitlements(promise: Promise) {
     try {
       ensureConnected()
-      val params = QueryPurchasesParams.newBuilder()
-        .setProductType(BillingClient.ProductType.SUBS)
-        .build()
-      val result = billingClient!!.queryPurchasesAsync(params)
-      val active = result.purchasesList
+      val purchases = queryPurchasesSuspend()
+      val active = purchases
         .filter { it.purchaseState == Purchase.PurchaseState.PURCHASED }
         .map { serializeTransaction(it) }
       promise.resolve(active)

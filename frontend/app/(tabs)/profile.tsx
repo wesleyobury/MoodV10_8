@@ -40,6 +40,9 @@ import { BRAND_GRADIENT } from '../../constants/brand';
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
 import { readCache, writeCache } from '../../utils/dataCache';
+import AchievementMedallion from '../../components/AchievementMedallion';
+import { useAchievements } from '../../contexts/AchievementsContext';
+import { ACHIEVEMENTS } from '../../constants/achievements';
 const { width } = Dimensions.get('window');
 
 
@@ -190,6 +193,14 @@ export default function Profile() {
   const { addToCart } = useCart();
   const { unreadMessages, refreshBadges } = useBadges();
   const { activeCount: savedBuildsCount, refreshCount: refreshDraftsCount } = useDrafts();
+  // V2.1 — profile previously showed NO badges, only a button routing to
+  // /user-stats. Same data source as that screen (static ACHIEVEMENTS x earnedIds)
+  // so the two can't disagree.
+  const { earnedIds } = useAchievements();
+  const earnedBadges = React.useMemo(() => {
+    const earned = new Set(earnedIds);
+    return ACHIEVEMENTS.filter(a => earned.has(a.id));
+  }, [earnedIds]);
 
   // BUNDLE-VERIFY: Unique marker so we can verify you're running the profile-fix v2 bundle.
   useEffect(() => {
@@ -912,6 +923,42 @@ export default function Profile() {
             </TouchableOpacity>
           </View>
 
+          {/* V2.1 — earned badges, inline. Shows EARNED only (user-stats shows the
+              full locked grid), so this reads as a trophy shelf rather than a
+              to-do list. Horizontal scroll keeps it to one row at any count, and
+              the whole strip routes to the full grid. Hidden entirely at zero —
+              an empty shelf on your own profile is worse than no shelf. */}
+          {earnedBadges.length > 0 && (
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={() => router.push('/user-stats')}
+              style={styles.badgeShelf}
+            >
+              <View style={styles.badgeShelfHead}>
+                <Text style={styles.badgeShelfTitle}>
+                  Badges <Text style={styles.badgeShelfCount}>{earnedBadges.length}</Text>
+                </Text>
+                <Ionicons name="chevron-forward" size={15} color="rgba(255,255,255,0.4)" />
+              </View>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.badgeShelfRow}
+                // Let the parent handle the tap; the row itself only scrolls.
+                scrollEnabled={earnedBadges.length > 4}
+              >
+                {earnedBadges.map(a => (
+                  <View key={a.id} style={styles.badgeShelfCell}>
+                    <AchievementMedallion icon={a.icon as any} size={44} />
+                    <Text style={styles.badgeShelfCaption} numberOfLines={1}>
+                      {a.label}
+                    </Text>
+                  </View>
+                ))}
+              </ScrollView>
+            </TouchableOpacity>
+          )}
+
           {/* Admin Dashboard Button - Only show for officialmoodapp admin account */}
           {(authUser?.username?.toLowerCase() === 'officialmoodapp' || user?.username?.toLowerCase() === 'officialmoodapp') && (
             <TouchableOpacity 
@@ -1631,6 +1678,34 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#ccc',
     lineHeight: 20,
+  },
+  badgeShelf: {
+    marginTop: 16,
+    paddingTop: 14,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.07)',
+  },
+  badgeShelfHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  badgeShelfTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: 'rgba(255,255,255,0.75)',
+    letterSpacing: 1.1,
+    textTransform: 'uppercase',
+  },
+  badgeShelfCount: { color: '#FFD700' },
+  badgeShelfRow: { gap: 14, paddingRight: 4 },
+  badgeShelfCell: { width: 56, alignItems: 'center' },
+  badgeShelfCaption: {
+    fontSize: 9,
+    color: 'rgba(255,255,255,0.5)',
+    marginTop: 5,
+    textAlign: 'center',
   },
   buttonRow: {
     flexDirection: 'row',

@@ -40,6 +40,8 @@ import HomeBackground from '../../components/HomeBackground';
 
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
+import { useSubscription } from '../../contexts/SubscriptionContext';
+import { useDrafts, type WorkoutDraft } from '../../contexts/DraftsContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CAROUSEL_PADDING = 16;
@@ -722,7 +724,53 @@ export default function WorkoutsHome() {
   const autoScrollTimer = useRef<NodeJS.Timeout | null>(null);
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { token, isGuest } = useAuth();
+  const { token, isGuest, user } = useAuth();
+  // First name for the greeting. Falls back to nothing rather than a placeholder
+  // — "Good evening, there" reads worse than just "Good evening".
+  const firstName = (user?.name || '').trim().split(' ')[0] || '';
+
+  // V2.1 — free allowance, surfaced BEFORE the user invests effort building a
+  // workout. free_workouts_remaining has been in the API response all along and
+  // was rendered nowhere, so the wall at "Begin Workout" arrived with no warning
+  // after six taps of work. freeWorkoutsResetAt is new in V2.1 (weekly gate) so
+  // this can say when it comes back rather than reading as permanent.
+  const { freeWorkoutsRemaining, freeWorkoutsResetAt } = useSubscription();
+
+  // Last unfinished build, for the resume card.
+  const { listDrafts, activeCount } = useDrafts();
+  const [resumable, setResumable] = useState<WorkoutDraft | null>(null);
+
+  // Runs for guests too. DraftsContext.identityQuery() falls back to device_id
+  // when there's no JWT, so guests genuinely have drafts on the server — and
+  // guests are the worst-retaining segment, so they're the last people who
+  // should be denied a resume affordance. listDrafts() returns [] if there's no
+  // usable identity, which is the correct empty state on its own.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const drafts = await listDrafts();
+        if (cancelled) return;
+        // Most-recent build the user started and didn't finish.
+        const open = (drafts || [])
+          .filter(d => d.status === 'in_progress' || d.status === 'ready_to_start' || d.status === 'started')
+          .sort((a, b) => String(b.last_modified_at || '').localeCompare(String(a.last_modified_at || '')));
+        setResumable(open[0] || null);
+      } catch {
+        setResumable(null);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [token, isGuest, activeCount]);
+  // token/isGuest stay in the dep array so the card re-resolves the moment a
+  // guest signs in and their device drafts get merged onto the new account.
+
+  const resetDayLabel = React.useMemo(() => {
+    if (!freeWorkoutsResetAt) return '';
+    try {
+      return new Date(freeWorkoutsResetAt).toLocaleDateString(undefined, { weekday: 'long' });
+    } catch { return ''; }
+  }, [freeWorkoutsResetAt]);
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   const [guestAction, setGuestAction] = useState('');
 
@@ -1196,9 +1244,68 @@ export default function WorkoutsHome() {
           <Text style={styles.centeredBrandTitle}>MOOD</Text>
           <Text style={styles.centeredBrandSubtitle}>TRAIN HOW YOU FEEL DAILY</Text>
 
+          {/* V2.1 — this greeting was computed into state and never placed in
+              JSX. It existed in three spots (useState, the setter effect, and an
+              orphaned stylesheet entry) and rendered nowhere, which is a large
+              part of why day 2 looked byte-identical to day 1. */}
+          {!!greeting && (
+            <Text style={styles.greeting}>
+              {greeting}{firstName ? `, ${firstName}` : ''}
+            </Text>
+          )}
+
           {/* Quiet "Synced 2m ago" indicator — hidden if no HealthKit permission */}
           <HealthSyncIndicator />
         </View>
+
+        {/* V2.1 — Continuity + allowance.
+            Day 2 used to render byte-identical to day 1: no welcome back, no
+            last workout, no resume, and no indication of how many free sessions
+            were left. Saved Builds existed but its ONLY entry point was three
+            levels into Profile and was hidden entirely when the count was 0. */}
+        {!!resumable && (
+          <TouchableOpacity
+            style={styles.resumeCard}
+            activeOpacity={0.85}
+            onPress={() => router.push((resumable.resume_route as any) || '/cart')}
+          >
+            <View style={styles.resumeIcon}>
+              <Ionicons name="play" size={16} color="#0c0c0c" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.resumeTitle}>Pick up where you left off</Text>
+              <Text style={styles.resumeSubtitle} numberOfLines={1}>
+                {/* Drafts now start at intensity confirm, so a resumable build
+                    often has no exercises yet. Say which one it is (the draft
+                    title carries mood + intensity) rather than the meaningless
+                    "Your saved build". */}
+                {resumable.generated_workout?.length
+                  ? `${resumable.generated_workout.length} exercise${resumable.generated_workout.length === 1 ? '' : 's'} ready`
+                  : resumable.title
+                  ? `${resumable.title} — still choosing`
+                  : 'Still choosing exercises'}
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="rgba(255,255,255,0.4)" />
+          </TouchableOpacity>
+        )}
+
+        {typeof freeWorkoutsRemaining === 'number' && (
+          <View style={styles.allowanceChip}>
+            <Ionicons
+              name={freeWorkoutsRemaining > 0 ? 'lock-open-outline' : 'time-outline'}
+              size={13}
+              color={freeWorkoutsRemaining > 0 ? '#FFD700' : 'rgba(255,255,255,0.5)'}
+            />
+            <Text style={styles.allowanceText}>
+              {freeWorkoutsRemaining > 0
+                ? `${freeWorkoutsRemaining} free workout${freeWorkoutsRemaining === 1 ? '' : 's'} this week`
+                : resetDayLabel
+                ? `Free workout returns ${resetDayLabel}`
+                : 'Free workout used this week'}
+            </Text>
+          </View>
+        )}
 
         {/* Progress Tracker - Animated Counting Stats */}
         <View style={styles.floatingStatsRow}>
@@ -1381,13 +1488,50 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  resumeCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginHorizontal: 20,
+    marginBottom: 12,
+    padding: 14,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255,215,0,0.07)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.22)',
+  },
+  resumeIcon: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#FFD700',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  resumeTitle: { fontSize: 14, fontWeight: '700', color: '#fff' },
+  resumeSubtitle: { fontSize: 12, color: 'rgba(255,255,255,0.55)', marginTop: 2 },
+  allowanceChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    gap: 6,
+    marginBottom: 14,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+  },
+  allowanceText: { fontSize: 12, fontWeight: '600', color: 'rgba(255,255,255,0.75)' },
   greeting: {
-    fontSize: 16,
-    color: '#888',
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.55)',
     fontWeight: '500',
-    textShadowColor: 'rgba(255, 215, 0, 0.2)',
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 4,
+    textAlign: 'center',
+    marginTop: 10,
+    // V2.1 — the original orphaned style had no textAlign and a gold text-shadow.
+    // It was written for a left-aligned header that no longer exists; under the
+    // centered wordmark it needed centering, and the glow fought the brand
+    // lockup directly above it.
   },
   title: {
     fontSize: 28,

@@ -19,6 +19,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useDrafts } from '../contexts/DraftsContext';
 import { useHealth } from '../contexts/HealthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
+import { clearWorkoutStartGrant } from '../utils/workoutStartGate';
 import { Analytics } from '../utils/analytics';
 import { recordWorkoutCompletionForRating } from '../utils/ratingPrompt';
 import { API_URL } from '../utils/apiConfig';
@@ -433,6 +434,9 @@ export default function WorkoutSessionScreen() {
     // `canStartWorkout` check in workout-guidance.tsx will be false and
     // trigger `start_workout_after_free_session` paywall.
     recordStartFreeWorkout();
+    // V2.1 — see workout-guidance.tsx: the session is over, so drop the cached
+    // entitlement grant and force the next session to re-verify.
+    clearWorkoutStartGrant();
 
     // Clear cart
     clearCart();

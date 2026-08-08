@@ -32,6 +32,36 @@ export default function AccessPage() {
 
   const [config, setConfig] = useState<AppConfig | null>(null);
   const [savingConfig, setSavingConfig] = useState(false);
+  const [broadcasting, setBroadcasting] = useState(false);
+  const [testUsername, setTestUsername] = useState("");
+  const [testing, setTesting] = useState(false);
+
+  // V2.1 — send to one account first. The blast reaches everyone and is
+  // idempotent, so a bad video URL or caption is not something you get to undo;
+  // this is the dry run.
+  const handleTestSend = async () => {
+    const handle = testUsername.trim().replace(/^@/, "");
+    if (!handle) {
+      setResult({ type: "error", message: "Enter a username to test with." });
+      return;
+    }
+    if (!config?.welcome_video_url) {
+      setResult({ type: "error", message: "Set a welcome video URL (and Save) before testing." });
+      return;
+    }
+    setTesting(true);
+    setResult(null);
+    const res = await api.testWelcomeVideo(handle);
+    if (res.data?.ok) {
+      setResult({
+        type: "success",
+        message: `Test video DM'd to @${res.data.sent_to}. They're still eligible for the real blast. Check Messages on that account.`,
+      });
+    } else {
+      setResult({ type: "error", message: res.error || "Test send failed." });
+    }
+    setTesting(false);
+  };
 
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [result, setResult] = useState<{ type: "success" | "error"; message: string } | null>(
@@ -165,6 +195,28 @@ export default function AccessPage() {
 
   const setCfg = (patch: Partial<AppConfig>) =>
     setConfig((prev) => (prev ? { ...prev, ...patch } : prev));
+
+  const handleBroadcast = async () => {
+    if (!config?.welcome_video_enabled || !config?.welcome_video_url) {
+      setResult({ type: "error", message: "Enable the welcome video and set a URL (then Save) before blasting." });
+      return;
+    }
+    if (!window.confirm("Send this welcome video as a DM to ALL users? Safe to re-run, but this reaches everyone.")) {
+      return;
+    }
+    setBroadcasting(true);
+    setResult(null);
+    const res = await api.broadcastWelcomeVideo();
+    if (res.data?.ok) {
+      setResult({
+        type: "success",
+        message: `Blasted to ${res.data.sent.toLocaleString()} users (${res.data.skipped.toLocaleString()} already had it).`,
+      });
+    } else {
+      setResult({ type: "error", message: res.error || "Broadcast failed." });
+    }
+    setBroadcasting(false);
+  };
 
   if (isLoading) {
     return (
@@ -534,6 +586,42 @@ export default function AccessPage() {
                   placeholder="Shown under the video in the DM"
                   className={numField}
                 />
+              </div>
+
+              <div className="border-t border-border pt-4">
+                <p className="text-xs text-muted-foreground mb-2">
+                  <span className="font-medium text-foreground">Test it on one account first.</span> Sends only to the
+                  username below, tagged separately so that account still receives the real blast. Re-sendable while
+                  you tweak the video or caption.
+                </p>
+                <div className="flex gap-2 mb-5">
+                  <input
+                    type="text"
+                    value={testUsername}
+                    onChange={(e) => setTestUsername(e.target.value)}
+                    placeholder="username"
+                    className="flex-1 max-w-xs px-3 py-2 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+                  />
+                  <button
+                    onClick={handleTestSend}
+                    disabled={testing || !config.welcome_video_url || !testUsername.trim()}
+                    className="px-4 py-2 bg-background text-foreground border border-border rounded-md font-medium hover:bg-muted disabled:opacity-50 transition-colors whitespace-nowrap"
+                  >
+                    {testing ? "Sending…" : "Send test"}
+                  </button>
+                </div>
+
+                <p className="text-xs text-muted-foreground mb-2">
+                  Send this video to <span className="font-medium text-foreground">every user</span>, not just new
+                  signups. Save your changes first. Safe to re-run — anyone who already received it is skipped.
+                </p>
+                <button
+                  onClick={handleBroadcast}
+                  disabled={broadcasting || !config.welcome_video_enabled || !config.welcome_video_url}
+                  className="px-4 py-2 bg-amber-500/15 text-amber-400 border border-amber-500/40 rounded-md font-medium hover:bg-amber-500/25 disabled:opacity-50 transition-colors"
+                >
+                  {broadcasting ? "Blasting…" : "Blast to all users"}
+                </button>
               </div>
             </div>
 

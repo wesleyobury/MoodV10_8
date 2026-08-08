@@ -186,6 +186,8 @@ from entitlement import (
     free_workouts_remaining,
     subscription_mirror_for_client,
     EntitlementReason,
+    consume_free_workout_update,
+    free_period_resets_at,
 )
 
 ROOT_DIR = Path(__file__).parent
@@ -2111,6 +2113,9 @@ async def get_entitlement(current_user_id: str = Depends(get_current_user)):
         "has_full_access": access,
         "reason": reason.value,
         "free_workouts_remaining": (None if access else free_workouts_remaining(user)),
+        # V2.1 — so the client can say "resets Monday" instead of showing a
+        # permanent wall. Null for entitled users, who have no allowance.
+        "free_workouts_reset_at": (None if access else free_period_resets_at().isoformat()),
         "is_founding_member": is_founding,
         "founding_pricing_claimed": claimed,
         "founding_window_active": bool(window_open and is_founding and not claimed),
@@ -2141,6 +2146,7 @@ async def start_workout_gate(current_user_id: str = Depends(get_current_user)):
                 "has_full_access": access,
                 "reason": reason.value,
                 "free_workouts_remaining": remaining,
+                "free_workouts_reset_at": free_period_resets_at().isoformat(),
                 **sub_mirror,
             },
         )
@@ -2150,6 +2156,7 @@ async def start_workout_gate(current_user_id: str = Depends(get_current_user)):
         "has_full_access": access,
         "reason": reason.value,
         "free_workouts_remaining": remaining,
+        "free_workouts_reset_at": (None if access else free_period_resets_at().isoformat()),
     }
 
 
@@ -2466,6 +2473,201 @@ async def update_app_config(update: AppConfigUpdate, admin_id: str = Depends(req
     await log_admin_action(admin_id, "update_app_config", "/admin/config",
                            {k: v for k, v in update_dict.items() if k != "updated_at"}, 200, "updated")
     return {"ok": True}
+
+
+# V2.1 — the founder-video send, factored out of broadcast_welcome_video so the
+# blast and the single-user test send share ONE implementation. Duplicating the
+# conversation/message/dedupe logic would let the test path drift from the real
+# one, which defeats the purpose of testing.
+async def _resolve_welcome_video_payload() -> tuple:
+    """(attachment, preview, caption) from app config. Raises if unconfigured."""
+    cfg = await db.app_config.find_one({"_id": "app_config"}) or {}
+    url = (cfg.get("welcome_video_url") or "").strip()
+    if not url:
+        raise HTTPException(status_code=400, detail="Set welcome_video_url in app config first")
+    caption = (cfg.get("welcome_video_caption") or "").strip()
+    thumb = (cfg.get("welcome_video_thumbnail_url") or "").strip()
+    attachment = {"video_url": url, "thumbnail_url": thumb, "caption": caption}
+    preview = (caption[:50] + "...") if caption else "\U0001F4F9 A note from the founder"
+    return attachment, preview, caption
+
+
+async def _welcome_video_sender() -> tuple:
+    """(ObjectId, str) of the officialmoodapp sender account."""
+    admin_user = await db.users.find_one({"username": WELCOME_MESSAGE_SENDER})
+    if not admin_user:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Sender account '{WELCOME_MESSAGE_SENDER}' not found",
+        )
+    return admin_user["_id"], str(admin_user["_id"])
+
+
+async def _deliver_welcome_video(
+    *, admin_id_str: str, uid: str, attachment: dict, preview: str,
+    caption: str, campaign: str, now: datetime, force: bool = False,
+) -> str:
+    """DM the founder video to one user. Returns "sent" or "skipped".
+
+    `force` bypasses the per-campaign dedupe so a test can be re-sent after
+    tweaking the video or caption. The blast never passes force=True.
+    """
+    conv = await db.conversations.find_one(
+        {"participants": {"$all": [admin_id_str, uid]}}
+    )
+    if conv:
+        conv_id = str(conv["_id"])
+        if not force:
+            already = await db.messages.find_one({
+                "conversation_id": conv_id,
+                "sender_id": admin_id_str,
+                "campaign": campaign,
+            })
+            if already:
+                return "skipped"
+    else:
+        r = await db.conversations.insert_one({
+            "participants": [admin_id_str, uid],
+            "created_at": now,
+            "updated_at": now,
+            "last_message": preview,
+            "last_message_at": now,
+        })
+        conv_id = str(r.inserted_id)
+
+    await db.messages.insert_one({
+        "conversation_id": conv_id,
+        "sender_id": admin_id_str,
+        "content": caption,
+        "attachment_type": "welcome_video",
+        "attachment": attachment,
+        "campaign": campaign,
+        "is_welcome": True,
+        "created_at": now,
+        "read": False,
+    })
+    await db.conversations.update_one(
+        {"_id": ObjectId(conv_id)},
+        {"$set": {"last_message": preview, "last_message_at": now, "updated_at": now}},
+    )
+    return "sent"
+
+
+@api_router.post("/admin/broadcast-welcome-video/test")
+async def test_welcome_video(
+    username: str,
+    campaign: str = "founder_video_v1",
+    admin_id: str = Depends(require_admin),
+):
+    """Send the founder video to ONE account by username, for a real-device check.
+
+    Two deliberate choices:
+
+    * The test is stamped with a DERIVED campaign tag (`<campaign>__test`), never
+      the real one. If it reused the real tag, the test recipient would then be
+      SKIPPED by the actual blast — so testing on your own account would quietly
+      exclude you from the send you were testing.
+    * force=True, so you can fire it repeatedly while iterating on the video URL
+      or caption instead of it silently no-op'ing on the second attempt.
+
+    Username match is case-insensitive and tolerates a leading '@'.
+    """
+    handle = (username or "").strip().lstrip("@")
+    if not handle:
+        raise HTTPException(status_code=400, detail="username is required")
+
+    target = await db.users.find_one(
+        {"username": {"$regex": f"^{re.escape(handle)}$", "$options": "i"}},
+        {"_id": 1, "username": 1},
+    )
+    if not target:
+        raise HTTPException(status_code=404, detail=f"No user with username '{handle}'")
+
+    attachment, preview, caption = await _resolve_welcome_video_payload()
+    admin_oid, admin_id_str = await _welcome_video_sender()
+    if target["_id"] == admin_oid:
+        raise HTTPException(
+            status_code=400,
+            detail=f"'{WELCOME_MESSAGE_SENDER}' is the sender — it can't DM itself. Use another account.",
+        )
+
+    test_campaign = f"{campaign}__test"
+    outcome = await _deliver_welcome_video(
+        admin_id_str=admin_id_str,
+        uid=str(target["_id"]),
+        attachment=attachment,
+        preview=preview,
+        caption=caption,
+        campaign=test_campaign,
+        now=datetime.now(timezone.utc),
+        force=True,
+    )
+
+    await log_admin_action(
+        admin_id, "test_welcome_video", "/admin/broadcast-welcome-video/test",
+        {"username": target.get("username"), "campaign": test_campaign}, 200, outcome,
+    )
+    return {
+        "ok": True,
+        "sent_to": target.get("username"),
+        "campaign": test_campaign,
+        "note": "Test tag only — this account is still eligible for the real blast.",
+    }
+
+
+@api_router.post("/admin/broadcast-welcome-video")
+async def broadcast_welcome_video(
+    campaign: str = "founder_video_v1",
+    include_internal: bool = False,
+    admin_id: str = Depends(require_admin),
+):
+    """
+    One-time blast: send the configured welcome video as a DM from
+    officialmoodapp to ALL users (not just new signups). Idempotent — a user
+    who already received this `campaign` is skipped, so it's safe to re-run
+    (e.g. to catch users who signed up since the last run). Uses the video URL /
+    caption / thumbnail set in app config. Excludes internal/staff by default.
+
+    Note: users on an app build without the video renderer see the caption text;
+    it upgrades to the video automatically once they update.
+    """
+    # V2.1 — shared with the single-user test endpoint above so the two paths
+    # cannot drift apart.
+    attachment, preview, caption = await _resolve_welcome_video_payload()
+    admin_oid, admin_id_str = await _welcome_video_sender()
+
+    query = {"_id": {"$ne": admin_oid}}
+    if not include_internal:
+        query["is_internal"] = {"$ne": True}
+
+    sent = 0
+    skipped = 0
+    now = datetime.now(timezone.utc)
+    try:
+        async for u in db.users.find(query, {"_id": 1}):
+            outcome = await _deliver_welcome_video(
+                admin_id_str=admin_id_str,
+                uid=str(u["_id"]),
+                attachment=attachment,
+                preview=preview,
+                caption=caption,
+                campaign=campaign,
+                now=now,
+                # Never force on the real blast — the per-campaign dedupe is what
+                # makes re-running it safe.
+                force=False,
+            )
+            if outcome == "sent":
+                sent += 1
+            else:
+                skipped += 1
+    except Exception as e:
+        logger.error(f"broadcast_welcome_video failed after {sent} sent: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+    await log_admin_action(admin_id, "broadcast_welcome_video", "/admin/broadcast-welcome-video",
+                           {"campaign": campaign, "sent": sent, "skipped": skipped}, 200, "sent")
+    return {"ok": True, "sent": sent, "skipped": skipped, "campaign": campaign}
 
 
 @api_router.post("/admin/founding-window/migrate")
@@ -7642,6 +7844,49 @@ async def get_current_user_info(
 
 
 
+@api_router.get("/users/me/funnel-answers")
+async def get_my_funnel_answers(current_user_id: str = Depends(get_current_user)):
+    """The user's onboarding funnel answers, recovered from their completion event.
+
+    V2.1 — WHY THIS EXISTS. Funnel answers are persisted ONLY to device
+    AsyncStorage (OnboardingFunnelContext, key @mood_funnel_answers_v1:<uid>).
+    There is no server-side copy on the user document. So any personalization
+    driven by those answers silently does nothing for:
+
+      • users who reinstalled the app (AsyncStorage wiped)
+      • users who signed in on a second device
+      • users who completed the funnel before answers were persisted per-user
+
+    `onboarding_completed` already carries every answer as event metadata, so
+    the server can hand them back without a migration or a schema change. The
+    client calls this when its local copy is empty and re-persists the result,
+    which is what makes the intensity prefill work for the EXISTING base rather
+    than only for people who onboard from here on.
+    """
+    doc = await db.user_events.find_one(
+        {"user_id": current_user_id, "event_type": "onboarding_completed"},
+        sort=[("timestamp", -1)],
+    )
+    meta = (doc.get("metadata") or {}) if doc else {}
+
+    # Only return dimensions that are actually present — an explicit null would
+    # overwrite a good local value with nothing when the client merges.
+    out = {}
+    for src, dest in (
+        ("mood", "mood"),
+        ("primary_goal", "primaryGoal"),
+        ("fitness_level", "fitnessLevel"),
+        ("biggest_barrier", "biggestBarrier"),
+        ("workout_length", "workoutLength"),
+        ("equipment", "equipment"),
+    ):
+        val = meta.get(src)
+        if val is not None:
+            out[dest] = val
+
+    return {"answers": out, "recovered": bool(out)}
+
+
 @api_router.get("/users/me/stats")
 async def get_current_user_stats(current_user_id: str = Depends(get_current_user)):
     """Get user's workout stats from tracking events"""
@@ -7651,10 +7896,52 @@ async def get_current_user_stats(current_user_id: str = Depends(get_current_user
         "user_id": current_user_id,
         "event_type": "workout_completed"
     })
-    
-    # Calculate total minutes (estimate based on workouts - average 20 mins per workout)
-    total_minutes = workouts_completed * 20
-    
+
+    # V2.1 — total minutes from REAL reported durations.
+    #
+    # This was `workouts_completed * 20`: a fabricated number presented to the
+    # user as a statistic. Every completion event already carries
+    # metadata.duration_minutes (see Analytics.workoutCompleted), so the honest
+    # figure was one aggregation away. Falls back to 20/workout ONLY for
+    # historical events that predate duration reporting, so the number never
+    # goes backwards for an existing user.
+    duration_agg = await db.user_events.aggregate([
+        {"$match": {
+            "user_id": current_user_id,
+            "event_type": "workout_completed",
+        }},
+        {"$group": {
+            "_id": None,
+            "reported": {"$sum": {"$ifNull": ["$metadata.duration_minutes", 0]}},
+            "missing": {
+                "$sum": {"$cond": [{"$ifNull": ["$metadata.duration_minutes", False]}, 0, 1]}
+            },
+        }},
+    ]).to_list(1)
+    if duration_agg:
+        reported = int(duration_agg[0].get("reported") or 0)
+        missing = int(duration_agg[0].get("missing") or 0)
+        total_minutes = reported + (missing * 20)
+    else:
+        total_minutes = 0
+
+    # All-time exercises completed. Monotonic by construction — it can only ever
+    # go up, which is the point: nothing on the home screen should be able to
+    # fall and make a returning user feel like they lost ground. Sourced from
+    # metadata.exercises_completed, already sent on every completion event.
+    # Distinct from workouts_completed, so the third stat tile isn't a duplicate.
+    exercises_agg = await db.user_events.aggregate([
+        {"$match": {
+            "user_id": current_user_id,
+            "event_type": "workout_completed",
+        }},
+        {"$group": {
+            "_id": None,
+            "total": {"$sum": {"$ifNull": ["$metadata.exercises_completed", 0]}},
+        }},
+    ]).to_list(1)
+    exercises_completed = int(exercises_agg[0].get("total") or 0) if exercises_agg else 0
+
     # Calculate accurate streak using helper function
     current_streak = await calculate_user_streak(current_user_id)
     
@@ -7671,6 +7958,11 @@ async def get_current_user_stats(current_user_id: str = Depends(get_current_user
     return {
         "workouts_completed": workouts_completed,
         "total_minutes": total_minutes,
+        "exercises_completed": exercises_completed,
+        # NOTE `current_streak` counts any ACTIVITY day (app opens, screen views
+        # — see calculate_user_streak), not workout days. It is kept in the
+        # response for backwards compatibility but is no longer shown on home;
+        # rt_streak_current is the real workout streak if one is ever needed.
         "current_streak": current_streak
     }
 
@@ -8737,9 +9029,12 @@ async def log_workout_completion(workout_data: UserWorkoutCreate, current_user_i
         is_admin_u, _ = is_admin_effective_sync(u)
         access, _r = has_full_access(u, is_admin_u)
         if not access:
+            # V2.1: book against the CURRENT ISO week. consume_free_workout_update
+            # increments within the week and resets to 1 when the stored period
+            # is stale, so the allowance self-resets every Monday 00:00 UTC.
             await db.users.update_one(
                 {"_id": ObjectId(current_user_id)},
-                {"$inc": {"free_workouts_used": 1}},
+                consume_free_workout_update(u),
             )
     except Exception as e:
         logger.error(f"free_workouts_used increment failed: {e}")
@@ -13902,6 +14197,33 @@ class FeaturedSuggestionPush(BaseModel):
     custom_copy: Optional[str] = None  # None = random from library
     target_user_ids: Optional[List[str]] = None  # None = all users
 
+class CustomPush(BaseModel):
+    """V2.1 — fully admin-authored push. Title AND body are required and used
+    verbatim; nothing is drawn from the copy libraries.
+
+    Set `featured_workout_id` to attach a cart: the push is then sent as a
+    FEATURED_WORKOUT so it rides the fully-implemented client tap handler,
+    landing the user on /cart with the workout preloaded and one tap from
+    Begin Workout. Leave it null for a plain announcement.
+    """
+    title: str = Field(..., min_length=1, max_length=120)
+    body: str = Field(..., min_length=1, max_length=400)
+    # Ignored when featured_workout_id is set (the cart route wins).
+    deep_link: Optional[str] = None
+    featured_workout_id: Optional[str] = None
+    target_user_ids: Optional[List[str]] = None  # None = all non-banned users
+    # V2.1 — named audience, resolved server-side. Added because the only
+    # targeting options were "every non-banned user" or an explicit id list the
+    # admin had no way to produce, which made an announcement aimed at a real
+    # segment (e.g. "tell non-subscribers the paywall changed") impossible
+    # without hand-assembling thousands of ids. Ignored when target_user_ids is
+    # supplied. See resolve_push_segment for the available names.
+    segment: Optional[str] = None
+    # Idempotency tag for one-time announcements: re-sending the same blast with
+    # the same tag will not double-notify anyone who already received it.
+    dedupe_tag: Optional[str] = None
+
+
 class WorkoutReminderPush(BaseModel):
     user_id: str
     custom_message: Optional[str] = None  # None = random from library
@@ -14093,6 +14415,134 @@ async def admin_send_featured_workout(
         "exercises_count": len(exercises),
         "message": f"Featured workout notification sent to {count} users ({len(exercises)} exercises)"
     }
+
+PUSH_SEGMENTS = {
+    "all": "Every non-banned user.",
+    "non_subscribers": "No active entitlement — the audience for pricing news.",
+    "subscribers": "Active or in-trial entitlement.",
+    "never_completed": "Signed up, never finished a workout.",
+    "completed_at_least_one": "Has finished at least one workout.",
+}
+
+
+async def resolve_push_segment(segment: str) -> List[str]:
+    """Turn a named audience into a concrete user-id list.
+
+    Entitlement is decided by `has_full_access` rather than by a Mongo query on
+    subscription.status, because that helper is the single source of truth and
+    already handles the lapsed-but-still-marked-active case (an expired
+    expiration_date with status still "active"). A raw status query would have
+    counted those users as subscribers and quietly excluded them from exactly
+    the announcement they most need to see.
+    """
+    if segment not in PUSH_SEGMENTS:
+        raise ValueError(
+            f"Unknown segment '{segment}'. Valid: {', '.join(sorted(PUSH_SEGMENTS))}"
+        )
+
+    users = await db.users.find({"is_banned": {"$ne": True}}).to_list(20000)
+
+    if segment == "all":
+        return [str(u["_id"]) for u in users]
+
+    if segment in ("non_subscribers", "subscribers"):
+        want_access = segment == "subscribers"
+        return [
+            str(u["_id"]) for u in users
+            if has_full_access(u, bool(u.get("is_internal")))[0] is want_access
+        ]
+
+    # Workout-history segments need one aggregation rather than N count queries.
+    completed = await db.user_events.aggregate([
+        {"$match": {"event_type": "workout_completed"}},
+        {"$group": {"_id": "$user_id"}},
+    ]).to_list(200000)
+    have_done = {d["_id"] for d in completed}
+
+    if segment == "never_completed":
+        return [str(u["_id"]) for u in users if str(u["_id"]) not in have_done]
+    return [str(u["_id"]) for u in users if str(u["_id"]) in have_done]
+
+
+@api_router.get("/admin/notifications/segments")
+async def admin_list_push_segments(current_user_id: str = Depends(require_admin)):
+    """Available audiences and their live sizes, so a blast can be sized first."""
+    out = []
+    for name, desc in PUSH_SEGMENTS.items():
+        try:
+            ids = await resolve_push_segment(name)
+            out.append({"segment": name, "description": desc, "size": len(ids)})
+        except Exception as e:
+            out.append({"segment": name, "description": desc, "error": str(e)})
+    return {"segments": out}
+
+
+@api_router.post("/admin/notifications/custom")
+async def admin_send_custom_push(
+    data: CustomPush,
+    current_user_id: str = Depends(require_admin)
+):
+    """Admin: send a push with a fully custom title and body.
+
+    Optionally attaches a built cart via `featured_workout_id`, in which case
+    tapping the notification opens the app with that cart preloaded.
+    """
+    notification_service = get_notification_service(db)
+
+    # Explicit ids win; otherwise resolve the named segment. Both absent = all users.
+    targets = data.target_user_ids
+    if targets is None and data.segment:
+        try:
+            targets = await resolve_push_segment(data.segment)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=str(e))
+        if not targets:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Segment '{data.segment}' matched 0 users — nothing to send.",
+            )
+
+    try:
+        report = await notification_service.send_custom_broadcast(
+            title=data.title,
+            body=data.body,
+            deep_link=data.deep_link,
+            target_user_ids=targets,
+            sender_user_id=current_user_id,
+            featured_workout_id=data.featured_workout_id,
+            dedupe_tag=data.dedupe_tag,
+        )
+    except ValueError as e:
+        # Bad workout id / empty cart — a client error, not a server fault.
+        raise HTTPException(status_code=400, detail=str(e))
+
+    await log_admin_action(
+        admin_user_id=current_user_id,
+        action="send_custom_push",
+        endpoint="/api/admin/notifications/custom",
+        request_body_redacted={
+            "title": data.title,
+            "mode": report["mode"],
+            "featured_workout_id": data.featured_workout_id,
+            "segment": data.segment or None,
+            "targeted": len(targets) if targets else "all",
+        },
+        result_summary=(
+            f"sent={report['sent']} skipped={report['skipped_opted_out']} "
+            f"failed={report['failed']} considered={report['considered']}"
+        ),
+    )
+
+    msg = f"Sent to {report['sent']} of {report['considered']} users"
+    if report["skipped_opted_out"]:
+        msg += f" ({report['skipped_opted_out']} opted out)"
+    if report["failed"]:
+        msg += f" ({report['failed']} failed)"
+    if report["truncated"]:
+        msg += " — recipient list was TRUNCATED, not everyone was reached"
+
+    return {"success": True, "message": msg, **report}
+
 
 @api_router.post("/admin/notifications/featured-suggestion")
 async def admin_send_featured_suggestion(
@@ -15136,6 +15586,15 @@ async def startup_db_client():
         )
         # Notification retrieval indexes
         await db.notifications.create_index([("user_id", 1), ("created_at", -1)])
+        # V2.1 — the re-engagement sweep asks "has this user EVER had campaign X?"
+        # once per candidate per pass (reengagement_campaign_ever_sent). The
+        # existing (user_id, created_at) index can't serve that predicate, so
+        # without this the sweep does a per-user scan of the notifications
+        # collection — fine at today's size, quietly quadratic as it grows.
+        await db.notifications.create_index(
+            [("user_id", 1), ("metadata.campaign", 1)],
+            name="notif_user_campaign",
+        )
         await db.device_tokens.create_index([("user_id", 1), ("is_valid", 1)])
         
         logger.info("✅ MongoDB indexes verified/created for analytics")
@@ -15205,6 +15664,39 @@ async def startup_db_client():
             logger.info("✅ notification_settings migration: nothing to do")
     except Exception as e:
         logger.error(f"⚠️ notification_settings migration failed: {e}")
+
+    # Migration (V2.1): backfill notification_settings for users who have none.
+    #
+    # A settings document was only ever created by update_user_settings — i.e.
+    # only when a user manually opened the notification-settings screen and
+    # saved. Nothing created one at signup. The scheduled-digest job queries
+    # db.notification_settings DIRECTLY (see notification_worker
+    # _process_scheduled_digests), so any user without a document was invisible
+    # to it and could never receive a digest — which is most users.
+    #
+    # Backfilling here rather than patching every signup path (google / email /
+    # apple) means existing users are fixed too, in one place. get_user_settings
+    # already falls back to opt-in defaults, so this changes no one's effective
+    # preferences — it just makes them visible to the cursor-based jobs.
+    try:
+        notif_service_boot = get_notification_service(db)
+        existing_ids = set(await db.notification_settings.distinct("user_id"))
+        missing = []
+        async for u in db.users.find({}, {"_id": 1}):
+            uid = str(u["_id"])
+            if uid not in existing_ids:
+                missing.append(notif_service_boot._get_default_settings(uid))
+        if missing:
+            now_boot = datetime.now(timezone.utc)
+            for doc in missing:
+                doc["created_at"] = now_boot
+                doc["updated_at"] = now_boot
+            await db.notification_settings.insert_many(missing, ordered=False)
+            logger.info(f"✅ notification_settings backfill: created {len(missing)} default docs")
+        else:
+            logger.info("✅ notification_settings backfill: all users already have settings")
+    except Exception as e:
+        logger.error(f"⚠️ notification_settings backfill failed: {e}")
     
 
     # Migration: Normalize string author_id to ObjectId for consistent queries

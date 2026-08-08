@@ -21,6 +21,10 @@ import { Analytics } from '../utils/analytics';
 import { useCart } from '../contexts/CartContext';
 import AchievementMedallion from './AchievementMedallion';
 
+// V2.1 — floor on automatic feed toasts. 3 minutes: frequent enough that an
+// active feed still feels live, rare enough that it stops being wallpaper.
+const TOAST_COOLDOWN_MS = 3 * 60 * 1000;
+
 // ===== Brand tokens =====
 const GOLD = '#F5C518';
 const TEXT_PRIMARY = '#FFFFFF';
@@ -263,11 +267,19 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
   // Track previously-seen entry IDs so we can detect "+N just landed" on refresh
   const seenIdsRef = useRef<Set<string>>(new Set());
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const toastHideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const toastOpacity = useRef(new Animated.Value(0)).current;
   const toastTranslateY = useRef(new Animated.Value(-12)).current;
   const isFirstLoadRef = useRef(true);
+  // Minimum gap between automatic "+N just landed" toasts.
+  const toastCooldownUntilRef = useRef(0);
 
   const showToast = useCallback((message: string) => {
+    // V2.1 — clear any in-flight hide timer first. The timeout was previously
+    // untracked, so a second toast arriving inside the 2.5s window had its
+    // message wiped by the FIRST toast's timer (cutting it short), and a timer
+    // firing after unmount set state on a dead component.
+    if (toastHideTimerRef.current) clearTimeout(toastHideTimerRef.current);
     setToastMessage(message);
     Animated.parallel([
       Animated.timing(toastOpacity, { toValue: 1, duration: 220, useNativeDriver: true }),
@@ -275,7 +287,7 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
     ]).start();
 
     // Auto-hide after 2.5s
-    setTimeout(() => {
+    toastHideTimerRef.current = setTimeout(() => {
       Animated.parallel([
         Animated.timing(toastOpacity, { toValue: 0, duration: 220, useNativeDriver: true }),
         Animated.timing(toastTranslateY, { toValue: -12, duration: 220, useNativeDriver: true }),
@@ -296,12 +308,31 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
       const newEntries = (json.entries || []).filter((e) => !previouslySeen.has(e.id));
       const isFirst = isFirstLoadRef.current;
 
-      // Update seen set with current entries
-      seenIdsRef.current = new Set((json.entries || []).map((e) => e.id));
+      // V2.1 — ACCUMULATE the seen set instead of replacing it.
+      //
+      // This was `new Set(json.entries.map(...))`, i.e. the set was overwritten
+      // with only the 30 entries in the current window. Any entry that fell out
+      // of the top 30 and later reappeared (feed reorder, a deletion pushing
+      // older items back up) was therefore counted as brand new, firing a false
+      // "+1 just landed" for something the user had already seen.
+      //
+      // Bounded so a long session can't grow this without limit: keep the most
+      // recent SEEN_CAP ids, which is many windows' worth of history.
+      const SEEN_CAP = 600;
+      const merged = [...seenIdsRef.current, ...(json.entries || []).map((e) => e.id)];
+      seenIdsRef.current = new Set(merged.slice(-SEEN_CAP));
       setData(json);
 
-      // Toast logic — skip on the very first load (everything would be "new")
-      if (!isFirst && newEntries.length > 0) {
+      // Toast logic — skip on the very first load (everything would be "new").
+      //
+      // V2.1 — added a cooldown. The feed polls every 30s while focused and
+      // toasted on ANY new entry, so on an active feed a user sitting on the Live
+      // tab got "+N just landed" every 30 seconds indefinitely. A manual
+      // pull-to-refresh bypasses the cooldown, because there the user explicitly
+      // asked what changed.
+      const cooledDown = Date.now() >= toastCooldownUntilRef.current;
+      if (!isFirst && newEntries.length > 0 && (isManualRefresh || cooledDown)) {
+        toastCooldownUntilRef.current = Date.now() + TOAST_COOLDOWN_MS;
         const msg = newEntries.length === 1
           ? '+1 just landed'
           : `+${newEntries.length} just landed`;
@@ -324,6 +355,11 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
   useEffect(() => {
     fetchFeed(false);
   }, [fetchFeed]);
+
+  // Clear the toast hide timer on unmount (leaving the Live tab mid-toast).
+  useEffect(() => () => {
+    if (toastHideTimerRef.current) clearTimeout(toastHideTimerRef.current);
+  }, []);
 
   // Poll every 30s while screen is focused
   useFocusEffect(

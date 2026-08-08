@@ -87,6 +87,8 @@ export interface Entitlement {
   has_full_access: boolean;
   reason: string;
   free_workouts_remaining: number | null;
+  /** V2.1 — ISO ts when the weekly free allowance resets. Null if entitled. */
+  free_workouts_reset_at?: string | null;
   is_founding_member: boolean;
   founding_pricing_claimed: boolean;
   founding_window_active: boolean;

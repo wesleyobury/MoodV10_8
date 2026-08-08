@@ -161,6 +161,22 @@ export default function RevealPayoff() {
     const trigger = isFoundingEligible ? 'post_onboarding_founding' : 'post_onboarding_soft';
     Analytics.revealScreenViewed(token, { stage: 'payoff', variant });
     Analytics.paywallViewed(token, { trigger_source: trigger });
+    // V2.1 — fire completion on ARRIVAL at the payoff screen.
+    //
+    // It used to fire only from three of the six CTAs here (skip / claim
+    // founding / creator code) or from a successful in-modal purchase. So the
+    // ~116 taps on Subscribe / Start trial / See all plans produced NO
+    // completion event unless the user actually paid, and dismissing the paywall
+    // produced none either. `onboarding_completed` was therefore measuring
+    // "chose a non-paywall action", not "completed onboarding" — the dashboard
+    // read 34.8% when ~79% of signups reach this screen.
+    //
+    // Arrival is also the app's OWN definition of done: markCompleted() already
+    // ran one screen earlier in reveal-loading, so on relaunch app/index.tsx
+    // routes straight past this screen. Anyone who backgrounded the app here was
+    // previously uncountable forever. fireCompleted is idempotent via
+    // completedRef, so no existing call site changes and no duplicates occur.
+    // (Fired from the dedicated effect below, once answers have rehydrated.)
   }, [token, isFoundingEligible]);
 
   const fireCompleted = () => {
@@ -178,22 +194,54 @@ export default function RevealPayoff() {
 
   const goWearables = () => router.replace(WEARABLES_ROUTE);
 
-  // Advance the funnel ONLY when Soft Paywall #1 actually converted — i.e.
-  // access was newly gained while the modal was open (a real purchase / trial).
-  // A plain dismiss or a cancelled Apple sheet leaves access unchanged, so the
-  // user returns here and must Subscribe, Start Trial, or tap "Try my first
-  // workout — free" to move on. (Previously any ambient `hasActiveAccess` —
-  // including a leftover sandbox sub or the old dev auto-grant — pushed the
-  // user straight into wearables on close.)
+  // Fire onboarding_completed on arrival — but only once the funnel answers have
+  // rehydrated. `answers` starts as {} and is filled by an async AsyncStorage
+  // read in OnboardingFunnelContext, so firing on bare mount would emit a
+  // completion event with every dimension undefined (mood, goal, level, barrier,
+  // length) and quietly destroy the segmentation on this event. `answers.mood` is
+  // the first funnel answer written, so its presence means the rest have landed.
+  // The timeout is a backstop: a user whose answers fail to rehydrate should
+  // still be COUNTED as completing, just without dimensions — losing the event
+  // entirely is worse than losing its metadata.
+  useEffect(() => {
+    if (completedRef.current) return;
+    if (answers.mood) {
+      fireCompleted();
+      return;
+    }
+    const t = setTimeout(fireCompleted, 2500);
+    return () => clearTimeout(t);
+  }, [answers.mood]);
+
+  // Advance the funnel once Soft Paywall #1 closes — whether or not it
+  // converted.
+  //
+  // V2.1 — REMOVING A DEAD END. This used to advance ONLY on a real conversion;
+  // a plain dismiss or a cancelled Apple sheet returned the user here with no
+  // back button out of onboarding, so the sole way forward was a 13.5px grey
+  // underlined link sitting below a full legal billing disclosure, below the
+  // fold, on a screen whose hero is over half the viewport. A user who tapped
+  // Subscribe out of curiosity, saw the price, and closed the sheet was
+  // effectively stranded — and the failure mode is silent abandonment, which
+  // logs nothing. That fits the observed D1 loss better than any paywall does.
+  //
+  // Note this is also the better MONETISATION choice, not a concession: the
+  // trigger data shows post-onboarding converts at 17.9% while usage-triggered
+  // paywalls ("start workout after free session", "generate after cap") convert
+  // at 58-67%. Trapping someone at the weakest moment costs revenue rather than
+  // protecting it — letting them into the app is what reaches the stronger
+  // triggers. They can still subscribe from Settings or any later paywall.
+  //
+  // The original concern this guard addressed (ambient `hasActiveAccess` from a
+  // leftover sandbox sub pushing the user through) no longer matters, because we
+  // advance on close regardless; `convertedNow` is now only used for attribution.
   useEffect(() => {
     if (!paywallOpenedRef.current || pendingTrigger) return;
     const convertedNow = hasActiveAccess && !hadAccessBeforePaywallRef.current;
-    if (!convertedNow) {
-      // Closed without converting — stay on Paywall #1. Reset the latch so a
-      // later real purchase can still trigger the advance.
-      paywallOpenedRef.current = false;
-      return;
-    }
+    paywallOpenedRef.current = false;
+    Analytics.revealCtaTapped(token, {
+      cta: convertedNow ? 'paywall_converted' : 'paywall_dismissed_advanced',
+    });
     fireCompleted();
     goWearables();
   }, [pendingTrigger, hasActiveAccess]);
@@ -223,6 +271,12 @@ export default function RevealPayoff() {
     try {
       await restorePurchases();
       await refreshEntitlement();
+      // V2.1 — a successful restore used to leave the user stranded on this
+      // screen: handleRestore never fired completion and never navigated, and
+      // because paywallOpenedRef was false the access-change effect could not
+      // fire either. They regained full access and still had nowhere to go.
+      fireCompleted();
+      goWearables();
     } catch {
       // no-op — nothing to restore.
     }
@@ -677,8 +731,18 @@ const styles = StyleSheet.create({
   trustText: { fontSize: 11, color: COLORS.textTertiary },
   safetyNet: { paddingTop: 14, alignItems: 'center' },
   safetyPrompt: { fontSize: 13, fontWeight: '600', color: COLORS.textSecondary, marginBottom: 6 },
-  tertiaryCta: { paddingVertical: 8, paddingHorizontal: 16, alignItems: 'center' },
-  tertiaryCtaLabel: { fontSize: 13.5, fontWeight: '600', color: COLORS.textSecondary, textDecorationLine: 'underline', textDecorationColor: 'rgba(255,255,255,0.3)' },
+  // V2.1 — this is the only "continue without paying" affordance in the whole
+  // app. At 13.5px in secondary grey with a 30%-opacity underline it read as
+  // fine print rather than a button. Bigger tap target, full-strength text.
+  tertiaryCta: {
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.18)',
+  },
+  tertiaryCtaLabel: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary },
   legalRow: { fontSize: 11, color: COLORS.textTertiary, textAlign: 'center', marginTop: 14 },
   link: { color: COLORS.textSecondary, textDecorationLine: 'underline' },
   bold: { color: COLORS.accent, fontWeight: '700' },

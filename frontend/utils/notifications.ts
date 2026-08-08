@@ -342,8 +342,20 @@ class NotificationService {
 
   /**
    * Central response handler — dispatches by notification type.
-   * For featured_workout: populates cart from push data → navigates to /cart.
-   * For all others: opens deep link or falls back to home.
+   *
+   * V2.1: this used to hand every non-featured type to
+   * `Linking.openURL(data.deep_link)`, which was dead code in production —
+   * the links were `mood://...` while app.json declares `scheme: "moodapp"`,
+   * so nothing was registered to handle them and every tap on a like /
+   * comment / follow / message / reminder push silently did nothing but log an
+   * error. On top of that the link paths (`mood://post/{id}`, `mood://home`,
+   * `mood://notifications`) don't correspond to any route in this flat
+   * expo-router tree, so even a correct scheme would have hit +not-found.
+   *
+   * We now route on `data.type` with `router.push` — the same mechanism the
+   * in-app inbox uses (app/notifications-inbox.tsx handleDeepLink), which is
+   * the one navigation path known to work. `deep_link` is no longer load-
+   * bearing for navigation.
    */
   private _handleNotificationResponse(response: Notifications.NotificationResponse): void {
     const data = response.notification.request.content.data as any;
@@ -359,104 +371,101 @@ class NotificationService {
 
     if (data?.type === 'featured_workout') {
       this._handleFeaturedWorkoutTap(data);
-    } else {
-      // Non-featured: open deep link if present, else go home
-      const link = data?.deep_link || 'mood://home';
-      Linking.openURL(link).catch((err) => {
-        console.error('Error opening deep link:', err);
-      });
+      return;
+    }
+
+    if (!this._router) {
+      console.warn('🔔 No router injected — cannot route notification tap');
+      return;
+    }
+
+    // `entityId` / `actorId` are always present on the payload as of V2.1;
+    // `targetId` is the legacy field name, kept as a fallback so pushes that
+    // were already sitting in the tray before this shipped still route.
+    const entityId: string = data?.entityId || data?.targetId || '';
+    const actorId: string = data?.actorId || '';
+
+    try {
+      switch (data?.type) {
+        case 'like':
+        case 'comment':
+        case 'mention':
+        case 'reply':
+          if (entityId) this._router.push(`/post-detail?postId=${entityId}`);
+          else this._router.push('/');
+          break;
+        case 'follow':
+          if (actorId) this._router.push(`/user-profile?userId=${actorId}`);
+          else this._router.push('/notifications-inbox');
+          break;
+        case 'message':
+        case 'message_request':
+          if (entityId) this._router.push(`/chat-detail?conversationId=${entityId}`);
+          else this._router.push('/notifications-inbox');
+          break;
+        case 'following_digest':
+        case 'while_away_digest':
+          this._router.push('/notifications-inbox');
+          break;
+        case 'workout_reminder':
+        case 'featured_suggestion':
+          this._router.push('/');
+          break;
+        case 'custom':
+          // Admin broadcast. A custom deep link is an in-app path when present
+          // (e.g. "/explore"); anything else just opens the app at home.
+          if (typeof data?.deep_link === 'string' && data.deep_link.startsWith('/')) {
+            this._router.push(data.deep_link);
+          } else {
+            this._router.push('/');
+          }
+          break;
+        default:
+          this._router.push('/');
+          break;
+      }
+    } catch (err) {
+      console.error('🔔 Notification routing failed:', err);
     }
   }
 
   /**
-   * Featured workout tap handler:
-   *  1. Build WorkoutItem[] from push data.cartItems (or fetch by workoutId)
-   *  2. Replace cart contents
-   *  3. Navigate to /cart
+   * Featured workout / admin-cart tap handler.
+   *
+   * V2.1: this used to duplicate cart hydration — mapping `data.cartItems`
+   * inline, with a fetch-by-id fallback. The server no longer ships inline
+   * cart items (they were capped at 10, silently truncating longer workouts,
+   * and rich exercises blew past the ~4KB APNs/FCM payload limit), so we
+   * simply navigate with the workout id and let app/cart.tsx hydrate. That
+   * path is uncapped, always reflects the current workout, and is the only one
+   * that also sets the cart hero image.
    */
   private async _handleFeaturedWorkoutTap(data: any): Promise<void> {
-    const workoutId = data.workoutId;
+    const workoutId = data.workoutId || data.entityId;
     const workoutTitle = data.workoutTitle || 'Featured Workout';
 
-    // Try to build cart items from push payload first
-    let cartItems: any[] = [];
-    if (Array.isArray(data.cartItems) && data.cartItems.length > 0) {
-      cartItems = data.cartItems.map((item: any) => ({
-        id: item.id || item.name || `push-${Date.now()}`,
-        name: item.name || '',
-        duration: item.duration || '',
-        description: item.description || '',
-        battlePlan: item.battlePlan || '',
-        imageUrl: item.imageUrl || item.image_url || '',
-        intensityReason: item.intensityReason || '',
-        equipment: item.equipment || 'None',
-        difficulty: item.difficulty || '',
-        workoutType: item.workoutType || '',
-        moodCard: item.moodCard || workoutTitle,
-        moodTips: item.moodTips || [],
-        source: 'build_for_me' as const,
-      }));
-    } else if (workoutId) {
-      // Fallback: fetch workout by ID from the backend
-      try {
-        const resp = await fetch(`${API_URL}/api/featured/workouts/batch`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify([workoutId]),
-        });
-        if (resp.ok) {
-          const result = await resp.json();
-          const workout = result.workouts?.[0];
-          if (workout?.exercises) {
-            cartItems = workout.exercises.map((ex: any) => ({
-              id: ex.exerciseId || ex.id || ex.name || `fetch-${Date.now()}`,
-              name: ex.name || '',
-              duration: ex.duration || '',
-              description: ex.description || '',
-              battlePlan: ex.battlePlan || '',
-              imageUrl: ex.imageUrl || ex.image_url || '',
-              intensityReason: ex.intensityReason || '',
-              equipment: ex.equipment || 'None',
-              difficulty: ex.difficulty || '',
-              workoutType: ex.workoutType || '',
-              moodCard: ex.moodCard || workout.title || workoutTitle,
-              moodTips: ex.moodTips || [],
-              source: 'build_for_me' as const,
-            }));
-          }
-        }
-      } catch (e) {
-        console.warn('🔔 Failed to fetch workout for push deep link:', e);
-      }
+    if (!workoutId) {
+      console.warn('🔔 featured_workout push carried no workout id');
+      this._router?.push('/');
+      return;
     }
 
-    // Replace cart BEFORE navigating
-    if (cartItems.length > 0 && this._replaceCart) {
-      console.log(`🔔 Populating cart with ${cartItems.length} items from push`);
-      this._replaceCart(cartItems);
+    if (!this._router) {
+      console.warn('🔔 No router injected — cannot open pushed cart');
+      return;
     }
 
-    // Navigate to cart screen — pass featuredId + serialized cart items as params
-    // so the Cart screen can self-hydrate even if replaceCart state is lost on cold start
-    if (this._router) {
-      try {
-        this._router.push({
-          pathname: '/cart',
-          params: {
-            featuredId: workoutId,
-            workoutTitle,
-            fromPush: 'true',
-            pushCartItems: cartItems.length > 0 ? JSON.stringify(cartItems) : undefined,
-          },
-        });
-      } catch (e) {
-        console.warn('🔔 Router navigation failed, falling back to Linking:', e);
-        Linking.openURL(data.deep_link || 'mood://cart').catch(() => {});
-      }
-    } else {
-      // No router injected yet — fall back to deep link
-      Linking.openURL(data.deep_link || 'mood://cart').catch(() => {});
-    }
+    this._router.push({
+      pathname: '/cart',
+      params: {
+        featuredId: workoutId,
+        workoutTitle,
+        // cart.tsx treats fromPush as authoritative and will replace an
+        // existing cart, so a pushed workout isn't silently ignored for users
+        // who happen to already have items in their cart.
+        fromPush: 'true',
+      },
+    });
   }
 
   cleanup(): void {

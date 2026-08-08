@@ -21,8 +21,11 @@ android {
 }
 
 dependencies {
-  // Google Play Billing Library. Must be 8.x+ to satisfy Google's
-  // Aug 31 2026 version floor; pin to the latest 8.x (or 9.x) at build time.
-  // `-ktx` brings the suspend extensions (queryProductDetails / queryPurchasesAsync).
-  implementation 'com.android.billingclient:billing-ktx:8.0.0'
+  // Google Play Billing Library — current stable, comfortably above Google's
+  // 8.x+ floor (Aug 31 2026). We use the PLAIN `billing` (Java) artifact, NOT
+  // `billing-ktx`: the ktx add-on is compiled with a newer Kotlin than Expo
+  // SDK 54 / RN 0.81 (Kotlin 2.1), which fails with an "incompatible Kotlin
+  // metadata" error. The Java artifact has no Kotlin metadata, so it always
+  // links; this module wraps Billing's callbacks in coroutines itself.
+  implementation 'com.android.billingclient:billing:9.1.0'
 }

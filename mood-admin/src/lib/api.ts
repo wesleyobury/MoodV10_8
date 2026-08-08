@@ -496,6 +496,33 @@ class ApiClient {
   async updateAppConfig(update: Partial<AppConfig>) {
     return this.put<{ ok: boolean }>("/admin/config", update);
   }
+
+  async broadcastWelcomeVideo(
+    campaign: string = "founder_video_v1",
+    includeInternal: boolean = false
+  ) {
+    const params = new URLSearchParams();
+    params.append("campaign", campaign);
+    if (includeInternal) params.append("include_internal", "true");
+    return this.post<{ ok: boolean; sent: number; skipped: number; campaign: string }>(
+      `/admin/broadcast-welcome-video?${params}`
+    );
+  }
+
+  /**
+   * Send the founder video to ONE account, for a real-device check before the
+   * blast. The server stamps a derived `<campaign>__test` tag, so the recipient
+   * stays eligible for the real send, and forces delivery so it can be re-fired
+   * while iterating on the video or caption.
+   */
+  async testWelcomeVideo(username: string, campaign: string = "founder_video_v1") {
+    const params = new URLSearchParams();
+    params.append("username", username);
+    params.append("campaign", campaign);
+    return this.post<{ ok: boolean; sent_to: string; campaign: string; note: string }>(
+      `/admin/broadcast-welcome-video/test?${params}`
+    );
+  }
 }
 
 export interface CompUser {
