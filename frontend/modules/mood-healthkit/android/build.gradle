@@ -20,8 +20,10 @@ android {
 }
 
 dependencies {
-  // Health Connect client. Pin to the latest stable at build time.
-  implementation 'androidx.health.connect:connect-client:1.1.0-rc03'
-  // Coroutine <-> ListenableFuture / permission-contract helpers.
-  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+  // Health Connect client — first stable release (1.1.0 shipped with no API
+  // changes from the 1.1.0-rc line this module was written against).
+  implementation 'androidx.health.connect:connect-client:1.1.0'
+  // Kotlin coroutines are provided transitively by expo-modules-core / RN;
+  // we intentionally do NOT pin a version here so Gradle resolves the one the
+  // rest of the app uses (matches the mood-storekit module).
 }

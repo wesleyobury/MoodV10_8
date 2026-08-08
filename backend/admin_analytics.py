@@ -204,7 +204,12 @@ _ONB_STEPS = [
     ("onboarding_step_viewed", "metadata.step", 4, "Biggest barrier"),
     ("onboarding_step_viewed", "metadata.step", 5, "Workout length"),
     ("onboarding_step_viewed", "metadata.step", 6, "Social proof"),
-    ("onboarding_step_viewed", "metadata.step", 7, "Name"),
+    # NOTE: step 7 ("Name") is deliberately NOT a funnel stage. The name-capture
+    # screen is conditional — frontend/app/onboarding-funnel/step-6-social-proof.tsx
+    # routes to it only for Apple Sign-In users whose Apple ID returned no name.
+    # Everyone else goes straight to reveal-loading. Treating it as a mandatory
+    # stage made the funnel report a fake ~99% drop at Name and a fake recovery
+    # at the next step. It stays in _ONB_STEP_LABELS for timing/abandonment labels.
     ("reveal_screen_viewed", "metadata.stage", "loading", "Reveal — building"),
     ("reveal_screen_viewed", "metadata.stage", "payoff", "Reveal — payoff"),
     ("onboarding_completed", None, None, "Onboarding complete"),
@@ -221,7 +226,8 @@ _ONB_QUESTIONS = [
 
 _ONB_STEP_LABELS = {
     0: "Intro", 1: "Mood", 2: "Primary goal", 3: "Fitness level",
-    4: "Biggest barrier", 5: "Workout length", 6: "Social proof", 7: "Name",
+    4: "Biggest barrier", 5: "Workout length", 6: "Social proof",
+    7: "Name (Apple sign-in only)", 8: "Wearables connect",
 }
 
 

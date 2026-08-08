@@ -687,6 +687,27 @@ export const Analytics = {
       ? trackEvent(token, 'start_workout_tapped', metadata)
       : trackGuestEvent('start_workout_tapped', metadata),
 
+  /**
+   * V2.1 — the entitlement round-trip that guards Start failed for a reason
+   * that is NOT the paywall (network unreachable, timeout, 5xx, unexpected
+   * shape). This previously showed a bare "Couldn't verify access" alert and
+   * emitted NOTHING, so a reliability problem on the app's core verb was
+   * completely invisible in the dashboard. `outcome` records whether we let the
+   * user through on the local mirror or actually blocked them.
+   */
+  workoutStartGateFailed: (
+    token: string | null,
+    metadata: {
+      reason: 'network' | 'timeout' | 'server_error' | 'unexpected';
+      outcome: 'allowed_offline' | 'blocked';
+      status?: number;
+      cached_grant?: boolean;
+    } & Record<string, any>,
+  ) =>
+    token
+      ? trackEvent(token, 'workout_start_gate_failed', metadata)
+      : trackGuestEvent('workout_start_gate_failed', metadata),
+
   // Founding Member — Phase D paid launch.
   foundingMemberModalShown: (token: string | null, metadata: Record<string, any> = {}) =>
     token

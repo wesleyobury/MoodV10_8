@@ -37,7 +37,15 @@ WORKOUT_COMPLETION_EVENTS = {
     "featured_workout_completed",
 }
 # Events that mark a "the user opened the app today" signal for comeback detection.
-SESSION_START_EVENTS = {"app_session_start"}
+#
+# V2.1: `app_session_start` alone was wrong. It has exactly ONE emitter
+# (contexts/AuthContext.tsx, in the stored-token restore path) and fires only on
+# a COLD start with an already-valid token — not on fresh login, not on signup,
+# and not on foreground/resume. The AppState listener emits `app_opened`
+# instead. So a user who left the app backgrounded for two weeks and resumed it
+# never produced a session-start event: comeback_after_lapse never fired,
+# lapse-based streak_broken never fired, and rt_last_active_day went stale.
+SESSION_START_EVENTS = {"app_session_start", "app_opened"}
 
 EmitFn = Callable[[str, dict], Awaitable[None]]
 

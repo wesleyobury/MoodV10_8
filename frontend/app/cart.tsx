@@ -405,7 +405,7 @@ export default function CartScreen() {
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { cartItems, removeFromCart, clearCart, reorderCart, addToCart, replaceCart, cartMeta, setCartMeta } = useCart();
-  const { currentDraftId, beginDraft, markReady, markStarted } = useDrafts();
+  const { currentDraftId, beginDraft, patchDraft, markReady, markStarted } = useDrafts();
   // Send-Workout-to-Friend modal state (cart-level)
   const [sendModalVisible, setSendModalVisible] = useState(false);
   const { token, isGuest } = useAuth();
@@ -491,8 +491,14 @@ export default function CartScreen() {
   const [hydrating, setHydrating] = useState(false);
 
   useEffect(() => {
-    if (cartItems.length > 0) return;  // already populated
-    if (userClearedRef.current) return; // user explicitly trashed — don't re-hydrate
+    // V2.1: a tapped push is authoritative. Previously an existing cart short-
+    // circuited hydration, so a user who already had items would tap an admin
+    // cart push and land on their OLD cart with no indication anything was
+    // pushed. Normal in-app navigation is unaffected (fromPush is only set by
+    // the notification tap handler).
+    const fromPush = params.fromPush === 'true';
+    if (cartItems.length > 0 && !fromPush) return;  // already populated
+    if (userClearedRef.current && !fromPush) return; // user explicitly trashed — don't re-hydrate
     if (!params.featuredId && !params.pushCartItems) return;  // not from push
 
     let cancelled = false;
@@ -567,7 +573,7 @@ export default function CartScreen() {
 
     hydrate();
     return () => { cancelled = true; };
-  }, [params.featuredId, params.pushCartItems, cartItems.length]);
+  }, [params.featuredId, params.pushCartItems, params.fromPush, cartItems.length]);
 
   // Continuous shimmer sweep on the flavor badge (signals it's tappable).
   useEffect(() => {
@@ -830,7 +836,21 @@ export default function CartScreen() {
 
     const first = cartItems[0];
     (async () => {
-      if (!currentDraftId) {
+      if (currentDraftId) {
+        // V2.1 — the draft now gets created EARLIER (at intensity confirm), so by
+        // the time we reach the cart it usually already exists with a null
+        // generated_workout. Seeding only happened inside beginDraft, so without
+        // this patch an early-created draft would stay permanently empty and
+        // resume to an empty cart.
+        await patchDraft(currentDraftId, {
+          generated_workout: cartItems,
+          resume_route: '/cart',
+          thumbnail_url:
+            (cartMeta?.source === 'featured-carousel' && cartMeta?.heroImageUrl) ||
+            first.imageUrl ||
+            undefined,
+        } as any);
+      } else {
         await beginDraft({
           moodCategory: first.moodCard || first.workoutType || 'Sweat',
           moodCard: first.workoutType || null,
@@ -845,7 +865,7 @@ export default function CartScreen() {
       }
       await markReady();
     })();
-  }, [cartItems, currentDraftId, beginDraft, markReady]);
+  }, [cartItems, currentDraftId, beginDraft, patchDraft, markReady]);
 
   const handleStartWorkoutSession = async () => {
     if (cartItems.length === 0) return;

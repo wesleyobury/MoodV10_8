@@ -32,6 +32,7 @@ import { AddWorkoutCoachmarkProvider } from '../components/AddWorkoutCoachmark';
 import { FoundingOfferModal } from '../components/FoundingOfferModal';
 import { ConnectionBanner } from '../components/ConnectionBanner';
 import { installErrorReporter } from '../utils/errorReporter';
+import DraftRouteTracker from '../components/DraftRouteTracker';
 
 // Phase 3 — lightweight crash telemetry (reports unhandled JS errors to the
 // backend). Installed at module load so it catches errors from app startup.
@@ -95,7 +96,32 @@ function NotificationInitializer() {
     notificationService.onNavigationReady();
   }, []);
 
-  // Auto-init on first auth or token change (login / app restore)
+  // V2.1 — Tap HANDLING must not depend on auth.
+  //
+  // setupListeners() and handleColdStartNotification() used to sit behind
+  // `if (!token || isGuest) return`, so a guest — or any user whose stored
+  // token hadn't finished restoring at the moment they tapped — registered no
+  // listener at all and never drained the cold-start queue. Worse,
+  // onNavigationReady() fires unconditionally, so the queue was drained before
+  // the listener that fills it existed: the tap was simply lost.
+  //
+  // Registering a listener requires no credentials. Only token REGISTRATION
+  // (initNotifications, which POSTs a device token) genuinely needs auth, so
+  // that stays gated in the effect below.
+  const listenersReady = useRef(false);
+  useEffect(() => {
+    if (listenersReady.current) return;
+    listenersReady.current = true;
+
+    notificationService.setupListeners();
+    if (!coldStartChecked.current) {
+      coldStartChecked.current = true;
+      notificationService.handleColdStartNotification();
+    }
+  }, []);
+
+  // Auto-init on first auth or token change (login / app restore).
+  // Token registration + analytics attribution only — needs a real user.
   useEffect(() => {
     if (!token || isGuest) return;
     if (initDoneForToken.current === token) return; // already ran for this token
@@ -105,16 +131,7 @@ function NotificationInitializer() {
     (async () => {
       console.log('🔔 NotificationInitializer: running initNotifications');
       notificationService.setAuthToken(token);
-      notificationService.setupListeners();
       await initNotifications(token);
-
-      // Check for cold-start notification (app was killed, user tapped a push).
-      // handleColdStartNotification queues the response if nav isn't ready yet;
-      // onNavigationReady (above) drains the queue once the Stack is mounted.
-      if (!coldStartChecked.current) {
-        coldStartChecked.current = true;
-        notificationService.handleColdStartNotification();
-      }
     })();
   }, [token, isGuest]);
 
@@ -223,6 +240,10 @@ function AppProviders({ children }: { children: React.ReactNode }) {
     <AuthProvider>
       <CartProvider>
         <DraftsProvider>
+          {/* V2.1 — keeps an in-progress Saved Build's resume_route pointed at the
+              screen the user is actually on, now that drafts start at intensity
+              confirm rather than at the cart. Renders nothing. */}
+          <DraftRouteTracker />
           <BadgeProviderWrapper>
             <OnboardingProvider>
               <OnboardingFunnelProvider>

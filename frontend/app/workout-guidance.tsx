@@ -30,7 +30,7 @@ import { SLUG_TO_NAME, TUTORIAL_CANDIDATES } from '../utils/tutorialMap';
 import type { Movement } from '../types/workout';
 import { TextWithTermLinks } from '../components/TermDefinitionPopup';
 import { API_URL } from '../utils/apiConfig';
-import { tryBeginWorkoutSession } from '../utils/workoutStartGate';
+import { tryBeginWorkoutSession, clearWorkoutStartGrant } from '../utils/workoutStartGate';
 import InSessionProgressBar from '../components/InSessionProgressBar';
 import { SessionSafetyBanner } from '../components/SessionSafetyBanner';
 import GuestPromptModal from '../components/GuestPromptModal';
@@ -430,6 +430,11 @@ export default function WorkoutGuidanceScreen() {
     moodCategory: string,
   ) => {
     recordStartFreeWorkout();
+    // V2.1 — invalidate the cached entitlement grant. The grant exists so a
+    // multi-exercise session doesn't re-hit the network per exercise; once the
+    // session is DONE the allowance has been spent, so the next session must
+    // be re-verified against the server rather than riding the old grant.
+    clearWorkoutStartGrant();
     await logCompletedWorkoutToServer(workoutId, totalDuration, moodCategory);
   };
 
@@ -632,7 +637,13 @@ export default function WorkoutGuidanceScreen() {
   const handleCompletedWorkout = async () => {
     // Featured + other direct-to-guidance paths can progress via "Next
     // Workout" without ever tapping the timer Start button.
-    if (isSession && !isGuest && !(await tryBeginWorkoutSession(canStartWorkout, openPaywall, token))) {
+    //
+    // V2.1 fix: the `isSession &&` condition used to be here, which meant the
+    // SINGLE-workout completion path skipped the gate entirely — an already-
+    // blocked free user could log a workout (and consume their allowance via
+    // consumeFreeWorkoutAllowance at the end of this handler) without ever
+    // passing a paywall check. Every non-guest completion is gated now.
+    if (!isGuest && !(await tryBeginWorkoutSession(canStartWorkout, openPaywall, token))) {
       return;
     }
 

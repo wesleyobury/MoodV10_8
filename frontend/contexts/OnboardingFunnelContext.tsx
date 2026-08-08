@@ -21,6 +21,7 @@ import React, {
   useState,
 } from 'react';
 import { useAuth } from './AuthContext';
+import { API_URL } from '../utils/apiConfig';
 
 /* ---------------------------- Domain types ---------------------------- */
 
@@ -156,15 +157,24 @@ async function writePersistedForUser(userId: string | null, next: FunnelAnswers)
 const Ctx = createContext<OnboardingFunnelContextValue | undefined>(undefined);
 
 export function OnboardingFunnelProvider({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const userId = user?.id ?? null;
   const userIdRef = useRef(userId);
   userIdRef.current = userId;
+  const tokenRef = useRef(token);
+  tokenRef.current = token;
 
   const [answers, setAnswers] = useState<FunnelAnswers>({});
   const timingsRef = useRef<Map<number, FunnelStepTiming>>(new Map());
 
   // Rehydrate per-user answers when the authenticated user changes.
+  //
+  // V2.1 — added a server fallback. Answers were persisted ONLY to device
+  // AsyncStorage, so a reinstall, a second device, or an account that predates
+  // per-user scoping came back with {} — and every feature driven by these
+  // answers silently no-op'd for those users. `onboarding_completed` carries the
+  // full answer set as event metadata, so /users/me/funnel-answers can recover
+  // them with no migration. Local wins where present; the server only fills gaps.
   useEffect(() => {
     let cancelled = false;
     if (!userId) {
@@ -173,7 +183,35 @@ export function OnboardingFunnelProvider({ children }: { children: React.ReactNo
     }
     (async () => {
       const persisted = await readPersistedForUser(userId);
-      if (!cancelled) setAnswers(persisted);
+      if (cancelled) return;
+      setAnswers(persisted);
+
+      // Only reach for the network when the local copy is missing the
+      // dimensions that actually drive behaviour.
+      const needsRecovery =
+        persisted.fitnessLevel === undefined ||
+        persisted.workoutLength === undefined ||
+        persisted.biggestBarrier === undefined;
+      if (!needsRecovery || !tokenRef.current) return;
+
+      try {
+        const res = await fetch(`${API_URL}/api/users/me/funnel-answers`, {
+          headers: { Authorization: `Bearer ${tokenRef.current}` },
+        });
+        if (!res.ok || cancelled) return;
+        const data = await res.json();
+        const recovered = (data?.answers || {}) as FunnelAnswers;
+        if (!Object.keys(recovered).length) return;
+
+        setAnswers((prev) => {
+          // Local values win — the device copy is newer than a historical event.
+          const merged = { ...recovered, ...prev };
+          writePersistedForUser(userIdRef.current, merged);
+          return merged;
+        });
+      } catch {
+        // Offline or endpoint unavailable — funnel answers stay as they were.
+      }
     })();
     return () => {
       cancelled = true;

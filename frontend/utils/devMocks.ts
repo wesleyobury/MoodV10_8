@@ -26,6 +26,7 @@ export interface DevMockEntitlement {
   has_full_access: boolean;
   reason: string;
   free_workouts_remaining: number | null;
+  free_workouts_reset_at?: string | null;
   is_founding_member: boolean;
   founding_pricing_claimed: boolean;
   founding_window_active: boolean;
@@ -80,6 +81,7 @@ export async function getDevMockEntitlement(): Promise<DevMockEntitlement | null
     has_full_access: false,
     reason: 'dev_mock_founding',
     free_workouts_remaining: null,
+    free_workouts_reset_at: null,
     is_founding_member: true,
     founding_pricing_claimed: false,
     founding_window_active: true,

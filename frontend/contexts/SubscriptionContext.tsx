@@ -58,8 +58,23 @@ export type PaywallTrigger =
   | 'unknown';
 
 interface SubscriptionState {
-  /** True after the user has tapped Start on their one free live session. */
+  /**
+   * True after the user has EVER consumed a free live session. Lifetime flag —
+   * do NOT use this to gate workout start (see `freeSessionPeriod`). It exists
+   * so Soft Paywall #2 ("first workout" moment) stays a genuine one-shot.
+   */
   hasUsedFreeSession: boolean;
+  /**
+   * ISO week key (e.g. "2026-W31") in which the most recent free session was
+   * consumed, or null if never / pre-V2.1 storage.
+   *
+   * V2.1: the free allowance resets weekly server-side. Gating on the lifetime
+   * `hasUsedFreeSession` flag alone would keep a user locked out forever even
+   * after the server reset, because this flag is persisted to AsyncStorage and
+   * was never cleared. A legacy row with no period reads as "not used this
+   * week", which unlocks previously-blocked users — matching the backend.
+   */
+  freeSessionPeriod: string | null;
   /** Number of generations consumed in the initial free flow. Cap = 3. */
   freeGenerationsUsed: number;
   /**
@@ -79,6 +94,14 @@ interface SubscriptionContextValue extends SubscriptionState {
   canGenerate: boolean;
   /** True if user is allowed to start a live workout session. */
   canStartWorkout: boolean;
+  /**
+   * Free workouts left in the current ISO week, or null for entitled users.
+   * V2.1 — surface this in the UI BEFORE the user invests effort building a
+   * workout; the value was previously fetched and never rendered anywhere.
+   */
+  freeWorkoutsRemaining: number | null;
+  /** ISO timestamp when the weekly allowance resets. Null if entitled. */
+  freeWorkoutsResetAt: string | null;
   /** Increment the generation counter (call AFTER a successful generation). */
   recordGeneration: () => void;
   /** Mark the user's free live session as consumed. Idempotent. */
@@ -130,6 +153,26 @@ interface SubscriptionContextValue extends SubscriptionState {
  * cap) without touching every call site.
  */
 export const FREE_GENERATION_CAP = Number.POSITIVE_INFINITY;
+
+/**
+ * ISO year-week key in UTC, e.g. "2026-W31". MUST stay byte-identical to
+ * backend `entitlement.current_free_period_key()` — the client mirror and the
+ * server gate have to agree on which week it is, or the UI will show a
+ * remaining count the server refuses to honour.
+ *
+ * Standard ISO-8601 week algorithm: shift to the Thursday of the current week,
+ * then count weeks from Jan 1 of *that* Thursday's year. This is what makes
+ * the year-boundary cases (e.g. 2026-W53 running into January 2027) correct.
+ */
+export function currentFreePeriodKey(now: Date = new Date()): string {
+  const dt = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const dayNum = dt.getUTCDay() || 7; // Mon=1 ... Sun=7
+  dt.setUTCDate(dt.getUTCDate() + 4 - dayNum);
+  const isoYear = dt.getUTCFullYear();
+  const yearStart = Date.UTC(isoYear, 0, 1);
+  const week = Math.ceil(((dt.getTime() - yearStart) / 86400000 + 1) / 7);
+  return `${isoYear}-W${String(week).padStart(2, '0')}`;
+}
 const STORAGE_KEY_PREFIX = '@mood_subscription_state_v1';
 const LEGACY_STORAGE_KEY = STORAGE_KEY_PREFIX;
 /** Spec §3 Stage 2 — one-shot flag so Soft Paywall #2 fires at most once
@@ -165,6 +208,7 @@ export async function markPostFirstWorkoutPaywallShown(userId: string): Promise<
 
 const DEFAULT_STATE: SubscriptionState = {
   hasUsedFreeSession: false,
+  freeSessionPeriod: null,
   freeGenerationsUsed: 0,
   lastConversionTrigger: null,
 };
@@ -179,6 +223,9 @@ function parseSubscriptionState(raw: string): SubscriptionState {
   const parsed = JSON.parse(raw);
   return {
     hasUsedFreeSession: Boolean(parsed.hasUsedFreeSession),
+    // Absent on pre-V2.1 stored state -> null -> "not used this week" -> unlocked.
+    freeSessionPeriod:
+      typeof parsed.freeSessionPeriod === 'string' ? parsed.freeSessionPeriod : null,
     freeGenerationsUsed: Number.isFinite(parsed.freeGenerationsUsed)
       ? parsed.freeGenerationsUsed
       : 0,
@@ -290,7 +337,25 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       : false;
 
   const canGenerate = hasActiveAccess || state.freeGenerationsUsed < FREE_GENERATION_CAP;
-  const canStartWorkout = hasActiveAccess || !(freeWorkoutUsedServer || state.hasUsedFreeSession);
+
+  // V2.1 — offline/pre-entitlement fallback, scoped to the CURRENT week so it
+  // cannot outlive the server-side reset. `hasUsedFreeSession` on its own is a
+  // lifetime flag and would permanently block the user.
+  const hasUsedFreeSessionThisPeriod =
+    state.hasUsedFreeSession && state.freeSessionPeriod === currentFreePeriodKey();
+
+  const canStartWorkout =
+    hasActiveAccess || !(freeWorkoutUsedServer || hasUsedFreeSessionThisPeriod);
+
+  /** Free workouts left this week (server SoT; falls back to the local mirror). */
+  const freeWorkoutsRemaining = hasActiveAccess
+    ? null
+    : (serverFreeRemaining ?? (hasUsedFreeSessionThisPeriod ? 0 : 1));
+
+  /** ISO timestamp when the weekly allowance next resets, or null if entitled. */
+  const freeWorkoutsResetAt = hasActiveAccess
+    ? null
+    : (entitlement?.free_workouts_reset_at ?? null);
 
   const recordGeneration = useCallback(() => {
     setState((prev) => {
@@ -304,8 +369,12 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
 
   const recordStartFreeWorkout = useCallback(() => {
     setState((prev) => {
-      if (prev.hasUsedFreeSession) return prev;
-      const next = { ...prev, hasUsedFreeSession: true };
+      const period = currentFreePeriodKey();
+      // Idempotent WITHIN a week. Must not early-return on the lifetime flag —
+      // a user consuming their allowance in a later week still needs the new
+      // period stamped, or the local mirror would read as "not used".
+      if (prev.hasUsedFreeSession && prev.freeSessionPeriod === period) return prev;
+      const next = { ...prev, hasUsedFreeSession: true, freeSessionPeriod: period };
       persistState(next);
       return next;
     });
@@ -396,6 +465,8 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       hasActiveAccess,
       canGenerate,
       canStartWorkout,
+      freeWorkoutsRemaining,
+      freeWorkoutsResetAt,
       recordGeneration,
       recordStartFreeWorkout,
       openPaywall,
@@ -413,6 +484,8 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       hasActiveAccess,
       canGenerate,
       canStartWorkout,
+      freeWorkoutsRemaining,
+      freeWorkoutsResetAt,
       recordGeneration,
       recordStartFreeWorkout,
       openPaywall,
