@@ -418,6 +418,24 @@ async def send_welcome_message(new_user_id: str):
             }
         )
         
+        # V2.1 — push the welcome DM. Like the founder-video blast before it was
+        # fixed, this wrote the message row and never notified anyone, so a new
+        # user's first contact from the app arrived silently and was only found
+        # if they happened to open Messages. Uses the founder title when the DM
+        # is the video, so a new signup and the blast read identically.
+        try:
+            notification_service = get_notification_service(db)
+            await notification_service.trigger_message_notification(
+                sender_id=admin_id,
+                recipient_id=new_user_id,
+                conversation_id=conversation_id,
+                message_text=preview,
+                title_override=FOUNDER_VIDEO_PUSH_TITLE if use_video else None,
+                body_override=preview if use_video else None,
+            )
+        except Exception as e:
+            logger.warning(f"welcome-message push failed for {new_user_id[:8]}: {e}")
+
         logger.info(f"Welcome message sent to new user {new_user_id}")
         
     except Exception as e:

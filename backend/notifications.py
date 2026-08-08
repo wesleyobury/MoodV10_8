@@ -117,8 +117,13 @@ DEEP_LINK_SCHEMES = {
     NotificationType.FOLLOW: "moodapp:///user-profile?userId={actor_id}",
     NotificationType.MENTION: "moodapp:///post-detail?postId={entity_id}",
     NotificationType.REPLY: "moodapp:///post-detail?postId={entity_id}",
-    NotificationType.MESSAGE: "moodapp:///chat-detail?conversationId={entity_id}",
-    NotificationType.MESSAGE_REQUEST: "moodapp:///chat-detail?conversationId={entity_id}",
+    # V2.1 — route is /chat (app/chat.tsx). There is no /chat-detail screen, so
+    # tapping a message push landed on "page not found", and on a cold start it
+    # hung on the splash because the deep link resolved during startup to a
+    # route that never mounts. chat.tsx reads `conversationId`, so only the
+    # path was wrong.
+    NotificationType.MESSAGE: "moodapp:///chat?conversationId={entity_id}",
+    NotificationType.MESSAGE_REQUEST: "moodapp:///chat?conversationId={entity_id}",
     NotificationType.FEATURED_WORKOUT: "moodapp:///cart?featuredId={entity_id}",
     NotificationType.WORKOUT_REMINDER: "moodapp:///",
     NotificationType.FEATURED_SUGGESTION: "moodapp:///",

@@ -267,7 +267,7 @@ export default function NotificationsInbox() {
       case 'message':
       case 'message_request':
         if (entity_id) {
-          router.push(`/chat-detail?conversationId=${entity_id}`);
+          router.push(`/chat?conversationId=${entity_id}`);
         }
         break;
       case 'featured_workout':

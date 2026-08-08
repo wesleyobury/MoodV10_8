@@ -400,7 +400,7 @@ class NotificationService {
           break;
         case 'message':
         case 'message_request':
-          if (entityId) this._router.push(`/chat-detail?conversationId=${entityId}`);
+          if (entityId) this._router.push(`/chat?conversationId=${entityId}`);
           else this._router.push('/notifications-inbox');
           break;
         case 'following_digest':
