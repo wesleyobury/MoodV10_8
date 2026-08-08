@@ -949,7 +949,7 @@ export default function Profile() {
               >
                 {earnedBadges.map(a => (
                   <View key={a.id} style={styles.badgeShelfCell}>
-                    <AchievementMedallion icon={a.icon as any} size={44} />
+                    <AchievementMedallion icon={a.icon as any} size={44} glow={false} />
                     <Text style={styles.badgeShelfCaption} numberOfLines={1}>
                       {a.label}
                     </Text>
@@ -1700,7 +1700,7 @@ const styles = StyleSheet.create({
   },
   badgeShelfCount: { color: '#FFD700' },
   badgeShelfRow: { gap: 14, paddingRight: 4 },
-  badgeShelfCell: { width: 56, alignItems: 'center' },
+  badgeShelfCell: { width: 56, alignItems: 'center', paddingBottom: 6 },
   badgeShelfCaption: {
     fontSize: 9,
     color: 'rgba(255,255,255,0.5)',
@@ -1710,7 +1710,10 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     gap: 12,
-    marginBottom: 16,
+    // Tightened top and bottom — the row sat with more air around it than the
+    // rest of the header stack.
+    marginTop: 4,
+    marginBottom: 8,
   },
   editButton: {
     flex: 1,

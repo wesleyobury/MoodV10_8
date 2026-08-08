@@ -14,6 +14,8 @@ import {
   FlatList,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  AppState,
+  type AppStateStatus,
 } from 'react-native';
 import { Image } from 'expo-image';
 import { BlurView } from 'expo-blur';
@@ -737,8 +739,33 @@ export default function WorkoutsHome() {
   const { freeWorkoutsRemaining, freeWorkoutsResetAt } = useSubscription();
 
   // Last unfinished build, for the resume card.
-  const { listDrafts, activeCount } = useDrafts();
+  const { listDrafts, activeCount, resumeDraft } = useDrafts();
   const [resumable, setResumable] = useState<WorkoutDraft | null>(null);
+
+  // V2.1 — SESSION BOUNDARY for the resume card.
+  //
+  // The card must not appear in the same session the build happened in — "pick
+  // up where you left off" is meaningless while you're still where you left it.
+  // A session ends when the app goes to the background, so this stamps a new
+  // start each time the app returns to the foreground, and only drafts last
+  // touched BEFORE that moment are eligible.
+  //
+  // Guarded on the previous AppState (the same mistake that made badge toasts
+  // re-fire): a bare `=== 'active'` also triggers on a share sheet or permission
+  // dialog closing, which is not a new session.
+  const sessionStartRef = useRef<number>(Date.now());
+  const appStateRef = useRef<AppStateStatus>(AppState.currentState);
+  const [sessionEpoch, setSessionEpoch] = useState(0);
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (next: AppStateStatus) => {
+      if (/inactive|background/.test(appStateRef.current) && next === 'active') {
+        sessionStartRef.current = Date.now();
+        setSessionEpoch((n) => n + 1);
+      }
+      appStateRef.current = next;
+    });
+    return () => sub.remove();
+  }, []);
 
   // Runs for guests too. DraftsContext.identityQuery() falls back to device_id
   // when there's no JWT, so guests genuinely have drafts on the server — and
@@ -754,6 +781,15 @@ export default function WorkoutsHome() {
         // Most-recent build the user started and didn't finish.
         const open = (drafts || [])
           .filter(d => d.status === 'in_progress' || d.status === 'ready_to_start' || d.status === 'started')
+          // Must contain ACTUAL exercises. A draft is created at intensity
+          // confirm, so a selection-stage draft has generated_workout = null —
+          // offering to "resume" that led to an empty cart.
+          .filter(d => Array.isArray(d.generated_workout) && d.generated_workout.length > 0)
+          // Previous session only.
+          .filter(d => {
+            const t = Date.parse(String(d.last_modified_at || ''));
+            return Number.isFinite(t) && t < sessionStartRef.current;
+          })
           .sort((a, b) => String(b.last_modified_at || '').localeCompare(String(a.last_modified_at || '')));
         setResumable(open[0] || null);
       } catch {
@@ -761,7 +797,7 @@ export default function WorkoutsHome() {
       }
     })();
     return () => { cancelled = true; };
-  }, [token, isGuest, activeCount]);
+  }, [token, isGuest, activeCount, sessionEpoch]);
   // token/isGuest stay in the dep array so the card re-resolves the moment a
   // guest signs in and their device drafts get merged onto the new account.
 
@@ -1267,7 +1303,15 @@ export default function WorkoutsHome() {
           <TouchableOpacity
             style={styles.resumeCard}
             activeOpacity={0.85}
-            onPress={() => router.push((resumable.resume_route as any) || '/cart')}
+            onPress={async () => {
+              // V2.1 — resumeDraft() is what actually rehydrates the cart
+              // (replaceCart with the draft's generated_workout) and re-attaches
+              // currentDraftId. Previously this only navigated, so /cart rendered
+              // the LIVE cart — empty — while the card advertised "6 exercises
+              // ready" from the draft record. Navigate only after hydration.
+              const draft = await resumeDraft(resumable.id);
+              router.push(((draft?.resume_route || resumable.resume_route) as any) || '/cart');
+            }}
           >
             <View style={styles.resumeIcon}>
               <Ionicons name="play" size={16} color="#0c0c0c" />
@@ -1279,11 +1323,9 @@ export default function WorkoutsHome() {
                     often has no exercises yet. Say which one it is (the draft
                     title carries mood + intensity) rather than the meaningless
                     "Your saved build". */}
-                {resumable.generated_workout?.length
-                  ? `${resumable.generated_workout.length} exercise${resumable.generated_workout.length === 1 ? '' : 's'} ready`
-                  : resumable.title
-                  ? `${resumable.title} — still choosing`
-                  : 'Still choosing exercises'}
+                {`${resumable.generated_workout?.length ?? 0} exercise${
+                  (resumable.generated_workout?.length ?? 0) === 1 ? '' : 's'
+                } ready`}
               </Text>
             </View>
             <Ionicons name="chevron-forward" size={18} color="rgba(255,255,255,0.4)" />
@@ -1496,14 +1538,21 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     padding: 14,
     borderRadius: 14,
-    backgroundColor: 'rgba(255,215,0,0.07)',
+    // NOTE — do NOT use a translucent gold wash (rgba(255,215,0,0.0x)) as a
+    // surface fill anywhere in this app. Gold is reserved for marks: the
+    // wordmark, medallions, accents, and active state. As a large background
+    // tint it muddies to olive against #0c0c0c and fights the brand lockup.
+    // Neutral surface + a neutral hairline is the house treatment; see
+    // CLAUDE.md "Colour rules".
+    backgroundColor: 'rgba(255,255,255,0.05)',
     borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.22)',
+    borderColor: 'rgba(255,255,255,0.10)',
   },
   resumeIcon: {
     width: 30,
     height: 30,
     borderRadius: 15,
+    // Gold as a small MARK is correct — it's the affordance, not the surface.
     backgroundColor: '#FFD700',
     alignItems: 'center',
     justifyContent: 'center',

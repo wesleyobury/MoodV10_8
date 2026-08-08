@@ -26,9 +26,13 @@ interface Props {
   locked?: boolean;
   /** Faint gold rim on a locked badge to signal "close / next up". */
   near?: boolean;
+  /** Outer gold halo. Off for dense rows (e.g. the profile badge shelf), where
+   *  overlapping halos read as blur rather than depth. Default on so the full
+   *  achievements grid keeps its intended treatment. */
+  glow?: boolean;
 }
 
-export default function AchievementMedallion({ icon, size = 64, locked = false, near = false }: Props) {
+export default function AchievementMedallion({ icon, size = 64, locked = false, near = false, glow = true }: Props) {
   const radius = size / 2;
   const iconSize = Math.round(size * 0.46);
 
@@ -57,17 +61,19 @@ export default function AchievementMedallion({ icon, size = 64, locked = false, 
   return (
     <View style={{ width: size, height: size }}>
       {/* Outer glow — a soft gold halo behind the disc for depth. */}
-      <View
-        style={[
-          styles.glow,
-          {
-            width: size,
-            height: size,
-            borderRadius: radius,
-            shadowRadius: size * 0.35,
-          },
-        ]}
-      />
+      {glow && (
+        <View
+          style={[
+            styles.glow,
+            {
+              width: size,
+              height: size,
+              borderRadius: radius,
+              shadowRadius: size * 0.35,
+            },
+          ]}
+        />
+      )}
       <SafeLinearGradient
         colors={GOLD_RAMP}
         start={{ x: 0.25, y: 0.1 }}
