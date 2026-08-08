@@ -313,6 +313,13 @@ STAGING_ADMIN_USERNAMES = ["officialmoodapp"]
 
 # Welcome message configuration
 WELCOME_MESSAGE_SENDER = "officialmoodapp"
+
+# V2.1 — push title for the founder-video blast. The shared DM path titles every
+# notification "New Message", which is correct for a conversation but wastes the
+# one line that decides whether a one-time announcement gets opened. Kept here
+# rather than inside the delivery helper so the copy is editable without reading
+# push plumbing. Under iOS's ~40-char lock-screen title budget.
+FOUNDER_VIDEO_PUSH_TITLE = "A personal message from Wes"
 WELCOME_MESSAGE_TEXT = """Welcome to MOOD 👋
 
 Here, you can build workouts by vibe, equipment, and intensity — all tailored to how you want to train.
@@ -2489,7 +2496,17 @@ async def _resolve_welcome_video_payload() -> tuple:
     caption = (cfg.get("welcome_video_caption") or "").strip()
     thumb = (cfg.get("welcome_video_thumbnail_url") or "").strip()
     attachment = {"video_url": url, "thumbnail_url": thumb, "caption": caption}
-    preview = (caption[:50] + "...") if caption else "\U0001F4F9 A note from the founder"
+    # V2.1 — only ellipsize when we ACTUALLY truncated. The previous form
+    # appended "..." unconditionally, so a short caption became
+    # 'Welcome to MOOD....' — four dots, since the caption already ended in a
+    # period. This string is both the DM-list preview and (now that the video
+    # sends a push) the notification body, so the stray ellipsis would have gone
+    # out on every lock screen in the blast.
+    preview = (
+        ((caption[:50] + "...") if len(caption) > 50 else caption)
+        if caption
+        else "\U0001F4F9 A note from the founder"
+    )
     return attachment, preview, caption
 
 
@@ -2551,6 +2568,36 @@ async def _deliver_welcome_video(
         {"_id": ObjectId(conv_id)},
         {"$set": {"last_message": preview, "last_message_at": now, "updated_at": now}},
     )
+
+    # V2.1 — actually PUSH it.
+    #
+    # This function wrote the message row and updated the conversation but never
+    # called the notification service, so the founder video appeared silently
+    # in-app and no device ever buzzed. A one-time announcement nobody is told
+    # about is just a row in Mongo.
+    #
+    # Reuses trigger_message_notification — the identical path a normal DM takes
+    # — so it inherits the recipient's message preferences, quiet hours, and
+    # deep-link-to-conversation behaviour for free rather than inventing a
+    # parallel push with its own rules. Best-effort: a push failure must never
+    # abort the delivery loop mid-blast, or a transient Expo error would strand
+    # the rest of the send.
+    try:
+        notification_service = get_notification_service(db)
+        await notification_service.trigger_message_notification(
+            sender_id=admin_id_str,
+            recipient_id=uid,
+            conversation_id=conv_id,
+            message_text=preview,
+            title_override=FOUNDER_VIDEO_PUSH_TITLE,
+            # Body is the caption alone. With a titled announcement the
+            # 'MOOD: "..."' conversation wrapper is redundant and eats the
+            # limited body width.
+            body_override=preview,
+        )
+    except Exception as e:
+        logger.warning("welcome-video push failed for %s: %s", uid[:8], e)
+
     return "sent"
 
 

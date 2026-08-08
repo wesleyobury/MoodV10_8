@@ -17,7 +17,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Analytics } from '../../utils/analytics';
 
 const WORKOUTS_COMPLETED = '1,100+';
-const ATHLETES_TRAINING = '300+';
+const ATHLETES_TRAINING = '600+';
 const APP_STORE_RATING = '5.0';
 
 type Testimonial = {

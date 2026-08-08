@@ -1016,9 +1016,18 @@ class NotificationService:
         recipient_id: str,
         conversation_id: str,
         message_text: str,
-        is_request: bool = False
+        is_request: bool = False,
+        title_override: Optional[str] = None,
+        body_override: Optional[str] = None,
     ) -> Optional[str]:
-        """Trigger notification when someone sends a message"""
+        """Trigger notification when someone sends a message.
+
+        V2.1 — `title_override` / `body_override` added for the founder-video
+        blast, which is delivered as a DM but is an announcement, not a
+        conversation. Both default to None so every ordinary DM keeps the
+        existing "New Message" / 'Sender: "text"' shape untouched; only the
+        caller that explicitly opts in gets different copy.
+        """
         sender = await self.db.users.find_one({"_id": ObjectId(sender_id)})
         if not sender:
             return None
@@ -1030,13 +1039,16 @@ class NotificationService:
         truncated_msg = message_text[:50] + "..." if len(message_text) > 50 else message_text
         
         notification_type = NotificationType.MESSAGE_REQUEST if is_request else NotificationType.MESSAGE
-        title = "Message Request" if is_request else "New Message"
+        title = title_override or ("Message Request" if is_request else "New Message")
         
         return await self.create_notification(
             user_id=recipient_id,
             notification_type=notification_type,
             title=title,
-            body=f'{sender_name}: "{truncated_msg}"',
+            # An overridden body is used verbatim. The `Sender: "text"` wrapper
+            # is right for a real conversation but reads oddly under a titled
+            # announcement ("A personal message from Wes" / 'MOOD: "..."').
+            body=body_override or f'{sender_name}: "{truncated_msg}"',
             actor_id=sender_id,
             entity_id=conversation_id,
             entity_type="conversation",

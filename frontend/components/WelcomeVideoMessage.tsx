@@ -13,6 +13,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { Ionicons } from '@expo/vector-icons';
+import { cloudinaryThumbnailUrlFromVideoUrl } from '../utils/cloudinaryVideo';
 
 interface WelcomeVideoMessageProps {
   videoUrl: string;
@@ -26,6 +27,14 @@ export default function WelcomeVideoMessage({
   caption,
 }: WelcomeVideoMessageProps) {
   const [started, setStarted] = useState(false);
+  // V2.1 — fall back to a Cloudinary-derived poster frame when app config has no
+  // explicit welcome_video_thumbnail_url. Without this the DM rendered
+  // `posterFallback` — a blank grey box — which is what made the founder video
+  // look broken rather than unplayed. TutorialGrid and ExerciseLookupSheet
+  // already use this same helper, so this matches how the rest of the app
+  // derives posters instead of inventing a second convention.
+  const poster = thumbnailUrl || cloudinaryThumbnailUrlFromVideoUrl(videoUrl);
+
   const player = useVideoPlayer(videoUrl, (p) => {
     p.loop = false;
   });
@@ -44,8 +53,8 @@ export default function WelcomeVideoMessage({
       <View style={styles.frame}>
         {!started ? (
           <TouchableOpacity style={styles.posterWrap} activeOpacity={0.9} onPress={handlePlay}>
-            {thumbnailUrl ? (
-              <Image source={{ uri: thumbnailUrl }} style={styles.media} contentFit="contain" transition={150} />
+            {poster ? (
+              <Image source={{ uri: poster }} style={styles.media} contentFit="contain" transition={150} />
             ) : (
               <View style={[styles.media, styles.posterFallback]} />
             )}
