@@ -743,7 +743,7 @@ export default function WorkoutsHome() {
   const { freeWorkoutsRemaining, freeWorkoutsResetAt } = useSubscription();
 
   // Last unfinished build, for the resume card.
-  const { listDrafts, activeCount, resumeDraft } = useDrafts();
+  const { listDrafts, resumeDraft } = useDrafts();
   const [resumable, setResumable] = useState<WorkoutDraft | null>(null);
 
   // V2.1 — SESSION BOUNDARY for the resume card.
@@ -760,6 +760,23 @@ export default function WorkoutsHome() {
   const sessionStartRef = useRef<number>(Date.now());
   const appStateRef = useRef<AppStateStatus>(AppState.currentState);
   const [sessionEpoch, setSessionEpoch] = useState(0);
+  // V2.1 — decide ONCE per session, then stop looking.
+  //
+  // BUG THIS FIXES: the effect below re-ran on every `activeCount` change, and
+  // trashing the cart only DETACHES currentDraftId (DraftsContext) — the draft
+  // itself stays `in_progress` with its exercises intact. So each delete bumped
+  // the count, re-ran the effect, and surfaced the NEXT-most-recent old draft.
+  // With a backlog of drafts from testing, that reads as the card respawning
+  // forever with a random workout each time.
+  const decidedThisSessionRef = useRef(false);
+  const [dismissed, setDismissed] = useState(false);
+
+  // A genuine new session (background -> foreground) is the ONLY thing that
+  // re-opens the decision.
+  useEffect(() => {
+    decidedThisSessionRef.current = false;
+    setDismissed(false);
+  }, [sessionEpoch]);
   useEffect(() => {
     const sub = AppState.addEventListener('change', (next: AppStateStatus) => {
       if (/inactive|background/.test(appStateRef.current) && next === 'active') {
@@ -777,6 +794,8 @@ export default function WorkoutsHome() {
   // should be denied a resume affordance. listDrafts() returns [] if there's no
   // usable identity, which is the correct empty state on its own.
   useEffect(() => {
+    // Already decided for this session — a cart delete must not reopen it.
+    if (decidedThisSessionRef.current) return;
     let cancelled = false;
     (async () => {
       try {
@@ -795,13 +814,19 @@ export default function WorkoutsHome() {
             return Number.isFinite(t) && t < sessionStartRef.current;
           })
           .sort((a, b) => String(b.last_modified_at || '').localeCompare(String(a.last_modified_at || '')));
+        // Mark the decision made whether or not we found one, so an empty
+        // result doesn't leave the effect armed to fire later in the session.
+        decidedThisSessionRef.current = true;
         setResumable(open[0] || null);
       } catch {
         setResumable(null);
       }
     })();
     return () => { cancelled = true; };
-  }, [token, isGuest, activeCount, sessionEpoch]);
+    // NOTE: `activeCount` is deliberately NOT a dependency. It changes whenever
+    // a draft is created, detached, or trashed, which is exactly the churn that
+    // made this card respawn mid-session.
+  }, [token, isGuest, sessionEpoch]);
   // token/isGuest stay in the dep array so the card re-resolves the moment a
   // guest signs in and their device drafts get merged onto the new account.
 
@@ -1303,7 +1328,7 @@ export default function WorkoutsHome() {
             last workout, no resume, and no indication of how many free sessions
             were left. Saved Builds existed but its ONLY entry point was three
             levels into Profile and was hidden entirely when the count was 0. */}
-        {!!resumable && (
+        {!!resumable && !dismissed && (
           <TouchableOpacity
             style={styles.resumeCard}
             activeOpacity={0.85}
@@ -1313,6 +1338,10 @@ export default function WorkoutsHome() {
               // currentDraftId. Previously this only navigated, so /cart rendered
               // the LIVE cart — empty — while the card advertised "6 exercises
               // ready" from the draft record. Navigate only after hydration.
+              // Hide immediately. Once acted on, the card has done its job for
+              // this session — leaving it up meant returning to home and being
+              // re-offered the build you just opened.
+              setDismissed(true);
               const draft = await resumeDraft(resumable.id);
               router.push(((draft?.resume_route || resumable.resume_route) as any) || '/cart');
             }}
