@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode, useRef, useEffect } from 'react';
 import { API_URL } from '../utils/apiConfig';
 import { prefetchCartImages } from '../utils/mediaPrefetch';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface WorkoutItem {
   id: string;
@@ -73,10 +74,55 @@ interface CartProviderProps {
   children: ReactNode;
 }
 
+/**
+ * V2.1 — the cart now PERSISTS across app launches.
+ *
+ * It was in-memory only, so closing the app silently discarded whatever you had
+ * built. That is what the "pick up where you left off" banner was trying to
+ * paper over — reconstructing intent from the drafts collection, which produced
+ * stale and wrong suggestions.
+ *
+ * Persisting the cart itself removes the need for any of that: if you added
+ * exercises and left, the cart is still there next launch and FloatingCart is
+ * simply still visible. Finishing a workout calls clearCart(), so it clears
+ * itself. One source of truth, one affordance.
+ */
+const CART_STORAGE_KEY = '@mood_cart_v1';
+
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, setCartItems] = useState<WorkoutItem[]>([]);
   const [cartMeta, setCartMetaState] = useState<CartMeta | null>(null);
   const tokenRef = useRef<string | null>(null);
+  // Don't write back until the initial read finishes, or an empty first render
+  // would immediately overwrite the stored cart with [].
+  const hydratedRef = useRef(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem(CART_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setCartItems(parsed);
+          }
+        }
+      } catch {
+        // Corrupt or unreadable — start empty rather than blocking launch.
+      } finally {
+        hydratedRef.current = true;
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!hydratedRef.current) return;
+    if (cartItems.length === 0) {
+      AsyncStorage.removeItem(CART_STORAGE_KEY).catch(() => {});
+    } else {
+      AsyncStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems)).catch(() => {});
+    }
+  }, [cartItems]);
 
   const setCartMeta = useCallback((meta: CartMeta | null) => {
     setCartMetaState(meta);

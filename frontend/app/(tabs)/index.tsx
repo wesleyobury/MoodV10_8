@@ -43,11 +43,7 @@ import HomeBackground from '../../components/HomeBackground';
 // Prioritize process.env for development/preview environments
 import { API_URL } from '../../utils/apiConfig';
 import { useSubscription } from '../../contexts/SubscriptionContext';
-import { useDrafts, type WorkoutDraft } from '../../contexts/DraftsContext';
 
-// Brand gold per frontend/CLAUDE.md — soft ambient gold, not the harsher
-// #FFD700 that has crept into parts of the codebase.
-const BRAND_GOLD = '#F4C316';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CAROUSEL_PADDING = 16;
@@ -742,94 +738,6 @@ export default function WorkoutsHome() {
   // this can say when it comes back rather than reading as permanent.
   const { freeWorkoutsRemaining, freeWorkoutsResetAt } = useSubscription();
 
-  // Last unfinished build, for the resume card.
-  const { listDrafts, resumeDraft } = useDrafts();
-  const [resumable, setResumable] = useState<WorkoutDraft | null>(null);
-
-  // V2.1 — SESSION BOUNDARY for the resume card.
-  //
-  // The card must not appear in the same session the build happened in — "pick
-  // up where you left off" is meaningless while you're still where you left it.
-  // A session ends when the app goes to the background, so this stamps a new
-  // start each time the app returns to the foreground, and only drafts last
-  // touched BEFORE that moment are eligible.
-  //
-  // Guarded on the previous AppState (the same mistake that made badge toasts
-  // re-fire): a bare `=== 'active'` also triggers on a share sheet or permission
-  // dialog closing, which is not a new session.
-  const sessionStartRef = useRef<number>(Date.now());
-  const appStateRef = useRef<AppStateStatus>(AppState.currentState);
-  const [sessionEpoch, setSessionEpoch] = useState(0);
-  // V2.1 — decide ONCE per session, then stop looking.
-  //
-  // BUG THIS FIXES: the effect below re-ran on every `activeCount` change, and
-  // trashing the cart only DETACHES currentDraftId (DraftsContext) — the draft
-  // itself stays `in_progress` with its exercises intact. So each delete bumped
-  // the count, re-ran the effect, and surfaced the NEXT-most-recent old draft.
-  // With a backlog of drafts from testing, that reads as the card respawning
-  // forever with a random workout each time.
-  const decidedThisSessionRef = useRef(false);
-  const [dismissed, setDismissed] = useState(false);
-
-  // A genuine new session (background -> foreground) is the ONLY thing that
-  // re-opens the decision.
-  useEffect(() => {
-    decidedThisSessionRef.current = false;
-    setDismissed(false);
-  }, [sessionEpoch]);
-  useEffect(() => {
-    const sub = AppState.addEventListener('change', (next: AppStateStatus) => {
-      if (/inactive|background/.test(appStateRef.current) && next === 'active') {
-        sessionStartRef.current = Date.now();
-        setSessionEpoch((n) => n + 1);
-      }
-      appStateRef.current = next;
-    });
-    return () => sub.remove();
-  }, []);
-
-  // Runs for guests too. DraftsContext.identityQuery() falls back to device_id
-  // when there's no JWT, so guests genuinely have drafts on the server — and
-  // guests are the worst-retaining segment, so they're the last people who
-  // should be denied a resume affordance. listDrafts() returns [] if there's no
-  // usable identity, which is the correct empty state on its own.
-  useEffect(() => {
-    // Already decided for this session — a cart delete must not reopen it.
-    if (decidedThisSessionRef.current) return;
-    let cancelled = false;
-    (async () => {
-      try {
-        const drafts = await listDrafts();
-        if (cancelled) return;
-        // Most-recent build the user started and didn't finish.
-        const open = (drafts || [])
-          .filter(d => d.status === 'in_progress' || d.status === 'ready_to_start' || d.status === 'started')
-          // Must contain ACTUAL exercises. A draft is created at intensity
-          // confirm, so a selection-stage draft has generated_workout = null —
-          // offering to "resume" that led to an empty cart.
-          .filter(d => Array.isArray(d.generated_workout) && d.generated_workout.length > 0)
-          // Previous session only.
-          .filter(d => {
-            const t = Date.parse(String(d.last_modified_at || ''));
-            return Number.isFinite(t) && t < sessionStartRef.current;
-          })
-          .sort((a, b) => String(b.last_modified_at || '').localeCompare(String(a.last_modified_at || '')));
-        // Mark the decision made whether or not we found one, so an empty
-        // result doesn't leave the effect armed to fire later in the session.
-        decidedThisSessionRef.current = true;
-        setResumable(open[0] || null);
-      } catch {
-        setResumable(null);
-      }
-    })();
-    return () => { cancelled = true; };
-    // NOTE: `activeCount` is deliberately NOT a dependency. It changes whenever
-    // a draft is created, detached, or trashed, which is exactly the churn that
-    // made this card respawn mid-session.
-  }, [token, isGuest, sessionEpoch]);
-  // token/isGuest stay in the dep array so the card re-resolves the moment a
-  // guest signs in and their device drafts get merged onto the new account.
-
   const resetDayLabel = React.useMemo(() => {
     if (!freeWorkoutsResetAt) return '';
     try {
@@ -1323,46 +1231,13 @@ export default function WorkoutsHome() {
           <HealthSyncIndicator />
         </View>
 
-        {/* V2.1 — Continuity + allowance.
-            Day 2 used to render byte-identical to day 1: no welcome back, no
-            last workout, no resume, and no indication of how many free sessions
-            were left. Saved Builds existed but its ONLY entry point was three
-            levels into Profile and was hidden entirely when the count was 0. */}
-        {!!resumable && !dismissed && (
-          <TouchableOpacity
-            style={styles.resumeCard}
-            activeOpacity={0.85}
-            onPress={async () => {
-              // V2.1 — resumeDraft() is what actually rehydrates the cart
-              // (replaceCart with the draft's generated_workout) and re-attaches
-              // currentDraftId. Previously this only navigated, so /cart rendered
-              // the LIVE cart — empty — while the card advertised "6 exercises
-              // ready" from the draft record. Navigate only after hydration.
-              // Hide immediately. Once acted on, the card has done its job for
-              // this session — leaving it up meant returning to home and being
-              // re-offered the build you just opened.
-              setDismissed(true);
-              const draft = await resumeDraft(resumable.id);
-              router.push(((draft?.resume_route || resumable.resume_route) as any) || '/cart');
-            }}
-          >
-            {/* `barbell-outline`, not `play`. A filled gold play triangle read as
-                "watch a video" — the wrong promise for a saved workout build.
-                A thin-stroke outline mark in brand gold on a dark surface is
-                the treatment CLAUDE.md explicitly allows, and it says
-                "workout" instead of "media". */}
-            <Ionicons name="barbell-outline" size={19} color={BRAND_GOLD} />
-            <View style={{ flex: 1 }}>
-              <Text style={styles.resumeTitle}>Pick up where you left off</Text>
-              <Text style={styles.resumeSubtitle} numberOfLines={1}>
-                {`${resumable.generated_workout?.length ?? 0} exercise${
-                  (resumable.generated_workout?.length ?? 0) === 1 ? '' : 's'
-                } ready`}
-              </Text>
-            </View>
-            <Ionicons name="chevron-forward" size={15} color="rgba(255,255,255,0.25)" />
-          </TouchableOpacity>
-        )}
+        {/* V2.1 — the resume BANNER was removed deliberately.
+            Continuity is now carried by the existing FloatingCart: the cart
+            persists across launches (see CartContext), so if you added
+            exercises and left without finishing, the cart icon is simply still
+            there next launch. Completing a workout calls clearCart(), so it
+            disappears on its own. No banner, no drafts, no saved-builds
+            lookup — one affordance instead of two competing ones. */}
 
         {typeof freeWorkoutsRemaining === 'number' && (
           <View style={styles.allowanceChip}>
@@ -1562,28 +1437,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  resumeCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 13,
-    marginHorizontal: 20,
-    marginBottom: 12,
-    // Slightly more vertical room than horizontal — the Wallet/TV+ proportion.
-    paddingVertical: 15,
-    paddingHorizontal: 16,
-    borderRadius: 14,
-    // NOTE — never a translucent gold wash (rgba(255,215,0,0.0x)) as a surface
-    // fill. Gold is a MARK colour only. See CLAUDE.md "Design rules".
-    // Dialled down from 0.05/0.10: at this width the card should read as a
-    // recessed shelf, not a raised button competing with the stat tiles.
-    backgroundColor: 'rgba(255,255,255,0.035)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.07)',
-  },
-  // Brand tokens from CLAUDE.md rather than #fff / #FFD700, so this matches the
-  // stated palette instead of drifting a second set of values.
-  resumeTitle: { fontSize: 13.5, fontWeight: '600', color: '#F3F3F3', letterSpacing: 0.1 },
-  resumeSubtitle: { fontSize: 11.5, color: '#8D8D90', marginTop: 3 },
   allowanceChip: {
     flexDirection: 'row',
     alignItems: 'center',

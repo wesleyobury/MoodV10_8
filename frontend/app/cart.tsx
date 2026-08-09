@@ -418,6 +418,24 @@ export default function CartScreen() {
   const [showAddExerciseModal, setShowAddExerciseModal] = useState(false);
   
   // Generated carts state for skip functionality
+  // V2.1 — PREVIEW vs CART.
+  //
+  // Flipping variations used to write straight to the global cart (clearCart +
+  // addToCart per exercise) because the screen renders off `cartItems` and had
+  // no other list to draw. So merely viewing a variation committed it — which
+  // also fired the draft autosave and a regenerate analytics event on every
+  // Skip, filling the drafts collection with junk.
+  //
+  // `previewWorkouts` is now "what you're looking at". null = nothing being
+  // previewed, so the screen falls back to the real cart (the manual add-to-cart
+  // flow, which has no variations). The cart is written only on COMMIT:
+  // Save, Start, an edit, or leaving the screen — so the cart icon still
+  // reflects the last thing you looked at, without churning on every flip.
+  const [previewWorkouts, setPreviewWorkouts] = useState<WorkoutItem[] | null>(null);
+  // Mirrored into a ref so the unmount cleanup below commits the LATEST preview
+  // rather than whatever was current when the effect was created.
+  const commitPreviewRef = useRef<WorkoutItem[] | null>(null);
+  commitPreviewRef.current = previewWorkouts;
   const [generatedCarts, setGeneratedCarts] = useState<any[]>([]);
   const [currentCartIndex, setCurrentCartIndex] = useState(0);
   const [isGeneratedWorkout, setIsGeneratedWorkout] = useState(false);
@@ -589,6 +607,17 @@ export default function CartScreen() {
   }, [isGeneratedWorkout, generatedCarts.length, shimmerAnim]);
 
   // Swap the active cart to a specific index (shared by skip + flavor dropdown).
+  // Option-3 behaviour: leaving the screen keeps whatever you last previewed, so
+  // the FloatingCart still reflects what you were looking at. Runs on unmount
+  // (back, tab switch, deep-link away) — reading the ref so it always commits
+  // the latest preview rather than a stale closure.
+  useEffect(() => {
+    return () => {
+      const pending = commitPreviewRef.current;
+      if (pending && pending.length > 0) replaceCart(pending);
+    };
+  }, [replaceCart]);
+
   const goToCart = (nextIndex: number, cartsArr: any[] = generatedCarts) => {
     if (!isGeneratedWorkout || cartsArr.length === 0) return;
     const nextCart = cartsArr[nextIndex];
@@ -608,11 +637,25 @@ export default function CartScreen() {
     const intensity = nextCart?.intensity || 'intermediate';
     setDynamicTitle(getRandomWorkoutTitle(intensity, moodCard));
 
-    clearCart();
-    nextCart.workouts.forEach((workout: WorkoutItem) => {
-      addToCart(workout);
-    });
+    // Preview only — no cart mutation. commitPreview() below is what makes it
+    // real, and it runs on Save, Start, an edit, or leaving the screen.
+    setPreviewWorkouts(nextCart.workouts as WorkoutItem[]);
   };
+
+  /**
+   * Fold the previewed variation into the real cart.
+   *
+   * Idempotent and cheap when nothing is being previewed. Every path that
+   * either acts on the user's choice (Save / Start) or mutates the list
+   * (remove / reorder / add exercise) must call this first, otherwise it would
+   * operate on the variation the user is no longer looking at.
+   */
+  const commitPreview = useCallback(() => {
+    const pending = commitPreviewRef.current;
+    if (!pending || pending.length === 0) return;
+    replaceCart(pending);
+    setPreviewWorkouts(null);
+  }, [replaceCart]);
 
   // Handle skip to next generated cart. Skips are unlimited — when we reach the
   // end of the batch we wrap back to the start so the user can keep cycling
@@ -729,8 +772,10 @@ export default function CartScreen() {
         workout_name: workout.name,
       });
     }
-    // If removing the last item, mark as user-cleared to prevent re-hydration
-    if (cartItems.length <= 1) {
+    // Editing a variation IS choosing it — commit first, or removeFromCart
+    // would operate on the variation the user has flipped away from.
+    commitPreview();
+    if (displayedItems.length <= 1) {
       userClearedRef.current = true;
     }
     removeFromCart(workoutId);
@@ -738,11 +783,18 @@ export default function CartScreen() {
 
   const handleClearCart = () => {
     userClearedRef.current = true;
+    // Drop the preview FIRST. Otherwise the unmount cleanup would replaceCart()
+    // with the variation still being previewed, silently refilling the cart the
+    // user just emptied — the same "it keeps coming back" failure as the old
+    // resume banner.
+    setPreviewWorkouts(null);
+    commitPreviewRef.current = null;
     clearCart();
     router.push('/(tabs)');
   };
 
   const handleSaveWorkout = async () => {
+    commitPreview();
     if (!token) {
       Alert.alert('Login Required', 'Please login to save workouts');
       return;
@@ -868,7 +920,9 @@ export default function CartScreen() {
   }, [cartItems, currentDraftId, beginDraft, patchDraft, markReady]);
 
   const handleStartWorkoutSession = async () => {
-    if (cartItems.length === 0) return;
+    // Everything below reads cartItems, so the preview must land first.
+    commitPreview();
+    if (displayedItems.length === 0) return;
     if (isGuest) {
       setShowGuestPrompt(true);
       return;
@@ -979,18 +1033,27 @@ export default function CartScreen() {
 
   const handleMoveUp = (index: number) => {
     if (index > 0) {
+      commitPreview();
       reorderCart(index, index - 1);
     }
   };
 
   const handleMoveDown = (index: number) => {
     if (index < cartItems.length - 1) {
+      commitPreview();
       reorderCart(index, index + 1);
     }
   };
 
+  /**
+   * The list the SCREEN draws: preview when one is active, otherwise the real
+   * cart. Every render site reads this, never `cartItems` directly — otherwise
+   * the page shows one variation while the header counts another.
+   */
+  const displayedItems: WorkoutItem[] = previewWorkouts ?? cartItems;
+
   const getTotalDuration = () => {
-    return cartItems.reduce((total, item) => {
+    return displayedItems.reduce((total, item) => {
       const duration = parseInt(item.duration.split(' ')[0]) || 0;
       return total + duration;
     }, 0);
@@ -1117,7 +1180,7 @@ export default function CartScreen() {
   // Resolution lives in /utils/cartHero.ts — pure function, unit-tested
   // (see /utils/cartHero.test.ts: three-branch coverage).
   // Do NOT inline this logic again — the test guards regressions.
-  const cartHeroImage = resolveCartHeroImage(cartMeta, cartItems[0]);
+  const cartHeroImage = resolveCartHeroImage(cartMeta, displayedItems[0]);
 
   // Title split for the hero card: "Outdoor - Park to Peak" → mood "Outdoor",
   // subtitle "Park to Peak". Only applies when meta provides a title.
@@ -1152,7 +1215,7 @@ export default function CartScreen() {
 
 
   // Empty state (but not if we're hydrating from a push notification)
-  if (cartItems.length === 0 && !hydrating) {
+  if (displayedItems.length === 0 && !hydrating) {
     return (
       <View style={styles.container}>
         <View style={[styles.emptyHeader, { paddingTop: insets.top + 10 }]}>
@@ -1247,7 +1310,7 @@ export default function CartScreen() {
           } else {
             // LEGACY fallback for non-muscle-gainer carts (sweat, lazy, outdoor, etc.)
             const styles_count: Record<string, number> = {};
-            for (const it of cartItems) {
+            for (const it of displayedItems) {
               if (it.training_style && it.training_style !== 'mixed') {
                 styles_count[it.training_style] = (styles_count[it.training_style] || 0) + 1;
               }
@@ -1319,7 +1382,7 @@ export default function CartScreen() {
       {/* Exercise List */}
       <View style={styles.contentContainer}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Exercises ({cartItems.length})</Text>
+          <Text style={styles.sectionTitle}>Exercises ({displayedItems.length})</Text>
         </View>
 
         <ScrollView 
@@ -1327,12 +1390,12 @@ export default function CartScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 24 }}
         >
-          {cartItems.map((item, index) => {
+          {displayedItems.map((item, index) => {
             const subPath = getCartSubPathLabel(item);
-            const prevSubPath = index > 0 ? getCartSubPathLabel(cartItems[index - 1]) : null;
+            const prevSubPath = index > 0 ? getCartSubPathLabel(displayedItems[index - 1]) : null;
             const showDivider = subPath && subPath !== prevSubPath;
             const legSub = getCartLegSubLabel(item);
-            const prevLegSub = index > 0 ? getCartLegSubLabel(cartItems[index - 1]) : null;
+            const prevLegSub = index > 0 ? getCartLegSubLabel(displayedItems[index - 1]) : null;
             const showLegSubDivider = legSub && (showDivider || legSub !== prevLegSub);
             return (
               <React.Fragment key={item.id}>
@@ -1345,7 +1408,7 @@ export default function CartScreen() {
                   onMoveUp={handleMoveUp}
                   onMoveDown={handleMoveDown}
                   isFirst={index === 0}
-                  isLast={index === cartItems.length - 1}
+                  isLast={index === displayedItems.length - 1}
                 />
               </React.Fragment>
             );
@@ -1354,7 +1417,7 @@ export default function CartScreen() {
           {/* Add Custom Exercise Button - appears below last exercise */}
           <TouchableOpacity 
             style={styles.addExerciseButton}
-            onPress={() => setShowAddExerciseModal(true)}
+            onPress={() => { commitPreview(); setShowAddExerciseModal(true); }}
             activeOpacity={0.7}
           >
             <View style={styles.addExerciseIconContainer}>
@@ -1364,7 +1427,7 @@ export default function CartScreen() {
           </TouchableOpacity>
 
           {/* Send Workout to Friend — cart-level share */}
-          {cartItems.length > 0 && (
+          {displayedItems.length > 0 && (
             <TouchableOpacity
               style={styles.sendCartButton}
               onPress={() => setSendModalVisible(true)}
@@ -1394,16 +1457,16 @@ export default function CartScreen() {
       <SendWorkoutModal
         visible={sendModalVisible}
         onClose={() => setSendModalVisible(false)}
-        workout={cartItems.length > 0 ? {
+        workout={displayedItems.length > 0 ? {
           name: (isGeneratedWorkout && dynamicTitle) ? dynamicTitle : (moodInfo.type || 'Workout'),
-          imageUrl: cartItems[0]?.imageUrl || '',
+          imageUrl: displayedItems[0]?.imageUrl || '',
           duration: `${getTotalDuration()} min`,
-          description: cartItems.map((c) => c.name).join(' · '),
+          description: displayedItems.map((c) => c.name).join(' · '),
           // Carry the full cart so the recipient can preview/replicate it
-          workouts: cartItems,
+          workouts: displayedItems,
         } as any : null}
-        equipment={cartItems[0]?.equipment || ''}
-        difficulty={(generatedCarts[currentCartIndex]?.intensity) || (cartItems[0]?.difficulty) || ''}
+        equipment={displayedItems[0]?.equipment || ''}
+        difficulty={(generatedCarts[currentCartIndex]?.intensity) || (displayedItems[0]?.difficulty) || ''}
         moodCategory={moodInfo.mood || ''}
         subtext={(isGeneratedWorkout && dynamicTitle) ? '' : (moodInfo.type || '')}
       />
