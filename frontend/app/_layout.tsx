@@ -269,20 +269,28 @@ export default function RootLayout() {
   const [retryKey, setRetryKey] = useState(0);
   const splashHiddenRef = useRef(false);
 
-  // Handle app ready - hide splash screen
-  const handleAppReady = useCallback(async () => {
+  // Dismiss the NATIVE splash. Called as soon as AppBootstrap's boot screen has
+  // painted, so the animated logo is visible instead of being covered by the
+  // static native splash for the whole boot window.
+  const hideNativeSplash = useCallback(async () => {
     if (splashHiddenRef.current) return;
     splashHiddenRef.current = true;
-    
-    console.log('RootLayout: App ready, hiding splash screen');
-    setAppReady(true);
-    
+
+    console.log('RootLayout: Boot screen visible, hiding native splash');
     try {
       await SplashScreen.hideAsync();
     } catch (e) {
       // Ignore - splash screen might already be hidden
     }
   }, []);
+
+  // Handle app ready - boot screen finished, show the app
+  const handleAppReady = useCallback(async () => {
+    console.log('RootLayout: App ready');
+    setAppReady(true);
+    // Safety net: if the boot screen never reported layout, hide it now.
+    await hideNativeSplash();
+  }, [hideNativeSplash]);
 
   // Handle error boundary retry
   const handleRetry = useCallback(() => {
@@ -318,7 +326,10 @@ export default function RootLayout() {
       <SafeAreaProvider style={styles.rootContainer}>
         <ErrorBoundary key={retryKey} onRetry={handleRetry}>
           <AppProviders>
-            <AppBootstrap onReady={handleAppReady}>
+            <AppBootstrap
+              onReady={handleAppReady}
+              onBootScreenVisible={hideNativeSplash}
+            >
               <AppContent />
             </AppBootstrap>
           </AppProviders>

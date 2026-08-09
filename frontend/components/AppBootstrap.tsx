@@ -9,6 +9,12 @@ import { secureStorage, AUTH_TOKEN_KEY } from '../utils/secureStorage';
 interface AppBootstrapProps {
   children: React.ReactNode;
   onReady?: () => void;
+  /**
+   * Fired once the boot screen has actually painted. The root layout uses this
+   * to dismiss the NATIVE splash - without it the native splash sits on top of
+   * this screen for its whole life and the animation is never seen.
+   */
+  onBootScreenVisible?: () => void;
 }
 
 type BootState = 'booting' | 'ready' | 'recovery';
@@ -20,7 +26,7 @@ interface BackgroundStatus {
   tokenValid: boolean;
 }
 
-const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
+const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady, onBootScreenVisible }) => {
   const [bootState, setBootState] = useState<BootState>('booting');
   const [statusMessage, setStatusMessage] = useState('Starting...');
   const [showRecovery, setShowRecovery] = useState(false);
@@ -31,6 +37,7 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
   
   const mountedRef = useRef(true);
   const bootStartedRef = useRef(false);
+  const bootScreenShownRef = useRef(false);
   const backgroundStatusRef = useRef<BackgroundStatus>({
     healthChecked: false,
     healthOk: false,
@@ -234,6 +241,16 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
     });
   }, [fadeAnim, onReady, runBackgroundChecks]);
 
+  // Boot screen has laid out and painted -> safe to drop the native splash.
+  // One frame of headroom so the first animated frame is on screen first.
+  const handleBootScreenLayout = useCallback(() => {
+    if (bootScreenShownRef.current) return;
+    bootScreenShownRef.current = true;
+    requestAnimationFrame(() => {
+      onBootScreenVisible?.();
+    });
+  }, [onBootScreenVisible]);
+
   // Handle retry from recovery state
   const handleRetry = useCallback(() => {
     console.log('AppBootstrap: Retry requested');
@@ -313,7 +330,7 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
   // Recovery screen
   if (showRecovery) {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={handleBootScreenLayout}>
         <View style={styles.recoveryScreen}>
           {/* Logo (static - no animation on the recovery path) */}
           <View style={styles.recoveryLogoContainer}>
@@ -358,7 +375,7 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
 
   // Boot screen
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={handleBootScreenLayout}>
       <Animated.View
         style={[
           styles.loadingScreen,
