@@ -291,7 +291,7 @@ export default function RootLayout() {
   }, []);
 
   // Safety timeout - hide splash screen after 4 seconds no matter what
-  // AppBootstrap handles the 3-second boot, this is a fallback
+  // AppBootstrap handles the boot window (~1.6s), this is a fallback
   useEffect(() => {
     const timeout = setTimeout(async () => {
       if (!splashHiddenRef.current) {

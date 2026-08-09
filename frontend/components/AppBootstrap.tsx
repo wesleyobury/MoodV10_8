@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Animated, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, Animated, Easing, TouchableOpacity, Platform } from 'react-native';
 import { SafeLinearGradient as LinearGradient } from './SafeLinearGradient';
+import AnimatedSplashLogo from './AnimatedSplashLogo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from '../utils/apiConfig';
 import { secureStorage, AUTH_TOKEN_KEY } from '../utils/secureStorage';
@@ -26,7 +27,6 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
   const [isReady, setIsReady] = useState(false);
   
   const fadeAnim = useRef(new Animated.Value(1)).current;
-  const pulseAnim = useRef(new Animated.Value(1)).current;
   const progressAnim = useRef(new Animated.Value(0)).current;
   
   const mountedRef = useRef(true);
@@ -39,30 +39,12 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
   });
   
   // Configuration - STRICT timing for production cold-start
-  const MAX_BOOT_TIME_MS = 3000;  // Hard limit: 3 seconds to show app
+  const MAX_BOOT_TIME_MS = 1600;  // Hard limit: show the app after the splash animation reads
   const HEALTH_CHECK_TIMEOUT_MS = 5000;  // 5 second timeout for health check
   const TOKEN_RESTORE_TIMEOUT_MS = 5000;  // 5 second timeout for token restore
   const MAX_RETRIES = 1;  // Only 1 retry for background tasks
 
-  // Pulse animation for logo
-  useEffect(() => {
-    const pulse = Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.05,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-      ])
-    );
-    pulse.start();
-    return () => pulse.stop();
-  }, []);
+  // Logo breathing + glow pulse are owned by <AnimatedSplashLogo />.
 
   // Progress animation (0 to 1 over MAX_BOOT_TIME_MS)
   useEffect(() => {
@@ -205,7 +187,7 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
     runBackgroundChecks(apiUrl);
     
     // Animate status messages during boot
-    const statusMessages = ['Starting...', 'Loading...', 'Almost ready...'];
+    const statusMessages = ['Loading...', 'Almost ready...'];
     let messageIndex = 0;
     
     const statusInterval = setInterval(() => {
@@ -213,7 +195,7 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
         setStatusMessage(statusMessages[messageIndex]);
         messageIndex++;
       }
-    }, 800);
+    }, 600);
 
     // HARD TIMEOUT: Proceed to app after MAX_BOOT_TIME_MS regardless of background status
     await new Promise(resolve => setTimeout(resolve, MAX_BOOT_TIME_MS));
@@ -237,10 +219,12 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
     setBootState('ready');
     setStatusMessage('Ready');
     
-    // Fade out and show app
+    // Fade out and show app - slight scale-through so the logo dissolves
+    // forward into the app rather than blinking off.
     Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 200,
+      duration: 320,
+      easing: Easing.out(Easing.quad),
       useNativeDriver: true,
     }).start(() => {
       if (mountedRef.current) {
@@ -275,7 +259,8 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
     
     Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 200,
+      duration: 320,
+      easing: Easing.out(Easing.quad),
       useNativeDriver: true,
     }).start(() => {
       if (mountedRef.current) {
@@ -330,10 +315,9 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
     return (
       <View style={styles.container}>
         <View style={styles.recoveryScreen}>
-          {/* Logo */}
-          <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>MOOD</Text>
-            <Text style={styles.logoSubtext}>FITNESS</Text>
+          {/* Logo (static - no animation on the recovery path) */}
+          <View style={styles.recoveryLogoContainer}>
+            <AnimatedSplashLogo size={150} animated={false} />
           </View>
 
           {/* Recovery message */}
@@ -365,19 +349,29 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady }) => {
     );
   }
 
+  // Exit transition: the whole splash eases forward slightly as it fades,
+  // so it dissolves into the app instead of cutting.
+  const exitScale = fadeAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1.06, 1],
+  });
+
   // Boot screen
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.loadingScreen, { opacity: fadeAnim }]}>
-        {/* Logo with pulse animation */}
-        <Animated.View style={[styles.logoContainer, { transform: [{ scale: pulseAnim }] }]}>
-          <Text style={styles.logoText}>MOOD</Text>
-          <Text style={styles.logoSubtext}>FITNESS</Text>
-        </Animated.View>
+      <Animated.View
+        style={[
+          styles.loadingScreen,
+          { opacity: fadeAnim, transform: [{ scale: exitScale }] },
+        ]}
+      >
+        {/* Animated logo - matches the native splash so the handoff is seamless */}
+        <View style={styles.logoContainer}>
+          <AnimatedSplashLogo />
+        </View>
 
-        {/* Loading indicator and status */}
+        {/* Status */}
         <View style={styles.loadingArea}>
-          <ActivityIndicator size="large" color="#FFD700" />
           <Text style={styles.statusText}>{statusMessage}</Text>
         </View>
 
@@ -413,39 +407,33 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 60,
+    justifyContent: 'center',
+    marginBottom: 24,
   },
-  logoText: {
-    fontSize: 52,
-    fontWeight: 'bold',
-    color: '#FFD700',
-    letterSpacing: 10,
-  },
-  logoSubtext: {
-    fontSize: 13,
-    color: '#666',
-    letterSpacing: 8,
-    marginTop: 8,
+  recoveryLogoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 32,
   },
   loadingArea: {
     alignItems: 'center',
-    minHeight: 80,
+    minHeight: 28,
   },
   statusText: {
-    marginTop: 20,
-    fontSize: 14,
-    color: '#666',
-    letterSpacing: 1,
+    fontSize: 13,
+    color: '#5c5c5c',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
   },
   progressContainer: {
     position: 'absolute',
     bottom: 80,
-    left: 40,
-    right: 40,
+    left: 60,
+    right: 60,
   },
   progressTrack: {
-    height: 3,
-    backgroundColor: '#222',
+    height: 2,
+    backgroundColor: 'rgba(255, 215, 0, 0.12)',
     borderRadius: 2,
     overflow: 'hidden',
   },
