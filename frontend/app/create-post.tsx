@@ -443,6 +443,10 @@ export default function CreatePost() {
   
   // Saved achievements state
   const [savedAchievements, setSavedAchievements] = useState<any[]>([]);
+  // Last caption this screen generated automatically from workout stats. Used
+  // so that detaching a card removes its stale "450 cals and 30 minutes" text
+  // without wiping something the user actually typed.
+  const autoCaptionRef = useRef<string>('');
   const [loadingSavedAchievements, setLoadingSavedAchievements] = useState(false);
 
   // Legacy support - map selectedImages to selectedMedia
@@ -514,23 +518,94 @@ export default function CreatePost() {
     }
   }, [minuteTarget]);
 
-  // Fetch saved achievements when no workoutStats is passed
+  // Fetch the user's saved workout cards. Always fetched (not just on the
+  // from-scratch path) so that detaching a card can immediately offer the
+  // picker again without a round trip.
   useEffect(() => {
-    if (!params.workoutStats && token && !isGuest) {
+    if (token && !isGuest) {
       fetchSavedAchievements();
     }
-  }, [params.workoutStats, token, isGuest]);
+  }, [token, isGuest]);
+
+  // Merge completed-workout snapshots with saved cards, newest first.
+  // Snapshots win on collision: they are the completion record, whereas a card
+  // is a user-saved copy of the same workout.
+  const mergeAchievements = (snapshotEntries: any[], cardEntries: any[]) => {
+    const seenSnapshotIds = new Set(
+      snapshotEntries.map((e) => e.workoutSnapshotId).filter(Boolean)
+    );
+    const cardsNotAlreadyPresent = cardEntries.filter(
+      (c) => !c.workoutSnapshotId || !seenSnapshotIds.has(c.workoutSnapshotId)
+    );
+    return [...snapshotEntries, ...cardsNotAlreadyPresent].sort((a, b) => {
+      const at = Date.parse(a.completedAt || '') || 0;
+      const bt = Date.parse(b.completedAt || '') || 0;
+      return bt - at;
+    });
+  };
+
+  // Normalize one workout entry from either source (cards use snake_case from
+  // the card document, snapshots use whatever the completion path stored).
+  const normalizeWorkout = (w: any) => ({
+    ...w,
+    workoutTitle: w.workout_title || w.workoutTitle || w.workout_name || w.workoutName,
+    workoutName: w.workout_name || w.workoutName || w.workout_title || w.workoutTitle,
+    equipment: w.equipment,
+    duration: w.duration,
+    difficulty: w.difficulty,
+    moodCategory: w.mood_category || w.moodCategory,
+    battlePlan: w.battle_plan || w.battlePlan,
+    imageUrl: w.image_url || w.imageUrl,
+    description: w.description,
+    intensityReason: w.intensity_reason || w.intensityReason,
+  });
 
   const fetchSavedAchievements = async () => {
     if (!token) return;
-    
+
     try {
       setLoadingSavedAchievements(true);
-      const response = await fetch(`${API_URL}/api/workout-cards`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      if (response.ok) {
+
+      // Two sources, merged:
+      //   /workout-cards      - cards the user saved (also auto-saved on every
+      //                         completion that reaches this screen). Covers
+      //                         history from before the completion marker shipped.
+      //   /workout-snapshots  - every COMPLETED workout, saved or not. This is
+      //                         the real "your completed workouts" list.
+      // Deduped by snapshot id, since a completed workout usually appears in both.
+      const [cardsRes, snapshotsRes] = await Promise.all([
+        fetch(`${API_URL}/api/workout-cards`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }).catch(() => null),
+        fetch(`${API_URL}/api/workout-snapshots`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }).catch(() => null),
+      ]);
+
+      // Completed snapshots. Tolerated as empty if the backend predates this
+      // endpoint, so an old server just falls back to cards-only behaviour.
+      let snapshotEntries: any[] = [];
+      if (snapshotsRes && snapshotsRes.ok) {
+        try {
+          const snaps = await snapshotsRes.json();
+          if (Array.isArray(snaps)) {
+            snapshotEntries = snaps.map((snap: any) => ({
+              id: `snapshot:${snap.id}`,
+              workouts: (snap.workouts || []).map(normalizeWorkout),
+              totalDuration: snap.total_duration,
+              completedAt: snap.completed_at || snap.created_at,
+              moodCategory: snap.mood_category,
+              workoutSnapshotId: snap.id,
+            }));
+          }
+        } catch (e) {
+          console.warn('Could not parse completed workouts:', e);
+        }
+      }
+
+      const response = cardsRes;
+
+      if (response && response.ok) {
         const data = await response.json();
         console.log('📋 Fetched saved achievements:', data.length);
         // Transform to match WorkoutStats format, keeping ALL workout details
@@ -538,27 +613,17 @@ export default function CreatePost() {
           console.log(`📋 Card ${card.id} has workout_snapshot_id:`, card.workout_snapshot_id);
           return {
             id: card.id,
-            workouts: card.workouts.map((w: any) => ({
-              // Keep all original workout data for "Try this workout" replication
-              ...w,
-              workoutTitle: w.workout_title || w.workoutTitle || w.workout_name || w.workoutName,
-              workoutName: w.workout_name || w.workoutName || w.workout_title || w.workoutTitle,
-              equipment: w.equipment,
-              duration: w.duration,
-              difficulty: w.difficulty,
-              moodCategory: w.mood_category || w.moodCategory,
-              battlePlan: w.battle_plan || w.battlePlan,
-              imageUrl: w.image_url || w.imageUrl,
-              description: w.description,
-              intensityReason: w.intensity_reason || w.intensityReason,
-            })),
+            workouts: card.workouts.map(normalizeWorkout),
             totalDuration: card.total_duration,
             completedAt: card.completed_at,
             moodCategory: card.mood_category,
             workoutSnapshotId: card.workout_snapshot_id, // CRITICAL: Include snapshot ID for "Try this workout"
           };
         });
-        setSavedAchievements(transformed);
+        setSavedAchievements(mergeAchievements(snapshotEntries, transformed));
+      } else {
+        // Cards unavailable — completed workouts alone still populate the list.
+        setSavedAchievements(mergeAchievements(snapshotEntries, []));
       }
     } catch (error) {
       console.error('Error fetching saved achievements:', error);
@@ -597,7 +662,9 @@ export default function CreatePost() {
     const randomEmoji = workoutEmojis[Math.floor(Math.random() * workoutEmojis.length)];
     const minutes = achievement.totalDuration || 0;
     const calories = Math.round(minutes * 8);
-    setCaption(`${calories} cals and ${minutes} minutes today ${randomEmoji}`);
+    const autoCaption = `${calories} cals and ${minutes} minutes today ${randomEmoji}`;
+    autoCaptionRef.current = autoCaption;
+    setCaption(autoCaption);
   };
 
   // Load workout stats
@@ -621,7 +688,9 @@ export default function CreatePost() {
         // Calculate calories (same formula as stats card: duration * 8)
         const minutes = stats.totalDuration || 0;
         const calories = Math.round(minutes * 8);
-        setCaption(`${calories} cals and ${minutes} minutes today ${randomEmoji}`);
+        const autoCaption = `${calories} cals and ${minutes} minutes today ${randomEmoji}`;
+        autoCaptionRef.current = autoCaption;
+        setCaption(autoCaption);
       } catch (error) {
         console.error('Error parsing workout stats:', error);
       }
@@ -1075,6 +1144,16 @@ export default function CreatePost() {
       }),
     ]).start();
   };
+
+  // Remove the attached workout card so the user can pick a different one (or
+  // post without any). The card itself stays saved to their profile.
+  const handleDetachWorkoutCard = useCallback(() => {
+    setWorkoutStats(null);
+    setHasStatsCard(false);
+    // Only clear the caption if it is still the one we generated for them.
+    setCaption((prev) => (prev === autoCaptionRef.current ? '' : prev));
+    autoCaptionRef.current = '';
+  }, []);
 
   const handleSaveCard = async () => {
     console.log('handleSaveCard called');
@@ -1931,6 +2010,122 @@ export default function CreatePost() {
             </Text>
           </View>
 
+          {/* Attach a workout card — prompted whenever nothing is attached yet.
+              Hidden entirely when the user has no completed workouts, so new
+              users never see a dead section. */}
+          {!workoutStats && (loadingSavedAchievements || savedAchievements.length > 0) && (
+            <View style={[styles.attachmentCard, styles.workoutPromptCard]}>
+              <View style={styles.attachmentHeader}>
+                <View style={styles.attachmentLabelContainer}>
+                  <Ionicons name="trophy" size={16} color="#FFD700" />
+                  <Text style={styles.attachmentType}>
+                    {savedAchievements.length > 0
+                      ? `Add a workout card (${savedAchievements.length})`
+                      : 'Add a workout card'}
+                  </Text>
+                </View>
+              </View>
+
+              {loadingSavedAchievements ? (
+                <View style={styles.loadingSavedContainer}>
+                  <ActivityIndicator size="small" color="#FFD700" />
+                  <Text style={styles.loadingSavedText}>Loading your workouts...</Text>
+                </View>
+              ) : savedAchievements.length > 0 ? (
+                <>
+                  <Text style={styles.savedAchievementsHint}>
+                    Tap one to attach it — others can duplicate your workout in a tap.
+                  </Text>
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                style={styles.savedAchievementsScroll}
+                contentContainerStyle={styles.savedAchievementsContent}
+              >
+                {savedAchievements.map((achievement, index) => {
+                  const estimatedCalories = Math.round(achievement.totalDuration * 8);
+                  
+                  // Extract mood label from workout names
+                  const getMoodLabel = (): string => {
+                    if (achievement.workouts.length > 0) {
+                      const firstWorkout = achievement.workouts[0].workoutName?.toLowerCase() || '';
+                      if (firstWorkout.includes('muscle') || firstWorkout.includes('gainer') || firstWorkout.includes('back') || firstWorkout.includes('chest') || firstWorkout.includes('arm')) return 'Muscle';
+                      if (firstWorkout.includes('sweat') || firstWorkout.includes('cardio') || firstWorkout.includes('hiit') || firstWorkout.includes('burn')) return 'Sweat';
+                      if (firstWorkout.includes('explosion') || firstWorkout.includes('power') || firstWorkout.includes('explosive')) return 'Explosion';
+                      if (firstWorkout.includes('outdoor') || firstWorkout.includes('hill') || firstWorkout.includes('run') || firstWorkout.includes('outside')) return 'Outdoor';
+                      if (firstWorkout.includes('calisthenics') || firstWorkout.includes('pull') || firstWorkout.includes('dip') || firstWorkout.includes('bodyweight')) return 'Calisthenics';
+                      if (firstWorkout.includes('lazy') || firstWorkout.includes('stretch') || firstWorkout.includes('recovery') || firstWorkout.includes('easy')) return 'Lazy';
+                    }
+                    return 'Workout';
+                  };
+                  
+                  const moodLabel = getMoodLabel();
+                  
+                  return (
+                    <TouchableOpacity
+                      key={achievement.id || index}
+                      style={styles.savedAchievementCard}
+                      onPress={() => selectSavedAchievement(achievement)}
+                      activeOpacity={0.85}
+                    >
+                      <View style={styles.achievementCardContent}>
+                        {/* Header row */}
+                        <View style={styles.achievementHeaderRow}>
+                          <Text style={styles.achievementDateLabel}>{achievement.completedAt}</Text>
+                          <View style={styles.achievementTrophyBadge}>
+                            <Ionicons name="checkmark" size={12} color="#0c0c0c" />
+                          </View>
+                        </View>
+                        
+                        {/* Mood label as hero text */}
+                        <Text style={styles.achievementMoodLabel} numberOfLines={2}>{moodLabel}</Text>
+                        
+                        {/* Stats row - duration, calories, exercises */}
+                        <View style={styles.achievementStatsRow}>
+                          <View style={styles.achievementStatPill}>
+                            <Ionicons name="time-outline" size={10} color="#FFD700" />
+                            <Text style={styles.achievementStatPillText}>{achievement.totalDuration}m</Text>
+                          </View>
+                          <View style={styles.achievementStatPill}>
+                            <Ionicons name="flame-outline" size={10} color="#FFD700" />
+                            <Text style={styles.achievementStatPillText}>{estimatedCalories}</Text>
+                          </View>
+                          <View style={styles.achievementStatPill}>
+                            <Ionicons name="barbell-outline" size={10} color="#FFD700" />
+                            <Text style={styles.achievementStatPillText}>{achievement.workouts.length}</Text>
+                          </View>
+                        </View>
+                        
+                        {/* Workout preview list */}
+                        <View style={styles.achievementWorkoutPreview}>
+                          {achievement.workouts.slice(0, 2).map((workout: any, wIndex: number) => {
+                            const name = workout.workoutName || workout.workoutTitle;
+                            const equip = workout.equipment && workout.equipment !== 'None' ? workout.equipment : '';
+                            const label = equip ? `${name} \u2022 ${equip}` : name;
+                            const display = label.length > 40 ? label.slice(0, 37) + '...' : label;
+                            return (
+                              <Text key={wIndex} style={styles.achievementWorkoutName} numberOfLines={1}>
+                                {display}
+                              </Text>
+                            );
+                          })}
+                          {achievement.workouts.length > 2 && (
+                            <Text style={styles.achievementWorkoutMore}>
+                              +{achievement.workouts.length - 2} more
+                            </Text>
+                          )}
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+                </>
+              ) : null}
+            </View>
+          )}
+
+
           {/* 1. Media Picker Section — part of the feed post */}
           <View style={[styles.attachmentCard, styles.feedMediaCard]} ref={mediaRowRef} collapsable={false}>
             <View style={styles.attachmentHeader}>
@@ -2042,116 +2237,6 @@ export default function CreatePost() {
             <Text style={styles.captionCounter}>{caption.length}/500</Text>
           </View>
 
-          {/* Saved Achievements Section - Show when no workout stats */}
-          {!workoutStats && savedAchievements.length > 0 && (
-            <View style={styles.attachmentCard}>
-              <View style={styles.attachmentHeader}>
-                <View style={styles.attachmentLabelContainer}>
-                  <Ionicons name="trophy" size={16} color="#FFD700" />
-                  <Text style={styles.attachmentType}>Saved Achievements ({savedAchievements.length})</Text>
-                </View>
-              </View>
-              
-              <Text style={styles.savedAchievementsHint}>
-                Tap to add a workout achievement to your post
-              </Text>
-              
-              <ScrollView 
-                horizontal 
-                showsHorizontalScrollIndicator={false}
-                style={styles.savedAchievementsScroll}
-                contentContainerStyle={styles.savedAchievementsContent}
-              >
-                {savedAchievements.map((achievement, index) => {
-                  const estimatedCalories = Math.round(achievement.totalDuration * 8);
-                  
-                  // Extract mood label from workout names
-                  const getMoodLabel = (): string => {
-                    if (achievement.workouts.length > 0) {
-                      const firstWorkout = achievement.workouts[0].workoutName?.toLowerCase() || '';
-                      if (firstWorkout.includes('muscle') || firstWorkout.includes('gainer') || firstWorkout.includes('back') || firstWorkout.includes('chest') || firstWorkout.includes('arm')) return 'Muscle';
-                      if (firstWorkout.includes('sweat') || firstWorkout.includes('cardio') || firstWorkout.includes('hiit') || firstWorkout.includes('burn')) return 'Sweat';
-                      if (firstWorkout.includes('explosion') || firstWorkout.includes('power') || firstWorkout.includes('explosive')) return 'Explosion';
-                      if (firstWorkout.includes('outdoor') || firstWorkout.includes('hill') || firstWorkout.includes('run') || firstWorkout.includes('outside')) return 'Outdoor';
-                      if (firstWorkout.includes('calisthenics') || firstWorkout.includes('pull') || firstWorkout.includes('dip') || firstWorkout.includes('bodyweight')) return 'Calisthenics';
-                      if (firstWorkout.includes('lazy') || firstWorkout.includes('stretch') || firstWorkout.includes('recovery') || firstWorkout.includes('easy')) return 'Lazy';
-                    }
-                    return 'Workout';
-                  };
-                  
-                  const moodLabel = getMoodLabel();
-                  
-                  return (
-                    <TouchableOpacity
-                      key={achievement.id || index}
-                      style={styles.savedAchievementCard}
-                      onPress={() => selectSavedAchievement(achievement)}
-                      activeOpacity={0.85}
-                    >
-                      <View style={styles.achievementCardContent}>
-                        {/* Header row */}
-                        <View style={styles.achievementHeaderRow}>
-                          <Text style={styles.achievementDateLabel}>{achievement.completedAt}</Text>
-                          <View style={styles.achievementTrophyBadge}>
-                            <Ionicons name="checkmark" size={12} color="#0c0c0c" />
-                          </View>
-                        </View>
-                        
-                        {/* Mood label as hero text */}
-                        <Text style={styles.achievementMoodLabel} numberOfLines={2}>{moodLabel}</Text>
-                        
-                        {/* Stats row - duration, calories, exercises */}
-                        <View style={styles.achievementStatsRow}>
-                          <View style={styles.achievementStatPill}>
-                            <Ionicons name="time-outline" size={10} color="#FFD700" />
-                            <Text style={styles.achievementStatPillText}>{achievement.totalDuration}m</Text>
-                          </View>
-                          <View style={styles.achievementStatPill}>
-                            <Ionicons name="flame-outline" size={10} color="#FFD700" />
-                            <Text style={styles.achievementStatPillText}>{estimatedCalories}</Text>
-                          </View>
-                          <View style={styles.achievementStatPill}>
-                            <Ionicons name="barbell-outline" size={10} color="#FFD700" />
-                            <Text style={styles.achievementStatPillText}>{achievement.workouts.length}</Text>
-                          </View>
-                        </View>
-                        
-                        {/* Workout preview list */}
-                        <View style={styles.achievementWorkoutPreview}>
-                          {achievement.workouts.slice(0, 2).map((workout: any, wIndex: number) => {
-                            const name = workout.workoutName || workout.workoutTitle;
-                            const equip = workout.equipment && workout.equipment !== 'None' ? workout.equipment : '';
-                            const label = equip ? `${name} \u2022 ${equip}` : name;
-                            const display = label.length > 40 ? label.slice(0, 37) + '...' : label;
-                            return (
-                              <Text key={wIndex} style={styles.achievementWorkoutName} numberOfLines={1}>
-                                {display}
-                              </Text>
-                            );
-                          })}
-                          {achievement.workouts.length > 2 && (
-                            <Text style={styles.achievementWorkoutMore}>
-                              +{achievement.workouts.length - 2} more
-                            </Text>
-                          )}
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-            </View>
-          )}
-
-          {/* Loading saved achievements */}
-          {!workoutStats && loadingSavedAchievements && (
-            <View style={styles.attachmentCard}>
-              <View style={styles.loadingSavedContainer}>
-                <ActivityIndicator size="small" color="#FFD700" />
-                <Text style={styles.loadingSavedText}>Loading saved achievements...</Text>
-              </View>
-            </View>
-          )}
 
           {/* 3. Workout Stats Card - LAST */}
           {workoutStats && (
@@ -2233,8 +2318,22 @@ export default function CreatePost() {
                     <Text style={styles.saveButtonText}>Equip</Text>
                   </TouchableOpacity>
                 </View>
+
+                {/* Detach — removes the card from this post so a different one
+                    can be picked. The card stays saved to the profile. */}
+                <TouchableOpacity
+                  onPress={handleDetachWorkoutCard}
+                  style={styles.detachCardButton}
+                  activeOpacity={0.7}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  accessibilityRole="button"
+                  accessibilityLabel="Remove workout card from post"
+                  testID="detach-workout-card"
+                >
+                  <Ionicons name="close" size={15} color="rgba(255,255,255,0.75)" />
+                </TouchableOpacity>
               </View>
-              
+
               {/* Card + equipment toggle overlay */}
               <View style={styles.cardWithToggleContainer} ref={cardContainerRef} collapsable={false}>
                 <ScrollView
@@ -3448,6 +3547,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#F3F3F3',
     fontWeight: '500',
+  },
+  workoutPromptCard: {
+    borderColor: 'rgba(244, 195, 22, 0.28)',
+    backgroundColor: 'rgba(244, 195, 22, 0.045)',
+  },
+  detachCardButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.07)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.12)',
+    marginLeft: 8,
   },
   attachmentHeader: {
     flexDirection: 'row',

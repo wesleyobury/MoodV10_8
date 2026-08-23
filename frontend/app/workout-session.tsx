@@ -23,6 +23,7 @@ import { clearWorkoutStartGrant } from '../utils/workoutStartGate';
 import { Analytics } from '../utils/analytics';
 import { recordWorkoutCompletionForRating } from '../utils/ratingPrompt';
 import { API_URL } from '../utils/apiConfig';
+import { markWorkoutSnapshotCompleted } from '../utils/markWorkoutCompleted';
 import {
   subscribeHeartRateStream,
   fetchSessionMetrics,
@@ -357,6 +358,10 @@ export default function WorkoutSessionScreen() {
         console.error('❌ Error creating workout snapshot:', error);
       }
     }
+
+    // Mark the snapshot COMPLETED so it can be attached to a future post.
+    // Fire-and-forget — never block completion on this.
+    markWorkoutSnapshotCompleted(workoutSnapshotId, token);
 
     const workoutStatsData = {
       workouts: completedWorkouts,

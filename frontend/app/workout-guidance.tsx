@@ -30,6 +30,7 @@ import { SLUG_TO_NAME, TUTORIAL_CANDIDATES } from '../utils/tutorialMap';
 import type { Movement } from '../types/workout';
 import { TextWithTermLinks } from '../components/TermDefinitionPopup';
 import { API_URL } from '../utils/apiConfig';
+import { markWorkoutSnapshotCompleted } from '../utils/markWorkoutCompleted';
 import { tryBeginWorkoutSession, clearWorkoutStartGrant } from '../utils/workoutStartGate';
 import InSessionProgressBar from '../components/InSessionProgressBar';
 import { SessionSafetyBanner } from '../components/SessionSafetyBanner';
@@ -791,6 +792,12 @@ export default function WorkoutGuidanceScreen() {
             console.log('♻️  Reusing session-start snapshot:', workoutSnapshotId);
           }
 
+          // Mark the snapshot COMPLETED so it can be attached to a future post.
+          // This is the ONLY reliable completion signal for the reuse path
+          // above, where the snapshot was created back at session start.
+          // Fire-and-forget — never block completion on this.
+          markWorkoutSnapshotCompleted(workoutSnapshotId, token);
+
           const workoutStatsData = {
             workouts: completedWorkouts,
             totalDuration,
@@ -929,6 +936,10 @@ export default function WorkoutGuidanceScreen() {
           console.error('❌ Error creating single-workout snapshot:', err);
         }
       }
+
+      // Mark the snapshot COMPLETED so it can be attached to a future post.
+      // Fire-and-forget — never block completion on this.
+      markWorkoutSnapshotCompleted(workoutSnapshotId, token);
 
       // Track single workout completion (now with snapshot_id so the
       // Live Feed entry can deep-link into a hydrated cart).

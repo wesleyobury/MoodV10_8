@@ -11269,6 +11269,85 @@ async def get_workout_snapshot(snapshot_id: str):
         "created_at": snapshot["created_at"].isoformat()
     }
 
+@api_router.post("/workout-snapshots/{snapshot_id}/complete")
+async def mark_workout_snapshot_completed(
+    snapshot_id: str,
+    current_user_id: str = Depends(get_current_user)
+):
+    """Mark a workout snapshot as actually COMPLETED.
+
+    Snapshots are created in two situations:
+      1. session start  (cart.tsx, so the Live tab can hydrate "Try this workout")
+      2. completion     (workout-session.tsx / workout-guidance.tsx)
+
+    The multi-workout completion path REUSES the session-start snapshot rather
+    than creating a duplicate, so the creation site cannot tell us whether a
+    workout was finished. This endpoint is the completion signal: it stamps
+    completed_at, which is what GET /workout-snapshots filters on. Without it
+    an abandoned session would look identical to a finished one.
+
+    Idempotent - re-marking an already-completed snapshot is a no-op.
+    """
+    try:
+        oid = ObjectId(snapshot_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid snapshot ID")
+
+    result = await db.workout_snapshots.update_one(
+        {"_id": oid, "user_id": current_user_id, "completed_at": {"$exists": False}},
+        {"$set": {"completed_at": datetime.now(timezone.utc)}}
+    )
+
+    if result.matched_count == 0:
+        # Either already completed, or not this user's snapshot. Distinguish so
+        # a genuine ownership problem is not silently swallowed.
+        existing = await db.workout_snapshots.find_one({"_id": oid})
+        if not existing:
+            raise HTTPException(status_code=404, detail="Workout snapshot not found")
+        if existing.get("user_id") != current_user_id:
+            raise HTTPException(status_code=403, detail="Not your workout snapshot")
+        return {"message": "Workout snapshot already marked completed"}
+
+    logger.info(f"\u2705 Marked workout snapshot completed: {snapshot_id}")
+    return {"message": "Workout snapshot marked completed"}
+
+
+@api_router.get("/workout-snapshots")
+async def get_completed_workout_snapshots(
+    current_user_id: str = Depends(get_current_user),
+    limit: int = 30,
+    skip: int = 0
+):
+    """List the current user's COMPLETED workouts, newest first.
+
+    Only snapshots carrying completed_at are returned, so sessions that were
+    started and abandoned never show up. Snapshots created before the
+    completion marker shipped have no completed_at and are therefore absent -
+    those users are still served by GET /workout-cards, which the client merges
+    with this list.
+    """
+    limit = max(1, min(limit, 100))
+
+    snapshots = await db.workout_snapshots.find(
+        {"user_id": current_user_id, "completed_at": {"$exists": True}}
+    ).sort("completed_at", -1).skip(skip).limit(limit).to_list(length=limit)
+
+    result = []
+    for snap in snapshots:
+        completed_at = snap.get("completed_at")
+        created_at = snap.get("created_at")
+        result.append({
+            "id": str(snap["_id"]),
+            "workouts": snap.get("workouts", []),
+            "total_duration": snap.get("total_duration", 0),
+            "mood_category": snap.get("mood_category"),
+            "completed_at": completed_at.isoformat() if completed_at else None,
+            "created_at": created_at.isoformat() if created_at else None,
+        })
+
+    return result
+
+
 @api_router.post("/workout-cards")
 async def save_workout_card(
     card_data: WorkoutCardCreate,
