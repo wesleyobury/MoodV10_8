@@ -1,586 +1,665 @@
-# Auto-generated seed data — Featured Workouts v3 (8 picks)
-# Regenerated 2026-07-01. Replaces the v2 6-pick set.
-# Each featured workout's exercises are pulled from a SINGLE mood-card path in
-# the app's real exercise library (frontend/data/*-workouts-data.ts), so tapping
-# a carousel slide loads a legit cart built from that path.
-# Schema notes:
-#   - workoutType per exercise drives the cart sub-path dividers.
-#   - cartSizeOverride (optional) lets a featured workout exceed the default
-#     mood cart size (e.g. Back & Bis = 5-piece Muscle cart).
-#   - hook is the one-liner shown in carousel/admin.
-# Hero images: user-provided v3 (2026-07-01), delivered from Cloudinary
+# Auto-generated seed data — Featured Workouts v4 (8 picks)
+# Regenerated 2026-09-12. Replaces the v3 8-pick set.
+# Every workout below is real output of the app's own "Build Workout For Me"
+# generator (utils/workoutGenerator.ts), run against the live exercise
+# library, then hand-mapped to Wes's requested mood/flavor combos:
+#   Muscle Gainer - Booty Builder / Leg Strength, Sweat - Light Weights (Full
+#   Body) / Cardio, Calisthenics - Pull-Ups & Ab Work, Get Outside - Hill
+#   Sprints, Build Explosion x2 (Plyometric, Loaded Power).
+# Titles were shortened to drop the redundant "<Mood> - " prefix: the mood is
+# already rendered as its own label directly above the title on the featured
+# detail/cart screen (app/featured-workout-detail.tsx), so keeping it in the
+# title too produced a visible duplicate (e.g. "Muscle gainer" / "Muscle
+# Gainer - Booty Builder"). Fixed by naming these after the workout itself.
+# Hero images: user-provided v4 (2026-09-12), delivered from Cloudinary
 #   mood_app/featured_heroes/. optimizedImageUrl() injects f_auto,q_auto,c_limit
 #   at render time.
 
 PREVIEW_FEATURED_WORKOUTS = [
   {
-    "_id": "6a7c70ea6a76d293b68a1701",
-    "title": "Sweat - HIIT Circuit",
-    "mood": "Sweat / Burn Fat",
-    "duration": "~30 min",
-    "badge": "Trending",
-    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/sweat_hiit_circuit.jpg",
-    "difficulty": "Intermediate",
-    "hook": "Four stations. Full send. No place to hide.",
-    "exercises": [
-      {
-        "exerciseId": "",
-        "order": 0,
-        "name": "Tabata (Ropes)",
-        "equipment": "Battle Ropes",
-        "description": "Waves, slams, circles, jacks rotated for sixteen intervals.",
-        "battlePlan": "Instructions: Tabata — 20 seconds all-out, 10 seconds rest, then straight into the next move.\n• 4 rounds:\n• Rope waves — 20s\n• Rope slams — 20s\n• Rope circles — 20s\n• Jumping jacks — 20s",
-        "duration": "16 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241369/mood_app/workout_images/264ds1si_download.jpg",
-        "intensityReason": "Tabata sprints maximize power with managed fatigue.",
-        "difficulty": "intermediate",
-        "workoutType": "Sweat - Light Weights",
-        "moodCard": "Sweat / Burn Fat",
-        "moodTips": [
-          {
-            "icon": "body",
-            "title": "Drive force from hips and core",
-            "description": "Generate rope power from lower body, not just arms"
-          },
-          {
-            "icon": "flash",
-            "title": "Short, powerful bursts",
-            "description": "Focus on intensity over duration for each interval"
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 1,
-        "name": "AMRAP 10 (Slam Ball)",
-        "equipment": "Slam Balls",
-        "description": "Ten‑minute loop: slams, lateral slams, squat jumps.",
-        "battlePlan": "Instructions: AMRAP — as many rounds as possible in 10 minutes. Hold the ball at your chest on squat jumps. Rest only as needed.\n• Ball slams — 10 reps\n• Lateral slams — 5/side\n• Squat jumps — 10 reps",
-        "duration": "10–12 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241380/mood_app/workout_images/rfw3jxg0_download_3_.jpg",
-        "intensityReason": "Short AMRAP drives pace while keeping form tidy.",
-        "difficulty": "intermediate",
-        "workoutType": "Sweat - Light Weights",
-        "moodCard": "Sweat / Burn Fat",
-        "moodTips": [
-          {
-            "icon": "body",
-            "title": "Pivot hips on lateral slams",
-            "description": "Rotate through hips for side-to-side power"
-          },
-          {
-            "icon": "fitness",
-            "title": "Land jumps softly, stacked",
-            "description": "Absorb landing with bent knees and aligned spine"
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 2,
-        "name": "Tabata",
-        "equipment": "Kettlebells",
-        "description": "Four moves cycled Tabata‑style for sixteen total intervals.",
-        "battlePlan": "Instructions: Tabata — 20 seconds hard, 10 seconds rest, cycling the four moves in order.\n• 4 rounds:\n• Kettlebell swings — 20s\n• Goblet squats — 20s\n• Alternating lunges — 20s\n• High pulls — 20s",
-        "duration": "16 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241371/mood_app/workout_images/9cotsg82_download.jpg",
-        "intensityReason": "Timed sprints maximize output with controlled recovery.",
-        "difficulty": "intermediate",
-        "workoutType": "Sweat - Light Weights",
-        "moodCard": "Sweat / Burn Fat",
-        "moodTips": [
-          {
-            "icon": "body",
-            "title": "Neutral spine when fatigued",
-            "description": "Prioritize back position over speed when tired"
-          },
-          {
-            "icon": "fitness",
-            "title": "Drive legs on squats/lunges",
-            "description": "Push through floor with leg power, not momentum"
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 3,
-        "name": "Push And Drag Circuit",
-        "equipment": "Sled",
-        "description": "Four rounds: push, backward drag, lateral push, rest.",
-        "battlePlan": "Instructions: Low and powerful — drive through the whole foot, chest tall. The walk back to the start is part of your rest. 4 rounds — follow the 3 timed segments in order, no skipping.\nPerform 4 rounds:\n• 10 m Push (moderate)\n• 10 m Backward Drag\n• 10 m Lateral Push (sideways)\n• Rest 1 min",
-        "duration": "20–22 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241378/mood_app/workout_images/k8lo936w_download.jpg",
-        "intensityReason": "Mixed directions tax mechanics and aerobic capacity.",
-        "difficulty": "intermediate",
-        "workoutType": "Sweat - Light Weights",
-        "moodCard": "Sweat / Burn Fat",
-        "moodTips": [
-          {
-            "icon": "walk",
-            "title": "Lateral: hips square, steps controlled",
-            "description": "Keep hips facing forward during sideways movement"
-          },
-          {
-            "icon": "body",
-            "title": "Drag: knees bent, chest tall",
-            "description": "Maintain athletic posture while pulling backward"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "_id": "6a7c70ea6a76d293b68a1702",
-    "title": "Muscle Gainer - Back & Bis Volume",
+    "_id": "6b0a11f0a1b2c3d4e5f60a01",
+    "title": "Booty Builder",
     "mood": "Muscle gainer",
-    "duration": "~50 min",
-    "badge": "Top pick",
-    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/muscle_gainer_back_and_bis_volume.jpg",
+    "duration": "60 min",
+    "badge": "Build Muscle",
+    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1789193572/mood_app/featured_heroes/booty_builder.jpg",
     "difficulty": "Intermediate",
-    "hook": "Pull heavy, curl to failure. Build the taper.",
-    "cartSizeOverride": 5,
-    "exercises": [
-      {
-        "exerciseId": "",
-        "order": 0,
-        "name": "Pull-Ups + Iso Finisher",
-        "equipment": "Straight pull up bar",
-        "description": "Full pull-ups finished with a static top hold",
-        "battlePlan": "Instructions: Strict reps — no kipping. The 10s chin-over-bar hold caps every set.\n3 rounds\n• 6 Pull-Ups\n• Finish with 10s chin-over-bar hold\nRest 90s",
-        "duration": "12–14 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240736/mood_app/workout_images/ntsbiqfh_assisted_pull_ups_1.jpg",
-        "intensityReason": "Isometric finisher extends time under tension",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Back",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "construct",
-            "title": "Reps stay strict",
-            "description": "Finish all reps before adding the hold."
-          },
-          {
-            "icon": "trending-up",
-            "title": "Hold with intent",
-            "description": "Chest high, shoulders depressed."
-          },
-          {
-            "icon": "timer",
-            "title": "Peak contraction is motionless",
-            "description": "No shaking, no bar drift."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 1,
-        "name": "Slow Neg Row",
-        "equipment": "T bar row machine",
-        "description": "Time-under-tension row progression provides a challenging switchup",
-        "battlePlan": "Instructions: Control the lowering — four seconds down, every rep. 4 sets of 8 — rest 90s between sets.\n• Neutral grip row — 4 × 8 (4s eccentric)\n• Rest 90s between sets",
-        "duration": "12–14 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240561/mood_app/workout_images/xdrugsxs_tr.jpg",
-        "intensityReason": "3–4s eccentric tempo increases hypertrophy effect",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Back",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "trending-up",
-            "title": "Explode to chest, lower slow & steady.",
-            "description": "Fast concentric, slow eccentric maximizes muscle stimulus."
-          },
-          {
-            "icon": "timer",
-            "title": "Keep weight lighter to maintain control.",
-            "description": "Reduced load allows proper tempo execution and form."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 2,
-        "name": "Underhand Row",
-        "equipment": "Seated Chest Supported Row Machine",
-        "description": "Stronger pull variation for controlled overload",
-        "battlePlan": "Instructions: Moderate to heavy — leave two clean reps in the tank. 4 sets of 8–10 — rest 75s between sets.\n• Underhand grip row — 4 × 8–10\n• Rest 75s between sets",
-        "duration": "12–14 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240901/mood_app/workout_images/pm9titrm_scsrgr.jpg",
-        "intensityReason": "Underhand angle shifts load to lats and biceps",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Back",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "construct",
-            "title": "Keep wrists straight, elbows close to torso.",
-            "description": "Proper wrist alignment and elbow path optimize pulling mechanics."
-          },
-          {
-            "icon": "timer",
-            "title": "Hold 1s at contraction to deepen squeeze.",
-            "description": "Peak contraction pause enhances muscle activation."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 3,
-        "name": "Wide-Grip EZ Curl",
-        "equipment": "EZ Curl Bar",
-        "description": "Standard curl workout biasing short head.",
-        "battlePlan": "Instructions: Elbows pinned to your sides — wide grip biases the inner biceps. No swinging. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Standard Sets\n• 4×10 Wide-Grip EZ Curl — standard reps\nRest 75s",
-        "duration": "14–16 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iskvqgub_download_4_.jpg",
-        "intensityReason": "Wide grip targets short head for peak development",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Biceps",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "hand-left",
-            "title": "Grip wider than shoulders",
-            "description": "Short-head emphasis"
-          },
-          {
-            "icon": "body",
-            "title": "No torso swing",
-            "description": "Keeps tension pure"
-          },
-          {
-            "icon": "flash",
-            "title": "Squeeze hard at top",
-            "description": "Short head pumps fast"
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 4,
-        "name": "Incline Cable Curl",
-        "equipment": "Cable Machine",
-        "description": "Standard long-head curl workout using shoulder extension.",
-        "battlePlan": "Instructions: Keep constant cable tension — never let the stack touch down between reps. 4 sets of 10 — rest 75s between sets.\nBattle Plan — Standard Sets\n• 4×10 Incline Cable Curl — standard reps\nRest 75s",
-        "duration": "14–16 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240905/mood_app/workout_images/qi05o2xg_download_19_.jpg",
-        "intensityReason": "Incline position with cable creates extreme long-head stretch",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Biceps",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "body",
-            "title": "Bench low, arms back",
-            "description": "Long-head bias"
-          },
-          {
-            "icon": "timer",
-            "title": "Don't rush the bottom",
-            "description": "Stretch drives growth"
-          },
-          {
-            "icon": "trending-up",
-            "title": "Lean back slightly",
-            "description": "Cable stretch amplifies pump"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "_id": "6a7c70ea6a76d293b68a1703",
-    "title": "Sweat - Cardio Engine",
-    "mood": "Sweat / Burn Fat",
-    "duration": "~35 min",
-    "badge": "Popular",
-    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/sweat_cardio_engine.jpg",
-    "difficulty": "Intermediate",
-    "hook": "Bike hard, then lift light. Build the engine, torch the tank.",
-    "exercises": [
-      {
-        "exerciseId": "",
-        "order": 0,
-        "name": "Pyramid Ride",
-        "equipment": "Stationary bike",
-        "description": "Pyramid intensity progression from easy\nto hard and back down. 3 complete rounds.\n ",
-        "battlePlan": "Instructions: Ride the pyramid up and back down each round — easy is conversational, hard means you can't talk. 3 rounds — follow the 5 timed segments in order, no skipping.\n• 3 rounds:\n• 3 min easy\n• 2 min moderate\n• 1 min hard\n• 2 min moderate\n• 3 min easy",
-        "duration": "30 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240940/mood_app/workout_images/706vd22i_download_2_.jpg",
-        "intensityReason": "Progressive pyramids challenge sustained effort.",
-        "difficulty": "intermediate",
-        "workoutType": "Sweat - Cardio Based",
-        "moodCard": "Sweat / Burn Fat",
-        "moodTips": [
-          {
-            "icon": "timer",
-            "title": "Active Recovery",
-            "description": "Moderate phases are active recovery; track cadence."
-          },
-          {
-            "icon": "refresh",
-            "title": "Breathing Rhythm",
-            "description": "Use strong, steady breathing to maintain rhythm."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 1,
-        "name": "DB Cardio Circuit",
-        "equipment": "Dumbbells",
-        "description": "Four 4‑min rounds of squats, lunges, and\npush press with programmed rest. Light load.\n ",
-        "battlePlan": "Instructions: 30s per station, straight into the next — the 30s rest closes each round. Pick loads you can move fast.\n• 4 rounds (4 min each):\n• 30s Goblet Squat\n• 30s Alternating Reverse Lunge\n• 30s Push Press\n• 30s Rest",
-        "duration": "16–18 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240916/mood_app/workout_images/xgk4blng_download_2_.jpg",
-        "intensityReason": "Intervals raise HR while preserving form and control.",
-        "difficulty": "intermediate",
-        "workoutType": "Sweat - Cardio Based",
-        "moodCard": "Sweat / Burn Fat",
-        "moodTips": [
-          {
-            "icon": "body",
-            "title": "Chest tall; knees track toes",
-            "description": "Maintain upright posture and proper knee alignment over feet."
-          },
-          {
-            "icon": "fitness",
-            "title": "Exhale hard on push press",
-            "description": "Use a forceful exhale to brace core during the pressing motion."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "_id": "6a7c70ea6a76d293b68a1704",
-    "title": "Muscle Gainer - Chest & Shoulders",
-    "mood": "Muscle gainer",
-    "duration": "~50 min",
-    "badge": "Trending",
-    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/muscle_gainer_chest_and_shoulders.jpg",
-    "difficulty": "Intermediate",
-    "hook": "Push day done right. Press, fly, and cap the delts.",
-    "cartSizeOverride": 5,
-    "exercises": [
-      {
-        "exerciseId": "",
-        "order": 0,
-        "name": "Working Incline",
-        "equipment": "Incline bench",
-        "description": "Traditional incline benching with meaningful working weight.",
-        "battlePlan": "Instructions: Increase load only if all reps stay clean. 5 sets of 6 — rest 90s between sets.\nSets: 5\nRest: 90s\n\n• Incline Press — 5 × 6",
-        "duration": "14–18 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241313/mood_app/workout_images/lnd9yph3_ibp.png",
-        "intensityReason": "Traditional incline benching with meaningful working weight.",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Chest",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "barbell",
-            "title": "Reps should challenge control",
-            "description": "Bar speed slows slightly, form doesn't."
-          },
-          {
-            "icon": "construct",
-            "title": "Same angle every set",
-            "description": "Consistency drives progress."
-          },
-          {
-            "icon": "people",
-            "title": "Spotter optional",
-            "description": "Useful on later sets."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 1,
-        "name": "Working Dumbbells",
-        "equipment": "Dumbbells",
-        "description": "Traditional dumbbell pressing with meaningful load.",
-        "battlePlan": "Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom — rest 90s between exercises. Increase weight only if reps stay clean.\nSets: 5\nRest: 90s\n\n• DB Flat Press — 3 × 8\n• DB Incline Press — 2 × 8",
-        "duration": "14–18 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240773/mood_app/workout_images/msod5irt_download_19_.jpg",
-        "intensityReason": "Traditional dumbbell pressing with meaningful load.",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Chest",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "barbell",
-            "title": "Reps should challenge control",
-            "description": "Slight slowdown is fine."
-          },
-          {
-            "icon": "arrow-forward",
-            "title": "Press inward at the top",
-            "description": "Finish with chest intent."
-          },
-          {
-            "icon": "people",
-            "title": "Spotter optional",
-            "description": "Useful for heavier sets."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 2,
-        "name": "Working Cables",
-        "equipment": "Cable crossover",
-        "description": "Traditional cable flyes with meaningful load.",
-        "battlePlan": "Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom. Increase load only if reps stay clean.\nSets: 5\n\n• Mid Cable Fly — 3 × 12\n• Low-to-High Cable Fly — 2 × 12",
-        "duration": "14–18 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240780/mood_app/workout_images/vlu2ckag_download_11_.jpg",
-        "intensityReason": "Traditional cable flyes with meaningful load.",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Chest",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "flame",
-            "title": "Reps should burn",
-            "description": "Chest stays engaged."
-          },
-          {
-            "icon": "construct",
-            "title": "Same pulley height",
-            "description": "Consistency matters."
-          },
-          {
-            "icon": "shield",
-            "title": "Push safely",
-            "description": "Cables are forgiving."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 3,
-        "name": "Arnold Press Builder",
-        "equipment": "Dumbbells",
-        "description": "Standard rotational press workout for full delt recruitment.",
-        "battlePlan": "Instructions: Rotate through the full arc — palms face you at the bottom, forward at the top. Smooth, no jerking. 5 sets of 10 — rest 75s between sets.\nBattle Plan — Standard Sets\n• 5×10 Arnold Press — standard reps\nRest 75s",
-        "duration": "14–16 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240980/mood_app/workout_images/64d4m132_arnold_press.jpg",
-        "intensityReason": "Standard rotational press workout for full delt recruitment.",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Shoulders",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "refresh",
-            "title": "Rotate smoothly through the press",
-            "description": "All delt heads contribute."
-          },
-          {
-            "icon": "trending-down",
-            "title": "Control the bottom",
-            "description": "Prevents shoulder dump."
-          },
-          {
-            "icon": "people",
-            "title": "Spotter optional",
-            "description": "Useful near failure."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 4,
-        "name": "Cable Lateral Raise Fatigue Builder",
-        "equipment": "Cable Crossover Machine",
-        "description": "Pulse-rep isolation workout for extended time under tension.",
-        "battlePlan": "Instructions: Pulses live in the top third — short, controlled, shoulder stays down away from your ear. 4 sets of 15 — rest 75s between sets.\nBattle Plan — Pulse Sets\n• 4×15 Cable Lateral Raise — pulse reps (top ⅓)\nRest 75s",
-        "duration": "15–17 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241019/mood_app/workout_images/ndk3n5nw_image.jpg",
-        "intensityReason": "Pulse-rep isolation workout for extended time under tension.",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Shoulders",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "flame",
-            "title": "Short pulses keep tension constant",
-            "description": "Big burn, low joint stress."
-          },
-          {
-            "icon": "hand-left",
-            "title": "No swinging under fatigue",
-            "description": "Cables expose cheats fast."
-          },
-          {
-            "icon": "checkmark-circle",
-            "title": "Chase burn, not numbers",
-            "description": "Use a weight that never lets the delt relax."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "_id": "6a7c70ea6a76d293b68a1705",
-    "title": "Build Explosion - Power Complex",
-    "mood": "Build Explosion",
-    "duration": "~30 min",
-    "badge": "New",
-    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/build_explosion_power_complex.jpg",
-    "difficulty": "Intermediate",
-    "hook": "Load it, launch it, land it. Train like an athlete.",
+    "hook": "Glutes on notice. Volume, drops, and burn from every angle.",
     "cartSizeOverride": 4,
     "exercises": [
       {
         "exerciseId": "",
         "order": 0,
-        "name": "Trap Bar Jump",
-        "equipment": "Trap Hex Bar",
-        "description": "Small jump with load; soft stick; deliberate stance reset.",
-        "battlePlan": "Instructions: Maximum intent on every jump — reset your stance between reps. 5 sets of 3 — rest 90s between sets.\n• Trap bar jumps — 5 × 3\n• Rest 90s between sets",
-        "duration": "10–12 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241140/mood_app/workout_images/dpe352d2_tbj.jpg",
-        "intensityReason": "Loaded jumps build speed-strength with aligned mechanics.",
+        "name": "Hip Thrust Drop Set",
+        "equipment": "Hip Thruster Equipment",
+        "description": "Extended thrust sets using fast load reductions",
+        "battlePlan": "Instructions: Hit the reps, strip weight immediately (no rest), and keep going — the drop IS the set. 3 sets — all 3 moves in order, then rest 120s.\n3 sets\n• 8 Thrusts\n• Thrust drop → 8\n• Thrust drop → 8\nRest 120s",
+        "duration": "14–16 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240654/mood_app/workout_images/60kuhstx_hip_thrust.jpg",
+        "intensityReason": "Drop sets extend time under tension for hypertrophy",
         "difficulty": "intermediate",
-        "workoutType": "Build Explosion - Dynamic",
-        "moodCard": "Build Explosion",
+        "workoutType": "Muscle Building - Glutes",
+        "moodCard": "Muscle gainer",
         "moodTips": [
           {
-            "icon": "body",
-            "title": "Load",
-            "description": "Light load; ribs stacked; avoid deep dip on countermovement"
+            "icon": "flash",
+            "title": "Immediate drops",
+            "description": "Reduce load ~25% without resting.",
           },
           {
-            "icon": "footsteps",
-            "title": "Landing",
-            "description": "Land mid-foot; absorb softly; match jump height across sets"
-          }
-        ]
+            "icon": "construct",
+            "title": "Same mechanics",
+            "description": "Range and tempo stay identical.",
+          },
+          {
+            "icon": "flame",
+            "title": "Chase deep burn",
+            "description": "Continuous tension is goal.",
+          },
+        ],
       },
       {
         "exerciseId": "",
         "order": 1,
-        "name": "Clean to Jerk",
-        "equipment": "Kettlebells",
-        "description": "Pop to rack; dip-drive; punch under; stable overhead stick.",
-        "battlePlan": "Instructions: Every rep starts from a clean setup — reset your feet and grip. Power comes from the hips, not the arms. 4 sets of 4 per side — rest 90s between sets, take all of it.\n4 rounds\n• 4 per side Clean → Jerk\nRest 90s",
-        "duration": "10–12 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241149/mood_app/workout_images/gxkmxo9y_download_6_.jpg",
-        "intensityReason": "Clean primes rack; jerk expresses rapid vertical force.",
+        "name": "Pause Kickback",
+        "equipment": "Glute Kick Machine",
+        "description": "Strict tempo isolates stronger contraction at end",
+        "battlePlan": "Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8 per side — rest 90s between sets, take all of it.\n3 sets\n• 8 per leg Pause Kickbacks\nRest 90s",
+        "duration": "14–16 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241397/mood_app/workout_images/k5zii6kf_download_8_.jpg",
+        "intensityReason": "Added pause loads glute contraction maximally",
         "difficulty": "intermediate",
-        "workoutType": "Build Explosion - Dynamic",
-        "moodCard": "Build Explosion",
+        "workoutType": "Muscle Building - Glutes",
+        "moodCard": "Muscle gainer",
+        "moodTips": [
+          {
+            "icon": "timer",
+            "title": "Pause 2s with knee extended back",
+            "description": "Extended pause maximizes peak contraction and muscle activation.",
+          },
+          {
+            "icon": "construct",
+            "title": "Slow return; avoid pad snapping",
+            "description": "Controlled eccentric enhances muscle development and joint safety.",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 2,
+        "name": "Cable High Kickback",
+        "equipment": "Single Stack Cable Machine",
+        "description": "Top‑end contraction isolates and strengthens glutes",
+        "battlePlan": "Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 3 sets of 8–10 per side — rest 75–90s between sets, take all of it.\n3 sets\n• 8–10 per leg Kickbacks (2s pause top)\nRest 75–90s",
+        "duration": "14–16 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241390/mood_app/workout_images/coxrp5yp_gk.jpg",
+        "intensityReason": "Kickbacks with higher angle add peak glute tension",
+        "difficulty": "intermediate",
+        "workoutType": "Muscle Building - Glutes",
+        "moodCard": "Muscle gainer",
+        "moodTips": [
+          {
+            "icon": "construct",
+            "title": "Ankle cuff, pulley low, hinge slightly forward",
+            "description": "Low pulley position creates optimal resistance curve for glutes.",
+          },
+          {
+            "icon": "timer",
+            "title": "Kick upward + back, pause two seconds top",
+            "description": "Pause at peak contraction maximizes muscle activation and control.",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 3,
+        "name": "Banded Abduction",
+        "equipment": "Hip Abductor Machine",
+        "description": "Combo band+machine emphasizes hypertrophy work",
+        "battlePlan": "Instructions: 4 sets of 12 — rest 90s between sets, take all of it.\n4 sets\n• 12 Banded Abductions\nRest 90s",
+        "duration": "14–16 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241400/mood_app/workout_images/o6mep0pr_ha.jpg",
+        "intensityReason": "Band tension increases abductor contraction top end",
+        "difficulty": "intermediate",
+        "workoutType": "Muscle Building - Glutes",
+        "moodCard": "Muscle gainer",
+        "moodTips": [
+          {
+            "icon": "resize",
+            "title": "Strap band above knees, press outward",
+            "description": "Band creates additional resistance throughout the range of motion.",
+          },
+          {
+            "icon": "construct",
+            "title": "Keep knees wide, resist on way in",
+            "description": "Controlled return prevents band snap-back and maintains tension.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    "_id": "6b0a11f0a1b2c3d4e5f60a02",
+    "title": "Leg Day Strength",
+    "mood": "Muscle gainer",
+    "duration": "75 min",
+    "badge": "Lift Heavy",
+    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1789193577/mood_app/featured_heroes/leg_strength.jpg",
+    "difficulty": "Intermediate",
+    "hook": "Heavy compounds, low reps. Build real leg strength.",
+    "cartSizeOverride": 5,
+    "exercises": [
+      {
+        "exerciseId": "",
+        "order": 0,
+        "name": "Sissy Squat 1½ Reps",
+        "equipment": "Barbell",
+        "description": "High tension squatting style grows endurance fast",
+        "battlePlan": "Instructions: Sink to the bottom, drive halfway up, sink back down, then stand tall — that's ONE rep. The half rep stays in the bottom, where it burns. 3 sets of 8 — rest 90s between sets, take all of it.\n3 sets\n• 8 Combo Reps (half + full = 1)\nRest 90s",
+        "duration": "14–16 min",
+        "imageUrl": "https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/fwtkmsgm_bb%20sissy%20squat%202.png",
+        "intensityReason": "Half+full rep sequence lengthens quad activation",
+        "difficulty": "intermediate",
+        "workoutType": "Muscle Building - Quads",
+        "moodCard": "Muscle gainer",
+        "moodTips": [
+          {
+            "icon": "refresh",
+            "title": "Perform half rep, then full as one",
+            "description": "Complex rep pattern extends time under tension for quads.",
+          },
+          {
+            "icon": "construct",
+            "title": "Keep bar tight, don't roll forward",
+            "description": "Maintain bar position and posture throughout complex movement.",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 1,
+        "name": "Heavy Extensions",
+        "equipment": "Leg Extension Machine",
+        "description": "Machine allows safe overload using strict form",
+        "battlePlan": "Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 sets\n• 8–10 Heavy Extensions\nRest 90s",
+        "duration": "14–16 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240641/mood_app/workout_images/er89oli2_download_23_.jpg",
+        "intensityReason": "Progressive heavy loading maximizes quad growth",
+        "difficulty": "intermediate",
+        "workoutType": "Muscle Building - Quads",
+        "moodCard": "Muscle gainer",
         "moodTips": [
           {
             "icon": "fitness",
-            "title": "Rack",
-            "description": "Rack thumb in; elbow down/in; wrist neutral"
+            "title": "Grip handles tight to stabilize",
+            "description": "Secure grip maintains stability for heavy quad extensions.",
+          },
+          {
+            "icon": "flash",
+            "title": "Drive pad up forceful, control back",
+            "description": "Explosive concentric with controlled eccentric builds strength.",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 2,
+        "name": "1½ Rep Leg Extensions",
+        "equipment": "Leg Extension Machine",
+        "description": "Longer muscle strain increases hypertrophy response",
+        "battlePlan": "Instructions: Every rep = one full rep plus a half rep in the hardest range before you finish. 3 sets of 8–10 — rest 90s between sets, take all of it.\n3 sets\n• 8–10 Total Combo Reps\nRest 90s",
+        "duration": "14–16 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240639/mood_app/workout_images/6hwlna7o_quad_ext.jpg",
+        "intensityReason": "Half+full rep cycle expands quad time under load",
+        "difficulty": "intermediate",
+        "workoutType": "Muscle Building - Quads",
+        "moodCard": "Muscle gainer",
+        "moodTips": [
+          {
+            "icon": "refresh",
+            "title": "Perform one half + one full rep",
+            "description": "Complex rep pattern extends time under tension significantly.",
+          },
+          {
+            "icon": "construct",
+            "title": "Keep tempo smooth, don't drop pad",
+            "description": "Controlled movement maintains tension throughout range.",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 3,
+        "name": "Barbell Pause RDL",
+        "equipment": "Barbell",
+        "description": "Strict hold eliminates momentum, builds hamstring size",
+        "battlePlan": "Instructions: Own the lowering — count the seconds down, then move normally on the way up. Dead-stop pause — kill all momentum at the pause point before finishing the rep. 4 sets of 8 — rest 90s between sets, take all of it.\n4 sets\n• 8 RDLs (2s pause at shin)\nRest 90s",
+        "duration": "14–16 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240638/mood_app/workout_images/46ki5rsl_download_15_.jpg",
+        "intensityReason": "Mid‑hinge pause increases hamstring strength time",
+        "difficulty": "intermediate",
+        "workoutType": "Muscle Building - Hamstrings",
+        "moodCard": "Muscle gainer",
+        "moodTips": [
+          {
+            "icon": "timer",
+            "title": "Pause 2s across shin level",
+            "description": "Isometric hold at stretched position builds strength.",
+          },
+          {
+            "icon": "construct",
+            "title": "Keep bar tight against body always",
+            "description": "Close bar path maintains hamstring tension throughout.",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 4,
+        "name": "Heavy Leg Curl",
+        "equipment": "Leg Curl Machine",
+        "description": "Increased weight overload boosts hypertrophy",
+        "battlePlan": "Instructions: 4 sets of 8–10 — rest 90s between sets, take all of it.\n4 sets\n• 8–10 Heavy Curls\nRest 90s",
+        "duration": "14–16 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240637/mood_app/workout_images/3vkyuj1o_download_19_.jpg",
+        "intensityReason": "Progressive loading builds hamstrings thickness",
+        "difficulty": "intermediate",
+        "workoutType": "Muscle Building - Hamstrings",
+        "moodCard": "Muscle gainer",
+        "moodTips": [
+          {
+            "icon": "shield",
+            "title": "Brace core firm, pad curl explosive",
+            "description": "Core stability allows maximum force transfer to hamstrings.",
+          },
+          {
+            "icon": "flash",
+            "title": "Finish with hard squeeze up top",
+            "description": "Peak contraction at top maximizes muscle activation.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    "_id": "6b0a11f0a1b2c3d4e5f60a03",
+    "title": "Full Body Light & Fast",
+    "mood": "Sweat / Burn Fat",
+    "duration": "32 min",
+    "badge": "Resistance",
+    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1789193587/mood_app/featured_heroes/sweat_light_weights.jpg",
+    "difficulty": "Intermediate",
+    "hook": "Light loads, quick pace. A full-body burn that never gets heavy.",
+    "cartSizeOverride": 2,
+    "exercises": [
+      {
+        "exerciseId": "",
+        "order": 0,
+        "name": "EMOM 12 (BB)",
+        "equipment": "Barbells",
+        "description": "Odd minutes thrusters; even minutes sumo high pulls.",
+        "battlePlan": "Instructions: Work for 12 minutes, alternating each minute.\n• Odd min, 8 Thrusters\n• Even min, 10 Sumo Deadlift High Pulls",
+        "duration": "12 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241370/mood_app/workout_images/2tl6mdrg_download.jpg",
+        "intensityReason": "Alternating minutes sharpen cadence and repeatability.",
+        "difficulty": "intermediate",
+        "workoutType": "Weights Only",
+        "moodCard": "Sweat / Burn Fat",
+        "moodTips": [
+          {
+            "icon": "fitness",
+            "title": "Thrusters: rebound into press",
+            "description": "Use squat momentum to power the overhead press",
+          },
+          {
+            "icon": "trending-up",
+            "title": "High pulls: elbows high, bar close",
+            "description": "Lead with elbows and keep bar traveling close to body",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 1,
+        "name": "Sprint Intervals",
+        "equipment": "Sled",
+        "description": "Ten rounds: 10 m sprint push, walk back recovery pacing.",
+        "battlePlan": "Instructions: Own the lowering — count the seconds down, then move normally on the way up. Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. 10 sets of ~10m — rest walk back slow between sets, take all of it.\nPerform 10 rounds:\n• Sprint Push — ~10m\nRest: walk back slow",
+        "duration": "20 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241377/mood_app/workout_images/k6ha38p9_download_1_.jpg",
+        "intensityReason": "Short sprint pushes spike power with full walkback rest.",
+        "difficulty": "intermediate",
+        "workoutType": "Weights Only",
+        "moodCard": "Sweat / Burn Fat",
+        "moodTips": [
+          {
+            "icon": "flash",
+            "title": "Explode with leg drive",
+            "description": "Push forcefully through ground with each step",
+          },
+          {
+            "icon": "walk",
+            "title": "Keep stride short and quick",
+            "description": "Use rapid choppy steps for maximum power output",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    "_id": "6b0a11f0a1b2c3d4e5f60a04",
+    "title": "Cardio Blast",
+    "mood": "Sweat / Burn Fat",
+    "duration": "33 min",
+    "badge": "Conditioning",
+    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1789193585/mood_app/featured_heroes/sweat_cardio.jpg",
+    "difficulty": "Intermediate",
+    "hook": "Jump rope to elliptical. Pure cardio, smartly paced.",
+    "cartSizeOverride": 2,
+    "exercises": [
+      {
+        "exerciseId": "",
+        "order": 0,
+        "name": "Combo Jumps",
+        "equipment": "Jump rope",
+        "description": "Combination jumping patterns with basic,\nalternate foot, and double bounce styles.\n ",
+        "battlePlan": "Instructions: 4 rounds — follow the 4 timed segments in order, no skipping.\n• 1 min basic jump\n• 30 sec alternate foot\n• 30 sec double bounce\n• 1 min rest",
+        "duration": "15 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240959/mood_app/workout_images/vj88wh1r_download.jpg",
+        "intensityReason": "Multiple jumping patterns challenge intermediate coordination.",
+        "difficulty": "intermediate",
+        "workoutType": "Cardio Only",
+        "moodCard": "Sweat / Burn Fat",
+        "moodTips": [
+          {
+            "icon": "body",
+            "title": "Soft Landing",
+            "description": "Land softly to protect shins and joints.",
+          },
+          {
+            "icon": "flash",
+            "title": "Efficient Turns",
+            "description": "Use short, efficient rope turns; minimize arm movement.",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 1,
+        "name": "Reverse & Forward",
+        "equipment": "Elliptical",
+        "description": "Forward and reverse elliptical intervals\nwith sprint finishes for muscle balance.\n ",
+        "battlePlan": "Instructions: Cap every set with the finisher: 2 min easy — it counts, don't skip it. 4 rounds — follow the 3 timed segments in order, no skipping.\n• 3 min forward (resistance 6)\n• 2 min reverse (resistance 4)\n• 1 min sprint (forward, resistance 5)\n• finish with 2 min easy",
+        "duration": "18 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240936/mood_app/workout_images/0knopdsq_download_3_.jpg",
+        "intensityReason": "Direction changes engage muscles with cardio demand.",
+        "difficulty": "intermediate",
+        "workoutType": "Cardio Only",
+        "moodCard": "Sweat / Burn Fat",
+        "moodTips": [
+          {
+            "icon": "body",
+            "title": "Core Control",
+            "description": "Core tight, avoid knee overextension in reverse.",
+          },
+          {
+            "icon": "refresh",
+            "title": "Direction Switch",
+            "description": "Exhale fully when switching direction to reset rhythm.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    "_id": "6b0a11f0a1b2c3d4e5f60a05",
+    "title": "Pull-Up & Core Builder",
+    "mood": "Calisthenics",
+    "duration": "82 min",
+    "badge": "Pull",
+    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1789193576/mood_app/featured_heroes/calisthenics.jpg",
+    "difficulty": "Intermediate",
+    "hook": "Pull-up bar and ab wheel. Build real pulling strength.",
+    "cartSizeOverride": 4,
+    "exercises": [
+      {
+        "exerciseId": "",
+        "order": 0,
+        "name": "Eccentric Lines",
+        "equipment": "Pull up bar",
+        "description": "Chin-up eccentrics, isometric holds, knee raises.",
+        "battlePlan": "Instructions: Own the lowering — count the seconds down, then move normally on the way up. The hold is strict: locked position, squeezing hard, no drifting. Work top to bottom.\nEccentric Chin-Up\n• 4 × 3–4 (RPE 5–6), 90s rest\nTop Isometric Pullup Hold (chin over bar)\n• 3 × 10–15s (RPE 5), 75s rest\nHanging Knee Raise\n• 3 × 10–12 (RPE 5), 60s rest",
+        "duration": "22–28 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241201/mood_app/workout_images/7475d60t_chin_ups.jpg",
+        "intensityReason": "Negatives build strength through full, safe range.",
+        "difficulty": "intermediate",
+        "workoutType": "Calisthenics",
+        "moodCard": "Calisthenics",
+        "moodTips": [
+          {
+            "icon": "body",
+            "title": "4–5s negatives",
+            "description": "4–5s negatives",
+          },
+          {
+            "icon": "body",
+            "title": "Hold chest-up position",
+            "description": "Hold chest-up position",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 1,
+        "name": "Wheel Lines",
+        "equipment": "Ab wheel",
+        "description": "Kneeling rolls fuller range, hollow rocks to polish.",
+        "battlePlan": "Instructions: Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. Work top to bottom.\nKneeling Ab Wheel (fuller ROM)\n• 4 × 6–8 (RPE 5), 90s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest\nSide Plank with Hip Tap\n• 3 × 8–10/side (RPE 5), 45–60s rest",
+        "duration": "14–18 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241241/mood_app/workout_images/pgkoxn00_download.jpg",
+        "intensityReason": "Moderate volume kneeling rolls challenge midline.",
+        "difficulty": "intermediate",
+        "workoutType": "Calisthenics",
+        "moodCard": "Calisthenics",
+        "moodTips": [
+          {
+            "icon": "body",
+            "title": "Smooth 3s lowers",
+            "description": "Control the eccentric for 3 seconds to maximize tension",
+          },
+          {
+            "icon": "leaf",
+            "title": "Exhale pulling back",
+            "description": "Breathe out forcefully during concentric to aid core stability",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 2,
+        "name": "Volume Pull",
+        "equipment": "Pull up bar",
+        "description": "Assisted pullups, inverted rows, hollow rocks finish.",
+        "battlePlan": "Instructions: Every rep at full intent — reset your stance between reps; speed beats load. Match the RPE, not a number on the bar — RPE 7 means 3 clean reps left in the tank. Work top to bottom.\nBand-Assisted Pullup\n• 4 × 6–8 (RPE 5), 90s rest\nInverted Row (feet flat)\n• 4 × 8–10 (RPE 5), 75s rest\nHollow Rock\n• 3 × 10–15 (RPE 5), 60s rest",
+        "duration": "22–28 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241216/mood_app/workout_images/cvdrz3i5_inverted_rows.jpg",
+        "intensityReason": "Moderate band assist allows higher-quality volume.",
+        "difficulty": "intermediate",
+        "workoutType": "Calisthenics",
+        "moodCard": "Calisthenics",
+        "moodTips": [
+          {
+            "icon": "body",
+            "title": "Smooth 2–1–3 tempo",
+            "description": "Smooth 2–1–3 tempo",
+          },
+          {
+            "icon": "body",
+            "title": "Keep ribs down in rocks",
+            "description": "Keep ribs down in rocks",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 3,
+        "name": "Hanging Leg Raise",
+        "equipment": "Pull-Up Bar (abs)",
+        "description": "Straight-leg raises increasing lower ab strength and tension",
+        "battlePlan": "Instructions: 4 sets of 10–12 — rest 75s between sets, take all of it.\n4 sets\n• 10–12 reps\nRest 75s",
+        "duration": "10–12 min",
+        "imageUrl": "https://customer-assets.emergentagent.com/job_ac961e42-7fcc-4980-8c0c-d7055d6cef31/artifacts/btrm5pgt_pull%20up%20bar%20leg%20raise.png",
+        "intensityReason": "Straight legs lengthen the lever and overload the lower abs",
+        "difficulty": "intermediate",
+        "workoutType": "Calisthenics",
+        "moodCard": "Calisthenics",
+        "moodTips": [
+          {
+            "icon": "remove",
+            "title": "Keep legs as straight as possible",
+            "description": "Bent knees reduce the challenge significantly.",
           },
           {
             "icon": "arrow-up",
-            "title": "Jerk",
-            "description": "Dip shallow; soft land; lock elbows solid"
-          }
-        ]
+            "title": "Lift from your pelvis, not hips alone",
+            "description": "Posterior tilt fully engages the abs.",
+          },
+          {
+            "icon": "flame",
+            "title": "The burn should build gradually",
+            "description": "Especially in the lower abs.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    "_id": "6b0a11f0a1b2c3d4e5f60a06",
+    "title": "Hill Sprints",
+    "mood": "Get Outside",
+    "duration": "44 min",
+    "badge": "Explosive",
+    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1789193582/mood_app/featured_heroes/outdoor_hill_run.jpg",
+    "difficulty": "Intermediate",
+    "hook": "Find a hill. Sprint it. Repeat until it hurts.",
+    "cartSizeOverride": 2,
+    "exercises": [
+      {
+        "exerciseId": "",
+        "order": 0,
+        "name": "Hill Power Mix",
+        "equipment": "Hills",
+        "description": "Powerful jumps plus sprints develop rhythm and drive uphill.",
+        "battlePlan": "Instructions: Uphill bounds: walk down. Uphill skips for height: walk down. Uphill sprints: walk down. Work top to bottom.\n• Uphill Bounds — 6 × (12–15)\n• Uphill Skips For Height — 6 × (~25–30yd)\n• Uphill Sprints — 6 × (~25–30yd)",
+        "duration": "18–24 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240859/mood_app/workout_images/zqqramht_download_13_.jpg",
+        "intensityReason": "Bounds, skips, sprints build elastic strength safely.",
+        "difficulty": "intermediate",
+        "workoutType": "Outdoor",
+        "moodCard": "Get Outside",
+        "moodTips": [
+          {
+            "icon": "trending-up",
+            "title": "Bounds: knee drive then hip extend; stick landings under control",
+            "description": "Drive knee high, extend hip fully, and land with stability",
+          },
+          {
+            "icon": "walk",
+            "title": "Avoid heel striking uphill; keep cadence snappy and forward",
+            "description": "Land on midfoot with quick turnover for uphill efficiency",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 1,
+        "name": "Strength Endurance Mix",
+        "equipment": "Hills",
+        "description": "Lunges, broad jumps, sprints reinforce controlled power.",
+        "battlePlan": "Instructions: Sprint at max effort, then walk the FULL recovery — showing up fresh for every rep is the whole workout. Every rep at full intent — reset your stance between reps; speed beats load. 6 rounds — all 3 moves in order.\n• 6 rounds:\n\n• Uphill Walking Lunges — ~20yd\n6–8 uphill broad jumps (~20 yd)\n• Uphill Sprint — ~20yd\nWalk down recovery",
+        "duration": "20–26 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240856/mood_app/workout_images/xyu6atdo_download_10_.jpg",
+        "intensityReason": "Lunges and jumps pre-fatigue, then sprints build posture.",
+        "difficulty": "intermediate",
+        "workoutType": "Outdoor",
+        "moodCard": "Get Outside",
+        "moodTips": [
+          {
+            "icon": "body",
+            "title": "Lunges: knee over mid-foot; upright torso; no inward collapse",
+            "description": "Align knee with foot center while staying tall without knee cave",
+          },
+          {
+            "icon": "trending-up",
+            "title": "Broad jumps: swing arms; land softly; stabilize before sprint",
+            "description": "Use arm momentum, absorb landing, then set before running",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    "_id": "6b0a11f0a1b2c3d4e5f60a07",
+    "title": "Plyo Power",
+    "mood": "Build Explosion",
+    "duration": "33 min",
+    "badge": "Jump & Bound",
+    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1789193573/mood_app/featured_heroes/build_explosion_box_jumps.jpg",
+    "difficulty": "Intermediate",
+    "hook": "Jump, land, reset. Train explosive power the athlete way.",
+    "cartSizeOverride": 3,
+    "exercises": [
+      {
+        "exerciseId": "",
+        "order": 0,
+        "name": "Depth Drop Rebound",
+        "equipment": "Plyo Box",
+        "description": "Drop down, stick one second hold, then rebound to box immediately",
+        "battlePlan": "Instructions: Superset: the paired moves run back-to-back with zero rest — rest only after the pair. Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 3 — rest 90s between sets, take all of it.\n4 sets\n• 3 Depth Drop (stick 1s) → Rebound to Box\nRest 90s",
+        "duration": "10–12 min",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240617/mood_app/workout_images/ofqstfu6_download_1_.jpg",
+        "intensityReason": "Eccentric stick then rapid takeoff improves force development rate",
+        "difficulty": "intermediate",
+        "workoutType": "Build Explosion - Body Weight",
+        "moodCard": "Build Explosion",
+        "moodTips": [
+          {
+            "icon": "body",
+            "title": "Landing Position",
+            "description": "Heels kiss; knees soft; hips back",
+          },
+          {
+            "icon": "flash",
+            "title": "Rebound Timing",
+            "description": "Rebound immediately after stick",
+          },
+        ],
+      },
+      {
+        "exerciseId": "",
+        "order": 1,
+        "name": "DB Broad Jump Carry",
+        "equipment": "Dumbbells",
+        "description": "Two broad jumps; grab DBs; fast upright ten-meter carry.",
+        "battlePlan": "Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 2 — rest 90s between sets, take all of it.\n4 sets\n• 2 Broad Jumps (stick) → 10m Farmer Carry\nRest 90s",
+        "duration": "10–12 min",
+        "imageUrl": "https://customer-assets.emergentagent.com/job_muscle-mapper-2/artifacts/yclz6917_dbbjc.avif",
+        "intensityReason": "Jumps then loaded carry train projection and bracing.",
+        "difficulty": "intermediate",
+        "workoutType": "Build Explosion - Weight Based",
+        "moodCard": "Build Explosion",
+        "moodTips": [
+          {
+            "icon": "walk",
+            "title": "Jumps",
+            "description": "Jumps: big arms; stick one to two seconds; measure",
+          },
+          {
+            "icon": "body",
+            "title": "Carry",
+            "description": "Carry: posture tall; short, fast steps; firm grip",
+          },
+        ],
       },
       {
         "exerciseId": "",
@@ -588,7 +667,7 @@ PREVIEW_FEATURED_WORKOUTS = [
         "name": "Box Jump Repeats",
         "equipment": "Plyo Box",
         "description": "Crisp consecutive jumps with short resets to preserve power output",
-        "battlePlan": "Instructions: Step down, never jump down — reset fully so every jump is maximal. 4 sets of 6–8 — rest 75s between sets, take all of it.\n4 rounds\n• 6–8 Box Jumps\nRest 75s",
+        "battlePlan": "Instructions: Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 6–8 — rest 75s between sets, take all of it.\n4 sets\n• 6–8 Box Jumps\nRest 75s",
         "duration": "10–12 min",
         "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240628/mood_app/workout_images/wok1mz8a_rbj.jpg",
         "intensityReason": "Repeated jump efforts build sustainable explosive power capacity",
@@ -599,283 +678,93 @@ PREVIEW_FEATURED_WORKOUTS = [
           {
             "icon": "refresh",
             "title": "Reset",
-            "description": "Reset stance and breath each rep"
+            "description": "Reset stance and breath each rep",
           },
           {
             "icon": "speedometer",
             "title": "Consistency",
-            "description": "Match height and landing each time"
-          }
-        ]
+            "description": "Match height and landing each time",
+          },
+        ],
       },
+    ],
+  },
+  {
+    "_id": "6b0a11f0a1b2c3d4e5f60a08",
+    "title": "Loaded Power",
+    "mood": "Build Explosion",
+    "duration": "22 min",
+    "badge": "Weighted",
+    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1789193574/mood_app/featured_heroes/build_explosion_hang_clean.jpg",
+    "difficulty": "Intermediate",
+    "hook": "Load it heavy, move it fast. Strength meets speed.",
+    "cartSizeOverride": 2,
+    "exercises": [
       {
         "exerciseId": "",
-        "order": 3,
-        "name": "Slam + Quick Pick",
-        "equipment": "Med Ball",
-        "description": "Hard slam down, instant scoop up, repeat at consistent steady height",
-        "battlePlan": "Instructions: Slam through the ball, not at it — then pick up fast and flow straight into the next rep. 4 rounds — all 2 moves in order, then rest 90s.\n4 rounds\n• 8–10 Overhead Slams\n• 8–10 Fast Scoop Resets\nRest 90s",
+        "order": 0,
+        "name": "Clean to Jerk",
+        "equipment": "Kettlebells",
+        "description": "Pop to rack; dip-drive; punch under; stable overhead stick.",
+        "battlePlan": "Instructions: Complete ALL reps on one side before switching — no alternating unless written. Every rep at full intent — reset your stance between reps; speed beats load. 4 sets of 4 per side — rest 90s between sets, take all of it.\n4 sets\n• 4 per side Clean → Jerk\nRest 90s",
         "duration": "10–12 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240600/mood_app/workout_images/dkiyafwm_download_1_.jpg",
-        "intensityReason": "Rapid reset pattern trains repeatable explosive power output",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241149/mood_app/workout_images/gxkmxo9y_download_6_.jpg",
+        "intensityReason": "Clean primes rack; jerk expresses rapid vertical force.",
         "difficulty": "intermediate",
-        "workoutType": "Build Explosion - Body Weight",
+        "workoutType": "Build Explosion - Weight Based",
         "moodCard": "Build Explosion",
         "moodTips": [
           {
-            "icon": "body",
-            "title": "Spine Position",
-            "description": "Keep spine neutral; hinge; reload fast"
+            "icon": "fitness",
+            "title": "Rack",
+            "description": "Rack thumb in; elbow down/in; wrist neutral",
           },
           {
-            "icon": "speedometer",
-            "title": "Consistency",
-            "description": "Same slam height every rep"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "_id": "6a7c70ea6a76d293b68a1706",
-    "title": "Muscle Gainer - Glute Day",
-    "mood": "Muscle gainer",
-    "duration": "~45 min",
-    "badge": "Popular",
-    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/muscle_gainer_glute_day.jpg",
-    "difficulty": "Intermediate",
-    "hook": "Thrust, squat, kick, abduct. Build the shelf.",
-    "cartSizeOverride": 4,
-    "exercises": [
-      {
-        "exerciseId": "",
-        "order": 0,
-        "name": "Glute-Biased Back Squat",
-        "equipment": "Barbell",
-        "description": "Wider stance squats emphasizing glute engagement and strength",
-        "battlePlan": "Instructions: Sit back and down — push the floor away through mid-foot and squeeze the glutes to stand. 4 sets of 8–10 — rest 120s between sets, take all of it.\n4 rounds\n• 8–10 reps\nRest 120s",
-        "duration": "14–16 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241394/mood_app/workout_images/gxoxkpbs_download_5_.jpg",
-        "intensityReason": "Wider stance emphasizes hip drive and glute recruitment",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Compound",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "expand",
-            "title": "Push knees outward hard",
-            "description": "Creates better glute recruitment and hip stability."
+            "icon": "arrow-up",
+            "title": "Jerk",
+            "description": "Dip shallow; soft land; lock elbows solid",
           },
-          {
-            "icon": "footsteps",
-            "title": "Drive through your heels",
-            "description": "You should feel glutes working before quads dominate."
-          },
-          {
-            "icon": "flame",
-            "title": "Tension should build each round",
-            "description": "If reps still feel easy late, increase load."
-          }
-        ]
+        ],
       },
       {
         "exerciseId": "",
         "order": 1,
-        "name": "Tempo Hip Thrust",
-        "equipment": "Hip Thruster Equipment",
-        "description": "Slow eccentrics increasing glute time under tension",
-        "battlePlan": "Instructions: Three seconds down on every rep — squeeze hard at the top. 4 sets of 8–10 — rest 90s between sets.\n• Hip thrust — 4 × 8–10 (3s eccentric)\n• Rest 90s between sets",
-        "duration": "14–16 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240679/mood_app/workout_images/mr69uwpz_bb_hip_thrust.jpg",
-        "intensityReason": "Extended eccentric phase maximizes muscle fiber recruitment",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Glutes",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "timer",
-            "title": "Three-second lower",
-            "description": "Slower descent intensifies loading."
-          },
-          {
-            "icon": "pause",
-            "title": "Pause at lockout",
-            "description": "One-second squeeze reinforces contraction."
-          },
-          {
-            "icon": "shield",
-            "title": "Core braced",
-            "description": "Prevents lower-back takeover."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 2,
-        "name": "Heavy Abduction",
-        "equipment": "Hip Abductor Machine",
-        "description": "Progressive overload builds strength through hip abduction",
-        "battlePlan": "Instructions: Own the 1s pause at the peak — no bouncing off the stack.\n4 rounds\n• 12–15 Heavy Abductions (1s pause at peak)\nRest 90s",
-        "duration": "14–16 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241405/mood_app/workout_images/u602jvhu_download_9_.jpg",
-        "intensityReason": "Increased load pushes hypertrophy for the glute medius",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Glutes",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "construct",
-            "title": "Sit tall, lean slightly forward to bias glutes",
-            "description": "A slight forward lean shifts tension onto the glute medius."
-          },
-          {
-            "icon": "shield",
-            "title": "Push knees out controlled, no sudden snaps",
-            "description": "Controlled movement maintains tension and protects the hips."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 3,
-        "name": "Cable High Kickback",
-        "equipment": "Single Stack Cable Machine",
-        "description": "Top‑end contraction isolates and strengthens glutes",
-        "battlePlan": "Instructions: Squeeze hard through the 2s pause at the top — hips square, back flat.\n3 rounds\n• 8–10 per leg Kickbacks (2s pause top)\nRest 75–90s",
-        "duration": "14–16 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241390/mood_app/workout_images/coxrp5yp_gk.jpg",
-        "intensityReason": "Kickbacks with higher angle add peak glute tension",
-        "difficulty": "intermediate",
-        "workoutType": "Muscle Gainer - Glutes",
-        "moodCard": "Muscle gainer",
-        "moodTips": [
-          {
-            "icon": "construct",
-            "title": "Ankle cuff, pulley low, hinge slightly forward",
-            "description": "Low pulley position creates optimal resistance curve for glutes."
-          },
-          {
-            "icon": "timer",
-            "title": "Kick upward + back, pause two seconds top",
-            "description": "Pause at peak contraction maximizes muscle activation and control."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "_id": "6a7c70ea6a76d293b68a1707",
-    "title": "Outdoor - Hill Repeats",
-    "mood": "Get Outside",
-    "duration": "~25 min",
-    "badge": "New",
-    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/outdoor_hill_repeats.jpg",
-    "difficulty": "Intermediate",
-    "hook": "Find a hill. Make it hate you back.",
-    "exercises": [
-      {
-        "exerciseId": "",
-        "order": 0,
-        "name": "Hill Power Mix",
-        "equipment": "Hills",
-        "description": "Bounds, skips, then sprints — a simple uphill power ladder.",
-        "battlePlan": "Instructions: Find a hill about 20 yards long. One move at a time — walk back down after every rep, that's your rest.\n• Uphill bounds — 4 × (10 reps)\n• Uphill power skips — 4 × (20 yd)\n• Uphill sprints — 4 × (20 yd)",
-        "duration": "14–18 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240859/mood_app/workout_images/zqqramht_download_13_.jpg",
-        "intensityReason": "Low volume with full recovery — elastic power without the burnout.",
-        "difficulty": "intermediate",
-        "workoutType": "Outdoor - Hills",
-        "moodCard": "Get Outside",
-        "moodTips": [
-          {
-            "icon": "trending-up",
-            "title": "Bounds: knee drive then hip extend; stick landings under control",
-            "description": "Drive knee high, extend hip fully, and land with stability"
-          },
-          {
-            "icon": "walk",
-            "title": "Avoid heel striking uphill; keep cadence snappy and forward",
-            "description": "Land on midfoot with quick turnover for uphill efficiency"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "_id": "6a7c70ea6a76d293b68a1708",
-    "title": "Outdoor - Run & Rep",
-    "mood": "Get Outside",
-    "duration": "~25 min",
-    "badge": "Classic",
-    "heroImageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/mood_app/featured_heroes/outdoor_park_circuit.jpg",
-    "difficulty": "Intermediate",
-    "hook": "Run to the park, earn the EMOM. Legs then lungs.",
-    "exercises": [
-      {
-        "exerciseId": "",
-        "order": 0,
-        "name": "Outdoor Run",
-        "equipment": "Open road or trail",
-        "description": "Steady warm-up run to the park. Build a light sweat before the EMOM.",
-        "battlePlan": "Instructions: Run at a conversational pace — you should be able to talk. Treat it as the warm-up that gets you to your park spot.\n• Run — 1–1.5 miles (~10–12 min)\n• Finish with 3 × 20s stride-outs to prime the legs",
+        "name": "Trap Bar High Pull",
+        "equipment": "Trap Hex Bar",
+        "description": "Pop tall; elbows drive up; keep handle path tight and close.",
+        "battlePlan": "Instructions: 4 sets of 2 — rest 90s between sets, take all of it.\n4 sets\n• 4 × 2 High Pulls (moderate)\nRest 90s",
         "duration": "10–12 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240831/mood_app/workout_images/8d9vosf3_download_12_.jpg",
-        "intensityReason": "An easy aerobic run warms the body and sets up quality strength work.",
+        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241148/mood_app/workout_images/gur5s8sa_tbhp.jpg",
+        "intensityReason": "Aggressive extension elevates handles with rapid speed.",
         "difficulty": "intermediate",
-        "workoutType": "Outdoor - Run",
-        "moodCard": "Get Outside",
+        "workoutType": "Build Explosion - Weight Based",
+        "moodCard": "Build Explosion",
         "moodTips": [
-          {
-            "icon": "walk",
-            "title": "Keep it conversational; save the effort for the EMOM",
-            "description": "Run easy enough to hold a conversation so you arrive fresh."
-          },
           {
             "icon": "flash",
-            "title": "Stride-outs: relax, lengthen, quick turnover",
-            "description": "Stay loose and tall while picking up leg speed on each stride-out."
-          }
-        ]
-      },
-      {
-        "exerciseId": "",
-        "order": 1,
-        "name": "EMOM Park Strength",
-        "equipment": "Park workout",
-        "description": "Dips, jumps, push-ups, short runs cycle with planned rest.",
-        "battlePlan": "Instructions: EMOM 20 — start a new move at the top of every minute, rest whatever's left. Cycle the four moves five times.\n• Dips — 10–12 reps\n• Step-ups — 5/side\n• Push-ups — 10–12 reps\n• Run — ~200 m",
-        "duration": "20–24 min",
-        "imageUrl": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240844/mood_app/workout_images/ixf6e9ex_download_20_.jpg",
-        "intensityReason": "EMOM timing preserves quality while managing fatigue.",
-        "difficulty": "intermediate",
-        "workoutType": "Outdoor - Park",
-        "moodCard": "Get Outside",
-        "moodTips": [
-          {
-            "icon": "trending-up",
-            "title": "Bench jumps: land softly; knees stacked; absorb through hips",
-            "description": "Touch down gently with aligned knees and hip absorption"
+            "title": "Pull",
+            "description": "Hinge load; sweep close; full triple extension timing",
           },
           {
-            "icon": "body",
-            "title": "Push-ups: elbows ~45°; shoulder blades glide; avoid flares",
-            "description": "Keep elbows at moderate angle with smooth scapular movement"
-          }
-        ]
-      }
-    ]
-  }
+            "icon": "arrow-up",
+            "title": "Finish",
+            "description": "Elbows up/back; avoid early curl; reset between reps",
+          },
+        ],
+      },
+    ],
+  },
 ]
 
 # The exact order of featured workout IDs for the carousel
 # (seed-time stable _ids; auto-seed regenerates real ObjectIds at startup.)
 FEATURED_WORKOUT_IDS = [
-    "6a7c70ea6a76d293b68a1701",  # Sweat - HIIT Circuit
-    "6a7c70ea6a76d293b68a1702",  # Muscle Gainer - Back & Bis Volume
-    "6a7c70ea6a76d293b68a1703",  # Sweat - Cardio Engine
-    "6a7c70ea6a76d293b68a1704",  # Muscle Gainer - Chest & Shoulders
-    "6a7c70ea6a76d293b68a1705",  # Build Explosion - Power Complex
-    "6a7c70ea6a76d293b68a1706",  # Muscle Gainer - Glute Day
-    "6a7c70ea6a76d293b68a1707",  # Outdoor - Hill Repeats
-    "6a7c70ea6a76d293b68a1708",  # Outdoor - Run & Rep
+    "6b0a11f0a1b2c3d4e5f60a01",  # Booty Builder
+    "6b0a11f0a1b2c3d4e5f60a02",  # Leg Day Strength
+    "6b0a11f0a1b2c3d4e5f60a03",  # Full Body Light & Fast
+    "6b0a11f0a1b2c3d4e5f60a04",  # Cardio Blast
+    "6b0a11f0a1b2c3d4e5f60a05",  # Pull-Up & Core Builder
+    "6b0a11f0a1b2c3d4e5f60a06",  # Hill Sprints
+    "6b0a11f0a1b2c3d4e5f60a07",  # Plyo Power
+    "6b0a11f0a1b2c3d4e5f60a08",  # Loaded Power
 ]
