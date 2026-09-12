@@ -68,13 +68,21 @@ async def notify_new_subscription_discord(
     revenue_usd: Optional[float],
     source: str,
     txn_key: Optional[str],
+    is_trial: bool = False,
 ) -> None:
-    """Fire a one-time Discord ping for a NEW subscription. Never raises.
+    """Fire a one-time Discord ping for a NEW subscription or a NEW free
+    trial. Never raises.
 
     Deduped on the subscription's transaction identity (Apple
     original_transaction_id / Google purchase token) via an atomic insert into
     `sub_notify_log`, so the app-validate path (which re-fires on every launch)
     and the Apple/Google server webhooks never double-notify the same sale.
+
+    IMPORTANT: `is_trial=True` means Apple/Google has NOT charged anyone yet —
+    this is a 7-day free-trial start, not a sale. The message wording (and the
+    fact that the price is labelled as a future/pending amount, not
+    "Revenue") is deliberately different so a trial start can never be
+    mistaken for real revenue.
     """
     webhook_url = os.environ.get(DISCORD_SUBS_WEBHOOK_ENV)
     if not webhook_url:
@@ -89,19 +97,29 @@ async def notify_new_subscription_discord(
                 "user_id": user_id,
                 "product_id": product_id,
                 "source": source,
+                "is_trial": is_trial,
                 "created_at": datetime.now(timezone.utc),
             })
         except Exception:
             return
 
         plan_label = plan or product_id or "subscription"
-        content = (
-            "💸 **New MOOD subscription**\n"
-            f"• Plan: **{plan_label}**\n"
-            f"• Revenue: **{_fmt_usd(revenue_usd)}**\n"
-            f"• Source: {source}\n"
-            f"• User: `{user_id}`"
-        )
+        if is_trial:
+            content = (
+                "🆓 **New MOOD free trial started** (no charge yet)\n"
+                f"• Plan: **{plan_label}**\n"
+                f"• Converts to **{_fmt_usd(revenue_usd)}** in ~7 days unless cancelled\n"
+                f"• Source: {source}\n"
+                f"• User: `{user_id}`"
+            )
+        else:
+            content = (
+                "💸 **New MOOD subscription (paid)**\n"
+                f"• Plan: **{plan_label}**\n"
+                f"• Revenue: **{_fmt_usd(revenue_usd)}**\n"
+                f"• Source: {source}\n"
+                f"• User: `{user_id}`"
+            )
         async with httpx.AsyncClient(timeout=8.0) as client:
             await client.post(webhook_url, json={"content": content})
     except Exception as e:
@@ -434,6 +452,7 @@ def build_subscriptions_router(
             revenue_usd=PRODUCT_PRICE_USD.get(product_id),
             source=analytics_source_for(payload.platform),
             txn_key=store_fields.get("original_transaction_id") or store_fields.get("transaction_id"),
+            is_trial=(status_value == "in_trial"),
         )
 
         return {
@@ -667,6 +686,7 @@ def build_subscriptions_router(
                 revenue_usd=metadata.get("revenue_usd"),
                 source="apple",
                 txn_key=original_transaction_id,
+                is_trial=(sub.get("status") == "in_trial"),
             )
         return {"ok": True, "verified": True, "event": event_type, "user_matched": True}
 
@@ -821,6 +841,7 @@ def build_subscriptions_router(
                 revenue_usd=metadata.get("revenue_usd"),
                 source="google",
                 txn_key=purchase_token,
+                is_trial=(status_value == "in_trial"),
             )
         return {"ok": True, "verified": True, "event": event_type, "user_matched": True}
 

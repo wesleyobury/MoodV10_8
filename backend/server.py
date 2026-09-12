@@ -23,6 +23,7 @@ import cloudinary.uploader
 import cloudinary.api
 import re
 import httpx
+import hmac
 import secrets
 import asyncio
 import resend
@@ -4713,6 +4714,46 @@ async def get_retention_endpoint(
     except Exception as e:
         logger.error(f"Retention endpoint error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/analytics/admin/users/exists")
+async def user_exists_endpoint(
+    q: str,
+    x_service_token: Optional[str] = Header(None),
+):
+    """
+    Does this email belong to a MOOD user? Yes or no, nothing else.
+
+    Service-to-service, so it takes a static shared secret rather than an admin
+    JWT — the caller is the training booking Worker on Cloudflare, which has no
+    way to log in as a person and would break every time an access token aged
+    out. Set BOOKING_SERVICE_TOKEN in this app's environment and the identical
+    value as APP_USER_LOOKUP_TOKEN on the Worker.
+
+    Deliberately returns only a count. The booking page asks this question
+    about strangers' email addresses, so it must not be able to confirm
+    anything else about them, and an unauthenticated caller must not be able to
+    use it to test whether an address is registered.
+    """
+    expected = os.environ.get("BOOKING_SERVICE_TOKEN", "")
+    if not expected:
+        # Unset means the integration is off. Say so plainly rather than
+        # letting an empty string authenticate anybody.
+        raise HTTPException(status_code=503, detail="BOOKING_SERVICE_TOKEN is not configured")
+    if not hmac.compare_digest(x_service_token or "", expected):
+        raise HTTPException(status_code=401, detail="Invalid service token")
+
+    addr = (q or "").strip().lower()
+    if len(addr) < 3 or "@" not in addr:
+        raise HTTPException(status_code=400, detail="q must be an email address")
+
+    # Emails are stored as the user typed them, so match case-insensitively but
+    # anchored — no partial or prefix matches.
+    user = await db.users.find_one(
+        {"email": {"$regex": f"^{re.escape(addr)}$", "$options": "i"}},
+        {"_id": 1},
+    )
+    return {"total": 1 if user else 0}
 
 
 @api_router.get("/analytics/admin/users/search")
