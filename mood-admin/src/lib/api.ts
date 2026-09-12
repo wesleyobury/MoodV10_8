@@ -510,6 +510,22 @@ class ApiClient {
     return this.get<SubscribersData>(`/analytics/admin/subscribers?${params}`);
   }
 
+  // ── Apple payouts (manually-tracked "what's actually hit the bank") ──
+  async getPayouts() {
+    return this.get<ApplePayoutsData>(`/analytics/admin/payouts`);
+  }
+
+  async upsertPayout(
+    period: string,
+    payload: { proceeds_usd: number; status: "paid" | "pending"; paid_date?: string; txn_id?: string; note?: string }
+  ) {
+    return this.put<{ ok: boolean; period: string }>(`/analytics/admin/payouts/${period}`, payload);
+  }
+
+  async deletePayout(period: string) {
+    return this.delete<{ ok: boolean }>(`/analytics/admin/payouts/${period}`);
+  }
+
   // ── Acquisition funnel (downloads → signup → trial → paid) ──────────
   async getAcquisition(start?: string, end?: string, includeInternal: boolean = false) {
     const params = new URLSearchParams();
@@ -963,6 +979,19 @@ export interface MonetizationData {
   founding: { shown: number; claimed: number; dismissed: number; claim_rate: number };
   churn: { trial_cancelled: number; subscription_lapsed: number; purchase_failed: number; checkout_abandoned: number };
   error?: string;
+}
+
+export interface ApplePayout {
+  period: string; // "YYYY-MM"
+  proceeds_usd: number;
+  status: "paid" | "pending";
+  paid_date?: string | null;
+  txn_id?: string | null;
+  note?: string | null;
+  updated_at?: string;
+}
+export interface ApplePayoutsData {
+  payouts: ApplePayout[];
 }
 
 export interface RetentionData {

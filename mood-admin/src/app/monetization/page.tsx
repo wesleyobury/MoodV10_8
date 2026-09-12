@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { useFilters } from "@/lib/filter-context";
-import { api, MonetizationData, TimeSeriesData } from "@/lib/api";
+import { api, MonetizationData, TimeSeriesData, ApplePayout } from "@/lib/api";
 import { FunnelChart } from "@/components/charts/FunnelChart";
 import { TimeSeriesChart } from "@/components/charts/TimeSeriesChart";
 import { KPICard } from "@/components/KPICard";
@@ -11,7 +11,7 @@ import { FilterBar } from "@/components/FilterBar";
 import { CSVExport } from "@/components/CSVExport";
 import { Tooltip, METRIC_TOOLTIPS } from "@/components/Tooltip";
 import { redirect } from "next/navigation";
-import { DollarSign, CreditCard, Percent, TrendingUp, Sparkles, Users } from "lucide-react";
+import { DollarSign, CreditCard, Percent, TrendingUp, Sparkles, Users, Landmark, ExternalLink, Pencil } from "lucide-react";
 
 const humanize = (s: string) =>
   !s ? s : s.replace(/[_-]+/g, " ").replace(/^\w/, (c) => c.toUpperCase());
@@ -23,6 +23,36 @@ export default function MonetizationPage() {
   const [data, setData] = useState<MonetizationData | null>(null);
   const [revenue, setRevenue] = useState<TimeSeriesData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [payouts, setPayouts] = useState<ApplePayout[]>([]);
+  const [payoutForm, setPayoutForm] = useState<{ period: string; proceeds_usd: string; status: "paid" | "pending"; paid_date: string; txn_id: string; note: string }>(
+    { period: "", proceeds_usd: "", status: "pending", paid_date: "", txn_id: "", note: "" }
+  );
+  const [savingPayout, setSavingPayout] = useState(false);
+
+  const fetchPayouts = async () => {
+    const res = await api.getPayouts();
+    if (res.data) setPayouts(res.data.payouts);
+  };
+
+  const savePayout = async () => {
+    if (!/^\d{4}-\d{2}$/.test(payoutForm.period) || !payoutForm.proceeds_usd) return;
+    setSavingPayout(true);
+    await api.upsertPayout(payoutForm.period, {
+      proceeds_usd: parseFloat(payoutForm.proceeds_usd),
+      status: payoutForm.status,
+      paid_date: payoutForm.paid_date || undefined,
+      txn_id: payoutForm.txn_id || undefined,
+      note: payoutForm.note || undefined,
+    });
+    await fetchPayouts();
+    setPayoutForm({ period: "", proceeds_usd: "", status: "pending", paid_date: "", txn_id: "", note: "" });
+    setSavingPayout(false);
+  };
+
+  useEffect(() => {
+    if (isAuthenticated && isAdmin) fetchPayouts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isAdmin]);
 
   useEffect(() => {
     if (!isLoading && (!isAuthenticated || !isAdmin)) redirect("/");
@@ -112,6 +142,158 @@ export default function MonetizationPage() {
         <KPICard title="MRR" value={usd(data?.headline.mrr_usd || 0)} icon={<TrendingUp className="h-4 w-4" />} tooltip="Monthly recurring revenue from active paid subscriptions (annual plans ÷ 12). Live snapshot — not affected by the date range." />
         <KPICard title="ARR" value={usd(data?.headline.arr_usd || 0)} icon={<TrendingUp className="h-4 w-4" />} tooltip="Annual recurring revenue (MRR × 12)." />
         <KPICard title="Active Subscribers" value={data?.headline.active_subscribers || 0} icon={<Users className="h-4 w-4" />} tooltip={METRIC_TOOLTIPS.activeSubscriptions} />
+      </div>
+
+      {/* Apple payouts — what App Store Connect actually shows, by hand */}
+      <div className="bg-card border border-border rounded-lg p-4">
+        <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
+          <h3 className="font-medium flex items-center gap-2">
+            <Landmark className="h-4 w-4 text-muted-foreground" />
+            Apple payouts
+          </h3>
+          <a
+            href="https://appstoreconnect.apple.com/itc/payments_and_financial_reports"
+            target="_blank"
+            rel="noreferrer"
+            className="text-xs text-primary hover:underline flex items-center gap-1"
+          >
+            Check App Store Connect <ExternalLink className="h-3 w-3" />
+          </a>
+        </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          What Apple&apos;s Payments and Financial Reports page actually shows, by calendar month — entered by hand after each check,
+          since Apple&apos;s financial-report API runs on its own fiscal calendar rather than Jan&ndash;Dec months. This is the real,
+          settled-by-Apple number; the KPIs above are the app&apos;s own bookings estimate and can run ahead of it.
+        </p>
+
+        {payouts.length > 0 && (
+          <div className="overflow-x-auto mb-3">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border text-muted-foreground">
+                  <th className="text-left py-2 font-medium">Period</th>
+                  <th className="text-right py-2 font-medium">Proceeds</th>
+                  <th className="text-left py-2 font-medium pl-4">Status</th>
+                  <th className="text-left py-2 font-medium pl-4">Detail</th>
+                  <th className="w-8"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {payouts.map((p) => (
+                  <tr key={p.period} className="border-b border-border last:border-0">
+                    <td className="py-2 font-mono">{p.period}</td>
+                    <td className="py-2 text-right font-mono">{usd(p.proceeds_usd)}</td>
+                    <td className="py-2 pl-4">
+                      <span
+                        className={
+                          p.status === "paid"
+                            ? "px-2 py-0.5 text-xs rounded-full font-medium bg-green-500/15 text-green-400 border border-green-500/30"
+                            : "px-2 py-0.5 text-xs rounded-full font-medium bg-amber-500/15 text-amber-400 border border-amber-500/30"
+                        }
+                      >
+                        {p.status === "paid" ? "Paid" : "Pending"}
+                      </span>
+                    </td>
+                    <td className="py-2 pl-4 text-xs text-muted-foreground">
+                      {p.status === "paid" && p.paid_date ? `Paid ${p.paid_date}` : ""}
+                      {p.txn_id ? ` · txn ${p.txn_id}` : ""}
+                      {p.note ? ` · ${p.note}` : ""}
+                    </td>
+                    <td className="py-2">
+                      <button
+                        title="Edit"
+                        onClick={() =>
+                          setPayoutForm({
+                            period: p.period,
+                            proceeds_usd: String(p.proceeds_usd),
+                            status: p.status,
+                            paid_date: p.paid_date || "",
+                            txn_id: p.txn_id || "",
+                            note: p.note || "",
+                          })
+                        }
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        <div className="flex flex-wrap items-end gap-2 pt-2 border-t border-border">
+          <div className="flex flex-col gap-1">
+            <label className="text-[11px] text-muted-foreground">Period</label>
+            <input
+              type="text"
+              placeholder="2026-09"
+              value={payoutForm.period}
+              onChange={(e) => setPayoutForm({ ...payoutForm, period: e.target.value.trim() })}
+              className="w-24 px-2 py-1.5 bg-background border border-border rounded-md text-sm"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-[11px] text-muted-foreground">Proceeds (USD)</label>
+            <input
+              type="number"
+              step="0.01"
+              placeholder="224.16"
+              value={payoutForm.proceeds_usd}
+              onChange={(e) => setPayoutForm({ ...payoutForm, proceeds_usd: e.target.value })}
+              className="w-28 px-2 py-1.5 bg-background border border-border rounded-md text-sm"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-[11px] text-muted-foreground">Status</label>
+            <select
+              value={payoutForm.status}
+              onChange={(e) => setPayoutForm({ ...payoutForm, status: e.target.value as "paid" | "pending" })}
+              className="px-2 py-1.5 bg-background border border-border rounded-md text-sm"
+            >
+              <option value="pending">Pending</option>
+              <option value="paid">Paid</option>
+            </select>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-[11px] text-muted-foreground">Paid date</label>
+            <input
+              type="date"
+              value={payoutForm.paid_date}
+              onChange={(e) => setPayoutForm({ ...payoutForm, paid_date: e.target.value })}
+              className="px-2 py-1.5 bg-background border border-border rounded-md text-sm"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-[11px] text-muted-foreground">Txn ID</label>
+            <input
+              type="text"
+              placeholder="403649371"
+              value={payoutForm.txn_id}
+              onChange={(e) => setPayoutForm({ ...payoutForm, txn_id: e.target.value })}
+              className="w-28 px-2 py-1.5 bg-background border border-border rounded-md text-sm"
+            />
+          </div>
+          <div className="flex flex-col gap-1 flex-1 min-w-[140px]">
+            <label className="text-[11px] text-muted-foreground">Note</label>
+            <input
+              type="text"
+              placeholder="optional"
+              value={payoutForm.note}
+              onChange={(e) => setPayoutForm({ ...payoutForm, note: e.target.value })}
+              className="w-full px-2 py-1.5 bg-background border border-border rounded-md text-sm"
+            />
+          </div>
+          <button
+            onClick={savePayout}
+            disabled={savingPayout || !payoutForm.period || !payoutForm.proceeds_usd}
+            className="px-3 py-1.5 text-sm rounded-md bg-primary text-primary-foreground disabled:opacity-50"
+          >
+            {savingPayout ? "Saving…" : "Save"}
+          </button>
+        </div>
       </div>
 
       {/* Paywall funnel */}

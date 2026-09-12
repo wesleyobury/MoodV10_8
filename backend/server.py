@@ -4393,6 +4393,87 @@ async def get_subscribers_endpoint(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+class ApplePayoutUpsert(BaseModel):
+    """One period's entry in the manually-tracked Apple payout ledger."""
+    proceeds_usd: float
+    status: str  # "paid" | "pending"
+    paid_date: Optional[str] = None   # ISO date string, set once Apple pays it out
+    txn_id: Optional[str] = None      # Apple's payment transaction id, once paid
+    note: Optional[str] = None
+
+
+@api_router.get("/analytics/admin/payouts")
+async def list_apple_payouts_endpoint(current_user_id: str = Depends(require_admin)):
+    """
+    Manually-tracked ledger of what Apple's Payments and Financial Reports page
+    actually shows, by calendar period (YYYY-MM).
+
+    This is NOT derived from app events — Apple's Financial Report API keys
+    everything to its own fiscal calendar (not Jan-Dec calendar months), so an
+    automated fetch here would risk silently mislabeling which month a payout
+    belongs to. Until that's mapped and verified against a live account,
+    whoever checks App Store Connect updates this by hand; the dashboard just
+    gives those numbers a home next to the app's own tracking.
+    """
+    docs = await db.apple_payouts.find().sort("_id", -1).to_list(60)
+    return {
+        "payouts": [
+            {
+                "period": d["_id"],
+                "proceeds_usd": d.get("proceeds_usd"),
+                "status": d.get("status"),
+                "paid_date": d.get("paid_date"),
+                "txn_id": d.get("txn_id"),
+                "note": d.get("note"),
+                "updated_at": d["updated_at"].isoformat() if isinstance(d.get("updated_at"), datetime) else d.get("updated_at"),
+            }
+            for d in docs
+        ]
+    }
+
+
+@api_router.put("/analytics/admin/payouts/{period}")
+async def upsert_apple_payout_endpoint(
+    period: str,
+    payload: ApplePayoutUpsert,
+    admin_id: str = Depends(require_admin),
+):
+    """Create or update one period's entry. `period` is 'YYYY-MM'."""
+    if not re.match(r"^\d{4}-\d{2}$", period):
+        raise HTTPException(status_code=400, detail="period must be formatted YYYY-MM")
+    if payload.status not in ("paid", "pending"):
+        raise HTTPException(status_code=400, detail="status must be 'paid' or 'pending'")
+
+    now = datetime.now(timezone.utc)
+    doc = {
+        "proceeds_usd": round(payload.proceeds_usd, 2),
+        "status": payload.status,
+        "paid_date": payload.paid_date,
+        "txn_id": payload.txn_id,
+        "note": payload.note,
+        "updated_at": now,
+        "updated_by": admin_id,
+    }
+    await db.apple_payouts.update_one({"_id": period}, {"$set": doc}, upsert=True)
+    await log_admin_action(
+        admin_id, "upsert_apple_payout", f"/admin/payouts/{period}",
+        {"period": period, "proceeds_usd": doc["proceeds_usd"], "status": doc["status"]},
+        200, "saved",
+    )
+    return {"ok": True, "period": period}
+
+
+@api_router.delete("/analytics/admin/payouts/{period}")
+async def delete_apple_payout_endpoint(period: str, admin_id: str = Depends(require_admin)):
+    result = await db.apple_payouts.delete_one({"_id": period})
+    await log_admin_action(
+        admin_id, "delete_apple_payout", f"/admin/payouts/{period}",
+        {"period": period}, 200 if result.deleted_count else 404,
+        "deleted" if result.deleted_count else "not_found",
+    )
+    return {"ok": bool(result.deleted_count)}
+
+
 @api_router.get("/analytics/admin/acquisition")
 async def get_acquisition_endpoint(
     start: Optional[str] = None,
