@@ -686,7 +686,17 @@ class NotificationService:
         except Exception:
             badge_count = None
 
-        # Build push messages
+        # Build one message per token.
+        #
+        # CRITICAL: these are sent as SEPARATE requests, one per token, not as a
+        # single batch. Expo rejects an ENTIRE request with
+        # PUSH_TOO_MANY_EXPERIENCE_IDS if the tokens in it belong to more than
+        # one Expo project, and a user accumulates tokens across projects very
+        # easily (reinstalls, a renamed slug, an old scaffold project) because
+        # nothing prunes them. Batching meant one stale token from a dead
+        # project silently killed the push to every one of that user's real
+        # devices. Per-token sends cost a few extra HTTP calls (capped at 10
+        # tokens by get_user_tokens) and make each token fail or succeed alone.
         messages = []
         for token in tokens:
             message: Dict[str, Any] = {
@@ -699,57 +709,116 @@ class NotificationService:
             }
             if badge_count is not None:
                 message["badge"] = badge_count
-            
+
             # Add category/actions based on type
             if notification_type == NotificationType.MESSAGE:
                 message["categoryId"] = "MESSAGE"
             elif notification_type == NotificationType.FEATURED_WORKOUT:
                 message["categoryId"] = "FEATURED_WORKOUT"
-            
+
             messages.append(message)
-        
+
+        delivered_count = 0
+        failed_count = 0
+
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    self.expo_push_url,
-                    json=messages,
-                    headers={"Content-Type": "application/json"},
-                    timeout=10.0
-                )
-                
-                if response.status_code == 200:
-                    result = response.json()
-                    
-                    # Check for individual ticket errors
-                    for i, ticket in enumerate(result.get("data", [])):
-                        if ticket.get("status") == "error":
-                            error_msg = ticket.get("message", "Unknown error")
-                            if "DeviceNotRegistered" in error_msg:
-                                await self.invalidate_token(tokens[i])
-                                logger.warning("Invalidated token: DeviceNotRegistered")
-                            else:
-                                logger.error(f"Push error: {error_msg}")
-                    
-                    # Mark as delivered
-                    await self.db.notifications.update_one(
-                        {"_id": ObjectId(notification_id)},
-                        {"$set": {"delivered_push_at": datetime.now(timezone.utc)}}
-                    )
-                    
-                    # Track analytics
-                    await self._track_notification_event(
-                        user_id, "push_sent", notification_type.value
-                    )
-                    
-                    logger.info(f"📤 Push sent to {len(tokens)} device(s) for user {user_id[:8]}...")
-                    return True
-                else:
-                    logger.error(f"Expo push failed: {response.status_code} - {response.text}")
-                    return False
-                    
+                for token, message in zip(tokens, messages):
+                    try:
+                        response = await client.post(
+                            self.expo_push_url,
+                            json=[message],
+                            headers={"Content-Type": "application/json"},
+                            timeout=10.0,
+                        )
+                    except Exception as req_err:
+                        failed_count += 1
+                        logger.error(f"Push request failed for one token: {req_err}")
+                        continue
+
+                    # A non-200 means Expo rejected the request outright. The
+                    # body still carries a structured `errors` array worth
+                    # logging - this used to be discarded, which is how a total
+                    # failure looked identical to a success.
+                    if response.status_code != 200:
+                        failed_count += 1
+                        logger.error(
+                            f"Expo push failed: {response.status_code} - {response.text[:500]}"
+                        )
+                        continue
+
+                    try:
+                        result = response.json()
+                    except Exception:
+                        failed_count += 1
+                        logger.error(f"Expo push: non-JSON response - {response.text[:300]}")
+                        continue
+
+                    # Top-level `errors` (as opposed to per-ticket errors) means
+                    # the request itself was refused; `data` will be absent.
+                    top_errors = result.get("errors")
+                    if top_errors:
+                        failed_count += 1
+                        logger.error(f"Expo push request error: {top_errors}")
+                        continue
+
+                    tickets = result.get("data") or []
+                    ticket = tickets[0] if tickets else None
+
+                    if ticket is None:
+                        failed_count += 1
+                        logger.error("Expo push: 200 with no ticket returned")
+                        continue
+
+                    if ticket.get("status") == "error":
+                        failed_count += 1
+                        error_msg = ticket.get("message", "Unknown error")
+                        details = ticket.get("details") or {}
+                        err_code = details.get("error") or ""
+
+                        # Retire tokens that can never succeed again, so a dead
+                        # token does not linger and re-fail on every push.
+                        if "DeviceNotRegistered" in error_msg or err_code == "DeviceNotRegistered":
+                            await self.invalidate_token(token)
+                            logger.warning(f"Invalidated token (DeviceNotRegistered): {token[:30]}...")
+                        elif "ExperienceNotFound" in error_msg or "experience" in error_msg.lower():
+                            # Token belongs to an Expo project this server no
+                            # longer pushes for. Same treatment: it will never
+                            # deliver, so stop carrying it.
+                            await self.invalidate_token(token)
+                            logger.warning(f"Invalidated token (wrong/!unknown experience): {token[:30]}...")
+                        else:
+                            logger.error(f"Push error for {token[:30]}...: {error_msg} {details}")
+                        continue
+
+                    delivered_count += 1
+
         except Exception as e:
             logger.error(f"Error sending push notification: {e}")
             return False
+
+        if delivered_count == 0:
+            logger.error(
+                f"\U0001F4E4 Push NOT delivered for user {user_id[:8]}... "
+                f"type={notification_type.value} ({failed_count} token(s) failed)"
+            )
+            return False
+
+        # Mark as delivered only when at least one device actually took it.
+        await self.db.notifications.update_one(
+            {"_id": ObjectId(notification_id)},
+            {"$set": {"delivered_push_at": datetime.now(timezone.utc)}}
+        )
+
+        await self._track_notification_event(
+            user_id, "push_sent", notification_type.value
+        )
+
+        logger.info(
+            f"\U0001F4E4 Push sent to {delivered_count}/{len(tokens)} device(s) "
+            f"for user {user_id[:8]}... type={notification_type.value}"
+        )
+        return True
     
     # ----------------------------------------
     # NOTIFICATION RETRIEVAL

@@ -218,6 +218,44 @@ export async function initNotifications(authToken: string): Promise<NotifStatus>
 }
 
 /**
+ * Release this device's push token from the current account.
+ *
+ * Must be called BEFORE the auth token is cleared on logout, since the request
+ * is authenticated as the user being logged out.
+ *
+ * Why this matters: without it, device_tokens keeps mapping this phone to the
+ * previous account, so that user's DMs and likes keep pushing to a device they
+ * no longer hold. It also lets tokens pile up per account, and the backend
+ * pushes to every token a user owns - a stale one from an older build (or a
+ * different Expo project entirely) then fails on every send.
+ *
+ * Best-effort: logout must never be blocked by this.
+ */
+export async function unregisterPushToken(authToken: string): Promise<void> {
+  try {
+    const pushToken = await AsyncStorage.getItem(PUSH_TOKEN_KEY);
+    if (pushToken && authToken) {
+      // The backend declares `token` as a query parameter, not a body field.
+      await fetch(
+        `${API_URL}/api/notifications/device-token?token=${encodeURIComponent(pushToken)}`,
+        {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+    }
+  } catch (e) {
+    console.warn('🔔 unregisterPushToken: failed (non-fatal)', e);
+  } finally {
+    // Clear locally regardless, so a failed call cannot leave the app believing
+    // it is still registered.
+    try {
+      await AsyncStorage.removeItem(PUSH_TOKEN_KEY);
+    } catch {}
+  }
+}
+
+/**
  * Read the current notification status from OS + local persistence.
  * Use this to derive UI state without triggering any permission dialogs.
  */

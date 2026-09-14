@@ -10,6 +10,7 @@ import { secureStorage, AUTH_TOKEN_KEY, AUTH_REFRESH_TOKEN_KEY, AUTH_TOKEN_STORE
 import { DEV_MOCKS_ENABLED, getDevMockEntitlement } from '../utils/devMocks';
 import { refreshSubscriptionFromServer } from '../hooks/subscription/subscriptionState';
 import { readHasCompletedFunnel } from './OnboardingFunnelContext';
+import { unregisterPushToken } from '../utils/notifications';
 
 // Terms version must match backend CURRENT_TERMS_VERSION
 // Update this when terms change to force re-acceptance for all users
@@ -434,6 +435,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = async () => {
     try {
+      // Release this device's push token from the account FIRST, while the auth
+      // token is still available to authenticate the call. Otherwise the
+      // backend keeps pushing this user's DMs and likes to a phone they have
+      // signed out of, and their token row lingers forever.
+      await unregisterPushToken(token ?? '');
+
       await secureStorage.delete(AUTH_TOKEN_KEY);
       await secureStorage.delete(AUTH_REFRESH_TOKEN_KEY);
       await secureStorage.delete(AUTH_TOKEN_STORED_AT_KEY);

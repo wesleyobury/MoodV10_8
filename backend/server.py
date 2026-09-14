@@ -14806,25 +14806,56 @@ async def admin_test_push(
     try:
         async with httpx.AsyncClient() as client:
             # Send push
-            resp = await client.post(expo_url, json=messages, headers={"Content-Type": "application/json"}, timeout=15.0)
-            ticket_data = resp.json()
-            logger.info(f"🧪 TEST-PUSH tickets: {ticket_data}")
-
-            # Check tickets for errors
+            # Send ONE REQUEST PER TOKEN. Expo refuses an entire request whose
+            # tokens span more than one Expo project
+            # (PUSH_TOO_MANY_EXPERIENCE_IDS), and a user accumulates tokens
+            # across projects through reinstalls and slug changes. Batching made
+            # one stale token look like a total transport failure - and, because
+            # the old code only read the `data` array, made it look like SUCCESS.
+            ticket_data = []
             ticket_ids = []
             ticket_errors = []
-            for i, ticket in enumerate(ticket_data.get("data", [])):
-                if ticket.get("status") == "ok":
-                    ticket_ids.append(ticket.get("id"))
-                else:
-                    ticket_errors.append({
+            request_errors = []
+
+            for i, (token, message) in enumerate(zip(push_tokens, messages)):
+                resp = await client.post(
+                    expo_url,
+                    json=[message],
+                    headers={"Content-Type": "application/json"},
+                    timeout=15.0,
+                )
+                try:
+                    body = resp.json()
+                except Exception:
+                    body = {"raw": resp.text[:300]}
+                ticket_data.append({"token_index": i, "http_status": resp.status_code, "body": body})
+                logger.info(f"\U0001F9EA TEST-PUSH token[{i}] -> {resp.status_code} {body}")
+
+                # A non-200, or a top-level `errors` array, means the request was
+                # refused outright. This is the case the old code silently
+                # treated as success because `data` was simply absent.
+                if resp.status_code != 200 or body.get("errors"):
+                    request_errors.append({
                         "token_index": i,
-                        "token": push_tokens[i][:30] + "...",
-                        "status": ticket.get("status"),
-                        "message": ticket.get("message"),
-                        "details": ticket.get("details"),
+                        "token": token[:30] + "...",
+                        "http_status": resp.status_code,
+                        "errors": body.get("errors"),
                     })
-                    logger.error(f"🧪 TEST-PUSH ticket error: {ticket}")
+                    logger.error(f"\U0001F9EA TEST-PUSH request refused for token[{i}]: {body.get('errors')}")
+                    continue
+
+                for ticket in body.get("data", []):
+                    if ticket.get("status") == "ok":
+                        ticket_ids.append(ticket.get("id"))
+                    else:
+                        ticket_errors.append({
+                            "token_index": i,
+                            "token": token[:30] + "...",
+                            "status": ticket.get("status"),
+                            "message": ticket.get("message"),
+                            "details": ticket.get("details"),
+                        })
+                        logger.error(f"\U0001F9EA TEST-PUSH ticket error: {ticket}")
 
             # 4. Fetch receipts (wait briefly for Expo to process)
             if ticket_ids:
@@ -14916,7 +14947,11 @@ async def admin_test_push(
         recent_notifs = [{"error": str(e)}]
 
     return {
-        "success": len(ticket_errors) == 0,
+        # Success means at least one push was ACCEPTED by Expo and nothing was
+        # refused. Previously this only counted per-ticket errors, so a request
+        # Expo rejected wholesale (no `data` array at all) reported success.
+        "success": len(ticket_ids) > 0 and not ticket_errors and not request_errors,
+        "request_errors": request_errors,
         "settings_diagnostics": settings_diag,
         "recent_notifications": recent_notifs,
         "user_id": user_id,
