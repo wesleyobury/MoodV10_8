@@ -424,16 +424,38 @@ async def send_welcome_message(new_user_id: str):
         # user's first contact from the app arrived silently and was only found
         # if they happened to open Messages. Uses the founder title when the DM
         # is the video, so a new signup and the blast read identically.
+        # V2.2 — DEFER this push when the user has no device token yet.
+        #
+        # send_welcome_message runs inside POST /auth/register, BEFORE the
+        # response carrying the auth token is returned. The client cannot
+        # register a push token until it HAS that auth token, so at this instant
+        # a brand-new user has ZERO tokens and _send_push_notification exits at
+        # "NO TOKENS". Every single signup lost its welcome push this way — the
+        # DM row existed, but the highest-intent moment in the funnel produced
+        # no notification at all. So: send now if we somehow can, otherwise
+        # stash the intent and let the device-token endpoint fire it the moment
+        # delivery becomes possible.
         try:
             notification_service = get_notification_service(db)
-            await notification_service.trigger_message_notification(
-                sender_id=admin_id,
-                recipient_id=new_user_id,
-                conversation_id=conversation_id,
-                message_text=preview,
-                title_override=FOUNDER_VIDEO_PUSH_TITLE if use_video else None,
-                body_override=preview if use_video else None,
-            )
+            welcome_push = {
+                "sender_id": admin_id,
+                "recipient_id": new_user_id,
+                "conversation_id": conversation_id,
+                "message_text": preview,
+                "title_override": FOUNDER_VIDEO_PUSH_TITLE if use_video else None,
+                "body_override": preview if use_video else None,
+            }
+            if await notification_service.get_user_tokens(new_user_id):
+                await notification_service.trigger_message_notification(**welcome_push)
+            else:
+                await db.users.update_one(
+                    {"_id": ObjectId(new_user_id)},
+                    {"$set": {"pending_welcome_push": {
+                        **welcome_push,
+                        "queued_at": datetime.now(timezone.utc),
+                    }}},
+                )
+                logger.info(f"welcome-message push DEFERRED (no tokens yet) for {new_user_id[:8]}")
         except Exception as e:
             logger.warning(f"welcome-message push failed for {new_user_id[:8]}: {e}")
 
@@ -14481,6 +14503,54 @@ class NotificationSettingsUpdate(BaseModel):
 class MarkNotificationsRead(BaseModel):
     notification_ids: List[str]
 
+WELCOME_PUSH_MAX_AGE_DAYS = 7
+
+
+async def _flush_pending_welcome_push(user_id: str) -> None:
+    """Deliver the welcome push that signup could not send.
+
+    Signup queues `pending_welcome_push` on the user document because at that
+    moment the device has no push token (see send_welcome_message). This runs on
+    token registration, which is the first instant a push can actually land.
+
+    Best-effort and self-clearing: the flag is removed BEFORE the send is
+    attempted, so a push that fails cannot re-fire on every app foreground.
+    """
+    try:
+        user = await db.users.find_one({"_id": ObjectId(user_id)}, {"pending_welcome_push": 1})
+    except Exception:
+        return
+
+    pending = (user or {}).get("pending_welcome_push")
+    if not pending:
+        return
+
+    await db.users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$unset": {"pending_welcome_push": ""}},
+    )
+
+    # A welcome that has been sitting for a week is no longer a welcome.
+    queued_at = pending.get("queued_at")
+    if queued_at is not None:
+        if queued_at.tzinfo is None:
+            queued_at = queued_at.replace(tzinfo=timezone.utc)
+        if datetime.now(timezone.utc) - queued_at > timedelta(days=WELCOME_PUSH_MAX_AGE_DAYS):
+            logger.info(f"pending welcome push EXPIRED for {user_id[:8]}")
+            return
+
+    notification_service = get_notification_service(db)
+    await notification_service.trigger_message_notification(
+        sender_id=pending.get("sender_id"),
+        recipient_id=pending.get("recipient_id") or user_id,
+        conversation_id=pending.get("conversation_id"),
+        message_text=pending.get("message_text") or "",
+        title_override=pending.get("title_override"),
+        body_override=pending.get("body_override"),
+    )
+    logger.info(f"\u2705 Delivered DEFERRED welcome push for {user_id[:8]}")
+
+
 @api_router.post("/notifications/device-token")
 async def register_device_token(
     data: DeviceTokenRegister,
@@ -14496,6 +14566,14 @@ async def register_device_token(
         device_id=data.device_id
     )
     logger.info(f"📱 DEVICE-TOKEN result: user={current_user_id}, status={result.get('status')}, id={result.get('id')}")
+
+    # First moment this user is actually reachable — send the welcome push that
+    # signup had to defer.
+    try:
+        await _flush_pending_welcome_push(current_user_id)
+    except Exception as e:
+        logger.warning(f"pending welcome push flush failed for {current_user_id[:8]}: {e}")
+
     return result
 
 @api_router.delete("/notifications/device-token")
@@ -15210,6 +15288,128 @@ async def admin_send_mass_workout_reminder(
         "notifications_sent": count,
         "message": f"Workout reminders sent to {count} users"
     }
+
+@api_router.get("/admin/notifications/delivery-health")
+async def admin_notification_delivery_health(
+    days: int = 7,
+    current_user_id: str = Depends(require_admin),
+):
+    """Is push actually REACHING people? One call, no DB console needed.
+
+    `delivered_push_at` is stamped only when a device accepted the push, so the
+    delivered/total ratio per type is the honest delivery rate. A type sitting
+    at 0% is a broken path, not a quiet week — that is the signal that was
+    missing when a token-batching bug silenced every push on multi-token
+    accounts and nothing surfaced it.
+
+    Only meaningful for rows created AFTER the per-token send fix shipped;
+    older rows were never stamped reliably and will drag the rate down.
+    """
+    days = max(1, min(days, 90))
+    since = datetime.now(timezone.utc) - timedelta(days=days)
+    delivered_expr = {"$sum": {"$cond": [{"$ifNull": ["$delivered_push_at", False]}, 1, 0]}}
+
+    def _rate(delivered: int, total: int) -> float:
+        return round((delivered / total) * 100, 1) if total else 0.0
+
+    # ---- delivery rate per notification type ----
+    by_type = []
+    try:
+        rows = await db.notifications.aggregate([
+            {"$match": {"created_at": {"$gte": since}}},
+            {"$group": {"_id": "$type", "total": {"$sum": 1}, "delivered": delivered_expr}},
+            {"$sort": {"total": -1}},
+        ]).to_list(100)
+        by_type = [
+            {
+                "type": r.get("_id") or "unknown",
+                "total": r.get("total", 0),
+                "delivered": r.get("delivered", 0),
+                "delivery_rate_pct": _rate(r.get("delivered", 0), r.get("total", 0)),
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        by_type = [{"error": str(e)}]
+
+    overall_total = sum(r.get("total", 0) for r in by_type if "total" in r)
+    overall_delivered = sum(r.get("delivered", 0) for r in by_type if "delivered" in r)
+
+    # ---- can we even reach people? ----
+    try:
+        total_users = await db.users.count_documents({"is_banned": {"$ne": True}})
+        reachable = len(await db.device_tokens.distinct("user_id", {"is_valid": True}))
+        token_coverage = {
+            "users": total_users,
+            "users_with_a_valid_token": reachable,
+            "coverage_pct": _rate(reachable, total_users),
+            "valid_tokens": await db.device_tokens.count_documents({"is_valid": True}),
+            "invalid_tokens": await db.device_tokens.count_documents({"is_valid": False}),
+        }
+    except Exception as e:
+        token_coverage = {"error": str(e)}
+
+    # ---- the drip, per day: did the sweep actually run? ----
+    # A day missing from this list is a day the worker never swept. That is the
+    # failure mode to watch: the whole cohort's drip rides on one tick per day.
+    try:
+        drip_rows = await db.notifications.aggregate([
+            {"$match": {"created_at": {"$gte": since}, "metadata.reengagement": True}},
+            {"$group": {
+                "_id": {
+                    "day": {"$dateToString": {"format": "%Y-%m-%d", "date": "$created_at"}},
+                    "campaign": "$metadata.campaign",
+                },
+                "total": {"$sum": 1},
+                "delivered": delivered_expr,
+            }},
+            {"$sort": {"_id.day": 1}},
+        ]).to_list(1000)
+
+        drip_by_day = {}
+        for r in drip_rows:
+            day = r["_id"].get("day")
+            entry = drip_by_day.setdefault(day, {"day": day, "total": 0, "delivered": 0, "campaigns": {}})
+            entry["total"] += r.get("total", 0)
+            entry["delivered"] += r.get("delivered", 0)
+            entry["campaigns"][r["_id"].get("campaign") or "unknown"] = r.get("total", 0)
+        for entry in drip_by_day.values():
+            entry["delivery_rate_pct"] = _rate(entry["delivered"], entry["total"])
+
+        expected_days = [
+            (datetime.now(timezone.utc) - timedelta(days=i)).strftime("%Y-%m-%d")
+            for i in range(days)
+        ]
+        silent_days = sorted(d for d in expected_days if d not in drip_by_day)
+
+        drip = {
+            "by_day": [drip_by_day[k] for k in sorted(drip_by_day)],
+            "days_with_no_drip_at_all": silent_days,
+        }
+    except Exception as e:
+        drip = {"error": str(e)}
+
+    # ---- worker liveness ----
+    worker_running = None
+    try:
+        worker_running = bool(get_notification_worker(db).running)
+    except Exception as e:
+        logger.warning(f"delivery-health: worker status unavailable: {e}")
+
+    return {
+        "window_days": days,
+        "since": since.isoformat(),
+        "overall": {
+            "total": overall_total,
+            "delivered": overall_delivered,
+            "delivery_rate_pct": _rate(overall_delivered, overall_total),
+        },
+        "by_type": by_type,
+        "token_coverage": token_coverage,
+        "drip": drip,
+        "worker_running": worker_running,
+    }
+
 
 @api_router.get("/admin/notifications/worker-status")
 async def admin_get_worker_status(

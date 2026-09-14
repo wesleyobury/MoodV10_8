@@ -210,10 +210,59 @@ export async function initNotifications(authToken: string): Promise<NotifStatus>
       console.warn('🔔 initNotif: Backend upsert network error', e);
     }
 
+    // 6. Keep the server's copy of this user's timezone current — the drip
+    // schedule keys off it.
+    await syncTimezone(authToken);
+
     return result;
   } catch (error) {
     console.error('🔔 initNotif: Error', error);
     return result;
+  }
+}
+
+const TIMEZONE_SYNCED_KEY = '@mood_tz_synced';
+
+/**
+ * Tell the server which timezone this user is actually in.
+ *
+ * The re-engagement drip only sends when it is early evening in the user's
+ * LOCAL time (notification_worker._local_hour). That field defaulted to
+ * "America/New_York" for every account and nothing ever wrote the real value,
+ * so two things went wrong: users outside Eastern were nudged at the wrong hour,
+ * and the entire cohort passed the local-hour gate on the SAME sweep, making the
+ * whole day's drip depend on one worker tick. Writing the real zone spreads
+ * sends across the 24 hourly passes the worker already makes.
+ *
+ * Sends only when the zone has changed since last time (travel, first run), so
+ * this is not a request on every foreground. PUT uses exclude_none server-side,
+ * so a timezone-only body cannot clobber the user's other preferences.
+ */
+export async function syncTimezone(authToken: string): Promise<void> {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (!tz || !authToken) return;
+
+    const lastSynced = await AsyncStorage.getItem(TIMEZONE_SYNCED_KEY);
+    if (lastSynced === tz) return;
+
+    const resp = await fetch(`${API_URL}/api/notifications/settings`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({ timezone: tz }),
+    });
+
+    if (resp.ok) {
+      await AsyncStorage.setItem(TIMEZONE_SYNCED_KEY, tz);
+      console.log(`\u{1F514} syncTimezone: server now has ${tz}`);
+    } else {
+      console.warn(`\u{1F514} syncTimezone: HTTP ${resp.status}`);
+    }
+  } catch (e) {
+    console.warn('\u{1F514} syncTimezone: failed (non-fatal)', e);
   }
 }
 
