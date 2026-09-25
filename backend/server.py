@@ -9525,8 +9525,10 @@ async def get_user_workouts(current_user_id: str = Depends(get_current_user), li
 
 # File Upload Endpoints - Using Cloudinary for persistent cloud storage
 
-UPLOAD_DIR = Path("/app/backend/uploads")
-UPLOAD_DIR.mkdir(exist_ok=True)
+# Next to this file (= /app/backend/uploads on the hosted server, unchanged), so
+# the backend also starts from a local checkout for dev-build testing.
+UPLOAD_DIR = Path(__file__).resolve().parent / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 # Helper function to generate video thumbnail URL from Cloudinary
 def get_cloudinary_video_thumbnail(public_id: str, timestamp: float = 2.0) -> str:
