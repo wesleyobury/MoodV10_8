@@ -43,6 +43,54 @@ const SEND_TIMEOUT_MS = 8000;
 let flushTimer: ReturnType<typeof setTimeout> | null = null;
 let flushing = false;
 
+/* ────────────────────────────────────────────────────────────────────────
+ * Pre-auth parking.
+ *
+ * AuthContext initialises `token` to null and fills it from an async
+ * AsyncStorage read. Any analytics call that runs in that gap put "Bearer
+ * null" in the header, got a 401, and was lost with no retry. That silently
+ * deleted roughly half of onboarding_completed. Rather than fix each call
+ * site, events fired without a token are parked briefly and released once a
+ * token is known.
+ *
+ * Bounded deliberately: only PARK_WINDOW_MS of events, and only
+ * MAX_PARKED_EVENTS of them, so a genuinely anonymous session cannot have its
+ * events attributed to whoever signs in much later. Events older than the
+ * window are dropped rather than mis-attributed.
+ * ──────────────────────────────────────────────────────────────────────── */
+const PARK_WINDOW_MS = 60_000;
+const MAX_PARKED_EVENTS = 20;
+type ParkedEvent = { url: string; body: Record<string, any>; parkedAt: number };
+const parkedEvents: ParkedEvent[] = [];
+let lastKnownToken: string | null = null;
+
+/**
+ * Tell analytics which token to use. Call this whenever auth state changes;
+ * it releases anything that was fired before the token had loaded.
+ */
+export const setAnalyticsAuthToken = (token: string | null): void => {
+  lastKnownToken = token || null;
+  if (!lastKnownToken || parkedEvents.length === 0) return;
+  const cutoff = Date.now() - PARK_WINDOW_MS;
+  const releasable = parkedEvents.splice(0, parkedEvents.length);
+  for (const evt of releasable) {
+    if (evt.parkedAt < cutoff) continue; // too old to attribute safely
+    enqueueEvent({
+      url: evt.url,
+      headers: {
+        Authorization: `Bearer ${lastKnownToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: evt.body,
+    });
+  }
+};
+
+function parkEvent(url: string, body: Record<string, any>): void {
+  parkedEvents.push({ url, body, parkedAt: Date.now() });
+  if (parkedEvents.length > MAX_PARKED_EVENTS) parkedEvents.shift();
+}
+
 function enqueueEvent(evt: QueuedAnalyticsEvent): void {
   eventQueue.push(evt);
   if (eventQueue.length > MAX_QUEUE_LENGTH) eventQueue.shift(); // drop oldest
@@ -118,6 +166,28 @@ export const getUserTimezone = (): string => {
 };
 
 /**
+ * App version + build stamped on every event.
+ *
+ * Without this there is no way to tell whether a metric reflects the build
+ * you just shipped or one still on half your users' phones — which is exactly
+ * the question that blocks every "did the fix work?" investigation.
+ */
+export const getAppBuildInfo = (): { app_version: string; app_build: string } => {
+  try {
+    const expo: any = Constants.expoConfig ?? {};
+    const build =
+      expo?.ios?.buildNumber ??
+      (expo?.android?.versionCode != null ? String(expo.android.versionCode) : undefined);
+    return {
+      app_version: String(expo?.version ?? 'unknown'),
+      app_build: String(build ?? 'unknown'),
+    };
+  } catch {
+    return { app_version: 'unknown', app_build: 'unknown' };
+  }
+};
+
+/**
  * Get current UTC timestamp in ISO format
  */
 export const getUTCTimestamp = (): string => {
@@ -169,20 +239,30 @@ export const trackEvent = async (
       }
     }
 
+    const authToken = token || lastKnownToken;
+    const eventBody = {
+      event_type: eventType,
+      event_timestamp_utc: getUTCTimestamp(),
+      user_timezone: getUserTimezone(),
+      metadata: { ...getAppBuildInfo(), ...(metadata || {}) },
+    };
+
+    // No token yet: park rather than send "Bearer null" into a 401.
+    if (!authToken) {
+      parkEvent(`${API_URL}/api/analytics/track`, eventBody);
+      return;
+    }
+    if (token) lastKnownToken = token;
+
     // Timestamp is stamped NOW (enqueue time), so batched delivery a few
     // seconds later doesn't skew event times.
     enqueueEvent({
       url: `${API_URL}/api/analytics/track`,
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${authToken}`,
         'Content-Type': 'application/json'
       },
-      body: {
-        event_type: eventType,
-        event_timestamp_utc: getUTCTimestamp(),
-        user_timezone: getUserTimezone(),
-        metadata: metadata || {}
-      }
+      body: eventBody
     });
 
     // Phase G — fan-out to any externally-registered providers (PostHog /
@@ -226,7 +306,7 @@ export const trackGuestEvent = async (
         device_id: deviceId,
         event_timestamp_utc: getUTCTimestamp(),
         user_timezone: getUserTimezone(),
-        metadata: { ...metadata, is_guest: true }
+        metadata: { ...getAppBuildInfo(), ...metadata, is_guest: true }
       }
     });
 
@@ -290,6 +370,10 @@ export const Analytics = {
     equipment?: string;
     duration_minutes?: number;
     exercises_completed?: number;
+    // Exercises the user actually spent time on, vs the planned count above.
+    exercises_engaged?: number;
+    // Real wall-clock session length, vs the summed planned durations.
+    actual_duration_seconds?: number;
     // Phase 7 — included on completion so the Live Feed entry can carry
     // an opaque pointer back to the full cart. Tapping "Try this workout"
     // on a feed entry fetches /api/workout-snapshots/{id} and hydrates the
@@ -305,21 +389,48 @@ export const Analytics = {
 
   workoutAbandoned: (token: string, metadata: {
     workout_name?: string;
+    reason?: string;
+    exercise_index?: number;
+    exercises_engaged?: number;
     progress_percentage?: number;
     exercises_completed?: number;
     total_exercises?: number;
+    elapsed_seconds?: number;
   }) => trackEvent(token, 'workout_abandoned', metadata),
+
+  // Non-terminal: the user switched away mid-session. Recorded separately
+  // from abandonment because people background the app to change music.
+  workoutBackgrounded: (token: string, metadata: {
+    exercise_index?: number;
+    total_exercises?: number;
+    elapsed_seconds?: number;
+  }) => trackEvent(token, 'workout_backgrounded', metadata),
 
   workoutSaved: (token: string, metadata: {
     workout_id?: string;
     mood_category?: string;
   }) => trackEvent(token, 'workout_saved', metadata),
 
+  // Fires only when the user actually spent time on the exercise. See
+  // EXERCISE_ENGAGED_SECONDS in workout-session.tsx.
   exerciseCompleted: (token: string, metadata: {
     exercise_name?: string;
+    exercise_index?: number;
+    total_exercises?: number;
+    dwell_seconds?: number;
     sets?: number;
     reps?: number;
   }) => trackEvent(token, 'exercise_completed', metadata),
+
+  // Fires on every advance, engaged or not. The `engaged` flag plus
+  // dwell_seconds is what separates training from tapping through a list.
+  exerciseAdvanced: (token: string, metadata: {
+    exercise_name?: string;
+    exercise_index?: number;
+    total_exercises?: number;
+    dwell_seconds?: number;
+    engaged?: boolean;
+  }) => trackEvent(token, 'exercise_advanced', metadata),
 
   // Cart/Add workout events
   trackWorkoutAdded: (token: string, workoutId: string, workoutName: string, equipment: string, difficulty: string) => 

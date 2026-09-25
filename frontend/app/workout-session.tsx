@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   Alert,
+  AppState,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -44,6 +45,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TIP_FORM_VIDEOS_DISMISSED_KEY = 'mood:tip:form_videos:never';
 
+// Minimum seconds a user must spend on an exercise before we treat it as
+// actually performed. Below this it is a tap-through, and we record
+// exercise_advanced instead of exercise_completed so the two never blur.
+const EXERCISE_ENGAGED_SECONDS = 30;
+
 interface SessionWorkout {
   workoutName: string;
   equipment: string;
@@ -74,6 +80,21 @@ export default function WorkoutSessionScreen() {
   const hrSubRef = useRef<{ remove: () => Promise<void> } | null>(null);
   const sessionStartRef = useRef<string>(new Date().toISOString());
   const [showNoWatchToast, setShowNoWatchToast] = useState(false);
+
+  // ─────────────────────────────────────────────────────────────────
+  // Session instrumentation refs.
+  // These mirror state so the unmount handler is not reading a stale
+  // closure, and they track real wall-clock time independently of
+  // HealthKit permission.
+  // ─────────────────────────────────────────────────────────────────
+  const sessionWorkoutsRef = useRef<SessionWorkout[]>([]);
+  const currentIndexRef = useRef(0);
+  const sessionStartedMsRef = useRef<number>(Date.now());
+  const indexEnteredMsRef = useRef<number>(Date.now());
+  const engagedIndexesRef = useRef<Set<number>>(new Set());
+  const sessionStartReportedRef = useRef(false);
+  const sessionFinishedRef = useRef(false);
+  const abandonReportedRef = useRef(false);
   
   const [sessionWorkouts, setSessionWorkouts] = useState<SessionWorkout[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -144,12 +165,6 @@ export default function WorkoutSessionScreen() {
     sessionStartRef.current = new Date().toISOString();
     hrSamplesRef.current = [];
 
-    if (token) {
-      Analytics.workoutSessionStarted(token, {
-        started_at: sessionStartRef.current,
-      });
-    }
-
     (async () => {
       const sub = await subscribeHeartRateStream((sample) => {
         hrSamplesRef.current.push(sample);
@@ -176,6 +191,74 @@ export default function WorkoutSessionScreen() {
       }
     };
   }, [healthStatus, token]);
+
+  // Keep refs in step with state so unmount-time reporting is accurate.
+  useEffect(() => { sessionWorkoutsRef.current = sessionWorkouts; }, [sessionWorkouts]);
+  useEffect(() => { currentIndexRef.current = currentIndex; }, [currentIndex]);
+
+  // ─────────────────────────────────────────────────────────────────
+  // Session lifecycle instrumentation.
+  // Deliberately NOT gated on HealthKit permission: every session has to
+  // be measurable whether or not the user granted health access or owns
+  // a watch. Previously these events sat inside the heart-rate effect and
+  // therefore never fired for most users.
+  // ─────────────────────────────────────────────────────────────────
+  const reportAbandon = React.useCallback((reason: string) => {
+    if (!token) return;
+    if (sessionFinishedRef.current || abandonReportedRef.current) return;
+    const total = sessionWorkoutsRef.current.length;
+    if (total === 0) return;
+    abandonReportedRef.current = true;
+    const idx = currentIndexRef.current;
+    Analytics.workoutAbandoned(token, {
+      workout_name: sessionWorkoutsRef.current[idx]?.workoutName,
+      reason,
+      exercise_index: idx,
+      exercises_engaged: engagedIndexesRef.current.size,
+      exercises_completed: engagedIndexesRef.current.size,
+      total_exercises: total,
+      progress_percentage: Math.round((idx / total) * 100),
+      elapsed_seconds: Math.round((Date.now() - sessionStartedMsRef.current) / 1000),
+    });
+  }, [token]);
+
+  useEffect(() => {
+    if (!token) return;
+    if (sessionWorkouts.length === 0) return;
+    if (sessionStartReportedRef.current) return;
+    sessionStartReportedRef.current = true;
+    sessionStartedMsRef.current = Date.now();
+    indexEnteredMsRef.current = Date.now();
+    const first = sessionWorkouts[0];
+    Analytics.workoutSessionStarted(token, {
+      started_at: new Date(sessionStartedMsRef.current).toISOString(),
+      total_exercises: sessionWorkouts.length,
+      mood_category: first?.workoutType || 'Unknown',
+      difficulty: first?.difficulty,
+      equipment: first?.equipment,
+      featured_workout_id: (params.featuredWorkoutId as string) || undefined,
+    });
+  }, [token, sessionWorkouts, params.featuredWorkoutId]);
+
+  // Backgrounding is recorded but is NOT terminal: people switch to music
+  // mid-set and come back. Only leaving the screen counts as abandonment.
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (next) => {
+      if (next !== 'background' && next !== 'inactive') return;
+      if (!token || sessionFinishedRef.current) return;
+      const total = sessionWorkoutsRef.current.length;
+      if (total === 0) return;
+      Analytics.workoutBackgrounded(token, {
+        exercise_index: currentIndexRef.current,
+        total_exercises: total,
+        elapsed_seconds: Math.round((Date.now() - sessionStartedMsRef.current) / 1000),
+      });
+    });
+    return () => {
+      sub.remove();
+      reportAbandon('exited');
+    };
+  }, [token, reportAbandon]);
 
   useEffect(() => {
     try {
@@ -195,55 +278,6 @@ export default function WorkoutSessionScreen() {
     }
   }, [params]);
 
-  // ─────────────────────────────────────────────────────────────────
-  // Live heart-rate stream lifecycle.
-  // Starts once when the session screen mounts (subject to permission).
-  // Stops on unmount AND in handleFinishSession (whichever fires first).
-  // ─────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    if (healthStatus !== 'determined') return;
-    let cancelled = false;
-    sessionStartRef.current = new Date().toISOString();
-    hrSamplesRef.current = [];
-
-    if (token) {
-      Analytics.workoutSessionStarted(token, {
-        started_at: sessionStartRef.current,
-      });
-    }
-
-    (async () => {
-      const sub = await subscribeHeartRateStream((sample) => {
-        hrSamplesRef.current.push(sample);
-        // Throttled state update so the screen can show a live count without
-        // re-rendering on every single sample (cheap enough at 5s cadence,
-        // but keeps the door open for higher-frequency sources later).
-        setHrSampleCount(hrSamplesRef.current.length);
-      });
-      if (cancelled) {
-        sub.remove().catch(() => {});
-        return;
-      }
-      hrSubRef.current = sub;
-    })();
-
-    // Apple Watch detection — if zero samples land in the first 30s after a
-    // permission-granted start, gently nudge the user. Don't block anything.
-    const watchTimer = setTimeout(() => {
-      if (hrSamplesRef.current.length === 0) {
-        setShowNoWatchToast(true);
-      }
-    }, 30_000);
-
-    return () => {
-      cancelled = true;
-      clearTimeout(watchTimer);
-      if (hrSubRef.current) {
-        hrSubRef.current.remove().catch(() => {});
-        hrSubRef.current = null;
-      }
-    };
-  }, [healthStatus, token]);
 
   const currentWorkout = sessionWorkouts[currentIndex];
   const isLastWorkout = currentIndex === sessionWorkouts.length - 1;
@@ -262,15 +296,9 @@ export default function WorkoutSessionScreen() {
             text: "Leave", 
             style: "destructive", 
             onPress: () => {
-              // Track workout abandoned event
-              if (token && currentWorkout) {
-                Analytics.workoutAbandoned(token, {
-                  workout_name: currentWorkout.workoutName,
-                  progress_percentage: Math.round((currentIndex / sessionWorkouts.length) * 100),
-                  exercises_completed: currentIndex,
-                  total_exercises: sessionWorkouts.length,
-                });
-              }
+              // reportAbandon is one-shot, so the unmount handler below will
+              // not double-report this exit.
+              reportAbandon('confirmed_leave');
               router.back();
             }
           }
@@ -281,26 +309,55 @@ export default function WorkoutSessionScreen() {
 
   const handleNextWorkout = () => {
     if (!isLastWorkout) {
-      // Track exercise/workout completed
+      // Dwell time is what separates a performed exercise from a tap-through.
+      // Advancing always emits exercise_advanced; only a real dwell emits
+      // exercise_completed, so completion counts mean something.
+      const dwellSeconds = Math.round((Date.now() - indexEnteredMsRef.current) / 1000);
+      const engaged = dwellSeconds >= EXERCISE_ENGAGED_SECONDS;
+      if (engaged) engagedIndexesRef.current.add(currentIndex);
+
       if (token && currentWorkout) {
-        Analytics.exerciseCompleted(token, {
+        Analytics.exerciseAdvanced(token, {
           exercise_name: currentWorkout.workoutName,
-          sets: 1,
-          reps: 1,
+          exercise_index: currentIndex,
+          total_exercises: sessionWorkouts.length,
+          dwell_seconds: dwellSeconds,
+          engaged,
         });
+        if (engaged) {
+          Analytics.exerciseCompleted(token, {
+            exercise_name: currentWorkout.workoutName,
+            exercise_index: currentIndex,
+            total_exercises: sessionWorkouts.length,
+            dwell_seconds: dwellSeconds,
+          });
+        }
       }
+
+      indexEnteredMsRef.current = Date.now();
       setCurrentIndex(currentIndex + 1);
     }
   };
 
   const handlePreviousWorkout = () => {
     if (!isFirstWorkout) {
+      indexEnteredMsRef.current = Date.now();
       setCurrentIndex(currentIndex - 1);
     }
   };
 
   const handleFinishSession = async () => {
     console.log('=== FINISH SESSION CALLED ===');
+
+    // Credit the final exercise if the user actually spent time on it, then
+    // lock the session so the unmount handler does not report abandonment.
+    {
+      const finalDwell = Math.round((Date.now() - indexEnteredMsRef.current) / 1000);
+      if (finalDwell >= EXERCISE_ENGAGED_SECONDS) {
+        engagedIndexesRef.current.add(currentIndexRef.current);
+      }
+    }
+    sessionFinishedRef.current = true;
     
     // Prepare workout completion data with full details for replication
     const completedWorkouts = sessionWorkouts.map(workout => ({
@@ -400,7 +457,11 @@ export default function WorkoutSessionScreen() {
         difficulty: firstWorkout.difficulty,
         equipment: firstWorkout.equipment,
         duration_minutes: totalDuration,
+        // exercises_completed stays as the planned count for continuity with
+        // existing dashboards; exercises_engaged is the honest number.
         exercises_completed: sessionWorkouts.length,
+        exercises_engaged: engagedIndexesRef.current.size,
+        actual_duration_seconds: Math.round((Date.now() - sessionStartedMsRef.current) / 1000),
         workout_snapshot_id: workoutSnapshotId || undefined,
       });
     }

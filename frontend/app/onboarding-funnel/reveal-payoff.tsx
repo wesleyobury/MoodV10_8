@@ -181,6 +181,11 @@ export default function RevealPayoff() {
 
   const fireCompleted = () => {
     if (completedRef.current) return;
+    // Do NOT latch the ref without a token. trackEvent puts the token straight
+    // into the Authorization header, so firing while auth is still loading
+    // sends "Bearer null", the API drops it with a 401, and the ref would mark
+    // the event as sent forever. The effect below re-runs when the token lands.
+    if (!token) return;
     completedRef.current = true;
     Analytics.onboardingCompleted(token, {
       mood: answers.mood,
@@ -203,15 +208,26 @@ export default function RevealPayoff() {
   // The timeout is a backstop: a user whose answers fail to rehydrate should
   // still be COUNTED as completing, just without dimensions — losing the event
   // entirely is worse than losing its metadata.
+  //
+  // `token` is in the dependency list deliberately. AuthContext initialises
+  // token to null and fills it from an async AsyncStorage read, and this effect
+  // used to depend on [answers.mood] alone. Any user whose token had not landed
+  // by the time this ran produced no completion event and never got a retry,
+  // while revealScreenViewed (deps [token, ...]) did re-fire and was recorded.
+  // That asymmetry is why the dashboard showed ~79% reaching the payoff screen
+  // and only ~36% completing: of 220 users who reached this screen after the
+  // 2.1 release, 100 never fired completion yet went on using the app
+  // afterwards. They were never lost, only uncounted.
   useEffect(() => {
     if (completedRef.current) return;
+    if (!token) return;
     if (answers.mood) {
       fireCompleted();
       return;
     }
     const t = setTimeout(fireCompleted, 2500);
     return () => clearTimeout(t);
-  }, [answers.mood]);
+  }, [token, answers.mood]);
 
   // Advance the funnel once Soft Paywall #1 closes — whether or not it
   // converted.

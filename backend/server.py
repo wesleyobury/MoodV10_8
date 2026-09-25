@@ -5940,10 +5940,17 @@ async def get_workout_quality_metrics(
         ]
         
         completed_results = await db.user_events.aggregate(completed_pipeline).to_list(1000)
-        completed_map = {
-            (r["_id"].get("mood"), r["_id"].get("difficulty"), r["_id"].get("equipment")): r["completed_count"]
-            for r in completed_results
-        }
+        # Mood is normalised on both sides of this join so the same mood does
+        # not split into several rows on casing or phrasing alone.
+        from admin_analytics import normalize_mood_category
+        completed_map = {}
+        for r in completed_results:
+            key = (
+                normalize_mood_category(r["_id"].get("mood")),
+                r["_id"].get("difficulty") or "Unknown",
+                r["_id"].get("equipment") or "None",
+            )
+            completed_map[key] = completed_map.get(key, 0) + r["completed_count"]
         
         # Calculate by mood category
         by_mood = {}
@@ -5953,15 +5960,27 @@ async def get_workout_quality_metrics(
         total_started = 0
         total_completed = 0
         
+        # Collapse the raw rows onto the normalised key FIRST. Two spellings of
+        # the same mood are one row, and the completed count for that key is
+        # then applied once rather than once per spelling.
+        started_map: Dict[tuple, Dict[str, Any]] = {}
         for item in started_results:
-            mood = item["_id"].get("mood") or "Unknown"
-            difficulty = item["_id"].get("difficulty") or "Unknown"
-            equipment = item["_id"].get("equipment") or "None"
-            started = item["started_count"]
-            completed = completed_map.get(
-                (item["_id"].get("mood"), item["_id"].get("difficulty"), item["_id"].get("equipment")),
-                0
+            key = (
+                normalize_mood_category(item["_id"].get("mood")),
+                item["_id"].get("difficulty") or "Unknown",
+                item["_id"].get("equipment") or "None",
             )
+            bucket = started_map.setdefault(
+                key, {"started": 0, "user_ids": set()}
+            )
+            bucket["started"] += item["started_count"]
+            bucket["user_ids"].update(item.get("user_ids", []))
+
+        for (mood, difficulty, equipment), agg in started_map.items():
+            started = agg["started"]
+            completed = completed_map.get((mood, difficulty, equipment), 0)
+            # A completed count can never exceed starts once keys are merged.
+            completed = min(completed, started)
             
             total_started += started
             total_completed += completed
@@ -5971,7 +5990,7 @@ async def get_workout_quality_metrics(
                 by_mood[mood] = {"started": 0, "completed": 0, "unique_users": set()}
             by_mood[mood]["started"] += started
             by_mood[mood]["completed"] += completed
-            by_mood[mood]["unique_users"].update(item.get("user_ids", []))
+            by_mood[mood]["unique_users"].update(agg["user_ids"])
             
             # Aggregate by difficulty
             if difficulty not in by_difficulty:
@@ -15289,11 +15308,7 @@ async def admin_send_mass_workout_reminder(
         "message": f"Workout reminders sent to {count} users"
     }
 
-@api_router.get("/admin/notifications/delivery-health")
-async def admin_notification_delivery_health(
-    days: int = 7,
-    current_user_id: str = Depends(require_admin),
-):
+async def _compute_notification_delivery_health(days: int = 7) -> dict:
     """Is push actually REACHING people? One call, no DB console needed.
 
     `delivered_push_at` is stamped only when a device accepted the push, so the
@@ -15409,6 +15424,42 @@ async def admin_notification_delivery_health(
         "drip": drip,
         "worker_running": worker_running,
     }
+
+
+@api_router.get("/admin/notifications/delivery-health")
+async def admin_notification_delivery_health(
+    days: int = 7,
+    current_user_id: str = Depends(require_admin),
+):
+    """Push delivery health, for a signed-in admin."""
+    return await _compute_notification_delivery_health(days)
+
+
+@api_router.get("/metrics/notification-health")
+async def metrics_notification_health(
+    days: int = 7,
+    x_service_token: Optional[str] = Header(None),
+):
+    """Same numbers as /admin/notifications/delivery-health, for automation.
+
+    Takes a static shared secret rather than an admin JWT, because the caller is
+    an unattended weekly job with no way to log in as a person and no business
+    holding an admin password. Set METRICS_SERVICE_TOKEN in this app's
+    environment and give the identical value to the caller.
+
+    Read-only and scoped to these aggregate counts: it exposes no user record,
+    no message content and no device token, so a leak of this secret costs
+    delivery statistics and nothing else. Rotate by changing the env var.
+    """
+    expected = os.environ.get("METRICS_SERVICE_TOKEN", "")
+    if not expected:
+        # Unset means this door is closed. Say so rather than letting an empty
+        # string authenticate anybody.
+        raise HTTPException(status_code=503, detail="METRICS_SERVICE_TOKEN is not configured")
+    if not hmac.compare_digest(x_service_token or "", expected):
+        raise HTTPException(status_code=401, detail="Invalid service token")
+
+    return await _compute_notification_delivery_health(days)
 
 
 @api_router.get("/admin/notifications/worker-status")
@@ -16269,6 +16320,15 @@ async def startup_db_client():
     """Start background services on app startup"""
     # Log environment info
     logger.info(f"🌍 Environment: APP_ENV={APP_ENV}, IS_STAGING={IS_STAGING}")
+
+    # Make sure admin/tester accounts carry is_internal before any analytics
+    # read happens. Without this the founder account is counted as a real user.
+    try:
+        from admin_analytics import sync_internal_flags
+        flagged = await sync_internal_flags(db, force=True)
+        logger.info(f"🔒 Internal-account sync complete ({flagged} newly flagged)")
+    except Exception as e:
+        logger.warning(f"Internal-account sync skipped: {e}")
     play_ready, play_message = google_play_verifier_config_status()
     if play_ready:
         logger.info(f"✅ Google Play subscription verifier {play_message}")
