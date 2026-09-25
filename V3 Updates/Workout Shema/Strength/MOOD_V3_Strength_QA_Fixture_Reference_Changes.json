@@ -1,0 +1,3012 @@
+{
+ "archetype": [
+  {
+   "id": "AS002",
+   "scenario": "S1 Normal / Int / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS003",
+   "scenario": "S1 Normal / Int / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS004",
+   "scenario": "S1 Normal / Int / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS006",
+   "scenario": "S1 Normal / Int / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS008",
+   "scenario": "S1 Normal / Int / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS009",
+   "scenario": "S1 Normal / Int / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS011",
+   "scenario": "S2 Normal / Int / 30",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 30,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS012",
+   "scenario": "S2 Normal / Int / 30",
+   "mode": "either",
+   "archetype": "strength_upper_mixed",
+   "duration": 30,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS013",
+   "scenario": "S2 Normal / Int / 30",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 30,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS014",
+   "scenario": "S2 Normal / Int / 30",
+   "mode": "either",
+   "archetype": "strength_lower_squat",
+   "duration": 30,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press",
+   "new": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS015",
+   "scenario": "S2 Normal / Int / 30",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 30,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS016",
+   "scenario": "S2 Normal / Int / 30",
+   "mode": "either",
+   "archetype": "strength_glutes_legs",
+   "duration": 30,
+   "old": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift",
+   "new": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Reverse Lunge",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS017",
+   "scenario": "S2 Normal / Int / 30",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 30,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | core: Pallof Press",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS018",
+   "scenario": "S2 Normal / Int / 30",
+   "mode": "either",
+   "archetype": "strength_core",
+   "duration": 30,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS020",
+   "scenario": "S3 Low Energy",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Assisted Pull-Up Machine | target_accessory: Prone Y-Raise | biceps_accessory: Machine Preacher Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Assisted Pull-Up Machine | target_accessory: Prone Y-Raise | biceps_accessory: EZ-Bar Preacher Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS021",
+   "scenario": "S3 Low Energy",
+   "mode": "either",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Machine Shoulder Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Incline Dumbbell Curl",
+   "new": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Machine Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Machine Preacher Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS022",
+   "scenario": "S3 Low Energy",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Spider Curl | triceps_exercise: Machine Triceps Extension | shoulder_exercise: Machine Lateral Raise | compound_combination: Assisted Dip (Triceps Bias)",
+   "new": "biceps_exercise: Spider Curl | triceps_exercise: Seated Dip Machine | shoulder_exercise: Machine Lateral Raise | compound_combination: Machine Shoulder Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS024",
+   "scenario": "S3 Low Energy",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Machine Hip Thrust | secondary_posterior_unilateral: Single-Leg Glute Bridge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Machine Hip Thrust | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS025",
+   "scenario": "S3 Low Energy",
+   "mode": "either",
+   "archetype": "strength_glutes_legs",
+   "duration": 60,
+   "old": "primary_glute_compound: Machine Hip Thrust | complementary_lower_compound: Hack Squat | third_compound_unilateral: Single-Leg Leg Press | glute_accessory: Machine Glute Kickback",
+   "new": "primary_glute_compound: Single-Leg Glute Bridge | complementary_lower_compound: Hack Squat | third_compound_unilateral: Single-Leg Leg Press | glute_accessory: Machine Glute Kickback",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS026",
+   "scenario": "S3 Low Energy",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Plate-Loaded Incline Press | core: Weighted Sit-Up",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Lat Pulldown | complementary_upper_or_lower: Plate-Loaded Incline Press | core: Machine Crunch",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS027",
+   "scenario": "S3 Low Energy",
+   "mode": "either",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Mountain Climber | complementary_work: Reverse Crunch",
+   "new": "primary_work: Mountain Climber | complementary_work: Reverse Crunch",
+   "old_log": "",
+   "new_log": "duration_underfill_accepted"
+  },
+  {
+   "id": "AS029",
+   "scenario": "S4 Stressed",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: Cable Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Seated Cable Row | secondary_back: Machine Low Row | target_accessory: Straight-Arm Pulldown | biceps_accessory: Cable Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS030",
+   "scenario": "S4 Stressed",
+   "mode": "either",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Dumbbell Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Dumbbell Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Machine Preacher Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS031",
+   "scenario": "S4 Stressed",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Cable Front Raise | compound_combination: Bench Dip",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Cable Front Raise | compound_combination: Bench Dip",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS033",
+   "scenario": "S4 Stressed",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Barbell Hip Thrust | secondary_posterior_unilateral: B-Stance Hip Thrust | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Barbell Hip Thrust | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS035",
+   "scenario": "S4 Stressed",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Plate-Loaded Incline Press | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Squat-to-Press | primary_upper: Lat Pulldown | complementary_upper_or_lower: Standing Cable Chest Press | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS036",
+   "scenario": "S4 Stressed",
+   "mode": "either",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Cable Wood Chop",
+   "new": "primary_work: Pallof Press | complementary_work: Cable Crunch | optional_finish: Cable Wood Chop | extra: Hollow Body Hold",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS038",
+   "scenario": "S5 Bored",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS039",
+   "scenario": "S5 Bored",
+   "mode": "either",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Z-Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Lu Raise",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Z-Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Lu Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS041",
+   "scenario": "S5 Bored",
+   "mode": "either",
+   "archetype": "strength_lower_squat",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Lateral Lunge | target_accessory: Reverse Nordic Curl",
+   "new": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Reverse Nordic Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS042",
+   "scenario": "S5 Bored",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Kickstand Dumbbell RDL | target_accessory: Slider Hamstring Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Curtsy Lunge | target_accessory: Slider Hamstring Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS044",
+   "scenario": "S5 Bored",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Single-Arm Cable Chest Press | core: Copenhagen Plank",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Renegade Row | primary_upper: Lat Pulldown | complementary_upper_or_lower: Single-Arm Cable Chest Press | core: Copenhagen Plank",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS045",
+   "scenario": "S5 Bored",
+   "mode": "either",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Step-Out | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Step-Out | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS047",
+   "scenario": "S6 Irritated",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS048",
+   "scenario": "S6 Irritated",
+   "mode": "either",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS049",
+   "scenario": "S6 Irritated",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Bench Dip",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Bench Dip",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS051",
+   "scenario": "S6 Irritated",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Rack Pull | secondary_posterior_unilateral: Kickstand Dumbbell RDL | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Rack Pull | secondary_posterior_unilateral: B-Stance Hip Thrust | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS053",
+   "scenario": "S6 Irritated",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Lat Pulldown | complementary_upper_or_lower: Smith Machine Bench Press | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS054",
+   "scenario": "S6 Irritated",
+   "mode": "either",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS056",
+   "scenario": "S7 Amped",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS057",
+   "scenario": "S7 Amped",
+   "mode": "either",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS058",
+   "scenario": "S7 Amped",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Close-Grip Bench Press | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Seated Dip Machine | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS060",
+   "scenario": "S7 Amped",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS062",
+   "scenario": "S7 Amped",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS063",
+   "scenario": "S7 Amped",
+   "mode": "either",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS065",
+   "scenario": "S8 Beginner",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS066",
+   "scenario": "S8 Beginner",
+   "mode": "either",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS067",
+   "scenario": "S8 Beginner",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Bench Dip",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Bench Dip",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS069",
+   "scenario": "S8 Beginner",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Kickstand Dumbbell RDL | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS071",
+   "scenario": "S8 Beginner",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Lat Pulldown | complementary_upper_or_lower: Smith Machine Bench Press | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS072",
+   "scenario": "S8 Beginner",
+   "mode": "either",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS074",
+   "scenario": "S9a No barbell / rack (machine-heavy gym)",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: Bayesian Cable Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: Spider Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS075",
+   "scenario": "S9a No barbell / rack (machine-heavy gym)",
+   "mode": "either",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS076",
+   "scenario": "S9a No barbell / rack (machine-heavy gym)",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: High Cable Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: Bayesian Cable Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS078",
+   "scenario": "S9a No barbell / rack (machine-heavy gym)",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS080",
+   "scenario": "S9a No barbell / rack (machine-heavy gym)",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS081",
+   "scenario": "S9a No barbell / rack (machine-heavy gym)",
+   "mode": "either",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS082",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_upper_push",
+   "duration": 60,
+   "old": "primary_press: Barbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Barbell Incline Press | target_accessory: Dumbbell Fly | triceps_accessory: Dumbbell Overhead Triceps Extension",
+   "new": "primary_press: Barbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Barbell Incline Press | target_accessory: Dumbbell Fly | triceps_accessory: Dumbbell Skull Crusher",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS083",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Pull-Up | complementary_pull: Pendlay Row | secondary_back: Inverted Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Pull-Up | complementary_pull: Bent-Over Dumbbell Row (Two-Arm) | secondary_back: Meadows Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS084",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Pull-Up | secondary_upper: Barbell Overhead Press | opposing_secondary: Bent-Over Dumbbell Row (Two-Arm) | arm_shoulder_accessory: Barbell Curl",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Pull-Up | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Inverted Row | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS085",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: EZ-Bar Skull Crusher | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Dumbbell Overhead Triceps Extension | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS086",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_lower_squat",
+   "duration": 60,
+   "old": "primary_squat_pattern: Barbell Back Squat | secondary_lower: Reverse Lunge | unilateral_secondary: Bulgarian Split Squat | target_accessory: Reverse Nordic Curl",
+   "new": "primary_squat_pattern: Barbell Back Squat | secondary_lower: Dumbbell Step-Up | unilateral_secondary: Bulgarian Split Squat | target_accessory: Reverse Nordic Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS087",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Barbell Hip Thrust | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Slider Hamstring Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Barbell Hip Thrust | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Slider Hamstring Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS089",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Pull-Up | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Ab Wheel Rollout",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Pull-Up | complementary_upper_or_lower: Parallel Bar Dip | core: Hanging Leg Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS090",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Hanging Knee Raise | complementary_work: Dead Bug",
+   "new": "primary_work: Mountain Climber | complementary_work: Reverse Crunch | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS091",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_push",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "new": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS093",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Chin-Up | complementary_pull: Seated Cable Row | secondary_back: Single-Arm Lat Pulldown | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Chin-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS094",
+   "scenario": "S10 Sore shoulders",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Chin-Up | complementary_pull: Seated Cable Row | secondary_back: Single-Arm Lat Pulldown | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Chin-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS095",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chin-Up | secondary_upper: Parallel Bar Dip | opposing_secondary: Bent-Over Dumbbell Row (Two-Arm) | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chin-Up | secondary_upper: Parallel Bar Dip | opposing_secondary: Inverted Row | arm_shoulder_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS096",
+   "scenario": "S10 Sore shoulders",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chin-Up | secondary_upper: Parallel Bar Dip | opposing_secondary: Bent-Over Dumbbell Row (Two-Arm) | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chin-Up | secondary_upper: Parallel Bar Dip | opposing_secondary: Inverted Row | arm_shoulder_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS097",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | compound_combination: Bench Dip",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | compound_combination: Close-Grip Bench Press",
+   "old_log": "",
+   "new_log": "duration_underfill_accepted"
+  },
+  {
+   "id": "AS098",
+   "scenario": "S10 Sore shoulders",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | compound_combination: Bench Dip",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | compound_combination: Close-Grip Bench Press",
+   "old_log": "",
+   "new_log": "duration_underfill_accepted"
+  },
+  {
+   "id": "AS101",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS102",
+   "scenario": "S10 Sore shoulders",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS105",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Renegade Row | primary_upper: Chin-Up | complementary_upper_or_lower: Single-Arm Cable Chest Press | core: Cable Crunch",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Renegade Row | primary_upper: Chin-Up | complementary_upper_or_lower: Single-Arm Cable Chest Press | core: Hanging Leg Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS106",
+   "scenario": "S10 Sore shoulders",
+   "mode": "Explicit Target",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Renegade Row | primary_upper: Chin-Up | complementary_upper_or_lower: Single-Arm Cable Chest Press | core: Cable Crunch",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Renegade Row | primary_upper: Chin-Up | complementary_upper_or_lower: Single-Arm Cable Chest Press | core: Hanging Leg Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS107",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Hanging Knee Raise | complementary_work: Dead Bug",
+   "new": "primary_work: Cable Crunch | complementary_work: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS108",
+   "scenario": "S10 Sore shoulders",
+   "mode": "Explicit Target",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Hanging Knee Raise | complementary_work: Dead Bug",
+   "new": "primary_work: Cable Crunch | complementary_work: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS111",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS112",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS113",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS114",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS115",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS116",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS119",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS120",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS123",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS124",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS125",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS126",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS129",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "new": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS130",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "target_accessory: Dumbbell Rear-Delt Fly | biceps_accessory: EZ-Bar Curl",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS131",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "new": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS132",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | secondary_upper: Barbell Overhead Press | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS133",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS134",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS137",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS138",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS141",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Barbell Bench Press | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Dumbbell Bench Press | core: Pallof Press",
+   "old_log": "upper_class_fallback→push",
+   "new_log": "upper_class_fallback→push"
+  },
+  {
+   "id": "AS142",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Barbell Bench Press | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Dumbbell Bench Press | core: Pallof Press",
+   "old_log": "upper_class_fallback→push",
+   "new_log": "upper_class_fallback→push"
+  },
+  {
+   "id": "AS143",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS144",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS147",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS148",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS149",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS150",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS151",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS152",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS155",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Dumbbell Step-Up | target_accessory: Leg Extension",
+   "new": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Dumbbell Step-Up | target_accessory: Leg Extension",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS156",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Machine Hip Thrust | complementary_posterior_compound: Sumo Deadlift | secondary_posterior_unilateral: B-Stance Hip Thrust",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS159",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS160",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "Explicit Target",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS161",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS162",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "Explicit Target",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS165",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS166",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS167",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS168",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS169",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS170",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS171",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_squat",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS172",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_squat",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | target_accessory: Leg Extension",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS173",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS174",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Good Morning | target_accessory: Seated Leg Curl",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS175",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_glutes_legs",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS176",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_glutes_legs",
+   "duration": 60,
+   "old": "",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS177",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Renegade Row | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS178",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Hack Squat | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Hack Squat | true_full_body_bridge: Renegade Row | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS179",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS180",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS181",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_push",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "new": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS182",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_push",
+   "duration": 60,
+   "old": "triceps_accessory: Cable Triceps Pressdown",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS183",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Straight-Arm Pulldown | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS184",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Straight-Arm Pulldown | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS185",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "new": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS186",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Seated Dumbbell Shoulder Press | primary_pull: Chest-Supported Machine Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS187",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS188",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS191",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS192",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS195",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Barbell Overhead Press | core: Pallof Press",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Push Press | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS196",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Barbell Overhead Press | core: Pallof Press",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Push Press | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS197",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS198",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS201",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "new": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS202",
+   "scenario": "S10 Sore biceps",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS203",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS204",
+   "scenario": "S10 Sore biceps",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS205",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "new": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS206",
+   "scenario": "S10 Sore biceps",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Bench Dip",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS209",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS210",
+   "scenario": "S10 Sore biceps",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS213",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS214",
+   "scenario": "S10 Sore biceps",
+   "mode": "Explicit Target",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Barbell Back Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS215",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS216",
+   "scenario": "S10 Sore biceps",
+   "mode": "Explicit Target",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS219",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS220",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS221",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS222",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_push: Dumbbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Barbell Overhead Press | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+   "new": "primary_push: Barbell Bench Press | primary_pull: Chest-Supported Machine Row | secondary_upper: Seated Dumbbell Shoulder Press | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Dumbbell Lateral Raise",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS223",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS224",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Barbell Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS225",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_squat",
+   "duration": 60,
+   "old": "primary_pull: Seated Cable Row | complementary_pull: Lat Pulldown | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "old_log": "",
+   "new_log": "sore_reroute"
+  },
+  {
+   "id": "AS226",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_squat",
+   "duration": 60,
+   "old": "",
+   "new": "",
+   "old_log": "",
+   "new_log": "sore_terminal_conflict"
+  },
+  {
+   "id": "AS227",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": "relaxation_a_swap_family_distinctness:secondary_posterior_unilateral"
+  },
+  {
+   "id": "AS228",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "old_log": "",
+   "new_log": "relaxation_a_swap_family_distinctness:secondary_posterior_unilateral"
+  },
+  {
+   "id": "AS229",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_glutes_legs",
+   "duration": 60,
+   "old": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Barbell Romanian Deadlift | glute_accessory: Cable Glute Kickback",
+   "new": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Barbell Romanian Deadlift | glute_accessory: Cable Glute Kickback",
+   "old_log": "",
+   "new_log": "duration_underfill_accepted"
+  },
+  {
+   "id": "AS230",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_glutes_legs",
+   "duration": 60,
+   "old": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Barbell Romanian Deadlift | glute_accessory: Cable Glute Kickback",
+   "new": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Barbell Romanian Deadlift | glute_accessory: Cable Glute Kickback",
+   "old_log": "",
+   "new_log": "duration_underfill_accepted"
+  },
+  {
+   "id": "AS231",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Romanian Deadlift | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Barbell Romanian Deadlift | true_full_body_bridge: Renegade Row | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS232",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "primary_lower: Barbell Romanian Deadlift | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Deficit Push-Up (Handles) | core: Pallof Press",
+   "new": "primary_lower: Barbell Romanian Deadlift | true_full_body_bridge: Renegade Row | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Pallof Press",
+   "old_log": "",
+   "new_log": ""
+  },
+  {
+   "id": "AS233",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  },
+  {
+   "id": "AS234",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_core",
+   "duration": 60,
+   "old": "primary_work: Pallof Press | complementary_work: Dead Bug",
+   "new": "primary_work: Pallof Press | complementary_work: Reverse Crunch | optional_finish: Dead Bug | extra: Ab Wheel Rollout",
+   "old_log": "",
+   "new_log": "duration_backfill"
+  }
+ ],
+ "custom": [],
+ "v3_expected_outcome_changes": [
+  {
+   "id": "AS092",
+   "scenario": "S10 Sore shoulders",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_push",
+   "old": "VALID BUILD",
+   "new": "VALID TERMINAL CONFLICT",
+   "reason": "WA v12 S1(c)/S2: unavoidable secondary loading of the sore muscle"
+  },
+  {
+   "id": "AS095",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "old": "VALID BUILD",
+   "new": "VALID ADAPTIVE REROUTE",
+   "reason": "WA v12 S1(c)/S2: unavoidable secondary loading of the sore muscle"
+  },
+  {
+   "id": "AS105",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "old": "VALID BUILD",
+   "new": "VALID ADAPTIVE REROUTE",
+   "reason": "WA v12 S1(c)/S2: unavoidable secondary loading of the sore muscle"
+  },
+  {
+   "id": "AS157",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_glutes_legs",
+   "old": "VALID BUILD",
+   "new": "VALID ADAPTIVE REROUTE",
+   "reason": "WA v12 S1(c)/S2: unavoidable secondary loading of the sore muscle"
+  },
+  {
+   "id": "AS177",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "old": "VALID BUILD",
+   "new": "VALID ADAPTIVE REROUTE",
+   "reason": "WA v12 S1(c)/S2: unavoidable secondary loading of the sore muscle"
+  },
+  {
+   "id": "AS203",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "old": "VALID BUILD",
+   "new": "VALID ADAPTIVE REROUTE",
+   "reason": "WA v12 S1(c)/S2: unavoidable secondary loading of the sore muscle"
+  },
+  {
+   "id": "AS213",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_full_body",
+   "old": "VALID BUILD",
+   "new": "VALID ADAPTIVE REROUTE",
+   "reason": "WA v12 S1(c)/S2: unavoidable secondary loading of the sore muscle"
+  }
+ ],
+ "v4_expected_outcome_changes": [
+  {
+   "id": "AS092",
+   "scenario": "S10 Sore shoulders",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_push",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS130",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_pull",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS132",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_mixed",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS156",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS172",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_squat",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS174",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS176",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_glutes_legs",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS182",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_push",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS186",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_mixed",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS202",
+   "scenario": "S10 Sore biceps",
+   "mode": "Explicit Target",
+   "archetype": "strength_upper_pull",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS206",
+   "scenario": "S10 Sore biceps",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  },
+  {
+   "id": "AS226",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_squat",
+   "old": "VALID TERMINAL CONFLICT",
+   "new": "VALID BUILD",
+   "reason": "WA v13 S2a: explicit Target names the sore muscle; trained normally"
+  }
+ ],
+ "v5_expected_outcome_changes": [],
+ "v5_reference_compositions_changed": 100,
+ "v6_expected_outcome_changes": [],
+ "v6_reference_compositions_changed": 62,
+ "v6_reference_composition_changes": [
+  {
+   "id": "AS004",
+   "scenario": "S1 Normal / Int / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS006",
+   "scenario": "S1 Normal / Int / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS013",
+   "scenario": "S2 Normal / Int / 30",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 30,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise"
+  },
+  {
+   "id": "AS022",
+   "scenario": "S3 Low Energy",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Spider Curl | triceps_exercise: Seated Dip Machine | shoulder_exercise: Machine Lateral Raise | compound_combination: Machine Shoulder Press",
+   "new": "biceps_exercise: Spider Curl | triceps_exercise: Seated Dip Machine | shoulder_exercise: Machine Lateral Raise | biceps_depth: Machine Preacher Curl | triceps_depth: Dumbbell Overhead Triceps Extension"
+  },
+  {
+   "id": "AS024",
+   "scenario": "S3 Low Energy",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Machine Hip Thrust | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Machine Hip Thrust | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS029",
+   "scenario": "S4 Stressed",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Lat Pulldown | complementary_pull: Seated Cable Row | secondary_back: Machine Low Row | target_accessory: Straight-Arm Pulldown | biceps_accessory: Cable Curl | ancillary_depth: Alternating Dumbbell Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Seated Cable Row | secondary_back: Machine Low Row | target_accessory: Straight-Arm Pulldown | biceps_accessory: Cable Curl | ancillary_depth: Incline Dumbbell Curl"
+  },
+  {
+   "id": "AS031",
+   "scenario": "S4 Stressed",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Cable Front Raise | compound_combination: Bench Dip",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Cable Front Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Dumbbell Rear-Delt Fly"
+  },
+  {
+   "id": "AS033",
+   "scenario": "S4 Stressed",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Barbell Hip Thrust | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Barbell Hip Thrust | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Standing Calf Raise Machine"
+  },
+  {
+   "id": "AS038",
+   "scenario": "S5 Bored",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl | ancillary_depth: Zottman Curl",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl | ancillary_depth: Spider Curl"
+  },
+  {
+   "id": "AS040",
+   "scenario": "S5 Bored",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Bayesian Cable Curl | triceps_exercise: Cross-Body Cable Triceps Extension | shoulder_exercise: Lu Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: Bayesian Cable Curl | triceps_exercise: Cross-Body Cable Triceps Extension | shoulder_exercise: Lu Raise | biceps_depth: Spider Curl | triceps_depth: Dumbbell Overhead Triceps Extension | compound_combination: Close-Grip Bench Press"
+  },
+  {
+   "id": "AS042",
+   "scenario": "S5 Bored",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Curtsy Lunge | target_accessory: Slider Hamstring Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Curtsy Lunge | target_accessory: Slider Hamstring Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS049",
+   "scenario": "S6 Irritated",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Bench Dip",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS051",
+   "scenario": "S6 Irritated",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Rack Pull | secondary_posterior_unilateral: B-Stance Hip Thrust | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Rack Pull | secondary_posterior_unilateral: B-Stance Hip Thrust | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS058",
+   "scenario": "S7 Amped",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Seated Dip Machine | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Seated Dip Machine | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Cross-Body Cable Triceps Extension | compound_combination: Close-Grip Bench Press"
+  },
+  {
+   "id": "AS060",
+   "scenario": "S7 Amped",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS067",
+   "scenario": "S8 Beginner",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Bench Dip",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS069",
+   "scenario": "S8 Beginner",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS076",
+   "scenario": "S9a No barbell / rack (machine-heavy gym)",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: Bayesian Cable Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: Bayesian Cable Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Spider Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS078",
+   "scenario": "S9a No barbell / rack (machine-heavy gym)",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS083",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_pull: Pull-Up | complementary_pull: Bent-Over Dumbbell Row (Two-Arm) | secondary_back: Meadows Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl",
+   "new": "primary_pull: Pull-Up | complementary_pull: Bent-Over Dumbbell Row (Two-Arm) | secondary_back: Meadows Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl | ancillary_depth: Incline Dumbbell Curl"
+  },
+  {
+   "id": "AS085",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Dumbbell Overhead Triceps Extension | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Dumbbell Overhead Triceps Extension | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Spider Curl | triceps_depth: Diamond Push-Up | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS087",
+   "scenario": "S9b Free-weight-only gym",
+   "mode": "either",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Barbell Hip Thrust | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Slider Hamstring Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Barbell Hip Thrust | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Slider Hamstring Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS091",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_push",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | optional_extra_burnout: Incline Dumbbell Curl"
+  },
+  {
+   "id": "AS095",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+   "new": "primary_pull: Chin-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl | ancillary_depth: Bayesian Cable Curl"
+  },
+  {
+   "id": "AS097",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | compound_combination: Close-Grip Bench Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | optional_extra_burnout: Incline Dumbbell Curl"
+  },
+  {
+   "id": "AS098",
+   "scenario": "S10 Sore shoulders",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | compound_combination: Close-Grip Bench Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | optional_extra_burnout: Incline Dumbbell Curl"
+  },
+  {
+   "id": "AS101",
+   "scenario": "S10 Sore shoulders",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS102",
+   "scenario": "S10 Sore shoulders",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS115",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS116",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS119",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS120",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS129",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension | support_accessory: Standing Single-Leg Curl",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Cable Lateral Raise"
+  },
+  {
+   "id": "AS131",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension | support_accessory: Standing Single-Leg Curl",
+   "new": "primary_press: Barbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Plate-Loaded Incline Press | target_accessory: Cable Fly | triceps_accessory: Cable Triceps Pressdown | ancillary_depth: EZ-Bar Skull Crusher"
+  },
+  {
+   "id": "AS133",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Cable Lateral Raise"
+  },
+  {
+   "id": "AS134",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Cable Lateral Raise"
+  },
+  {
+   "id": "AS137",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS138",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS151",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS152",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS156",
+   "scenario": "S10 Sore hamstrings",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS169",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS170",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS171",
+   "scenario": "S10 Sore glutes",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_squat",
+   "duration": 60,
+   "old": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl | ancillary_depth: Bayesian Cable Curl",
+   "new": "primary_press: Barbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Plate-Loaded Incline Press | target_accessory: Cable Fly | triceps_accessory: Cable Triceps Pressdown | ancillary_depth: EZ-Bar Skull Crusher"
+  },
+  {
+   "id": "AS174",
+   "scenario": "S10 Sore glutes",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS181",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_push",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS185",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+   "new": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Straight-Arm Pulldown | biceps_accessory: EZ-Bar Curl | ancillary_depth: Bayesian Cable Curl"
+  },
+  {
+   "id": "AS187",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS188",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS191",
+   "scenario": "S10 Sore chest",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS192",
+   "scenario": "S10 Sore chest",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS201",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_pull",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+   "new": "primary_press: Barbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Plate-Loaded Incline Press | target_accessory: Cable Fly | triceps_accessory: Cable Triceps Pressdown | ancillary_depth: EZ-Bar Skull Crusher"
+  },
+  {
+   "id": "AS203",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_upper_mixed",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+   "new": "primary_press: Barbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Plate-Loaded Incline Press | target_accessory: Cable Fly | triceps_accessory: Cable Triceps Pressdown | ancillary_depth: EZ-Bar Skull Crusher"
+  },
+  {
+   "id": "AS205",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Leg Extension | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+   "new": "primary_press: Barbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Plate-Loaded Incline Press | target_accessory: Cable Fly | triceps_accessory: Cable Triceps Pressdown | ancillary_depth: EZ-Bar Skull Crusher"
+  },
+  {
+   "id": "AS206",
+   "scenario": "S10 Sore biceps",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS209",
+   "scenario": "S10 Sore biceps",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS210",
+   "scenario": "S10 Sore biceps",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS223",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS224",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_arms",
+   "duration": 60,
+   "old": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | compound_combination: Curl to Arnold Press",
+   "new": "biceps_exercise: EZ-Bar Curl | triceps_exercise: Cable Triceps Pressdown | shoulder_exercise: Dumbbell Lateral Raise | biceps_depth: Bayesian Cable Curl | triceps_depth: Dumbbell Overhead Triceps Extension | shoulder_depth: Prone Y-Raise"
+  },
+  {
+   "id": "AS225",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_squat",
+   "duration": 60,
+   "old": "primary_pull: Lat Pulldown | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl | ancillary_depth: Bayesian Cable Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS227",
+   "scenario": "S10 Sore quads",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  },
+  {
+   "id": "AS228",
+   "scenario": "S10 Sore quads",
+   "mode": "Explicit Target",
+   "archetype": "strength_lower_hinge",
+   "duration": 60,
+   "old": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl",
+   "new": "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Single-Leg Romanian Deadlift | target_accessory: Seated Leg Curl | support_accessory: Frog Pump"
+  }
+ ],
+ "v6_reroute_destinations": [
+  {
+   "id": "AS091",
+   "scenario": "S10 Sore shoulders",
+   "archetype": "strength_upper_push",
+   "to": "strength_arms",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS095",
+   "scenario": "S10 Sore shoulders",
+   "archetype": "strength_upper_mixed",
+   "to": "strength_upper_pull",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS105",
+   "scenario": "S10 Sore shoulders",
+   "archetype": "strength_full_body",
+   "to": "strength_lower_squat",
+   "distance": 2.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS129",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "archetype": "strength_upper_pull",
+   "to": "strength_arms",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS131",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "archetype": "strength_upper_mixed",
+   "to": "strength_upper_push",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS155",
+   "scenario": "S10 Sore hamstrings",
+   "archetype": "strength_lower_hinge",
+   "to": "strength_lower_squat",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS157",
+   "scenario": "S10 Sore hamstrings",
+   "archetype": "strength_glutes_legs",
+   "to": "strength_lower_squat",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS171",
+   "scenario": "S10 Sore glutes",
+   "archetype": "strength_lower_squat",
+   "to": "strength_upper_push",
+   "distance": 4.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS173",
+   "scenario": "S10 Sore glutes",
+   "archetype": "strength_lower_hinge",
+   "to": "strength_upper_pull",
+   "distance": 4.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS175",
+   "scenario": "S10 Sore glutes",
+   "archetype": "strength_glutes_legs",
+   "to": "strength_upper_pull",
+   "distance": 4.25,
+   "v5_to": []
+  },
+  {
+   "id": "AS177",
+   "scenario": "S10 Sore glutes",
+   "archetype": "strength_full_body",
+   "to": "strength_upper_pull",
+   "distance": 2.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS181",
+   "scenario": "S10 Sore chest",
+   "archetype": "strength_upper_push",
+   "to": "strength_arms",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS185",
+   "scenario": "S10 Sore chest",
+   "archetype": "strength_upper_mixed",
+   "to": "strength_upper_pull",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS201",
+   "scenario": "S10 Sore biceps",
+   "archetype": "strength_upper_pull",
+   "to": "strength_upper_push",
+   "distance": 2.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS203",
+   "scenario": "S10 Sore biceps",
+   "archetype": "strength_upper_mixed",
+   "to": "strength_upper_push",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS205",
+   "scenario": "S10 Sore biceps",
+   "archetype": "strength_arms",
+   "to": "strength_upper_push",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS213",
+   "scenario": "S10 Sore biceps",
+   "archetype": "strength_full_body",
+   "to": "strength_lower_squat",
+   "distance": 2.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS225",
+   "scenario": "S10 Sore quads",
+   "archetype": "strength_lower_squat",
+   "to": "strength_lower_hinge",
+   "distance": 0.5,
+   "v5_to": []
+  }
+ ],
+ "v7_expected_outcome_changes": [],
+ "v7_reference_compositions_changed": 8,
+ "v7_reference_composition_changes": [
+  {
+   "id": "AS052",
+   "scenario": "S6 Irritated",
+   "mode": "either",
+   "archetype": "strength_glutes_legs",
+   "duration": 60,
+   "old": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Dumbbell Romanian Deadlift | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Leg Extension",
+   "new": "primary_glute_compound: Kettlebell Swing | complementary_lower_compound: Pit Shark Belt Squat | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Leg Extension",
+   "reason": "Kettlebell Swing complexity 2: forceful primary under Irritated"
+  },
+  {
+   "id": "AS121",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_glutes_legs",
+   "duration": 60,
+   "old": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Hack Squat | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Seated Leg Curl",
+   "new": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Pit Shark Belt Squat | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Seated Leg Curl",
+   "reason": "Library v11 determinism fix: Pit Shark Belt Squat preferred (first-listed role) for complementary_lower_compound"
+  },
+  {
+   "id": "AS122",
+   "scenario": "S10 Sore lower back (spinal_erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_glutes_legs",
+   "duration": 60,
+   "old": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Hack Squat | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Seated Leg Curl",
+   "new": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Pit Shark Belt Squat | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Seated Leg Curl",
+   "reason": "Library v11 determinism fix: Pit Shark Belt Squat preferred (first-listed role) for complementary_lower_compound"
+  },
+  {
+   "id": "AS139",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "MOOD's Pick",
+   "archetype": "strength_glutes_legs",
+   "duration": 60,
+   "old": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Hack Squat | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Seated Leg Curl",
+   "new": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Pit Shark Belt Squat | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Seated Leg Curl",
+   "reason": "Library v11 determinism fix: Pit Shark Belt Squat preferred (first-listed role) for complementary_lower_compound"
+  },
+  {
+   "id": "AS140",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "mode": "Explicit Target",
+   "archetype": "strength_glutes_legs",
+   "duration": 60,
+   "old": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Hack Squat | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Seated Leg Curl",
+   "new": "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Pit Shark Belt Squat | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Seated Leg Curl",
+   "reason": "Library v11 determinism fix: Pit Shark Belt Squat preferred (first-listed role) for complementary_lower_compound"
+  },
+  {
+   "id": "AS235",
+   "scenario": "S11 Beginner + Low Energy / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "",
+   "new": "primary_lower: Single-Leg Glute Bridge | primary_upper: Lat Pulldown | complementary_upper_or_lower: Plate-Loaded Incline Press | core: Machine Crunch",
+   "reason": "new S11 fixture (WA v16 FB1)"
+  },
+  {
+   "id": "AS236",
+   "scenario": "S11 Beginner + Stressed / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "",
+   "new": "primary_lower: Single-Leg Glute Bridge | primary_upper: Lat Pulldown | complementary_upper_or_lower: Smith Machine Bench Press | core: Machine Crunch",
+   "reason": "new S11 fixture (WA v16 FB1)"
+  },
+  {
+   "id": "AS237",
+   "scenario": "S11 Beginner + Irritated / 60 / commercial gym",
+   "mode": "either",
+   "archetype": "strength_full_body",
+   "duration": 60,
+   "old": "",
+   "new": "primary_lower: Single-Leg Glute Bridge | primary_upper: Lat Pulldown | complementary_upper_or_lower: Smith Machine Bench Press | core: Machine Crunch",
+   "reason": "new S11 fixture (WA v16 FB1)"
+  }
+ ],
+ "v7_reroute_destinations": [
+  {
+   "id": "AS091",
+   "scenario": "S10 Sore shoulders",
+   "archetype": "strength_upper_push",
+   "to": "strength_arms",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS095",
+   "scenario": "S10 Sore shoulders",
+   "archetype": "strength_upper_mixed",
+   "to": "strength_upper_pull",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS105",
+   "scenario": "S10 Sore shoulders",
+   "archetype": "strength_full_body",
+   "to": "strength_lower_squat",
+   "distance": 2.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS129",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "archetype": "strength_upper_pull",
+   "to": "strength_arms",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS131",
+   "scenario": "S10 Sore back (lats+erectors)",
+   "archetype": "strength_upper_mixed",
+   "to": "strength_upper_push",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS155",
+   "scenario": "S10 Sore hamstrings",
+   "archetype": "strength_lower_hinge",
+   "to": "strength_lower_squat",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS157",
+   "scenario": "S10 Sore hamstrings",
+   "archetype": "strength_glutes_legs",
+   "to": "strength_lower_squat",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS171",
+   "scenario": "S10 Sore glutes",
+   "archetype": "strength_lower_squat",
+   "to": "strength_upper_push",
+   "distance": 4.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS173",
+   "scenario": "S10 Sore glutes",
+   "archetype": "strength_lower_hinge",
+   "to": "strength_upper_pull",
+   "distance": 4.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS175",
+   "scenario": "S10 Sore glutes",
+   "archetype": "strength_glutes_legs",
+   "to": "strength_upper_pull",
+   "distance": 4.25,
+   "v5_to": []
+  },
+  {
+   "id": "AS177",
+   "scenario": "S10 Sore glutes",
+   "archetype": "strength_full_body",
+   "to": "strength_upper_pull",
+   "distance": 2.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS181",
+   "scenario": "S10 Sore chest",
+   "archetype": "strength_upper_push",
+   "to": "strength_arms",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS185",
+   "scenario": "S10 Sore chest",
+   "archetype": "strength_upper_mixed",
+   "to": "strength_upper_pull",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS201",
+   "scenario": "S10 Sore biceps",
+   "archetype": "strength_upper_pull",
+   "to": "strength_upper_push",
+   "distance": 2.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS203",
+   "scenario": "S10 Sore biceps",
+   "archetype": "strength_upper_mixed",
+   "to": "strength_upper_push",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS205",
+   "scenario": "S10 Sore biceps",
+   "archetype": "strength_arms",
+   "to": "strength_upper_push",
+   "distance": 0.5,
+   "v5_to": []
+  },
+  {
+   "id": "AS213",
+   "scenario": "S10 Sore biceps",
+   "archetype": "strength_full_body",
+   "to": "strength_lower_squat",
+   "distance": 2.0,
+   "v5_to": []
+  },
+  {
+   "id": "AS225",
+   "scenario": "S10 Sore quads",
+   "archetype": "strength_lower_squat",
+   "to": "strength_lower_hinge",
+   "distance": 0.5,
+   "v5_to": []
+  }
+ ]
+}

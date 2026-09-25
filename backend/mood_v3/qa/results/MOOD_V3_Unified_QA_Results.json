@@ -1,0 +1,421 @@
+{
+ "A_grid": {
+  "builds": 8424,
+  "by_direction": {
+   "strength": 5184,
+   "sweat": 1944,
+   "athletic": 1296
+  },
+  "outcomes": {
+   "strength": {
+    "valid": 3172,
+    "valid_with_relaxation": 1125,
+    "conflict": 887
+   },
+   "sweat": {
+    "valid": 1428,
+    "valid_with_relaxation": 180,
+    "conflict": 336
+   },
+   "athletic": {
+    "valid": 1024,
+    "valid_with_relaxation": 272
+   }
+  },
+  "conflicts": {
+   "strength": {
+    "cannot_build | free_weight_limited": 330,
+    "cannot_build | minimal": 485,
+    "sore_target_conflict | free_weight_limited": 33,
+    "sore_target_conflict | commercial_gym": 16,
+    "sore_target_conflict | minimal": 23
+   },
+   "sweat": {
+    "equipment_insufficient | free_weight_limited": 146,
+    "equipment_insufficient | minimal": 146,
+    "sore_target_conflict | free_weight_limited": 12,
+    "sore_target_conflict | minimal": 12,
+    "sore_target_conflict | commercial_gym": 20
+   }
+  },
+  "relaxations": {
+   "strength:duration_underfill_accepted": 885,
+   "strength:sore_secondary_retained": 114,
+   "strength:relaxation_a_swap_family_distinctness": 4,
+   "strength:bridge_relaxed_beginner_constrained_state": 132,
+   "strength:upper_class_fallback": 88,
+   "strength:sore_substitution": 20,
+   "sweat:region_balance_relaxed_sore": 174,
+   "sweat:complexity_relaxed_state_cap": 9,
+   "sweat:relaxation_a": 7,
+   "athletic:duration_floor_equipment_limited": 249,
+   "athletic:fba_regions_equipment": 48
+  },
+  "estimated_minutes": {
+   "athletic 30 advanced": {
+    "min": 16.3,
+    "mean": 21.5,
+    "max": 27.8
+   },
+   "athletic 30 beginner": {
+    "min": 19.0,
+    "mean": 21.6,
+    "max": 23.9
+   },
+   "athletic 30 intermediate": {
+    "min": 16.8,
+    "mean": 21.3,
+    "max": 24.6
+   },
+   "athletic 60 advanced": {
+    "min": 21.2,
+    "mean": 33.0,
+    "max": 47.3
+   },
+   "athletic 60 beginner": {
+    "min": 20.8,
+    "mean": 29.9,
+    "max": 35.4
+   },
+   "athletic 60 intermediate": {
+    "min": 20.4,
+    "mean": 32.6,
+    "max": 45.6
+   },
+   "strength 30 advanced": {
+    "min": 10.0,
+    "mean": 21.5,
+    "max": 29.0
+   },
+   "strength 30 beginner": {
+    "min": 10.0,
+    "mean": 20.3,
+    "max": 28.0
+   },
+   "strength 30 intermediate": {
+    "min": 10.0,
+    "mean": 21.3,
+    "max": 29.0
+   },
+   "strength 60 advanced": {
+    "min": 18.0,
+    "mean": 37.9,
+    "max": 50.0
+   },
+   "strength 60 beginner": {
+    "min": 18.0,
+    "mean": 34.1,
+    "max": 49.0
+   },
+   "strength 60 intermediate": {
+    "min": 18.0,
+    "mean": 37.4,
+    "max": 49.0
+   },
+   "sweat 30 advanced": {
+    "min": 20.0,
+    "mean": 24.7,
+    "max": 29.0
+   },
+   "sweat 30 beginner": {
+    "min": 21.0,
+    "mean": 25.8,
+    "max": 28.4
+   },
+   "sweat 30 intermediate": {
+    "min": 20.0,
+    "mean": 24.8,
+    "max": 29.0
+   },
+   "sweat 60 advanced": {
+    "min": 39.1,
+    "mean": 45.8,
+    "max": 55.0
+   },
+   "sweat 60 beginner": {
+    "min": 39.1,
+    "mean": 46.0,
+    "max": 55.2
+   },
+   "sweat 60 intermediate": {
+    "min": 38.5,
+    "mean": 45.8,
+    "max": 55.0
+   }
+  },
+  "failures": 0
+ },
+ "A_commercial_unexpected_conflicts": 0,
+ "B_history": {
+  "strength:moods_pick": {
+   "archetypes": [
+    "strength_glutes_legs",
+    "strength_upper_pull",
+    "strength_upper_push",
+    "strength_lower_squat",
+    "strength_upper_mixed",
+    "strength_glutes_legs",
+    "strength_upper_pull",
+    "strength_upper_push"
+   ],
+   "primaries": [
+    "barbell_hip_thrust",
+    "lat_pulldown",
+    "db_bench_press",
+    "barbell_back_squat",
+    "db_bench_press",
+    "barbell_hip_thrust",
+    "lat_pulldown",
+    "db_bench_press"
+   ],
+   "mean_overlap_with_previous": 0.0,
+   "distinct_exercises": 34
+  },
+  "sweat:moods_pick": {
+   "archetypes": [
+    "sweat_circuit",
+    "sweat_engine",
+    "sweat_hybrid",
+    "sweat_circuit",
+    "sweat_engine",
+    "sweat_hybrid",
+    "sweat_circuit",
+    "sweat_engine"
+   ],
+   "primaries": [
+    "air_bike",
+    "row_erg",
+    "treadmill_run",
+    "high_knees",
+    "ski_erg",
+    "row_erg",
+    "treadmill_run",
+    "treadmill_incline_walk"
+   ],
+   "mean_overlap_with_previous": 0.0,
+   "distinct_exercises": 36
+  },
+  "athletic:moods_pick": {
+   "archetypes": [
+    "athletic_full_body",
+    "athletic_power",
+    "athletic_speed_agility",
+    "athletic_full_body",
+    "athletic_power",
+    "athletic_speed_agility",
+    "athletic_full_body",
+    "athletic_power"
+   ],
+   "primaries": [
+    "seated_box_jump",
+    "pogo_to_box_jump",
+    "acceleration_sprint",
+    "seated_box_jump",
+    "pogo_to_box_jump",
+    "acceleration_sprint",
+    "seated_box_jump",
+    "pogo_to_box_jump"
+   ],
+   "mean_overlap_with_previous": 0.09,
+   "distinct_exercises": 23
+  },
+  "strength:strength_upper_push": {
+   "archetypes": [
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push"
+   ],
+   "primaries": [
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press"
+   ],
+   "mean_overlap_with_previous": 0.33,
+   "distinct_exercises": 22
+  }
+ },
+ "C_swaps": {
+  "counts": {
+   "ok": 131,
+   "second_swap_ok": 128,
+   "swap_workout_ok": 25,
+   "no_alternative": 2,
+   "swap_workout_identical": 1
+  },
+  "failures": []
+ },
+ "D_conflicts": {
+  "athletic_speed_sore_legs": {
+   "expected": "conflict:sore_target_conflict",
+   "got": "conflict:sore_target_conflict",
+   "detail": "Speed + Agility needs your legs, and they are sore today.",
+   "options": [
+    "Let MOOD pick",
+    "Pick another session type",
+    "Try Strength",
+    "Try Sweat"
+   ],
+   "pass": true
+  },
+  "athletic_pick_sore_legs_reroutes": {
+   "expected": "ok",
+   "got": "rerouted",
+   "detail": "Power (rerouted); With sore legs, today moved to Power.",
+   "options": null,
+   "pass": true
+  },
+  "athletic_bodyweight_sore_legs": {
+   "expected": "conflict:equipment_insufficient",
+   "got": "conflict:equipment_insufficient",
+   "detail": "With sore legs and this equipment there is not enough worthwhile upper-body Athletic work today.",
+   "options": [
+    "Try Strength",
+    "Try Sweat",
+    "Use full gym equipment"
+   ],
+   "pass": true
+  },
+  "strength_pick_sore_quads_reroutes": {
+   "expected": "rerouted",
+   "got": "rerouted",
+   "detail": "Lower Body: Hinge (rerouted); With sore quads, today moved to Lower Body: Hinge.",
+   "options": null,
+   "pass": true
+  },
+  "strength_explicit_chest_sore_chest_trains": {
+   "expected": "ok",
+   "got": "ok",
+   "detail": "Upper Push (valid); You chose Chest, so it's trained as planned despite the soreness. | You chose Chest, so today centers on chest.",
+   "options": null,
+   "pass": true
+  },
+  "strength_explicit_back_sore_arms_shoulders": {
+   "expected": "any",
+   "got": "ok",
+   "detail": "Upper Pull (valid_with_relaxation); You chose Back + Biceps, so it's trained as planned despite the soreness. | You chose Back + Biceps, so today centers on back + biceps.",
+   "options": null,
+   "pass": true
+  },
+  "sweat_engine_sore_legs": {
+   "expected": "any",
+   "got": "ok",
+   "detail": "Engine (valid_with_relaxation); Today's workout shifts stress away from your sore legs. | You picked Engine.",
+   "options": null,
+   "pass": true
+  },
+  "sweat_hybrid_minimal": {
+   "expected": "conflict:equipment_insufficient",
+   "got": "conflict:equipment_insufficient",
+   "detail": "This Sweat format needs equipment that is not in your setup.",
+   "options": [
+    "Let MOOD pick",
+    "Use full gym equipment"
+   ],
+   "pass": true
+  },
+  "strength_minimal_full_body": {
+   "expected": "any",
+   "got": "ok",
+   "detail": "Full Body (valid); You picked Full Body. | Built around the equipment you have.",
+   "options": null,
+   "pass": true
+  },
+  "invalid_duration_45": {
+   "expected": "input_error",
+   "got": "input_error",
+   "detail": "must be 30 or 60",
+   "pass": true
+  },
+  "four_states": {
+   "expected": "input_error",
+   "got": "input_error",
+   "detail": "select at most 3 States",
+   "pass": true
+  },
+  "athletic_muscle_target": {
+   "expected": "input_error",
+   "got": "input_error",
+   "detail": "Athletic uses an archetype (Power, Speed + Agility, Full-Body Athlete) or MOOD's Pick, not a muscle Target",
+   "pass": true
+  }
+ },
+ "E_progression": {
+  "strength_hit_all_reps": {
+   "reference": {
+    "load": 100,
+    "unit": "kg",
+    "reps": [
+     6,
+     6,
+     6,
+     6
+    ],
+    "date": "2026-10-01"
+   },
+   "suggestion": {
+    "load": 105,
+    "unit": "kg",
+    "reps": 6,
+    "action": "increase"
+   },
+   "text": "You hit every rep at 100 kg last time. Try 105 kg today."
+  },
+  "strength_missed_reps": {
+   "reference": {
+    "load": 100,
+    "unit": "kg",
+    "reps": [
+     6,
+     4
+    ],
+    "date": "2026-10-01"
+   },
+   "suggestion": {
+    "load": 100,
+    "unit": "kg",
+    "reps": 6,
+    "action": "hold"
+   },
+   "text": "Last time: 100 kg \u00d7 6, 4. Stay at 100 kg and own every rep."
+  },
+  "strength_low_energy_today": "absent",
+  "strength_unseen_exercise_has_no_load": true,
+  "sweat_resistance": {
+   "reference": {
+    "load": 16,
+    "unit": "kg",
+    "date": "x"
+   },
+   "suggestion": null,
+   "text": "Same load as last time: 16 kg."
+  },
+  "pass": true
+ },
+ "F_negative": {
+  "strength_wrong_slot_exercise_caught": true,
+  "strength_sore_primary_caught": true,
+  "sweat_long_passive_rest_caught": true,
+  "sweat_primary_not_first_caught": true,
+  "athletic_type_a_overdose_caught": true,
+  "athletic_treadmill_caught": true,
+  "pass": true
+ },
+ "G_determinism": {
+  "identical": 3,
+  "cases": 3
+ },
+ "failures": [],
+ "failure_count": 0,
+ "all_green": true,
+ "seconds": 12.4
+}
