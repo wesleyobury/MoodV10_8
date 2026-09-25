@@ -118,7 +118,10 @@ ok "verify-local-modules.js passes on current tree"
 #    Uses `resolve --json` (the EXACT command Cocoapods invokes on EAS)
 #    instead of `search`, so this matches production behavior.
 echo "── Running autolinking probe (slow) ──"
-RESOLVE_JSON=$(npx --no-install expo-modules-autolinking resolve --platform ios --json 2>&1)
+# stderr goes to a file, not into the JSON: under `yarn run`, npx prints
+# "npm warn Unknown env config ..." to stderr, which broke JSON.parse.
+RESOLVE_ERR=$(mktemp)
+RESOLVE_JSON=$(npx --no-install expo-modules-autolinking resolve --platform ios --json 2>"$RESOLVE_ERR") || { cat "$RESOLVE_ERR"; fail "autolinking resolve failed"; }
 echo "$RESOLVE_JSON" | node -e "
 let buf = '';
 process.stdin.on('data', d => buf += d);
