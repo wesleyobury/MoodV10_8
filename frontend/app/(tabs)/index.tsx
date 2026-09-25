@@ -26,6 +26,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
 import Constants from 'expo-constants';
 import { useAuth } from '../../contexts/AuthContext';
+import V3Home from '../../components/v3/V3Home';
+import { V3_HOME_ENABLED } from '../../utils/v3Profile';
 import { useAchievements } from '../../contexts/AchievementsContext';
 import { useHealth } from '../../contexts/HealthContext';
 import { Analytics } from '../../utils/analytics';
@@ -667,7 +669,18 @@ const moodCards: MoodCard[] = [
   // },
 ];
 
+/**
+ * Workouts tab. MOOD V3: signed-in users get the V3 Today's Workout builder
+ * (components/v3/V3Home). Guests, and V3_HOME_ENABLED = false, get the V2
+ * home below, unchanged.
+ */
 export default function WorkoutsHome() {
+  const { token, isGuest } = useAuth();
+  if (V3_HOME_ENABLED && token && !isGuest) return <V3Home />;
+  return <V2WorkoutsHome />;
+}
+
+function V2WorkoutsHome() {
   // Track screen time
   useScreenTime('Home');
   

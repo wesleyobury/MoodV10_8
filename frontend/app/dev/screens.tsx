@@ -209,6 +209,11 @@ export default function DevScreens() {
         <Row label="Login" route="/auth/login" onPress={() => go('/auth/login')} />
         <Row label="Register" route="/auth/register" onPress={() => go('/auth/register')} />
 
+        <SectionHeader title="MOOD V3" />
+        <Row label="V3 output pack (renderer QA)" route="/dev/v3-pack" onPress={() => go('/dev/v3-pack')} />
+        <Row label="V3 upgrade re-onboarding" route="/onboarding-funnel/upgrade" onPress={() => go('/onboarding-funnel/upgrade')} />
+        <Row label="V3 Training Profile (edit)" route="/onboarding-funnel/upgrade?mode=edit" onPress={() => go('/onboarding-funnel/upgrade?mode=edit')} />
+
         <SectionHeader title="Onboarding Funnel" />
         <Row label="Intro (cinematic)" route="/onboarding-funnel/intro" onPress={() => go('/onboarding-funnel/intro')} />
         <Row label="Step 1 — Mood" route="/onboarding-funnel/step-1-mood" onPress={() => go('/onboarding-funnel/step-1-mood')} />

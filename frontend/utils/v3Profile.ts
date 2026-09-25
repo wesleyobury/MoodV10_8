@@ -23,6 +23,13 @@ import { authFetch } from './api';
  */
 export const V3_ONBOARDING_ENABLED = true;
 
+/**
+ * V3 Home (Workouts tab): Today's Workout builder -> /api/v3 -> Overview.
+ * false = the V2 Workouts home (mood cards) renders instead. Guests always get
+ * V2, since /api/v3 needs an account.
+ */
+export const V3_HOME_ENABLED = true;
+
 /* ------------------------------------------------------------------ values */
 
 export type TrainingPreference = 'lifting' | 'conditioning' | 'athletic' | 'mix';
@@ -68,10 +75,11 @@ export const DEFAULT_EQUIPMENT = 'commercial_gym' as const;
 // Same labels on the funnel and (Phase 2) the Home screen.
 
 export const PREFERENCE_OPTIONS: { id: TrainingPreference; label: string; description: string }[] = [
-  { id: 'lifting', label: 'Strength Training', description: 'Lifting. Sets, reps, getting stronger.' },
-  { id: 'conditioning', label: 'Conditioning / Sweat', description: 'Circuits, intervals, engine work.' },
-  { id: 'athletic', label: 'Athletic Training', description: 'Jumps, sprints, throws. Power and speed.' },
-  { id: 'mix', label: 'Mix of Everything', description: 'A little of all three.' },
+  // Same vocabulary as the Home Directions (Strength / Sweat / Athletic). Stored IDs unchanged.
+  { id: 'lifting', label: 'Strength', description: 'Lifting, muscle & strength' },
+  { id: 'conditioning', label: 'Sweat', description: 'Conditioning, HIIT & endurance' },
+  { id: 'athletic', label: 'Athletic', description: 'Power, speed & athleticism' },
+  { id: 'mix', label: 'Mix It Up', description: 'A little of everything' },
 ];
 export const GOAL_OPTIONS: { id: V3Goal; label: string }[] = [
   { id: 'build_strength', label: 'Build Strength' },
