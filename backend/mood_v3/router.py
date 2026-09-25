@@ -15,6 +15,7 @@ from typing import List, Optional, Literal, Union
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field, ConfigDict
 from . import service, normalize as N
+from .profile_defaults import apply_profile_defaults
 
 log = logging.getLogger('mood_v3')
 HISTORY_WINDOW = 30
@@ -110,6 +111,14 @@ def build_v3_router(db, get_current_user):
         perf = [dict(completed_at=d['completed_at'].isoformat() if d.get('completed_at') else None, entries=d.get('performance_entries') or {}) for d in docs]
         return hist, perf
 
+    async def _training_profile(user_id):
+        try:
+            from bson import ObjectId
+            doc = await db.users.find_one({'_id': ObjectId(user_id)}, {'training_profile': 1})
+        except Exception:
+            return None
+        return (doc or {}).get('training_profile')
+
     async def _finish(env):
         try: attach_media(env, await MEDIA.get(db))
         except Exception as e: log.warning(f'v3 media enrichment skipped: {e}')
@@ -124,7 +133,9 @@ def build_v3_router(db, get_current_user):
     @r.post('/workouts/generate')
     async def generate(body: GenerateBody, user_id: str = Depends(get_current_user)):
         hist, perf = await _history(user_id)
-        raw = body.model_dump(exclude={'persist'})
+        # Persistent inputs: explicit request value > users.training_profile > backend default.
+        profile = await _training_profile(user_id)
+        raw, applied = apply_profile_defaults(body.model_dump(exclude={'persist'}), body.model_fields_set, profile)
         try:
             env, state = await asyncio.to_thread(service.generate_workout, raw, user_id, hist, perf)
         except N.InputError as e:
@@ -136,6 +147,7 @@ def build_v3_router(db, get_current_user):
         elif env['status'] == 'ok':
             env['workout']['workout_id'] = None
         if env['status'] != 'ok': log.info(f"v3 conflict {env['conflict']['code']} for {user_id}: {raw}")
+        env['profile_defaults_applied'] = applied
         return await _finish(env)
 
     @r.get('/workouts/history')

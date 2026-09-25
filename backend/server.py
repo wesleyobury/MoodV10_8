@@ -175,6 +175,7 @@ from notification_worker import (
 from seed_data import PREVIEW_FEATURED_WORKOUTS, FEATURED_WORKOUT_IDS
 from exercises_seed_data import PREVIEW_EXERCISES
 from mood_v3.router import build_v3_router  # MOOD V3 unified workout generation
+from training_profile import build_training_profile_router  # MOOD V3 persistent training profile
 from workout_drafts import (
     build_workout_drafts_router,
     ensure_workout_drafts_indexes,
@@ -15655,6 +15656,8 @@ api_router.include_router(
 
 # MOOD V3: unified Strength / Sweat / Athletic generation (/api/v3/workouts/*)
 api_router.include_router(build_v3_router(db, get_current_user))
+# MOOD V3: GET/PUT /api/users/me/training-profile (users.training_profile)
+api_router.include_router(build_training_profile_router(db, get_current_user))
 
 # Subscriptions / IAP — StoreKit validate, Apple webhooks, founding claim
 api_router.include_router(

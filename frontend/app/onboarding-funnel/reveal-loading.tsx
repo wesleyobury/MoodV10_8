@@ -10,6 +10,12 @@
  *
  * A reasoning stream below narrates the synthesis from the user's real answers,
  * and their answers float around the radar as chips. No counts, no fake timer.
+ *
+ * MOOD V3: when the V3 training-profile answers are present this screen
+ * processes the real profile instead (TRAINING STYLE -> ..., GOAL -> ...),
+ * saves it to PUT /api/users/me/training-profile, writes the first-Home
+ * handoff + V3 completion marker, and advances to profile-reveal. The V2 path
+ * below is kept intact for V3_ONBOARDING_ENABLED = false.
  */
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -35,7 +41,29 @@ import {
   useOnboardingFunnel,
 } from '../../contexts/OnboardingFunnelContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { Analytics } from '../../utils/analytics';
+import { Analytics, trackEvent } from '../../utils/analytics';
+import {
+  V3_ONBOARDING_ENABLED,
+  TrainingProfile,
+  Barrier,
+  Direction,
+  TrainingPreference,
+  V3Goal,
+  markV3ProfileDone,
+  saveTrainingProfile,
+  writeFirstHomeHandoff,
+} from '../../utils/v3Profile';
+import { RADAR_AXES, processingLines, radarValues } from '../../utils/v3ProfileCopy';
+
+// Short chip labels so the four corner chips never collide with the radar.
+const V3_PREF_SHORT: Record<TrainingPreference, string> = { lifting: 'Strength', conditioning: 'Sweat', athletic: 'Athletic', mix: 'Mix' };
+const V3_GOAL_SHORT: Record<V3Goal, string> = {
+  build_strength: 'Build strength', lose_weight_conditioning: 'Burn fat', build_muscle: 'Physique',
+  improve_athleticism: 'Athleticism', feel_better_reduce_stress: 'Feel better', stay_consistent: 'Consistency',
+};
+const V3_BARRIER_SHORT: Record<Barrier, string> = {
+  time: 'Short on time', low_energy: 'Low energy', motivation: 'Motivation', dont_know: 'Need a plan', boredom: 'Need variety',
+};
 
 const AXES = ['Intensity', 'Strength', 'Conditioning', 'Recovery', 'Volume', 'Consistency'];
 const CX = 125;
@@ -143,14 +171,39 @@ function buildThoughts(answers: FunnelAnswers): string[] {
 
 export default function RevealLoading() {
   const router = useRouter();
-  const { answers, markCompleted } = useOnboardingFunnel();
-  const { token } = useAuth();
+  const { answers, markCompleted, setV3 } = useOnboardingFunnel();
+  const { token, user } = useAuth();
 
-  const target = useMemo(() => computeProfile(answers), [answers]);
-  const plans = useRef<Seg[][]>(AXES.map((_, i) => planAxis(target[i])));
-  const thoughts = useMemo(() => buildThoughts(answers), [answers]);
+  // V3 path: the five V3 answers drive the radar, stream and save.
+  const isV3 = V3_ONBOARDING_ENABLED && !!answers.trainingPreference;
+  const v3Mode = answers.v3Mode ?? 'new';
+  const v3Profile = useMemo<TrainingProfile>(
+    () => ({
+      training_preference: answers.trainingPreference,
+      goal: answers.v3Goal,
+      experience: answers.experience,
+      training_frequency: answers.trainingFrequency,
+      biggest_barrier: answers.barrier,
+    }),
+    [answers],
+  );
+  const axes = isV3 ? RADAR_AXES : AXES;
+  const target = useMemo(() => (isV3 ? radarValues(v3Profile) : computeProfile(answers)), [answers, isV3, v3Profile]);
+  const plans = useRef<Seg[][]>(axes.map((_, i) => planAxis(target[i])));
+  const thoughts = useMemo(() => (isV3 ? processingLines(v3Profile) : buildThoughts(answers)), [answers, isV3, v3Profile]);
+  // The auto-advance timer is set once on mount; read the latest values through a ref.
+  const latest = useRef({ token, user, v3Profile, v3Mode });
+  latest.current = { token, user, v3Profile, v3Mode };
 
   const chips = useMemo(() => {
+    if (isV3) {
+      return [
+        { icon: 'flame' as const, label: answers.trainingPreference ? V3_PREF_SHORT[answers.trainingPreference] : 'Your style' },
+        { icon: 'locate' as const, label: answers.v3Goal ? V3_GOAL_SHORT[answers.v3Goal] : 'Your goal' },
+        { icon: 'battery-half' as const, label: answers.barrier ? V3_BARRIER_SHORT[answers.barrier] : 'Your level' },
+        { icon: 'time-outline' as const, label: '60 min' },
+      ];
+    }
     const length = answers.workoutLength ?? 30;
     return [
       { icon: 'flame' as const, label: answers.mood ? MOOD_DISPLAY[answers.mood].title : 'Your mood' },
@@ -158,10 +211,10 @@ export default function RevealLoading() {
       { icon: 'battery-half' as const, label: answers.biggestBarrier ? BARRIER_SHORT[answers.biggestBarrier] : 'Your level' },
       { icon: 'time-outline' as const, label: `${length} min` },
     ];
-  }, [answers]);
+  }, [answers, isV3]);
 
-  const [vals, setVals] = useState<number[]>(AXES.map(() => BASE));
-  const [active, setActive] = useState<boolean[]>(AXES.map(() => false));
+  const [vals, setVals] = useState<number[]>(axes.map(() => BASE));
+  const [active, setActive] = useState<boolean[]>(axes.map(() => false));
   const [lines, setLines] = useState<{ key: number; text: string }[]>([]);
   const [workLabel, setWorkLabel] = useState('Reasoning…');
   const [ready, setReady] = useState(false);
@@ -200,12 +253,12 @@ export default function RevealLoading() {
         lastUpdate = el;
         if (el >= LOCK_MS) {
           setVals(target.slice());
-          setActive(AXES.map(() => false));
+          setActive(axes.map(() => false));
           return; // stop — shape locked
         }
         const nv: number[] = [];
         const na: boolean[] = [];
-        for (let i = 0; i < AXES.length; i++) {
+        for (let i = 0; i < axes.length; i++) {
           const r = valueAt(plans.current[i], el);
           nv.push(clamp(r.v));
           na.push(r.active);
@@ -219,9 +272,47 @@ export default function RevealLoading() {
     return () => cancelAnimationFrame(raf);
   }, [target]);
 
+  /**
+   * V3: persist the training profile, then hand off. A failed save never blocks
+   * the user: answers stay in the funnel store (v3SavedAt unset) and
+   * V3ProfileGate retries the PUT on the next Home visit.
+   */
+  const finishV3 = async () => {
+    const { token: tk, user: u, v3Profile: prof, v3Mode: mode } = latest.current;
+    const source = mode === 'new' ? 'onboarding_v3' : mode === 'upgrade' ? 'reonboarding_v3' : 'user_edit';
+    let serverDir: Direction | undefined;
+    let saved = false;
+    if (tk) {
+      try {
+        const res = await saveTrainingProfile(tk, { ...prof, profile_source: source });
+        saved = !!res?.complete;
+        serverDir = res?.default_direction;
+      } catch {
+        saved = false;
+      }
+    }
+    if (u?.id) {
+      if (saved) await markV3ProfileDone(u.id);
+      // Edit mode is not a first Home visit, so it never re-arms the prefill.
+      if (mode !== 'edit') await writeFirstHomeHandoff(u.id, prof, mode, serverDir);
+    }
+    setV3({ v3SavedAt: saved ? new Date().toISOString() : undefined });
+    if (tk) {
+      trackEvent(tk, 'v3_training_profile_saved', {
+        funnel_version: 'v3', mode, profile_source: source, saved,
+        training_preference: prof.training_preference, goal: prof.goal, experience: prof.experience,
+        training_frequency: prof.training_frequency, biggest_barrier: prof.biggest_barrier,
+        default_direction: serverDir,
+      });
+    }
+    // V2 completion marker keeps index / FunnelEntryGate routing working for new users.
+    if (mode === 'new') await markCompleted();
+    router.replace('/onboarding-funnel/profile-reveal' as any);
+  };
+
   // Reasoning stream + auto-advance.
   useEffect(() => {
-    Analytics.revealScreenViewed(token, { stage: 'loading' });
+    Analytics.revealScreenViewed(token, isV3 ? { stage: 'loading', funnel_version: 'v3', mode: v3Mode } : { stage: 'loading' });
     const timers: ReturnType<typeof setTimeout>[] = [];
     let i = 0;
     const emit = () => {
@@ -233,14 +324,18 @@ export default function RevealLoading() {
       if (i < thoughts.length) {
         timers.push(setTimeout(emit, 720 + Math.random() * 340));
       } else {
-        setWorkLabel('Finalizing your program…');
+        setWorkLabel(isV3 ? 'Saving your profile…' : 'Finalizing your program…');
       }
     };
     emit();
 
-    timers.push(setTimeout(() => { setReady(true); setWorkLabel('Your plan is ready'); }, LOCK_MS + 150));
+    timers.push(setTimeout(() => { setReady(true); setWorkLabel(isV3 ? 'Your profile is ready' : 'Your plan is ready'); }, LOCK_MS + 150));
     timers.push(
       setTimeout(async () => {
+        if (isV3) {
+          await finishV3();
+          return;
+        }
         await markCompleted();
         router.replace('/onboarding-funnel/reveal-payoff');
       }, END_MS)
@@ -250,16 +345,18 @@ export default function RevealLoading() {
   }, []);
 
   const polyPoints = vals.map((v, i) => axisPoint(i, R * v).join(',')).join(' ');
-  const ringPoints = (f: number) => AXES.map((_, i) => axisPoint(i, R * f).join(',')).join(' ');
+  const ringPoints = (f: number) => axes.map((_, i) => axisPoint(i, R * f).join(',')).join(' ');
   const spinDeg = spin.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
 
   return (
     <SafeAreaView style={styles.root} edges={['top', 'bottom']} testID="reveal-loading" data-testid="reveal-loading">
       <View style={styles.header}>
-        <Text style={styles.eyebrow}>PERSONALIZING YOUR MOOD</Text>
-        <Text style={styles.title}>Designing your program</Text>
+        <Text style={styles.eyebrow}>{isV3 ? 'YOUR TRAINING PROFILE' : 'PERSONALIZING YOUR MOOD'}</Text>
+        <Text style={styles.title}>{isV3 ? 'Building your MOOD profile' : 'Designing your program'}</Text>
         <Text style={styles.sub}>
-          Not just your first workout — we&apos;re shaping every session, your progression, and your recovery around you.
+          {isV3
+            ? 'Turning your answers into the settings MOOD uses to build every session.'
+            : 'Not just your first workout — we\u2019re shaping every session, your progression, and your recovery around you.'}
         </Text>
       </View>
 
@@ -273,7 +370,7 @@ export default function RevealLoading() {
             {[0.4, 0.7, 1].map((f) => (
               <Polygon key={f} points={ringPoints(f)} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={1} />
             ))}
-            {AXES.map((_, i) => {
+            {axes.map((_, i) => {
               const [x, y] = axisPoint(i, R);
               return <Line key={i} x1={CX} y1={CY} x2={x} y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth={1} />;
             })}
@@ -288,7 +385,7 @@ export default function RevealLoading() {
               <Stop offset="1" stopColor={COLORS.accent} stopOpacity={0.08} />
             </RadialGradient>
           </Defs>
-          {AXES.map((ax, i) => {
+          {axes.map((ax, i) => {
             const [lx, ly] = axisPoint(i, R + 18);
             return (
               <SvgText

@@ -16,6 +16,7 @@ import { AchievementsProvider } from '../contexts/AchievementsContext';
 import { DraftsProvider } from '../contexts/DraftsContext';
 import { HealthProvider } from '../contexts/HealthContext';
 import HealthOnboardingGate from '../components/HealthOnboardingGate';
+import V3ProfileGate from '../components/V3ProfileGate';
 import { PaywallModal } from '../components/PaywallModal';
 import { FoundingMemberGate } from '../components/FoundingMemberGate';
 import { LegalReacceptGate } from '../components/LegalReacceptGate';
@@ -209,6 +210,7 @@ function AppContent() {
         <AppStateTracker />
         <NotificationInitializer />
         <HealthOnboardingGate />
+        <V3ProfileGate />
         <NavigationStack />
         <FloatingCart />
         <DevPill />

@@ -708,14 +708,18 @@ export const Analytics = {
   // The funnel runs before login; events are routed to both authenticated and
   // guest pipelines so the funnel can be analyzed end-to-end pre- and
   // post-account creation.
-  onboardingStepViewed: (token: string | null, metadata: { step: number; question?: string }) =>
+  onboardingStepViewed: (
+    token: string | null,
+    // V3 adds funnel_version ('v3') and mode ('new' | 'upgrade' | 'edit').
+    metadata: { step: number; question?: string; funnel_version?: string; mode?: string },
+  ) =>
     token
       ? trackEvent(token, 'onboarding_step_viewed', metadata)
       : trackGuestEvent('onboarding_step_viewed', metadata),
 
   onboardingStepCompleted: (
     token: string | null,
-    metadata: { step: number; question?: string; answer?: any; time_spent_ms?: number }
+    metadata: { step: number; question?: string; answer?: any; time_spent_ms?: number; funnel_version?: string; mode?: string }
   ) =>
     token
       ? trackEvent(token, 'onboarding_step_completed', metadata)

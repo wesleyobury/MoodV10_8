@@ -49,6 +49,7 @@ import CreatorCodeModal from '../components/CreatorCodeModal';
 
 import { API_URL } from '../utils/apiConfig';
 import { navigateToLoginAfterSessionEnd } from '../utils/navigateToLoginAfterSessionEnd';
+import { V3_ONBOARDING_ENABLED } from '../utils/v3Profile';
 
 // Phase E paid-launch — Subscription section copy comes from subscriptionState helpers.
 const SUPPORT_EMAIL = 'wes@officialmoodapp.com';
@@ -457,6 +458,23 @@ export default function Settings() {
         {/* Account Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Account</Text>
+
+          {V3_ONBOARDING_ENABLED && (
+            <TouchableOpacity
+              style={styles.settingsItem}
+              onPress={() => router.push('/onboarding-funnel/upgrade?mode=edit' as any)}
+              testID="settings-training-profile"
+            >
+              <View style={styles.settingsItemLeft}>
+                <Ionicons name="barbell-outline" size={20} color="#FFD700" />
+                <View>
+                  <Text style={styles.settingsItemText}>Training Profile</Text>
+                  <Text style={styles.settingsItemSubtext}>Training style, goal, experience and schedule</Text>
+                </View>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color='#666' />
+            </TouchableOpacity>
+          )}
 
           <TouchableOpacity
             style={styles.settingsItem}

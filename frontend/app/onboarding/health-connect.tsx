@@ -26,6 +26,7 @@ import { markWorkoutHandoffPending } from '../../utils/onboardingFunnelDefer';
 import { WearablesSuccessState } from '../../components/WearablesSuccessState';
 import { useAuth } from '../../contexts/AuthContext';
 import { Analytics } from '../../utils/analytics';
+import { V3_ONBOARDING_ENABLED } from '../../utils/v3Profile';
 
 // Guideline 2.5.1 — Apple requires HealthKit functionality to be clearly
 // identified in the UI, so name the framework explicitly per platform.
@@ -62,6 +63,14 @@ export default function HealthConnectScreen() {
   // mood-intro then forwards to the first decision screen of the funnel mood.
   const goToMoodIntro = async () => {
     await setHealthOnboardingComplete();
+    if (V3_ONBOARDING_ENABLED) {
+      // MOOD V3: land on Home. The first-Home handoff (utils/v3Profile) was
+      // written when the profile saved; Phase 2 Home reads it. The V2 workout
+      // handoff flag is NOT set, since mood-intro (which clears it) is not
+      // part of the V3 flow and a stale flag would defer auxiliary gates.
+      router.replace('/(tabs)');
+      return;
+    }
     if (user?.id) await markWorkoutHandoffPending(user.id);
     router.replace('/mood-intro');
   };
@@ -119,8 +128,8 @@ export default function HealthConnectScreen() {
 
         <Text style={styles.body}>
           MOOD uses {HEALTH_PLATFORM} to read the health data below and
-          personalize your workouts. Read-only. Never sold. Never used for
-          ads.
+          show it alongside your training. Read-only. Never sold. Never used
+          for ads.
         </Text>
 
         <Text style={styles.bulletsHeader}>

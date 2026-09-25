@@ -48,6 +48,12 @@ import { isStoreKitAvailable, restorePurchases } from '../../modules/mood-storek
 import { useStorePrices } from '../../hooks/useStorePrices';
 import { openSubscriptionManagement } from '../../utils/billingPlatform';
 import CreatorCodeModal from '../../components/CreatorCodeModal';
+import {
+  TrainingPreference,
+  experienceLabel,
+  frequencyLabel,
+  goalLabel,
+} from '../../utils/v3Profile';
 
 const PAGE_BG = '#0A0A0A'; // must equal COLORS.bg so the hero fade has no seam
 
@@ -72,6 +78,14 @@ const HERO_IMAGES: Record<MoodId, ImageSourcePropType> = {
 };
 const WEARABLES_ROUTE = '/onboarding/health-connect';
 
+// MOOD V3: hero photo by training preference (reuses the existing payoff art).
+const V3_HERO_MOOD: Record<TrainingPreference, MoodId> = {
+  lifting: 'muscle',
+  conditioning: 'sweat',
+  athletic: 'explosive',
+  mix: 'calisthenics',
+};
+
 // Short goal word used in the personalized hero blurb.
 const GOAL_BLURB_WORD: Record<PrimaryGoal, string> = {
   feel_better: 'feel-better',
@@ -93,7 +107,7 @@ const FEATURES: { icon: keyof typeof Ionicons.glyphMap; title: string; subtext: 
   { icon: 'people', title: 'See & copy other athletes', subtext: 'Browse their content, duplicate any workout.' },
   { icon: 'locate', title: 'Personalized to you', subtext: 'Built around your goals and level.' },
   { icon: 'flame', title: 'An amazing community', subtext: 'Train alongside a driven crew that shows up.' },
-  { icon: 'sync', title: 'Adapts to recovery', subtext: 'Intensity tuned to how recovered you are.' },
+  { icon: 'pulse', title: 'Adapts to how you feel', subtext: 'Tell MOOD your energy and soreness. Today\u2019s session adjusts.' },
   { icon: 'watch', title: 'Heart rate & wearables', subtext: 'Real-time metrics from your watch.' },
   { icon: 'stats-chart', title: 'Progress that matters', subtext: 'Shareable charts that track your wins.' },
   { icon: 'barbell', title: 'Full exercise library', subtext: 'Every move, with video guidance.' },
@@ -143,12 +157,19 @@ export default function RevealPayoff() {
     usernameFallback ||
     'Athlete';
   const moodWord = answers.mood ?? 'chosen';
-  const heroImage = HERO_IMAGES[answers.mood ?? 'sweat'] ?? HERO_IMAGES.sweat;
+  // V3 answers present -> V3 copy (preference hero, profile blurb). Else V2 as before.
+  const isV3 = !!answers.trainingPreference;
+  const heroImage = isV3
+    ? HERO_IMAGES[V3_HERO_MOOD[answers.trainingPreference!]] ?? HERO_IMAGES.sweat
+    : HERO_IMAGES[answers.mood ?? 'sweat'] ?? HERO_IMAGES.sweat;
   const goalWord = answers.primaryGoal ? GOAL_BLURB_WORD[answers.primaryGoal] : 'your';
   const levelWord = answers.fitnessLevel
     ? LEVEL_LABELS[answers.fitnessLevel].toLowerCase()
     : 'current';
-  const blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} level, we've curated a library of workouts designed specifically for your preferences. Subscribe now to gain unlimited access.`;
+  const v3Blurb = `Your MOOD profile is set: ${goalLabel(answers.v3Goal).toLowerCase() || 'your'} focus, ${experienceLabel(answers.experience).toLowerCase() || 'your'} level, ${frequencyLabel(answers.trainingFrequency) || 'your schedule'}. Every session is built from it and adjusts to how you feel that day. Subscribe now to gain unlimited access.`;
+  const headline = isV3 ? `${firstName}, your profile is ready!` : `${firstName}, your plan is ready!`;
+  const v2Blurb = `Based on your ${moodWord} mood, ${goalWord} goal, and ${levelWord} level, we've curated a library of workouts designed specifically for your preferences. Subscribe now to gain unlimited access.`;
+  const blurb = isV3 ? v3Blurb : v2Blurb;
 
   const isFoundingEligible =
     !!entitlement?.is_founding_member &&
@@ -194,6 +215,15 @@ export default function RevealPayoff() {
       biggest_barrier: answers.biggestBarrier,
       workout_length: answers.workoutLength,
       equipment: answers.equipment,
+      // MOOD V3 profile (undefined on the V2 funnel)
+      funnel_version: answers.trainingPreference ? 'v3' : 'v2',
+      mode: answers.v3Mode ?? (answers.trainingPreference ? 'new' : undefined),
+      training_preference: answers.trainingPreference,
+      goal: answers.v3Goal,
+      experience: answers.experience,
+      training_frequency: answers.trainingFrequency,
+      v3_biggest_barrier: answers.barrier,
+      v3_profile_saved: !!answers.v3SavedAt,
     });
   };
 
@@ -221,13 +251,14 @@ export default function RevealPayoff() {
   useEffect(() => {
     if (completedRef.current) return;
     if (!token) return;
-    if (answers.mood) {
+    // V3 funnels have no `mood`; the V3 preference is their first answer.
+    if (answers.mood || answers.trainingPreference) {
       fireCompleted();
       return;
     }
     const t = setTimeout(fireCompleted, 2500);
     return () => clearTimeout(t);
-  }, [token, answers.mood]);
+  }, [token, answers.mood, answers.trainingPreference]);
 
   // Advance the funnel once Soft Paywall #1 closes — whether or not it
   // converted.
@@ -365,7 +396,7 @@ export default function RevealPayoff() {
 
           {/* Headline + blurb — anchored to the bottom third of the hero */}
           <View style={styles.heroTextWrap}>
-            <Text style={styles.heroHeadline}>{firstName}, your plan is ready!</Text>
+            <Text style={styles.heroHeadline}>{headline}</Text>
             <Text style={styles.heroSubhead}>{blurb}</Text>
           </View>
         </ImageBackground>

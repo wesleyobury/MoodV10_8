@@ -19,14 +19,17 @@ class _Col:
     def __init__(self): self.docs = []
     def _match(self, d, q): return all(d.get(k) == v for k, v in q.items())
     def find(self, q=None, proj=None): return _Cursor([d for d in self.docs if self._match(d, q or {})])
-    async def find_one(self, q): return copy.deepcopy(next((d for d in self.docs if self._match(d, q)), None))
+    async def find_one(self, q, proj=None): return copy.deepcopy(next((d for d in self.docs if self._match(d, q)), None))
     async def insert_one(self, d): self.docs.append(copy.deepcopy(d))
     async def update_one(self, q, u):
+        class _R:
+            def __init__(self, n): self.matched_count = n; self.modified_count = n
         for d in self.docs:
             if self._match(d, q):
                 d.update(copy.deepcopy(u.get('$set', {})))
                 for k, v in u.get('$push', {}).items(): d.setdefault(k, []).append(copy.deepcopy(v))
-                return
+                return _R(1)
+        return _R(0)
 
 class _DB:
     def __init__(self):

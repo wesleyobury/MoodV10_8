@@ -28,13 +28,14 @@ import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { useOnboardingFunnel } from '../../contexts/OnboardingFunnelContext';
 import { Analytics } from '../../utils/analytics';
+import { V3_ONBOARDING_ENABLED } from '../../utils/v3Profile';
 
 const BG_VIDEO_SOURCE = require('../../assets/videos/bg.mp4');
 
 export default function FunnelIntro() {
   const router = useRouter();
   const { token, user } = useAuth();
-  const { answers, setFirstName } = useOnboardingFunnel();
+  const { answers, setFirstName, setV3 } = useOnboardingFunnel();
 
   // Carry the user's name through the whole funnel from the very start:
   // Google gives us a real name; manual signups have a display name or
@@ -77,6 +78,13 @@ export default function FunnelIntro() {
   }, [videoReady, videoOpacity]);
 
   const handleBegin = () => {
+    if (V3_ONBOARDING_ENABLED) {
+      // MOOD V3: training-profile funnel (preference, goal, experience, frequency, barrier).
+      setV3({ v3Mode: 'new' });
+      Analytics.onboardingStepCompleted(token, { step: 0, question: 'intro', funnel_version: 'v3', mode: 'new' });
+      router.push('/onboarding-funnel/v3-preference' as any);
+      return;
+    }
     Analytics.onboardingStepCompleted(token, { step: 0, question: 'intro' });
     router.push('/onboarding-funnel/step-1-mood');
   };

@@ -23,6 +23,8 @@ All routes live under `/api/v3` and need the normal bearer token (`get_current_u
 }
 ```
 
+**Training-profile fallback (Phase 1).** Any of `goal`, `experience`, `training_frequency`, `training_preference`, `equipment` and `duration` left out of the request (or sent as null) is filled from the caller's `users.training_profile` (`GET/PUT /api/users/me/training-profile`), and then from the backend defaults above. Precedence: explicit request > training profile > backend default. The envelope reports which fields were filled from the profile in `profile_defaults_applied` (for example `{"goal": "build_muscle", "duration": 60}`); it is `{}` when nothing was filled. Daily inputs (States, soreness, Target, archetype) are never stored in or read from the profile.
+
 Invalid input returns HTTP 422 `{field, message}`. Examples: duration 45, 4 States, a muscle Target on Athletic, an archetype from another Direction, or both a Sweat archetype and a Target.
 
 Equipment preset mapping (each Direction uses the preset its frozen QA ran on):

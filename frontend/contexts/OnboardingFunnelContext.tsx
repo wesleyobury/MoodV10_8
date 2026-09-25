@@ -22,6 +22,14 @@ import React, {
 } from 'react';
 import { useAuth } from './AuthContext';
 import { API_URL } from '../utils/apiConfig';
+import type {
+  Barrier,
+  Experience,
+  TrainingFrequency,
+  TrainingPreference,
+  V3FunnelMode,
+  V3Goal,
+} from '../utils/v3Profile';
 
 /* ---------------------------- Domain types ---------------------------- */
 
@@ -63,6 +71,16 @@ export interface FunnelAnswers {
    *  greeting regardless of what (if anything) Apple/Google returned. */
   firstName?: string;
   completedAt?: string; // ISO timestamp
+  /* ---- MOOD V3 training profile (see utils/v3Profile.ts) ---- */
+  trainingPreference?: TrainingPreference;
+  v3Goal?: V3Goal;
+  experience?: Experience;
+  trainingFrequency?: TrainingFrequency;
+  barrier?: Barrier;
+  /** new = signup, upgrade = existing user's first V3 open, edit = Settings. */
+  v3Mode?: V3FunnelMode;
+  /** ISO time the V3 profile was saved to the server (PUT succeeded). */
+  v3SavedAt?: string;
 }
 
 interface FunnelStepTiming {
@@ -80,6 +98,8 @@ interface OnboardingFunnelContextValue {
   setWorkoutLength: (length: WorkoutLength) => void;
   setEquipment: (equipment: EquipmentAccess) => void;
   setFirstName: (firstName: string) => void;
+  /** MOOD V3 profile setters. */
+  setV3: (delta: Partial<Pick<FunnelAnswers, 'trainingPreference' | 'v3Goal' | 'experience' | 'trainingFrequency' | 'barrier' | 'v3Mode' | 'v3SavedAt'>>) => void;
   /** Returns ms spent on the given step since `markStepEntered` was called. */
   markStepEntered: (step: number) => void;
   consumeStepDuration: (step: number) => number;
@@ -103,6 +123,17 @@ export async function readHasCompletedFunnel(userId?: string | null): Promise<bo
     return Boolean(answers.completedAt);
   } catch {
     return false;
+  }
+}
+
+/** MOOD V3 — one-shot read of the persisted funnel answers for a user, for
+ *  gates that run before the provider has rehydrated (V3ProfileGate uses it
+ *  to retry a training-profile save that failed at the end of the funnel). */
+export async function readPersistedFunnelAnswers(userId?: string | null): Promise<FunnelAnswers> {
+  try {
+    return await readPersistedForUser(userId ?? null);
+  } catch {
+    return {} as FunnelAnswers;
   }
 }
 
@@ -270,6 +301,7 @@ export function OnboardingFunnelProvider({ children }: { children: React.ReactNo
       setWorkoutLength: (workoutLength) => patch({ workoutLength }),
       setEquipment: (equipment) => patch({ equipment }),
       setFirstName: (firstName) => patch({ firstName }),
+      setV3: (delta) => patch(delta),
       markStepEntered,
       consumeStepDuration,
       markCompleted,

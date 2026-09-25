@@ -33,6 +33,8 @@ import { BRAND_GRADIENT, COLORS, FUNNEL_TOTAL_STEPS } from '../../constants/bran
 
 interface FunnelLayoutProps {
   step: number;
+  /** Defaults to FUNNEL_TOTAL_STEPS. V3 upgrade / edit runs show 5. */
+  totalSteps?: number;
   eyebrow?: string;
   title: string;
   subtitle?: string;
@@ -46,6 +48,7 @@ interface FunnelLayoutProps {
 
 export function FunnelLayout({
   step,
+  totalSteps = FUNNEL_TOTAL_STEPS,
   eyebrow,
   title,
   subtitle,
@@ -56,7 +59,7 @@ export function FunnelLayout({
   onCtaPress,
   testID,
 }: FunnelLayoutProps) {
-  const progress = Math.max(0, Math.min(1, step / FUNNEL_TOTAL_STEPS));
+  const progress = Math.max(0, Math.min(1, step / totalSteps));
   const progressAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -91,7 +94,7 @@ export function FunnelLayout({
           </Animated.View>
         </View>
         <Text style={styles.stepLabel}>
-          Step {step} / {FUNNEL_TOTAL_STEPS}
+          Step {step} / {totalSteps}
         </Text>
       </View>
 
