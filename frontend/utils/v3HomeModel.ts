@@ -64,6 +64,43 @@ export const TARGETS: { id: string; label: string; muscles: string[] | 'full_bod
 
 export const DURATIONS: (30 | 60)[] = [60, 30];
 
+/**
+ * Session types (archetypes) the user may pick explicitly (Phase 2.5). IDs are the backend registry
+ * (normalize.ARCHETYPES); names match the API's archetype.name. MOOD's Pick (null) is always the default.
+ * Strength Core / Custom Target are reached through the Target control, not listed here.
+ */
+export const ARCHETYPES: Record<V3Direction, { id: string; name: string }[]> = {
+  strength: [
+    { id: 'strength_upper_push', name: 'Upper Push' },
+    { id: 'strength_upper_pull', name: 'Upper Pull' },
+    { id: 'strength_upper_mixed', name: 'Upper Body' },
+    { id: 'strength_lower_squat', name: 'Lower Body: Squat' },
+    { id: 'strength_lower_hinge', name: 'Lower Body: Hinge' },
+    { id: 'strength_glutes_legs', name: 'Glutes + Legs' },
+    { id: 'strength_full_body', name: 'Full Body' },
+    { id: 'strength_arms', name: 'Arms' },
+  ],
+  sweat: [
+    { id: 'sweat_circuit', name: 'Circuit' },
+    { id: 'sweat_engine', name: 'Engine' },
+    { id: 'sweat_hybrid', name: 'Hybrid' },
+  ],
+  athletic: [
+    { id: 'athletic_power', name: 'Power' },
+    { id: 'athletic_speed_agility', name: 'Speed + Agility' },
+    { id: 'athletic_full_body', name: 'Full-Body Athlete' },
+  ],
+};
+
+export function archetypeName(id: string | null | undefined): string | null {
+  if (!id) return null;
+  for (const list of Object.values(ARCHETYPES)) {
+    const hit = list.find((a) => a.id === id);
+    if (hit) return hit.name;
+  }
+  return null;
+}
+
 /* ------------------------------------------------------------------ state */
 
 export interface HomeInputs {
@@ -73,7 +110,7 @@ export interface HomeInputs {
   /** null = MOOD's Pick. Otherwise exactly what is sent as `target`. */
   target: string[] | 'full_body' | null;
   duration: 30 | 60;
-  /** Only ever set by a conflict option's patch; the UI never exposes archetypes. */
+  /** Explicit session type (archetype). null = MOOD's Pick. Mutually exclusive with a Target (Phase 2.5 UX rule). */
   archetype: string | null;
   /** Session-only equipment override from a conflict option ("Use full gym equipment"). */
   equipment: V3Equipment | null;
@@ -144,8 +181,18 @@ export function toggleTarget(inputs: HomeInputs, chipId: string): { inputs: Home
   return { inputs: { ...inputs, target: next, archetype: null }, limitHit: false };
 }
 
+/**
+ * Target vs session type (Phase 2.5): they are different questions, and the backend does not compose a Target inside an
+ * explicit archetype. Rule: picking a session type clears the Target; picking a Target returns the type to MOOD's Pick.
+ */
+export function setArchetype(inputs: HomeInputs, archetype: string | null): HomeInputs {
+  if (archetype && !ARCHETYPES[inputs.direction].some((a) => a.id === archetype)) return inputs;
+  return { ...inputs, archetype, target: archetype ? null : inputs.target };
+}
+
+/** Target "None". Leaves an explicit session type alone (the two are exclusive, so there is nothing to reconcile). */
 export function clearTarget(inputs: HomeInputs): HomeInputs {
-  return { ...inputs, target: null, archetype: null };
+  return { ...inputs, target: null };
 }
 
 /** "Chest + Arms", "Full Body", or null for MOOD's Pick. */
@@ -249,7 +296,7 @@ export function applyConflictPatch(
 /* ------------------------------------------------------------------ copy */
 
 export function summaryLine(inputs: HomeInputs): string {
-  const focus = inputs.archetype ? null : targetLabel(inputs.target);
+  const focus = inputs.archetype ? archetypeName(inputs.archetype) : targetLabel(inputs.target);
   return [DIRECTION_NAME[inputs.direction], focus ?? "MOOD's Pick", `${inputs.duration} min`].join(' · ');
 }
 

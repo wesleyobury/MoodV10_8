@@ -7,8 +7,10 @@
  *
  *   A. How are you feeling?   States (optional, max 3) + sore areas
  *   B. What are we doing?     Strength / Sweat / Athletic (always one selected)
- *   C. Focus + Length         MOOD's Pick by default, optional Target; 60 / 30
- *   D. Build workout          POST /api/v3/workouts/generate -> Overview
+ *   C. Type + Target + Length Type = MOOD's Pick by default or an explicit archetype (Phase 2.5);
+ *                             optional Target (Strength/Sweat); 60 / 30. Picking a type clears the
+ *                             Target and picking a Target returns the type to MOOD's Pick.
+ *   D. Build workout          POST /api/v3/workouts/generate -> Workout Preview
  *
  * Zero-input path: default Direction + MOOD's Pick + 60 min = one tap.
  * First visit only: the Phase 1 barrier prefill (visible, removable).
@@ -49,6 +51,7 @@ import {
   STATE_LABEL,
   TARGETS,
   applyConflictOption,
+  archetypeName,
   buildBlocker,
   buildRequest,
   clearTarget,
@@ -56,6 +59,7 @@ import {
   isTargetSelected,
   moodsPickCopy,
   requestSignature,
+  setArchetype,
   setDirection,
   setDuration,
   summaryLine,
@@ -68,6 +72,7 @@ import {
 import { V3TodayEntry, readLastDirection, readToday, writeLastDirection, writeToday } from '../../utils/v3Today';
 import { V3Chip } from './V3Chip';
 import { ConflictSheet } from './ConflictSheet';
+import { ArchetypeSheet } from './ArchetypeSheet';
 
 const VALID_STATES = new Set<string>(STATES.map((s) => s.id));
 
@@ -87,6 +92,7 @@ export default function V3Home() {
   const [handoff, setHandoff] = useState<FirstHomeHandoff | null>(null);
   const [today, setToday] = useState<V3TodayEntry | null>(null);
   const [focusOpen, setFocusOpen] = useState(false);
+  const [typeOpen, setTypeOpen] = useState(false);
   const [stateHint, setStateHint] = useState(false);
   const [targetHint, setTargetHint] = useState(false);
   const [building, setBuilding] = useState(false);
@@ -208,6 +214,21 @@ export default function V3Home() {
     track('v3_target_changed', { target: r.inputs.target, direction: inputs.direction });
   };
 
+  const onArchetype = (a: string | null) => {
+    setTypeOpen(false);
+    if (!inputs || a === inputs.archetype) return;
+    const next = setArchetype(inputs, a);
+    track('v3_archetype_changed', {
+      surface: 'home',
+      direction: inputs.direction,
+      from: inputs.archetype ?? 'moods_pick',
+      to: a ?? 'moods_pick',
+      cleared_target: !!a && inputs.target !== null,
+    });
+    setInputs(next);
+    if (a) setFocusOpen(false);
+  };
+
   const onMoodsPick = () => {
     if (!inputs) return;
     setInputs(clearTarget(inputs));
@@ -238,6 +259,7 @@ export default function V3Home() {
       target: req.target ?? null,
       duration: req.duration,
       moods_pick: moodsPick,
+      archetype: req.archetype ?? null,
       first_visit: !!handoff,
     });
     if (moodsPick) track('v3_moods_pick_used', { direction: req.direction });
@@ -456,9 +478,23 @@ export default function V3Home() {
           </View>
         </View>
 
-        {/* C. Focus + Length */}
+        {/* C. Type + Target + Length */}
         <View style={styles.section}>
-          <View style={[styles.panel, emphasizePick && !tLabel && styles.panelEmph]}>
+          <View style={[styles.panel, emphasizePick && !tLabel && !inputs.archetype && styles.panelEmph]}>
+            <Pressable onPress={() => setTypeOpen(true)} style={styles.panelRow} testID="v3-type-toggle">
+              <View style={{ flex: 1 }}>
+                <Text style={styles.panelLabel}>TYPE</Text>
+                <Text style={styles.panelValue}>{archetypeName(inputs.archetype) ?? (tLabel ? 'Built from your Target' : "MOOD's Pick")}</Text>
+              </View>
+              <View style={styles.change}>
+                <Text style={styles.changeText}>Change</Text>
+                <Ionicons name="chevron-down" size={14} color={COLORS.textSecondary} />
+              </View>
+            </Pressable>
+            {!tLabel && !inputs.archetype ? <Text style={styles.pickCopy}>{moodsPickCopy(inputs.direction)}</Text> : null}
+
+            {canTarget ? <View style={styles.hr} /> : null}
+            {canTarget ? (
             <Pressable
               onPress={() => canTarget && setFocusOpen((v) => !v)}
               style={styles.panelRow}
@@ -466,8 +502,8 @@ export default function V3Home() {
               testID="v3-focus-toggle"
             >
               <View style={{ flex: 1 }}>
-                <Text style={styles.panelLabel}>FOCUS</Text>
-                <Text style={styles.panelValue}>{inputs.archetype ? 'Adjusted by MOOD' : tLabel ?? "MOOD's Pick"}</Text>
+                <Text style={styles.panelLabel}>TARGET</Text>
+                <Text style={[styles.panelValue, !tLabel && styles.panelValueQuiet]}>{tLabel ?? 'None'}</Text>
               </View>
               {canTarget ? (
                 <View style={styles.change}>
@@ -476,11 +512,11 @@ export default function V3Home() {
                 </View>
               ) : null}
             </Pressable>
-            {!tLabel ? <Text style={styles.pickCopy}>{moodsPickCopy(inputs.direction)}</Text> : null}
+            ) : null}
             {focusOpen && canTarget ? (
               <View style={styles.targets} testID="v3-targets">
                 <View style={styles.wrap}>
-                  <V3Chip size="sm" label="MOOD's Pick" icon="sparkles" selected={inputs.target === null} onPress={onMoodsPick} testID="v3-target-moods-pick" />
+                  <V3Chip size="sm" label="None" selected={inputs.target === null} onPress={onMoodsPick} testID="v3-target-moods-pick" />
                   {TARGETS.map((t) => (
                     <V3Chip
                       key={t.id}
@@ -492,7 +528,13 @@ export default function V3Home() {
                     />
                   ))}
                 </View>
-                <Text style={styles.targetHint}>{targetHint ? 'Up to 3 muscle groups. Arms counts as two.' : 'Pick up to 3, or Full Body.'}</Text>
+                <Text style={styles.targetHint}>
+                  {targetHint
+                    ? 'Up to 3 muscle groups. Arms counts as two.'
+                    : inputs.archetype
+                      ? `Picking a Target sets the type back to MOOD's Pick.`
+                      : 'Pick up to 3, or Full Body. MOOD builds the session around them.'}
+                </Text>
               </View>
             ) : null}
 
@@ -559,6 +601,14 @@ export default function V3Home() {
       </View>
 
       <ConflictSheet conflict={conflict} onSelect={onConflictOption} onClose={() => setConflict(null)} />
+      <ArchetypeSheet
+        visible={typeOpen}
+        direction={inputs.direction}
+        selected={inputs.archetype}
+        note={tLabel ? `Picking a type replaces your Target (${tLabel}).` : "MOOD's Pick chooses from your profile and recent workouts."}
+        onSelect={onArchetype}
+        onClose={() => setTypeOpen(false)}
+      />
     </View>
   );
 }
@@ -639,6 +689,7 @@ const styles = StyleSheet.create({
   panelRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12, gap: 10 },
   panelLabel: { fontSize: 10.5, fontWeight: '800', letterSpacing: 1.6, color: COLORS.textTertiary },
   panelValue: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginTop: 3 },
+  panelValueQuiet: { color: COLORS.textSecondary, fontWeight: '600' },
   change: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   changeText: { fontSize: 13, fontWeight: '600', color: COLORS.textSecondary },
   pickCopy: { fontSize: 12.5, lineHeight: 18, color: COLORS.textTertiary, marginTop: -4, marginBottom: 12 },

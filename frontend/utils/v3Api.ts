@@ -143,6 +143,10 @@ export interface V3Workout {
   relaxations: unknown[];
   adjustments: unknown[];
   swapped_item?: { item_id: string; from: string; to: string };
+  /** Phase 2.5: who chose the session type. Different Workout may change the archetype only for 'moods_pick'. */
+  selection_source?: 'moods_pick' | 'user_selected' | 'target' | null;
+  /** Phase 2.5 Built for Today header: what the user told MOOD and what MOOD chose. */
+  today?: { told: string[]; chose: string; chosen_by: string } | null;
 }
 
 export interface V3ConflictOption {

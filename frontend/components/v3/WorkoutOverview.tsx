@@ -3,7 +3,7 @@
  *
  *   header (Direction · title · Target · duration.display · facts)
  *   Adjusted for today (rerouted only; API text)
- *   Built for Today (API `built_for_today`, verbatim)
+ *   Built for Today: TODAY (what you told MOOD) / MOOD CHOSE / BUILT FOR TODAY lines (API text, verbatim)
  *   Warm-up → blocks → cool-down
  *
  * Content only (no scroll container, no actions) so the Overview screen, the
@@ -78,8 +78,24 @@ export function WorkoutOverview({ envelope, onSwap, swappingItemId, highlightIte
       ) : null}
 
       {/* Built for Today */}
-      {built.length ? (
+      {built.length || w.today ? (
         <View style={styles.bft} testID="v3-built-for-today">
+          {w.today ? (
+            <>
+              <Text style={styles.bftLabel}>TODAY</Text>
+              <View style={styles.toldRow} testID="v3-today-told">
+                {w.today.told.map((t) => (
+                  <View key={t} style={styles.toldPill}>
+                    <Text style={styles.toldText}>{t}</Text>
+                  </View>
+                ))}
+              </View>
+              <Text style={[styles.bftLabel, styles.bftLabelGap]}>MOOD CHOSE</Text>
+              <Text style={styles.chose} testID="v3-today-chose">{w.today.chose}</Text>
+              {w.today.chosen_by ? <Text style={styles.chosenBy}>{w.today.chosen_by}</Text> : null}
+              <View style={styles.bftRule} />
+            </>
+          ) : null}
           <View style={styles.bftHead}>
             <Ionicons name="sparkles" size={14} color={COLORS.accent} />
             <Text style={styles.bftTitle}>BUILT FOR TODAY</Text>
@@ -175,6 +191,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255,215,0,0.28)',
   },
+  bftLabel: { fontSize: 10.5, fontWeight: '800', letterSpacing: 1.6, color: COLORS.textTertiary },
+  bftLabelGap: { marginTop: 14 },
+  toldRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
+  toldPill: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.08)' },
+  toldText: { fontSize: 12.5, fontWeight: '600', color: COLORS.textPrimary },
+  chose: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginTop: 5 },
+  chosenBy: { fontSize: 12.5, color: COLORS.textSecondary, marginTop: 2 },
+  bftRule: { height: StyleSheet.hairlineWidth, backgroundColor: 'rgba(255,255,255,0.12)', marginVertical: 14 },
   bftHead: { flexDirection: 'row', alignItems: 'center', gap: 7, marginBottom: 6 },
   bftTitle: { fontSize: 11, fontWeight: '800', letterSpacing: 1.8, color: COLORS.accent },
   bftLine: { flexDirection: 'row', gap: 10, marginTop: 7 },

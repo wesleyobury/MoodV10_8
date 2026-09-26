@@ -5,6 +5,8 @@
  *
  * Gated by DEV_TOOLS_ENABLED like /dev/screens. Reach it from the DEV pill or
  * by navigating to /dev/v3-pack.
+ *
+ * Phase 2.5: each case renders as the compact Preview or as Details (the rich Overview).
  */
 import React, { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -16,6 +18,7 @@ import { DEV_TOOLS_ENABLED } from '../../utils/devFlags';
 import type { V3Envelope } from '../../utils/v3Api';
 import { WorkoutOverview } from '../../components/v3/WorkoutOverview';
 import { V3Chip } from '../../components/v3/V3Chip';
+import { PreviewSections } from '../../components/v3/PreviewSections';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const PACK: { key: string; title: string; envelope: V3Envelope }[] = require('../../utils/dev/v3PackFixture.json');
@@ -24,6 +27,7 @@ export default function V3PackViewer() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [idx, setIdx] = useState(0);
+  const [mode, setMode] = useState<'preview' | 'details'>('preview');
   const entry = PACK[idx];
   const env = entry?.envelope;
   const conflict = useMemo(() => (env?.status === 'conflict' ? env.conflict : null), [env]);
@@ -37,6 +41,9 @@ export default function V3PackViewer() {
           <Ionicons name="chevron-back" size={22} color={COLORS.textPrimary} />
         </Pressable>
         <Text style={styles.barTitle}>V3 output pack</Text>
+        <View style={{ flex: 1 }} />
+        <V3Chip size="sm" label="Preview" selected={mode === 'preview'} onPress={() => setMode('preview')} testID="v3-pack-mode-preview" />
+        <V3Chip size="sm" label="Details" selected={mode === 'details'} onPress={() => setMode('details')} testID="v3-pack-mode-details" />
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabs}>
         {PACK.map((p, i) => (
@@ -57,6 +64,12 @@ export default function V3PackViewer() {
               </Text>
             ))}
           </View>
+        ) : mode === 'preview' && env.workout ? (
+          <View>
+            <Text style={styles.pvTitle}>{env.workout.archetype.name}</Text>
+            <Text style={styles.caseTitle}>{env.workout.duration.display}</Text>
+            <PreviewSections workout={env.workout} />
+          </View>
         ) : (
           <WorkoutOverview envelope={env} onSwap={() => {}} />
         )}
@@ -71,6 +84,7 @@ const styles = StyleSheet.create({
   barTitle: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary },
   tabs: { paddingHorizontal: 14, gap: 6, paddingBottom: 8 },
   scroll: { paddingHorizontal: 20, paddingTop: 8 },
+  pvTitle: { fontSize: 28, fontWeight: '800', color: COLORS.textPrimary, marginBottom: 2 },
   caseTitle: { fontSize: 12, color: COLORS.textTertiary, marginBottom: 14 },
   conflict: { padding: 16, borderRadius: 16, backgroundColor: 'rgba(255,255,255,0.05)' },
   conflictCode: { fontSize: 12, fontWeight: '800', color: COLORS.accent, letterSpacing: 1 },
