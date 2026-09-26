@@ -82,7 +82,7 @@ def envelope_ok(*, workout_id, version, ctx, res, built_for_today, created_at, t
     outcome = 'rerouted' if res.get('rerouted') else ('valid_with_relaxation' if res.get('relaxations') else 'valid')
     tgt_mode = 'archetype' if (ctx.archetype and ctx.target_mode == 'moods_pick') else ctx.target_mode
     return dict(
-        schema_version=SCHEMA_VERSION, status='ok', outcome=outcome, conflict=None,
+        schema_version=SCHEMA_VERSION, status='ok', outcome=outcome, conflict=None, engine=_engine(),
         workout=dict(
             workout_id=workout_id, version=version, created_at=created_at,
             direction=ctx.direction, direction_name=DIRECTION_NAMES[ctx.direction],
@@ -110,8 +110,13 @@ def envelope_ok(*, workout_id, version, ctx, res, built_for_today, created_at, t
 
 
 def envelope_conflict(ctx, conflict, *, adjustments=None):
-    return dict(schema_version=SCHEMA_VERSION, status='conflict', outcome='conflict', workout=None,
+    return dict(schema_version=SCHEMA_VERSION, status='conflict', outcome='conflict', workout=None, engine=_engine(),
                 conflict=dict(conflict, adjustments=adjustments or []), request=ctx.public() if ctx else None)
+
+
+def _engine():
+    from .build_info import ENGINE_PHASE, ENGINE_BUILD
+    return dict(phase=ENGINE_PHASE, build=ENGINE_BUILD)
 
 
 def _preset_label(p):

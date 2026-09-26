@@ -295,9 +295,21 @@ export function applyConflictPatch(
 
 /* ------------------------------------------------------------------ copy */
 
+/** What drives the session: the explicit Workout Type, else the Focus (Target), else MOOD's Pick. */
+export function focusLabel(inputs: HomeInputs): string {
+  return archetypeName(inputs.archetype) ?? targetLabel(inputs.target) ?? "MOOD's Pick";
+}
+
+/** Home's compact configuration row (Phase 2.6): "MOOD's Pick · 60 min", "Chest · 60 min", "Lower Body: Squat · 30 min". */
+export function configSummary(inputs: HomeInputs): string {
+  return `${focusLabel(inputs)} · ${inputs.duration} min`;
+}
+
+/** Line above Build: exactly what will be sent. "Strength · Amped · Chest · 60 min". */
 export function summaryLine(inputs: HomeInputs): string {
-  const focus = inputs.archetype ? archetypeName(inputs.archetype) : targetLabel(inputs.target);
-  return [DIRECTION_NAME[inputs.direction], focus ?? "MOOD's Pick", `${inputs.duration} min`].join(' · ');
+  const states = inputs.states.filter((s) => s !== 'sore').map((s) => STATE_LABEL[s]);
+  if (inputs.states.includes('sore')) states.push(inputs.soreness.length ? `Sore ${inputs.soreness.map((r) => r.replace(/_/g, ' ')).join(', ')}` : 'Sore');
+  return [DIRECTION_NAME[inputs.direction], ...states, focusLabel(inputs), `${inputs.duration} min`].join(' · ');
 }
 
 /** Honest MOOD's Pick copy: the pick uses the profile + completed V3 history; States shape the build. */

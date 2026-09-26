@@ -8,6 +8,8 @@
  */
 import { apiFetch, ApiResponse } from './api';
 
+declare const __DEV__: boolean;
+
 /* ------------------------------------------------------------------ inputs */
 
 export type V3Direction = 'strength' | 'sweat' | 'athletic';
@@ -146,7 +148,13 @@ export interface V3Workout {
   /** Phase 2.5: who chose the session type. Different Workout may change the archetype only for 'moods_pick'. */
   selection_source?: 'moods_pick' | 'user_selected' | 'target' | null;
   /** Phase 2.5 Built for Today header: what the user told MOOD and what MOOD chose. */
-  today?: { told: string[]; chose: string; chosen_by: string } | null;
+  today?: {
+    told: string[];
+    chose: string;
+    chosen_by: string;
+    /** Phase 2.6: the one adaptation worth showing on the Preview; null when there is nothing meaningful to say. */
+    teaser?: { code: string; title: string; text: string } | null;
+  } | null;
 }
 
 export interface V3ConflictOption {
@@ -165,8 +173,18 @@ export interface V3Conflict {
 
 export type V3Outcome = 'valid' | 'valid_with_relaxation' | 'rerouted' | 'conflict';
 
+/** Engine identity of the process that built an envelope (Phase 2.6). */
+export interface V3Engine {
+  phase: string;
+  build: string;
+}
+
+/** The engine phase this app build expects. A backend reporting anything else is running other code. */
+export const EXPECTED_ENGINE_PHASE = '2.6';
+
 export interface V3Envelope {
   schema_version: string;
+  engine?: V3Engine;
   status: 'ok' | 'conflict';
   outcome: V3Outcome;
   conflict: V3Conflict | null;
@@ -218,12 +236,34 @@ async function call(path: string, token: string, init: { method?: string; body?:
     body: init.body === undefined ? undefined : JSON.stringify(init.body),
     timeoutMs: init.timeoutMs,
   });
-  if (res.ok && res.data && (res.data as V3Envelope).schema_version) return { ok: true, envelope: res.data };
+  if (res.ok && res.data && (res.data as V3Envelope).schema_version) {
+    devTrace(path, init.body, res.data);
+    return { ok: true, envelope: res.data };
+  }
   if (res.ok) return { ok: false, error: { kind: 'server', status: res.status, message: 'Unexpected response from MOOD. Try again.' } };
   return { ok: false, error: toError(res) };
 }
 
+/** Dev builds only: one compact line per V3 call, so request/response mismatches are visible in the Metro log. */
+function devTrace(path: string, body: unknown, env: V3Envelope) {
+  if (typeof __DEV__ === 'undefined' || !__DEV__) return;
+  const b = (body ?? {}) as Partial<V3GenerateRequest>;
+  const w = env.workout;
+  const ask = body ? ` ask=${b.direction ?? ''} target=${JSON.stringify(b.target ?? null)} type=${b.archetype ?? '-'} states=${(b.states ?? []).join(',')} dur=${b.duration ?? ''}` : '';
+  const got = w
+    ? `${w.archetype.id} src=${w.selection_source ?? 'MISSING'} swap=${w.swap_count} n=${w.blocks.reduce((n, x) => n + x.items.length, 0)}`
+    : `conflict ${env.conflict?.code}`;
+  // eslint-disable-next-line no-console
+  console.log(`[v3] ${path.replace('/api/v3/workouts', '')}${ask} -> ${got} engine=${env.engine ? `${env.engine.phase}/${env.engine.build}` : 'MISSING (old backend process)'}`);
+}
+
 /* ------------------------------------------------------------------ endpoints */
+
+/** GET /api/v3/version: engine identity of the running backend process (used by dev builds to catch stale code). */
+export async function getV3Version(token: string | null): Promise<{ engine_phase: string; engine_build: string; started_at: string } | null> {
+  const res = await apiFetch<any>('/api/v3/version', { method: 'GET', headers: token ? { Authorization: `Bearer ${token}` } : {}, timeoutMs: 6000 });
+  return res.ok && res.data && res.data.engine_phase ? res.data : null;
+}
 
 export function generateV3Workout(token: string, req: V3GenerateRequest): Promise<V3Result> {
   return call('/api/v3/workouts/generate', token, { method: 'POST', body: req, timeoutMs: GENERATE_TIMEOUT_MS });

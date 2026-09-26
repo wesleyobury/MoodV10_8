@@ -8284,16 +8284,20 @@
  },
  {
   "key": "p25_ct_back_core",
-  "title": "Phase 2.5: Custom Target Back + Core, 60 min (Core last, direct trunk work)",
+  "title": "Custom Target Back + Core, 60 min (Core last, direct trunk work)",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
    "outcome": "valid",
    "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
    "workout": {
-    "workout_id": "772b94910c714242b51aba6b83421cca",
+    "workout_id": "4dd833336e574672bf37573564ccf4c3",
     "version": 1,
-    "created_at": "2026-09-26T03:47:04.051512+00:00",
+    "created_at": "2026-09-26T05:05:50.128182+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -8330,11 +8334,7 @@
     "built_for_today": [
      {
       "code": "allocation",
-      "text": "Back gets most of today's work (3 movements) because it's the bigger muscle you chose."
-     },
-     {
-      "code": "core_last",
-      "text": "Core comes last with direct trunk work, so it isn't tired before your back work."
+      "text": "Back gets 3 movements while Core gets 2, with Core saved for the end."
      }
     ],
     "today": {
@@ -8344,12 +8344,17 @@
       "60 min"
      ],
      "chose": "Custom Strength: Back + Core",
-     "chosen_by": "Built from your Target"
+     "chosen_by": "Built from your Target",
+     "teaser": {
+      "code": "allocation",
+      "title": "Built around Back + Core",
+      "text": "Back gets 3 movements while Core gets 2, with Core saved for the end."
+     }
     },
     "warmup": {
      "minutes": 7,
      "items": [],
-     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of T-Bar Row."
+     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Rack Pull."
     },
     "blocks": [
      {
@@ -8371,12 +8376,13 @@
         "slot_id": "target_block_a#0",
         "role": "back block",
         "exercise": {
-         "id": "t_bar_row",
-         "name": "T-Bar Row",
-         "equipment": "landmine",
-         "equipment_label": "Landmine",
+         "id": "rack_pull",
+         "name": "Rack Pull",
+         "equipment": "barbell",
+         "equipment_label": "Barbell",
          "primary_muscles": [
-          "back"
+          "back",
+          "glutes"
          ],
          "media": null
         },
@@ -8485,13 +8491,12 @@
         "slot_id": "target_block_a#2",
         "role": "back block",
         "exercise": {
-         "id": "rack_pull",
-         "name": "Rack Pull",
+         "id": "inverted_row",
+         "name": "Inverted Row",
          "equipment": "barbell",
          "equipment_label": "Barbell",
          "primary_muscles": [
-          "back",
-          "glutes"
+          "back"
          ],
          "media": null
         },
@@ -8543,10 +8548,10 @@
         "slot_id": "target_block_b#3",
         "role": "core block",
         "exercise": {
-         "id": "hanging_knee_raise",
-         "name": "Hanging Knee Raise",
-         "equipment": "pullup_bar",
-         "equipment_label": "Pull-up bar",
+         "id": "cable_wood_chop",
+         "name": "Cable Wood Chop",
+         "equipment": "cable",
+         "equipment_label": "Cable",
          "primary_muscles": [
           "core"
          ],
@@ -8557,7 +8562,7 @@
          "sets": 3,
          "reps": "10",
          "reps_scheme": null,
-         "per_side": false,
+         "per_side": true,
          "seconds": null,
          "distance_m": null,
          "calories": null,
@@ -8565,7 +8570,7 @@
          "rir": 2,
          "rpe": null,
          "load_guidance": "Stop each set with about 2 reps left in the tank.",
-         "display": "3 × 10",
+         "display": "3 × 10/side",
          "direction_fields": {
           "slot_class": "target_block",
           "protected": false,
@@ -8600,10 +8605,10 @@
         "slot_id": "target_block_b#4",
         "role": "core block",
         "exercise": {
-         "id": "landmine_rotation",
-         "name": "Landmine Rotation",
-         "equipment": "landmine",
-         "equipment_label": "Landmine",
+         "id": "pallof_step_out",
+         "name": "Pallof Step-Out",
+         "equipment": "cable",
+         "equipment_label": "Cable",
          "primary_muscles": [
           "core"
          ],
@@ -8614,7 +8619,7 @@
          "sets": 3,
          "reps": "10",
          "reps_scheme": null,
-         "per_side": false,
+         "per_side": true,
          "seconds": null,
          "distance_m": null,
          "calories": null,
@@ -8622,7 +8627,7 @@
          "rir": 2,
          "rpe": null,
          "load_guidance": "Stop each set with about 2 reps left in the tank.",
-         "display": "3 × 10",
+         "display": "3 × 10/side",
          "direction_fields": {
           "slot_class": "target_block",
           "protected": false,
@@ -8630,7 +8635,7 @@
          }
         },
         "cues": [
-         "Arms long, turn through the hips; the lower back stays quiet."
+         "Step out without letting the handle pull you round."
         ],
         "quality_stop": null,
         "swap": {
@@ -8662,16 +8667,20 @@
  },
  {
   "key": "p25_ct_back_core_30",
-  "title": "Phase 2.5: Custom Target Back + Core, 30 min",
+  "title": "Custom Target Back + Core, 30 min",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
    "outcome": "valid",
    "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
    "workout": {
-    "workout_id": "d135195178864dc2b2ad3f2f6e813f38",
+    "workout_id": "8f31608a8121444098d7e8ec1ff644b2",
     "version": 1,
-    "created_at": "2026-09-26T03:47:04.056328+00:00",
+    "created_at": "2026-09-26T05:05:50.134175+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -8708,11 +8717,7 @@
     "built_for_today": [
      {
       "code": "allocation",
-      "text": "Back gets most of today's work (2 movements) because it's the bigger muscle you chose."
-     },
-     {
-      "code": "core_last",
-      "text": "Core comes last with direct trunk work, so it isn't tired before your back work."
+      "text": "Back gets 2 movements while Core gets 1, with Core saved for the end."
      },
      {
       "code": "duration",
@@ -8726,12 +8731,17 @@
       "30 min"
      ],
      "chose": "Custom Strength: Back + Core",
-     "chosen_by": "Built from your Target"
+     "chosen_by": "Built from your Target",
+     "teaser": {
+      "code": "allocation",
+      "title": "Built around Back + Core",
+      "text": "Back gets 2 movements while Core gets 1, with Core saved for the end."
+     }
     },
     "warmup": {
      "minutes": 4,
      "items": [],
-     "guidance": "3-5 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of T-Bar Row."
+     "guidance": "3-5 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Rack Pull."
     },
     "blocks": [
      {
@@ -8753,12 +8763,13 @@
         "slot_id": "target_block_a#0",
         "role": "back block",
         "exercise": {
-         "id": "t_bar_row",
-         "name": "T-Bar Row",
-         "equipment": "landmine",
-         "equipment_label": "Landmine",
+         "id": "rack_pull",
+         "name": "Rack Pull",
+         "equipment": "barbell",
+         "equipment_label": "Barbell",
          "primary_muscles": [
-          "back"
+          "back",
+          "glutes"
          ],
          "media": null
         },
@@ -8867,10 +8878,10 @@
         "slot_id": "target_block_b#2",
         "role": "core block",
         "exercise": {
-         "id": "hanging_knee_raise",
-         "name": "Hanging Knee Raise",
-         "equipment": "pullup_bar",
-         "equipment_label": "Pull-up bar",
+         "id": "cable_wood_chop",
+         "name": "Cable Wood Chop",
+         "equipment": "cable",
+         "equipment_label": "Cable",
          "primary_muscles": [
           "core"
          ],
@@ -8881,7 +8892,7 @@
          "sets": 2,
          "reps": "10",
          "reps_scheme": null,
-         "per_side": false,
+         "per_side": true,
          "seconds": null,
          "distance_m": null,
          "calories": null,
@@ -8889,7 +8900,7 @@
          "rir": 2,
          "rpe": null,
          "load_guidance": "Stop each set with about 2 reps left in the tank.",
-         "display": "2 × 10",
+         "display": "2 × 10/side",
          "direction_fields": {
           "slot_class": "target_block",
           "protected": false,
@@ -8937,16 +8948,20 @@
  },
  {
   "key": "p25_ct_chest",
-  "title": "Phase 2.5: single-muscle Chest routes to Custom Target",
+  "title": "Chest alone routes to Custom Target",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
    "outcome": "valid",
    "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
    "workout": {
-    "workout_id": "8898ba119df446919e07af4ea3835e60",
+    "workout_id": "f2831c7fdb3f4ee5b01a01fd1ab4ad1d",
     "version": 1,
-    "created_at": "2026-09-26T03:47:04.060606+00:00",
+    "created_at": "2026-09-26T05:05:50.140028+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -8979,12 +8994,7 @@
     },
     "swap_count": 0,
     "selection_source": "target",
-    "built_for_today": [
-     {
-      "code": "target",
-      "text": "You chose Chest, so all 5 movements train chest."
-     }
-    ],
+    "built_for_today": [],
     "today": {
      "told": [
       "Strength",
@@ -8992,12 +9002,13 @@
       "60 min"
      ],
      "chose": "Custom Strength: Chest",
-     "chosen_by": "Built from your Target"
+     "chosen_by": "Built from your Target",
+     "teaser": null
     },
     "warmup": {
      "minutes": 7,
      "items": [],
-     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Single-Arm Cable Chest Press."
+     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Dumbbell Floor Press."
     },
     "blocks": [
      {
@@ -9019,10 +9030,10 @@
         "slot_id": "target_block_a#0",
         "role": "chest block",
         "exercise": {
-         "id": "single_arm_cable_chest_press",
-         "name": "Single-Arm Cable Chest Press",
-         "equipment": "cable",
-         "equipment_label": "Cable",
+         "id": "db_floor_press",
+         "name": "Dumbbell Floor Press",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "chest"
          ],
@@ -9033,7 +9044,7 @@
          "sets": 3,
          "reps": "10",
          "reps_scheme": null,
-         "per_side": true,
+         "per_side": false,
          "seconds": null,
          "distance_m": null,
          "calories": null,
@@ -9041,7 +9052,7 @@
          "rir": 2,
          "rpe": null,
          "load_guidance": "Stop each set with about 2 reps left in the tank.",
-         "display": "3 × 10/side",
+         "display": "3 × 10",
          "direction_fields": {
           "slot_class": "target_block",
           "protected": false,
@@ -9076,10 +9087,10 @@
         "slot_id": "target_block_a#1",
         "role": "chest block",
         "exercise": {
-         "id": "db_fly",
-         "name": "Dumbbell Fly",
-         "equipment": "dumbbells",
-         "equipment_label": "Dumbbells",
+         "id": "cable_fly",
+         "name": "Cable Fly",
+         "equipment": "cable",
+         "equipment_label": "Cable",
          "primary_muscles": [
           "chest"
          ],
@@ -9133,10 +9144,10 @@
         "slot_id": "target_block_a#2",
         "role": "chest block",
         "exercise": {
-         "id": "cable_fly",
-         "name": "Cable Fly",
-         "equipment": "cable",
-         "equipment_label": "Cable",
+         "id": "pec_deck",
+         "name": "Pec Deck",
+         "equipment": "selectorized_machine",
+         "equipment_label": "Machine",
          "primary_muscles": [
           "chest"
          ],
@@ -9190,10 +9201,10 @@
         "slot_id": "target_block_a#3",
         "role": "chest block",
         "exercise": {
-         "id": "pec_deck",
-         "name": "Pec Deck",
-         "equipment": "selectorized_machine",
-         "equipment_label": "Machine",
+         "id": "db_fly",
+         "name": "Dumbbell Fly",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "chest"
          ],
@@ -9247,10 +9258,10 @@
         "slot_id": "target_block_a#4",
         "role": "chest block",
         "exercise": {
-         "id": "smith_incline_press",
-         "name": "Smith Machine Incline Press",
-         "equipment": "smith_machine",
-         "equipment_label": "Smith machine",
+         "id": "machine_incline_press",
+         "name": "Plate-Loaded Incline Press",
+         "equipment": "plate_loaded_machine",
+         "equipment_label": "Plate-loaded machine",
          "primary_muscles": [
           "chest"
          ],
@@ -9307,16 +9318,20 @@
  },
  {
   "key": "p25_ct_chest_diff",
-  "title": "Phase 2.5: Chest after Different Workout",
+  "title": "Chest after Different Workout",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
    "outcome": "valid",
    "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
    "workout": {
-    "workout_id": "8898ba119df446919e07af4ea3835e60",
+    "workout_id": "f2831c7fdb3f4ee5b01a01fd1ab4ad1d",
     "version": 2,
-    "created_at": "2026-09-26T03:47:04.066107+00:00",
+    "created_at": "2026-09-26T05:05:50.147287+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -9352,11 +9367,7 @@
     "built_for_today": [
      {
       "code": "different_workout",
-      "text": "You asked for a different workout: 4 of 5 exercises changed, same Custom Target setup."
-     },
-     {
-      "code": "target",
-      "text": "You chose Chest, so all 5 movements train chest."
+      "text": "A different Custom Target session: 4 of 5 exercises changed."
      }
     ],
     "today": {
@@ -9366,7 +9377,8 @@
       "60 min"
      ],
      "chose": "Custom Strength: Chest",
-     "chosen_by": "Built from your Target"
+     "chosen_by": "Built from your Target",
+     "teaser": null
     },
     "warmup": {
      "minutes": 7,
@@ -9507,10 +9519,10 @@
         "slot_id": "target_block_a#2",
         "role": "chest block",
         "exercise": {
-         "id": "db_floor_press",
-         "name": "Dumbbell Floor Press",
-         "equipment": "dumbbells",
-         "equipment_label": "Dumbbells",
+         "id": "smith_incline_press",
+         "name": "Smith Machine Incline Press",
+         "equipment": "smith_machine",
+         "equipment_label": "Smith machine",
          "primary_muscles": [
           "chest"
          ],
@@ -9564,10 +9576,10 @@
         "slot_id": "target_block_a#3",
         "role": "chest block",
         "exercise": {
-         "id": "deficit_push_up",
-         "name": "Deficit Push-Up (Handles)",
-         "equipment": "bodyweight",
-         "equipment_label": "Bodyweight",
+         "id": "single_arm_cable_chest_press",
+         "name": "Single-Arm Cable Chest Press",
+         "equipment": "cable",
+         "equipment_label": "Cable",
          "primary_muscles": [
           "chest"
          ],
@@ -9576,17 +9588,17 @@
         "prescription": {
          "kind": "reps",
          "sets": 3,
-         "reps": "8–12",
+         "reps": "10",
          "reps_scheme": null,
-         "per_side": false,
+         "per_side": true,
          "seconds": null,
          "distance_m": null,
          "calories": null,
          "rest_sec": 90,
          "rir": 2,
          "rpe": null,
-         "load_guidance": "Bodyweight: work within the rep range. Stop each set with about 2 reps left in the tank.",
-         "display": "3 × 8–12",
+         "load_guidance": "Stop each set with about 2 reps left in the tank.",
+         "display": "3 × 10/side",
          "direction_fields": {
           "slot_class": "target_block",
           "protected": false,
@@ -9672,8 +9684,8 @@
      {
       "reason_code": "workout_swapped",
       "swap_count": 1,
-      "prior_composition": "['single_arm_cable_chest_press', 'db_fly', 'cable_fly', 'pec_deck', 'smith_incline_press']",
-      "replacement_composition": "['parallel_bar_dip', 'low_to_high_cable_fly', 'db_floor_press', 'deficit_push_up', 'pec_deck']",
+      "prior_composition": "['db_floor_press', 'cable_fly', 'pec_deck', 'db_fly', 'machine_incline_press']",
+      "replacement_composition": "['parallel_bar_dip', 'low_to_high_cable_fly', 'smith_incline_press', 'single_arm_cable_chest_press', 'pec_deck']",
       "exercises_changed": 4,
       "changed_ratio": 0.8
      }
@@ -9683,16 +9695,20 @@
  },
  {
   "key": "p25_hybrid_60",
-  "title": "Phase 2.5: Sweat Hybrid 60, one block",
+  "title": "Sweat Hybrid 60, one block",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
    "outcome": "valid",
    "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
    "workout": {
-    "workout_id": "efc0cf6208234bd6becc48ed2d176d93",
+    "workout_id": "5f7d798991b144968948bb2953e0a229",
     "version": 1,
-    "created_at": "2026-09-26T03:47:04.071211+00:00",
+    "created_at": "2026-09-26T05:05:50.154058+00:00",
     "direction": "sweat",
     "direction_name": "Sweat",
     "archetype": {
@@ -9707,7 +9723,7 @@
     },
     "duration": {
      "requested_minutes": 60,
-     "estimated_minutes": 39.9,
+     "estimated_minutes": 39.5,
      "display": "35–40 min"
     },
     "experience": "intermediate",
@@ -9725,10 +9741,6 @@
     "selection_source": "user_selected",
     "built_for_today": [
      {
-      "code": "archetype",
-      "text": "You picked Hybrid."
-     },
-     {
       "code": "duration",
       "text": "This session is complete at about 40 min. Quality over filler."
      }
@@ -9740,7 +9752,8 @@
       "60 min"
      ],
      "chose": "Sweat · Hybrid",
-     "chosen_by": "You picked it"
+     "chosen_by": "You picked it",
+     "teaser": null
     },
     "warmup": {
      "minutes": 7,
@@ -9765,7 +9778,7 @@
        ]
       },
       "instructions": "Every round: Treadmill Run, then that round's station. Walk 45 s between rounds.",
-      "est_minutes": 26.9,
+      "est_minutes": 26.5,
       "items": [
        {
         "item_id": "primary_hybrid_block.0",
@@ -9866,13 +9879,13 @@
         "slot_id": "primary_hybrid_block.station",
         "role": "station",
         "exercise": {
-         "id": "waiter_carry",
-         "name": "Single-Arm Overhead Carry",
+         "id": "front_rack_carry",
+         "name": "Front-Rack Carry",
          "equipment": "dumbbells",
          "equipment_label": "Dumbbells",
          "primary_muscles": [
-          "shoulders",
-          "core"
+          "core",
+          "quads"
          ],
          "media": null
         },
@@ -9891,7 +9904,7 @@
           7,
           7
          ],
-         "load_guidance": "moderate load, switch arms halfway",
+         "load_guidance": "moderate-heavy, stay tall",
          "display": "60 m",
          "direction_fields": {
           "progression": "output",
@@ -9910,55 +9923,6 @@
        },
        {
         "item_id": "primary_hybrid_block.3",
-        "slot_id": "primary_hybrid_block.station",
-        "role": "station",
-        "exercise": {
-         "id": "burpee",
-         "name": "Burpee",
-         "equipment": "bodyweight",
-         "equipment_label": "Bodyweight",
-         "primary_muscles": [
-          "quads",
-          "chest"
-         ],
-         "media": null
-        },
-        "prescription": {
-         "kind": "reps",
-         "sets": 1,
-         "reps": 10,
-         "reps_scheme": null,
-         "per_side": false,
-         "seconds": null,
-         "distance_m": null,
-         "calories": null,
-         "rest_sec": null,
-         "rir": null,
-         "rpe": [
-          7,
-          7
-         ],
-         "load_guidance": "RPE 7, quick and clean",
-         "display": "10",
-         "direction_fields": {
-          "progression": "output",
-          "role": "output",
-          "rounds": [
-           3
-          ]
-         }
-        },
-        "cues": [
-         "Chest to floor, jump the feet in, stand and jump."
-        ],
-        "quality_stop": null,
-        "swap": {
-         "swappable": true
-        },
-        "progression": null
-       },
-       {
-        "item_id": "primary_hybrid_block.4",
         "slot_id": "primary_hybrid_block.station",
         "role": "station",
         "exercise": {
@@ -9993,7 +9957,7 @@
           "progression": "reuse_load",
           "role": "resistance_lower",
           "rounds": [
-           4
+           3
           ]
          }
         },
@@ -10005,17 +9969,17 @@
         "progression": null
        },
        {
-        "item_id": "primary_hybrid_block.5",
+        "item_id": "primary_hybrid_block.4",
         "slot_id": "primary_hybrid_block.station",
         "role": "station",
         "exercise": {
-         "id": "box_step_up_glute",
-         "name": "Box Step-Up (Glute Bias)",
-         "equipment": "dumbbells",
-         "equipment_label": "Dumbbells",
+         "id": "burpee",
+         "name": "Burpee",
+         "equipment": "bodyweight",
+         "equipment_label": "Bodyweight",
          "primary_muscles": [
-          "glutes",
-          "quads"
+          "quads",
+          "chest"
          ],
          "media": null
         },
@@ -10024,7 +9988,7 @@
          "sets": 1,
          "reps": 10,
          "reps_scheme": null,
-         "per_side": true,
+         "per_side": false,
          "seconds": null,
          "distance_m": null,
          "calories": null,
@@ -10034,17 +9998,68 @@
           7,
           7
          ],
-         "load_guidance": "light-moderate load, unbroken, short of failure",
-         "display": "10/side",
+         "load_guidance": "RPE 7, quick and clean",
+         "display": "10",
          "direction_fields": {
-          "progression": "reuse_load",
-          "role": "resistance_lower",
+          "progression": "output",
+          "role": "output",
+          "rounds": [
+           4
+          ]
+         }
+        },
+        "cues": [
+         "Chest to floor, jump the feet in, stand and jump."
+        ],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       },
+       {
+        "item_id": "primary_hybrid_block.5",
+        "slot_id": "primary_hybrid_block.station",
+        "role": "station",
+        "exercise": {
+         "id": "plate_push",
+         "name": "Plate Push",
+         "equipment": "plate",
+         "equipment_label": "Plate",
+         "primary_muscles": [
+          "quads",
+          "glutes"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "distance",
+         "sets": 1,
+         "reps": null,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": 20,
+         "calories": null,
+         "rest_sec": null,
+         "rir": null,
+         "rpe": [
+          7,
+          7
+         ],
+         "load_guidance": "moderate plate, fast feet",
+         "display": "20 m",
+         "direction_fields": {
+          "progression": "output",
+          "role": "output",
           "rounds": [
            5
           ]
          }
         },
-        "cues": [],
+        "cues": [
+         "Hands on the plate, hips low, drive with short fast steps."
+        ],
         "quality_stop": null,
         "swap": {
          "swappable": true
@@ -10084,16 +10099,20 @@
  },
  {
   "key": "p25_hybrid_30",
-  "title": "Phase 2.5: Sweat Hybrid 30",
+  "title": "Sweat Hybrid 30",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
    "outcome": "valid",
    "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
    "workout": {
-    "workout_id": "22e7089a2b4e4841a13f5a31618fa7a5",
+    "workout_id": "e14362f9bd2747d49b13475b0c6a8e32",
     "version": 1,
-    "created_at": "2026-09-26T03:47:04.075879+00:00",
+    "created_at": "2026-09-26T05:05:50.160268+00:00",
     "direction": "sweat",
     "direction_name": "Sweat",
     "archetype": {
@@ -10124,12 +10143,7 @@
     },
     "swap_count": 0,
     "selection_source": "user_selected",
-    "built_for_today": [
-     {
-      "code": "archetype",
-      "text": "You picked Hybrid."
-     }
-    ],
+    "built_for_today": [],
     "today": {
      "told": [
       "Sweat",
@@ -10137,7 +10151,8 @@
       "30 min"
      ],
      "chose": "Sweat · Hybrid",
-     "chosen_by": "You picked it"
+     "chosen_by": "You picked it",
+     "teaser": null
     },
     "warmup": {
      "minutes": 5,
@@ -10264,13 +10279,13 @@
         "slot_id": "primary_hybrid_block.station",
         "role": "station",
         "exercise": {
-         "id": "waiter_carry",
-         "name": "Single-Arm Overhead Carry",
+         "id": "front_rack_carry",
+         "name": "Front-Rack Carry",
          "equipment": "dumbbells",
          "equipment_label": "Dumbbells",
          "primary_muscles": [
-          "shoulders",
-          "core"
+          "core",
+          "quads"
          ],
          "media": null
         },
@@ -10289,7 +10304,7 @@
           7,
           7
          ],
-         "load_guidance": "moderate load, switch arms halfway",
+         "load_guidance": "moderate-heavy, stay tall",
          "display": "60 m",
          "direction_fields": {
           "progression": "output",
@@ -10333,16 +10348,20 @@
  },
  {
   "key": "p25_moods_pick_diff",
-  "title": "Phase 2.5: MOOD's Pick after Different Workout (archetype rotated)",
+  "title": "MOOD's Pick after Different Workout (archetype rotated)",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
    "outcome": "valid",
    "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
    "workout": {
-    "workout_id": "62b2d478831840be8a20b277f1522095",
+    "workout_id": "7bb3d1d813674bcbb102a160afdc1f29",
     "version": 2,
-    "created_at": "2026-09-26T03:47:04.086498+00:00",
+    "created_at": "2026-09-26T05:05:50.170917+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -10376,7 +10395,7 @@
     "built_for_today": [
      {
       "code": "rotation_swap",
-      "text": "You asked for a different workout, so MOOD's Pick moved from Upper Pull to Lower Body: Squat."
+      "text": "MOOD moved you from Upper Pull to Lower Body: Squat so this actually feels like a different session."
      }
     ],
     "today": {
@@ -10385,7 +10404,8 @@
       "60 min"
      ],
      "chose": "Strength · Lower Body: Squat",
-     "chosen_by": "MOOD's Pick"
+     "chosen_by": "MOOD's Pick",
+     "teaser": null
     },
     "warmup": {
      "minutes": 7,
@@ -10695,7 +10715,7 @@
      {
       "reason_code": "protected_primary_changed",
       "slot": "primary_squat_pattern",
-      "from": "barbell_back_squat",
+      "from": "hack_squat",
       "to": "pit_shark_belt_squat",
       "reason": "different_workout_requested (Phase 2.5: the primary may change on Different Workout)"
      },
@@ -10709,7 +10729,7 @@
      {
       "reason_code": "workout_swapped",
       "swap_count": 1,
-      "prior_composition": "{'primary_squat_pattern': 'barbell_back_squat', 'secondary_lower': 'leg_press', 'unilateral_secondary': 'bulgarian_split_squat', 'target_accessory': 'leg_extension', 'support_accessory': 'roman_chair_ghd_raise'}",
+      "prior_composition": "{'primary_squat_pattern': 'hack_squat', 'secondary_lower': 'leg_press', 'unilateral_secondary': 'bulgarian_split_squat', 'target_accessory': 'leg_extension', 'support_accessory': 'roman_chair_ghd_raise'}",
       "replacement_composition": "{'primary_squat_pattern': 'pit_shark_belt_squat', 'secondary_lower': 'pendulum_squat', 'unilateral_secondary': 'reverse_lunge', 'target_accessory': 'reverse_nordic', 'support_accessory': 'roman_chair_ghd_raise'}",
       "slots_changed": "['primary_squat_pattern', 'secondary_lower', 'target_accessory', 'unilateral_secondary']"
      },
@@ -10726,16 +10746,20 @@
  },
  {
   "key": "p25_explicit_diff",
-  "title": "Phase 2.5: explicit Lower Squat after Different Workout",
+  "title": "explicit Lower Squat after Different Workout",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
    "outcome": "valid",
    "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
    "workout": {
-    "workout_id": "b2fc1137b2c745debbaaadbcf677cb5d",
+    "workout_id": "21bb2f398a43421182f8350035de875d",
     "version": 2,
-    "created_at": "2026-09-26T03:47:04.095558+00:00",
+    "created_at": "2026-09-26T05:05:50.181135+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -10772,11 +10796,7 @@
     "built_for_today": [
      {
       "code": "different_workout",
-      "text": "You asked for a different workout: 4 of 5 exercises changed, same Lower Body: Squat setup."
-     },
-     {
-      "code": "archetype",
-      "text": "You picked Lower Body: Squat."
+      "text": "A different Lower Body: Squat session: 4 of 5 exercises changed."
      }
     ],
     "today": {
@@ -10786,7 +10806,8 @@
       "60 min"
      ],
      "chose": "Strength · Lower Body: Squat",
-     "chosen_by": "You picked it"
+     "chosen_by": "You picked it",
+     "teaser": null
     },
     "warmup": {
      "minutes": 7,
@@ -10871,10 +10892,10 @@
         "slot_id": "secondary_lower",
         "role": "Secondary Lower",
         "exercise": {
-         "id": "goblet_squat",
-         "name": "Goblet Squat",
-         "equipment": "dumbbells",
-         "equipment_label": "Dumbbells",
+         "id": "smith_squat",
+         "name": "Smith Machine Squat",
+         "equipment": "smith_machine",
+         "equipment_label": "Smith machine",
          "primary_muscles": [
           "quads",
           "glutes"
@@ -10929,13 +10950,13 @@
         "slot_id": "unilateral_secondary",
         "role": "Unilateral / Secondary",
         "exercise": {
-         "id": "reverse_lunge",
-         "name": "Reverse Lunge",
+         "id": "bulgarian_split_squat",
+         "name": "Bulgarian Split Squat",
          "equipment": "dumbbells",
          "equipment_label": "Dumbbells",
          "primary_muscles": [
-          "glutes",
-          "quads"
+          "quads",
+          "glutes"
          ],
          "media": null
         },
@@ -10959,7 +10980,9 @@
           "role": "Unilateral / Secondary"
          }
         },
-        "cues": [],
+        "cues": [
+         "Most weight on the front foot; drop the back knee straight down."
+        ],
         "quality_stop": null,
         "swap": {
          "swappable": true
@@ -11098,14 +11121,14 @@
       "reason_code": "protected_primary_changed",
       "slot": "secondary_lower",
       "from": "leg_press",
-      "to": "goblet_squat",
+      "to": "smith_squat",
       "reason": "different_workout_requested (Phase 2.5: the primary may change on Different Workout)"
      },
      {
       "reason_code": "workout_swapped",
       "swap_count": 1,
-      "prior_composition": "{'primary_squat_pattern': 'hack_squat', 'secondary_lower': 'leg_press', 'unilateral_secondary': 'bulgarian_split_squat', 'target_accessory': 'leg_extension', 'support_accessory': 'roman_chair_ghd_raise'}",
-      "replacement_composition": "{'primary_squat_pattern': 'pit_shark_belt_squat', 'secondary_lower': 'goblet_squat', 'unilateral_secondary': 'reverse_lunge', 'target_accessory': 'sissy_squat', 'support_accessory': 'roman_chair_ghd_raise'}",
+      "prior_composition": "{'primary_squat_pattern': 'hack_squat', 'secondary_lower': 'leg_press', 'unilateral_secondary': 'reverse_lunge', 'target_accessory': 'leg_extension', 'support_accessory': 'roman_chair_ghd_raise'}",
+      "replacement_composition": "{'primary_squat_pattern': 'pit_shark_belt_squat', 'secondary_lower': 'smith_squat', 'unilateral_secondary': 'bulgarian_split_squat', 'target_accessory': 'sissy_squat', 'support_accessory': 'roman_chair_ghd_raise'}",
       "slots_changed": "['primary_squat_pattern', 'secondary_lower', 'target_accessory', 'unilateral_secondary']"
      },
      {
@@ -11113,10 +11136,1962 @@
       "state": null,
       "pattern": "straight",
       "emitted": "straight",
-      "blocks": "[('straight', ['pit_shark_belt_squat']), ('straight', ['goblet_squat']), ('straight', ['reverse_lunge']), ('straight', ['sissy_squat']), ('straight', ['roman_chair_ghd_raise'])]"
+      "blocks": "[('straight', ['pit_shark_belt_squat']), ('straight', ['smith_squat']), ('straight', ['bulgarian_split_squat']), ('straight', ['sissy_squat']), ('straight', ['roman_chair_ghd_raise'])]"
      }
     ]
    }
+  }
+ },
+ {
+  "key": "p26_hybrid_irritated",
+  "title": "Phase 2.6: live Irritated Hybrid 60 (Hybrid + Finisher, no Complement)",
+  "envelope": {
+   "schema_version": "v3.0",
+   "status": "ok",
+   "outcome": "valid",
+   "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
+   "workout": {
+    "workout_id": "fb14d42fca8f491db9dc090a0c78a26d",
+    "version": 1,
+    "created_at": "2026-09-26T05:05:50.186807+00:00",
+    "direction": "sweat",
+    "direction_name": "Sweat",
+    "archetype": {
+     "id": "sweat_hybrid",
+     "name": "Hybrid"
+    },
+    "requested_archetype": null,
+    "target": {
+     "mode": "archetype",
+     "muscles": [],
+     "label": "Hybrid"
+    },
+    "duration": {
+     "requested_minutes": 60,
+     "estimated_minutes": 44.6,
+     "display": "40–45 min"
+    },
+    "experience": "intermediate",
+    "states": [
+     "irritated"
+    ],
+    "soreness": {
+     "regions": [],
+     "muscles": [],
+     "trained_anyway": []
+    },
+    "equipment": {
+     "preset": "commercial_gym",
+     "label": "Commercial gym"
+    },
+    "swap_count": 0,
+    "selection_source": "user_selected",
+    "built_for_today": [
+     {
+      "code": "state_irritated",
+      "text": "You're Irritated, so a Battle Rope Waves and Sled Rope Pull finisher closes the session."
+     }
+    ],
+    "today": {
+     "told": [
+      "Sweat",
+      "Irritated",
+      "Hybrid",
+      "60 min"
+     ],
+     "chose": "Sweat · Hybrid",
+     "chosen_by": "You picked it",
+     "teaser": {
+      "code": "state_irritated",
+      "title": "Built for your Irritated state",
+      "text": "You're Irritated, so a Battle Rope Waves and Sled Rope Pull finisher closes the session."
+     }
+    },
+    "warmup": {
+     "minutes": 7,
+     "items": [],
+     "guidance": "7 min: easy cardio building to a moderate pace, plus a few reps of the first stations."
+    },
+    "blocks": [
+     {
+      "block_id": "B1",
+      "sequence": 1,
+      "type": "primary",
+      "structure": "anchor_circuit",
+      "title": "Hybrid",
+      "rounds": 7,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 45,
+      "interval": null,
+      "effort": {
+       "rpe": [
+        8,
+        8
+       ]
+      },
+      "instructions": "Every round: Row Erg, then that round's station. Walk 45 s between rounds.",
+      "est_minutes": 26.1,
+      "items": [
+       {
+        "item_id": "primary_hybrid_block.0",
+        "slot_id": "primary_hybrid_block.anchor",
+        "role": "anchor",
+        "exercise": {
+         "id": "row_erg",
+         "name": "Row Erg",
+         "equipment": "rower",
+         "equipment_label": "Rower",
+         "primary_muscles": [
+          "quads",
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "distance",
+         "sets": 7,
+         "reps": null,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": 500,
+         "calories": null,
+         "rest_sec": null,
+         "rir": null,
+         "rpe": [
+          8,
+          8
+         ],
+         "load_guidance": "RPE 8",
+         "display": "500 m",
+         "direction_fields": {
+          "progression": "output",
+          "role": "engine"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       },
+       {
+        "item_id": "primary_hybrid_block.1",
+        "slot_id": "primary_hybrid_block.station",
+        "role": "station",
+        "exercise": {
+         "id": "sled_push",
+         "name": "Sled Push",
+         "equipment": "sled",
+         "equipment_label": "Sled",
+         "primary_muscles": [
+          "quads",
+          "glutes"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "distance",
+         "sets": 2,
+         "reps": null,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": 20,
+         "calories": null,
+         "rest_sec": null,
+         "rir": null,
+         "rpe": [
+          8,
+          8
+         ],
+         "load_guidance": "heavy, steady",
+         "display": "20 m",
+         "direction_fields": {
+          "progression": "output",
+          "role": "output",
+          "rounds": [
+           1,
+           6
+          ]
+         }
+        },
+        "cues": [
+         "Arms locked or bent, body at 45 degrees; short, fast steps."
+        ],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       },
+       {
+        "item_id": "primary_hybrid_block.2",
+        "slot_id": "primary_hybrid_block.station",
+        "role": "station",
+        "exercise": {
+         "id": "front_rack_carry",
+         "name": "Front-Rack Carry",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
+         "primary_muscles": [
+          "core",
+          "quads"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "distance",
+         "sets": 2,
+         "reps": null,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": 60,
+         "calories": null,
+         "rest_sec": null,
+         "rir": null,
+         "rpe": [
+          8,
+          8
+         ],
+         "load_guidance": "moderate-heavy, stay tall",
+         "display": "60 m",
+         "direction_fields": {
+          "progression": "output",
+          "role": "output",
+          "rounds": [
+           2,
+           7
+          ]
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       },
+       {
+        "item_id": "primary_hybrid_block.3",
+        "slot_id": "primary_hybrid_block.station",
+        "role": "station",
+        "exercise": {
+         "id": "burpee",
+         "name": "Burpee",
+         "equipment": "bodyweight",
+         "equipment_label": "Bodyweight",
+         "primary_muscles": [
+          "quads",
+          "chest"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 1,
+         "reps": 10,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": null,
+         "rir": null,
+         "rpe": [
+          8,
+          8
+         ],
+         "load_guidance": "RPE 8, quick and clean",
+         "display": "10",
+         "direction_fields": {
+          "progression": "output",
+          "role": "output",
+          "rounds": [
+           3
+          ]
+         }
+        },
+        "cues": [
+         "Chest to floor, jump the feet in, stand and jump."
+        ],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       },
+       {
+        "item_id": "primary_hybrid_block.4",
+        "slot_id": "primary_hybrid_block.station",
+        "role": "station",
+        "exercise": {
+         "id": "med_ball_slam",
+         "name": "Med-Ball Slam",
+         "equipment": "slam_ball",
+         "equipment_label": "Slam ball",
+         "primary_muscles": [
+          "core",
+          "shoulders"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 1,
+         "reps": 15,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": null,
+         "rir": null,
+         "rpe": [
+          8,
+          8
+         ],
+         "load_guidance": "RPE 8",
+         "display": "15",
+         "direction_fields": {
+          "progression": "output",
+          "role": "output",
+          "rounds": [
+           4
+          ]
+         }
+        },
+        "cues": [
+         "Reach tall, then slam through the floor with the whole body."
+        ],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       },
+       {
+        "item_id": "primary_hybrid_block.5",
+        "slot_id": "primary_hybrid_block.station",
+        "role": "station",
+        "exercise": {
+         "id": "plate_push",
+         "name": "Plate Push",
+         "equipment": "plate",
+         "equipment_label": "Plate",
+         "primary_muscles": [
+          "quads",
+          "glutes"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "distance",
+         "sets": 1,
+         "reps": null,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": 20,
+         "calories": null,
+         "rest_sec": null,
+         "rir": null,
+         "rpe": [
+          8,
+          8
+         ],
+         "load_guidance": "moderate plate, fast feet",
+         "display": "20 m",
+         "direction_fields": {
+          "progression": "output",
+          "role": "output",
+          "rounds": [
+           5
+          ]
+         }
+        },
+        "cues": [
+         "Hands on the plate, hips low, drive with short fast steps."
+        ],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B2",
+      "sequence": 2,
+      "type": "finisher",
+      "structure": "finisher",
+      "title": "Finisher",
+      "rounds": 6,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": null,
+      "interval": {
+       "work_sec": 20,
+       "recovery_sec": 30,
+       "rounds": 6,
+       "alternate": true
+      },
+      "effort": {
+       "rpe": [
+        9,
+        9
+       ]
+      },
+      "instructions": "Alternate the exercises each interval.",
+      "est_minutes": 4.5,
+      "items": [
+       {
+        "item_id": "optional_extra.0",
+        "slot_id": "optional_extra",
+        "role": null,
+        "exercise": {
+         "id": "battle_rope_waves",
+         "name": "Battle Rope Waves",
+         "equipment": "battle_ropes",
+         "equipment_label": "Battle ropes",
+         "primary_muscles": [
+          "front_delts"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "time",
+         "sets": 6,
+         "reps": null,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": 20,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 30,
+         "rir": null,
+         "rpe": [
+          9,
+          9
+         ],
+         "load_guidance": "RPE 9",
+         "display": "6 × 20 s / 30 s easy",
+         "direction_fields": {
+          "progression": "output",
+          "role": "output"
+         }
+        },
+        "cues": [
+         "Athletic stance, fast alternating waves from the shoulders."
+        ],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       },
+       {
+        "item_id": "optional_extra.1",
+        "slot_id": "optional_extra",
+        "role": null,
+        "exercise": {
+         "id": "sled_pull",
+         "name": "Sled Rope Pull",
+         "equipment": "sled",
+         "equipment_label": "Sled",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "time",
+         "sets": 6,
+         "reps": null,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": 20,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 30,
+         "rir": null,
+         "rpe": [
+          9,
+          9
+         ],
+         "load_guidance": "heavy, steady",
+         "display": "6 × 20 s / 30 s easy",
+         "direction_fields": {
+          "progression": "output",
+          "role": "output"
+         }
+        },
+        "cues": [
+         "Lean back, walk backwards with short steps."
+        ],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     }
+    ],
+    "cooldown": {
+     "minutes": 5,
+     "guidance": "Easy pace and breathing down."
+    },
+    "relaxations": [],
+    "adjustments": [
+     {
+      "reason_code": "dials_resolved",
+      "detail": "{'V': 0, 'E': 1, 'NE': 0, 'NS': 0, 'C': -1, 'G': 1, 'X': 1, 'cap': 2, 'pair': None}"
+     },
+     {
+      "reason_code": "duration_backfill",
+      "detail": "primary +1 unit"
+     },
+     {
+      "reason_code": "duration_backfill",
+      "detail": "primary +1 unit"
+     },
+     {
+      "reason_code": "duration_backfill",
+      "detail": "primary +1 unit"
+     },
+     {
+      "reason_code": "extra_finisher",
+      "detail": "battle_rope_waves,sled_pull"
+     }
+    ]
+   },
+   "profile_defaults_applied": [
+    "goal",
+    "experience",
+    "training_frequency",
+    "training_preference"
+   ]
+  }
+ },
+ {
+  "key": "p26_amped",
+  "title": "Phase 2.6: Amped Strength (teaser)",
+  "envelope": {
+   "schema_version": "v3.0",
+   "status": "ok",
+   "outcome": "valid",
+   "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
+   "workout": {
+    "workout_id": "97fc78b23785445f8b71f4f217015e6a",
+    "version": 1,
+    "created_at": "2026-09-26T05:05:50.192178+00:00",
+    "direction": "strength",
+    "direction_name": "Strength",
+    "archetype": {
+     "id": "strength_upper_pull",
+     "name": "Upper Pull"
+    },
+    "requested_archetype": null,
+    "target": {
+     "mode": "moods_pick",
+     "muscles": [],
+     "label": "MOOD's Pick"
+    },
+    "duration": {
+     "requested_minutes": 60,
+     "estimated_minutes": 43.0,
+     "display": "40–45 min"
+    },
+    "experience": "intermediate",
+    "states": [
+     "amped"
+    ],
+    "soreness": {
+     "regions": [],
+     "muscles": [],
+     "trained_anyway": []
+    },
+    "equipment": {
+     "preset": "commercial_gym",
+     "label": "Commercial gym"
+    },
+    "swap_count": 0,
+    "selection_source": "moods_pick",
+    "built_for_today": [
+     {
+      "code": "goal",
+      "text": "MOOD's Pick follows a rotation built for your goal to build muscle."
+     },
+     {
+      "code": "state_amped",
+      "text": "You're Amped, so a Machine Preacher Curl burnout finishes the session and working sets go a rep closer to failure."
+     }
+    ],
+    "today": {
+     "told": [
+      "Strength",
+      "Amped",
+      "60 min"
+     ],
+     "chose": "Strength · Upper Pull",
+     "chosen_by": "MOOD's Pick",
+     "teaser": {
+      "code": "state_amped",
+      "title": "Built for your Amped state",
+      "text": "You're Amped, so a Machine Preacher Curl burnout finishes the session and working sets go a rep closer to failure."
+     }
+    },
+    "warmup": {
+     "minutes": 7,
+     "items": [],
+     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Lat Pulldown."
+    },
+    "blocks": [
+     {
+      "block_id": "B1",
+      "sequence": 1,
+      "type": "main",
+      "structure": "straight",
+      "title": "Main lift",
+      "rounds": 4,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 120,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "primary_pull",
+        "slot_id": "primary_pull",
+        "role": "Primary Pull",
+        "exercise": {
+         "id": "lat_pulldown",
+         "name": "Lat Pulldown",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 4,
+         "reps": "8",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 120,
+         "rir": 1,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 1 rep left in the tank.",
+         "display": "4 × 8",
+         "direction_fields": {
+          "slot_class": "primary_compound",
+          "protected": true,
+          "role": "Primary Pull"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B2",
+      "sequence": 2,
+      "type": "secondary",
+      "structure": "straight",
+      "title": "Strength",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 90,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "complementary_pull",
+        "slot_id": "complementary_pull",
+        "role": "Complementary Pull",
+        "exercise": {
+         "id": "chest_supported_row_machine",
+         "name": "Chest-Supported Machine Row",
+         "equipment": "plate_loaded_machine",
+         "equipment_label": "Plate-loaded machine",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": "10",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 90,
+         "rir": 1,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 1 rep left in the tank.",
+         "display": "3 × 10",
+         "direction_fields": {
+          "slot_class": "secondary_compound",
+          "protected": true,
+          "role": "Complementary Pull"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B3",
+      "sequence": 3,
+      "type": "secondary",
+      "structure": "straight",
+      "title": "Strength",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 90,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "secondary_back",
+        "slot_id": "secondary_back",
+        "role": "Secondary Back",
+        "exercise": {
+         "id": "single_arm_cable_row",
+         "name": "Single-Arm Cable Row",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": "10",
+         "reps_scheme": null,
+         "per_side": true,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 90,
+         "rir": 1,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 1 rep left in the tank.",
+         "display": "3 × 10/side",
+         "direction_fields": {
+          "slot_class": "secondary_compound",
+          "protected": false,
+          "role": "Secondary Back"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B4",
+      "sequence": 4,
+      "type": "accessory",
+      "structure": "superset",
+      "title": "Superset",
+      "rounds": 2,
+      "rest_between_items_sec": 15,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": "Alternate the two exercises; rest after each round.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "target_accessory",
+        "slot_id": "target_accessory",
+        "role": "Target Accessory",
+        "exercise": {
+         "id": "cable_pullover",
+         "name": "Cable Pullover",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 2,
+         "reps": "12",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": 0,
+         "rpe": null,
+         "load_guidance": "Take the last set close to failure with clean form.",
+         "display": "2 × 12",
+         "direction_fields": {
+          "slot_class": "accessory",
+          "protected": false,
+          "role": "Target Accessory"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       },
+       {
+        "item_id": "biceps_accessory",
+        "slot_id": "biceps_accessory",
+        "role": "Biceps Accessory",
+        "exercise": {
+         "id": "ez_bar_curl",
+         "name": "EZ-Bar Curl",
+         "equipment": "ez_bar",
+         "equipment_label": "EZ bar",
+         "primary_muscles": [
+          "biceps"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 2,
+         "reps": "12",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": 0,
+         "rpe": null,
+         "load_guidance": "Take the last set close to failure with clean form.",
+         "display": "2 × 12",
+         "direction_fields": {
+          "slot_class": "accessory",
+          "protected": false,
+          "role": "Biceps Accessory"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B5",
+      "sequence": 5,
+      "type": "accessory",
+      "structure": "straight",
+      "title": "Accessory",
+      "rounds": 2,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "ancillary_depth",
+        "slot_id": "ancillary_depth",
+        "role": "Ancillary Depth (Biceps)",
+        "exercise": {
+         "id": "bayesian_cable_curl",
+         "name": "Bayesian Cable Curl",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "biceps"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 2,
+         "reps": "12",
+         "reps_scheme": null,
+         "per_side": true,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": 0,
+         "rpe": null,
+         "load_guidance": "Take the last set close to failure with clean form.",
+         "display": "2 × 12/side",
+         "direction_fields": {
+          "slot_class": "accessory",
+          "protected": false,
+          "role": "Ancillary Depth (Biceps)"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B6",
+      "sequence": 6,
+      "type": "finisher",
+      "structure": "finisher",
+      "title": "Finisher",
+      "rounds": 2,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 30,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "finisher",
+        "slot_id": "finisher",
+        "role": "Finisher",
+        "exercise": {
+         "id": "machine_preacher_curl",
+         "name": "Machine Preacher Curl",
+         "equipment": "selectorized_machine",
+         "equipment_label": "Machine",
+         "primary_muscles": [
+          "biceps"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 2,
+         "reps": "20",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 30,
+         "rir": 0,
+         "rpe": null,
+         "load_guidance": "Take the last set close to failure with clean form.",
+         "display": "2 × 20",
+         "direction_fields": {
+          "slot_class": "finisher",
+          "protected": false,
+          "role": "Finisher"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     }
+    ],
+    "cooldown": null,
+    "relaxations": [],
+    "adjustments": [
+     {
+      "reason_code": "ancillary_depth",
+      "slot": "ancillary_depth",
+      "muscle": "biceps",
+      "exposures": "['ez_bar_curl', 'bayesian_cable_curl']",
+      "profile_differences": 3,
+      "family_reuse": true
+     },
+     {
+      "reason_code": "ancillary_depth_set_allocation",
+      "operation": "three accessory slots at 2 sets each (ATD1)"
+     },
+     {
+      "reason_code": "dial_volume",
+      "value": 1,
+      "operation": "expressed as the burnout finisher block (WA v15 ST3, Amped); no straight set added"
+     },
+     {
+      "reason_code": "dial_effort",
+      "value": 1,
+      "operation": "target RIR lowered by 1 (floor 1 RIR compounds, 0 RIR accessories)"
+     },
+     {
+      "reason_code": "dial_extras",
+      "value": 1,
+      "operation": "one Extra: burnout finisher block"
+     },
+     {
+      "reason_code": "structure_selected",
+      "state": "amped",
+      "pattern": "density_superset+burnout_finisher",
+      "emitted": "finisher+straight+superset",
+      "blocks": "[('straight', ['lat_pulldown']), ('straight', ['chest_supported_row_machine']), ('straight', ['single_arm_cable_row']), ('superset', ['cable_pullover', 'ez_bar_curl']), ('straight', ['bayesian_cable_curl']), ('finisher', ['machine_preacher_curl'])]"
+     }
+    ]
+   },
+   "profile_defaults_applied": [
+    "goal",
+    "experience",
+    "training_frequency",
+    "training_preference"
+   ]
+  }
+ },
+ {
+  "key": "p26_sore_legs",
+  "title": "Phase 2.6: sore legs reroute (teaser)",
+  "envelope": {
+   "schema_version": "v3.0",
+   "status": "ok",
+   "outcome": "valid",
+   "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
+   "workout": {
+    "workout_id": "95dbf430965a49f3b0a814a50f4666b6",
+    "version": 1,
+    "created_at": "2026-09-26T05:05:50.197652+00:00",
+    "direction": "strength",
+    "direction_name": "Strength",
+    "archetype": {
+     "id": "strength_upper_pull",
+     "name": "Upper Pull"
+    },
+    "requested_archetype": null,
+    "target": {
+     "mode": "moods_pick",
+     "muscles": [],
+     "label": "MOOD's Pick"
+    },
+    "duration": {
+     "requested_minutes": 60,
+     "estimated_minutes": 42.0,
+     "display": "40–45 min"
+    },
+    "experience": "intermediate",
+    "states": [
+     "sore"
+    ],
+    "soreness": {
+     "regions": [
+      "legs"
+     ],
+     "muscles": [
+      "calves",
+      "glutes",
+      "hamstrings",
+      "quads"
+     ],
+     "trained_anyway": []
+    },
+    "equipment": {
+     "preset": "commercial_gym",
+     "label": "Commercial gym"
+    },
+    "swap_count": 0,
+    "selection_source": "moods_pick",
+    "built_for_today": [
+     {
+      "code": "sore",
+      "text": "Today's workout shifts stress away from your sore legs."
+     },
+     {
+      "code": "goal",
+      "text": "MOOD's Pick follows a rotation built for your goal to build muscle."
+     }
+    ],
+    "today": {
+     "told": [
+      "Strength",
+      "Sore legs",
+      "60 min"
+     ],
+     "chose": "Strength · Upper Pull",
+     "chosen_by": "MOOD's Pick",
+     "teaser": {
+      "code": "sore",
+      "title": "Built around sore legs",
+      "text": "Today's workout shifts stress away from your sore legs."
+     }
+    },
+    "warmup": {
+     "minutes": 7,
+     "items": [],
+     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Lat Pulldown."
+    },
+    "blocks": [
+     {
+      "block_id": "B1",
+      "sequence": 1,
+      "type": "main",
+      "structure": "straight",
+      "title": "Main lift",
+      "rounds": 4,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 120,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "primary_pull",
+        "slot_id": "primary_pull",
+        "role": "Primary Pull",
+        "exercise": {
+         "id": "lat_pulldown",
+         "name": "Lat Pulldown",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 4,
+         "reps": "8",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 120,
+         "rir": 2,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 2 reps left in the tank.",
+         "display": "4 × 8",
+         "direction_fields": {
+          "slot_class": "primary_compound",
+          "protected": true,
+          "role": "Primary Pull"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B2",
+      "sequence": 2,
+      "type": "secondary",
+      "structure": "straight",
+      "title": "Strength",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 90,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "complementary_pull",
+        "slot_id": "complementary_pull",
+        "role": "Complementary Pull",
+        "exercise": {
+         "id": "chest_supported_row_machine",
+         "name": "Chest-Supported Machine Row",
+         "equipment": "plate_loaded_machine",
+         "equipment_label": "Plate-loaded machine",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": "10",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 90,
+         "rir": 2,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 2 reps left in the tank.",
+         "display": "3 × 10",
+         "direction_fields": {
+          "slot_class": "secondary_compound",
+          "protected": true,
+          "role": "Complementary Pull"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B3",
+      "sequence": 3,
+      "type": "secondary",
+      "structure": "straight",
+      "title": "Strength",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 90,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "secondary_back",
+        "slot_id": "secondary_back",
+        "role": "Secondary Back",
+        "exercise": {
+         "id": "single_arm_cable_row",
+         "name": "Single-Arm Cable Row",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": "10",
+         "reps_scheme": null,
+         "per_side": true,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 90,
+         "rir": 2,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 2 reps left in the tank.",
+         "display": "3 × 10/side",
+         "direction_fields": {
+          "slot_class": "secondary_compound",
+          "protected": false,
+          "role": "Secondary Back"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B4",
+      "sequence": 4,
+      "type": "accessory",
+      "structure": "straight",
+      "title": "Accessory",
+      "rounds": 2,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "target_accessory",
+        "slot_id": "target_accessory",
+        "role": "Target Accessory",
+        "exercise": {
+         "id": "cable_pullover",
+         "name": "Cable Pullover",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 2,
+         "reps": "12",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": 1,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 1 rep left in the tank.",
+         "display": "2 × 12",
+         "direction_fields": {
+          "slot_class": "accessory",
+          "protected": false,
+          "role": "Target Accessory"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B5",
+      "sequence": 5,
+      "type": "accessory",
+      "structure": "straight",
+      "title": "Accessory",
+      "rounds": 2,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "biceps_accessory",
+        "slot_id": "biceps_accessory",
+        "role": "Biceps Accessory",
+        "exercise": {
+         "id": "ez_bar_curl",
+         "name": "EZ-Bar Curl",
+         "equipment": "ez_bar",
+         "equipment_label": "EZ bar",
+         "primary_muscles": [
+          "biceps"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 2,
+         "reps": "12",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": 1,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 1 rep left in the tank.",
+         "display": "2 × 12",
+         "direction_fields": {
+          "slot_class": "accessory",
+          "protected": false,
+          "role": "Biceps Accessory"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B6",
+      "sequence": 6,
+      "type": "accessory",
+      "structure": "straight",
+      "title": "Accessory",
+      "rounds": 2,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "ancillary_depth",
+        "slot_id": "ancillary_depth",
+        "role": "Ancillary Depth (Biceps)",
+        "exercise": {
+         "id": "bayesian_cable_curl",
+         "name": "Bayesian Cable Curl",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "biceps"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 2,
+         "reps": "12",
+         "reps_scheme": null,
+         "per_side": true,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": 1,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 1 rep left in the tank.",
+         "display": "2 × 12/side",
+         "direction_fields": {
+          "slot_class": "accessory",
+          "protected": false,
+          "role": "Ancillary Depth (Biceps)"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     }
+    ],
+    "cooldown": null,
+    "relaxations": [],
+    "adjustments": [
+     {
+      "reason_code": "ancillary_depth",
+      "slot": "ancillary_depth",
+      "muscle": "biceps",
+      "exposures": "['ez_bar_curl', 'bayesian_cable_curl']",
+      "profile_differences": 3,
+      "family_reuse": true
+     },
+     {
+      "reason_code": "ancillary_depth_set_allocation",
+      "operation": "three accessory slots at 2 sets each (ATD1)"
+     },
+     {
+      "reason_code": "structure_selected",
+      "state": null,
+      "pattern": "straight",
+      "emitted": "straight",
+      "blocks": "[('straight', ['lat_pulldown']), ('straight', ['chest_supported_row_machine']), ('straight', ['single_arm_cable_row']), ('straight', ['cable_pullover']), ('straight', ['ez_bar_curl']), ('straight', ['bayesian_cable_curl'])]"
+     }
+    ]
+   },
+   "profile_defaults_applied": [
+    "goal",
+    "experience",
+    "training_frequency",
+    "training_preference"
+   ]
+  }
+ },
+ {
+  "key": "p26_athletic_speed",
+  "title": "Phase 2.6: Athletic Speed + Agility",
+  "envelope": {
+   "schema_version": "v3.0",
+   "status": "ok",
+   "outcome": "valid",
+   "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "0991c8b311d6"
+   },
+   "workout": {
+    "workout_id": "62bd4313b1ff40ac97d495cd7520739a",
+    "version": 1,
+    "created_at": "2026-09-26T05:05:50.202895+00:00",
+    "direction": "athletic",
+    "direction_name": "Athletic",
+    "archetype": {
+     "id": "athletic_speed_agility",
+     "name": "Speed + Agility"
+    },
+    "requested_archetype": null,
+    "target": {
+     "mode": "archetype",
+     "muscles": [],
+     "label": "Speed + Agility"
+    },
+    "duration": {
+     "requested_minutes": 60,
+     "estimated_minutes": 44.4,
+     "display": "40–45 min"
+    },
+    "experience": "intermediate",
+    "states": [],
+    "soreness": {
+     "regions": [],
+     "muscles": [],
+     "trained_anyway": []
+    },
+    "equipment": {
+     "preset": "commercial_gym",
+     "label": "Commercial gym"
+    },
+    "swap_count": 0,
+    "selection_source": "user_selected",
+    "built_for_today": [],
+    "today": {
+     "told": [
+      "Athletic",
+      "Speed + Agility",
+      "60 min"
+     ],
+     "chose": "Athletic · Speed + Agility",
+     "chosen_by": "You picked it",
+     "teaser": null
+    },
+    "warmup": {
+     "minutes": 6.0,
+     "items": [
+      {
+       "component": "raise",
+       "component_label": "Raise temperature",
+       "exercise": {
+        "id": "air_bike",
+        "name": "Air Bike",
+        "equipment": "bike",
+        "equipment_label": "Bike",
+        "primary_muscles": [
+         "quads"
+        ],
+        "media": null
+       },
+       "name": "Air Bike",
+       "prescription_text": "2-3 min easy"
+      },
+      {
+       "component": "prep",
+       "component_label": "Mobility",
+       "exercise": {
+        "id": "leg_swings",
+        "name": "Leg Swings",
+        "equipment": "bodyweight",
+        "equipment_label": "Bodyweight",
+        "primary_muscles": [
+         "glutes",
+         "hamstrings"
+        ],
+        "media": null
+       },
+       "name": "Leg Swings",
+       "prescription_text": "10 each way"
+      },
+      {
+       "component": "primer",
+       "component_label": "Primer",
+       "exercise": {
+        "id": "a_skip",
+        "name": "A-Skip",
+        "equipment": "bodyweight",
+        "equipment_label": "Bodyweight",
+        "primary_muscles": [
+         "quads",
+         "calves"
+        ],
+        "media": null
+       },
+       "name": "A-Skip",
+       "prescription_text": "2 x 10 m"
+      },
+      {
+       "component": "rehearsal",
+       "component_label": "Rehearsal",
+       "exercise": {
+        "id": "sled_push",
+        "name": "Sled Push",
+        "equipment": "sled",
+        "equipment_label": "Sled",
+        "primary_muscles": [
+         "quads",
+         "glutes"
+        ],
+        "media": null
+       },
+       "name": "Sled Push",
+       "prescription_text": "1 x 10 m easy"
+      }
+     ],
+     "guidance": null
+    },
+    "blocks": [
+     {
+      "block_id": "B1",
+      "sequence": 1,
+      "type": "primary",
+      "structure": "exposure",
+      "title": "Primary exposure",
+      "rounds": 6,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 90,
+      "interval": null,
+      "effort": null,
+      "instructions": "Full recovery between sets. Quality over volume.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "px",
+        "slot_id": "primary_exposure",
+        "role": "px",
+        "exercise": {
+         "id": "sled_push",
+         "name": "Sled Push",
+         "equipment": "sled",
+         "equipment_label": "Sled",
+         "primary_muscles": [
+          "quads",
+          "glutes"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "distance",
+         "sets": 6,
+         "reps": null,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": 10,
+         "calories": null,
+         "rest_sec": 90,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "10 m, light-moderate sled, drive fast",
+         "display": "6 × 10 m",
+         "direction_fields": {
+          "type": "B",
+          "quality": "sled"
+         }
+        },
+        "cues": [
+         "Arms locked or bent, body at 45 degrees; short, fast steps."
+        ],
+        "quality_stop": "Drive fast. Take the full rest; stop if the sled slows clearly from the first rep.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B2",
+      "sequence": 2,
+      "type": "secondary",
+      "structure": "exposure",
+      "title": "Secondary exposure",
+      "rounds": 5,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": "Full recovery between sets. Quality over volume.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "sx",
+        "slot_id": "secondary_exposure",
+        "role": "sx",
+        "exercise": {
+         "id": "skater_hop",
+         "name": "Skater Hops",
+         "equipment": "bodyweight",
+         "equipment_label": "Bodyweight",
+         "primary_muscles": [
+          "glutes",
+          "quads"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 5,
+         "reps": 3,
+         "reps_scheme": null,
+         "per_side": true,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "stick each landing",
+         "display": "5 × 3/side",
+         "direction_fields": {
+          "type": "B",
+          "quality": "lateral_power"
+         }
+        },
+        "cues": [],
+        "quality_stop": "End the set when distance drops or you cannot stick the landing.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B3",
+      "sequence": 3,
+      "type": "secondary",
+      "structure": "exposure",
+      "title": "Third exposure",
+      "rounds": 5,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 90,
+      "interval": null,
+      "effort": null,
+      "instructions": "Full recovery between sets. Quality over volume.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "sx2",
+        "slot_id": "third_exposure",
+        "role": "sx2",
+        "exercise": {
+         "id": "broad_jump_to_vertical",
+         "name": "Broad Jump to Vertical Jump",
+         "equipment": "bodyweight",
+         "equipment_label": "Bodyweight",
+         "primary_muscles": [
+          "glutes",
+          "quads"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 5,
+         "reps": 2,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 90,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "max intent, stick the landing",
+         "display": "5 × 2",
+         "direction_fields": {
+          "type": "A",
+          "quality": "jump_combo"
+         }
+        },
+        "cues": [],
+        "quality_stop": "End the set when either jump loses height or you cannot stick the landing.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B4",
+      "sequence": 4,
+      "type": "repeats",
+      "structure": "repeats",
+      "title": "Repeat efforts",
+      "rounds": 8,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": "Short, all-out efforts with long recovery.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "qc",
+        "slot_id": "quality_capped_repeats",
+        "role": "qc",
+        "exercise": {
+         "id": "acceleration_sprint",
+         "name": "Explosive Start (5-10 m)",
+         "equipment": "bodyweight",
+         "equipment_label": "Bodyweight",
+         "primary_muscles": [
+          "quads",
+          "glutes"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "distance",
+         "sets": 8,
+         "reps": null,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": 10,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "10 m, walk back",
+         "display": "8 × 10 m, walk back",
+         "direction_fields": {
+          "type": "repeats",
+          "work_sec": 3,
+          "recovery_sec": 60
+         }
+        },
+        "cues": [
+         "Lean from the ankles, drive the arms, push the ground back.",
+         "Walk back fully before the next rep."
+        ],
+        "quality_stop": "All-out, but end the block early if efforts clearly slow.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B5",
+      "sequence": 5,
+      "type": "support",
+      "structure": "straight",
+      "title": "Performance Support",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 75,
+      "interval": null,
+      "effort": null,
+      "instructions": "Why it's here: hamstring resilience for sprinting.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "ps",
+        "slot_id": "performance_support",
+        "role": "ps",
+        "exercise": {
+         "id": "slider_hamstring_curl",
+         "name": "Slider Hamstring Curl",
+         "equipment": "bodyweight",
+         "equipment_label": "Bodyweight",
+         "primary_muscles": [
+          "hamstrings"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": 8,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 75,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "controlled",
+         "display": "3 × 8",
+         "direction_fields": {
+          "type": "support",
+          "quality": null,
+          "purpose": "hamstring_resilience",
+          "why": "hamstring resilience for sprinting"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     }
+    ],
+    "cooldown": null,
+    "relaxations": [],
+    "adjustments": [
+     {
+      "reason_code": "athletic_log",
+      "detail": "Added repeat efforts (Explosive Start (5-10 m)) to complete the session"
+     },
+     {
+      "reason_code": "athletic_log",
+      "detail": "Added Slider Hamstring Curl (hamstring resilience): hamstring resilience for sprinting"
+     }
+    ]
+   },
+   "profile_defaults_applied": [
+    "goal",
+    "experience",
+    "training_frequency",
+    "training_preference"
+   ]
   }
  }
 ]

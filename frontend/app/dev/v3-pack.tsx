@@ -19,6 +19,7 @@ import type { V3Envelope } from '../../utils/v3Api';
 import { WorkoutOverview } from '../../components/v3/WorkoutOverview';
 import { V3Chip } from '../../components/v3/V3Chip';
 import { PreviewSections } from '../../components/v3/PreviewSections';
+import { previewMeta, previewTitle } from '../../utils/v3PreviewFormat';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const PACK: { key: string; title: string; envelope: V3Envelope }[] = require('../../utils/dev/v3PackFixture.json');
@@ -66,8 +67,13 @@ export default function V3PackViewer() {
           </View>
         ) : mode === 'preview' && env.workout ? (
           <View>
-            <Text style={styles.pvTitle}>{env.workout.archetype.name}</Text>
-            <Text style={styles.caseTitle}>{env.workout.duration.display}</Text>
+            <Text style={styles.pvTitle}>{previewTitle(env.workout)}</Text>
+            <Text style={styles.caseTitle}>{previewMeta(env.workout)}</Text>
+            {env.workout.today?.teaser ? (
+              <Text style={styles.caseTitle}>
+                {env.workout.today.teaser.title}: {env.workout.today.teaser.text}
+              </Text>
+            ) : null}
             <PreviewSections workout={env.workout} />
           </View>
         ) : (

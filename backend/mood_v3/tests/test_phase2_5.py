@@ -166,7 +166,8 @@ def test_hybrid_is_one_coherent_block(exp, dur, states):
 def test_built_for_today_is_specific_and_honest():
     env, _ = gen(direction='strength', target=['back', 'core'], states=['amped'])
     codes = {l['code'] for l in env['workout']['built_for_today']}
-    assert {'allocation', 'core_last', 'state_amped'} <= codes
+    assert {'allocation', 'state_amped'} <= codes                    # Phase 2.6: Core-last folded into the allocation line
+    assert 'Core saved for the end' in next(l['text'] for l in env['workout']['built_for_today'] if l['code'] == 'allocation')
     assert env['workout']['today']['chose'].startswith('Custom Strength')
     for l in env['workout']['built_for_today']: assert not explain.lint(l['text'])
     env, _ = gen(direction='strength', target=['chest'])

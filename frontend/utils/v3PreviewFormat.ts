@@ -1,36 +1,35 @@
 /**
- * MOOD V3 Workout Preview: compact structural view over the unified envelope (Phase 2.5).
+ * MOOD V3 Workout Preview: compact structural view over the unified envelope (Phase 2.5, tightened in 2.6).
  *
- * The Preview answers "what am I about to do, and how is it organised?" in one screen:
- *   STRAIGHT SETS            consecutive straight blocks merged
- *   SUPERSET · 3 rounds      A1 / A2 tags
- *   CIRCUIT · 6 rounds
- *   HYBRID · 6 rounds        anchor every round + stations with their rounds
- *   EMOM · 10 min / INTERVALS / TIMED CIRCUIT / CONTINUOUS / PYRAMID / LADDER / FINISHER
- *   ATHLETIC EXPOSURE        consecutive exposures merged, one short quality cue per row
- *   REPEAT EFFORTS / PERFORMANCE SUPPORT
+ * The Preview answers "what am I doing?" in a few seconds. Details answers "why and how".
+ *   STRAIGHT SETS            1 · Barbell Back Squat   4 × 6     (numbered through the session)
+ *   SUPERSET · 3 rounds      A1 Cable Fly   12 reps
+ *   CIRCUIT · 4 rounds       Burpee   8
+ *   HYBRID · 6 rounds        ANCHOR Row Erg 550 m (every round), R1 Sled Push, R2 Front-Rack Carry ...
+ *   EMOM / INTERVALS / TIMED CIRCUIT / CONTINUOUS / PYRAMID / LADDER / FINISHER
+ *   PRIMARY / SECONDARY      Athletic exposures; the primary and repeat efforts keep one essential quality stop
+ *   REPEAT EFFORTS / SUPPORT
  *
  * Presentation only: names, prescriptions and cues are the API's text. No workout rules live here.
  */
-import type { V3Block, V3GenerateRequest, V3Item, V3Workout } from './v3Api';
-import { localDateISO } from './v3Api';
-import { archetypeName, targetLabel } from './v3HomeModel';
+import type { V3Block, V3Item, V3Workout } from './v3Api';
 import { secondsLabel } from './v3OverviewFormat';
 
 export interface PreviewRow {
   key: string;
   itemId: string;
+  /** Left marker: "1", "A1", "ANCHOR", "R1", "R1+R6"; null for plain circuit rows. */
   tag: string | null;
   name: string;
   detail: string;
-  /** Short secondary line: Hybrid rounds, Athletic quality cue. */
+  /** One short secondary line: the Hybrid anchor's "Every round", an Athletic quality stop. */
   note: string | null;
 }
 
 export interface PreviewSection {
   key: string;
   label: string;
-  /** One short line under the label (block title for complements/finishers, Hybrid flow). */
+  /** One short line under the label (Complement / Finisher title, Hybrid flow). */
   caption: string | null;
   grouped: boolean;
   rows: PreviewRow[];
@@ -41,15 +40,13 @@ const GENERIC_TITLES = new Set([
   'repeat efforts', 'performance support', 'superset', 'circuit', 'pyramid', 'ladder', 'finisher', 'hybrid', 'engine',
 ]);
 
-/** First sentence of an Athletic quality stop: the one cue that matters before starting. */
+/** The one cue worth reading before a set: the stop rule when there is one, else the first sentence. */
 export function essentialCue(text: string | null | undefined): string | null {
   const t = (text ?? '').trim();
   if (!t) return null;
   const sentences = (t.match(/[^.!?]+[.!?]?/g) ?? [t]).map((x) => x.trim()).filter(Boolean);
-  // Prefer the stop rule when the first sentence is set-up only ("Full walk-back between reps.").
   const stop = sentences.find((x) => /\b(end|stop)\b/i.test(x));
-  const first = sentences[0] ?? t;
-  return (stop ?? first).trim();
+  return (stop ?? sentences[0] ?? t).trim();
 }
 
 function roundsText(n: number | null | undefined): string | null {
@@ -60,14 +57,22 @@ function join(...parts: (string | null | undefined)[]): string {
   return parts.filter(Boolean).join(' · ');
 }
 
-function hybridRounds(item: V3Item, total: number | null): string {
-  const r = item.prescription.direction_fields?.rounds;
-  if (Array.isArray(r) && r.length && !(total && r.length >= total)) return r.length === 1 ? `Round ${r[0]}` : `Rounds ${r.join(' + ')}`;
-  return 'Every round';
+/** Inside a rounds structure the "N ×" is the round count, already in the label: "2 × 12" -> "12". */
+export function perRound(item: V3Item, rounds: number | null, unit = ''): string {
+  const d = item.prescription.display.trim();
+  const m = d.match(/^(\d+)\s*×\s*(.+)$/);
+  const body = m && rounds && Number(m[1]) === rounds ? m[2] : d;
+  return unit && /^\d+(–\d+)?$/.test(body) ? `${body} ${unit}` : body;
 }
 
-function row(item: V3Item, tag: string | null = null, note: string | null = null): PreviewRow {
-  return { key: item.item_id, itemId: item.item_id, tag, name: item.exercise.name, detail: item.prescription.display, note };
+function stationTag(item: V3Item, total: number | null): string | null {
+  const r = item.prescription.direction_fields?.rounds;
+  if (!Array.isArray(r) || !r.length || (total && r.length >= total)) return null;
+  return r.map((x: number) => `R${x}`).join('+');
+}
+
+function row(item: V3Item, tag: string | null, detail?: string, note: string | null = null): PreviewRow {
+  return { key: item.item_id, itemId: item.item_id, tag, name: item.exercise.name, detail: detail ?? item.prescription.display, note };
 }
 
 function caption(block: V3Block, label: string): string | null {
@@ -76,32 +81,30 @@ function caption(block: V3Block, label: string): string | null {
   return label.toLowerCase().startsWith(t.toLowerCase()) ? null : t;
 }
 
+const ATHLETIC_LABEL: Record<string, string> = { primary: 'PRIMARY', secondary: 'SECONDARY' };
+
 /** The structural sections of a workout, in session order. */
 export function previewSections(w: V3Workout): PreviewSection[] {
   const out: PreviewSection[] = [];
   let groupLetter = 0;
+  let num = 0;
   const isHybrid = w.archetype.id === 'sweat_hybrid';
 
   for (const b of w.blocks) {
     const s = b.structure;
     const last = out[out.length - 1];
 
-    // Merge runs of plain straight sets and of Athletic exposures.
     if (s === 'straight' && b.type !== 'support') {
-      if (last && last.key.startsWith('straight')) {
-        last.rows.push(...b.items.map((i) => row(i)));
-        continue;
-      }
-      out.push({ key: `straight-${b.block_id}`, label: 'STRAIGHT SETS', caption: null, grouped: false, rows: b.items.map((i) => row(i)) });
+      const rows = b.items.map((i) => row(i, String(++num)));
+      if (last && last.key.startsWith('straight')) last.rows.push(...rows);
+      else out.push({ key: `straight-${b.block_id}`, label: 'STRAIGHT SETS', caption: null, grouped: false, rows });
       continue;
     }
     if (s === 'exposure') {
-      const rows = b.items.map((i) => row(i, null, essentialCue(i.quality_stop)));
-      if (last && last.key.startsWith('exposure')) {
-        last.rows.push(...rows);
-        continue;
-      }
-      out.push({ key: `exposure-${b.block_id}`, label: 'ATHLETIC EXPOSURE', caption: null, grouped: false, rows });
+      const label = ATHLETIC_LABEL[b.type] ?? 'SECONDARY';
+      const rows = b.items.map((i) => row(i, null, undefined, b.type === 'primary' ? essentialCue(i.quality_stop) : null));
+      if (last && last.label === label && last.key.startsWith('exposure')) last.rows.push(...rows);
+      else out.push({ key: `exposure-${b.block_id}`, label, caption: null, grouped: false, rows });
       continue;
     }
 
@@ -114,92 +117,87 @@ export function previewSections(w: V3Workout): PreviewSection[] {
         const letter = String.fromCharCode(65 + (groupLetter++ % 26));
         label = join('SUPERSET', roundsText(b.rounds));
         grouped = b.items.length > 1;
-        rows = b.items.map((i, k) => row(i, grouped ? `${letter}${k + 1}` : null));
+        rows = b.items.map((i, k) => row(i, grouped ? `${letter}${k + 1}` : String(++num), grouped ? perRound(i, b.rounds, 'reps') : undefined));
         break;
       }
       case 'anchor_circuit': {
         label = join(isHybrid ? 'HYBRID' : 'ANCHOR CIRCUIT', roundsText(b.rounds));
         const anchor = b.items.find((i) => i.role === 'anchor') ?? b.items[0];
         const stations = b.items.filter((i) => i !== anchor);
-        const rotating = stations.some((i) => Array.isArray(i.prescription.direction_fields?.rounds) && i.prescription.direction_fields!.rounds.length < (b.rounds ?? 0));
-        cap = rotating ? `${anchor.exercise.name} every round, then that round's station` : `${anchor.exercise.name} every round, then every station`;
-        rows = [row(anchor, 'ANCHOR', 'Every round'), ...stations.map((i) => row(i, null, hybridRounds(i, b.rounds)))];
+        const rotating = stations.some((i) => stationTag(i, b.rounds) !== null);
+        cap = rotating ? 'Anchor every round, then that round’s station' : 'Anchor every round, then every station';
+        rows = [row(anchor, 'ANCHOR', undefined, 'Every round'), ...stations.map((i) => row(i, stationTag(i, b.rounds)))];
         break;
       }
+      case 'circuit':
+        label = join('CIRCUIT', roundsText(b.rounds));
+        rows = b.items.map((i) => row(i, null, perRound(i, b.rounds)));
+        break;
       case 'emom':
         label = join('EMOM', typeof b.interval?.minutes === 'number' ? `${b.interval.minutes} min` : roundsText(b.rounds));
-        rows = b.items.map((i) => row(i));
+        rows = b.items.map((i) => row(i, null, perRound(i, b.rounds)));
         break;
       case 'intervals':
         label = join('INTERVALS', roundsText(b.interval?.rounds ?? b.rounds));
-        rows = b.items.map((i) => row(i));
+        rows = b.items.map((i) => row(i, null));
         break;
       case 'timed_circuit':
         label = join('TIMED CIRCUIT', roundsText(b.rounds));
-        rows = b.items.map((i) => row(i));
+        rows = b.items.map((i) => row(i, null, perRound(i, b.rounds)));
         cap = b.interval?.work_sec ? `${secondsLabel(b.interval.work_sec)} on / ${secondsLabel(b.interval.recovery_sec ?? 0)} off per station` : null;
         break;
       case 'continuous':
         label = join('CONTINUOUS', b.est_minutes ? `~${Math.round(b.est_minutes)} min` : null);
-        rows = b.items.map((i) => row(i));
+        rows = b.items.map((i) => row(i, null));
         break;
       case 'repeats':
         label = join('REPEAT EFFORTS', roundsText(b.rounds));
-        rows = b.items.map((i) => row(i, null, essentialCue(i.quality_stop)));
+        rows = b.items.map((i) => row(i, null, undefined, essentialCue(i.quality_stop)));
         break;
       case 'straight': // Athletic support
-        label = 'PERFORMANCE SUPPORT';
-        rows = b.items.map((i) => row(i));
-        break;
-      case 'circuit':
-        label = join('CIRCUIT', roundsText(b.rounds));
-        rows = b.items.map((i) => row(i));
+        label = 'SUPPORT';
+        rows = b.items.map((i) => row(i, null));
         break;
       default:
-        label = join(s.replace(/_/g, ' ').toUpperCase(), ['finisher'].includes(s) ? roundsText(b.rounds) : null);
-        rows = b.items.map((i) => row(i));
+        label = join(s.replace(/_/g, ' ').toUpperCase(), s === 'finisher' ? roundsText(b.rounds) : null);
+        rows = b.items.map((i) => row(i, null, s === 'finisher' ? perRound(i, b.rounds) : undefined));
     }
     out.push({ key: `${s}-${b.block_id}`, label, caption: cap ?? caption(b, label), grouped, rows });
   }
   return out;
 }
 
-/** Header "type" line for the Preview's session-type control. */
-export function typeLabel(w: V3Workout): { value: string; source: 'moods_pick' | 'user_selected' | 'target' } {
-  const src = (w.selection_source ?? (w.target.mode === 'explicit' || w.target.mode === 'full_body' ? 'target' : 'moods_pick')) as
-    | 'moods_pick'
-    | 'user_selected'
-    | 'target';
-  if (src === 'target') {
-    const lbl = w.target.label || targetLabel(w.target.muscles as any) || w.archetype.name;
-    return { value: `Target: ${lbl}`, source: src };
-  }
-  const name = archetypeName(w.archetype.id) ?? w.archetype.name;
-  return { value: src === 'moods_pick' ? `MOOD's Pick · ${name}` : name, source: src };
+/** Preview header facts: "~45 min · 5 exercises". */
+export function previewMeta(w: V3Workout): string {
+  const n = w.blocks.reduce((k, b) => k + b.items.length, 0);
+  const est = Math.round(w.duration.estimated_minutes);
+  return `~${est} min · ${n} ${n === 1 ? 'exercise' : 'exercises'}`;
 }
 
-/** The request that produced a workout: today's stored request, else rebuilt from the envelope. */
-export function requestFor(w: V3Workout, stored: V3GenerateRequest | null): V3GenerateRequest {
-  if (stored) return { ...stored };
-  const req: V3GenerateRequest = {
-    direction: w.direction,
-    states: [...w.states],
-    soreness: w.states.includes('sore') ? (w.soreness.regions as any) : [],
-    duration: (w.duration.requested_minutes === 30 ? 30 : 60) as 30 | 60,
-    date: localDateISO(),
-    persist: true,
-  };
-  if (w.selection_source === 'target' && w.target.mode === 'full_body') req.target = 'full_body';
-  else if (w.selection_source === 'target' && w.target.muscles.length) req.target = [...w.target.muscles];
-  if (w.selection_source === 'user_selected') req.archetype = w.archetype.id;
-  return req;
+/** Preview title: the Target for Target sessions ("Chest", "Back + Core"), else the session type. */
+export function previewTitle(w: V3Workout): string {
+  if ((w.selection_source === 'target' || w.target.mode === 'explicit') && w.target.label && w.target.mode === 'explicit') return w.target.label;
+  if (w.target.mode === 'full_body' && w.archetype.id !== 'strength_full_body') return 'Full Body';
+  return w.archetype.name;
 }
 
-/** Session type change: explicit archetype clears the Target; MOOD's Pick clears both (Phase 2.5 UX rule). */
-export function withArchetype(req: V3GenerateRequest, archetype: string | null): V3GenerateRequest {
-  const next: V3GenerateRequest = { ...req };
-  delete next.target;
-  delete next.archetype;
-  if (archetype) next.archetype = archetype;
-  return next;
+/** Exercise ids of a workout, in order (Different Workout comparison). */
+export function exerciseIds(w: V3Workout | null | undefined): string[] {
+  return w ? w.blocks.flatMap((b) => b.items.map((i) => i.exercise.id)) : [];
+}
+
+/** How a Different Workout result differs from the one on screen. */
+export function workoutDiff(before: V3Workout, after: V3Workout): { archetypeChanged: boolean; changed: number; total: number; identical: boolean } {
+  const a = exerciseIds(before);
+  const b = exerciseIds(after);
+  const set = new Set(a);
+  const changed = b.filter((x) => !set.has(x)).length;
+  return { archetypeChanged: before.archetype.id !== after.archetype.id, changed, total: b.length, identical: a.join('|') === b.join('|') };
+}
+
+/** Confirmation after Different Workout: "New workout · Upper Pull" / "New Chest workout · 4 of 5 exercises changed". */
+export function differentWorkoutMessage(before: V3Workout, after: V3Workout): string {
+  const d = workoutDiff(before, after);
+  if (d.archetypeChanged) return `New workout · ${after.archetype.name}`;
+  return `New ${previewTitle(after)} workout · ${d.changed} of ${d.total} exercises changed`;
 }

@@ -6,6 +6,7 @@ POST /api/v3/workouts/{id}/swap-exercise   exercise-level swap (same slot purpos
 POST /api/v3/workouts/{id}/swap-workout    Swap Workout (same inputs, swap_count + 1)
 POST /api/v3/workouts/{id}/complete        completion + per-set performance (history / progression source)
 GET  /api/v3/workouts/history           completed V3 workouts (summaries)
+GET  /api/v3/version                    engine phase + source fingerprint of the running process (no auth; dev stale-code check)
 
 Collection: db.v3_workouts. Engine calls run in a worker thread (CPU-bound, engine-internal locks serialize them).
 """
@@ -14,7 +15,7 @@ import asyncio, datetime as _dt, logging, re, time
 from typing import List, Optional, Literal, Union
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field, ConfigDict
-from . import service, normalize as N
+from . import service, normalize as N, build_info
 from .profile_defaults import apply_profile_defaults
 
 log = logging.getLogger('mood_v3')
@@ -130,6 +131,18 @@ def build_v3_router(db, get_current_user):
         if d['user_id'] != user_id: raise HTTPException(403, 'Not your workout')
         return d
 
+    def _trace(kind, user_id, env, req=None):
+        # One compact line per generation: what was asked and what was built. Makes stale-process or wrong-route bugs obvious.
+        w = env.get('workout') or {}
+        items = [it['exercise']['id'] for b in w.get('blocks', []) for it in b['items']]
+        ask = '' if req is None else f" ask=dir:{req.get('direction')} target:{req.get('target')} type:{req.get('archetype')} states:{req.get('states')} dur:{req.get('duration')}"
+        log.info(f"v3 {kind} user={user_id} engine={build_info.ENGINE_PHASE}/{build_info.ENGINE_BUILD}{ask} -> "
+                 f"{env.get('status')} {w.get('archetype', {}).get('id')} src={w.get('selection_source')} swap={w.get('swap_count')} n={len(items)}")
+
+    @r.get('/version')
+    async def version():
+        return dict(build_info.info(), schema_version=service.F.SCHEMA_VERSION)
+
     @r.post('/workouts/generate')
     async def generate(body: GenerateBody, user_id: str = Depends(get_current_user)):
         hist, perf = await _history(user_id)
@@ -148,6 +161,7 @@ def build_v3_router(db, get_current_user):
             env['workout']['workout_id'] = None
         if env['status'] != 'ok': log.info(f"v3 conflict {env['conflict']['code']} for {user_id}: {raw}")
         env['profile_defaults_applied'] = applied
+        _trace('generate', user_id, env, raw)
         return await _finish(env)
 
     @r.get('/workouts/history')
@@ -190,6 +204,7 @@ def build_v3_router(db, get_current_user):
         env, state = await asyncio.to_thread(service.swap_workout, d['state'], d['envelope'], perf)
         if state:
             await col.update_one({'_id': workout_id}, {'$set': {'state': state, 'envelope': env, 'updated_at': _dt.datetime.now(_dt.timezone.utc)}})
+        _trace('swap-workout', user_id, env)
         return await _finish(env)
 
     @r.post('/workouts/{workout_id}/complete')

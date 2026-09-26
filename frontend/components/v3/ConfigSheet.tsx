@@ -1,0 +1,170 @@
+/**
+ * ConfigSheet: the one "Change" interaction on Home (Phase 2.6). Everything optional lives here:
+ *
+ *   FOCUS          What do you want to train?        MOOD's Pick | Targets (Strength / Sweat only)
+ *   WORKOUT TYPE   Want a specific style of session?  Let MOOD choose | registry archetypes
+ *   LENGTH         60 | 30
+ *
+ * The backend takes one routing instruction (a Target or an archetype). The sheet keeps that graceful: picking a Focus
+ * puts Workout Type back to "Let MOOD choose", picking a Workout Type puts Focus back to MOOD's Pick, and one quiet line
+ * says which choice now leads. Edits stay in a draft until Done, so Home only ever shows a complete configuration.
+ */
+import React, { useEffect, useState } from 'react';
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeLinearGradient as LinearGradient } from '../SafeLinearGradient';
+import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
+import {
+  ARCHETYPES,
+  DURATIONS,
+  HomeInputs,
+  TARGETS,
+  archetypeName,
+  clearTarget,
+  configSummary,
+  isTargetSelected,
+  setArchetype,
+  setDuration,
+  targetLabel,
+  targetSupported,
+  toggleTarget,
+} from '../../utils/v3HomeModel';
+import { V3Chip } from './V3Chip';
+
+interface Props {
+  visible: boolean;
+  inputs: HomeInputs;
+  suggest30?: boolean;
+  onApply: (next: HomeInputs) => void;
+  onClose: () => void;
+}
+
+export function ConfigSheet({ visible, inputs, suggest30, onApply, onClose }: Props) {
+  const insets = useSafeAreaInsets();
+  const [draft, setDraft] = useState<HomeInputs>(inputs);
+  const [note, setNote] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (visible) {
+      setDraft(inputs);
+      setNote(null);
+    }
+  }, [visible, inputs]);
+
+  const canTarget = targetSupported(draft.direction);
+
+  const pickFocus = (chipId: string | null) => {
+    if (chipId === null) {
+      setDraft(clearTarget(draft));
+      setNote(null);
+      return;
+    }
+    const hadType = draft.archetype;
+    const r = toggleTarget(draft, chipId);
+    if (r.limitHit) {
+      setNote('Up to 3 muscle groups. Arms counts as two.');
+      return;
+    }
+    setDraft(r.inputs);
+    const lbl = targetLabel(r.inputs.target);
+    setNote(hadType && lbl ? `MOOD now builds the session around ${lbl}.` : null);
+  };
+
+  const pickType = (id: string | null) => {
+    const hadFocus = targetLabel(draft.target);
+    const next = setArchetype(draft, id);
+    setDraft(next);
+    setNote(id && hadFocus ? `${archetypeName(id)} now shapes the session.` : null);
+  };
+
+  return (
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+      <Pressable style={styles.scrim} onPress={onClose} />
+      <View style={[styles.sheet, { paddingBottom: insets.bottom + 16 }]} testID="v3-config-sheet">
+        <View style={styles.grip} />
+        <ScrollView contentContainerStyle={styles.body} showsVerticalScrollIndicator={false}>
+          {canTarget ? (
+            <View style={styles.group}>
+              <Text style={styles.label}>FOCUS</Text>
+              <Text style={styles.question}>What do you want to train?</Text>
+              <View style={styles.wrap}>
+                <V3Chip size="sm" label="MOOD's Pick" icon="sparkles" selected={draft.target === null} onPress={() => pickFocus(null)} testID="v3-focus-moods-pick" />
+                {TARGETS.map((t) => (
+                  <V3Chip key={t.id} size="sm" label={t.label} selected={isTargetSelected(draft, t.id)} onPress={() => pickFocus(t.id)} testID={`v3-focus-${t.id}`} />
+                ))}
+              </View>
+            </View>
+          ) : null}
+
+          <View style={styles.group}>
+            <Text style={styles.label}>WORKOUT TYPE</Text>
+            <Text style={styles.question}>Want a specific style of session?</Text>
+            <View style={styles.wrap}>
+              <V3Chip size="sm" label="Let MOOD choose" selected={draft.archetype === null} onPress={() => pickType(null)} testID="v3-type-moods" />
+              {ARCHETYPES[draft.direction].map((a) => (
+                <V3Chip key={a.id} size="sm" label={a.name} selected={draft.archetype === a.id} onPress={() => pickType(a.id)} testID={`v3-type-${a.id}`} />
+              ))}
+            </View>
+          </View>
+
+          {note ? (
+            <Text style={styles.note} testID="v3-config-note">
+              {note}
+            </Text>
+          ) : null}
+
+          <View style={styles.group}>
+            <Text style={styles.label}>LENGTH</Text>
+            <View style={styles.row}>
+              {DURATIONS.map((d) => (
+                <V3Chip
+                  key={d}
+                  size="sm"
+                  label={`${d} min`}
+                  badge={suggest30 && d === 30 && draft.duration !== 30 ? 'SUGGESTED' : undefined}
+                  selected={draft.duration === d}
+                  onPress={() => setDraft(setDuration(draft, d))}
+                  testID={`v3-length-${d}`}
+                />
+              ))}
+            </View>
+          </View>
+        </ScrollView>
+
+        <Pressable onPress={() => onApply(draft)} testID="v3-config-done" style={({ pressed }) => [styles.doneWrap, pressed && { opacity: 0.9 }]}>
+          <LinearGradient colors={[...BRAND_GRADIENT]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.done}>
+            <Text style={styles.doneText}>{`Done · ${configSummary(draft)}`}</Text>
+          </LinearGradient>
+        </Pressable>
+      </View>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.6)' },
+  sheet: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    maxHeight: '86%',
+    paddingTop: 10,
+    borderTopLeftRadius: 26,
+    borderTopRightRadius: 26,
+    backgroundColor: '#121212',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255,255,255,0.14)',
+  },
+  grip: { alignSelf: 'center', width: 38, height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.2)', marginBottom: 6 },
+  body: { paddingHorizontal: 20, paddingBottom: 8 },
+  group: { marginTop: 18 },
+  label: { fontSize: 10.5, fontWeight: '800', letterSpacing: 1.6, color: COLORS.textTertiary },
+  question: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginTop: 4, marginBottom: 12 },
+  wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  row: { flexDirection: 'row', gap: 8, marginTop: 10 },
+  note: { fontSize: 12.5, lineHeight: 18, color: COLORS.textSecondary, marginTop: 12 },
+  doneWrap: { marginHorizontal: 20, marginTop: 12 },
+  done: { height: 54, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
+  doneText: { fontSize: 16, fontWeight: '800', color: COLORS.accentInk },
+});

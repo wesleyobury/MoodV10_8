@@ -8,22 +8,26 @@ Phase 2.5: "What I told MOOD -> what MOOD changed -> why". Lines are built from 
 duration, experience, goal / frequency where they actually drive the pick), the resolution (selection source, MOOD's Pick
 rotation, reroute, Different Workout) and the generated output (allocation, structure events, finishers, progression).
 `today_summary()` gives the header the Details screen shows above the lines. No LLM, no claims without an event.
+
+Phase 2.6: the lines answer "what did MOOD do differently because of me?", not "what did I press?". Pure confirmations
+("You picked Hybrid", "You chose Chest") are gone, at most 4 lines are kept, and `teaser()` picks the one adaptation the
+Preview shows (or nothing when there is nothing meaningful to say).
 """
 from __future__ import annotations
 from .formatter import ARCHETYPE_NAMES, REGION_NAMES, MUSCLE_NAMES, DIRECTION_NAMES, target_label
 
 STATE_LINES = {
-    'low_energy': 'Stable, efficient movements keep the session productive without burying you.',
-    'bored': "More movement variety and less familiar combinations keep today's workout fresh.",
-    'irritated': 'Simple, forceful movements give you somewhere productive to put that energy.',
-    'amped': 'Extra output goes into heavier, faster or higher-volume work where it fits.',
-    'stressed': 'Predictable movements and a steadier structure keep the workout focused without adding chaos.',
+    'low_energy': 'Stable, low-friction movements keep the session productive without adding unnecessary systemic fatigue.',
+    'bored': 'MOOD pushed exercise and structure variety today instead of repeating your usual patterns.',
+    'irritated': 'Simple, forceful movements give that energy somewhere productive to go.',
+    'amped': 'Your extra energy goes into higher training intent where it fits.',
+    'stressed': "Today's work stays rhythmic and predictable without forcing you to race the clock.",
 }
 DIRECTION_STATE_LINES = {   # Direction-true variants where the generic line would overclaim
     ('athletic', 'amped'): 'Extra output goes into more quality efforts, never at the cost of speed.',
     ('athletic', 'low_energy'): 'Simple, low-impact explosive work keeps the quality high without burying you.',
     ('sweat', 'amped'): 'Extra output goes into denser, harder conditioning where it fits.',
-    ('sweat', 'irritated'): 'Cathartic, forceful stations give you somewhere productive to put that energy.',
+    ('sweat', 'irritated'): 'Forceful stations give that energy somewhere productive to go.',
 }
 PAIR_LINES = {   # SD MULTI-STATE ARBITRATION named combinations
     frozenset({'bored', 'stressed'}): 'Fresh movements inside a simple, steady structure: something new without the chaos.',
@@ -32,6 +36,7 @@ PAIR_LINES = {   # SD MULTI-STATE ARBITRATION named combinations
     frozenset({'irritated', 'stressed'}): 'Forceful but predictable: hard efforts with clear recovery.',
     frozenset({'bored', 'amped'}): 'New shapes plus one extra push where it fits.',
 }
+FORCEFUL = ('sled', 'carry', 'slam', 'battle rope', 'push press', 'wall ball')   # Sweat Irritated line names what is really there
 STATE_NAMES = {'low_energy': 'Low Energy', 'bored': 'Bored', 'irritated': 'Irritated', 'amped': 'Amped', 'stressed': 'Stressed', 'sore': 'Sore'}
 GOAL_PHRASES = {'build_strength': 'build strength', 'build_muscle': 'build muscle', 'improve_athleticism': 'improve athleticism'}
 BANNED = ('easier', 'reduced', 'lower')
@@ -60,26 +65,20 @@ def _items(res):
 
 
 def _custom_lines(ctx, res, add):
+    """Multi-muscle Custom Target: how the work was split (a single muscle needs no line: the title already says it)."""
     ct = next(iter(_log(res, 'custom_target')), None)
     if not ct or not ct.get('allocation'): return
     alloc = ct['allocation']; order = ct.get('block_order') or list(alloc)
+    if len(order) < 2: return
     names = {m: MUSCLE_NAMES.get(m, m) for m in order}
-    if len(order) == 1:
-        m = order[0]
-        add('target', f"You chose {names[m]}, so all {alloc[m]['exercises']} movements train {names[m].lower()}.")
-        return
-    majors = [m for m in order if alloc[m]['role'] == 'major']
-    others = [m for m in order if alloc[m]['role'] != 'major']
-    if len(majors) == 1 and others:
-        m = majors[0]
-        add('allocation', f"{names[m]} gets most of today's work ({alloc[m]['exercises']} movements) because it's the bigger muscle you chose.")
-    elif len(majors) >= 2:
-        add('allocation', f"{_join(names[m] for m in majors)} share the main work as your primary Targets.")
+    n = lambda m: f"{alloc[m]['exercises']} movement" + ('s' if alloc[m]['exercises'] != 1 else '')
+    counts = [alloc[m]['exercises'] for m in order]
+    core_tail = ', with Core saved for the end' if 'core' in order and order[-1] == 'core' else ''
+    if len(set(counts)) == 1:
+        add('allocation', f"{_join(names[m] for m in order)} get {n(order[0])} each{core_tail}.")
     else:
-        add('target', f"You chose {target_label(order)}, so today centers on {target_label(order).lower()}.")
-    if 'core' in order and len(order) > 1:
-        lead = names[order[0]].lower()
-        add('core_last', f"Core comes last with direct trunk work, so it isn't tired before your {lead} work.")
+        lead, rest = order[0], order[1:]
+        add('allocation', f"{names[lead]} gets {n(lead)} while {_join(names[m] + ' gets ' + str(alloc[m]['exercises']) for m in rest)}{core_tail}.")
 
 
 def build_lines(ctx, res, history_records):
@@ -95,37 +94,32 @@ def build_lines(ctx, res, history_records):
     # 1. soreness / reroute (hard constraint first)
     if ctx.sore_regions:
         if res.get('rerouted'):
-            add('sore_reroute', f"With sore {_regions(ctx)}, today moved to {arch}.")
+            are = 'is' if len(ctx.sore_regions) == 1 and not _regions(ctx).endswith('s') else 'are'
+            add('sore_reroute', f"Your {_regions(ctx)} {are} sore, so today was rerouted to {arch}, away from that loading.")
         elif res.get('sore_override'):
-            add('sore_override', f"You chose {target_label(ctx.target_muscles or res.get('target_muscles') or [])}, so it's trained as planned despite the soreness.")
+            add('sore_override', f"{target_label(ctx.target_muscles or res.get('target_muscles') or [])} is trained as planned despite the soreness, because you asked for it.")
         else:
             add('sore', "Today's workout shifts stress away from your sore " + _regions(ctx) + '.')
 
     # 2. why this session type
     rot = next(iter(_log(res, 'moods_pick_rotated')), None)
     if rot:
-        add('rotation_swap', f"You asked for a different workout, so MOOD's Pick moved from {ARCHETYPE_NAMES.get(rot['from'], rot['from'])} to {arch}.")
+        add('rotation_swap', f"MOOD moved you from {ARCHETYPE_NAMES.get(rot['from'], rot['from'])} to {arch} so this actually feels like a different session.")
     elif source == 'target':
         if res['archetype'] == 'strength_custom_target':
             _custom_lines(ctx, res, add)
-        elif ctx.target_mode == 'full_body':
-            add('target', 'You chose Full Body, so every region gets work today.')
-        else:
+        elif ctx.target_mode != 'full_body':
             tl = target_label(ctx.target_muscles or res.get('target_muscles'))
-            if d == 'strength':
+            if d == 'strength' and len(ctx.target_muscles or []) > 1:
                 art = 'an' if arch[:1].lower() in 'aeiou' else 'a'
-                add('target', f"You chose {tl}, so today is {art} {arch} session built around them.")
-            else:
-                add('target', f"You chose {tl}, so the circuit is built around {tl.lower()}." if res['archetype'] == 'sweat_circuit' else f"You chose {tl}, so today centers on {tl.lower()}.")
-    elif source == 'user_selected':
-        add('archetype', f"You picked {arch}.")
-    elif not res.get('rerouted'):
+                add('target', f"{tl} run as {art} {arch} session, so both get direct work.")
+            elif d == 'sweat' and res['archetype'] == 'sweat_circuit':
+                add('target', f"The circuit stations are weighted toward {tl.lower()}.")
+    elif source == 'moods_pick' and not res.get('rerouted'):
         last = [h for h in history_records if h.get('direction') == d]
         if d == 'strength' and last:
             prev = ARCHETYPE_NAMES.get(last[-1]['archetype'], last[-1]['archetype'])
             if last[-1]['archetype'] != res['archetype']: add('rotation', f"You trained {prev} last time, so MOOD's Pick rotates to {arch} today.")
-        elif not last:
-            add('first_session', f"Your first {DIRECTION_NAMES[d]} session starts with {arch}.")
         if d == 'strength':
             if ctx.frequency == '1-2' and res['archetype'] == 'strength_full_body':
                 add('frequency', 'You train 1–2 days a week, so MOOD keeps every Strength session full-body.')
@@ -152,10 +146,14 @@ def build_lines(ctx, res, history_records):
             specific['low_energy'] = 'Low Energy: one set comes off the last accessory, so the main work keeps its quality.'
         if 'bored' in st and any(b.get('structure') in ('superset', 'pyramid', 'ladder', 'circuit') for b in res.get('blocks', [])):
             shape = next(b['structure'] for b in res['blocks'] if b.get('structure') in ('superset', 'pyramid', 'ladder', 'circuit'))
-            specific['bored'] = f"You're Bored, so part of the session runs as a {shape} to change the rhythm."
+            specific['bored'] = f"MOOD pushed variety today: part of the session runs as a {shape} instead of your usual straight sets."
     elif d == 'sweat' and fin and any(s in st for s in ('amped', 'irritated')):
         s0 = 'amped' if 'amped' in st else 'irritated'
         specific[s0] = f"You're {STATE_NAMES[s0]}, so a {fin_names} finisher closes the session."
+    if d == 'sweat' and 'irritated' in st and 'irritated' not in specific:
+        forceful = [it['exercise']['name'] for it in items if any(k in it['exercise']['name'].lower() for k in FORCEFUL)]
+        if forceful:
+            specific['irritated'] = f"Forceful stations like {_join(list(dict.fromkeys(forceful))[:3]).lower()} give that energy somewhere productive to go."
     pair = next((p for p in PAIR_LINES if p <= set(st)), None)
     if pair and not any(s in specific for s in pair):
         add('state_pair', PAIR_LINES[pair]); st = [s for s in st if s not in pair]
@@ -182,7 +180,28 @@ def build_lines(ctx, res, history_records):
         add('progression', f"Your last {prog['exercise']['name']} session sets today's target.")
     if 'exercise_swapped' in codes:
         add('swap', 'Swapped in a fresh option for that slot, same purpose.')
-    return lines[:6]
+    return lines[:MAX_LINES]
+
+
+MAX_LINES = 4
+# Preview teaser: the single adaptation worth reading before starting. Confirmations and context never qualify.
+TEASER_ORDER = ('sore_reroute', 'sore', 'sore_override', 'state_pair', 'state_amped', 'state_irritated', 'state_low_energy',
+                'state_stressed', 'state_bored', 'allocation', 'target')
+
+
+def teaser(ctx, res, lines):
+    by = {l['code']: l['text'] for l in lines}
+    code = next((c for c in TEASER_ORDER if c in by), None)
+    if not code: return None
+    if code.startswith('sore'):
+        title = f"Built around sore {_regions(ctx)}"
+    elif code == 'state_pair':
+        title = 'Built for how you feel today'
+    elif code.startswith('state_'):
+        title = f"Built for your {STATE_NAMES[code[6:]]} state"
+    else:
+        title = f"Built around {target_label(ctx.target_muscles or res.get('target_muscles') or [])}"
+    return dict(code=code, title=title, text=by[code])
 
 
 def today_summary(ctx, res):
@@ -201,6 +220,10 @@ def today_summary(ctx, res):
         chose = f"{DIRECTION_NAMES[ctx.direction]} · {arch}"
     by = {'moods_pick': "MOOD's Pick", 'user_selected': 'You picked it', 'target': 'Built from your Target'}[source]
     return dict(told=[DIRECTION_NAMES[ctx.direction]] + told, chose=chose, chosen_by=by)
+
+
+def today_block(ctx, res, lines):
+    return dict(today_summary(ctx, res), teaser=teaser(ctx, res, lines))
 
 
 def lint(text):

@@ -1,0 +1,13 @@
+import React, { useEffect, useState } from 'react';
+type Route = { pathname: string; params: any };
+const stack: Route[] = [{ pathname: '/', params: {} }]; const subs = new Set<() => void>();
+const emit = () => subs.forEach((f) => f());
+const norm = (h: any): Route => (typeof h === 'string' ? { pathname: h.split('?')[0], params: Object.fromEntries(new URLSearchParams(h.split('?')[1] || '')) } : { pathname: h.pathname, params: h.params || {} });
+export const router = { push: (h: any) => { stack.push(norm(h)); emit(); }, replace: (h: any) => { stack[stack.length - 1] = norm(h); emit(); }, back: () => { if (stack.length > 1) stack.pop(); emit(); }, dismissTo: (h: any) => { stack.length = 1; emit(); }, setParams: (p: any) => { Object.assign(stack[stack.length - 1].params, p); } };
+(window as any).__router = router; (window as any).__stack = stack;
+export const useRouter = () => router;
+export const useCurrentRoute = () => { const [, f] = useState(0); useEffect(() => { const s = () => f((x) => x + 1); subs.add(s); return () => { subs.delete(s); }; }, []); return stack[stack.length - 1]; };
+let current: Route = stack[0];
+export const _setCurrent = (r: Route) => { current = r; };
+export const useLocalSearchParams = () => { const [p] = useState(current.params); return p; };
+export const Redirect = () => null;

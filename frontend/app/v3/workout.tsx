@@ -1,13 +1,19 @@
 /**
- * V3 Workout Preview: /v3/workout?id=<workout_id>  (Phase 2.5)
+ * V3 Workout Preview: /v3/workout?id=<workout_id>  (Phase 2.6)
  *
- * Home → Build → Preview → Start Workout. The Preview is compact: what the session is, how it is organised
- * (STRAIGHT SETS, SUPERSET A1/A2, CIRCUIT, HYBRID anchor + stations, ATHLETIC EXPOSURE with its quality cue) and
- * four actions: session type, Start Workout, Built for Today / Details, Different Workout.
+ * Preview = what. Details = why + how. Guided Session = do.
  *
- * The rich Overview (Built for Today, warm-up, per-exercise cues, progression, Swap Exercise) lives on
- * /v3/details. The server stays the source of truth: every change here is a real API call and the screen only
- * shows the envelope it gets back.
+ *   STRENGTH                      Direction eyebrow
+ *   Chest                         Target (Target sessions) or session type
+ *   ~40 min · 5 exercises         + State chips when any were selected
+ *   Built for your Amped state    at most one adaptation line (API `today.teaser`), only when meaningful
+ *   STRAIGHT SETS / SUPERSET ...  the workout itself
+ *   Different workout · Details   secondary actions;   Start Workout (sticky)
+ *
+ * One source of truth: `env` is the server's envelope for this workout id. It is replaced only by a successful server
+ * response for the same id (GET, Different Workout) or a newer cached version written by Details (Swap Exercise).
+ * Different Workout keeps the current workout on screen while it builds and swaps it in only on success.
+ * Session type is edited on Home (Change sheet) only.
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Animated, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -19,48 +25,33 @@ import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinea
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { trackEvent } from '../../utils/analytics';
-import {
-  V3Conflict,
-  V3ConflictOption,
-  V3Envelope,
-  V3GenerateRequest,
-  generateV3Workout,
-  getV3Workout,
-  localDateISO,
-  swapV3Workout,
-} from '../../utils/v3Api';
-import { readCachedEnvelope, readToday, updateTodayEnvelope, writeToday } from '../../utils/v3Today';
-import { requestSignature } from '../../utils/v3HomeModel';
-import { exerciseCount, workoutTitle } from '../../utils/v3OverviewFormat';
-import { requestFor, typeLabel, withArchetype } from '../../utils/v3PreviewFormat';
+import { V3Envelope, getV3Workout, swapV3Workout } from '../../utils/v3Api';
+import { readCachedEnvelope, updateTodayEnvelope } from '../../utils/v3Today';
+import { STATE_LABEL } from '../../utils/v3HomeModel';
+import { differentWorkoutMessage, exerciseIds, previewMeta, previewTitle, workoutDiff } from '../../utils/v3PreviewFormat';
 import { PreviewSections } from '../../components/v3/PreviewSections';
-import { ArchetypeSheet } from '../../components/v3/ArchetypeSheet';
-import { ConflictSheet } from '../../components/v3/ConflictSheet';
 
 export default function V3WorkoutPreview() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const params = useLocalSearchParams<{ id?: string }>();
+  const { id } = useLocalSearchParams<{ id?: string }>();
   const { token, user } = useAuth();
   const uid = user?.id ?? null;
 
-  const [wid, setWid] = useState<string | undefined>(params.id);
   const [env, setEnv] = useState<V3Envelope | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [busy, setBusy] = useState<null | 'different' | 'type'>(null);
-  const [typeOpen, setTypeOpen] = useState(false);
-  const [conflict, setConflict] = useState<{ conflict: V3Conflict; req: V3GenerateRequest } | null>(null);
-  const [changeNote, setChangeNote] = useState<string | null>(null);
+  const [building, setBuilding] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const toastOpacity = useRef(new Animated.Value(0)).current;
+  const contentOpacity = useRef(new Animated.Value(1)).current;
   const viewedFor = useRef<string | null>(null);
   const scrollRef = useRef<ScrollView>(null);
 
   const track = useCallback(
     (name: string, meta: Record<string, any> = {}) => {
-      if (token) trackEvent(token, name, { workout_id: wid, ...meta });
+      if (token) trackEvent(token, name, { workout_id: id, ...meta });
     },
-    [token, wid],
+    [token, id],
   );
 
   const showToast = (msg: string) => {
@@ -73,41 +64,42 @@ export default function V3WorkoutPreview() {
     ]).start(() => setToast(null));
   };
 
+  /** Take an envelope for this workout id if it is not older than the one on screen. */
   const accept = useCallback(
-    (next: V3Envelope) => {
-      setEnv(next);
-      if (uid) updateTodayEnvelope(uid, next);
+    (next: V3Envelope | null, persist: boolean) => {
+      if (!next?.workout || next.workout.workout_id !== id) return false;
+      setEnv((cur) => (cur?.workout && cur.workout.version > next.workout!.version ? cur : next));
+      if (persist && uid) updateTodayEnvelope(uid, next);
+      return true;
     },
-    [uid],
+    [id, uid],
   );
 
-  // Load: cached envelope first (instant), then the server copy.
+  // Load: cached envelope first (instant), then the server copy (authoritative).
   useEffect(() => {
-    if (!wid || !token) return;
+    if (!id || !token) return;
     let alive = true;
     (async () => {
       if (uid) {
-        const cached = await readCachedEnvelope(uid, wid);
-        if (alive && cached) setEnv((e) => (e?.workout?.workout_id === wid ? e : cached));
+        const cached = await readCachedEnvelope(uid, id);
+        if (alive) accept(cached, false);
       }
-      const res = await getV3Workout(token, wid);
+      const res = await getV3Workout(token, id);
       if (!alive) return;
-      if (res.ok) accept(res.envelope);
+      if (res.ok) accept(res.envelope, true);
       else setLoadError(res.error.message);
     })();
     return () => {
       alive = false;
     };
-  }, [wid, token, uid, accept]);
+  }, [id, token, uid, accept]);
 
-  // Back from Details: pick up an exercise swap made there.
+  // Back from Details: pick up an exercise swap made there (a newer version of the same workout).
   useFocusEffect(
     useCallback(() => {
-      if (!uid || !wid) return;
-      readCachedEnvelope(uid, wid).then((c) => {
-        if (c?.workout?.workout_id === wid) setEnv(c);
-      });
-    }, [uid, wid]),
+      if (!uid || !id) return;
+      readCachedEnvelope(uid, id).then((c) => accept(c, false));
+    }, [uid, id, accept]),
   );
 
   useEffect(() => {
@@ -121,125 +113,70 @@ export default function V3WorkoutPreview() {
       target_mode: w.target.mode,
       duration: w.duration.requested_minutes,
       estimated_minutes: w.duration.estimated_minutes,
-      exercises: exerciseCount(w),
-      structures: w.blocks.map((b) => b.structure),
+      exercises: exerciseIds(w).length,
+      has_teaser: !!w.today?.teaser,
+      engine: env?.engine?.phase ?? null,
     });
   }, [env, track]);
 
-  const resetScroll = () => scrollRef.current?.scrollTo({ y: 0, animated: false });
-
   /* ------------------------------------------------------------ Different Workout */
   const onDifferent = async () => {
-    const w = env?.workout;
-    if (!token || !wid || !w || busy) return;
-    const from = w.archetype;
-    setBusy('different');
-    setChangeNote(null);
-    track('v3_swap_workout_tapped', { swap_count: w.swap_count, selection_source: w.selection_source ?? null, archetype: from.id });
-    const res = await swapV3Workout(token, wid);
-    setBusy(null);
+    const before = env?.workout;
+    if (!token || !id || !before || building) return;
+    setBuilding(true);
+    track('v3_swap_workout_tapped', { swap_count: before.swap_count, selection_source: before.selection_source ?? null, archetype: before.archetype.id });
+    const res = await swapV3Workout(token, id);
+    setBuilding(false);
     if (!res.ok || res.envelope.status === 'conflict' || !res.envelope.workout) {
-      const msg = res.ok ? res.envelope.conflict?.message || "Couldn't find another workout for these choices." : res.error.message;
+      const msg = res.ok ? res.envelope.conflict?.message || "There isn't another version of this workout today." : res.error.message;
       track('v3_swap_workout_result', { result: res.ok ? res.envelope.conflict?.code ?? 'conflict' : 'error' });
       showToast(msg);
       return;
     }
-    const next = res.envelope.workout;
-    const changed = next.archetype.id !== from.id;
-    const before = new Set(w.blocks.flatMap((b) => b.items.map((i) => i.exercise.id)));
-    const after = next.blocks.flatMap((b) => b.items.map((i) => i.exercise.id));
-    const changedCount = after.filter((x) => !before.has(x)).length;
-    accept(res.envelope);
-    resetScroll();
+    const after = res.envelope.workout;
+    const d = workoutDiff(before, after);
     track('v3_swap_workout_result', {
-      result: 'swapped',
-      archetype_changed: changed,
-      from: from.id,
-      to: next.archetype.id,
-      selection_source: next.selection_source ?? null,
-      exercises_changed: changedCount,
-      exercises_total: after.length,
-      swap_count: next.swap_count,
+      result: d.identical ? 'identical' : 'swapped',
+      archetype_changed: d.archetypeChanged,
+      from: before.archetype.id,
+      to: after.archetype.id,
+      selection_source: after.selection_source ?? null,
+      exercises_changed: d.changed,
+      exercises_total: d.total,
+      swap_count: after.swap_count,
+      engine: res.envelope.engine?.phase ?? null,
     });
-    if (changed) {
-      setChangeNote(`New type: ${from.name} → ${next.archetype.name}`);
-      showToast(`MOOD switched to ${next.archetype.name}`);
-    } else {
-      setChangeNote(`Same ${next.archetype.name} setup · ${changedCount} of ${after.length} exercises changed`);
-      showToast(`Here's a different ${next.archetype.name} workout`);
-    }
-  };
-
-  /* ------------------------------------------------------------ Session type */
-  const regenerate = async (req: V3GenerateRequest, meta: Record<string, any>) => {
-    if (!token || !uid) return;
-    setBusy('type');
-    setChangeNote(null);
-    const res = await generateV3Workout(token, req);
-    setBusy(null);
-    if (!res.ok) {
-      track('v3_archetype_change_result', { ...meta, result: 'error', error_kind: res.error.kind });
-      showToast(res.error.message);
+    accept(res.envelope, true);
+    if (d.identical) {
+      // Only an old engine does this (Phase 2.5+ returns no_alternative instead); say so rather than pretend.
+      showToast("There isn't another version of this workout today.");
       return;
     }
-    const e = res.envelope;
-    if (e.status === 'conflict' || !e.workout?.workout_id) {
-      track('v3_archetype_change_result', { ...meta, result: e.conflict?.code ?? 'conflict' });
-      if (e.conflict) setConflict({ conflict: e.conflict, req });
-      return;
-    }
-    const newId = e.workout.workout_id;
-    await writeToday(uid, { date: req.date, workout_id: newId, signature: requestSignature(req), request: req, envelope: e, saved_at: new Date().toISOString() });
-    setEnv(e);
-    setWid(newId);
-    router.setParams({ id: newId } as any);
-    resetScroll();
-    track('v3_archetype_change_result', { ...meta, result: 'ok', to_resolved: e.workout.archetype.id, outcome: e.outcome });
-    setChangeNote(meta.to === 'moods_pick' ? `MOOD's Pick: ${e.workout.archetype.name}` : `Type set to ${e.workout.archetype.name}`);
-  };
-
-  const onType = async (archetype: string | null) => {
-    setTypeOpen(false);
-    const w = env?.workout;
-    if (!w || !uid || busy) return;
-    const src = w.selection_source ?? 'moods_pick';
-    const current = src === 'user_selected' ? w.archetype.id : null;
-    if (archetype === current && src !== 'target') return;
-    const today = await readToday(uid, localDateISO());
-    const stored = today && today.workout_id === wid ? today.request : null;
-    const req = { ...withArchetype(requestFor(w, stored), archetype), date: localDateISO(), persist: true };
-    const meta = { surface: 'preview', direction: w.direction, from: current ?? (src === 'target' ? 'target' : 'moods_pick'), to: archetype ?? 'moods_pick', cleared_target: src === 'target' };
-    track('v3_archetype_changed', meta);
-    await regenerate(req, meta);
-  };
-
-  const onConflictOption = (o: V3ConflictOption) => {
-    const c = conflict;
-    setConflict(null);
-    if (!c || !o.patch) return;
-    const req = { ...c.req, ...(o.patch as Partial<V3GenerateRequest>) };
-    regenerate(req, { surface: 'preview_conflict', action: o.action, to: req.archetype ?? 'moods_pick' });
+    scrollRef.current?.scrollTo({ y: 0, animated: false });
+    contentOpacity.setValue(0.35);
+    Animated.timing(contentOpacity, { toValue: 1, duration: 260, useNativeDriver: true }).start();
+    showToast(differentWorkoutMessage(before, after));
   };
 
   /* ------------------------------------------------------------ navigation */
   const onDetails = () => {
-    if (!wid) return;
+    if (!id) return;
     track('v3_details_opened', { source: 'preview' });
-    router.push({ pathname: '/v3/details', params: { id: wid } } as any);
+    router.push({ pathname: '/v3/details', params: { id } } as any);
   };
 
   const onStart = () => {
     const w = env?.workout;
-    if (!w || !wid) return;
+    if (!w || !id) return;
     track('v3_start_workout_tapped', { direction: w.direction, archetype: w.archetype.id, surface: 'preview' });
-    router.push({ pathname: '/v3/session', params: { id: wid } } as any);
+    router.push({ pathname: '/v3/session', params: { id } } as any);
   };
 
   /* ------------------------------------------------------------ render */
   const w = env?.workout ?? null;
-  const tl = w ? typeLabel(w) : null;
-  const { title, subtitle } = w ? workoutTitle(w) : { title: '', subtitle: null };
-  const firstWhy = w?.built_for_today?.[0]?.text ?? null;
+  const teaser = w?.today?.teaser ?? null;
+  const states = w ? w.states.filter((s) => s !== 'sore') : [];
+  const sore = w && w.soreness.regions.length ? `Sore ${w.soreness.regions.map((r) => r.replace(/_/g, ' ')).join(', ')}` : null;
 
   return (
     <View style={styles.root} testID="v3-preview">
@@ -247,11 +184,6 @@ export default function V3WorkoutPreview() {
         <Pressable onPress={() => router.back()} hitSlop={12} style={styles.back} accessibilityLabel="Back" testID="v3-preview-back">
           <Ionicons name="chevron-back" size={22} color={COLORS.textPrimary} />
         </Pressable>
-        {w ? (
-          <Pressable onPress={onDetails} hitSlop={8} style={styles.detailsLink} testID="v3-preview-details-top">
-            <Text style={styles.detailsLinkText}>Details</Text>
-          </Pressable>
-        ) : null}
       </View>
 
       {!w ? (
@@ -268,94 +200,73 @@ export default function V3WorkoutPreview() {
           )}
         </View>
       ) : (
-        <ScrollView ref={scrollRef} contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 150 }]} showsVerticalScrollIndicator={false}>
-          <View style={busy ? { opacity: 0.4 } : null}>
-            {/* Identity */}
-            <Text style={styles.eyebrow}>{`${w.direction_name.toUpperCase()} · ${w.duration.display.toUpperCase()}`}</Text>
-            <Text style={styles.title} testID="v3-preview-title">{title}</Text>
-            {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
-            <Text style={styles.facts}>
-              {[`${exerciseCount(w)} exercises`, w.equipment.preset !== 'commercial_gym' ? w.equipment.label : null].filter(Boolean).join('  ·  ')}
+        <ScrollView ref={scrollRef} contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 120 }]} showsVerticalScrollIndicator={false}>
+          <Animated.View style={{ opacity: contentOpacity }} testID="v3-preview-content">
+            <Text style={styles.eyebrow}>{w.direction_name.toUpperCase()}</Text>
+            <Text style={styles.title} testID="v3-preview-title">
+              {previewTitle(w)}
             </Text>
-
-            {changeNote ? (
-              <View style={styles.changeNote} testID="v3-preview-change-note">
-                <Ionicons name="shuffle" size={14} color={COLORS.accent} />
-                <Text style={styles.changeNoteText}>{changeNote}</Text>
+            <Text style={styles.meta} testID="v3-preview-meta">
+              {previewMeta(w)}
+            </Text>
+            {states.length || sore ? (
+              <View style={styles.chips}>
+                {states.map((s) => (
+                  <View key={s} style={styles.chip}>
+                    <Text style={styles.chipText}>{STATE_LABEL[s] ?? s}</Text>
+                  </View>
+                ))}
+                {sore ? (
+                  <View style={styles.chip}>
+                    <Text style={styles.chipText}>{sore}</Text>
+                  </View>
+                ) : null}
               </View>
             ) : null}
 
-            {/* Session type */}
-            <Pressable onPress={() => setTypeOpen(true)} disabled={!!busy} style={({ pressed }) => [styles.typeRow, pressed && { opacity: 0.8 }]} testID="v3-preview-type">
-              <View style={{ flex: 1 }}>
-                <Text style={styles.typeLabel}>TYPE</Text>
-                <Text style={styles.typeValue}>{tl?.value}</Text>
+            {teaser ? (
+              <View style={styles.teaser} testID="v3-preview-teaser">
+                <Text style={styles.teaserTitle}>{teaser.title}</Text>
+                <Text style={styles.teaserText}>{teaser.text}</Text>
               </View>
-              <Text style={styles.typeChange}>Change</Text>
-              <Ionicons name="chevron-down" size={14} color={COLORS.textSecondary} />
-            </Pressable>
+            ) : null}
 
-            {/* Structure */}
             <PreviewSections workout={w} />
+          </Animated.View>
 
-            {/* Built for Today teaser */}
-            <Pressable onPress={onDetails} style={({ pressed }) => [styles.why, pressed && { opacity: 0.85 }]} testID="v3-preview-details">
-              <View style={styles.whyHead}>
-                <Ionicons name="sparkles" size={14} color={COLORS.accent} />
-                <Text style={styles.whyTitle}>BUILT FOR TODAY</Text>
-              </View>
-              {firstWhy ? <Text style={styles.whyText} numberOfLines={2}>{firstWhy}</Text> : null}
-              <View style={styles.whyMore}>
-                <Text style={styles.whyMoreText}>Why MOOD built this · warm-up · exercise details</Text>
-                <Ionicons name="chevron-forward" size={14} color={COLORS.textSecondary} />
-              </View>
+          <View style={styles.actions}>
+            <Pressable
+              onPress={onDifferent}
+              disabled={building}
+              style={({ pressed }) => [styles.action, pressed && { opacity: 0.7 }]}
+              testID="v3-swap-workout"
+              accessibilityState={{ busy: building }}
+            >
+              {building ? <ActivityIndicator size="small" color={COLORS.textPrimary} /> : <Ionicons name="shuffle" size={16} color={COLORS.textPrimary} />}
+              <Text style={styles.actionText}>{building ? 'Building…' : 'Different workout'}</Text>
+            </Pressable>
+            <Pressable onPress={onDetails} style={({ pressed }) => [styles.action, pressed && { opacity: 0.7 }]} testID="v3-preview-details">
+              <Ionicons name="list-outline" size={16} color={COLORS.textPrimary} />
+              <Text style={styles.actionText}>Details</Text>
             </Pressable>
           </View>
-
-          <Pressable onPress={onDifferent} disabled={!!busy} style={({ pressed }) => [styles.diff, (pressed || !!busy) && { opacity: 0.6 }]} testID="v3-swap-workout">
-            {busy === 'different' ? <ActivityIndicator size="small" color={COLORS.textSecondary} /> : <Ionicons name="shuffle" size={16} color={COLORS.textSecondary} />}
-            <Text style={styles.diffText}>Different workout</Text>
-          </Pressable>
-          <Text style={styles.diffHint}>
-            {w.selection_source === 'moods_pick'
-              ? 'MOOD may pick a different type.'
-              : w.selection_source === 'target'
-                ? 'Keeps your Target and changes the exercises.'
-                : `Keeps ${w.archetype.name} and changes the exercises.`}
-          </Text>
         </ScrollView>
       )}
 
       {w ? (
         <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]}>
           <LinearGradient colors={['rgba(10,10,10,0)', COLORS.bg]} style={styles.fade as any} />
-          <Pressable onPress={onStart} disabled={!!busy} testID="v3-start-workout">
-            <LinearGradient colors={[...BRAND_GRADIENT]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.cta, !!busy && { opacity: 0.6 }] as any}>
-              {busy === 'type' ? <ActivityIndicator color={COLORS.accentInk} /> : <Ionicons name="play" size={18} color={COLORS.accentInk} />}
-              <Text style={styles.ctaText}>{busy === 'type' ? 'Building' : 'Start Workout'}</Text>
+          <Pressable onPress={onStart} disabled={building} testID="v3-start-workout">
+            <LinearGradient colors={[...BRAND_GRADIENT]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.cta, building && { opacity: 0.6 }] as any}>
+              <Ionicons name="play" size={18} color={COLORS.accentInk} />
+              <Text style={styles.ctaText}>Start Workout</Text>
             </LinearGradient>
           </Pressable>
         </View>
       ) : null}
 
-      {w ? (
-        <ArchetypeSheet
-          visible={typeOpen}
-          direction={w.direction}
-          selected={w.selection_source === 'user_selected' ? w.archetype.id : w.selection_source === 'target' ? '__target__' : null}
-          note={
-            w.selection_source === 'target'
-              ? `Picking a type replaces your Target (${w.target.label}).`
-              : 'Same feelings, soreness and length. MOOD rebuilds the session.'
-          }
-          onSelect={onType}
-          onClose={() => setTypeOpen(false)}
-        />
-      ) : null}
-      <ConflictSheet conflict={conflict?.conflict ?? null} onSelect={(o) => onConflictOption(o)} onClose={() => setConflict(null)} />
-
       {toast ? (
-        <Animated.View style={[styles.toast, { top: insets.top + 54, opacity: toastOpacity }]} pointerEvents="none">
+        <Animated.View style={[styles.toast, { top: insets.top + 54, opacity: toastOpacity }]} pointerEvents="none" testID="v3-preview-toast">
           <Text style={styles.toastText}>{toast}</Text>
         </Animated.View>
       ) : null}
@@ -365,79 +276,37 @@ export default function V3WorkoutPreview() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.bg },
-  topBar: { paddingHorizontal: 12, paddingBottom: 4, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  topBar: { paddingHorizontal: 12, paddingBottom: 4 },
   back: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.06)' },
-  detailsLink: { paddingHorizontal: 12, paddingVertical: 7, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.06)' },
-  detailsLinkText: { fontSize: 13, fontWeight: '700', color: COLORS.textPrimary },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32 },
-  scroll: { paddingHorizontal: 20, paddingTop: 10 },
+  scroll: { paddingHorizontal: 22, paddingTop: 8 },
   errorText: { fontSize: 15, lineHeight: 22, color: COLORS.textSecondary, textAlign: 'center' },
   errorBtn: { marginTop: 16, paddingHorizontal: 18, paddingVertical: 10, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.08)' },
   errorBtnText: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary },
 
-  eyebrow: { fontSize: 12, fontWeight: '800', letterSpacing: 2, color: COLORS.accent },
-  title: { fontSize: 32, lineHeight: 37, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.6, marginTop: 6 },
-  subtitle: { fontSize: 16, fontWeight: '600', color: COLORS.textSecondary, marginTop: 4 },
-  facts: { fontSize: 13.5, color: COLORS.textSecondary, marginTop: 8 },
+  eyebrow: { fontSize: 12, fontWeight: '800', letterSpacing: 2.2, color: COLORS.accent },
+  title: { fontSize: 34, lineHeight: 39, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.7, marginTop: 6 },
+  meta: { fontSize: 14.5, color: COLORS.textSecondary, marginTop: 6, fontWeight: '500' },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 12 },
+  chip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.08)' },
+  chipText: { fontSize: 12, fontWeight: '600', color: COLORS.textPrimary, textTransform: 'capitalize' },
 
-  changeNote: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    alignSelf: 'flex-start',
-    marginTop: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    backgroundColor: 'rgba(255,215,0,0.1)',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(255,215,0,0.4)',
-  },
-  changeNoteText: { fontSize: 13, fontWeight: '700', color: COLORS.textPrimary },
+  teaser: { marginTop: 18, paddingLeft: 12, borderLeftWidth: 2, borderLeftColor: COLORS.accent },
+  teaserTitle: { fontSize: 13.5, fontWeight: '700', color: COLORS.textPrimary },
+  teaserText: { fontSize: 13.5, lineHeight: 19, color: COLORS.textSecondary, marginTop: 2 },
 
-  typeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginTop: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 11,
-    borderRadius: 14,
-    backgroundColor: 'rgba(255,255,255,0.045)',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(255,255,255,0.12)',
-  },
-  typeLabel: { fontSize: 10.5, fontWeight: '800', letterSpacing: 1.6, color: COLORS.textTertiary },
-  typeValue: { fontSize: 15.5, fontWeight: '700', color: COLORS.textPrimary, marginTop: 2 },
-  typeChange: { fontSize: 13, fontWeight: '600', color: COLORS.textSecondary },
-
-  why: {
-    marginTop: 24,
-    padding: 16,
-    borderRadius: 18,
-    backgroundColor: '#141414',
-    borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.28)',
-  },
-  whyHead: { flexDirection: 'row', alignItems: 'center', gap: 7 },
-  whyTitle: { fontSize: 11, fontWeight: '800', letterSpacing: 1.8, color: COLORS.accent },
-  whyText: { fontSize: 14.5, lineHeight: 21, color: COLORS.textPrimary, marginTop: 8 },
-  whyMore: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 },
-  whyMoreText: { fontSize: 12.5, fontWeight: '600', color: COLORS.textSecondary },
-
-  diff: {
+  actions: { flexDirection: 'row', gap: 10, marginTop: 28 },
+  action: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    marginTop: 18,
     paddingVertical: 14,
-    borderRadius: 16,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(255,255,255,0.16)',
+    borderRadius: 15,
+    backgroundColor: 'rgba(255,255,255,0.06)',
   },
-  diffText: { fontSize: 14.5, fontWeight: '600', color: COLORS.textSecondary },
-  diffHint: { fontSize: 12, color: COLORS.textTertiary, textAlign: 'center', marginTop: 8 },
+  actionText: { fontSize: 14.5, fontWeight: '700', color: COLORS.textPrimary },
   footer: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 20 },
   fade: { position: 'absolute', left: 0, right: 0, top: -36, bottom: 0 },
   cta: { height: 56, borderRadius: 18, flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center' },

@@ -1,19 +1,16 @@
 /**
- * V3Home — Today's Workout.
+ * V3Home: Today's Workout (Phase 2.6 hierarchy).
  *
- * "Onboarding tells MOOD who you are as an athlete. Home tells MOOD how you are
- * today." The Training Profile (server) supplies goal, experience, frequency
- * and equipment; Home only asks for today's inputs:
+ * "Onboarding tells MOOD who you are as an athlete. Home tells MOOD how you are today." Home answers one question:
+ * what happens if I tap Build?
  *
- *   A. How are you feeling?   States (optional, max 3) + sore areas
- *   B. What are we doing?     Strength / Sweat / Athletic (always one selected)
- *   C. Type + Target + Length Type = MOOD's Pick by default or an explicit archetype (Phase 2.5);
- *                             optional Target (Strength/Sweat); 60 / 30. Picking a type clears the
- *                             Target and picking a Target returns the type to MOOD's Pick.
+ *   A. How are you feeling?   optional States (max 3) + sore areas
+ *   B. What are we doing?     Strength / Sweat / Athletic (one always selected)
+ *   C. One compact row        "MOOD's Pick · 60 min"  Change  (Focus / Workout Type / Length live in ConfigSheet)
  *   D. Build workout          POST /api/v3/workouts/generate -> Workout Preview
  *
- * Zero-input path: default Direction + MOOD's Pick + 60 min = one tap.
- * First visit only: the Phase 1 barrier prefill (visible, removable).
+ * Default path: optional State -> Direction -> Build. First visit only: the barrier prefill, shown as a one-line hint.
+ * Today's workout is reopened only when it was built with the same inputs by the engine that is running now.
  */
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -34,45 +31,41 @@ import {
 import {
   V3Conflict,
   V3ConflictOption,
+  EXPECTED_ENGINE_PHASE,
   V3Direction,
   V3State,
   generateV3Workout,
+  getV3Version,
   localDateISO,
 } from '../../utils/v3Api';
 import {
   BARRIER_BANNER,
   BarrierKey,
   DIRECTIONS,
-  DURATIONS,
   HomeInputs,
   MAX_STATES,
   SORE_REGIONS,
   STATES,
   STATE_LABEL,
-  TARGETS,
   applyConflictOption,
-  archetypeName,
   buildBlocker,
   buildRequest,
-  clearTarget,
+  configSummary,
   initialInputs,
-  isTargetSelected,
   moodsPickCopy,
   requestSignature,
-  setArchetype,
   setDirection,
-  setDuration,
   summaryLine,
-  targetLabel,
-  targetSupported,
   toggleSoreRegion,
   toggleState,
-  toggleTarget,
 } from '../../utils/v3HomeModel';
 import { V3TodayEntry, readLastDirection, readToday, writeLastDirection, writeToday } from '../../utils/v3Today';
 import { V3Chip } from './V3Chip';
 import { ConflictSheet } from './ConflictSheet';
-import { ArchetypeSheet } from './ArchetypeSheet';
+import { ConfigSheet } from './ConfigSheet';
+import { previewTitle } from '../../utils/v3PreviewFormat';
+
+declare const __DEV__: boolean;
 
 const VALID_STATES = new Set<string>(STATES.map((s) => s.id));
 
@@ -91,10 +84,10 @@ export default function V3Home() {
   const [inputs, setInputs] = useState<HomeInputs | null>(null);
   const [handoff, setHandoff] = useState<FirstHomeHandoff | null>(null);
   const [today, setToday] = useState<V3TodayEntry | null>(null);
-  const [focusOpen, setFocusOpen] = useState(false);
-  const [typeOpen, setTypeOpen] = useState(false);
+  const [configOpen, setConfigOpen] = useState(false);
   const [stateHint, setStateHint] = useState(false);
-  const [targetHint, setTargetHint] = useState(false);
+  /** Engine identity of the running backend (GET /api/v3/version). null = unknown / unreachable. */
+  const [engine, setEngine] = useState<{ engine_phase: string; engine_build: string } | null | undefined>(undefined);
   const [building, setBuilding] = useState(false);
   const [conflict, setConflict] = useState<V3Conflict | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -150,17 +143,31 @@ export default function V3Home() {
     }, [uid]),
   );
 
+  // Which engine is the backend running? Used to never reopen a workout an older engine built, and (dev builds) to
+  // flag a backend process that is still running old code.
+  useEffect(() => {
+    let alive = true;
+    getV3Version(token ?? null).then((v) => {
+      if (!alive) return;
+      setEngine(v);
+      if (typeof __DEV__ !== 'undefined' && __DEV__) {
+        // eslint-disable-next-line no-console
+        console.log(`[v3] backend engine ${v ? `${v.engine_phase}/${v.engine_build} started ${v.started_at}` : 'UNKNOWN (no /api/v3/version: old backend process?)'}`);
+      }
+    });
+    return () => {
+      alive = false;
+    };
+  }, [token]);
+
   useEffect(() => () => {
     if (hintTimer.current) clearTimeout(hintTimer.current);
   }, []);
 
-  const flashHint = (which: 'state' | 'target') => {
+  const flashHint = () => {
     if (hintTimer.current) clearTimeout(hintTimer.current);
-    which === 'state' ? setStateHint(true) : setTargetHint(true);
-    hintTimer.current = setTimeout(() => {
-      setStateHint(false);
-      setTargetHint(false);
-    }, 2600);
+    setStateHint(true);
+    hintTimer.current = setTimeout(() => setStateHint(false), 2600);
   };
 
   /* ---------------------------------------------------------------- first-visit prefill */
@@ -186,7 +193,7 @@ export default function V3Home() {
     if (!inputs) return;
     const r = toggleState(inputs, id);
     if (r.limitHit) {
-      flashHint('state');
+      flashHint();
       track('v3_state_limit_reached', { state: id });
       return;
     }
@@ -203,42 +210,27 @@ export default function V3Home() {
     setError(null);
   };
 
-  const onTarget = (chipId: string) => {
+  const onConfig = (next: HomeInputs) => {
+    setConfigOpen(false);
     if (!inputs) return;
-    const r = toggleTarget(inputs, chipId);
-    if (r.limitHit) {
-      flashHint('target');
-      return;
-    }
-    setInputs(r.inputs);
-    track('v3_target_changed', { target: r.inputs.target, direction: inputs.direction });
-  };
-
-  const onArchetype = (a: string | null) => {
-    setTypeOpen(false);
-    if (!inputs || a === inputs.archetype) return;
-    const next = setArchetype(inputs, a);
-    track('v3_archetype_changed', {
-      surface: 'home',
-      direction: inputs.direction,
-      from: inputs.archetype ?? 'moods_pick',
-      to: a ?? 'moods_pick',
-      cleared_target: !!a && inputs.target !== null,
-    });
+    const changed = next.target !== inputs.target || next.archetype !== inputs.archetype || next.duration !== inputs.duration;
     setInputs(next);
-    if (a) setFocusOpen(false);
-  };
-
-  const onMoodsPick = () => {
-    if (!inputs) return;
-    setInputs(clearTarget(inputs));
-    track('v3_target_changed', { target: null, direction: inputs.direction });
-  };
-
-  const onDuration = (d: 30 | 60) => {
-    if (!inputs || d === inputs.duration) return;
-    setInputs(setDuration(inputs, d));
-    track('v3_duration_changed', { duration: d, suggested: suggest30 && d === 30 });
+    setError(null);
+    if (changed) {
+      track('v3_config_changed', {
+        direction: next.direction,
+        target: next.target,
+        archetype: next.archetype,
+        duration: next.duration,
+        from_target: inputs.target,
+        from_archetype: inputs.archetype,
+        from_duration: inputs.duration,
+      });
+      if (next.archetype !== inputs.archetype) {
+        track('v3_archetype_changed', { surface: 'home', direction: next.direction, from: inputs.archetype ?? 'moods_pick', to: next.archetype ?? 'moods_pick' });
+      }
+      if (next.duration !== inputs.duration) track('v3_duration_changed', { duration: next.duration, suggested: suggest30 && next.duration === 30 });
+    }
   };
 
   /* ---------------------------------------------------------------- build */
@@ -264,8 +256,10 @@ export default function V3Home() {
     });
     if (moodsPick) track('v3_moods_pick_used', { direction: req.direction });
 
-    // Same inputs, same day: the workout already exists. Reopen it.
-    if (today && today.signature === sig) {
+    // Same inputs, same day, same engine: the workout already exists. Reopen it. A workout built by another engine
+    // (e.g. before a backend update or while an old process was running) is never passed off as a fresh build.
+    const sameEngine = !!engine && today?.envelope.engine?.build === engine.engine_build;
+    if (today && today.signature === sig && sameEngine) {
       track('v3_workout_reopened', { workout_id: today.workout_id });
       openWorkout(today.workout_id);
       return;
@@ -322,7 +316,7 @@ export default function V3Home() {
     setConflict(null);
     if (r.effect === 'close') return;
     if (r.effect === 'open_target_picker') {
-      setFocusOpen(true);
+      setConfigOpen(true);
       return;
     }
     setInputs(r.inputs);
@@ -331,8 +325,9 @@ export default function V3Home() {
 
   /* ---------------------------------------------------------------- render */
   const blocker = inputs ? buildBlocker(inputs) : null;
-  const tLabel = inputs ? targetLabel(inputs.target) : null;
-  const canTarget = inputs ? targetSupported(inputs.direction) : true;
+  // Today's workout is only offered when the running engine built it (never an older engine's cached output).
+  const todayCurrent = !!today && !!engine && today.envelope.engine?.build === engine.engine_build;
+  const staleBackend = typeof __DEV__ !== 'undefined' && __DEV__ && engine !== undefined && (!engine || engine.engine_phase !== EXPECTED_ENGINE_PHASE);
   const buildingLine = useMemo(() => {
     if (!inputs) return '';
     const s = inputs.states.map((x) => STATE_LABEL[x]);
@@ -360,7 +355,7 @@ export default function V3Home() {
         <Text style={styles.h1}>Today's workout</Text>
 
         {/* Today's generated workout, reopenable */}
-        {today?.envelope.workout ? (
+        {todayCurrent && today?.envelope.workout ? (
           <Pressable
             onPress={() => {
               track('v3_workout_reopened', { workout_id: today.workout_id, source: 'today_card' });
@@ -372,7 +367,7 @@ export default function V3Home() {
             <View style={{ flex: 1 }}>
               <Text style={styles.todayEyebrow}>READY TO GO</Text>
               <Text style={styles.todayTitle}>
-                {today.envelope.workout.direction_name} · {today.envelope.workout.archetype.name}
+                {today.envelope.workout.direction_name} · {previewTitle(today.envelope.workout)}
               </Text>
               <Text style={styles.todayMeta}>{today.envelope.workout.duration.display}</Text>
             </View>
@@ -383,15 +378,24 @@ export default function V3Home() {
           </Pressable>
         ) : null}
 
-        {/* First-visit barrier prefill */}
+        {staleBackend ? (
+          <View style={styles.devWarn} testID="v3-dev-stale-backend">
+            <Text style={styles.devWarnText}>
+              DEV: backend is not running engine {EXPECTED_ENGINE_PHASE} ({engine ? `it reports ${engine.engine_phase}` : 'no /api/v3/version'}). Restart uvicorn, then reload the app.
+            </Text>
+          </View>
+        ) : null}
+
+        {/* First-visit barrier prefill: a starting suggestion, not another setting */}
         {banner ? (
-          <View style={styles.banner} testID="v3-prefill-banner">
-            <View style={{ flex: 1 }}>
-              <Text style={styles.bannerTitle}>{banner.title}</Text>
-              <Text style={styles.bannerBody}>{banner.body}</Text>
-            </View>
+          <View style={styles.hintRow} testID="v3-prefill-banner">
+            <Ionicons name="sparkles" size={13} color={COLORS.accent} />
+            <Text style={styles.hintText}>
+              <Text style={styles.hintStrong}>{banner.title}. </Text>
+              {banner.body}
+            </Text>
             <Pressable onPress={dismissPrefill} hitSlop={10} accessibilityLabel="Dismiss" testID="v3-prefill-dismiss">
-              <Ionicons name="close" size={18} color="rgba(255,255,255,0.55)" />
+              <Ionicons name="close" size={16} color="rgba(255,255,255,0.45)" />
             </Pressable>
           </View>
         ) : null}
@@ -478,89 +482,21 @@ export default function V3Home() {
           </View>
         </View>
 
-        {/* C. Type + Target + Length */}
-        <View style={styles.section}>
-          <View style={[styles.panel, emphasizePick && !tLabel && !inputs.archetype && styles.panelEmph]}>
-            <Pressable onPress={() => setTypeOpen(true)} style={styles.panelRow} testID="v3-type-toggle">
-              <View style={{ flex: 1 }}>
-                <Text style={styles.panelLabel}>TYPE</Text>
-                <Text style={styles.panelValue}>{archetypeName(inputs.archetype) ?? (tLabel ? 'Built from your Target' : "MOOD's Pick")}</Text>
-              </View>
-              <View style={styles.change}>
-                <Text style={styles.changeText}>Change</Text>
-                <Ionicons name="chevron-down" size={14} color={COLORS.textSecondary} />
-              </View>
-            </Pressable>
-            {!tLabel && !inputs.archetype ? <Text style={styles.pickCopy}>{moodsPickCopy(inputs.direction)}</Text> : null}
-
-            {canTarget ? <View style={styles.hr} /> : null}
-            {canTarget ? (
-            <Pressable
-              onPress={() => canTarget && setFocusOpen((v) => !v)}
-              style={styles.panelRow}
-              disabled={!canTarget}
-              testID="v3-focus-toggle"
-            >
-              <View style={{ flex: 1 }}>
-                <Text style={styles.panelLabel}>TARGET</Text>
-                <Text style={[styles.panelValue, !tLabel && styles.panelValueQuiet]}>{tLabel ?? 'None'}</Text>
-              </View>
-              {canTarget ? (
-                <View style={styles.change}>
-                  <Text style={styles.changeText}>{focusOpen ? 'Done' : 'Change'}</Text>
-                  <Ionicons name={focusOpen ? 'chevron-up' : 'chevron-down'} size={14} color={COLORS.textSecondary} />
-                </View>
-              ) : null}
-            </Pressable>
-            ) : null}
-            {focusOpen && canTarget ? (
-              <View style={styles.targets} testID="v3-targets">
-                <View style={styles.wrap}>
-                  <V3Chip size="sm" label="None" selected={inputs.target === null} onPress={onMoodsPick} testID="v3-target-moods-pick" />
-                  {TARGETS.map((t) => (
-                    <V3Chip
-                      key={t.id}
-                      size="sm"
-                      label={t.label}
-                      selected={isTargetSelected(inputs, t.id)}
-                      onPress={() => onTarget(t.id)}
-                      testID={`v3-target-${t.id}`}
-                    />
-                  ))}
-                </View>
-                <Text style={styles.targetHint}>
-                  {targetHint
-                    ? 'Up to 3 muscle groups. Arms counts as two.'
-                    : inputs.archetype
-                      ? `Picking a Target sets the type back to MOOD's Pick.`
-                      : 'Pick up to 3, or Full Body. MOOD builds the session around them.'}
-                </Text>
-              </View>
-            ) : null}
-
-            <View style={styles.hr} />
-
-            <View style={styles.panelRow}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.panelLabel}>LENGTH</Text>
-                {suggest30 && inputs.duration === 60 ? <Text style={styles.suggest}>Short on time? Try 30.</Text> : null}
-              </View>
-              <View style={styles.seg}>
-                {DURATIONS.map((d) => (
-                  <V3Chip
-                    key={d}
-                    size="sm"
-                    label={`${d} min`}
-                    badge={suggest30 && d === 30 && inputs.duration !== 30 ? 'SUGGESTED' : undefined}
-                    selected={inputs.duration === d}
-                    onPress={() => onDuration(d)}
-                    testID={`v3-duration-${d}`}
-                  />
-                ))}
-              </View>
-            </View>
+        {/* C. One compact configuration row */}
+        <Pressable
+          onPress={() => setConfigOpen(true)}
+          style={({ pressed }) => [styles.config, emphasizePick && styles.configEmph, pressed && { opacity: 0.85 }]}
+          testID="v3-config"
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={styles.configValue} testID="v3-config-summary">
+              {configSummary(inputs)}
+            </Text>
+            {emphasizePick && !inputs.archetype && inputs.target === null ? <Text style={styles.configSub}>{moodsPickCopy(inputs.direction)}</Text> : null}
+            {suggest30 && inputs.duration === 60 ? <Text style={styles.configSub}>Short on time? 30 min is one tap away.</Text> : null}
           </View>
-        </View>
+          <Text style={styles.configChange}>Change</Text>
+        </Pressable>
 
         {error ? (
           <View style={styles.error} testID="v3-home-error">
@@ -601,14 +537,7 @@ export default function V3Home() {
       </View>
 
       <ConflictSheet conflict={conflict} onSelect={onConflictOption} onClose={() => setConflict(null)} />
-      <ArchetypeSheet
-        visible={typeOpen}
-        direction={inputs.direction}
-        selected={inputs.archetype}
-        note={tLabel ? `Picking a type replaces your Target (${tLabel}).` : "MOOD's Pick chooses from your profile and recent workouts."}
-        onSelect={onArchetype}
-        onClose={() => setTypeOpen(false)}
-      />
+      <ConfigSheet visible={configOpen} inputs={inputs} suggest30={suggest30} onApply={onConfig} onClose={() => setConfigOpen(false)} />
     </View>
   );
 }
@@ -650,18 +579,11 @@ const styles = StyleSheet.create({
   },
   todayOpenText: { fontSize: 13, fontWeight: '700', color: COLORS.accentInk },
 
-  banner: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 18,
-    padding: 14,
-    borderRadius: 16,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(255,255,255,0.14)',
-  },
-  bannerTitle: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary },
-  bannerBody: { fontSize: 13, lineHeight: 19, color: COLORS.textSecondary, marginTop: 2 },
+  hintRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginTop: 14 },
+  hintText: { flex: 1, fontSize: 13, lineHeight: 19, color: COLORS.textSecondary },
+  hintStrong: { color: COLORS.textPrimary, fontWeight: '700' },
+  devWarn: { marginTop: 12, padding: 10, borderRadius: 10, backgroundColor: 'rgba(255,69,58,0.14)', borderWidth: 1, borderColor: 'rgba(255,69,58,0.5)' },
+  devWarnText: { fontSize: 12, lineHeight: 17, color: '#ff8a80', fontWeight: '600' },
 
   sore: { marginTop: 14, paddingTop: 14, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: 'rgba(255,255,255,0.1)' },
   soreLabel: { fontSize: 13.5, fontWeight: '600', color: COLORS.textSecondary, marginBottom: 10 },
@@ -677,27 +599,22 @@ const styles = StyleSheet.create({
   dirNameOff: { color: 'rgba(255,255,255,0.85)' },
   dirDesc: { fontSize: 11.5, lineHeight: 15, color: COLORS.textTertiary, marginTop: 3 },
 
-  panel: {
-    borderRadius: 18,
+  config: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 22,
     paddingHorizontal: 16,
-    paddingVertical: 4,
-    backgroundColor: 'rgba(255,255,255,0.04)',
+    paddingVertical: 15,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.045)',
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: 'rgba(255,255,255,0.12)',
   },
-  panelEmph: { borderWidth: 1, borderColor: 'rgba(255,215,0,0.35)' },
-  panelRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12, gap: 10 },
-  panelLabel: { fontSize: 10.5, fontWeight: '800', letterSpacing: 1.6, color: COLORS.textTertiary },
-  panelValue: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginTop: 3 },
-  panelValueQuiet: { color: COLORS.textSecondary, fontWeight: '600' },
-  change: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  changeText: { fontSize: 13, fontWeight: '600', color: COLORS.textSecondary },
-  pickCopy: { fontSize: 12.5, lineHeight: 18, color: COLORS.textTertiary, marginTop: -4, marginBottom: 12 },
-  targets: { paddingBottom: 12 },
-  targetHint: { fontSize: 12, color: COLORS.textTertiary, marginTop: 10 },
-  hr: { height: StyleSheet.hairlineWidth, backgroundColor: 'rgba(255,255,255,0.1)' },
-  seg: { flexDirection: 'row', gap: 8 },
-  suggest: { fontSize: 12, color: COLORS.textSecondary, marginTop: 3 },
+  configEmph: { borderWidth: 1, borderColor: 'rgba(255,215,0,0.35)' },
+  configValue: { fontSize: 17, fontWeight: '700', color: COLORS.textPrimary },
+  configSub: { fontSize: 12.5, lineHeight: 18, color: COLORS.textTertiary, marginTop: 4 },
+  configChange: { fontSize: 14, fontWeight: '700', color: COLORS.accent },
 
   error: {
     marginTop: 20,

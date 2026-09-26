@@ -3,7 +3,9 @@
 #
 # Prereq: the backend is running on port 8001 in another window:
 #   cd backend && source ~/.venvs/mood/bin/activate
-#   JWT_SECRET=dev-only-secret uvicorn server:app --host 0.0.0.0 --port 8001
+#   JWT_SECRET=dev-only-secret uvicorn server:app --host 0.0.0.0 --port 8001 --reload
+# --reload matters: without it the backend keeps running whatever code it started with, even after a
+# git pull or branch update (Phase 2.6 founder bugs were an old backend process serving Phase 2 output).
 #
 # Default: phone and Mac on the same Wi-Fi. The app talks to the backend at
 # http://<your Mac's Wi-Fi IP>:8001 (no tunnel), then Metro starts for the
@@ -20,6 +22,15 @@ if ! nc -z localhost 27017 2>/dev/null; then
   echo "✗ MongoDB isn't running. Run: brew services start mongodb-community   (then restart the backend)"
   exit 1
 fi
+
+EXPECTED_ENGINE="2.6"
+ENGINE=$(curl -s -m 5 http://localhost:8001/api/v3/version | python3 -c 'import sys,json; print(json.load(sys.stdin).get("engine_phase",""))' 2>/dev/null || true)
+if [[ "$ENGINE" != "$EXPECTED_ENGINE" ]]; then
+  echo "✗ The backend on :8001 is running old V3 code (engine '${ENGINE:-none}', expected $EXPECTED_ENGINE)."
+  echo "  Stop it (Ctrl+C in its window) and start it again with --reload (see the top of this script)."
+  exit 1
+fi
+echo "✓ Backend engine $ENGINE"
 
 IP=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || true)
 [[ -z "$IP" ]] && { echo "✗ Couldn't find your Mac's Wi-Fi IP. Is Wi-Fi on?"; exit 1; }

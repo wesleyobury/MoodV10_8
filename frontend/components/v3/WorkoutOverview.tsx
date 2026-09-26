@@ -93,13 +93,15 @@ export function WorkoutOverview({ envelope, onSwap, swappingItemId, highlightIte
               <Text style={[styles.bftLabel, styles.bftLabelGap]}>MOOD CHOSE</Text>
               <Text style={styles.chose} testID="v3-today-chose">{w.today.chose}</Text>
               {w.today.chosen_by ? <Text style={styles.chosenBy}>{w.today.chosen_by}</Text> : null}
-              <View style={styles.bftRule} />
+              {built.length ? <View style={styles.bftRule} /> : null}
             </>
           ) : null}
-          <View style={styles.bftHead}>
-            <Ionicons name="sparkles" size={14} color={COLORS.accent} />
-            <Text style={styles.bftTitle}>BUILT FOR TODAY</Text>
-          </View>
+          {built.length ? (
+            <View style={styles.bftHead}>
+              <Ionicons name="sparkles" size={14} color={COLORS.accent} />
+              <Text style={styles.bftTitle}>BUILT FOR TODAY</Text>
+            </View>
+          ) : null}
           {built.map((l) => (
             <View key={l.code + l.text} style={styles.bftLine}>
               <View style={styles.bftBullet} />

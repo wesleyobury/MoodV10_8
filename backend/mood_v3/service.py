@@ -62,7 +62,7 @@ def _finish(ctx, res, history_records, perf_history, workout_id, version, source
     res = dict(res, warmup=warm, blocks=blocks, cooldown=cool, adjustments=_adjustments(res))
     lines = explain.build_lines(ctx, res, history_records)
     return F.envelope_ok(workout_id=workout_id, version=version, ctx=ctx, res=res, built_for_today=lines, created_at=now_iso(),
-                         today=explain.today_summary(ctx, res))
+                         today=explain.today_block(ctx, res, lines))
 
 def _adjustments(res):
     out = []
@@ -194,6 +194,6 @@ def swap_workout(state, envelope, perf_history=()):
         if before and after:
             k = sum(1 for x in after if x not in before)
             env['workout']['built_for_today'].insert(0, dict(code='different_workout',
-                text=f"You asked for a different workout: {k} of {len(after)} exercises changed, same {env['workout']['archetype']['name']} setup."))
-            env['workout']['built_for_today'] = env['workout']['built_for_today'][:6]
+                text=f"A different {env['workout']['archetype']['name']} session: {k} of {len(after)} exercises changed."))
+            env['workout']['built_for_today'] = env['workout']['built_for_today'][:explain.MAX_LINES]
     return env, st2
