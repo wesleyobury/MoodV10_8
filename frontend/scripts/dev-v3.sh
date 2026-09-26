@@ -7,12 +7,17 @@
 #
 # Default: phone and Mac on the same Wi-Fi. The app talks to the backend at
 # http://<your Mac's Wi-Fi IP>:8001 (no tunnel), then Metro starts for the
-# dev client. Ctrl+C stops it. When finished testing: yarn env:prod
+# dev client. Ctrl+C stops it. When finished testing: git checkout .env
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 if ! curl -s -m 5 http://localhost:8001/api/health >/dev/null; then
   echo "✗ Backend is not answering on http://localhost:8001. Start it first (see the top of this script)."
+  exit 1
+fi
+
+if ! nc -z localhost 27017 2>/dev/null; then
+  echo "✗ MongoDB isn't running. Run: brew services start mongodb-community   (then restart the backend)"
   exit 1
 fi
 
@@ -25,8 +30,13 @@ if ! curl -s -m 5 "$URL/api/health" >/dev/null; then
   exit 1
 fi
 
-printf "EXPO_PUBLIC_API_URL=%s\nEXPO_PUBLIC_BACKEND_URL=%s\nEXPO_USE_FAST_RESOLVER=1\nEXPO_USE_STATIC=false\n" "$URL" "$URL" > .env
-echo "✓ Backend: $URL (written to .env)"
+# Expo loads .env.development ON TOP of .env in dev, so both must agree. Neither may
+# set EXPO_PACKAGER_PROXY_URL (the old sync-env did): it makes Metro send the phone
+# to that URL for the app bundle, which is what "problem loading the project" was.
+BODY=$(printf "EXPO_PUBLIC_API_URL=%s\nEXPO_PUBLIC_BACKEND_URL=%s\nEXPO_USE_FAST_RESOLVER=1\nEXPO_USE_STATIC=false\n" "$URL" "$URL")
+printf "%s\n" "$BODY" > .env
+printf "%s\nEXPO_PUBLIC_FORCE_SIGNUP_PAYWALL=true\n" "$BODY" > .env.development
+echo "✓ Backend: $URL (written to .env and .env.development)"
 echo "→ On your iPhone (same Wi-Fi): swipe MOOD away, then scan the QR code below."
 
 npx expo start --dev-client --clear "$@"
