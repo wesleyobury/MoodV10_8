@@ -20,6 +20,16 @@ let so=M.toggleState(M.initialInputs('strength'),'sore').inputs; so=M.toggleSore
 let d=M.setArchetype(M.initialInputs('strength'),'strength_arms'); d=M.setDirection(d,'sweat'); ok(d.archetype===null && M.buildRequest(d,'x').archetype===undefined,'direction clears type');
 let d2=M.toggleTarget(M.initialInputs('strength'),'chest').inputs; d2=M.setDirection(d2,'athletic'); ok(M.buildRequest(d2,'x').target===undefined,'athletic never sends target');
 ok(!M.targetSupported('athletic') && M.targetSupported('sweat'),'focus availability');
+// ---- Difficulty (= session experience): profile default, today-only override
+let x=M.initialInputs('strength'); ok(x.difficulty===null && M.buildRequest(x,'d').experience===undefined,'no override: nothing sent (server uses profile)');
+ok(M.effectiveDifficulty(x,'intermediate')==='intermediate' && M.effectiveDifficulty(x,null)==='intermediate','effective default');
+x=M.setDifficulty(x,'advanced','intermediate'); ok(x.difficulty==='advanced' && M.buildRequest(x,'d').experience==='advanced','advanced override sent');
+ok(M.configSummary(x)==="MOOD's Pick · Advanced · 60 min" && M.summaryLine(x)==="Strength · MOOD's Pick · Advanced · 60 min",'override surfaced');
+x=M.setDifficulty(x,'intermediate','intermediate'); ok(x.difficulty===null && M.configSummary(x)==="MOOD's Pick · 60 min",'choosing the profile level clears the override');
+x=M.setDifficulty(M.toggleTarget(M.initialInputs('strength'),'chest').inputs,'beginner','advanced'); ok(M.configSummary(x)==='Chest · Beginner · 60 min','chest beginner summary');
+ok(M.requestSignature(M.buildRequest(x,'d'))!==M.requestSignature(M.buildRequest({...x,difficulty:null},'d')),'signature includes difficulty');
+ok(M.setDirection(x,'sweat').difficulty==='beginner','difficulty survives direction change (it is not direction-specific)');
+
 // ---- Preview structure
 const labels=(k:string)=>V.previewSections(pk(k)).map(x=>x.label);
 ok(JSON.stringify(labels('S2'))===JSON.stringify(['STRAIGHT SETS','SUPERSET · 2 rounds','STRAIGHT SETS','FINISHER · 2 rounds']),'S2 labels '+labels('S2'));
@@ -41,13 +51,23 @@ for (const p of PACK){ const w=p.envelope.workout; if(!w) continue; const secs=V
 // ---- title / meta
 ok(V.previewTitle(pk('p25_ct_chest'))==='Chest','title chest'); ok(V.previewTitle(pk('p25_ct_back_core'))==='Back + Core','title back+core');
 ok(V.previewTitle(pk('p25_hybrid_60'))==='Hybrid' && V.previewTitle(pk('p25_explicit_diff'))==='Lower Body: Squat','title type');
-ok(/^~\d+ min · \d+ exercises$/.test(V.previewMeta(pk('p25_ct_chest'))),'meta format');
+ok(/^~\d+ min · \d+ exercises · (Beginner|Intermediate|Advanced)$/.test(V.previewMeta(pk('p25_ct_chest'))),'meta format '+V.previewMeta(pk('p25_ct_chest')));
+ok(V.previewMeta(pk('p26_athletic_beginner')).endsWith('Beginner') && V.previewMeta(pk('p26_athletic_advanced')).endsWith('Advanced'),'meta difficulty');
 // ---- teaser only when meaningful (API)
-ok(pk('p25_hybrid_60').today.teaser===null && pk('p25_ct_chest').today.teaser===null,'no teaser for confirmations');
-ok(pk('p26_amped').today.teaser.title==='Built for your Amped state','amped teaser');
-ok(pk('p25_ct_back_core').today.teaser.text.includes('Core saved for the end'),'allocation teaser');
-ok(pk('p26_sore_legs').today.teaser.title==='Built around sore legs','sore teaser');
-for (const p of PACK.filter(p=>p.key.startsWith('p2'))){ const w=p.envelope.workout; ok(!w.built_for_today.some((l:any)=>/^(You picked|You chose|Your first )/.test(l.text)),'no confirmation lines '+p.key); ok(w.built_for_today.length<=4,'<=4 lines '+p.key); ok(p.envelope.engine && p.envelope.engine.phase==='2.6','engine stamped '+p.key); }
+// ---- Built for Today: on every workout, 3-6 kind-ordered lines, adaptations first
+for (const p of PACK.filter(p=>p.key.startsWith('p2'))){ const w=p.envelope.workout; const b=V.builtForToday(w);
+  ok(b.length>=3 && b.length<=6,'3-6 lines '+p.key+' '+b.length);
+  ok(b.every(l=>['adaptation','decision','context'].includes(l.kind)),'kinds '+p.key);
+  const r=b.map(l=>({adaptation:0,decision:1,context:2} as any)[l.kind]); ok(r.join()===[...r].sort().join(),'kind order '+p.key);
+  ok(!b.some(l=>/^(You picked|You chose)/.test(l.text) || /rep range|hypertrophy/i.test(l.text)),'no confirmations / goal overclaims '+p.key);
+  ok(p.envelope.engine && p.envelope.engine.phase==='2.6','engine stamped '+p.key); }
+ok(V.builtForToday(pk('p26_amped'))[0].kind==='adaptation' && V.builtForToday(pk('p26_amped'))[0].text.includes('Amped'),'amped adaptation first');
+ok(V.builtForToday(pk('p25_ct_back_core')).some(l=>l.text.includes('Core saved for the end')),'allocation line');
+ok(V.builtForToday(pk('p26_sore_legs'))[0].kind==='adaptation' && /sore legs|legs are sore/.test(V.builtForToday(pk('p26_sore_legs'))[0].text),'sore first');
+const bd=(k:string)=>V.builtForToday(pk(k)).find(l=>/difficulty/i.test(l.text));
+ok(bd('p26_athletic_beginner')?.kind==='adaptation' && bd('p26_athletic_beginner')!.text.startsWith('Beginner difficulty'),'athletic beginner difficulty line');
+ok(bd('p26_strength_beginner')?.kind==='adaptation','strength beginner difficulty line');
+ok(!!bd('p26_athletic_advanced'),'athletic advanced difficulty line');
 // ---- Different Workout comparison + copy
 const c1=pk('p25_ct_chest'), c2=pk('p25_ct_chest_diff'); const dd=V.workoutDiff(c1,c2);
 ok(!dd.identical && !dd.archetypeChanged && dd.changed>=3,'chest diff '+JSON.stringify(dd));

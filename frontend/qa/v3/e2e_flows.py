@@ -47,12 +47,12 @@ with sync_playwright() as p:
     R['home_default']=dict(config=txt(page,'v3-config-summary'), stale_banner=tid(page,'v3-dev-stale-backend').count())
     # Flow A
     build(page); page.screenshot(path=SH+'A2_preview.png', full_page=True)
-    A=dict(request=last_gen(), title=txt(page,'v3-preview-title'), meta=txt(page,'v3-preview-meta'), teaser=tid(page,'v3-preview-teaser').count())
+    A=dict(request=last_gen(), title=txt(page,'v3-preview-title'), meta=txt(page,'v3-preview-meta'), bft=txt(page,'v3-preview-bft'), bft_rows=tid(page,'v3-preview-bft').locator('[data-testid^="v3-bft-"]').count())
     A['diff']=diff(page,'A3_after_diff.png')
     tid(page,'v3-start-workout').click(); tid(page,'v3-session-placeholder').wait_for(); A['start']=True; R['A']=A
     # Flow B: Amped
     home(page); tid(page,'v3-state-amped').click(); build(page); page.screenshot(path=SH+'B_preview_amped.png', full_page=True)
-    R['B']=dict(request=last_gen(), teaser=txt(page,'v3-preview-teaser') if tid(page,'v3-preview-teaser').count() else None, title=txt(page,'v3-preview-title'))
+    R['B']=dict(request=last_gen(), teaser=txt(page,'v3-preview-bft'), title=txt(page,'v3-preview-title'))
     home(page); tid(page,'v3-state-amped').click()
     # Flow C: Chest
     home(page); note=config(page, focus=['chest'], length=60); R['C_config']=dict(summary=txt(page,'v3-config-summary'), note=note)
@@ -62,7 +62,7 @@ with sync_playwright() as p:
     C['diff1']=diff(page,'C3_chest_diff.png'); C['diff2']=diff(page); R['C']=C
     # Flow D: Back + Core (change chest -> back+core)
     home(page); note=config(page, focus=['chest','back','core']); build(page); page.screenshot(path=SH+'D_preview_back_core.png', full_page=True)
-    D=dict(request=last_gen(), title=txt(page,'v3-preview-title'), teaser=txt(page,'v3-preview-teaser') if tid(page,'v3-preview-teaser').count() else None, rows=names(page))
+    D=dict(request=last_gen(), title=txt(page,'v3-preview-title'), teaser=txt(page,'v3-preview-bft'), rows=names(page))
     D['diff']=diff(page); R['D']=D
     # Flow E: explicit Lower Squat (type clears focus)
     home(page); note=config(page, typ='strength_lower_squat'); R['E_config']=dict(summary=txt(page,'v3-config-summary'), note=note)
@@ -72,7 +72,7 @@ with sync_playwright() as p:
     build(page); F=dict(request=last_gen(), title=txt(page,'v3-preview-title')); F['diff']=diff(page,'F_after_diff.png'); R['F']=F
     # Flow G: explicit Hybrid, Irritated
     home(page); tid(page,'v3-state-irritated').click(); config(page, typ='sweat_hybrid'); build(page); page.screenshot(path=SH+'G_preview_hybrid_irritated.png', full_page=True)
-    R['G']=dict(request=last_gen(), title=txt(page,'v3-preview-title'), meta=txt(page,'v3-preview-meta'), rows=names(page), teaser=txt(page,'v3-preview-teaser') if tid(page,'v3-preview-teaser').count() else None)
+    R['G']=dict(request=last_gen(), title=txt(page,'v3-preview-title'), meta=txt(page,'v3-preview-meta'), rows=names(page), teaser=txt(page,'v3-preview-bft'))
     tid(page,'v3-preview-details').click(); tid(page,'v3-overview').wait_for(); time.sleep(0.5); page.screenshot(path=SH+'G_details.png', full_page=True)
     R['G']['details_bft']=txt(page,'v3-built-for-today')
     page.evaluate('window.__router.back()'); time.sleep(0.3)
@@ -82,6 +82,27 @@ with sync_playwright() as p:
     tid(page,'v3-config').click(); time.sleep(0.3); R['H_sheet_has_focus']=tid(page,'v3-focus-chest').count(); page.screenshot(path=SH+'H_sheet.png'); tid(page,'v3-config-done').click(); time.sleep(0.2)
     build(page); page.screenshot(path=SH+'H_preview.png', full_page=True)
     H=dict(request=last_gen(), title=txt(page,'v3-preview-title'), rows=names(page)); H['diff']=diff(page); R['H']=H
+    # Flow I: Today's Workout card (already-built workout, distinct from MOOD's Pick)
+    home(page); page.screenshot(path=SH+'I_home_today_card.png', full_page=True)
+    I=dict(card=txt(page,'v3-today-card') if tid(page,'v3-today-card').count() else None)
+    tid(page,'v3-today-build-different').click(); time.sleep(0.3)
+    I['tucked_line']=txt(page,'v3-today-line') if tid(page,'v3-today-line').count() else None; I['card_after']=tid(page,'v3-today-card').count()
+    tid(page,'v3-today-line').click(); tid(page,'v3-preview-title').wait_for(); I['opened']=txt(page,'v3-preview-title'); R['I']=I
+    # Flow J: Difficulty (profile Intermediate)
+    home(page); tid(page,'v3-direction-athletic').click(); time.sleep(0.2)
+    tid(page,'v3-config').click(); tid(page,'v3-config-sheet').wait_for(); time.sleep(0.2)
+    J=dict(default_selected=tid(page,'v3-difficulty-intermediate').evaluate("e=>!!e.querySelector('[style*=linear-gradient]')"), hint_default=txt(page,'v3-difficulty-hint'))
+    tid(page,'v3-difficulty-beginner').click(); time.sleep(0.1); J['hint_override']=txt(page,'v3-difficulty-hint'); page.screenshot(path=SH+'J_sheet_difficulty.png')
+    tid(page,'v3-config-done').click(); time.sleep(0.2); J['summary']=txt(page,'v3-config-summary')
+    build(page); J['beg_request']=last_gen(); J['beg_meta']=txt(page,'v3-preview-meta'); J['beg_bft']=txt(page,'v3-preview-bft')
+    page.screenshot(path=SH+'J_preview_athletic_beginner.png', full_page=True)
+    J['profile_after']=page.evaluate("fetch('/api/users/me/training-profile').then(r=>r.json()).then(j=>j.profile.experience)")
+    home(page); tid(page,'v3-config').click(); time.sleep(0.2); tid(page,'v3-difficulty-advanced').click(); tid(page,'v3-config-done').click(); time.sleep(0.2)
+    J['adv_summary']=txt(page,'v3-config-summary'); build(page); J['adv_request']=last_gen(); J['adv_meta']=txt(page,'v3-preview-meta')
+    J['profile_after_adv']=page.evaluate("fetch('/api/users/me/training-profile').then(r=>r.json()).then(j=>j.profile.experience)")
+    page.reload(); tid(page,'v3-home').wait_for(); time.sleep(0.8)            # restart: back to the profile default
+    tid(page,'v3-direction-strength').click(); time.sleep(0.2)
+    J['fresh_summary']=txt(page,'v3-config-summary'); build(page); J['fresh_request']=last_gen(); J['fresh_meta']=txt(page,'v3-preview-meta'); R['J']=J
     # Details swap -> Preview reflects; Home reopen
     tid(page,'v3-preview-details').click(); tid(page,'v3-overview').wait_for(); time.sleep(0.4)
     page.locator('[data-testid^="v3-swap-"]:visible').first.click(); time.sleep(2); page.evaluate('window.__router.back()'); time.sleep(0.6)
@@ -110,7 +131,8 @@ def check(name, cond):
 ok = [
     check('A zero-effort request has no target/archetype', 'target' not in R['A']['request'] and 'archetype' not in R['A']['request']),
     check('A Different Workout changes, stays visible, scrolls to top', R['A']['diff']['changed'] and R['A']['diff']['visible_while_building'] and R['A']['diff']['scroll'] == 0),
-    check('B Amped teaser shown', bool(R['B']['teaser']) and R['B']['teaser'].startswith('Built for your Amped state')),
+    check('A Built for Today on a zero-input workout (3+ lines)', R['A']['bft_rows'] >= 3),
+    check('B Amped adaptation leads Built for Today', 'Amped' in R['B']['teaser'].split('\n')[1]),
     check('C request: strength + target=[chest], no archetype', R['C']['request']['direction'] == 'strength' and R['C']['request'].get('target') == ['chest'] and 'archetype' not in R['C']['request']),
     check('C Chest session, Different Workout changes twice', R['C']['title'] == 'Chest' and R['C']['diff1']['changed'] and R['C']['diff2']['changed']),
     check('D Back + Core, Core last, Different Workout changes', R['D']['title'] == 'Back + Core' and 'Core saved for the end' in (R['D']['teaser'] or '') and R['D']['diff']['changed']),
@@ -118,6 +140,10 @@ ok = [
     check("F Sweat MOOD's Pick rotates", R['F']['diff']['title'] != R['F']['title']),
     check('G Hybrid is one anchor block (+ Finisher), no Complement', R['G']['rows'][0].startswith('HYBRID') and not any(r.startswith('CIRCUIT') for r in R['G']['rows'])),
     check('H Athletic builds and Different Workout rotates', R['H']['diff']['changed'] and not R['H_sheet_has_focus']),
+    check("I Today's Workout card: title, View Workout, Build a different workout", bool(R['I']['card']) and R['I']['card'].startswith("TODAY'S WORKOUT") and 'View Workout' in R['I']['card'] and 'Build a different workout' in R['I']['card'] and R['I']['card_after'] == 0 and bool(R['I']['tucked_line']) and bool(R['I']['opened'])),
+    check('J Difficulty defaults to profile (Intermediate), nothing sent', R['J']['default_selected'] and R['J']['fresh_request'].get('experience') is None and R['J']['fresh_meta'].endswith('Intermediate') and 'Intermediate' not in R['J']['fresh_summary']),
+    check('J Beginner override sent, shown, explained; profile unchanged', R['J']['beg_request'].get('experience') == 'beginner' and R['J']['summary'] == "MOOD's Pick · Beginner · 60 min" and R['J']['beg_meta'].endswith('Beginner') and 'Beginner difficulty' in R['J']['beg_bft'] and R['J']['profile_after'] == 'intermediate'),
+    check('J Advanced override sent; profile unchanged', R['J']['adv_request'].get('experience') == 'advanced' and R['J']['adv_meta'].endswith('Advanced') and R['J']['profile_after_adv'] == 'intermediate'),
     check('Same inputs + same engine reopens without generating', R['reopen_same_engine_generated'] == 0),
     check('Cached workout from another engine is never reopened', R['stale_cache_generated'] == 1 and R['stale_today_card'] == 0),
     check('Dev banner when backend has no engine identity', R['stale_banner_when_old_backend'] == 1),

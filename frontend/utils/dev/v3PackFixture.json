@@ -8292,12 +8292,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "4dd833336e574672bf37573564ccf4c3",
+    "workout_id": "69578d1ea4bf4fe0aaf6c881ce23a6bd",
     "version": 1,
-    "created_at": "2026-09-26T05:05:50.128182+00:00",
+    "created_at": "2026-09-26T06:37:18.165566+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -8334,7 +8334,33 @@
     "built_for_today": [
      {
       "code": "allocation",
-      "text": "Back gets 3 movements while Core gets 2, with Core saved for the end."
+      "text": "Back gets 3 movements while Core gets 2, with Core saved for the end.",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "15 working sets across 5 exercises, about 40 minutes.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Main work stops about 2 reps short of failure.",
+      "kind": "decision"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate difficulty: every movement is within the intermediate complexity and skill limits.",
+      "kind": "context"
+     },
+     {
+      "code": "goal",
+      "text": "Your profile goal is to build muscle; today's Strength session is built from today's choices.",
+      "kind": "context"
+     },
+     {
+      "code": "history",
+      "text": "This is your first MOOD workout, so it starts from your Training Profile.",
+      "kind": "context"
      }
     ],
     "today": {
@@ -8354,7 +8380,7 @@
     "warmup": {
      "minutes": 7,
      "items": [],
-     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Rack Pull."
+     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Plate-Loaded High Row."
     },
     "blocks": [
      {
@@ -8376,13 +8402,12 @@
         "slot_id": "target_block_a#0",
         "role": "back block",
         "exercise": {
-         "id": "rack_pull",
-         "name": "Rack Pull",
-         "equipment": "barbell",
-         "equipment_label": "Barbell",
+         "id": "machine_high_row",
+         "name": "Plate-Loaded High Row",
+         "equipment": "plate_loaded_machine",
+         "equipment_label": "Plate-loaded machine",
          "primary_muscles": [
-          "back",
-          "glutes"
+          "back"
          ],
          "media": null
         },
@@ -8434,10 +8459,10 @@
         "slot_id": "target_block_a#1",
         "role": "back block",
         "exercise": {
-         "id": "cable_pullover",
-         "name": "Cable Pullover",
-         "equipment": "cable",
-         "equipment_label": "Cable",
+         "id": "db_pullover",
+         "name": "Dumbbell Pullover",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "back"
          ],
@@ -8491,10 +8516,10 @@
         "slot_id": "target_block_a#2",
         "role": "back block",
         "exercise": {
-         "id": "inverted_row",
-         "name": "Inverted Row",
-         "equipment": "barbell",
-         "equipment_label": "Barbell",
+         "id": "single_arm_cable_row",
+         "name": "Single-Arm Cable Row",
+         "equipment": "cable",
+         "equipment_label": "Cable",
          "primary_muscles": [
           "back"
          ],
@@ -8505,7 +8530,7 @@
          "sets": 3,
          "reps": "10",
          "reps_scheme": null,
-         "per_side": false,
+         "per_side": true,
          "seconds": null,
          "distance_m": null,
          "calories": null,
@@ -8513,7 +8538,7 @@
          "rir": 2,
          "rpe": null,
          "load_guidance": "Stop each set with about 2 reps left in the tank.",
-         "display": "3 × 10",
+         "display": "3 × 10/side",
          "direction_fields": {
           "slot_class": "target_block",
           "protected": false,
@@ -8548,65 +8573,8 @@
         "slot_id": "target_block_b#3",
         "role": "core block",
         "exercise": {
-         "id": "cable_wood_chop",
-         "name": "Cable Wood Chop",
-         "equipment": "cable",
-         "equipment_label": "Cable",
-         "primary_muscles": [
-          "core"
-         ],
-         "media": null
-        },
-        "prescription": {
-         "kind": "reps",
-         "sets": 3,
-         "reps": "10",
-         "reps_scheme": null,
-         "per_side": true,
-         "seconds": null,
-         "distance_m": null,
-         "calories": null,
-         "rest_sec": 90,
-         "rir": 2,
-         "rpe": null,
-         "load_guidance": "Stop each set with about 2 reps left in the tank.",
-         "display": "3 × 10/side",
-         "direction_fields": {
-          "slot_class": "target_block",
-          "protected": false,
-          "role": "core block"
-         }
-        },
-        "cues": [],
-        "quality_stop": null,
-        "swap": {
-         "swappable": true
-        },
-        "progression": null
-       }
-      ]
-     },
-     {
-      "block_id": "B5",
-      "sequence": 5,
-      "type": "target",
-      "structure": "straight",
-      "title": "Target block",
-      "rounds": 3,
-      "rest_between_items_sec": null,
-      "rest_between_rounds_sec": 90,
-      "interval": null,
-      "effort": null,
-      "instructions": null,
-      "est_minutes": null,
-      "items": [
-       {
-        "item_id": "target_block_b#4",
-        "slot_id": "target_block_b#4",
-        "role": "core block",
-        "exercise": {
-         "id": "pallof_step_out",
-         "name": "Pallof Step-Out",
+         "id": "pallof_press",
+         "name": "Pallof Press",
          "equipment": "cable",
          "equipment_label": "Cable",
          "primary_muscles": [
@@ -8635,8 +8603,65 @@
          }
         },
         "cues": [
-         "Step out without letting the handle pull you round."
+         "Press straight out and resist the turn; hips stay square."
         ],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B5",
+      "sequence": 5,
+      "type": "target",
+      "structure": "straight",
+      "title": "Target block",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 90,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "target_block_b#4",
+        "slot_id": "target_block_b#4",
+        "role": "core block",
+        "exercise": {
+         "id": "hanging_knee_raise",
+         "name": "Hanging Knee Raise",
+         "equipment": "pullup_bar",
+         "equipment_label": "Pull-up bar",
+         "primary_muscles": [
+          "core"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": "10",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 90,
+         "rir": 2,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 2 reps left in the tank.",
+         "display": "3 × 10",
+         "direction_fields": {
+          "slot_class": "target_block",
+          "protected": false,
+          "role": "core block"
+         }
+        },
+        "cues": [],
         "quality_stop": null,
         "swap": {
          "swappable": true
@@ -8675,12 +8700,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "8f31608a8121444098d7e8ec1ff644b2",
+    "workout_id": "17849ab914564a169851488044a29d45",
     "version": 1,
-    "created_at": "2026-09-26T05:05:50.134175+00:00",
+    "created_at": "2026-09-26T06:37:18.175641+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -8716,12 +8741,34 @@
     "selection_source": "target",
     "built_for_today": [
      {
-      "code": "allocation",
-      "text": "Back gets 2 movements while Core gets 1, with Core saved for the end."
+      "code": "duration",
+      "text": "30 minutes: 3 exercises and 8 working sets, with the main work kept.",
+      "kind": "adaptation"
      },
      {
-      "code": "duration",
-      "text": "30 minutes: 3 exercises and 8 working sets, with the main work kept."
+      "code": "allocation",
+      "text": "Back gets 2 movements while Core gets 1, with Core saved for the end.",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "8 working sets across 3 exercises, about 21 minutes.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Main work stops about 2 reps short of failure.",
+      "kind": "decision"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate difficulty: every movement is within the intermediate complexity and skill limits.",
+      "kind": "context"
+     },
+     {
+      "code": "goal",
+      "text": "Your profile goal is to build muscle; today's Strength session is built from today's choices.",
+      "kind": "context"
      }
     ],
     "today": {
@@ -8741,7 +8788,7 @@
     "warmup": {
      "minutes": 4,
      "items": [],
-     "guidance": "3-5 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Rack Pull."
+     "guidance": "3-5 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Plate-Loaded High Row."
     },
     "blocks": [
      {
@@ -8763,13 +8810,12 @@
         "slot_id": "target_block_a#0",
         "role": "back block",
         "exercise": {
-         "id": "rack_pull",
-         "name": "Rack Pull",
-         "equipment": "barbell",
-         "equipment_label": "Barbell",
+         "id": "machine_high_row",
+         "name": "Plate-Loaded High Row",
+         "equipment": "plate_loaded_machine",
+         "equipment_label": "Plate-loaded machine",
          "primary_muscles": [
-          "back",
-          "glutes"
+          "back"
          ],
          "media": null
         },
@@ -8821,10 +8867,10 @@
         "slot_id": "target_block_a#1",
         "role": "back block",
         "exercise": {
-         "id": "cable_pullover",
-         "name": "Cable Pullover",
-         "equipment": "cable",
-         "equipment_label": "Cable",
+         "id": "db_pullover",
+         "name": "Dumbbell Pullover",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "back"
          ],
@@ -8878,8 +8924,8 @@
         "slot_id": "target_block_b#2",
         "role": "core block",
         "exercise": {
-         "id": "cable_wood_chop",
-         "name": "Cable Wood Chop",
+         "id": "pallof_press",
+         "name": "Pallof Press",
          "equipment": "cable",
          "equipment_label": "Cable",
          "primary_muscles": [
@@ -8907,7 +8953,9 @@
           "role": "core block"
          }
         },
-        "cues": [],
+        "cues": [
+         "Press straight out and resist the turn; hips stay square."
+        ],
         "quality_stop": null,
         "swap": {
          "swappable": true
@@ -8956,12 +9004,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "f2831c7fdb3f4ee5b01a01fd1ab4ad1d",
+    "workout_id": "0692c4d8d3044ab39d2a2c4f186203da",
     "version": 1,
-    "created_at": "2026-09-26T05:05:50.140028+00:00",
+    "created_at": "2026-09-26T06:37:18.181797+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -8994,7 +9042,38 @@
     },
     "swap_count": 0,
     "selection_source": "target",
-    "built_for_today": [],
+    "built_for_today": [
+     {
+      "code": "structure",
+      "text": "All 5 movements train chest, opening with Weighted Push-Up (3 × 10).",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "15 working sets across 5 exercises, about 40 minutes.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Main work stops about 2 reps short of failure.",
+      "kind": "decision"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate difficulty: every movement is within the intermediate complexity and skill limits.",
+      "kind": "context"
+     },
+     {
+      "code": "goal",
+      "text": "Your profile goal is to build muscle; today's Strength session is built from today's choices.",
+      "kind": "context"
+     },
+     {
+      "code": "history",
+      "text": "This is your first MOOD workout, so it starts from your Training Profile.",
+      "kind": "context"
+     }
+    ],
     "today": {
      "told": [
       "Strength",
@@ -9008,7 +9087,7 @@
     "warmup": {
      "minutes": 7,
      "items": [],
-     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Dumbbell Floor Press."
+     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Weighted Push-Up."
     },
     "blocks": [
      {
@@ -9030,10 +9109,10 @@
         "slot_id": "target_block_a#0",
         "role": "chest block",
         "exercise": {
-         "id": "db_floor_press",
-         "name": "Dumbbell Floor Press",
-         "equipment": "dumbbells",
-         "equipment_label": "Dumbbells",
+         "id": "weighted_push_up",
+         "name": "Weighted Push-Up",
+         "equipment": "bodyweight",
+         "equipment_label": "Bodyweight",
          "primary_muscles": [
           "chest"
          ],
@@ -9087,10 +9166,10 @@
         "slot_id": "target_block_a#1",
         "role": "chest block",
         "exercise": {
-         "id": "cable_fly",
-         "name": "Cable Fly",
-         "equipment": "cable",
-         "equipment_label": "Cable",
+         "id": "pec_deck",
+         "name": "Pec Deck",
+         "equipment": "selectorized_machine",
+         "equipment_label": "Machine",
          "primary_muscles": [
           "chest"
          ],
@@ -9144,10 +9223,10 @@
         "slot_id": "target_block_a#2",
         "role": "chest block",
         "exercise": {
-         "id": "pec_deck",
-         "name": "Pec Deck",
-         "equipment": "selectorized_machine",
-         "equipment_label": "Machine",
+         "id": "low_to_high_cable_fly",
+         "name": "Low-to-High Cable Fly",
+         "equipment": "cable",
+         "equipment_label": "Cable",
          "primary_muscles": [
           "chest"
          ],
@@ -9258,10 +9337,10 @@
         "slot_id": "target_block_a#4",
         "role": "chest block",
         "exercise": {
-         "id": "machine_incline_press",
-         "name": "Plate-Loaded Incline Press",
-         "equipment": "plate_loaded_machine",
-         "equipment_label": "Plate-loaded machine",
+         "id": "barbell_incline_press",
+         "name": "Barbell Incline Press",
+         "equipment": "barbell",
+         "equipment_label": "Barbell",
          "primary_muscles": [
           "chest"
          ],
@@ -9326,12 +9405,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "f2831c7fdb3f4ee5b01a01fd1ab4ad1d",
+    "workout_id": "0692c4d8d3044ab39d2a2c4f186203da",
     "version": 2,
-    "created_at": "2026-09-26T05:05:50.147287+00:00",
+    "created_at": "2026-09-26T06:37:18.189741+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -9368,6 +9447,31 @@
      {
       "code": "different_workout",
       "text": "A different Custom Target session: 4 of 5 exercises changed."
+     },
+     {
+      "code": "structure",
+      "text": "All 5 movements train chest, opening with Parallel Bar Dip (3 × 10).",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "15 working sets across 5 exercises, about 40 minutes.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Main work stops about 2 reps short of failure.",
+      "kind": "decision"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate difficulty: every movement is within the intermediate complexity and skill limits.",
+      "kind": "context"
+     },
+     {
+      "code": "goal",
+      "text": "Your profile goal is to build muscle; today's Strength session is built from today's choices.",
+      "kind": "context"
      }
     ],
     "today": {
@@ -9462,8 +9566,8 @@
         "slot_id": "target_block_a#1",
         "role": "chest block",
         "exercise": {
-         "id": "low_to_high_cable_fly",
-         "name": "Low-to-High Cable Fly",
+         "id": "cable_fly",
+         "name": "Cable Fly",
          "equipment": "cable",
          "equipment_label": "Cable",
          "primary_muscles": [
@@ -9519,10 +9623,10 @@
         "slot_id": "target_block_a#2",
         "role": "chest block",
         "exercise": {
-         "id": "smith_incline_press",
-         "name": "Smith Machine Incline Press",
-         "equipment": "smith_machine",
-         "equipment_label": "Smith machine",
+         "id": "machine_chest_press",
+         "name": "Machine Chest Press",
+         "equipment": "selectorized_machine",
+         "equipment_label": "Machine",
          "primary_muscles": [
           "chest"
          ],
@@ -9576,10 +9680,10 @@
         "slot_id": "target_block_a#3",
         "role": "chest block",
         "exercise": {
-         "id": "single_arm_cable_chest_press",
-         "name": "Single-Arm Cable Chest Press",
-         "equipment": "cable",
-         "equipment_label": "Cable",
+         "id": "push_up",
+         "name": "Push-Up",
+         "equipment": "bodyweight",
+         "equipment_label": "Bodyweight",
          "primary_muscles": [
           "chest"
          ],
@@ -9588,17 +9692,17 @@
         "prescription": {
          "kind": "reps",
          "sets": 3,
-         "reps": "10",
+         "reps": "8–12",
          "reps_scheme": null,
-         "per_side": true,
+         "per_side": false,
          "seconds": null,
          "distance_m": null,
          "calories": null,
          "rest_sec": 90,
          "rir": 2,
          "rpe": null,
-         "load_guidance": "Stop each set with about 2 reps left in the tank.",
-         "display": "3 × 10/side",
+         "load_guidance": "Bodyweight: work within the rep range. Stop each set with about 2 reps left in the tank.",
+         "display": "3 × 8–12",
          "direction_fields": {
           "slot_class": "target_block",
           "protected": false,
@@ -9633,10 +9737,10 @@
         "slot_id": "target_block_a#4",
         "role": "chest block",
         "exercise": {
-         "id": "pec_deck",
-         "name": "Pec Deck",
-         "equipment": "selectorized_machine",
-         "equipment_label": "Machine",
+         "id": "db_fly",
+         "name": "Dumbbell Fly",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "chest"
          ],
@@ -9684,8 +9788,8 @@
      {
       "reason_code": "workout_swapped",
       "swap_count": 1,
-      "prior_composition": "['db_floor_press', 'cable_fly', 'pec_deck', 'db_fly', 'machine_incline_press']",
-      "replacement_composition": "['parallel_bar_dip', 'low_to_high_cable_fly', 'smith_incline_press', 'single_arm_cable_chest_press', 'pec_deck']",
+      "prior_composition": "['weighted_push_up', 'pec_deck', 'low_to_high_cable_fly', 'db_fly', 'barbell_incline_press']",
+      "replacement_composition": "['parallel_bar_dip', 'cable_fly', 'machine_chest_press', 'push_up', 'db_fly']",
       "exercises_changed": 4,
       "changed_ratio": 0.8
      }
@@ -9703,12 +9807,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "5f7d798991b144968948bb2953e0a229",
+    "workout_id": "2f7dbd5844ab4a2b91b1afcf0a7b9b47",
     "version": 1,
-    "created_at": "2026-09-26T05:05:50.154058+00:00",
+    "created_at": "2026-09-26T06:37:18.198479+00:00",
     "direction": "sweat",
     "direction_name": "Sweat",
     "archetype": {
@@ -9723,7 +9827,7 @@
     },
     "duration": {
      "requested_minutes": 60,
-     "estimated_minutes": 39.5,
+     "estimated_minutes": 39.8,
      "display": "35–40 min"
     },
     "experience": "intermediate",
@@ -9742,7 +9846,33 @@
     "built_for_today": [
      {
       "code": "duration",
-      "text": "This session is complete at about 40 min. Quality over filler."
+      "text": "This session is complete at about 40 min. Quality over filler.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate dosing: the anchor distance, station targets and 45 s between rounds are set for your level.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "structure",
+      "text": "Treadmill Run 500 m anchors all 6 rounds, with a different station each round (5 stations).",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "One block, about 40 minutes in all.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Target effort for the main block is RPE 7.",
+      "kind": "decision"
+     },
+     {
+      "code": "goal",
+      "text": "Your profile goal is to build muscle; today's Sweat session is built from today's choices.",
+      "kind": "context"
      }
     ],
     "today": {
@@ -9778,7 +9908,7 @@
        ]
       },
       "instructions": "Every round: Treadmill Run, then that round's station. Walk 45 s between rounds.",
-      "est_minutes": 26.5,
+      "est_minutes": 26.8,
       "items": [
        {
         "item_id": "primary_hybrid_block.0",
@@ -9926,53 +10056,6 @@
         "slot_id": "primary_hybrid_block.station",
         "role": "station",
         "exercise": {
-         "id": "goblet_squat",
-         "name": "Goblet Squat",
-         "equipment": "dumbbells",
-         "equipment_label": "Dumbbells",
-         "primary_muscles": [
-          "quads",
-          "glutes"
-         ],
-         "media": null
-        },
-        "prescription": {
-         "kind": "reps",
-         "sets": 1,
-         "reps": 15,
-         "reps_scheme": null,
-         "per_side": false,
-         "seconds": null,
-         "distance_m": null,
-         "calories": null,
-         "rest_sec": null,
-         "rir": null,
-         "rpe": [
-          7,
-          7
-         ],
-         "load_guidance": "light-moderate load, unbroken, short of failure",
-         "display": "15",
-         "direction_fields": {
-          "progression": "reuse_load",
-          "role": "resistance_lower",
-          "rounds": [
-           3
-          ]
-         }
-        },
-        "cues": [],
-        "quality_stop": null,
-        "swap": {
-         "swappable": true
-        },
-        "progression": null
-       },
-       {
-        "item_id": "primary_hybrid_block.4",
-        "slot_id": "primary_hybrid_block.station",
-        "role": "station",
-        "exercise": {
          "id": "burpee",
          "name": "Burpee",
          "equipment": "bodyweight",
@@ -10004,7 +10087,7 @@
           "progression": "output",
           "role": "output",
           "rounds": [
-           4
+           3
           ]
          }
         },
@@ -10018,14 +10101,14 @@
         "progression": null
        },
        {
-        "item_id": "primary_hybrid_block.5",
+        "item_id": "primary_hybrid_block.4",
         "slot_id": "primary_hybrid_block.station",
         "role": "station",
         "exercise": {
-         "id": "plate_push",
-         "name": "Plate Push",
-         "equipment": "plate",
-         "equipment_label": "Plate",
+         "id": "goblet_squat",
+         "name": "Goblet Squat",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "quads",
           "glutes"
@@ -10033,13 +10116,13 @@
          "media": null
         },
         "prescription": {
-         "kind": "distance",
+         "kind": "reps",
          "sets": 1,
-         "reps": null,
+         "reps": 15,
          "reps_scheme": null,
          "per_side": false,
          "seconds": null,
-         "distance_m": 20,
+         "distance_m": null,
          "calories": null,
          "rest_sec": null,
          "rir": null,
@@ -10047,19 +10130,64 @@
           7,
           7
          ],
-         "load_guidance": "moderate plate, fast feet",
-         "display": "20 m",
+         "load_guidance": "light-moderate load, unbroken, short of failure",
+         "display": "15",
          "direction_fields": {
-          "progression": "output",
-          "role": "output",
+          "progression": "reuse_load",
+          "role": "resistance_lower",
+          "rounds": [
+           4
+          ]
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       },
+       {
+        "item_id": "primary_hybrid_block.5",
+        "slot_id": "primary_hybrid_block.station",
+        "role": "station",
+        "exercise": {
+         "id": "db_squat_to_press",
+         "name": "Dumbbell Squat-to-Press",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
+         "primary_muscles": [
+          "quads",
+          "shoulders"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 1,
+         "reps": 15,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": null,
+         "rir": null,
+         "rpe": [
+          7,
+          7
+         ],
+         "load_guidance": "light-moderate load, unbroken, short of failure",
+         "display": "15",
+         "direction_fields": {
+          "progression": "reuse_load",
+          "role": "resistance_lower",
           "rounds": [
            5
           ]
          }
         },
-        "cues": [
-         "Hands on the plate, hips low, drive with short fast steps."
-        ],
+        "cues": [],
         "quality_stop": null,
         "swap": {
          "swappable": true
@@ -10107,12 +10235,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "e14362f9bd2747d49b13475b0c6a8e32",
+    "workout_id": "4a2917834cb44a7e90abd24a65a6d708",
     "version": 1,
-    "created_at": "2026-09-26T05:05:50.160268+00:00",
+    "created_at": "2026-09-26T06:37:18.207891+00:00",
     "direction": "sweat",
     "direction_name": "Sweat",
     "archetype": {
@@ -10143,7 +10271,38 @@
     },
     "swap_count": 0,
     "selection_source": "user_selected",
-    "built_for_today": [],
+    "built_for_today": [
+     {
+      "code": "difficulty",
+      "text": "Intermediate dosing: the anchor distance, station targets and 45 s between rounds are set for your level.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "structure",
+      "text": "Treadmill Run 400 m anchors all 3 rounds, followed by 2 stations every round.",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "One block, about 23 minutes in all.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Target effort for the main block is RPE 7.",
+      "kind": "decision"
+     },
+     {
+      "code": "goal",
+      "text": "Your profile goal is to build muscle; today's Sweat session is built from today's choices.",
+      "kind": "context"
+     },
+     {
+      "code": "history",
+      "text": "This is your first MOOD workout, so it starts from your Training Profile.",
+      "kind": "context"
+     }
+    ],
     "today": {
      "told": [
       "Sweat",
@@ -10356,12 +10515,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "7bb3d1d813674bcbb102a160afdc1f29",
+    "workout_id": "3b02352a9c1f4616a866c8621c176f94",
     "version": 2,
-    "created_at": "2026-09-26T05:05:50.170917+00:00",
+    "created_at": "2026-09-26T06:37:18.228700+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -10395,7 +10554,33 @@
     "built_for_today": [
      {
       "code": "rotation_swap",
-      "text": "MOOD moved you from Upper Pull to Lower Body: Squat so this actually feels like a different session."
+      "text": "MOOD moved you from Upper Pull to Lower Body: Squat so this actually feels like a different session.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "structure",
+      "text": "Pit Shark Belt Squat (4 × 8) leads as the main lift, then 2 strength lifts and 2 accessories.",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "16 working sets across 5 exercises, about 41 minutes.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Main work stops about 2 reps short of failure, accessories about 1 rep short of failure.",
+      "kind": "decision"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate difficulty: every movement is within the intermediate complexity and skill limits.",
+      "kind": "context"
+     },
+     {
+      "code": "goal",
+      "text": "MOOD's Pick follows the rotation built for your goal to build muscle, at 3 to 4 days a week.",
+      "kind": "context"
      }
     ],
     "today": {
@@ -10547,13 +10732,13 @@
         "slot_id": "unilateral_secondary",
         "role": "Unilateral / Secondary",
         "exercise": {
-         "id": "reverse_lunge",
-         "name": "Reverse Lunge",
+         "id": "bulgarian_split_squat",
+         "name": "Bulgarian Split Squat",
          "equipment": "dumbbells",
          "equipment_label": "Dumbbells",
          "primary_muscles": [
-          "glutes",
-          "quads"
+          "quads",
+          "glutes"
          ],
          "media": null
         },
@@ -10577,7 +10762,9 @@
           "role": "Unilateral / Secondary"
          }
         },
-        "cues": [],
+        "cues": [
+         "Most weight on the front foot; drop the back knee straight down."
+        ],
         "quality_stop": null,
         "swap": {
          "swappable": true
@@ -10729,8 +10916,8 @@
      {
       "reason_code": "workout_swapped",
       "swap_count": 1,
-      "prior_composition": "{'primary_squat_pattern': 'hack_squat', 'secondary_lower': 'leg_press', 'unilateral_secondary': 'bulgarian_split_squat', 'target_accessory': 'leg_extension', 'support_accessory': 'roman_chair_ghd_raise'}",
-      "replacement_composition": "{'primary_squat_pattern': 'pit_shark_belt_squat', 'secondary_lower': 'pendulum_squat', 'unilateral_secondary': 'reverse_lunge', 'target_accessory': 'reverse_nordic', 'support_accessory': 'roman_chair_ghd_raise'}",
+      "prior_composition": "{'primary_squat_pattern': 'hack_squat', 'secondary_lower': 'leg_press', 'unilateral_secondary': 'reverse_lunge', 'target_accessory': 'leg_extension', 'support_accessory': 'roman_chair_ghd_raise'}",
+      "replacement_composition": "{'primary_squat_pattern': 'pit_shark_belt_squat', 'secondary_lower': 'pendulum_squat', 'unilateral_secondary': 'bulgarian_split_squat', 'target_accessory': 'reverse_nordic', 'support_accessory': 'roman_chair_ghd_raise'}",
       "slots_changed": "['primary_squat_pattern', 'secondary_lower', 'target_accessory', 'unilateral_secondary']"
      },
      {
@@ -10738,7 +10925,7 @@
       "state": null,
       "pattern": "straight",
       "emitted": "straight",
-      "blocks": "[('straight', ['pit_shark_belt_squat']), ('straight', ['pendulum_squat']), ('straight', ['reverse_lunge']), ('straight', ['reverse_nordic']), ('straight', ['roman_chair_ghd_raise'])]"
+      "blocks": "[('straight', ['pit_shark_belt_squat']), ('straight', ['pendulum_squat']), ('straight', ['bulgarian_split_squat']), ('straight', ['reverse_nordic']), ('straight', ['roman_chair_ghd_raise'])]"
      }
     ]
    }
@@ -10754,12 +10941,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "21bb2f398a43421182f8350035de875d",
+    "workout_id": "5fcebdf76952441b813cb721a2340f87",
     "version": 2,
-    "created_at": "2026-09-26T05:05:50.181135+00:00",
+    "created_at": "2026-09-26T06:37:18.243788+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -10797,6 +10984,31 @@
      {
       "code": "different_workout",
       "text": "A different Lower Body: Squat session: 4 of 5 exercises changed."
+     },
+     {
+      "code": "structure",
+      "text": "Pit Shark Belt Squat (4 × 8) leads as the main lift, then 2 strength lifts and 2 accessories.",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "16 working sets across 5 exercises, about 41 minutes.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Main work stops about 2 reps short of failure, accessories about 1 rep short of failure.",
+      "kind": "decision"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate difficulty: every movement is within the intermediate complexity and skill limits.",
+      "kind": "context"
+     },
+     {
+      "code": "goal",
+      "text": "Your profile goal is to build muscle; today's Strength session is built from today's choices.",
+      "kind": "context"
      }
     ],
     "today": {
@@ -10892,10 +11104,10 @@
         "slot_id": "secondary_lower",
         "role": "Secondary Lower",
         "exercise": {
-         "id": "smith_squat",
-         "name": "Smith Machine Squat",
-         "equipment": "smith_machine",
-         "equipment_label": "Smith machine",
+         "id": "goblet_squat",
+         "name": "Goblet Squat",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "quads",
           "glutes"
@@ -11121,14 +11333,14 @@
       "reason_code": "protected_primary_changed",
       "slot": "secondary_lower",
       "from": "leg_press",
-      "to": "smith_squat",
+      "to": "goblet_squat",
       "reason": "different_workout_requested (Phase 2.5: the primary may change on Different Workout)"
      },
      {
       "reason_code": "workout_swapped",
       "swap_count": 1,
       "prior_composition": "{'primary_squat_pattern': 'hack_squat', 'secondary_lower': 'leg_press', 'unilateral_secondary': 'reverse_lunge', 'target_accessory': 'leg_extension', 'support_accessory': 'roman_chair_ghd_raise'}",
-      "replacement_composition": "{'primary_squat_pattern': 'pit_shark_belt_squat', 'secondary_lower': 'smith_squat', 'unilateral_secondary': 'bulgarian_split_squat', 'target_accessory': 'sissy_squat', 'support_accessory': 'roman_chair_ghd_raise'}",
+      "replacement_composition": "{'primary_squat_pattern': 'pit_shark_belt_squat', 'secondary_lower': 'goblet_squat', 'unilateral_secondary': 'bulgarian_split_squat', 'target_accessory': 'sissy_squat', 'support_accessory': 'roman_chair_ghd_raise'}",
       "slots_changed": "['primary_squat_pattern', 'secondary_lower', 'target_accessory', 'unilateral_secondary']"
      },
      {
@@ -11136,7 +11348,7 @@
       "state": null,
       "pattern": "straight",
       "emitted": "straight",
-      "blocks": "[('straight', ['pit_shark_belt_squat']), ('straight', ['smith_squat']), ('straight', ['bulgarian_split_squat']), ('straight', ['sissy_squat']), ('straight', ['roman_chair_ghd_raise'])]"
+      "blocks": "[('straight', ['pit_shark_belt_squat']), ('straight', ['goblet_squat']), ('straight', ['bulgarian_split_squat']), ('straight', ['sissy_squat']), ('straight', ['roman_chair_ghd_raise'])]"
      }
     ]
    }
@@ -11144,7 +11356,7 @@
  },
  {
   "key": "p26_hybrid_irritated",
-  "title": "Phase 2.6: live Irritated Hybrid 60 (Hybrid + Finisher, no Complement)",
+  "title": "Live Irritated Hybrid 60 (Hybrid + Finisher, no Complement)",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
@@ -11152,12 +11364,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "fb14d42fca8f491db9dc090a0c78a26d",
+    "workout_id": "46a30e7dca1d415690baa2e9266d0660",
     "version": 1,
-    "created_at": "2026-09-26T05:05:50.186807+00:00",
+    "created_at": "2026-09-26T06:37:18.250430+00:00",
     "direction": "sweat",
     "direction_name": "Sweat",
     "archetype": {
@@ -11193,7 +11405,33 @@
     "built_for_today": [
      {
       "code": "state_irritated",
-      "text": "You're Irritated, so a Battle Rope Waves and Sled Rope Pull finisher closes the session."
+      "text": "You're Irritated, so a Battle Rope Waves and Air Bike / Assault Bike finisher closes the session.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate dosing: the anchor distance, station targets and 45 s between rounds are set for your level.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "structure",
+      "text": "Row Erg 500 m anchors all 7 rounds, with a different station each round (5 stations).",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "Plus a short finisher block, about 45 minutes in all.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Target effort for the main block is RPE 8.",
+      "kind": "decision"
+     },
+     {
+      "code": "goal",
+      "text": "Your profile goal is to build muscle; today's Sweat session is built from today's choices.",
+      "kind": "context"
      }
     ],
     "today": {
@@ -11208,7 +11446,7 @@
      "teaser": {
       "code": "state_irritated",
       "title": "Built for your Irritated state",
-      "text": "You're Irritated, so a Battle Rope Waves and Sled Rope Pull finisher closes the session."
+      "text": "You're Irritated, so a Battle Rope Waves and Air Bike / Assault Bike finisher closes the session."
      }
     },
     "warmup": {
@@ -11601,12 +11839,12 @@
         "slot_id": "optional_extra",
         "role": null,
         "exercise": {
-         "id": "sled_pull",
-         "name": "Sled Rope Pull",
-         "equipment": "sled",
-         "equipment_label": "Sled",
+         "id": "air_bike",
+         "name": "Air Bike / Assault Bike",
+         "equipment": "bike",
+         "equipment_label": "Bike",
          "primary_muscles": [
-          "back"
+          "quads"
          ],
          "media": null
         },
@@ -11625,16 +11863,14 @@
           9,
           9
          ],
-         "load_guidance": "heavy, steady",
+         "load_guidance": "RPE 9",
          "display": "6 × 20 s / 30 s easy",
          "direction_fields": {
           "progression": "output",
-          "role": "output"
+          "role": "engine"
          }
         },
-        "cues": [
-         "Lean back, walk backwards with short steps."
-        ],
+        "cues": [],
         "quality_stop": null,
         "swap": {
          "swappable": true
@@ -11668,7 +11904,7 @@
      },
      {
       "reason_code": "extra_finisher",
-      "detail": "battle_rope_waves,sled_pull"
+      "detail": "battle_rope_waves,air_bike"
      }
     ]
    },
@@ -11682,7 +11918,7 @@
  },
  {
   "key": "p26_amped",
-  "title": "Phase 2.6: Amped Strength (teaser)",
+  "title": "Amped Strength",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
@@ -11690,12 +11926,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "97fc78b23785445f8b71f4f217015e6a",
+    "workout_id": "b66164f63eab4ceea78f861c82065089",
     "version": 1,
-    "created_at": "2026-09-26T05:05:50.192178+00:00",
+    "created_at": "2026-09-26T06:37:18.259993+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -11730,12 +11966,34 @@
     "selection_source": "moods_pick",
     "built_for_today": [
      {
-      "code": "goal",
-      "text": "MOOD's Pick follows a rotation built for your goal to build muscle."
+      "code": "state_amped",
+      "text": "You're Amped, so a Machine Preacher Curl burnout finishes the session and working sets go a rep closer to failure.",
+      "kind": "adaptation"
      },
      {
-      "code": "state_amped",
-      "text": "You're Amped, so a Machine Preacher Curl burnout finishes the session and working sets go a rep closer to failure."
+      "code": "structure",
+      "text": "Seated Cable Row (4 × 8) leads as the main lift, then 2 strength lifts and 3 accessories, with part of it run as a superset.",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "18 working sets across 7 exercises, about 43 minutes.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Main work stops about 1 rep short of failure, accessories at failure.",
+      "kind": "decision"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate difficulty: every movement is within the intermediate complexity and skill limits.",
+      "kind": "context"
+     },
+     {
+      "code": "goal",
+      "text": "MOOD's Pick follows the rotation built for your goal to build muscle, at 3 to 4 days a week.",
+      "kind": "context"
      }
     ],
     "today": {
@@ -11755,7 +12013,7 @@
     "warmup": {
      "minutes": 7,
      "items": [],
-     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Lat Pulldown."
+     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Seated Cable Row."
     },
     "blocks": [
      {
@@ -11777,8 +12035,8 @@
         "slot_id": "primary_pull",
         "role": "Primary Pull",
         "exercise": {
-         "id": "lat_pulldown",
-         "name": "Lat Pulldown",
+         "id": "seated_cable_row",
+         "name": "Seated Cable Row",
          "equipment": "cable",
          "equipment_label": "Cable",
          "primary_muscles": [
@@ -11834,10 +12092,10 @@
         "slot_id": "complementary_pull",
         "role": "Complementary Pull",
         "exercise": {
-         "id": "chest_supported_row_machine",
-         "name": "Chest-Supported Machine Row",
-         "equipment": "plate_loaded_machine",
-         "equipment_label": "Plate-loaded machine",
+         "id": "lat_pulldown",
+         "name": "Lat Pulldown",
+         "equipment": "cable",
+         "equipment_label": "Cable",
          "primary_muscles": [
           "back"
          ],
@@ -11891,10 +12149,10 @@
         "slot_id": "secondary_back",
         "role": "Secondary Back",
         "exercise": {
-         "id": "single_arm_cable_row",
-         "name": "Single-Arm Cable Row",
-         "equipment": "cable",
-         "equipment_label": "Cable",
+         "id": "bent_over_db_row",
+         "name": "Bent-Over Dumbbell Row (Two-Arm)",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "back"
          ],
@@ -11905,7 +12163,7 @@
          "sets": 3,
          "reps": "10",
          "reps_scheme": null,
-         "per_side": true,
+         "per_side": false,
          "seconds": null,
          "distance_m": null,
          "calories": null,
@@ -11913,7 +12171,7 @@
          "rir": 1,
          "rpe": null,
          "load_guidance": "Stop each set with about 1 rep left in the tank.",
-         "display": "3 × 10/side",
+         "display": "3 × 10",
          "direction_fields": {
           "slot_class": "secondary_compound",
           "protected": false,
@@ -11948,10 +12206,10 @@
         "slot_id": "target_accessory",
         "role": "Target Accessory",
         "exercise": {
-         "id": "cable_pullover",
-         "name": "Cable Pullover",
-         "equipment": "cable",
-         "equipment_label": "Cable",
+         "id": "db_pullover",
+         "name": "Dumbbell Pullover",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "back"
          ],
@@ -12177,7 +12435,7 @@
       "state": "amped",
       "pattern": "density_superset+burnout_finisher",
       "emitted": "finisher+straight+superset",
-      "blocks": "[('straight', ['lat_pulldown']), ('straight', ['chest_supported_row_machine']), ('straight', ['single_arm_cable_row']), ('superset', ['cable_pullover', 'ez_bar_curl']), ('straight', ['bayesian_cable_curl']), ('finisher', ['machine_preacher_curl'])]"
+      "blocks": "[('straight', ['seated_cable_row']), ('straight', ['lat_pulldown']), ('straight', ['bent_over_db_row']), ('superset', ['db_pullover', 'ez_bar_curl']), ('straight', ['bayesian_cable_curl']), ('finisher', ['machine_preacher_curl'])]"
      }
     ]
    },
@@ -12191,7 +12449,7 @@
  },
  {
   "key": "p26_sore_legs",
-  "title": "Phase 2.6: sore legs reroute (teaser)",
+  "title": "Sore legs reroute",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
@@ -12199,12 +12457,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "95dbf430965a49f3b0a814a50f4666b6",
+    "workout_id": "f537ecf82ca34f23aa037e6b3fd9a423",
     "version": 1,
-    "created_at": "2026-09-26T05:05:50.197652+00:00",
+    "created_at": "2026-09-26T06:37:18.267632+00:00",
     "direction": "strength",
     "direction_name": "Strength",
     "archetype": {
@@ -12247,11 +12505,33 @@
     "built_for_today": [
      {
       "code": "sore",
-      "text": "Today's workout shifts stress away from your sore legs."
+      "text": "Today's workout shifts stress away from your sore legs.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "structure",
+      "text": "Seated Cable Row (4 × 8) leads as the main lift, then 2 strength lifts and 3 accessories.",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "16 working sets across 6 exercises, about 42 minutes.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Main work stops about 2 reps short of failure, accessories about 1 rep short of failure.",
+      "kind": "decision"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate difficulty: every movement is within the intermediate complexity and skill limits.",
+      "kind": "context"
      },
      {
       "code": "goal",
-      "text": "MOOD's Pick follows a rotation built for your goal to build muscle."
+      "text": "MOOD's Pick follows the rotation built for your goal to build muscle, at 3 to 4 days a week.",
+      "kind": "context"
      }
     ],
     "today": {
@@ -12271,7 +12551,7 @@
     "warmup": {
      "minutes": 7,
      "items": [],
-     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Lat Pulldown."
+     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Seated Cable Row."
     },
     "blocks": [
      {
@@ -12293,8 +12573,8 @@
         "slot_id": "primary_pull",
         "role": "Primary Pull",
         "exercise": {
-         "id": "lat_pulldown",
-         "name": "Lat Pulldown",
+         "id": "seated_cable_row",
+         "name": "Seated Cable Row",
          "equipment": "cable",
          "equipment_label": "Cable",
          "primary_muscles": [
@@ -12350,10 +12630,10 @@
         "slot_id": "complementary_pull",
         "role": "Complementary Pull",
         "exercise": {
-         "id": "chest_supported_row_machine",
-         "name": "Chest-Supported Machine Row",
-         "equipment": "plate_loaded_machine",
-         "equipment_label": "Plate-loaded machine",
+         "id": "lat_pulldown",
+         "name": "Lat Pulldown",
+         "equipment": "cable",
+         "equipment_label": "Cable",
          "primary_muscles": [
           "back"
          ],
@@ -12407,10 +12687,10 @@
         "slot_id": "secondary_back",
         "role": "Secondary Back",
         "exercise": {
-         "id": "single_arm_cable_row",
-         "name": "Single-Arm Cable Row",
-         "equipment": "cable",
-         "equipment_label": "Cable",
+         "id": "bent_over_db_row",
+         "name": "Bent-Over Dumbbell Row (Two-Arm)",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "back"
          ],
@@ -12421,7 +12701,7 @@
          "sets": 3,
          "reps": "10",
          "reps_scheme": null,
-         "per_side": true,
+         "per_side": false,
          "seconds": null,
          "distance_m": null,
          "calories": null,
@@ -12429,7 +12709,7 @@
          "rir": 2,
          "rpe": null,
          "load_guidance": "Stop each set with about 2 reps left in the tank.",
-         "display": "3 × 10/side",
+         "display": "3 × 10",
          "direction_fields": {
           "slot_class": "secondary_compound",
           "protected": false,
@@ -12464,10 +12744,10 @@
         "slot_id": "target_accessory",
         "role": "Target Accessory",
         "exercise": {
-         "id": "cable_pullover",
-         "name": "Cable Pullover",
-         "equipment": "cable",
-         "equipment_label": "Cable",
+         "id": "db_pullover",
+         "name": "Dumbbell Pullover",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
          "primary_muscles": [
           "back"
          ],
@@ -12637,7 +12917,7 @@
       "state": null,
       "pattern": "straight",
       "emitted": "straight",
-      "blocks": "[('straight', ['lat_pulldown']), ('straight', ['chest_supported_row_machine']), ('straight', ['single_arm_cable_row']), ('straight', ['cable_pullover']), ('straight', ['ez_bar_curl']), ('straight', ['bayesian_cable_curl'])]"
+      "blocks": "[('straight', ['seated_cable_row']), ('straight', ['lat_pulldown']), ('straight', ['bent_over_db_row']), ('straight', ['db_pullover']), ('straight', ['ez_bar_curl']), ('straight', ['bayesian_cable_curl'])]"
      }
     ]
    },
@@ -12651,7 +12931,7 @@
  },
  {
   "key": "p26_athletic_speed",
-  "title": "Phase 2.6: Athletic Speed + Agility",
+  "title": "Athletic Speed + Agility",
   "envelope": {
    "schema_version": "v3.0",
    "status": "ok",
@@ -12659,12 +12939,12 @@
    "conflict": null,
    "engine": {
     "phase": "2.6",
-    "build": "0991c8b311d6"
+    "build": "bd39ff72773d"
    },
    "workout": {
-    "workout_id": "62bd4313b1ff40ac97d495cd7520739a",
+    "workout_id": "8525ebcc7b0c4a689c968d557e2b5275",
     "version": 1,
-    "created_at": "2026-09-26T05:05:50.202895+00:00",
+    "created_at": "2026-09-26T06:37:18.278403+00:00",
     "direction": "athletic",
     "direction_name": "Athletic",
     "archetype": {
@@ -12679,8 +12959,8 @@
     },
     "duration": {
      "requested_minutes": 60,
-     "estimated_minutes": 44.4,
-     "display": "40–45 min"
+     "estimated_minutes": 45.2,
+     "display": "about 45 min"
     },
     "experience": "intermediate",
     "states": [],
@@ -12695,7 +12975,38 @@
     },
     "swap_count": 0,
     "selection_source": "user_selected",
-    "built_for_today": [],
+    "built_for_today": [
+     {
+      "code": "structure",
+      "text": "Sled Push comes first, while you're fresh, then Banded Lateral Bound and Box Jump.",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "Explosive Start (5-10 m) repeat efforts (8 × 10 m, walk back) close out the speed work.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Each set ends when speed, height or control drops, so every rep is a quality rep.",
+      "kind": "decision"
+     },
+     {
+      "code": "support",
+      "text": "Slider Hamstring Curl is Performance Support: hamstring resilience for sprinting.",
+      "kind": "decision"
+     },
+     {
+      "code": "difficulty",
+      "text": "Intermediate difficulty allows full-intent power work but keeps high-impact landings for Advanced.",
+      "kind": "context"
+     },
+     {
+      "code": "goal",
+      "text": "Because your goal is to build muscle, Athletic sessions always include Performance Support.",
+      "kind": "context"
+     }
+    ],
     "today": {
      "told": [
       "Athletic",
@@ -12847,7 +13158,7 @@
       "title": "Secondary exposure",
       "rounds": 5,
       "rest_between_items_sec": null,
-      "rest_between_rounds_sec": 60,
+      "rest_between_rounds_sec": 75,
       "interval": null,
       "effort": null,
       "instructions": "Full recovery between sets. Quality over volume.",
@@ -12858,10 +13169,10 @@
         "slot_id": "secondary_exposure",
         "role": "sx",
         "exercise": {
-         "id": "skater_hop",
-         "name": "Skater Hops",
-         "equipment": "bodyweight",
-         "equipment_label": "Bodyweight",
+         "id": "banded_lateral_bound",
+         "name": "Banded Lateral Bound",
+         "equipment": "bands",
+         "equipment_label": "Band",
          "primary_muscles": [
           "glutes",
           "quads"
@@ -12877,13 +13188,13 @@
          "seconds": null,
          "distance_m": null,
          "calories": null,
-         "rest_sec": 60,
+         "rest_sec": 75,
          "rir": null,
          "rpe": null,
-         "load_guidance": "stick each landing",
+         "load_guidance": "max distance, stick",
          "display": "5 × 3/side",
          "direction_fields": {
-          "type": "B",
+          "type": "A",
           "quality": "lateral_power"
          }
         },
@@ -12915,20 +13226,20 @@
         "slot_id": "third_exposure",
         "role": "sx2",
         "exercise": {
-         "id": "broad_jump_to_vertical",
-         "name": "Broad Jump to Vertical Jump",
-         "equipment": "bodyweight",
-         "equipment_label": "Bodyweight",
+         "id": "box_jump",
+         "name": "Box Jump",
+         "equipment": "box",
+         "equipment_label": "Box",
          "primary_muscles": [
-          "glutes",
-          "quads"
+          "quads",
+          "glutes"
          ],
          "media": null
         },
         "prescription": {
          "kind": "reps",
          "sets": 5,
-         "reps": 2,
+         "reps": 3,
          "reps_scheme": null,
          "per_side": false,
          "seconds": null,
@@ -12937,15 +13248,17 @@
          "rest_sec": 90,
          "rir": null,
          "rpe": null,
-         "load_guidance": "max intent, stick the landing",
-         "display": "5 × 2",
+         "load_guidance": "max effort, land soft and quiet",
+         "display": "5 × 3",
          "direction_fields": {
           "type": "A",
-          "quality": "jump_combo"
+          "quality": "jump"
          }
         },
-        "cues": [],
-        "quality_stop": "End the set when either jump loses height or you cannot stick the landing.",
+        "cues": [
+         "Land softly in the same stance you took off in. Step down, do not jump down."
+        ],
+        "quality_stop": "End the set when jump height drops or landings get loud and heavy.",
         "swap": {
          "swappable": true
         },
@@ -13089,6 +13402,1365 @@
    "profile_defaults_applied": [
     "goal",
     "experience",
+    "training_frequency",
+    "training_preference"
+   ]
+  }
+ },
+ {
+  "key": "p26_athletic_beginner",
+  "title": "Difficulty Beginner: Athletic Power (safety rules)",
+  "envelope": {
+   "schema_version": "v3.0",
+   "status": "ok",
+   "outcome": "valid",
+   "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "bd39ff72773d"
+   },
+   "workout": {
+    "workout_id": "15323d8878d24a13b0656d368ac65671",
+    "version": 1,
+    "created_at": "2026-09-26T06:37:18.283517+00:00",
+    "direction": "athletic",
+    "direction_name": "Athletic",
+    "archetype": {
+     "id": "athletic_power",
+     "name": "Power"
+    },
+    "requested_archetype": null,
+    "target": {
+     "mode": "archetype",
+     "muscles": [],
+     "label": "Power"
+    },
+    "duration": {
+     "requested_minutes": 60,
+     "estimated_minutes": 34.2,
+     "display": "30–35 min"
+    },
+    "experience": "beginner",
+    "states": [],
+    "soreness": {
+     "regions": [],
+     "muscles": [],
+     "trained_anyway": []
+    },
+    "equipment": {
+     "preset": "commercial_gym",
+     "label": "Commercial gym"
+    },
+    "swap_count": 0,
+    "selection_source": "user_selected",
+    "built_for_today": [
+     {
+      "code": "duration",
+      "text": "This session is complete at about 34 min. Quality over filler.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "difficulty",
+      "text": "Beginner difficulty applies MOOD's athletic safety rules: no high-impact landings or advanced drills, a smaller landing budget, precision-first reps and no repeat-effort block.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "structure",
+      "text": "Broad Jump to Stick comes first, while you're fresh, then Med-Ball Rotational Throw and Dumbbell Push Press.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Each set ends when speed, height or control drops, so every rep is a quality rep.",
+      "kind": "decision"
+     },
+     {
+      "code": "support",
+      "text": "Kettlebell Deadlift is Performance Support: strength that carries over to the jumps and lifts.",
+      "kind": "decision"
+     },
+     {
+      "code": "goal",
+      "text": "Because your goal is to build muscle, Athletic sessions always include Performance Support.",
+      "kind": "context"
+     }
+    ],
+    "today": {
+     "told": [
+      "Athletic",
+      "Power",
+      "60 min"
+     ],
+     "chose": "Athletic · Power",
+     "chosen_by": "You picked it",
+     "teaser": null
+    },
+    "warmup": {
+     "minutes": 5.5,
+     "items": [
+      {
+       "component": "raise",
+       "component_label": "Raise temperature",
+       "exercise": {
+        "id": "stationary_bike",
+        "name": "Stationary Bike",
+        "equipment": "bike",
+        "equipment_label": "Bike",
+        "primary_muscles": [
+         "quads"
+        ],
+        "media": null
+       },
+       "name": "Stationary Bike",
+       "prescription_text": "2-3 min easy"
+      },
+      {
+       "component": "prep",
+       "component_label": "Mobility",
+       "exercise": {
+        "id": "leg_swings",
+        "name": "Leg Swings",
+        "equipment": "bodyweight",
+        "equipment_label": "Bodyweight",
+        "primary_muscles": [
+         "glutes",
+         "hamstrings"
+        ],
+        "media": null
+       },
+       "name": "Leg Swings",
+       "prescription_text": "10 each way"
+      },
+      {
+       "component": "primer",
+       "component_label": "Primer",
+       "exercise": {
+        "id": "snap_down",
+        "name": "Snap-Down to Stick",
+        "equipment": "bodyweight",
+        "equipment_label": "Bodyweight",
+        "primary_muscles": [
+         "quads",
+         "glutes"
+        ],
+        "media": null
+       },
+       "name": "Snap-Down to Stick",
+       "prescription_text": "2 x 5"
+      },
+      {
+       "component": "primer",
+       "component_label": "Primer",
+       "exercise": {
+        "id": "pogo_hop",
+        "name": "Pogo Jumps",
+        "equipment": "bodyweight",
+        "equipment_label": "Bodyweight",
+        "primary_muscles": [
+         "calves"
+        ],
+        "media": null
+       },
+       "name": "Pogo Jumps",
+       "prescription_text": "2 x 10"
+      }
+     ],
+     "guidance": null
+    },
+    "blocks": [
+     {
+      "block_id": "B1",
+      "sequence": 1,
+      "type": "primary",
+      "structure": "exposure",
+      "title": "Primary exposure",
+      "rounds": 5,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 75,
+      "interval": null,
+      "effort": null,
+      "instructions": "Full recovery between sets. Quality over volume.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "px",
+        "slot_id": "primary_exposure",
+        "role": "px",
+        "exercise": {
+         "id": "broad_jump",
+         "name": "Broad Jump to Stick",
+         "equipment": "bodyweight",
+         "equipment_label": "Bodyweight",
+         "primary_muscles": [
+          "glutes",
+          "quads"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 5,
+         "reps": 3,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 75,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "max effort, land soft and quiet",
+         "display": "5 × 3",
+         "direction_fields": {
+          "type": "A",
+          "quality": "jump"
+         }
+        },
+        "cues": [
+         "Swing the arms, jump out and stick the landing for a full second."
+        ],
+        "quality_stop": "End the set when jump height drops or landings get loud and heavy.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B2",
+      "sequence": 2,
+      "type": "secondary",
+      "structure": "exposure",
+      "title": "Secondary exposure",
+      "rounds": 5,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": "Full recovery between sets. Quality over volume.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "sx",
+        "slot_id": "secondary_exposure",
+        "role": "sx",
+        "exercise": {
+         "id": "mb_rotational_throw",
+         "name": "Med-Ball Rotational Throw",
+         "equipment": "med_ball",
+         "equipment_label": "Med ball",
+         "primary_muscles": [
+          "core"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 5,
+         "reps": 4,
+         "reps_scheme": null,
+         "per_side": true,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "drive from the back hip",
+         "display": "5 × 4/side",
+         "direction_fields": {
+          "type": "A",
+          "quality": "rotational_throw"
+         }
+        },
+        "cues": [],
+        "quality_stop": "Drive from the back hip. End the set when throws lose snap.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B3",
+      "sequence": 3,
+      "type": "secondary",
+      "structure": "exposure",
+      "title": "Third exposure",
+      "rounds": 5,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 75,
+      "interval": null,
+      "effort": null,
+      "instructions": "Full recovery between sets. Quality over volume.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "sx2",
+        "slot_id": "third_exposure",
+        "role": "sx2",
+        "exercise": {
+         "id": "db_push_press",
+         "name": "Dumbbell Push Press",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
+         "primary_muscles": [
+          "shoulders",
+          "triceps"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 5,
+         "reps": 4,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 75,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "dip and drive fast",
+         "display": "5 × 4",
+         "direction_fields": {
+          "type": "A",
+          "quality": "upper_power"
+         }
+        },
+        "cues": [],
+        "quality_stop": "Dip and drive fast. End the set when the bar or bell slows noticeably.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B4",
+      "sequence": 4,
+      "type": "support",
+      "structure": "straight",
+      "title": "Performance Support",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 150,
+      "interval": null,
+      "effort": null,
+      "instructions": "Why it's here: strength that carries over to the jumps and lifts.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "ps",
+        "slot_id": "performance_support",
+        "role": "ps",
+        "exercise": {
+         "id": "kettlebell_deadlift",
+         "name": "Kettlebell Deadlift",
+         "equipment": "kettlebell",
+         "equipment_label": "Kettlebell",
+         "primary_muscles": [
+          "hamstrings",
+          "glutes"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": 3,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 150,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "2 RIR",
+         "display": "3 × 3",
+         "direction_fields": {
+          "type": "support",
+          "quality": null,
+          "purpose": "strength_transfer",
+          "why": "strength that carries over to the jumps and lifts"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     }
+    ],
+    "cooldown": null,
+    "relaxations": [],
+    "adjustments": [
+     {
+      "reason_code": "athletic_log",
+      "detail": "Added Kettlebell Deadlift (strength transfer): strength that carries over to the jumps and lifts"
+     }
+    ]
+   },
+   "profile_defaults_applied": [
+    "goal",
+    "training_frequency",
+    "training_preference"
+   ]
+  }
+ },
+ {
+  "key": "p26_athletic_advanced",
+  "title": "Difficulty Advanced: Athletic Power",
+  "envelope": {
+   "schema_version": "v3.0",
+   "status": "ok",
+   "outcome": "valid",
+   "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "bd39ff72773d"
+   },
+   "workout": {
+    "workout_id": "5ebaec3c74ed4aac80bb2172648f7177",
+    "version": 1,
+    "created_at": "2026-09-26T06:37:18.289723+00:00",
+    "direction": "athletic",
+    "direction_name": "Athletic",
+    "archetype": {
+     "id": "athletic_power",
+     "name": "Power"
+    },
+    "requested_archetype": null,
+    "target": {
+     "mode": "archetype",
+     "muscles": [],
+     "label": "Power"
+    },
+    "duration": {
+     "requested_minutes": 60,
+     "estimated_minutes": 42.3,
+     "display": "40–45 min"
+    },
+    "experience": "advanced",
+    "states": [],
+    "soreness": {
+     "regions": [],
+     "muscles": [],
+     "trained_anyway": []
+    },
+    "equipment": {
+     "preset": "commercial_gym",
+     "label": "Commercial gym"
+    },
+    "swap_count": 0,
+    "selection_source": "user_selected",
+    "built_for_today": [
+     {
+      "code": "difficulty",
+      "text": "Advanced difficulty keeps higher-complexity power movements available: today includes Consecutive Broad Jumps.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "structure",
+      "text": "Kettlebell Snatch comes first, while you're fresh, then Consecutive Broad Jumps and Step-Behind Rotational Throw.",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "Sled Push repeat efforts (8 × 10 m, light sled, walk back) close out the speed work.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Each set ends when speed, height or control drops, so every rep is a quality rep.",
+      "kind": "decision"
+     },
+     {
+      "code": "support",
+      "text": "Barbell Back Squat is Performance Support: strength that carries over to the jumps and lifts.",
+      "kind": "decision"
+     },
+     {
+      "code": "goal",
+      "text": "Because your goal is to build muscle, Athletic sessions always include Performance Support.",
+      "kind": "context"
+     }
+    ],
+    "today": {
+     "told": [
+      "Athletic",
+      "Power",
+      "60 min"
+     ],
+     "chose": "Athletic · Power",
+     "chosen_by": "You picked it",
+     "teaser": null
+    },
+    "warmup": {
+     "minutes": 6.0,
+     "items": [
+      {
+       "component": "raise",
+       "component_label": "Raise temperature",
+       "exercise": {
+        "id": "row_erg",
+        "name": "Row Erg",
+        "equipment": "rower",
+        "equipment_label": "Rower",
+        "primary_muscles": [
+         "quads",
+         "back"
+        ],
+        "media": null
+       },
+       "name": "Row Erg",
+       "prescription_text": "2-3 min easy"
+      },
+      {
+       "component": "prep",
+       "component_label": "Mobility",
+       "exercise": {
+        "id": "worlds_greatest_stretch",
+        "name": "World's Greatest Stretch",
+        "equipment": "bodyweight",
+        "equipment_label": "Bodyweight",
+        "primary_muscles": [
+         "glutes",
+         "hip_adductors"
+        ],
+        "media": null
+       },
+       "name": "World's Greatest Stretch",
+       "prescription_text": "3 / side"
+      },
+      {
+       "component": "primer",
+       "component_label": "Primer",
+       "exercise": {
+        "id": "pogo_hop",
+        "name": "Pogo Jumps",
+        "equipment": "bodyweight",
+        "equipment_label": "Bodyweight",
+        "primary_muscles": [
+         "calves"
+        ],
+        "media": null
+       },
+       "name": "Pogo Jumps",
+       "prescription_text": "2 x 10"
+      },
+      {
+       "component": "rehearsal",
+       "component_label": "Rehearsal",
+       "exercise": {
+        "id": "kb_snatch",
+        "name": "Kettlebell Snatch",
+        "equipment": "kettlebell",
+        "equipment_label": "Kettlebell",
+        "primary_muscles": [
+         "glutes",
+         "hamstrings",
+         "shoulders"
+        ],
+        "media": null
+       },
+       "name": "Kettlebell Snatch",
+       "prescription_text": "light / submax, 2 x 2"
+      }
+     ],
+     "guidance": null
+    },
+    "blocks": [
+     {
+      "block_id": "B1",
+      "sequence": 1,
+      "type": "primary",
+      "structure": "exposure",
+      "title": "Primary exposure",
+      "rounds": 5,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 120,
+      "interval": null,
+      "effort": null,
+      "instructions": "Full recovery between sets. Quality over volume.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "px",
+        "slot_id": "primary_exposure",
+        "role": "px",
+        "exercise": {
+         "id": "kb_snatch",
+         "name": "Kettlebell Snatch",
+         "equipment": "kettlebell",
+         "equipment_label": "Kettlebell",
+         "primary_muscles": [
+          "glutes",
+          "hamstrings",
+          "shoulders"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 5,
+         "reps": 2,
+         "reps_scheme": null,
+         "per_side": true,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 120,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "move it fast; pick a weight that stays fast",
+         "display": "5 × 2/side",
+         "direction_fields": {
+          "type": "A",
+          "quality": "explosive_lift"
+         }
+        },
+        "cues": [
+         "Hips drive the bell; punch through at the top so it does not crash on the wrist."
+        ],
+        "quality_stop": "Pick a weight that stays fast. End the set when it slows noticeably.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B2",
+      "sequence": 2,
+      "type": "secondary",
+      "structure": "exposure",
+      "title": "Secondary exposure",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 120,
+      "interval": null,
+      "effort": null,
+      "instructions": "Full recovery between sets. Quality over volume.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "sx",
+        "slot_id": "secondary_exposure",
+        "role": "sx",
+        "exercise": {
+         "id": "consecutive_broad_jump",
+         "name": "Consecutive Broad Jumps",
+         "equipment": "bodyweight",
+         "equipment_label": "Bodyweight",
+         "primary_muscles": [
+          "glutes",
+          "quads"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": 3,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 120,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "max distance, stick the last one",
+         "display": "3 × 3",
+         "direction_fields": {
+          "type": "A",
+          "quality": "bound"
+         }
+        },
+        "cues": [],
+        "quality_stop": "End the set when distance per bound drops or the landing gets heavy.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B3",
+      "sequence": 3,
+      "type": "secondary",
+      "structure": "exposure",
+      "title": "Third exposure",
+      "rounds": 4,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": "Full recovery between sets. Quality over volume.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "sx2",
+        "slot_id": "third_exposure",
+        "role": "sx2",
+        "exercise": {
+         "id": "mb_step_behind_throw",
+         "name": "Step-Behind Rotational Throw",
+         "equipment": "med_ball",
+         "equipment_label": "Med ball",
+         "primary_muscles": [
+          "core"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 4,
+         "reps": 4,
+         "reps_scheme": null,
+         "per_side": true,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "drive from the back hip",
+         "display": "4 × 4/side",
+         "direction_fields": {
+          "type": "A",
+          "quality": "rotational_throw"
+         }
+        },
+        "cues": [],
+        "quality_stop": "Drive from the back hip. End the set when throws lose snap.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B4",
+      "sequence": 4,
+      "type": "repeats",
+      "structure": "repeats",
+      "title": "Repeat efforts",
+      "rounds": 8,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 45,
+      "interval": null,
+      "effort": null,
+      "instructions": "Short, all-out efforts with long recovery.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "qc",
+        "slot_id": "quality_capped_repeats",
+        "role": "qc",
+        "exercise": {
+         "id": "sled_push",
+         "name": "Sled Push",
+         "equipment": "sled",
+         "equipment_label": "Sled",
+         "primary_muscles": [
+          "quads",
+          "glutes"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "distance",
+         "sets": 8,
+         "reps": null,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": 10,
+         "calories": null,
+         "rest_sec": 45,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "10 m, light sled, walk back",
+         "display": "8 × 10 m, light sled, walk back",
+         "direction_fields": {
+          "type": "repeats",
+          "work_sec": 5,
+          "recovery_sec": 45
+         }
+        },
+        "cues": [
+         "Arms locked or bent, body at 45 degrees; short, fast steps."
+        ],
+        "quality_stop": "All-out, but end the block early if efforts clearly slow.",
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B5",
+      "sequence": 5,
+      "type": "support",
+      "structure": "straight",
+      "title": "Performance Support",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 150,
+      "interval": null,
+      "effort": null,
+      "instructions": "Why it's here: strength that carries over to the jumps and lifts.",
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "ps",
+        "slot_id": "performance_support",
+        "role": "ps",
+        "exercise": {
+         "id": "barbell_back_squat",
+         "name": "Barbell Back Squat",
+         "equipment": "barbell",
+         "equipment_label": "Barbell",
+         "primary_muscles": [
+          "quads",
+          "glutes"
+         ],
+         "media": {
+          "video_url": "https://v/squat.mp4",
+          "thumbnail_url": "https://t/squat.jpg",
+          "library_id": "lib1"
+         }
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": 3,
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 150,
+         "rir": null,
+         "rpe": null,
+         "load_guidance": "2 RIR",
+         "display": "3 × 3",
+         "direction_fields": {
+          "type": "support",
+          "quality": null,
+          "purpose": "strength_transfer",
+          "why": "strength that carries over to the jumps and lifts"
+         }
+        },
+        "cues": [
+         "Brace before each rep; knees track over the toes.",
+         "Use safeties set just below the bottom position."
+        ],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     }
+    ],
+    "cooldown": null,
+    "relaxations": [],
+    "adjustments": [
+     {
+      "reason_code": "athletic_log",
+      "detail": "Added repeat efforts (Sled Push) to complete the session"
+     },
+     {
+      "reason_code": "athletic_log",
+      "detail": "Added Barbell Back Squat (strength transfer): strength that carries over to the jumps and lifts"
+     }
+    ]
+   },
+   "profile_defaults_applied": [
+    "goal",
+    "training_frequency",
+    "training_preference"
+   ]
+  }
+ },
+ {
+  "key": "p26_strength_beginner",
+  "title": "Difficulty Beginner: Strength",
+  "envelope": {
+   "schema_version": "v3.0",
+   "status": "ok",
+   "outcome": "valid",
+   "conflict": null,
+   "engine": {
+    "phase": "2.6",
+    "build": "bd39ff72773d"
+   },
+   "workout": {
+    "workout_id": "f139e3b8d2e94d0781e0a720c5ac4d09",
+    "version": 1,
+    "created_at": "2026-09-26T06:37:18.295402+00:00",
+    "direction": "strength",
+    "direction_name": "Strength",
+    "archetype": {
+     "id": "strength_upper_pull",
+     "name": "Upper Pull"
+    },
+    "requested_archetype": null,
+    "target": {
+     "mode": "moods_pick",
+     "muscles": [],
+     "label": "MOOD's Pick"
+    },
+    "duration": {
+     "requested_minutes": 60,
+     "estimated_minutes": 42.0,
+     "display": "40–45 min"
+    },
+    "experience": "beginner",
+    "states": [],
+    "soreness": {
+     "regions": [],
+     "muscles": [],
+     "trained_anyway": []
+    },
+    "equipment": {
+     "preset": "commercial_gym",
+     "label": "Commercial gym"
+    },
+    "swap_count": 0,
+    "selection_source": "moods_pick",
+    "built_for_today": [
+     {
+      "code": "difficulty",
+      "text": "Beginner difficulty applies MOOD's beginner exercise rules: all 6 movements are beginner-rated and technically approachable.",
+      "kind": "adaptation"
+     },
+     {
+      "code": "structure",
+      "text": "Seated Cable Row (4 × 8) leads as the main lift, then 2 strength lifts and 3 accessories.",
+      "kind": "decision"
+     },
+     {
+      "code": "volume",
+      "text": "16 working sets across 6 exercises, about 42 minutes.",
+      "kind": "decision"
+     },
+     {
+      "code": "intensity",
+      "text": "Main work stops about 2 reps short of failure, accessories about 1 rep short of failure.",
+      "kind": "decision"
+     },
+     {
+      "code": "goal",
+      "text": "MOOD's Pick follows the rotation built for your goal to build muscle, at 3 to 4 days a week.",
+      "kind": "context"
+     },
+     {
+      "code": "history",
+      "text": "This is your first MOOD workout, so it starts from your Training Profile.",
+      "kind": "context"
+     }
+    ],
+    "today": {
+     "told": [
+      "Strength",
+      "60 min"
+     ],
+     "chose": "Strength · Upper Pull",
+     "chosen_by": "MOOD's Pick",
+     "teaser": null
+    },
+    "warmup": {
+     "minutes": 7,
+     "items": [],
+     "guidance": "5-8 min: easy cardio and mobility, then 2-3 lighter ramp-up sets of Seated Cable Row."
+    },
+    "blocks": [
+     {
+      "block_id": "B1",
+      "sequence": 1,
+      "type": "main",
+      "structure": "straight",
+      "title": "Main lift",
+      "rounds": 4,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 120,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "primary_pull",
+        "slot_id": "primary_pull",
+        "role": "Primary Pull",
+        "exercise": {
+         "id": "seated_cable_row",
+         "name": "Seated Cable Row",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 4,
+         "reps": "8",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 120,
+         "rir": 2,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 2 reps left in the tank.",
+         "display": "4 × 8",
+         "direction_fields": {
+          "slot_class": "primary_compound",
+          "protected": true,
+          "role": "Primary Pull"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B2",
+      "sequence": 2,
+      "type": "secondary",
+      "structure": "straight",
+      "title": "Strength",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 90,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "complementary_pull",
+        "slot_id": "complementary_pull",
+        "role": "Complementary Pull",
+        "exercise": {
+         "id": "lat_pulldown",
+         "name": "Lat Pulldown",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": "10",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 90,
+         "rir": 2,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 2 reps left in the tank.",
+         "display": "3 × 10",
+         "direction_fields": {
+          "slot_class": "secondary_compound",
+          "protected": true,
+          "role": "Complementary Pull"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B3",
+      "sequence": 3,
+      "type": "secondary",
+      "structure": "straight",
+      "title": "Strength",
+      "rounds": 3,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 90,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "secondary_back",
+        "slot_id": "secondary_back",
+        "role": "Secondary Back",
+        "exercise": {
+         "id": "bent_over_db_row",
+         "name": "Bent-Over Dumbbell Row (Two-Arm)",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 3,
+         "reps": "10",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 90,
+         "rir": 2,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 2 reps left in the tank.",
+         "display": "3 × 10",
+         "direction_fields": {
+          "slot_class": "secondary_compound",
+          "protected": false,
+          "role": "Secondary Back"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B4",
+      "sequence": 4,
+      "type": "accessory",
+      "structure": "straight",
+      "title": "Accessory",
+      "rounds": 2,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "target_accessory",
+        "slot_id": "target_accessory",
+        "role": "Target Accessory",
+        "exercise": {
+         "id": "db_pullover",
+         "name": "Dumbbell Pullover",
+         "equipment": "dumbbells",
+         "equipment_label": "Dumbbells",
+         "primary_muscles": [
+          "back"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 2,
+         "reps": "12",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": 1,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 1 rep left in the tank.",
+         "display": "2 × 12",
+         "direction_fields": {
+          "slot_class": "accessory",
+          "protected": false,
+          "role": "Target Accessory"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B5",
+      "sequence": 5,
+      "type": "accessory",
+      "structure": "straight",
+      "title": "Accessory",
+      "rounds": 2,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "biceps_accessory",
+        "slot_id": "biceps_accessory",
+        "role": "Biceps Accessory",
+        "exercise": {
+         "id": "ez_bar_curl",
+         "name": "EZ-Bar Curl",
+         "equipment": "ez_bar",
+         "equipment_label": "EZ bar",
+         "primary_muscles": [
+          "biceps"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 2,
+         "reps": "12",
+         "reps_scheme": null,
+         "per_side": false,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": 1,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 1 rep left in the tank.",
+         "display": "2 × 12",
+         "direction_fields": {
+          "slot_class": "accessory",
+          "protected": false,
+          "role": "Biceps Accessory"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     },
+     {
+      "block_id": "B6",
+      "sequence": 6,
+      "type": "accessory",
+      "structure": "straight",
+      "title": "Accessory",
+      "rounds": 2,
+      "rest_between_items_sec": null,
+      "rest_between_rounds_sec": 60,
+      "interval": null,
+      "effort": null,
+      "instructions": null,
+      "est_minutes": null,
+      "items": [
+       {
+        "item_id": "ancillary_depth",
+        "slot_id": "ancillary_depth",
+        "role": "Ancillary Depth (Biceps)",
+        "exercise": {
+         "id": "bayesian_cable_curl",
+         "name": "Bayesian Cable Curl",
+         "equipment": "cable",
+         "equipment_label": "Cable",
+         "primary_muscles": [
+          "biceps"
+         ],
+         "media": null
+        },
+        "prescription": {
+         "kind": "reps",
+         "sets": 2,
+         "reps": "12",
+         "reps_scheme": null,
+         "per_side": true,
+         "seconds": null,
+         "distance_m": null,
+         "calories": null,
+         "rest_sec": 60,
+         "rir": 1,
+         "rpe": null,
+         "load_guidance": "Stop each set with about 1 rep left in the tank.",
+         "display": "2 × 12/side",
+         "direction_fields": {
+          "slot_class": "accessory",
+          "protected": false,
+          "role": "Ancillary Depth (Biceps)"
+         }
+        },
+        "cues": [],
+        "quality_stop": null,
+        "swap": {
+         "swappable": true
+        },
+        "progression": null
+       }
+      ]
+     }
+    ],
+    "cooldown": null,
+    "relaxations": [],
+    "adjustments": [
+     {
+      "reason_code": "ancillary_depth",
+      "slot": "ancillary_depth",
+      "muscle": "biceps",
+      "exposures": "['ez_bar_curl', 'bayesian_cable_curl']",
+      "profile_differences": 3,
+      "family_reuse": true
+     },
+     {
+      "reason_code": "ancillary_depth_set_allocation",
+      "operation": "three accessory slots at 2 sets each (ATD1)"
+     },
+     {
+      "reason_code": "structure_selected",
+      "state": null,
+      "pattern": "straight",
+      "emitted": "straight",
+      "blocks": "[('straight', ['seated_cable_row']), ('straight', ['lat_pulldown']), ('straight', ['bent_over_db_row']), ('straight', ['db_pullover']), ('straight', ['ez_bar_curl']), ('straight', ['bayesian_cable_curl'])]"
+     }
+    ]
+   },
+   "profile_defaults_applied": [
+    "goal",
     "training_frequency",
     "training_preference"
    ]

@@ -7,7 +7,7 @@
  * The server still validates everything; these helpers only keep the UI from
  * offering a request the contract rejects.
  */
-import type { V3Direction, V3Equipment, V3GenerateRequest, V3SoreRegion, V3State } from './v3Api';
+import type { V3Direction, V3Equipment, V3Experience, V3GenerateRequest, V3SoreRegion, V3State } from './v3Api';
 
 /* ------------------------------------------------------------------ vocabulary */
 
@@ -64,6 +64,14 @@ export const TARGETS: { id: string; label: string; muscles: string[] | 'full_bod
 
 export const DURATIONS: (30 | 60)[] = [60, 30];
 
+/** Session Difficulty (the V3 `experience` input). Default comes from the Training Profile. */
+export const DIFFICULTIES: { id: V3Experience; label: string }[] = [
+  { id: 'beginner', label: 'Beginner' },
+  { id: 'intermediate', label: 'Intermediate' },
+  { id: 'advanced', label: 'Advanced' },
+];
+export const DIFFICULTY_LABEL: Record<V3Experience, string> = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' };
+
 /**
  * Session types (archetypes) the user may pick explicitly (Phase 2.5). IDs are the backend registry
  * (normalize.ARCHETYPES); names match the API's archetype.name. MOOD's Pick (null) is always the default.
@@ -114,6 +122,8 @@ export interface HomeInputs {
   archetype: string | null;
   /** Session-only equipment override from a conflict option ("Use full gym equipment"). */
   equipment: V3Equipment | null;
+  /** Today's Difficulty override. null = the Training Profile's experience (nothing sent; the server fills it). */
+  difficulty: V3Experience | null;
 }
 
 export function initialInputs(direction: V3Direction, opts: { states?: V3State[]; duration?: 30 | 60 } = {}): HomeInputs {
@@ -125,7 +135,21 @@ export function initialInputs(direction: V3Direction, opts: { states?: V3State[]
     duration: opts.duration ?? 60,
     archetype: null,
     equipment: null,
+    difficulty: null,
   };
+}
+
+/**
+ * Today's Difficulty. Choosing the profile's own level clears the override, so the request stays profile-driven and the
+ * summaries stay quiet. Never touches the Training Profile.
+ */
+export function setDifficulty(inputs: HomeInputs, level: V3Experience, profileLevel: V3Experience | null): HomeInputs {
+  return { ...inputs, difficulty: profileLevel && level === profileLevel ? null : level };
+}
+
+/** The Difficulty today's workout will use. */
+export function effectiveDifficulty(inputs: HomeInputs, profileLevel: V3Experience | null): V3Experience {
+  return inputs.difficulty ?? profileLevel ?? 'intermediate';
 }
 
 export function toggleState(inputs: HomeInputs, id: V3State): { inputs: HomeInputs; limitHit: boolean } {
@@ -234,6 +258,7 @@ export function buildRequest(inputs: HomeInputs, date: string): V3GenerateReques
   if (inputs.target !== null && targetSupported(inputs.direction)) req.target = inputs.target === 'full_body' ? 'full_body' : [...inputs.target];
   if (inputs.archetype) req.archetype = inputs.archetype;
   if (inputs.equipment) req.equipment = inputs.equipment;
+  if (inputs.difficulty) req.experience = inputs.difficulty;
   return req;
 }
 
@@ -247,6 +272,7 @@ export function requestSignature(req: V3GenerateRequest): string {
     a: req.archetype ?? null,
     du: req.duration,
     e: req.equipment ?? null,
+    x: req.experience ?? null,
     date: req.date,
   };
   return JSON.stringify(norm);
@@ -302,14 +328,16 @@ export function focusLabel(inputs: HomeInputs): string {
 
 /** Home's compact configuration row (Phase 2.6): "MOOD's Pick · 60 min", "Chest · 60 min", "Lower Body: Squat · 30 min". */
 export function configSummary(inputs: HomeInputs): string {
-  return `${focusLabel(inputs)} · ${inputs.duration} min`;
+  return [focusLabel(inputs), inputs.difficulty ? DIFFICULTY_LABEL[inputs.difficulty] : null, `${inputs.duration} min`].filter(Boolean).join(' · ');
 }
 
 /** Line above Build: exactly what will be sent. "Strength · Amped · Chest · 60 min". */
 export function summaryLine(inputs: HomeInputs): string {
   const states = inputs.states.filter((s) => s !== 'sore').map((s) => STATE_LABEL[s]);
   if (inputs.states.includes('sore')) states.push(inputs.soreness.length ? `Sore ${inputs.soreness.map((r) => r.replace(/_/g, ' ')).join(', ')}` : 'Sore');
-  return [DIRECTION_NAME[inputs.direction], ...states, focusLabel(inputs), `${inputs.duration} min`].join(' · ');
+  return [DIRECTION_NAME[inputs.direction], ...states, focusLabel(inputs), inputs.difficulty ? DIFFICULTY_LABEL[inputs.difficulty] : null, `${inputs.duration} min`]
+    .filter(Boolean)
+    .join(' · ');
 }
 
 /** Honest MOOD's Pick copy: the pick uses the profile + completed V3 history; States shape the build. */

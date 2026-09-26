@@ -5,8 +5,8 @@
  *
  *   STRENGTH                      Direction eyebrow
  *   Chest                         Target (Target sessions) or session type
- *   ~40 min · 5 exercises         + State chips when any were selected
- *   Built for your Amped state    at most one adaptation line (API `today.teaser`), only when meaningful
+ *   ~40 min · 5 exercises · Intermediate   + State chips when any were selected
+ *   BUILT FOR TODAY               always: what MOOD adapted, decided and took into account (API lines, kind-marked)
  *   STRAIGHT SETS / SUPERSET ...  the workout itself
  *   Different workout · Details   secondary actions;   Start Workout (sticky)
  *
@@ -28,8 +28,11 @@ import { trackEvent } from '../../utils/analytics';
 import { V3Envelope, getV3Workout, swapV3Workout } from '../../utils/v3Api';
 import { readCachedEnvelope, updateTodayEnvelope } from '../../utils/v3Today';
 import { STATE_LABEL } from '../../utils/v3HomeModel';
-import { differentWorkoutMessage, exerciseIds, previewMeta, previewTitle, workoutDiff } from '../../utils/v3PreviewFormat';
+import { builtForToday, differentWorkoutMessage, exerciseIds, previewMeta, previewTitle, workoutDiff } from '../../utils/v3PreviewFormat';
 import { PreviewSections } from '../../components/v3/PreviewSections';
+
+/** adaptation = something about you changed the workout; decision = a choice MOOD made; context = what it took into account. */
+const KIND_ICON = { adaptation: 'sparkles', decision: 'git-branch-outline', context: 'person-outline' } as const;
 
 export default function V3WorkoutPreview() {
   const router = useRouter();
@@ -114,7 +117,9 @@ export default function V3WorkoutPreview() {
       duration: w.duration.requested_minutes,
       estimated_minutes: w.duration.estimated_minutes,
       exercises: exerciseIds(w).length,
-      has_teaser: !!w.today?.teaser,
+      bft_lines: (w.built_for_today ?? []).length,
+      bft_adaptations: (w.built_for_today ?? []).filter((l) => l.kind === 'adaptation').length,
+      difficulty: w.experience,
       engine: env?.engine?.phase ?? null,
     });
   }, [env, track]);
@@ -174,7 +179,7 @@ export default function V3WorkoutPreview() {
 
   /* ------------------------------------------------------------ render */
   const w = env?.workout ?? null;
-  const teaser = w?.today?.teaser ?? null;
+  const bft = w ? builtForToday(w) : [];
   const states = w ? w.states.filter((s) => s !== 'sore') : [];
   const sore = w && w.soreness.regions.length ? `Sore ${w.soreness.regions.map((r) => r.replace(/_/g, ' ')).join(', ')}` : null;
 
@@ -224,12 +229,22 @@ export default function V3WorkoutPreview() {
               </View>
             ) : null}
 
-            {teaser ? (
-              <View style={styles.teaser} testID="v3-preview-teaser">
-                <Text style={styles.teaserTitle}>{teaser.title}</Text>
-                <Text style={styles.teaserText}>{teaser.text}</Text>
+            <View style={styles.bft} testID="v3-preview-bft">
+              <View style={styles.bftHead}>
+                <Ionicons name="sparkles" size={13} color={COLORS.accent} />
+                <Text style={styles.bftTitle}>BUILT FOR TODAY</Text>
               </View>
-            ) : null}
+              {bft.length ? (
+                bft.map((l) => (
+                  <View key={l.key} style={styles.bftRow} testID={`v3-bft-${l.kind}`}>
+                    <Ionicons name={KIND_ICON[l.kind] as any} size={14} color={l.kind === 'adaptation' ? COLORS.accent : COLORS.textTertiary} style={styles.bftIcon} />
+                    <Text style={[styles.bftText, l.kind === 'adaptation' && styles.bftTextStrong]}>{l.text}</Text>
+                  </View>
+                ))
+              ) : (
+                <Text style={styles.bftText}>Built from your Training Profile and today's choices.</Text>
+              )}
+            </View>
 
             <PreviewSections workout={w} />
           </Animated.View>
@@ -291,9 +306,22 @@ const styles = StyleSheet.create({
   chip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.08)' },
   chipText: { fontSize: 12, fontWeight: '600', color: COLORS.textPrimary, textTransform: 'capitalize' },
 
-  teaser: { marginTop: 18, paddingLeft: 12, borderLeftWidth: 2, borderLeftColor: COLORS.accent },
-  teaserTitle: { fontSize: 13.5, fontWeight: '700', color: COLORS.textPrimary },
-  teaserText: { fontSize: 13.5, lineHeight: 19, color: COLORS.textSecondary, marginTop: 2 },
+  bft: {
+    marginTop: 20,
+    paddingHorizontal: 14,
+    paddingTop: 12,
+    paddingBottom: 6,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255,215,0,0.05)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255,215,0,0.3)',
+  },
+  bftHead: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 },
+  bftTitle: { fontSize: 11, fontWeight: '800', letterSpacing: 1.7, color: COLORS.accent },
+  bftRow: { flexDirection: 'row', gap: 9, paddingVertical: 6 },
+  bftIcon: { marginTop: 2 },
+  bftText: { flex: 1, fontSize: 13.5, lineHeight: 19, color: COLORS.textSecondary },
+  bftTextStrong: { color: COLORS.textPrimary },
 
   actions: { flexDirection: 'row', gap: 10, marginTop: 28 },
   action: {

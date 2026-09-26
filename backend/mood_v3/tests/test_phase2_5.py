@@ -171,7 +171,9 @@ def test_built_for_today_is_specific_and_honest():
     assert env['workout']['today']['chose'].startswith('Custom Strength')
     for l in env['workout']['built_for_today']: assert not explain.lint(l['text'])
     env, _ = gen(direction='strength', target=['chest'])
-    assert not any('goal' in l['code'] for l in env['workout']['built_for_today'])   # no profile claim on a Target session
+    # Phase 2.6 addendum: the goal may appear as context on a Target session, never as a claim that it drove the build
+    for l in env['workout']['built_for_today']:
+        if l['code'] == 'goal': assert l['kind'] == 'context' and 'rotation' not in l['text'] and 'because' not in l['text'].lower()
 
 
 def test_different_workout_explained():

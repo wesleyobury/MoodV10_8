@@ -16,6 +16,8 @@ export type V3Direction = 'strength' | 'sweat' | 'athletic';
 export type V3State = 'low_energy' | 'bored' | 'irritated' | 'sore' | 'amped' | 'stressed';
 export type V3SoreRegion = 'legs' | 'chest' | 'back' | 'upper_back' | 'lower_back' | 'shoulders' | 'arms' | 'core';
 export type V3Equipment = 'commercial_gym' | 'free_weight_limited' | 'minimal';
+/** Session Difficulty (user-facing) = the V3 `experience` input. */
+export type V3Experience = 'beginner' | 'intermediate' | 'advanced';
 
 /** Exactly what POST /api/v3/workouts/generate receives. Profile fields
  *  (goal, experience, frequency, equipment) are omitted on purpose: the server
@@ -28,6 +30,8 @@ export interface V3GenerateRequest {
   archetype?: string;
   duration: 30 | 60;
   equipment?: V3Equipment;
+  /** Today's Difficulty override only. Omitted = the server uses training_profile.experience (never written back). */
+  experience?: V3Experience;
   date: string;
   persist: boolean;
 }
@@ -121,6 +125,8 @@ export interface V3WarmupItem {
 export interface V3BuiltLine {
   code: string;
   text: string;
+  /** Phase 2.6: adaptation (an input changed the output) | decision (a choice MOOD made) | context (true, explanatory). */
+  kind?: 'adaptation' | 'decision' | 'context';
 }
 
 export interface V3Workout {

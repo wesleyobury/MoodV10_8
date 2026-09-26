@@ -33,6 +33,7 @@ import {
   V3ConflictOption,
   EXPECTED_ENGINE_PHASE,
   V3Direction,
+  V3Experience,
   V3State,
   generateV3Workout,
   getV3Version,
@@ -63,7 +64,7 @@ import { V3TodayEntry, readLastDirection, readToday, writeLastDirection, writeTo
 import { V3Chip } from './V3Chip';
 import { ConflictSheet } from './ConflictSheet';
 import { ConfigSheet } from './ConfigSheet';
-import { previewTitle } from '../../utils/v3PreviewFormat';
+import { previewMeta, previewTitle } from '../../utils/v3PreviewFormat';
 
 declare const __DEV__: boolean;
 
@@ -85,6 +86,10 @@ export default function V3Home() {
   const [handoff, setHandoff] = useState<FirstHomeHandoff | null>(null);
   const [today, setToday] = useState<V3TodayEntry | null>(null);
   const [configOpen, setConfigOpen] = useState(false);
+  /** training_profile.experience: today's default Difficulty. */
+  const [profileLevel, setProfileLevel] = useState<V3Experience | null>(null);
+  /** "Build a different workout" tucks Today's Workout into one line so Home is about the new build. */
+  const [todayTucked, setTodayTucked] = useState(false);
   const [stateHint, setStateHint] = useState(false);
   /** Engine identity of the running backend (GET /api/v3/version). null = unknown / unreachable. */
   const [engine, setEngine] = useState<{ engine_phase: string; engine_build: string } | null | undefined>(undefined);
@@ -114,6 +119,8 @@ export default function V3Home() {
       const dir: V3Direction = last ?? (pending?.default_direction as V3Direction) ?? 'strength';
       const prefillStates = (pending?.prefill?.states ?? []).filter((s) => VALID_STATES.has(s)) as V3State[];
       setInputs(initialInputs(dir, { states: prefillStates, duration: 60 }));
+      const handoffLevel = (pending?.profile as any)?.experience as V3Experience | undefined;
+      if (handoffLevel) setProfileLevel(handoffLevel);
       setHandoff(pending);
       setToday(t);
       track('v3_home_viewed', {
@@ -123,10 +130,14 @@ export default function V3Home() {
         direction_source: last ? 'last_used' : pending ? 'handoff' : 'fallback',
         has_today_workout: !!t,
       });
-      if (!last && token) {
+      if (token) {
+        // Always read the profile: Difficulty defaults to its experience (Direction only when there is no last-used one).
         const prof = await fetchTrainingProfile(token);
+        if (!alive) return;
+        const lvl = prof?.profile?.experience as V3Experience | undefined;
+        if (lvl) setProfileLevel(lvl);
         const d = prof?.default_direction;
-        if (alive && d && !directionTouched.current) setInputs((i) => (i ? { ...i, direction: d } : i));
+        if (!last && d && !directionTouched.current) setInputs((i) => (i ? { ...i, direction: d } : i));
       }
     })();
     return () => {
@@ -213,7 +224,8 @@ export default function V3Home() {
   const onConfig = (next: HomeInputs) => {
     setConfigOpen(false);
     if (!inputs) return;
-    const changed = next.target !== inputs.target || next.archetype !== inputs.archetype || next.duration !== inputs.duration;
+    const changed =
+      next.target !== inputs.target || next.archetype !== inputs.archetype || next.duration !== inputs.duration || next.difficulty !== inputs.difficulty;
     setInputs(next);
     setError(null);
     if (changed) {
@@ -228,6 +240,9 @@ export default function V3Home() {
       });
       if (next.archetype !== inputs.archetype) {
         track('v3_archetype_changed', { surface: 'home', direction: next.direction, from: inputs.archetype ?? 'moods_pick', to: next.archetype ?? 'moods_pick' });
+      }
+      if (next.difficulty !== inputs.difficulty) {
+        track('v3_difficulty_changed', { direction: next.direction, from: inputs.difficulty ?? profileLevel ?? null, to: next.difficulty ?? profileLevel ?? null, profile: profileLevel, override: !!next.difficulty });
       }
       if (next.duration !== inputs.duration) track('v3_duration_changed', { duration: next.duration, suggested: suggest30 && next.duration === 30 });
     }
@@ -250,6 +265,8 @@ export default function V3Home() {
       soreness: req.soreness,
       target: req.target ?? null,
       duration: req.duration,
+      difficulty: req.experience ?? profileLevel ?? null,
+      difficulty_override: !!req.experience,
       moods_pick: moodsPick,
       archetype: req.archetype ?? null,
       first_visit: !!handoff,
@@ -304,6 +321,7 @@ export default function V3Home() {
     };
     await writeToday(uid, entry);
     setToday(entry);
+    setTodayTucked(false);
     // First successful generation ends the first-visit prefill for good.
     if (handoff) await consumeHandoff();
     if (entry.workout_id) openWorkout(entry.workout_id);
@@ -355,27 +373,53 @@ export default function V3Home() {
         <Text style={styles.h1}>Today's workout</Text>
 
         {/* Today's generated workout, reopenable */}
+        {/* Today's Workout: an already-built workout for today (not a generation preference). */}
         {todayCurrent && today?.envelope.workout ? (
-          <Pressable
-            onPress={() => {
-              track('v3_workout_reopened', { workout_id: today.workout_id, source: 'today_card' });
-              openWorkout(today.workout_id);
-            }}
-            style={({ pressed }) => [styles.todayCard, pressed && { opacity: 0.8 }]}
-            testID="v3-today-card"
-          >
-            <View style={{ flex: 1 }}>
-              <Text style={styles.todayEyebrow}>READY TO GO</Text>
+          todayTucked ? (
+            <Pressable
+              onPress={() => {
+                track('v3_workout_reopened', { workout_id: today.workout_id, source: 'today_line' });
+                openWorkout(today.workout_id);
+              }}
+              style={styles.todayLine}
+              testID="v3-today-line"
+            >
+              <Text style={styles.todayLineText} numberOfLines={1}>
+                Today's workout: {previewTitle(today.envelope.workout)}
+              </Text>
+              <Text style={styles.todayLineLink}>View</Text>
+            </Pressable>
+          ) : (
+            <View style={styles.todayCard} testID="v3-today-card">
+              <Text style={styles.todayEyebrow}>TODAY'S WORKOUT</Text>
               <Text style={styles.todayTitle}>
                 {today.envelope.workout.direction_name} · {previewTitle(today.envelope.workout)}
               </Text>
-              <Text style={styles.todayMeta}>{today.envelope.workout.duration.display}</Text>
+              <Text style={styles.todayMeta}>{previewMeta(today.envelope.workout)}</Text>
+              <Pressable
+                onPress={() => {
+                  track('v3_workout_reopened', { workout_id: today.workout_id, source: 'today_card' });
+                  openWorkout(today.workout_id);
+                }}
+                style={({ pressed }) => [styles.todayView, pressed && { opacity: 0.85 }]}
+                testID="v3-today-view"
+              >
+                <Text style={styles.todayViewText}>View Workout</Text>
+                <Ionicons name="chevron-forward" size={15} color={COLORS.accentInk} />
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  track('v3_build_different_tapped', { workout_id: today.workout_id });
+                  setTodayTucked(true);
+                }}
+                hitSlop={8}
+                style={styles.todayAlt}
+                testID="v3-today-build-different"
+              >
+                <Text style={styles.todayAltText}>Build a different workout</Text>
+              </Pressable>
             </View>
-            <View style={styles.todayOpen}>
-              <Text style={styles.todayOpenText}>Open</Text>
-              <Ionicons name="chevron-forward" size={15} color={COLORS.accentInk} />
-            </View>
-          </Pressable>
+          )
         ) : null}
 
         {staleBackend ? (
@@ -537,7 +581,7 @@ export default function V3Home() {
       </View>
 
       <ConflictSheet conflict={conflict} onSelect={onConflictOption} onClose={() => setConflict(null)} />
-      <ConfigSheet visible={configOpen} inputs={inputs} suggest30={suggest30} onApply={onConfig} onClose={() => setConfigOpen(false)} />
+      <ConfigSheet visible={configOpen} inputs={inputs} suggest30={suggest30} profileLevel={profileLevel} onApply={onConfig} onClose={() => setConfigOpen(false)} />
     </View>
   );
 }
@@ -556,8 +600,6 @@ const styles = StyleSheet.create({
   stateCell: { flexGrow: 1, flexBasis: '30%' },
 
   todayCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 18,
     padding: 16,
     borderRadius: 18,
@@ -566,18 +608,24 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,215,0,0.3)',
   },
   todayEyebrow: { fontSize: 10.5, fontWeight: '800', letterSpacing: 1.6, color: COLORS.accent },
-  todayTitle: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginTop: 4 },
-  todayMeta: { fontSize: 12.5, color: COLORS.textSecondary, marginTop: 2 },
-  todayOpen: {
+  todayTitle: { fontSize: 17, fontWeight: '700', color: COLORS.textPrimary, marginTop: 5 },
+  todayMeta: { fontSize: 13, color: COLORS.textSecondary, marginTop: 2 },
+  todayView: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 2,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 14,
+    justifyContent: 'center',
+    gap: 4,
+    marginTop: 14,
+    height: 44,
+    borderRadius: 13,
     backgroundColor: COLORS.textPrimary,
   },
-  todayOpenText: { fontSize: 13, fontWeight: '700', color: COLORS.accentInk },
+  todayViewText: { fontSize: 15, fontWeight: '800', color: COLORS.accentInk },
+  todayAlt: { alignSelf: 'center', marginTop: 12, paddingVertical: 2 },
+  todayAltText: { fontSize: 13.5, fontWeight: '600', color: COLORS.textSecondary },
+  todayLine: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 14 },
+  todayLineText: { flex: 1, fontSize: 13.5, color: COLORS.textSecondary },
+  todayLineLink: { fontSize: 13.5, fontWeight: '700', color: COLORS.accent },
 
   hintRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginTop: 14 },
   hintText: { flex: 1, fontSize: 13, lineHeight: 19, color: COLORS.textSecondary },

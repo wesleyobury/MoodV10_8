@@ -83,7 +83,7 @@ for(const p of PACK){ const env=p.envelope; if(!env.workout){ ok(env.status==='c
       if(b.structure==='anchor_circuit') ok(!!ar,'anchor label');
       if(w.direction==='athletic' && b.type!=='support' && b.type!=='repeats') { ok(!!it.quality_stop,'quality stop '+p.key+' '+it.item_id); }
       if(it.quality_stop) qs++; if(F.progressionText(it)) prog++;
-      ok(F.thumbnailUrl(it)===null && F.initials(it.exercise.name).length>=1,'media fallback'); } }
+      ok(F.thumbnailUrl(it)===null ? F.initials(it.exercise.name).length>=1 : /^https?:\/\//.test(F.thumbnailUrl(it)!),'media or fallback'); } }
   ok(strs.every(x=>!/undefined|NaN|null/.test(x)),'clean labels '+p.key+' '+strs.join('|'));
 }
 ok(seen.strength>=7 && seen.sweat>=5 && seen.athletic>=6,'all directions '+JSON.stringify(seen));

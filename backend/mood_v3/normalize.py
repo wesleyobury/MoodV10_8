@@ -90,6 +90,7 @@ class Context:
     date: str                    # local date YYYY-MM-DD (seed)
     swap_count: int = 0
     notes: list = field(default_factory=list)   # normalization notes (logged, never user-facing copy)
+    preference: str = ''         # training preference from the profile (Built for Today context only; never programming)
 
     def public(self):
         return dict(direction=self.direction, states=list(self.states), duration=self.duration, experience=self.experience, goal=self.goal,
@@ -193,4 +194,4 @@ def normalize(raw: dict, user_key: str, history_directions=()) -> Context:
     return Context(direction=direction, states=states, duration=duration, experience=exp, goal=goal, preset=preset,
                    sore_regions=regions, sore_muscles=frozenset(muscles), target_mode=t_mode, target_muscles=t_muscles,
                    archetype=archetype, frequency=freq, user_key=str(user_key), date=date,
-                   swap_count=int(raw.get('swap_count') or 0), notes=notes)
+                   swap_count=int(raw.get('swap_count') or 0), notes=notes, preference=str(raw.get('training_preference') or ''))

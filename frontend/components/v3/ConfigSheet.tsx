@@ -3,6 +3,7 @@
  *
  *   FOCUS          What do you want to train?        MOOD's Pick | Targets (Strength / Sweat only)
  *   WORKOUT TYPE   Want a specific style of session?  Let MOOD choose | registry archetypes
+ *   DIFFICULTY     Beginner | Intermediate | Advanced (default: Training Profile experience; today only)
  *   LENGTH         60 | 30
  *
  * The backend takes one routing instruction (a Target or an archetype). The sheet keeps that graceful: picking a Focus
@@ -14,16 +15,21 @@ import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-nati
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeLinearGradient as LinearGradient } from '../SafeLinearGradient';
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
+import type { V3Experience } from '../../utils/v3Api';
 import {
   ARCHETYPES,
+  DIFFICULTIES,
+  DIFFICULTY_LABEL,
   DURATIONS,
   HomeInputs,
   TARGETS,
   archetypeName,
   clearTarget,
   configSummary,
+  effectiveDifficulty,
   isTargetSelected,
   setArchetype,
+  setDifficulty,
   setDuration,
   targetLabel,
   targetSupported,
@@ -35,11 +41,13 @@ interface Props {
   visible: boolean;
   inputs: HomeInputs;
   suggest30?: boolean;
+  /** training_profile.experience: the default Difficulty. */
+  profileLevel: V3Experience | null;
   onApply: (next: HomeInputs) => void;
   onClose: () => void;
 }
 
-export function ConfigSheet({ visible, inputs, suggest30, onApply, onClose }: Props) {
+export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply, onClose }: Props) {
   const insets = useSafeAreaInsets();
   const [draft, setDraft] = useState<HomeInputs>(inputs);
   const [note, setNote] = useState<string | null>(null);
@@ -114,6 +122,29 @@ export function ConfigSheet({ visible, inputs, suggest30, onApply, onClose }: Pr
           ) : null}
 
           <View style={styles.group}>
+            <Text style={styles.label}>DIFFICULTY</Text>
+            <View style={styles.row}>
+              {DIFFICULTIES.map((x) => (
+                <V3Chip
+                  key={x.id}
+                  size="sm"
+                  label={x.label}
+                  selected={effectiveDifficulty(draft, profileLevel) === x.id}
+                  onPress={() => setDraft(setDifficulty(draft, x.id, profileLevel))}
+                  testID={`v3-difficulty-${x.id}`}
+                />
+              ))}
+            </View>
+            <Text style={styles.hint} testID="v3-difficulty-hint">
+              {draft.difficulty && profileLevel
+                ? `Today only. Your Training Profile stays ${DIFFICULTY_LABEL[profileLevel]}.`
+                : profileLevel
+                  ? 'From your Training Profile.'
+                  : 'Today only.'}
+            </Text>
+          </View>
+
+          <View style={styles.group}>
             <Text style={styles.label}>LENGTH</Text>
             <View style={styles.row}>
               {DURATIONS.map((d) => (
@@ -163,6 +194,7 @@ const styles = StyleSheet.create({
   question: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginTop: 4, marginBottom: 12 },
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   row: { flexDirection: 'row', gap: 8, marginTop: 10 },
+  hint: { fontSize: 12, color: COLORS.textTertiary, marginTop: 8 },
   note: { fontSize: 12.5, lineHeight: 18, color: COLORS.textSecondary, marginTop: 12 },
   doneWrap: { marginHorizontal: 20, marginTop: 12 },
   done: { height: 54, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },

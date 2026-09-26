@@ -167,11 +167,22 @@ export function previewSections(w: V3Workout): PreviewSection[] {
   return out;
 }
 
-/** Preview header facts: "~45 min · 5 exercises". */
+const LEVEL: Record<string, string> = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' };
+
+/** Preview header facts: "~45 min · 5 exercises · Advanced" (Difficulty = the session's experience). */
 export function previewMeta(w: V3Workout): string {
   const n = w.blocks.reduce((k, b) => k + b.items.length, 0);
   const est = Math.round(w.duration.estimated_minutes);
-  return `~${est} min · ${n} ${n === 1 ? 'exercise' : 'exercises'}`;
+  return [`~${est} min`, `${n} ${n === 1 ? 'exercise' : 'exercises'}`, LEVEL[w.experience] ?? null].filter(Boolean).join(' · ');
+}
+
+/** Built for Today lines for the Preview, most meaningful first (the API already orders adaptation > decision > context). */
+export function builtForToday(w: V3Workout): { key: string; kind: 'adaptation' | 'decision' | 'context'; text: string }[] {
+  const rank = { adaptation: 0, decision: 1, context: 2 } as const;
+  return (w.built_for_today ?? [])
+    .map((l, i) => ({ key: `${l.code}-${i}`, kind: (l.kind ?? 'decision') as 'adaptation' | 'decision' | 'context', text: l.text, i }))
+    .sort((a, b) => rank[a.kind] - rank[b.kind] || a.i - b.i)
+    .map(({ key, kind, text }) => ({ key, kind, text }));
 }
 
 /** Preview title: the Target for Target sessions ("Chest", "Back + Core"), else the session type. */
