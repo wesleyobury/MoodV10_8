@@ -47,9 +47,17 @@ def rank(cands,sc,sel,aid,slot,ctx,seed=0):
     T=ctx.get('target') or set(); protected=(aid,slot) in PROTECTED; anchor=prev_pick(sc,aid,slot)
     def key(t):
         e,v,b=t; tc=(2 if e['pm0'] in T else (1 if e['prims']&T else 0)) if T else 0
+        if protected and sc.get('swap',0)>0 and sc.get('displayed'):
+            # Phase 2.5 founder decision (supersedes WA v11 protected continuity for Different Workout ONLY): when the user
+            # explicitly asks for a different workout, the primary may move to another valid exercise / family.
+            # Programming tiers still lead (verdict > State > Target); normal next-session continuity is unchanged.
+            sf,se=swap_penalty(e,sc)
+            return (-VR[v],-pred_score(e,sc,sel,aid,slot),-tc,sf,se,-b,stable_seed(sc,aid,slot,e['id'],False))
         if protected:
             # continuity first: verdict > State > Target > bias > continuity with the anchor > seed (no recency, no swap)
-            return (-VR[v],-pred_score(e,sc,sel,aid,slot),-tc,-b,0 if e['id']==anchor else 1,stable_seed(sc,aid,slot,e['id'],True))
+            # Phase 2.5: continuity with the last COMPLETED primary outranks priority bias, so a primary the user trained after a
+            # Different Workout carries into the next session (and its progression). Verdict, State and Target still lead.
+            return (-VR[v],-pred_score(e,sc,sel,aid,slot),-tc,0 if e['id']==anchor else 1,-b,stable_seed(sc,aid,slot,e['id'],True))
         fr,er=recency_penalty(e,aid,sc); sf,se=swap_penalty(e,sc)
         f=depth_first(aid,slot,sel); pd=-profile_distance(e,f) if f is not None else 0   # WA v14 ATD2 / v15 depth slots: prefer the more different profile
         ps=0 if SLOT_COND.get((aid,slot))=='state_bored_amped' else pred_score(e,sc,sel,aid,slot)   # v15: a slot the State itself activates is ranked by fit and rotation, not by the State predicate again
@@ -160,7 +168,8 @@ def protected_change_log(aid,sc,dur,sel,ctx,log):
         if anchor and anchor!=e['id']:
             keys=list(sel.keys()); before={k:sel[k] for k in keys[:keys.index(slot)]}
             pool=[c[0]['id'] for c in candidates(aid,slot,sc,before,ctx)]
-            reason='anchor_ineligible_under_current_constraints (soreness / equipment / State cap / composition)' if anchor not in pool else 'anchor_outranked (verdict, State predicate, Target coverage or priority_bias changed)'
+            reason=('different_workout_requested (Phase 2.5: the primary may change on Different Workout)' if sc.get('swap',0)>0 and sc.get('displayed') and anchor in pool else
+                    'anchor_ineligible_under_current_constraints (soreness / equipment / State cap / composition)' if anchor not in pool else 'anchor_outranked (verdict, State predicate, Target coverage or priority_bias changed)')
             log.append({'reason_code':'protected_primary_changed','slot':slot,'from':anchor,'to':e['id'],'reason':reason})
 
 SLOT_TARGET={'strength_upper_pull':{'primary_pull':'back','complementary_pull':'back','secondary_back':'back'},'strength_upper_mixed':{'primary_pull':'back','secondary_upper':None,'opposing_secondary':None,'primary_push':'chest'},

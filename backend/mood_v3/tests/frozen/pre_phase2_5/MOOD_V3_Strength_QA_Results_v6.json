@@ -21,7 +21,7 @@
    "archetype": "strength_upper_push",
    "context": "Normal / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_press",
     "complementary_press"
@@ -29,14 +29,13 @@
    "distinct_compositions": 4,
    "slots_changed": [
     "ancillary_depth",
-    "primary_press",
     "secondary_target_press",
     "target_accessory",
     "triceps_accessory"
    ],
    "change_kinds": {
-    "meaningful": 10,
-    "trivial": 5
+    "meaningful": 8,
+    "trivial": 4
    },
    "slots_with_meaningful_alternatives": [
     "primary_press"
@@ -52,28 +51,26 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | secondary_target_press: Dumbbell Floor Press | target_accessory: Cable Fly | triceps_accessory: Cable Triceps Pressdown | ancillary_depth: EZ-Bar Skull Crusher",
-    "primary_press: Dumbbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Plate-Loaded Incline Press | target_accessory: Low-to-High Cable Fly | triceps_accessory: Machine Triceps Extension | ancillary_depth: Cross-Body Cable Triceps Extension",
-    "primary_press: Barbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Smith Machine Incline Press | target_accessory: Dumbbell Fly | triceps_accessory: Dumbbell Overhead Triceps Extension | ancillary_depth: Cable Triceps Kickback",
-    "primary_press: Barbell Incline Press | complementary_press: Parallel Bar Dip | secondary_target_press: Machine Chest Press | target_accessory: Pec Deck | triceps_accessory: Rope Triceps Pressdown | ancillary_depth: Dumbbell Skull Crusher"
+    "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | secondary_target_press: Deficit Push-Up (Handles) | target_accessory: Low-to-High Cable Fly | triceps_accessory: Machine Triceps Extension | ancillary_depth: Cross-Body Cable Triceps Extension",
+    "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | secondary_target_press: Weighted Push-Up | target_accessory: Dumbbell Fly | triceps_accessory: Dumbbell Overhead Triceps Extension | ancillary_depth: Cable Triceps Kickback",
+    "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | secondary_target_press: Machine Chest Press | target_accessory: Pec Deck | triceps_accessory: Rope Triceps Pressdown | ancillary_depth: Dumbbell Skull Crusher"
    ]
   },
   {
    "archetype": "strength_upper_push",
    "context": "Normal / 30",
    "duration": 30,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_press",
     "complementary_press"
    ],
    "distinct_compositions": 4,
    "slots_changed": [
-    "primary_press",
     "triceps_accessory"
    ],
    "change_kinds": {
-    "meaningful": 5,
-    "trivial": 1
+    "meaningful": 3
    },
    "slots_with_meaningful_alternatives": [
     "primary_press"
@@ -86,28 +83,26 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | triceps_accessory: Cable Triceps Pressdown",
-    "primary_press: Dumbbell Bench Press | complementary_press: Parallel Bar Dip | triceps_accessory: Machine Triceps Extension",
-    "primary_press: Barbell Incline Press | complementary_press: Parallel Bar Dip | triceps_accessory: Dumbbell Overhead Triceps Extension",
-    "primary_press: Barbell Bench Press | complementary_press: Parallel Bar Dip | triceps_accessory: Cross-Body Cable Triceps Extension"
+    "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | triceps_accessory: Machine Triceps Extension",
+    "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | triceps_accessory: Dumbbell Overhead Triceps Extension",
+    "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | triceps_accessory: Cross-Body Cable Triceps Extension"
    ]
   },
   {
    "archetype": "strength_upper_push",
    "context": "Low Energy / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_press",
     "complementary_press"
    ],
-   "distinct_compositions": 3,
+   "distinct_compositions": 2,
    "slots_changed": [
-    "primary_press",
     "secondary_target_press"
    ],
    "change_kinds": {
-    "meaningful": 4,
-    "trivial": 1
+    "trivial": 2
    },
    "slots_with_meaningful_alternatives": [
     "primary_press"
@@ -119,19 +114,19 @@
     "target_accessory": 4,
     "triceps_accessory": 10
    },
-   "classification": "HEALTHY VARIATION",
+   "classification": "LIMITED BUT DEFENSIBLE",
    "compositions": [
     "primary_press: Incline Dumbbell Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Dumbbell Floor Press | target_accessory: Pec Deck | triceps_accessory: Machine Triceps Extension",
-    "primary_press: Dumbbell Bench Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Plate-Loaded Incline Press | target_accessory: Pec Deck | triceps_accessory: Machine Triceps Extension",
     "primary_press: Incline Dumbbell Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Machine Chest Press | target_accessory: Pec Deck | triceps_accessory: Machine Triceps Extension",
-    "primary_press: Dumbbell Bench Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Plate-Loaded Incline Press | target_accessory: Pec Deck | triceps_accessory: Machine Triceps Extension"
+    "primary_press: Incline Dumbbell Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Dumbbell Floor Press | target_accessory: Pec Deck | triceps_accessory: Machine Triceps Extension",
+    "primary_press: Incline Dumbbell Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Machine Chest Press | target_accessory: Pec Deck | triceps_accessory: Machine Triceps Extension"
    ]
   },
   {
    "archetype": "strength_upper_push",
    "context": "Beginner / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_press",
     "complementary_press"
@@ -139,14 +134,13 @@
    "distinct_compositions": 4,
    "slots_changed": [
     "ancillary_depth",
-    "primary_press",
     "secondary_target_press",
     "target_accessory",
     "triceps_accessory"
    ],
    "change_kinds": {
-    "meaningful": 11,
-    "trivial": 3
+    "meaningful": 8,
+    "trivial": 4
    },
    "slots_with_meaningful_alternatives": [
     "primary_press"
@@ -162,16 +156,16 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_press: Incline Dumbbell Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Dumbbell Floor Press | target_accessory: Cable Fly | triceps_accessory: Cable Triceps Pressdown | ancillary_depth: EZ-Bar Skull Crusher",
-    "primary_press: Dumbbell Bench Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Plate-Loaded Incline Press | target_accessory: Low-to-High Cable Fly | triceps_accessory: Machine Triceps Extension | ancillary_depth: Cross-Body Cable Triceps Extension",
+    "primary_press: Incline Dumbbell Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Deficit Push-Up (Handles) | target_accessory: Low-to-High Cable Fly | triceps_accessory: Machine Triceps Extension | ancillary_depth: Cross-Body Cable Triceps Extension",
     "primary_press: Incline Dumbbell Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Smith Machine Bench Press | target_accessory: Dumbbell Fly | triceps_accessory: Dumbbell Overhead Triceps Extension | ancillary_depth: Cable Triceps Kickback",
-    "primary_press: Dumbbell Bench Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Smith Machine Incline Press | target_accessory: Pec Deck | triceps_accessory: Rope Triceps Pressdown | ancillary_depth: Dumbbell Skull Crusher"
+    "primary_press: Incline Dumbbell Press | complementary_press: Seated Dumbbell Shoulder Press | secondary_target_press: Machine Chest Press | target_accessory: Pec Deck | triceps_accessory: Rope Triceps Pressdown | ancillary_depth: Dumbbell Skull Crusher"
    ]
   },
   {
    "archetype": "strength_upper_push",
    "context": "Bored / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_press",
     "complementary_press"
@@ -179,12 +173,11 @@
    "distinct_compositions": 4,
    "slots_changed": [
     "ancillary_depth",
-    "primary_press",
     "secondary_target_press"
    ],
    "change_kinds": {
-    "meaningful": 6,
-    "trivial": 3
+    "meaningful": 3,
+    "trivial": 2
    },
    "slots_with_meaningful_alternatives": [
     "primary_press"
@@ -200,16 +193,16 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | secondary_target_press: Dumbbell Floor Press | target_accessory: Low-to-High Cable Fly | triceps_accessory: Cross-Body Cable Triceps Extension | ancillary_depth: EZ-Bar Skull Crusher",
-    "primary_press: Dumbbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Plate-Loaded Incline Press | target_accessory: Low-to-High Cable Fly | triceps_accessory: Cross-Body Cable Triceps Extension | ancillary_depth: Dumbbell Overhead Triceps Extension",
-    "primary_press: Barbell Bench Press | complementary_press: Parallel Bar Dip | secondary_target_press: Smith Machine Incline Press | target_accessory: Low-to-High Cable Fly | triceps_accessory: Cross-Body Cable Triceps Extension | ancillary_depth: Machine Triceps Extension",
-    "primary_press: Barbell Incline Press | complementary_press: Parallel Bar Dip | secondary_target_press: Single-Arm Cable Chest Press | target_accessory: Low-to-High Cable Fly | triceps_accessory: Cross-Body Cable Triceps Extension | ancillary_depth: Dumbbell Skull Crusher"
+    "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | secondary_target_press: Single-Arm Cable Chest Press | target_accessory: Low-to-High Cable Fly | triceps_accessory: Cross-Body Cable Triceps Extension | ancillary_depth: Dumbbell Overhead Triceps Extension",
+    "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | secondary_target_press: Dumbbell Floor Press | target_accessory: Low-to-High Cable Fly | triceps_accessory: Cross-Body Cable Triceps Extension | ancillary_depth: Machine Triceps Extension",
+    "primary_press: Incline Dumbbell Press | complementary_press: Parallel Bar Dip | secondary_target_press: Single-Arm Cable Chest Press | target_accessory: Low-to-High Cable Fly | triceps_accessory: Cross-Body Cable Triceps Extension | ancillary_depth: Dumbbell Skull Crusher"
    ]
   },
   {
    "archetype": "strength_upper_pull",
    "context": "Normal / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_pull",
     "complementary_pull"
@@ -218,13 +211,11 @@
    "slots_changed": [
     "ancillary_depth",
     "biceps_accessory",
-    "complementary_pull",
-    "primary_pull",
     "secondary_back",
     "target_accessory"
    ],
    "change_kinds": {
-    "meaningful": 16,
+    "meaningful": 10,
     "trivial": 1
    },
    "slots_with_meaningful_alternatives": [
@@ -243,29 +234,27 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl | ancillary_depth: Bayesian Cable Curl",
-    "primary_pull: Lat Pulldown | complementary_pull: Barbell Row | secondary_back: Single-Arm Dumbbell Row | target_accessory: Straight-Arm Pulldown | biceps_accessory: Barbell Curl | ancillary_depth: High Cable Curl",
-    "primary_pull: Seated Cable Row | complementary_pull: Assisted Pull-Up Machine | secondary_back: Machine Low Row | target_accessory: Cable Pullover | biceps_accessory: Spider Curl | ancillary_depth: Cable Curl",
-    "primary_pull: Neutral-Grip Lat Pulldown | complementary_pull: Bent-Over Dumbbell Row (Two-Arm) | secondary_back: Meadows Row | target_accessory: Dumbbell Pullover | biceps_accessory: Machine Preacher Curl | ancillary_depth: Zottman Curl"
+    "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: T-Bar Row | target_accessory: Straight-Arm Pulldown | biceps_accessory: Barbell Curl | ancillary_depth: High Cable Curl",
+    "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: Single-Arm Dumbbell Row | target_accessory: Cable Pullover | biceps_accessory: Spider Curl | ancillary_depth: Cable Curl",
+    "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: Plate-Loaded High Row | target_accessory: Dumbbell Pullover | biceps_accessory: Machine Preacher Curl | ancillary_depth: Zottman Curl"
    ]
   },
   {
    "archetype": "strength_upper_pull",
    "context": "Normal / 30",
    "duration": 30,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_pull",
     "complementary_pull"
    ],
    "distinct_compositions": 4,
    "slots_changed": [
-    "biceps_accessory",
-    "complementary_pull",
-    "primary_pull"
+    "biceps_accessory"
    ],
    "change_kinds": {
-    "meaningful": 8,
-    "trivial": 1
+    "trivial": 1,
+    "meaningful": 2
    },
    "slots_with_meaningful_alternatives": [
     "primary_pull",
@@ -279,29 +268,27 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | biceps_accessory: EZ-Bar Curl",
-    "primary_pull: Lat Pulldown | complementary_pull: Seated Cable Row | biceps_accessory: Barbell Curl",
-    "primary_pull: Barbell Row | complementary_pull: Assisted Pull-Up Machine | biceps_accessory: Spider Curl",
-    "primary_pull: Neutral-Grip Lat Pulldown | complementary_pull: Chest-Supported Dumbbell Row | biceps_accessory: Machine Preacher Curl"
+    "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | biceps_accessory: Barbell Curl",
+    "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | biceps_accessory: Spider Curl",
+    "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | biceps_accessory: Machine Preacher Curl"
    ]
   },
   {
    "archetype": "strength_upper_pull",
    "context": "Low Energy / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_pull",
     "complementary_pull"
    ],
    "distinct_compositions": 4,
    "slots_changed": [
-    "biceps_accessory",
-    "complementary_pull",
-    "primary_pull"
+    "biceps_accessory"
    ],
    "change_kinds": {
-    "meaningful": 6,
-    "trivial": 2
+    "trivial": 2,
+    "meaningful": 1
    },
    "slots_with_meaningful_alternatives": [
     "primary_pull",
@@ -314,19 +301,19 @@
     "target_accessory": 11,
     "biceps_accessory": 13
    },
-   "classification": "HEALTHY VARIATION",
+   "classification": "LIMITED BUT DEFENSIBLE",
    "compositions": [
     "primary_pull: Chest-Supported Machine Row | complementary_pull: Lat Pulldown | secondary_back: Assisted Pull-Up Machine | target_accessory: Prone Y-Raise | biceps_accessory: EZ-Bar Preacher Curl",
-    "primary_pull: Neutral-Grip Lat Pulldown | complementary_pull: Chest-Supported Dumbbell Row | secondary_back: Assisted Pull-Up Machine | target_accessory: Prone Y-Raise | biceps_accessory: Spider Curl",
-    "primary_pull: Chest-Supported Machine Row | complementary_pull: Plate-Loaded High Row | secondary_back: Assisted Pull-Up Machine | target_accessory: Prone Y-Raise | biceps_accessory: Machine Preacher Curl",
-    "primary_pull: Lat Pulldown | complementary_pull: Machine Low Row | secondary_back: Assisted Pull-Up Machine | target_accessory: Prone Y-Raise | biceps_accessory: Incline Dumbbell Curl"
+    "primary_pull: Chest-Supported Machine Row | complementary_pull: Lat Pulldown | secondary_back: Assisted Pull-Up Machine | target_accessory: Prone Y-Raise | biceps_accessory: Spider Curl",
+    "primary_pull: Chest-Supported Machine Row | complementary_pull: Lat Pulldown | secondary_back: Assisted Pull-Up Machine | target_accessory: Prone Y-Raise | biceps_accessory: Machine Preacher Curl",
+    "primary_pull: Chest-Supported Machine Row | complementary_pull: Lat Pulldown | secondary_back: Assisted Pull-Up Machine | target_accessory: Prone Y-Raise | biceps_accessory: Incline Dumbbell Curl"
    ]
   },
   {
    "archetype": "strength_upper_pull",
    "context": "Beginner / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_pull",
     "complementary_pull"
@@ -335,13 +322,11 @@
    "slots_changed": [
     "ancillary_depth",
     "biceps_accessory",
-    "complementary_pull",
-    "primary_pull",
     "secondary_back",
     "target_accessory"
    ],
    "change_kinds": {
-    "meaningful": 16,
+    "meaningful": 10,
     "trivial": 1
    },
    "slots_with_meaningful_alternatives": [
@@ -360,28 +345,26 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_pull: Chest-Supported Machine Row | complementary_pull: Lat Pulldown | secondary_back: Single-Arm Cable Row | target_accessory: Dumbbell Pullover | biceps_accessory: EZ-Bar Curl | ancillary_depth: Bayesian Cable Curl",
-    "primary_pull: Seated Cable Row | complementary_pull: Assisted Pull-Up Machine | secondary_back: Single-Arm Dumbbell Row | target_accessory: Straight-Arm Pulldown | biceps_accessory: Barbell Curl | ancillary_depth: High Cable Curl",
-    "primary_pull: Chest-Supported Dumbbell Row | complementary_pull: Plate-Loaded High Row | secondary_back: Bent-Over Dumbbell Row (Two-Arm) | target_accessory: Cable Pullover | biceps_accessory: Spider Curl | ancillary_depth: Cable Curl",
-    "primary_pull: Seated Cable Row | complementary_pull: Assisted Pull-Up Machine | secondary_back: Single-Arm Dumbbell Row | target_accessory: Dumbbell Pullover | biceps_accessory: Machine Preacher Curl | ancillary_depth: Zottman Curl"
+    "primary_pull: Chest-Supported Machine Row | complementary_pull: Lat Pulldown | secondary_back: Assisted Pull-Up Machine | target_accessory: Straight-Arm Pulldown | biceps_accessory: Barbell Curl | ancillary_depth: High Cable Curl",
+    "primary_pull: Chest-Supported Machine Row | complementary_pull: Lat Pulldown | secondary_back: Single-Arm Dumbbell Row | target_accessory: Cable Pullover | biceps_accessory: Spider Curl | ancillary_depth: Cable Curl",
+    "primary_pull: Chest-Supported Machine Row | complementary_pull: Lat Pulldown | secondary_back: Bent-Over Dumbbell Row (Two-Arm) | target_accessory: Dumbbell Pullover | biceps_accessory: Machine Preacher Curl | ancillary_depth: Zottman Curl"
    ]
   },
   {
    "archetype": "strength_upper_pull",
    "context": "Bored / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_pull",
     "complementary_pull"
    ],
-   "distinct_compositions": 4,
+   "distinct_compositions": 3,
    "slots_changed": [
-    "ancillary_depth",
-    "complementary_pull",
-    "primary_pull"
+    "ancillary_depth"
    ],
    "change_kinds": {
-    "meaningful": 8
+    "meaningful": 2
    },
    "slots_with_meaningful_alternatives": [
     "primary_pull",
@@ -398,16 +381,16 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl | ancillary_depth: Spider Curl",
-    "primary_pull: Lat Pulldown | complementary_pull: Seated Cable Row | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl | ancillary_depth: Zottman Curl",
-    "primary_pull: Barbell Row | complementary_pull: Assisted Pull-Up Machine | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl | ancillary_depth: High Cable Curl",
-    "primary_pull: Neutral-Grip Lat Pulldown | complementary_pull: Chest-Supported Dumbbell Row | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl | ancillary_depth: Spider Curl"
+    "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl | ancillary_depth: Zottman Curl",
+    "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl | ancillary_depth: High Cable Curl",
+    "primary_pull: Pull-Up | complementary_pull: Chest-Supported Machine Row | secondary_back: Meadows Row | target_accessory: Prone Y-Raise | biceps_accessory: Bayesian Cable Curl | ancillary_depth: Spider Curl"
    ]
   },
   {
    "archetype": "strength_upper_mixed",
    "context": "Normal / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_push",
     "primary_pull"
@@ -416,13 +399,11 @@
    "slots_changed": [
     "arm_shoulder_accessory",
     "opposing_secondary",
-    "primary_pull",
-    "primary_push",
     "secondary_upper"
    ],
    "change_kinds": {
-    "meaningful": 11,
-    "trivial": 3
+    "meaningful": 6,
+    "trivial": 2
    },
    "slots_with_meaningful_alternatives": [
     "primary_push",
@@ -441,29 +422,27 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_push: Incline Dumbbell Press | secondary_upper: Seated Dumbbell Shoulder Press | primary_pull: Seated Cable Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Barbell Curl",
-    "primary_push: Barbell Bench Press | secondary_upper: Parallel Bar Dip | primary_pull: Chest-Supported Machine Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Cable Triceps Pressdown",
-    "primary_push: Barbell Incline Press | secondary_upper: Barbell Overhead Press | primary_pull: Pendlay Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Dumbbell Lateral Raise",
-    "primary_push: Dumbbell Bench Press | secondary_upper: Parallel Bar Dip | primary_pull: Pull-Up | opposing_secondary: Machine Low Row | arm_shoulder_accessory: EZ-Bar Curl"
+    "primary_push: Incline Dumbbell Press | secondary_upper: Parallel Bar Dip | primary_pull: Seated Cable Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Cable Triceps Pressdown",
+    "primary_push: Incline Dumbbell Press | secondary_upper: Barbell Overhead Press | primary_pull: Seated Cable Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Dumbbell Lateral Raise",
+    "primary_push: Incline Dumbbell Press | secondary_upper: Parallel Bar Dip | primary_pull: Seated Cable Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: EZ-Bar Curl"
    ]
   },
   {
    "archetype": "strength_upper_mixed",
    "context": "Normal / 30",
    "duration": 30,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_push",
     "primary_pull"
    ],
    "distinct_compositions": 4,
    "slots_changed": [
-    "arm_shoulder_accessory",
-    "primary_pull",
-    "primary_push"
+    "arm_shoulder_accessory"
    ],
    "change_kinds": {
-    "meaningful": 7,
-    "trivial": 2
+    "meaningful": 2,
+    "trivial": 1
    },
    "slots_with_meaningful_alternatives": [
     "primary_push",
@@ -478,16 +457,16 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_push: Incline Dumbbell Press | primary_pull: Seated Cable Row | arm_shoulder_accessory: Barbell Curl",
-    "primary_push: Barbell Bench Press | primary_pull: Lat Pulldown | arm_shoulder_accessory: Cable Triceps Pressdown",
-    "primary_push: Barbell Incline Press | primary_pull: Chest-Supported Machine Row | arm_shoulder_accessory: Dumbbell Lateral Raise",
-    "primary_push: Dumbbell Bench Press | primary_pull: Pull-Up | arm_shoulder_accessory: EZ-Bar Curl"
+    "primary_push: Incline Dumbbell Press | primary_pull: Seated Cable Row | arm_shoulder_accessory: Cable Triceps Pressdown",
+    "primary_push: Incline Dumbbell Press | primary_pull: Seated Cable Row | arm_shoulder_accessory: Dumbbell Lateral Raise",
+    "primary_push: Incline Dumbbell Press | primary_pull: Seated Cable Row | arm_shoulder_accessory: EZ-Bar Curl"
    ]
   },
   {
    "archetype": "strength_upper_mixed",
    "context": "Low Energy / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_push",
     "primary_pull"
@@ -495,12 +474,10 @@
    "distinct_compositions": 4,
    "slots_changed": [
     "arm_shoulder_accessory",
-    "opposing_secondary",
-    "primary_pull",
-    "primary_push"
+    "opposing_secondary"
    ],
    "change_kinds": {
-    "meaningful": 10
+    "meaningful": 4
    },
    "slots_with_meaningful_alternatives": [
     "primary_push",
@@ -518,16 +495,16 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_push: Incline Dumbbell Press | secondary_upper: Machine Shoulder Press | primary_pull: Chest-Supported Machine Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Machine Triceps Extension",
-    "primary_push: Dumbbell Bench Press | secondary_upper: Machine Shoulder Press | primary_pull: Lat Pulldown | opposing_secondary: Machine Low Row | arm_shoulder_accessory: Machine Lateral Raise",
-    "primary_push: Incline Dumbbell Press | secondary_upper: Machine Shoulder Press | primary_pull: Neutral-Grip Lat Pulldown | opposing_secondary: Machine Low Row | arm_shoulder_accessory: Incline Dumbbell Curl",
-    "primary_push: Dumbbell Bench Press | secondary_upper: Machine Shoulder Press | primary_pull: Chest-Supported Dumbbell Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Machine Triceps Extension"
+    "primary_push: Incline Dumbbell Press | secondary_upper: Machine Shoulder Press | primary_pull: Chest-Supported Machine Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Machine Lateral Raise",
+    "primary_push: Incline Dumbbell Press | secondary_upper: Machine Shoulder Press | primary_pull: Chest-Supported Machine Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Incline Dumbbell Curl",
+    "primary_push: Incline Dumbbell Press | secondary_upper: Machine Shoulder Press | primary_pull: Chest-Supported Machine Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Machine Triceps Extension"
    ]
   },
   {
    "archetype": "strength_upper_mixed",
    "context": "Beginner / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_push",
     "primary_pull"
@@ -536,12 +513,10 @@
    "slots_changed": [
     "arm_shoulder_accessory",
     "opposing_secondary",
-    "primary_pull",
-    "primary_push",
     "secondary_upper"
    ],
    "change_kinds": {
-    "meaningful": 12,
+    "meaningful": 6,
     "trivial": 2
    },
    "slots_with_meaningful_alternatives": [
@@ -560,30 +535,27 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_push: Incline Dumbbell Press | secondary_upper: Seated Dumbbell Shoulder Press | primary_pull: Seated Cable Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Barbell Curl",
-    "primary_push: Dumbbell Bench Press | secondary_upper: Machine Shoulder Press | primary_pull: Chest-Supported Machine Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Cable Triceps Pressdown",
-    "primary_push: Incline Dumbbell Press | secondary_upper: Single-Arm Landmine Press | primary_pull: Lat Pulldown | opposing_secondary: Bent-Over Dumbbell Row (Two-Arm) | arm_shoulder_accessory: Dumbbell Lateral Raise",
-    "primary_push: Dumbbell Bench Press | secondary_upper: Smith Machine Shoulder Press | primary_pull: Chest-Supported Dumbbell Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: EZ-Bar Curl"
+    "primary_push: Incline Dumbbell Press | secondary_upper: Machine Shoulder Press | primary_pull: Seated Cable Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Cable Triceps Pressdown",
+    "primary_push: Incline Dumbbell Press | secondary_upper: Single-Arm Landmine Press | primary_pull: Seated Cable Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Dumbbell Lateral Raise",
+    "primary_push: Incline Dumbbell Press | secondary_upper: Smith Machine Shoulder Press | primary_pull: Seated Cable Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: EZ-Bar Curl"
    ]
   },
   {
    "archetype": "strength_upper_mixed",
    "context": "Bored / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_push",
     "primary_pull"
    ],
-   "distinct_compositions": 4,
+   "distinct_compositions": 2,
    "slots_changed": [
     "arm_shoulder_accessory",
-    "opposing_secondary",
-    "primary_pull",
-    "primary_push"
+    "opposing_secondary"
    ],
    "change_kinds": {
-    "meaningful": 9,
-    "trivial": 1
+    "meaningful": 4
    },
    "slots_with_meaningful_alternatives": [
     "primary_push",
@@ -598,12 +570,12 @@
     "opposing_secondary": 8,
     "arm_shoulder_accessory": 37
    },
-   "classification": "HEALTHY VARIATION",
+   "classification": "LIMITED BUT DEFENSIBLE",
    "compositions": [
     "primary_push: Incline Dumbbell Press | secondary_upper: Z-Press | primary_pull: Seated Cable Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Lu Raise",
-    "primary_push: Barbell Bench Press | secondary_upper: Z-Press | primary_pull: Chest-Supported Machine Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Bayesian Cable Curl",
-    "primary_push: Barbell Incline Press | secondary_upper: Z-Press | primary_pull: Pendlay Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Lu Raise",
-    "primary_push: Dumbbell Bench Press | secondary_upper: Z-Press | primary_pull: Pull-Up | opposing_secondary: Machine Low Row | arm_shoulder_accessory: Bayesian Cable Curl"
+    "primary_push: Incline Dumbbell Press | secondary_upper: Z-Press | primary_pull: Seated Cable Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Bayesian Cable Curl",
+    "primary_push: Incline Dumbbell Press | secondary_upper: Z-Press | primary_pull: Seated Cable Row | opposing_secondary: Plate-Loaded High Row | arm_shoulder_accessory: Lu Raise",
+    "primary_push: Incline Dumbbell Press | secondary_upper: Z-Press | primary_pull: Seated Cable Row | opposing_secondary: Assisted Pull-Up Machine | arm_shoulder_accessory: Bayesian Cable Curl"
    ]
   },
   {
@@ -790,20 +762,18 @@
    "archetype": "strength_lower_squat",
    "context": "Normal / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_squat_pattern",
     "secondary_lower"
    ],
    "distinct_compositions": 4,
    "slots_changed": [
-    "primary_squat_pattern",
-    "secondary_lower",
     "target_accessory",
     "unilateral_secondary"
    ],
    "change_kinds": {
-    "meaningful": 9,
+    "meaningful": 4,
     "trivial": 1
    },
    "slots_with_meaningful_alternatives": [
@@ -820,28 +790,26 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Reverse Lunge | target_accessory: Leg Extension | support_accessory: Roman Chair / GHD Glute-Ham Raise",
-    "primary_squat_pattern: Pit Shark Belt Squat | secondary_lower: Heel-Elevated Dumbbell Squat | unilateral_secondary: Bulgarian Split Squat | target_accessory: Reverse Nordic Curl | support_accessory: Roman Chair / GHD Glute-Ham Raise",
-    "primary_squat_pattern: Barbell Back Squat | secondary_lower: Leg Press | unilateral_secondary: Curtsy Lunge | target_accessory: Sissy Squat | support_accessory: Roman Chair / GHD Glute-Ham Raise",
-    "primary_squat_pattern: Pit Shark Belt Squat | secondary_lower: Goblet Squat | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Leg Extension | support_accessory: Roman Chair / GHD Glute-Ham Raise"
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat | target_accessory: Reverse Nordic Curl | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Curtsy Lunge | target_accessory: Sissy Squat | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Leg Extension | support_accessory: Roman Chair / GHD Glute-Ham Raise"
    ]
   },
   {
    "archetype": "strength_lower_squat",
    "context": "Normal / 30",
    "duration": 30,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_squat_pattern",
     "secondary_lower"
    ],
    "distinct_compositions": 4,
    "slots_changed": [
-    "primary_squat_pattern",
-    "secondary_lower",
     "unilateral_secondary"
    ],
    "change_kinds": {
-    "meaningful": 7,
+    "meaningful": 2,
     "trivial": 1
    },
    "slots_with_meaningful_alternatives": [
@@ -856,9 +824,9 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Reverse Lunge",
-    "primary_squat_pattern: Pit Shark Belt Squat | secondary_lower: Heel-Elevated Dumbbell Squat | unilateral_secondary: Bulgarian Split Squat",
-    "primary_squat_pattern: Barbell Back Squat | secondary_lower: Leg Press | unilateral_secondary: Curtsy Lunge",
-    "primary_squat_pattern: Pit Shark Belt Squat | secondary_lower: Goblet Squat | unilateral_secondary: Front-Foot Elevated Split Squat"
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Bulgarian Split Squat",
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Curtsy Lunge",
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Front-Foot Elevated Split Squat"
    ]
   },
   {
@@ -901,20 +869,18 @@
    "archetype": "strength_lower_squat",
    "context": "Beginner / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_squat_pattern",
     "secondary_lower"
    ],
    "distinct_compositions": 4,
    "slots_changed": [
-    "primary_squat_pattern",
-    "secondary_lower",
     "support_accessory",
     "unilateral_secondary"
    ],
    "change_kinds": {
-    "meaningful": 9,
+    "meaningful": 5,
     "trivial": 1
    },
    "slots_with_meaningful_alternatives": [
@@ -931,29 +897,27 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Reverse Lunge | target_accessory: Leg Extension | support_accessory: Lying Leg Curl",
-    "primary_squat_pattern: Pit Shark Belt Squat | secondary_lower: Heel-Elevated Dumbbell Squat | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Leg Extension | support_accessory: Seated Leg Curl",
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Leg Extension | support_accessory: Seated Leg Curl",
     "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Box Step-Up (Glute Bias) | target_accessory: Leg Extension | support_accessory: Slider Hamstring Curl",
-    "primary_squat_pattern: Pit Shark Belt Squat | secondary_lower: Goblet Squat | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Leg Extension | support_accessory: Standing Single-Leg Curl"
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Leg Extension | support_accessory: Standing Single-Leg Curl"
    ]
   },
   {
    "archetype": "strength_lower_squat",
    "context": "Bored / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_squat_pattern",
     "secondary_lower"
    ],
-   "distinct_compositions": 4,
+   "distinct_compositions": 3,
    "slots_changed": [
-    "primary_squat_pattern",
-    "secondary_lower",
     "target_accessory",
     "unilateral_secondary"
    ],
    "change_kinds": {
-    "meaningful": 10
+    "meaningful": 5
    },
    "slots_with_meaningful_alternatives": [
     "primary_squat_pattern",
@@ -969,30 +933,28 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Lateral Step-Up | target_accessory: Reverse Nordic Curl | support_accessory: Roman Chair / GHD Glute-Ham Raise",
-    "primary_squat_pattern: Pit Shark Belt Squat | secondary_lower: Heel-Elevated Dumbbell Squat | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Sissy Squat | support_accessory: Roman Chair / GHD Glute-Ham Raise",
-    "primary_squat_pattern: Barbell Back Squat | secondary_lower: Leg Press | unilateral_secondary: Curtsy Lunge | target_accessory: Reverse Nordic Curl | support_accessory: Roman Chair / GHD Glute-Ham Raise",
-    "primary_squat_pattern: Pit Shark Belt Squat | secondary_lower: Goblet Squat | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Sissy Squat | support_accessory: Roman Chair / GHD Glute-Ham Raise"
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Sissy Squat | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Curtsy Lunge | target_accessory: Reverse Nordic Curl | support_accessory: Roman Chair / GHD Glute-Ham Raise",
+    "primary_squat_pattern: Hack Squat | secondary_lower: Leg Press | unilateral_secondary: Front-Foot Elevated Split Squat | target_accessory: Sissy Squat | support_accessory: Roman Chair / GHD Glute-Ham Raise"
    ]
   },
   {
    "archetype": "strength_lower_hinge",
    "context": "Normal / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_posterior_compound",
     "complementary_posterior_compound"
    ],
    "distinct_compositions": 4,
    "slots_changed": [
-    "complementary_posterior_compound",
-    "primary_posterior_compound",
     "secondary_posterior_unilateral",
     "support_accessory",
     "target_accessory"
    ],
    "change_kinds": {
-    "meaningful": 12,
+    "meaningful": 7,
     "trivial": 2
    },
    "slots_with_meaningful_alternatives": [
@@ -1009,28 +971,26 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Curtsy Lunge | target_accessory: Seated Leg Curl | support_accessory: Cable Wood Chop",
-    "primary_posterior_compound: Conventional Deadlift | complementary_posterior_compound: Kettlebell Swing | secondary_posterior_unilateral: Single-Leg Glute Bridge | target_accessory: Slider Hamstring Curl | support_accessory: Front Plank",
-    "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Box Step-Up (Glute Bias) | target_accessory: Lying Leg Curl | support_accessory: Hanging Knee Raise",
-    "primary_posterior_compound: Conventional Deadlift | complementary_posterior_compound: Kettlebell Swing | secondary_posterior_unilateral: B-Stance Hip Thrust | target_accessory: Single-Leg Lying Leg Curl | support_accessory: Cable Crunch"
+    "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Box Step-Up (Glute Bias) | target_accessory: Slider Hamstring Curl | support_accessory: Front Plank",
+    "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Lying Leg Curl | support_accessory: Hanging Knee Raise",
+    "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Box Step-Up (Glute Bias) | target_accessory: Single-Leg Lying Leg Curl | support_accessory: Cable Crunch"
    ]
   },
   {
    "archetype": "strength_lower_hinge",
    "context": "Normal / 30",
    "duration": 30,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_posterior_compound",
     "complementary_posterior_compound"
    ],
-   "distinct_compositions": 4,
+   "distinct_compositions": 3,
    "slots_changed": [
-    "complementary_posterior_compound",
-    "primary_posterior_compound",
     "secondary_posterior_unilateral"
    ],
    "change_kinds": {
-    "meaningful": 7,
+    "meaningful": 2,
     "trivial": 1
    },
    "slots_with_meaningful_alternatives": [
@@ -1044,30 +1004,29 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Curtsy Lunge",
-    "primary_posterior_compound: Conventional Deadlift | complementary_posterior_compound: Kettlebell Swing | secondary_posterior_unilateral: Single-Leg Glute Bridge",
-    "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Box Step-Up (Glute Bias)",
-    "primary_posterior_compound: Conventional Deadlift | complementary_posterior_compound: Kettlebell Swing | secondary_posterior_unilateral: B-Stance Hip Thrust"
+    "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Box Step-Up (Glute Bias)",
+    "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Reverse Lunge",
+    "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Box Step-Up (Glute Bias)"
    ]
   },
   {
    "archetype": "strength_lower_hinge",
    "context": "Low Energy / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_posterior_compound",
     "complementary_posterior_compound"
    ],
    "distinct_compositions": 4,
    "slots_changed": [
-    "complementary_posterior_compound",
     "secondary_posterior_unilateral",
     "support_accessory",
     "target_accessory"
    ],
    "change_kinds": {
-    "trivial": 2,
-    "meaningful": 8
+    "meaningful": 7,
+    "trivial": 1
    },
    "slots_with_meaningful_alternatives": [
     "support_accessory"
@@ -1082,8 +1041,8 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Barbell Glute Bridge | secondary_posterior_unilateral: Box Step-Up (Glute Bias) | target_accessory: Seated Leg Curl | support_accessory: Leg Press Calf Raise",
-    "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Machine Hip Thrust | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Standing Single-Leg Curl | support_accessory: Front Plank",
-    "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Single-Leg Glute Bridge | secondary_posterior_unilateral: Box Step-Up (Glute Bias) | target_accessory: Lying Leg Curl | support_accessory: Frog Pump",
+    "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Barbell Glute Bridge | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Standing Single-Leg Curl | support_accessory: Front Plank",
+    "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Barbell Glute Bridge | secondary_posterior_unilateral: Box Step-Up (Glute Bias) | target_accessory: Lying Leg Curl | support_accessory: Frog Pump",
     "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Barbell Glute Bridge | secondary_posterior_unilateral: Reverse Lunge | target_accessory: Single-Leg Lying Leg Curl | support_accessory: Machine Crunch"
    ]
   },
@@ -1128,22 +1087,18 @@
    "archetype": "strength_lower_hinge",
    "context": "Bored / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_posterior_compound",
     "complementary_posterior_compound"
    ],
-   "distinct_compositions": 3,
+   "distinct_compositions": 2,
    "slots_changed": [
-    "complementary_posterior_compound",
-    "primary_posterior_compound",
-    "secondary_posterior_unilateral",
     "support_accessory",
     "target_accessory"
    ],
    "change_kinds": {
-    "meaningful": 10,
-    "trivial": 1
+    "meaningful": 4
    },
    "slots_with_meaningful_alternatives": [
     "primary_posterior_compound",
@@ -1156,33 +1111,32 @@
     "target_accessory": 6,
     "support_accessory": 28
    },
-   "classification": "HEALTHY VARIATION",
+   "classification": "LIMITED BUT DEFENSIBLE",
    "compositions": [
     "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Curtsy Lunge | target_accessory: Roman Chair / GHD Glute-Ham Raise | support_accessory: Frog Pump",
-    "primary_posterior_compound: Conventional Deadlift | complementary_posterior_compound: Kettlebell Swing | secondary_posterior_unilateral: B-Stance Hip Thrust | target_accessory: Slider Hamstring Curl | support_accessory: Pallof Step-Out",
-    "primary_posterior_compound: Dumbbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Curtsy Lunge | target_accessory: Roman Chair / GHD Glute-Ham Raise | support_accessory: Frog Pump",
-    "primary_posterior_compound: Conventional Deadlift | complementary_posterior_compound: Kettlebell Swing | secondary_posterior_unilateral: B-Stance Hip Thrust | target_accessory: Slider Hamstring Curl | support_accessory: Pallof Step-Out"
+    "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Curtsy Lunge | target_accessory: Slider Hamstring Curl | support_accessory: Pallof Step-Out",
+    "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Curtsy Lunge | target_accessory: Roman Chair / GHD Glute-Ham Raise | support_accessory: Frog Pump",
+    "primary_posterior_compound: Barbell Romanian Deadlift | complementary_posterior_compound: Cable Pull-Through | secondary_posterior_unilateral: Curtsy Lunge | target_accessory: Slider Hamstring Curl | support_accessory: Pallof Step-Out"
    ]
   },
   {
    "archetype": "strength_glutes_legs",
    "context": "Normal / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_glute_compound",
     "complementary_lower_compound"
    ],
-   "distinct_compositions": 4,
+   "distinct_compositions": 3,
    "slots_changed": [
     "glute_accessory",
     "leg_accessory",
-    "primary_glute_compound",
     "third_compound_unilateral"
    ],
    "change_kinds": {
-    "meaningful": 8,
-    "trivial": 2
+    "meaningful": 5,
+    "trivial": 1
    },
    "slots_with_meaningful_alternatives": [
     "primary_glute_compound"
@@ -1197,28 +1151,27 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Leg Extension",
-    "primary_glute_compound: Kettlebell Swing | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Box Step-Up (Glute Bias) | glute_accessory: Frog Pump | leg_accessory: Reverse Nordic Curl",
-    "primary_glute_compound: Dumbbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Curtsy Lunge | glute_accessory: Machine Glute Kickback | leg_accessory: Sissy Squat",
-    "primary_glute_compound: Kettlebell Swing | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Single-Leg Glute Bridge | glute_accessory: Cable Glute Kickback | leg_accessory: Leg Extension"
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Box Step-Up (Glute Bias) | glute_accessory: Frog Pump | leg_accessory: Reverse Nordic Curl",
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Curtsy Lunge | glute_accessory: Machine Glute Kickback | leg_accessory: Sissy Squat",
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Leg Extension"
    ]
   },
   {
    "archetype": "strength_glutes_legs",
    "context": "Normal / 30",
    "duration": 30,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_glute_compound",
     "complementary_lower_compound"
    ],
-   "distinct_compositions": 4,
+   "distinct_compositions": 3,
    "slots_changed": [
-    "primary_glute_compound",
     "third_compound_unilateral"
    ],
    "change_kinds": {
-    "meaningful": 4,
-    "trivial": 2
+    "meaningful": 1,
+    "trivial": 1
    },
    "slots_with_meaningful_alternatives": [
     "primary_glute_compound"
@@ -1228,19 +1181,19 @@
     "complementary_lower_compound": 18,
     "third_compound_unilateral": 12
    },
-   "classification": "HEALTHY VARIATION",
+   "classification": "LIMITED BUT DEFENSIBLE",
    "compositions": [
     "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Reverse Lunge",
-    "primary_glute_compound: Kettlebell Swing | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Box Step-Up (Glute Bias)",
-    "primary_glute_compound: Dumbbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Curtsy Lunge",
-    "primary_glute_compound: Kettlebell Swing | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Single-Leg Glute Bridge"
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Box Step-Up (Glute Bias)",
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Curtsy Lunge",
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Reverse Lunge"
    ]
   },
   {
    "archetype": "strength_glutes_legs",
    "context": "Low Energy / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_glute_compound",
     "complementary_lower_compound"
@@ -1248,12 +1201,11 @@
    "distinct_compositions": 4,
    "slots_changed": [
     "glute_accessory",
-    "leg_accessory",
-    "primary_glute_compound"
+    "leg_accessory"
    ],
    "change_kinds": {
-    "trivial": 2,
-    "meaningful": 5
+    "meaningful": 4,
+    "trivial": 1
    },
    "slots_with_meaningful_alternatives": [],
    "pool_widths": {
@@ -1266,8 +1218,8 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_glute_compound: Machine Hip Thrust | complementary_lower_compound: Hack Squat | third_compound_unilateral: Single-Leg Leg Press | glute_accessory: Machine Glute Kickback | leg_accessory: Seated Leg Curl",
-    "primary_glute_compound: Barbell Glute Bridge | complementary_lower_compound: Hack Squat | third_compound_unilateral: Single-Leg Leg Press | glute_accessory: Frog Pump | leg_accessory: Lying Leg Curl",
-    "primary_glute_compound: Single-Leg Glute Bridge | complementary_lower_compound: Hack Squat | third_compound_unilateral: Single-Leg Leg Press | glute_accessory: Machine Glute Kickback | leg_accessory: Standing Single-Leg Curl",
+    "primary_glute_compound: Machine Hip Thrust | complementary_lower_compound: Hack Squat | third_compound_unilateral: Single-Leg Leg Press | glute_accessory: Frog Pump | leg_accessory: Lying Leg Curl",
+    "primary_glute_compound: Machine Hip Thrust | complementary_lower_compound: Hack Squat | third_compound_unilateral: Single-Leg Leg Press | glute_accessory: Machine Glute Kickback | leg_accessory: Standing Single-Leg Curl",
     "primary_glute_compound: Machine Hip Thrust | complementary_lower_compound: Hack Squat | third_compound_unilateral: Single-Leg Leg Press | glute_accessory: Frog Pump | leg_accessory: Single-Leg Lying Leg Curl"
    ]
   },
@@ -1275,22 +1227,18 @@
    "archetype": "strength_glutes_legs",
    "context": "Beginner / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_glute_compound",
     "complementary_lower_compound"
    ],
    "distinct_compositions": 4,
    "slots_changed": [
-    "complementary_lower_compound",
     "glute_accessory",
-    "leg_accessory",
-    "primary_glute_compound",
     "third_compound_unilateral"
    ],
    "change_kinds": {
-    "meaningful": 10,
-    "trivial": 1
+    "meaningful": 4
    },
    "slots_with_meaningful_alternatives": [
     "primary_glute_compound",
@@ -1306,28 +1254,26 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Dumbbell Romanian Deadlift | third_compound_unilateral: Reverse Lunge | glute_accessory: Cable Glute Kickback | leg_accessory: Leg Extension",
-    "primary_glute_compound: B-Stance Hip Thrust | complementary_lower_compound: Pit Shark Belt Squat | third_compound_unilateral: Box Step-Up (Glute Bias) | glute_accessory: Frog Pump | leg_accessory: Seated Leg Curl",
-    "primary_glute_compound: Dumbbell Hip Thrust | complementary_lower_compound: Dumbbell Romanian Deadlift | third_compound_unilateral: Reverse Lunge | glute_accessory: Machine Glute Kickback | leg_accessory: Leg Extension",
-    "primary_glute_compound: Single-Leg Glute Bridge | complementary_lower_compound: Pit Shark Belt Squat | third_compound_unilateral: Box Step-Up (Glute Bias) | glute_accessory: Cable Glute Kickback | leg_accessory: Standing Single-Leg Curl"
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Dumbbell Romanian Deadlift | third_compound_unilateral: Box Step-Up (Glute Bias) | glute_accessory: Frog Pump | leg_accessory: Leg Extension",
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Dumbbell Romanian Deadlift | third_compound_unilateral: Reverse Lunge | glute_accessory: Machine Glute Kickback | leg_accessory: Leg Extension",
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Dumbbell Romanian Deadlift | third_compound_unilateral: Box Step-Up (Glute Bias) | glute_accessory: Cable Glute Kickback | leg_accessory: Leg Extension"
    ]
   },
   {
    "archetype": "strength_glutes_legs",
    "context": "Bored / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_glute_compound",
     "complementary_lower_compound"
    ],
-   "distinct_compositions": 4,
+   "distinct_compositions": 2,
    "slots_changed": [
-    "leg_accessory",
-    "primary_glute_compound",
-    "third_compound_unilateral"
+    "leg_accessory"
    ],
    "change_kinds": {
-    "meaningful": 7
+    "meaningful": 2
    },
    "slots_with_meaningful_alternatives": [
     "primary_glute_compound"
@@ -1339,19 +1285,19 @@
     "glute_accessory": 9,
     "leg_accessory": 3
    },
-   "classification": "HEALTHY VARIATION",
+   "classification": "LIMITED BUT DEFENSIBLE",
    "compositions": [
     "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Curtsy Lunge | glute_accessory: Frog Pump | leg_accessory: Reverse Nordic Curl",
-    "primary_glute_compound: Kettlebell Swing | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: B-Stance Hip Thrust | glute_accessory: Frog Pump | leg_accessory: Sissy Squat",
-    "primary_glute_compound: Box Step-Up (Glute Bias) | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: B-Stance Hip Thrust | glute_accessory: Frog Pump | leg_accessory: Reverse Nordic Curl",
-    "primary_glute_compound: Kettlebell Swing | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Curtsy Lunge | glute_accessory: Frog Pump | leg_accessory: Sissy Squat"
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Curtsy Lunge | glute_accessory: Frog Pump | leg_accessory: Sissy Squat",
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Curtsy Lunge | glute_accessory: Frog Pump | leg_accessory: Reverse Nordic Curl",
+    "primary_glute_compound: Barbell Hip Thrust | complementary_lower_compound: Trap-Bar Deadlift | third_compound_unilateral: Curtsy Lunge | glute_accessory: Frog Pump | leg_accessory: Sissy Squat"
    ]
   },
   {
    "archetype": "strength_full_body",
    "context": "Normal / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_lower",
     "primary_upper"
@@ -1360,12 +1306,10 @@
    "slots_changed": [
     "complementary_upper_or_lower",
     "core",
-    "primary_lower",
-    "primary_upper",
     "true_full_body_bridge"
    ],
    "change_kinds": {
-    "meaningful": 15
+    "meaningful": 9
    },
    "slots_with_meaningful_alternatives": [
     "primary_lower",
@@ -1384,16 +1328,16 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Weighted Push-Up | core: Pallof Press",
-    "primary_lower: Trap-Bar Deadlift | true_full_body_bridge: Renegade Row | primary_upper: Lat Pulldown | complementary_upper_or_lower: Parallel Bar Dip | core: Hanging Leg Raise",
-    "primary_lower: Barbell Romanian Deadlift | true_full_body_bridge: Reverse Lunge to Overhead Press | primary_upper: Pull-Up | complementary_upper_or_lower: Smith Machine Incline Press | core: Hollow Body Hold",
-    "primary_lower: Pit Shark Belt Squat | true_full_body_bridge: Renegade Row | primary_upper: Seated Cable Row | complementary_upper_or_lower: Machine Chest Press | core: Reverse Crunch"
+    "primary_lower: Hack Squat | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Parallel Bar Dip | core: Hanging Leg Raise",
+    "primary_lower: Hack Squat | true_full_body_bridge: Reverse Lunge to Overhead Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Smith Machine Incline Press | core: Hollow Body Hold",
+    "primary_lower: Hack Squat | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Machine Chest Press | core: Reverse Crunch"
    ]
   },
   {
    "archetype": "strength_full_body",
    "context": "Normal / 30",
    "duration": 30,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_lower",
     "primary_upper"
@@ -1401,12 +1345,10 @@
    "distinct_compositions": 4,
    "slots_changed": [
     "core",
-    "primary_lower",
-    "primary_upper",
     "true_full_body_bridge"
    ],
    "change_kinds": {
-    "meaningful": 12
+    "meaningful": 6
    },
    "slots_with_meaningful_alternatives": [
     "primary_lower",
@@ -1423,16 +1365,16 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Thruster | primary_upper: Chest-Supported Machine Row | core: Pallof Press",
-    "primary_lower: Trap-Bar Deadlift | true_full_body_bridge: Renegade Row | primary_upper: Lat Pulldown | core: Hanging Leg Raise",
-    "primary_lower: Barbell Romanian Deadlift | true_full_body_bridge: Reverse Lunge to Overhead Press | primary_upper: Pull-Up | core: Hollow Body Hold",
-    "primary_lower: Pit Shark Belt Squat | true_full_body_bridge: Renegade Row | primary_upper: Seated Cable Row | core: Reverse Crunch"
+    "primary_lower: Hack Squat | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | core: Hanging Leg Raise",
+    "primary_lower: Hack Squat | true_full_body_bridge: Reverse Lunge to Overhead Press | primary_upper: Chest-Supported Machine Row | core: Hollow Body Hold",
+    "primary_lower: Hack Squat | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | core: Reverse Crunch"
    ]
   },
   {
    "archetype": "strength_full_body",
    "context": "Low Energy / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_lower",
     "primary_upper"
@@ -1441,12 +1383,11 @@
    "slots_changed": [
     "complementary_upper_or_lower",
     "core",
-    "primary_upper",
     "true_full_body_bridge"
    ],
    "change_kinds": {
     "trivial": 2,
-    "meaningful": 8
+    "meaningful": 5
    },
    "slots_with_meaningful_alternatives": [
     "primary_upper",
@@ -1463,16 +1404,16 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Plate-Loaded Incline Press | core: Weighted Plank",
-    "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Lat Pulldown | complementary_upper_or_lower: Machine Chest Press | core: Captain's Chair Knee Raise",
-    "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Squat-to-Press | primary_upper: Chest-Supported Dumbbell Row | complementary_upper_or_lower: Plate-Loaded Incline Press | core: Weighted Sit-Up",
-    "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Neutral-Grip Lat Pulldown | complementary_upper_or_lower: Dumbbell Floor Press | core: Side Plank"
+    "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Machine Chest Press | core: Captain's Chair Knee Raise",
+    "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Plate-Loaded Incline Press | core: Weighted Sit-Up",
+    "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Dumbbell Floor Press | core: Side Plank"
    ]
   },
   {
    "archetype": "strength_full_body",
    "context": "Beginner / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_lower",
     "primary_upper"
@@ -1481,13 +1422,11 @@
    "slots_changed": [
     "complementary_upper_or_lower",
     "core",
-    "primary_lower",
-    "primary_upper",
     "true_full_body_bridge"
    ],
    "change_kinds": {
-    "meaningful": 10,
-    "trivial": 3
+    "trivial": 3,
+    "meaningful": 5
    },
    "slots_with_meaningful_alternatives": [
     "primary_lower",
@@ -1505,30 +1444,28 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Plate-Loaded Incline Press | core: Pallof Press",
-    "primary_lower: Pit Shark Belt Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Lat Pulldown | complementary_upper_or_lower: Push-Up | core: Captain's Chair Knee Raise",
-    "primary_lower: Dumbbell Romanian Deadlift | true_full_body_bridge: Dumbbell Squat-to-Press | primary_upper: Seated Cable Row | complementary_upper_or_lower: Smith Machine Incline Press | core: Hollow Body Hold",
-    "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Chest-Supported Dumbbell Row | complementary_upper_or_lower: Machine Chest Press | core: Reverse Crunch"
+    "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Push-Up | core: Captain's Chair Knee Raise",
+    "primary_lower: Hack Squat | true_full_body_bridge: Dumbbell Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Smith Machine Incline Press | core: Hollow Body Hold",
+    "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Machine Chest Press | core: Reverse Crunch"
    ]
   },
   {
    "archetype": "strength_full_body",
    "context": "Bored / 60",
    "duration": 60,
-   "protected_primary_stable": false,
+   "protected_primary_stable": true,
    "protected_slots": [
     "primary_lower",
     "primary_upper"
    ],
-   "distinct_compositions": 4,
+   "distinct_compositions": 3,
    "slots_changed": [
     "complementary_upper_or_lower",
     "core",
-    "primary_lower",
-    "primary_upper",
     "true_full_body_bridge"
    ],
    "change_kinds": {
-    "meaningful": 13
+    "meaningful": 7
    },
    "slots_with_meaningful_alternatives": [
     "primary_lower",
@@ -1546,9 +1483,9 @@
    "classification": "HEALTHY VARIATION",
    "compositions": [
     "primary_lower: Hack Squat | true_full_body_bridge: Landmine Squat-to-Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Dumbbell Floor Press | core: Pallof Step-Out",
-    "primary_lower: Trap-Bar Deadlift | true_full_body_bridge: Renegade Row | primary_upper: Lat Pulldown | complementary_upper_or_lower: Single-Arm Cable Chest Press | core: Copenhagen Plank",
-    "primary_lower: Barbell Romanian Deadlift | true_full_body_bridge: Reverse Lunge to Overhead Press | primary_upper: Pull-Up | complementary_upper_or_lower: Dumbbell Floor Press | core: Pallof Step-Out",
-    "primary_lower: Pit Shark Belt Squat | true_full_body_bridge: Renegade Row | primary_upper: Seated Cable Row | complementary_upper_or_lower: Single-Arm Cable Chest Press | core: Copenhagen Plank"
+    "primary_lower: Hack Squat | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Single-Arm Cable Chest Press | core: Copenhagen Plank",
+    "primary_lower: Hack Squat | true_full_body_bridge: Reverse Lunge to Overhead Press | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Dumbbell Floor Press | core: Pallof Step-Out",
+    "primary_lower: Hack Squat | true_full_body_bridge: Renegade Row | primary_upper: Chest-Supported Machine Row | complementary_upper_or_lower: Single-Arm Cable Chest Press | core: Copenhagen Plank"
    ]
   },
   {

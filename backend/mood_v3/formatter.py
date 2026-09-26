@@ -77,7 +77,7 @@ def block(block_id, sequence, block_type, structure, title, items, *, rounds=Non
                 effort=effort, instructions=instructions, est_minutes=est_minutes, items=items)
 
 
-def envelope_ok(*, workout_id, version, ctx, res, built_for_today, created_at):
+def envelope_ok(*, workout_id, version, ctx, res, built_for_today, created_at, today=None):
     rr = res.get('requested_archetype')
     outcome = 'rerouted' if res.get('rerouted') else ('valid_with_relaxation' if res.get('relaxations') else 'valid')
     tgt_mode = 'archetype' if (ctx.archetype and ctx.target_mode == 'moods_pick') else ctx.target_mode
@@ -98,7 +98,9 @@ def envelope_ok(*, workout_id, version, ctx, res, built_for_today, created_at):
                           trained_anyway=sorted(res.get('sore_override', []))),
             equipment=dict(preset=ctx.preset, label=_preset_label(ctx.preset)),
             swap_count=ctx.swap_count,
+            selection_source=res.get('selection_source'),   # 'moods_pick' | 'user_selected' | 'target' (Phase 2.5)
             built_for_today=built_for_today,
+            today=today,                                     # Phase 2.5 header: {told: [...], chose, chosen_by}
             warmup=res['warmup'],
             blocks=res['blocks'],
             cooldown=res.get('cooldown'),

@@ -294,7 +294,12 @@ def engine_mode(ctx,log):
 
 # ------------------------------------------------------------------ block builders
 BAND={30:(22,28),60:(42,55)}
-PRIMARY_MAX={('sweat_engine',60):26,('sweat_engine',30):18,('sweat_circuit',60):24,('sweat_circuit',30):19,('sweat_hybrid',60):26,('sweat_hybrid',30):18}
+# Phase 2.5 founder refinement: Hybrid is ONE coherent block (engine anchor + rotating stations + rounds), not a full circuit
+# with more work stacked after it. Its estimated-minute band sits below the other archetypes because transitions, machine
+# changes, loading and water add real time the estimator does not capture (founder intent: a strong ~40-50 min real session).
+HYBRID_BAND={30:(20,28),60:(36,46)}
+def band_for(aid,duration): return HYBRID_BAND[duration] if aid=='sweat_hybrid' else BAND[duration]
+PRIMARY_MAX={('sweat_engine',60):26,('sweat_engine',30):18,('sweat_circuit',60):24,('sweat_circuit',30):19,('sweat_hybrid',60):34,('sweat_hybrid',30):20}
 PRIMARY_TGT={('sweat_engine',60):22,('sweat_engine',30):16,('sweat_circuit',60):21,('sweat_circuit',30):17,('sweat_hybrid',60):23,('sweat_hybrid',30):15}
 COMP_TGT={'sweat_engine':9,'sweat_circuit':10,'sweat_hybrid':8}; COMP_MAX={'sweat_engine':10,'sweat_circuit':12,'sweat_hybrid':10}
 
@@ -802,10 +807,10 @@ def build(aid,ctx,d,log):
     elif aid=='sweat_circuit': blocks.append(circuit_primary(ctx,d,log,pt,duration))
     else: blocks.append(hybrid_primary(ctx,d,log,pt,duration))
     p=blocks[0]
-    comp_active = duration==60 or block_minutes(p,exp)<=14
+    comp_active = (duration==60 or block_minutes(p,exp)<=14) and aid!='sweat_hybrid'   # Hybrid: no stacked complement (Phase 2.5)
     if comp_active: _add_comp(aid,ctx,d,log,blocks,duration)
     # ---- Sweat DF (before State dials)
-    lo,hi=BAND[duration]; guard=0
+    lo,hi=band_for(aid,duration); guard=0
     while total_minutes(blocks,aid,duration,exp)<lo and guard<12:
         guard+=1
         itp=blocks[0].get('interval_target') or {}
@@ -813,10 +818,14 @@ def build(aid,ctx,d,log):
             log.append(dict(reason_code='duration_backfill',detail='primary +1 unit')); continue
         if len(blocks)>1 and block_minutes(blocks[1],exp)<COMP_MAX[aid] and add_unit(blocks[1]):
             log.append(dict(reason_code='duration_backfill',detail='complement +1 unit')); continue
-        if len(blocks)==1 and duration==30:
+        if len(blocks)==1 and duration==30 and aid!='sweat_hybrid':
             _add_comp(aid,ctx,d,log,blocks,duration,small=True)
             if len(blocks)>1: log.append(dict(reason_code='duration_backfill',detail='complement activated at 30')); continue
         break
+    if aid=='sweat_hybrid' and len(blocks)==1 and total_minutes(blocks,aid,duration,exp)<lo-3:
+        # only when the Hybrid block itself cannot fill the session (thin pool / equipment) does a short complement join it
+        _add_comp(aid,ctx,d,log,blocks,duration,small=True)
+        if len(blocks)>1: log.append(dict(reason_code='duration_backfill',detail='hybrid complement: primary block could not fill'))
     guard=0
     while total_minutes(blocks,aid,duration,exp)>hi+0.5 and guard<12:
         guard+=1
@@ -838,7 +847,11 @@ def build(aid,ctx,d,log):
     V=d['V']
     if V>0:
         for _ in range(V):
-            if add_unit(blocks[0]): log.append(dict(reason_code='state_volume',detail='+1 unit primary'))
+            snap=copy.deepcopy(blocks[0])
+            if add_unit(blocks[0]):
+                if aid=='sweat_hybrid' and total_minutes(blocks,aid,duration,exp)>hi+0.5:
+                    blocks[0]=snap; log.append(dict(reason_code='state_volume_capped',detail='Hybrid stays one block inside its band; extra output goes into intensity'))
+                else: log.append(dict(reason_code='state_volume',detail='+1 unit primary'))
     elif V<0:
         floor=12 if duration==30 else 22                      # DIAL BINDING clamp: never below the minimum viable session (I3)
         for _ in range(-V):

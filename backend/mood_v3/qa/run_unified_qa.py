@@ -98,7 +98,7 @@ def check_envelope(env, raw, fails, tag):
     lines = [l['text'] for l in w['built_for_today']]
     for t in lines:
         if explain.lint(t): bad(f'banned word in explanation: {t}')
-    if len(lines) > 5: bad('too many explanation lines')
+    if len(lines) > 6: bad('too many explanation lines')   # Phase 2.5: up to 6 personalized lines
     for s in ctx.states:
         if s == 'sore': continue
         if not any(l['code'] in ('state_' + s, 'state_pair') for l in w['built_for_today']): bad(f'no explanation for State {s}')

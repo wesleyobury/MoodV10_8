@@ -686,10 +686,10 @@
      "profile": "Normal performance",
      "sequence": [
       "sweat_hybrid / None / None / circuit / treadmill_run",
-      "sweat_circuit / None / None / circuit / wall_ball",
+      "sweat_circuit / None / None / circuit / ski_erg",
       "sweat_engine / interval / long_even / intervals / air_bike",
       "sweat_hybrid / None / None / circuit / row_erg",
-      "sweat_circuit / None / None / intervals / sled_push",
+      "sweat_circuit / None / None / intervals / wall_ball",
       "sweat_engine / steady / aerobic / continuous / treadmill_incline_walk",
       "sweat_hybrid / None / None / circuit / treadmill_run",
       "sweat_circuit / None / None / circuit / burpee"
@@ -769,10 +769,10 @@
       "sweat_circuit / None / None / intervals / jump_squat",
       "sweat_engine / interval / long_even / intervals / row_erg",
       "sweat_hybrid / None / None / circuit / ski_erg",
-      "sweat_circuit / None / None / intervals / wall_ball",
+      "sweat_circuit / None / None / intervals / row_erg",
       "sweat_engine / interval / long_even / intervals / air_bike",
       "sweat_hybrid / None / None / circuit / row_erg",
-      "sweat_circuit / None / None / intervals / skater_hop",
+      "sweat_circuit / None / None / intervals / burpee",
       "sweat_engine / interval / long_even / intervals / row_erg"
      ],
      "engine_modes": [
@@ -790,10 +790,10 @@
       "sweat_hybrid / None / None / circuit / row_erg",
       "sweat_circuit / None / None / circuit / jump_squat",
       "sweat_hybrid / None / None / circuit / ski_erg",
-      "sweat_circuit / None / None / circuit / burpee",
+      "sweat_circuit / None / None / circuit / wall_ball",
       "sweat_hybrid / None / None / circuit / row_erg",
-      "sweat_circuit / None / None / circuit / ski_erg",
-      "sweat_hybrid / None / None / circuit / ski_erg"
+      "sweat_circuit / None / None / circuit / burpee",
+      "sweat_hybrid / None / None / circuit / row_erg"
      ],
      "engine_modes": [],
      "issues": [],
@@ -805,10 +805,10 @@
       "sweat_circuit / None / None / circuit / air_bike",
       "sweat_engine / interval / controlled / intervals / treadmill_run",
       "sweat_hybrid / None / None / circuit / row_erg",
-      "sweat_circuit / None / None / intervals / wall_ball",
+      "sweat_circuit / None / None / intervals / jumping_jack",
       "sweat_engine / steady / aerobic / continuous / stationary_bike",
       "sweat_hybrid / None / None / circuit / treadmill_run",
-      "sweat_circuit / None / None / circuit / sled_push",
+      "sweat_circuit / None / None / circuit / wall_ball",
       "sweat_engine / interval / controlled / intervals / treadmill_incline_walk"
      ],
      "engine_modes": [
@@ -2596,8 +2596,8 @@
      },
      "sweat_hybrid|circuit": {
       "n": 76,
-      "min": 0.751,
-      "mean": 0.849
+      "min": 0.756,
+      "mean": 0.855
      }
     },
     "below": 0,
@@ -4994,52 +4994,52 @@
        "jump_squat"
       ],
       [
-       "wall_ball",
        "walking_lunge",
+       "sled_pull",
        "kettlebell_deadlift",
        "skater_hop",
        "db_push_press"
       ],
       [
        "db_snatch",
-       "sled_pull",
        "air_squat",
        "db_squat_to_press",
-       "front_foot_elevated_split_squat"
+       "front_foot_elevated_split_squat",
+       "med_ball_slam"
       ],
       [
        "heel_elevated_db_squat",
        "suitcase_carry",
-       "plate_push",
        "box_jump",
-       "med_ball_slam"
+       "devil_press",
+       "sled_push"
       ],
       [
-       "sled_push",
        "burpee",
+       "wall_ball",
        "reverse_lunge",
        "kickstand_db_rdl",
-       "devil_press"
-      ],
-      [
-       "wall_ball",
-       "kb_snatch",
-       "skater_hop",
-       "db_push_press",
        "jump_squat"
       ],
       [
-       "goblet_squat",
+       "kb_snatch",
        "sled_pull",
-       "waiter_carry",
-       "air_squat",
-       "db_squat_to_press"
+       "skater_hop",
+       "db_push_press",
+       "plate_push"
       ],
       [
+       "goblet_squat",
+       "waiter_carry",
+       "med_ball_slam",
+       "air_squat",
+       "landmine_squat_to_press"
+      ],
+      [
+       "sled_push",
        "db_step_up",
        "front_foot_elevated_split_squat",
-       "plate_push",
-       "med_ball_slam",
+       "devil_press",
        "db_rdl"
       ]
      ],
@@ -5053,8 +5053,8 @@
       0.0
      ],
      "full_hyrox_template_sessions": 0,
-     "sessions_with_sled": 4,
-     "distinct_stations": 27,
+     "sessions_with_sled": 5,
+     "distinct_stations": 28,
      "verdict": "varied"
     },
     {
@@ -5064,11 +5064,11 @@
       "row_erg",
       "ski_erg",
       "row_erg",
-      "ski_erg",
       "row_erg",
       "ski_erg",
       "row_erg",
-      "ski_erg"
+      "ski_erg",
+      "row_erg"
      ],
      "stations": [
       [
@@ -5080,65 +5080,65 @@
       ],
       [
        "wall_ball",
-       "db_push_press",
        "box_jump",
        "jump_squat",
-       "kettlebell_swing"
+       "kettlebell_swing",
+       "front_rack_carry"
       ],
       [
        "sled_push",
-       "front_rack_carry",
        "burpee",
        "med_ball_slam",
-       "plate_push"
+       "plate_push",
+       "jump_squat"
       ],
       [
-       "wall_ball",
        "box_jump",
        "kettlebell_swing",
-       "jump_squat",
-       "db_push_press"
+       "sled_pull",
+       "front_rack_carry",
+       "burpee"
       ],
       [
        "sled_push",
-       "front_rack_carry",
-       "burpee",
        "plate_push",
-       "med_ball_slam"
+       "jump_squat",
+       "front_rack_carry",
+       "burpee"
       ],
       [
-       "wall_ball",
-       "jump_squat",
        "box_jump",
        "kettlebell_swing",
-       "db_push_press"
+       "wall_ball",
+       "med_ball_slam",
+       "front_rack_carry"
       ],
       [
        "sled_push",
-       "front_rack_carry",
-       "burpee",
        "plate_push",
+       "jump_squat",
+       "burpee",
        "med_ball_slam"
       ],
       [
-       "wall_ball",
-       "db_push_press",
        "kettlebell_swing",
-       "jump_squat",
-       "box_jump"
+       "box_jump",
+       "sled_pull",
+       "front_rack_carry",
+       "burpee"
       ]
      ],
      "consecutive_overlap": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0.2,
+      0.2,
+      0.2,
+      0.4,
+      0.2,
+      0.2,
+      0.2
      ],
      "full_hyrox_template_sessions": 0,
-     "sessions_with_sled": 4,
+     "sessions_with_sled": 6,
      "distinct_stations": 10,
      "verdict": "varied"
     },
@@ -5166,7 +5166,7 @@
       ],
       [
        "wall_ball",
-       "burpee"
+       "skater_hop"
       ],
       [
        "bw_step_up",
@@ -5174,7 +5174,7 @@
       ],
       [
        "sled_push",
-       "kickstand_db_rdl"
+       "burpee"
       ],
       [
        "goblet_squat",
@@ -5185,8 +5185,8 @@
        "waiter_carry"
       ],
       [
-       "burpee",
-       "walking_lunge"
+       "walking_lunge",
+       "box_jump"
       ]
      ],
      "consecutive_overlap": [
@@ -5200,7 +5200,7 @@
      ],
      "full_hyrox_template_sessions": 0,
      "sessions_with_sled": 4,
-     "distinct_stations": 10,
+     "distinct_stations": 11,
      "verdict": "varied"
     },
     {
@@ -5228,18 +5228,18 @@
        "skater_hop"
       ],
       [
-       "wall_ball",
        "db_squat_to_press",
        "devil_press",
        "db_step_up",
-       "front_foot_elevated_split_squat"
+       "front_foot_elevated_split_squat",
+       "air_squat"
       ],
       [
        "kb_snatch",
        "overhead_carry",
        "plate_push",
-       "db_push_press",
-       "air_squat"
+       "wall_ball",
+       "burpee"
       ]
      ],
      "consecutive_overlap": [
@@ -5249,17 +5249,17 @@
      ],
      "full_hyrox_template_sessions": 0,
      "sessions_with_sled": 2,
-     "distinct_stations": 20,
+     "distinct_stations": 19,
      "verdict": "varied"
     }
    ]
   },
   "T4_invariants": {
    "builds": 832,
-   "checks": 71240,
+   "checks": 74562,
    "violations": {},
    "fixed_station_overflows": 0,
-   "sled_used_in_default_builds": 76
+   "sled_used_in_default_builds": 79
   }
  },
  "summary": {

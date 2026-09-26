@@ -70,14 +70,19 @@ def equipment(spec):
     return set(spec[1]), set(spec[2])
 
 # ------------------------------------------------------------------ Target routing (WA TARGET ROUTING, sole authority)
+# Phase 2.5 founder decision: a SINGLE-muscle Target means "train this muscle" (V2 rule: only what you selected), so the
+# single-muscle rows chest / back / quads / hamstrings / glutes / biceps / triceps were removed and now fall through to Custom
+# Target. Multi-muscle rows that describe an archetype are unchanged; single Core keeps the Core archetype.
+ROUTING_REMOVED_PHASE_2_5 = {'chest': 'strength_upper_push', 'back': 'strength_upper_pull', 'quads': 'strength_lower_squat',
+                             'hamstrings': 'strength_lower_hinge', 'glutes': 'strength_glutes_legs', 'biceps': 'strength_arms', 'triceps': 'strength_arms'}
 ROUTING = {frozenset(k.split('+')): v for k, v in {
-    'chest': 'strength_upper_push', 'chest+triceps': 'strength_upper_push', 'chest+shoulders': 'strength_upper_push',
+    'chest+triceps': 'strength_upper_push', 'chest+shoulders': 'strength_upper_push',
     'shoulders+triceps': 'strength_upper_push', 'chest+shoulders+triceps': 'strength_upper_push',
-    'back': 'strength_upper_pull', 'back+biceps': 'strength_upper_pull',
-    'biceps': 'strength_arms', 'triceps': 'strength_arms', 'biceps+triceps': 'strength_arms', 'biceps+triceps+shoulders': 'strength_arms',
+    'back+biceps': 'strength_upper_pull',
+    'biceps+triceps': 'strength_arms', 'biceps+triceps+shoulders': 'strength_arms',
     'chest+back': 'strength_upper_mixed', 'chest+back+biceps': 'strength_upper_mixed', 'chest+back+triceps': 'strength_upper_mixed',
-    'chest+back+shoulders': 'strength_upper_mixed', 'core': 'strength_core', 'quads': 'strength_lower_squat', 'hamstrings': 'strength_lower_hinge',
-    'glutes': 'strength_glutes_legs', 'quads+glutes': 'strength_glutes_legs', 'hamstrings+glutes': 'strength_lower_hinge',
+    'chest+back+shoulders': 'strength_upper_mixed', 'core': 'strength_core',
+    'quads+glutes': 'strength_glutes_legs', 'hamstrings+glutes': 'strength_lower_hinge',
     'quads+hamstrings+glutes': 'strength_glutes_legs'}.items()}
 def route_target(muscles):
     return ROUTING.get(frozenset(muscles), 'strength_custom_target')
@@ -192,7 +197,7 @@ def build(nctx, history_records, swap=0):
         else:
             aid, why = nctx.get('resolved_archetype') or moods_pick(nctx['goal'], nctx['frequency'], history)[0], 'moods_pick'; mode = 'pick'
         if aid == 'strength_custom_target':
-            return _build_custom(nctx, list(nctx['target_muscles']), swap)
+            return _build_custom(nctx, list(nctx['target_muscles']), swap, history)
         last_err = None
         for attempt, salt in enumerate(('', '#r1', '#r2')):
             sc = _sc(nctx, history, swap, salt)
@@ -254,10 +259,20 @@ def _result(nctx, aid_req, a, mode, why, sc, ctx, payload, rows, events, blocks,
                 target_muscles=sorted(ctx.get('target') or []) if mode == 'explicit' else [])
 
 # ------------------------------------------------------------------ Custom Target (explicit fallback archetype)
-def _build_custom(nctx, targets, swap):
+def _custom_chain(targets, sc2, dur, swap):
+    """Displayed compositions of the Different Workout chain (swap 0 .. swap-1), rebuilt deterministically."""
+    shown = []
+    for k in range(swap):
+        o, b, _, _, _ = AE.compose_custom(targets, dict(sc2, swap=k, ct_shown=list(shown)), dur)
+        shown.append([e['id'] for m in o for e in b[m]])
+    return shown
+
+def _build_custom(nctx, targets, swap, history=()):
     dur = nctx['duration']
-    sc = _sc(nctx, [], swap)
+    sc = _sc(nctx, list(history), swap)
     sc2, ov = QE.custom_sore_override(targets, sc)
+    shown = _custom_chain(targets, sc2, dur, swap) if swap > 0 else []
+    sc2 = dict(sc2, ct_shown=shown)
     order, blocks, widths, fails, multi = AE.compose_custom(targets, sc2, dur)
     if fails:
         sore_caused = bool(sc.get('sore')) and not AE.compose_custom(targets, dict(sc2, sore=set()), dur)[3]
@@ -310,7 +325,17 @@ def _build_custom(nctx, targets, swap):
     st_blocks = []
     for i, r in enumerate(rows, 1):
         st_blocks.append(ST.straight(r, f'B{i}', 'Custom Target: straight sets')); st_blocks[-1]['sequence_index'] = i
-    log = [{'reason_code': 'custom_target', 'targets': targets, 'block_order': order}] + events
+    swap_log = []
+    if swap > 0 and shown:
+        prev = shown[-1]
+        if sorted(ids) == sorted(prev):
+            # never hand back the composition that is already on screen (Phase 2.5 Different Workout rule)
+            raise Conflict('no_alternative', "There isn't another version of this Target with your equipment, level and soreness today.", [])
+        changed = sum(1 for i in ids if i not in prev)
+        swap_log.append({'reason_code': 'workout_swapped', 'swap_count': swap, 'prior_composition': prev, 'replacement_composition': ids,
+                         'exercises_changed': changed, 'changed_ratio': round(changed / max(1, len(ids)), 2)})
+    alloc = {m: dict(role=AE.ct_role(m), exercises=len(blocks[m]), sets=sum(r['sets'] for r in rows if r['muscle'] == m)) for m in order}
+    log = [{'reason_code': 'custom_target', 'targets': targets, 'block_order': order, 'allocation': alloc}] + events + swap_log
     if ov: log.append({'reason_code': 'sore_override_by_explicit_target', 'muscles': ov})
     W = {r['slot']: r['eid'] for r in rows}
     return dict(status='ok', direction='strength', archetype='strength_custom_target', requested_archetype='strength_custom_target', rerouted=False,

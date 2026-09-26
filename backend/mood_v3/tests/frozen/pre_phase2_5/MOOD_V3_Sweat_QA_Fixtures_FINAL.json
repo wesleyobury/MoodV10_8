@@ -45,7 +45,7 @@
     "user": "fx_W03"
    },
    "expected_outcome": "VALID BUILD",
-   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"sled_push\", \"overhead_carry\", \"goblet_squat\", \"burpee\", \"kettlebell_swing\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 7], \"rs\": [[\"sled_push\"], [\"overhead_carry\"], [\"goblet_squat\"], [\"burpee\"], [\"kettlebell_swing\"], [\"sled_push\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"sled_push\", \"overhead_carry\", \"goblet_squat\", \"burpee\", \"kettlebell_swing\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 7], \"rs\": [[\"sled_push\"], [\"overhead_carry\"], [\"goblet_squat\"], [\"burpee\"], [\"kettlebell_swing\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"push_up\", \"wall_ball\", \"dead_bug\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
   },
   {
    "id": "W03b",
@@ -59,7 +59,7 @@
     "user": "fx_W03b"
    },
    "expected_outcome": "VALID BUILD",
-   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"wall_ball\", \"front_rack_carry\", \"goblet_squat\", \"burpee\", \"jump_squat\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 7], \"rs\": [[\"wall_ball\"], [\"front_rack_carry\"], [\"goblet_squat\"], [\"burpee\"], [\"jump_squat\"], [\"wall_ball\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"wall_ball\", \"front_rack_carry\", \"goblet_squat\", \"burpee\", \"jump_squat\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 7], \"rs\": [[\"wall_ball\"], [\"front_rack_carry\"], [\"goblet_squat\"], [\"burpee\"], [\"jump_squat\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"push_up\", \"db_jumping_jack\", \"dead_bug\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
   },
   {
    "id": "W04",
@@ -103,7 +103,7 @@
     "user": "fx_W06"
    },
    "expected_outcome": "VALID BUILD",
-   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"sled_push\", \"suitcase_carry\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 7], \"rs\": [[\"sled_push\", \"suitcase_carry\"], [\"sled_push\", \"suitcase_carry\"], [\"sled_push\", \"suitcase_carry\"], [\"sled_push\", \"suitcase_carry\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"sled_push\", \"suitcase_carry\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 7], \"rs\": [[\"sled_push\", \"suitcase_carry\"], [\"sled_push\", \"suitcase_carry\"], [\"sled_push\", \"suitcase_carry\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"push_up\", \"burpee\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 2, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
   },
   {
    "id": "W07",
@@ -222,7 +222,7 @@
     "user": "fx_W10"
    },
    "expected_outcome": "VALID BUILD",
-   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"row_erg\", \"sled_push\", \"front_rack_carry\", \"burpee\", \"med_ball_slam\", \"plate_push\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [8, 8], \"rs\": [[\"sled_push\"], [\"front_rack_carry\"], [\"burpee\"], [\"med_ball_slam\"], [\"plate_push\"], [\"sled_push\"], [\"front_rack_carry\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"battle_rope_waves\", \"sled_pull\"], \"it\": {\"alternate\": true, \"recovery\": 30, \"rounds\": 6, \"work\": 20}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [9, 9], \"rs\": [], \"s\": \"optional_extra\", \"st\": \"finisher\"}], \"o\": \"VALID BUILD\"}"
+   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"row_erg\", \"sled_push\", \"front_rack_carry\", \"burpee\", \"med_ball_slam\", \"plate_push\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [8, 8], \"rs\": [[\"sled_push\"], [\"front_rack_carry\"], [\"burpee\"], [\"med_ball_slam\"], [\"plate_push\"], [\"sled_push\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"db_push_press\", \"sled_pull\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"battle_rope_waves\", \"air_bike\"], \"it\": {\"alternate\": true, \"recovery\": 30, \"rounds\": 6, \"work\": 20}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [9, 9], \"rs\": [], \"s\": \"optional_extra\", \"st\": \"finisher\"}], \"o\": \"VALID BUILD\"}"
   },
   {
    "id": "W11",

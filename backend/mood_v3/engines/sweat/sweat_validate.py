@@ -1,6 +1,6 @@
 """Independent Sweat validator: invariants I1-I6, safety J1-J6, structure gates, Target, soreness, duration.
 Reads only the emitted workout + exercise records; returns [(check, ok, detail)]."""
-from .sweat_gen import EX, block_minutes, est, BAND, MIN_BOUT, cue_for, duty_cycle, DUTY_MIN
+from .sweat_gen import EX, block_minutes, est, BAND, band_for, MIN_BOUT, cue_for, duty_cycle, DUTY_MIN
 from .sweat_data import *
 
 SWEAT_STRUCTS={'intervals','circuit','emom','ladder','pyramid','continuous','finisher'}
@@ -178,7 +178,7 @@ def validate(w):
             if m=='full_body': continue
             chk('target_muscle_covered',m in allm,m)
     # Duration
-    lo,hi=BAND[dur]; t=w['est_minutes']
+    lo,hi=band_for(aid,dur); t=w['est_minutes']
     under_ok=any(a['reason_code'] in ('state_volume','state_volume_clamped','complement_unavailable','region_balance_relaxed_sore','region_balance_relaxed_equipment') for a in w['adjustments'])
     chk('duration_fits',t<=dur,f'{t}')
     chk('duration_not_underfilled',t>=lo-3 or under_ok,f'{t} vs floor {lo}')

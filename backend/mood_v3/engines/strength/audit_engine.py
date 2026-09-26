@@ -286,15 +286,51 @@ def compose(aid,sc,dur,ctx,seed=0):
     ctx['_log']=log; ctx['_sorefail']=sorefail; ctx['_soresec']=soresec; ctx['_soresec_req']=soresec_req
     return sel,widths,fail,ctx
 
+# ---------------- Phase 2.5 (founder-approved V2 -> V3 port): role-weighted Custom Target composition
+# Roles (V2 primary / ancillary / abs): major muscles get the most work, minor muscles less, Core finishes the session.
+CT_MAJOR={'chest','back','shoulders','quads','hamstrings','glutes','calves'}
+CT_MINOR={'biceps','triceps','forearms','hip_adductors','hip_abductors'}
+def ct_role(m): return 'core' if m=='core' else ('major' if m in CT_MAJOR else 'minor')
+CT_ROLE_RANK={'major':0,'minor':1,'core':2}
+# Targets inside the frozen WA v7.1 ranges (1 muscle 3-5 / 2-4; 2 muscles 2-3 / 1-2 each; 3 muscles 1-2 / 1 each), chosen by role
+# instead of always taking the minimum. The Strength working-set band still trims the final volume.
+CT_SIZE={60:{1:{'major':5,'minor':4,'core':4},2:{'major':3,'minor':2,'core':2},3:{'major':2,'minor':2,'core':2}},
+         30:{1:{'major':3,'minor':3,'core':3},2:{'major':2,'minor':1,'core':1},3:{'major':1,'minor':1,'core':1}}}
+def ct_size(m,n,dur): return CT_SIZE[dur][n][ct_role(m)]
+
+def ct_penalties(e,sc):
+    """Variation (V2 'recently seen' memory, made deterministic): (family, exercise) shown in the Different Workout chain,
+    then (family, exercise) in the last 2 completed Strength sessions. Weights: most recent 2, earlier 1."""
+    sf=se=0
+    for back,ids in enumerate(reversed(sc.get('ct_shown') or [])):
+        w=2 if back==0 else 1; shown=[EX[x] for x in ids if x in EX]
+        if any(e['swap']==x['swap'] for x in shown): sf=max(sf,w)
+        if e['id'] in ids: se=max(se,w)
+    rf=rx=0
+    for back,h in enumerate(reversed((sc.get('history') or [])[-2:])):
+        w=2 if back==0 else 1; ids=list(h.get('exercises') or [])
+        if any(e['swap']==EX[x]['swap'] for x in ids if x in EX): rf=max(rf,w)
+        if e['id'] in ids: rx=max(rx,w)
+    return sf,se,rf,rx
+
 def compose_custom(targets,sc,dur,seed=0):
-    # BLOCK ORDER + block rules (WA v7.1). Sizes: 1 muscle 3–5 (60) / 2–4 (30); 2 muscles 2–3 / 1–2 each; 3 muscles 1–2 / 1 each
-    n=len(targets); size={1:(3 if dur==60 else 2),2:(2 if dur==60 else 1),3:(2 if dur==60 else 1)}[n]
+    # BLOCK ORDER + block rules (WA v7.1 ranges; Phase 2.5 role-weighted sizes, Core last, direct Core work, variation)
+    n=len(targets)
     pool=[EX[eid] for eid,v,c,b in ELIG[('strength_custom_target','target_block_a')] if hard_ok(EX[eid],sc)]
     blocks={}; widths={}; fails=[]
+    swap=sc.get('swap',0)
+    def key(e):
+        sf,se,rf,rx=ct_penalties(e,sc)
+        h=int(hashlib.md5(f"{sc.get('user','qa_user')}|{sc.get('date','2026-09-22')}|ct|{swap}|{e['id']}".encode()).hexdigest(),16)%100000
+        ps=-pred_score(e,sc,{}, 'strength_custom_target','target_block_a')
+        # Different Workout: what was just shown is avoided first (family, then exercise); otherwise State fit leads
+        return (sf,se,ps,rf,rx,h) if swap>0 else (ps,rf,rx,h)
     for m in targets:
         ms=expand(m); bp=[e for e in pool if roll(e['prim'][0])==m]
         comp=[e for e in bp if e['cls']!='isolation']; iso=[e for e in bp if e['cls']=='isolation']
         widths[m]=(len(bp),len(comp),len(iso),len({e['swap'] for e in bp}))
+        size=ct_size(m,n,dur)
+        core_with_others=(m=='core' and n>1)
         chosen=[]; used=set()
         def sig(e): return (e['eq'],e['sup'],e['lat'],tuple(sorted(e['vt'])))
         def distinct(e):  # single-muscle rule: >=2 of 5 attributes differ from every chosen exercise, and no identical tuple
@@ -305,21 +341,35 @@ def compose_custom(targets,sc,dur,seed=0):
             return True
         def ok(e):
             if e in chosen: return False
+            if e['cls']=='integrated' and any(c['cls']=='integrated' for c in chosen): return False   # at most one full-body integrated lift per block
             if n==1: return (e['swap'] not in used) or distinct(e)
             return e['swap'] not in used
-        first=sorted(comp or iso,key=lambda e:(-pred_score(e,sc,{}, 'strength_custom_target','target_block_a'),e['id']))
+        # Core combined with other Targets is direct trunk work (V2 Abs pool): no carry / get-up leads it
+        lead=(iso or comp) if core_with_others else (comp or iso)
+        first=sorted(lead,key=key)
         if not first: fails.append(m); blocks[m]=[]; continue
         chosen.append(first[0]); used.add(first[0]['swap'])
-        for e in sorted(iso,key=lambda e:(-pred_score(e,sc,{}, 'strength_custom_target','target_block_a'),e['id'])):
-            if len(chosen)>=size: break
-            if ok(e): chosen.append(e); used.add(e['swap'])
-        if len(chosen)<size:
-            for e in comp:
+        if swap>0:
+            # Different Workout: exercises not just shown come before anything shown; isolation-first shape kept within each group
+            fill=sorted(iso+comp,key=lambda e:(ct_penalties(e,sc)[1]>0,0 if e['cls']=='isolation' else 1)+key(e))
+            if core_with_others: fill=[e for e in fill if e['cls']=='isolation']+[e for e in fill if e['cls']!='isolation']
+            ccap=(size+1)//2   # keep the block's shape: at most about half compounds, so a re-roll never becomes a stack of heavy lifts
+            for relax in (False,True):
+                for e in fill:
+                    if len(chosen)>=size: break
+                    if not relax and e['cls']!='isolation' and sum(c['cls']!='isolation' for c in chosen)>=ccap: continue
+                    if ok(e): chosen.append(e); used.add(e['swap'])
+        else:
+            for e in sorted(iso,key=key):
                 if len(chosen)>=size: break
                 if ok(e): chosen.append(e); used.add(e['swap'])
+            if len(chosen)<size:
+                for e in sorted(comp,key=key):
+                    if len(chosen)>=size: break
+                    if ok(e): chosen.append(e); used.add(e['swap'])
         blocks[m]=chosen
-    # block order: compound-led first (cls rank, systemic), tie by hierarchy order
-    order=sorted(targets,key=lambda m:(0 if (blocks[m] and blocks[m][0]['cls']!='isolation') else 1, -(blocks[m][0]['sysd'] if blocks[m] else 0), list(PARENT).index(m)))
+    # block order (V2 session order): major -> minor -> Core last; within a tier compound-led first, then systemic, then Target order
+    order=sorted(targets,key=lambda m:(CT_ROLE_RANK[ct_role(m)],0 if (blocks[m] and blocks[m][0]['cls']!='isolation') else 1,-(blocks[m][0]['sysd'] if blocks[m] else 0),targets.index(m)))
     multi=[EX[eid] for eid,v,c,b in ELIG[('strength_custom_target','multi_target_compound')] if hard_ok(EX[eid],sc) and len({roll(x) for x in EX[eid]['allm']|set(EX[eid]['compm'])}&set(targets))>=2]
     return order,blocks,widths,fails,multi
 
