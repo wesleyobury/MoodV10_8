@@ -26,6 +26,7 @@ import {
   archetypeName,
   clearTarget,
   configSummary,
+  focusSummary,
   effectiveDifficulty,
   isTargetSelected,
   setArchetype,
@@ -34,6 +35,12 @@ import {
   targetLabel,
   targetSupported,
   toggleTarget,
+  BODY_AREAS,
+  STRENGTH_MUSCLES,
+  bodyAreaOf,
+  isStrengthMuscleSelected,
+  pickBodyArea,
+  toggleStrengthMuscle,
 } from '../../utils/v3HomeModel';
 import { V3Chip } from './V3Chip';
 
@@ -45,9 +52,11 @@ interface Props {
   profileLevel: V3Experience | null;
   onApply: (next: HomeInputs) => void;
   onClose: () => void;
+  /** H1: the Build screen shows Length inline, so its Focus sheet hides it. Default true. */
+  showLength?: boolean;
 }
 
-export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply, onClose }: Props) {
+export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply, onClose, showLength = true }: Props) {
   const insets = useSafeAreaInsets();
   const [draft, setDraft] = useState<HomeInputs>(inputs);
   const [note, setNote] = useState<string | null>(null);
@@ -60,6 +69,23 @@ export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply,
   }, [visible, inputs]);
 
   const canTarget = targetSupported(draft.direction);
+  /** Strength (founder edit pass): MOOD's Pick / Body Area / Specific Muscle. Target routing chooses the architecture, so the
+   *  internal session types (Upper Push, Lower Hinge ...) are not a second targeting system in the UI. */
+  const strength = draft.direction === 'strength';
+
+  const pickArea = (id: string) => {
+    setDraft({ ...pickBodyArea(draft, id), archetype: null });
+    setNote(null);
+  };
+  const pickMuscle = (id: string) => {
+    const r = toggleStrengthMuscle(draft, id);
+    if (r.limitHit) {
+      setNote('Up to 3 muscles. MOOD builds the session around them.');
+      return;
+    }
+    setDraft(r.inputs);
+    setNote(null);
+  };
 
   const pickFocus = (chipId: string | null) => {
     if (chipId === null) {
@@ -91,29 +117,71 @@ export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply,
       <View style={[styles.sheet, { paddingBottom: insets.bottom + 16 }]} testID="v3-config-sheet">
         <View style={styles.grip} />
         <ScrollView contentContainerStyle={styles.body} showsVerticalScrollIndicator={false}>
+          {strength ? (
+            <>
+              <View style={styles.group}>
+                <Text style={styles.label}>MOOD&apos;S PICK</Text>
+                <Text style={styles.question}>Let MOOD choose from your profile and recent training</Text>
+                <View style={styles.wrap}>
+                  <V3Chip
+                    size="sm"
+                    label="MOOD's Pick"
+                    icon="sparkles"
+                    selected={draft.target === null && !draft.archetype}
+                    onPress={() => {
+                      setDraft({ ...clearTarget(draft), archetype: null });
+                      setNote(null);
+                    }}
+                    testID="v3-focus-moods-pick"
+                  />
+                </View>
+              </View>
+              <View style={styles.group}>
+                <Text style={styles.label}>BODY AREA</Text>
+                <View style={styles.row}>
+                  {BODY_AREAS.map((a) => (
+                    <V3Chip key={a.id} size="sm" label={a.label} selected={bodyAreaOf(draft.target)?.id === a.id} onPress={() => pickArea(a.id)} testID={`v3-area-${a.id}`} />
+                  ))}
+                </View>
+              </View>
+              <View style={styles.group}>
+                <Text style={styles.label}>SPECIFIC MUSCLE</Text>
+                <Text style={styles.hint}>Up to 3</Text>
+                <View style={[styles.wrap, { marginTop: 10 }]}>
+                  {STRENGTH_MUSCLES.map((m) => (
+                    <V3Chip key={m.id} size="sm" label={m.label} selected={isStrengthMuscleSelected(draft, m.id)} onPress={() => pickMuscle(m.id)} testID={`v3-muscle-${m.id}`} />
+                  ))}
+                </View>
+              </View>
+            </>
+          ) : (
+            <>
           {canTarget ? (
+              <View style={styles.group}>
+                <Text style={styles.label}>FOCUS</Text>
+                <Text style={styles.question}>What do you want to train?</Text>
+                <View style={styles.wrap}>
+                  <V3Chip size="sm" label="MOOD's Pick" icon="sparkles" selected={draft.target === null} onPress={() => pickFocus(null)} testID="v3-focus-moods-pick" />
+                  {TARGETS.map((t) => (
+                    <V3Chip key={t.id} size="sm" label={t.label} selected={isTargetSelected(draft, t.id)} onPress={() => pickFocus(t.id)} testID={`v3-focus-${t.id}`} />
+                  ))}
+                </View>
+              </View>
+            ) : null}
+  
             <View style={styles.group}>
-              <Text style={styles.label}>FOCUS</Text>
-              <Text style={styles.question}>What do you want to train?</Text>
+              <Text style={styles.label}>WORKOUT TYPE</Text>
+              <Text style={styles.question}>Want a specific style of session?</Text>
               <View style={styles.wrap}>
-                <V3Chip size="sm" label="MOOD's Pick" icon="sparkles" selected={draft.target === null} onPress={() => pickFocus(null)} testID="v3-focus-moods-pick" />
-                {TARGETS.map((t) => (
-                  <V3Chip key={t.id} size="sm" label={t.label} selected={isTargetSelected(draft, t.id)} onPress={() => pickFocus(t.id)} testID={`v3-focus-${t.id}`} />
+                <V3Chip size="sm" label="Let MOOD choose" selected={draft.archetype === null} onPress={() => pickType(null)} testID="v3-type-moods" />
+                {ARCHETYPES[draft.direction].map((a) => (
+                  <V3Chip key={a.id} size="sm" label={a.name} selected={draft.archetype === a.id} onPress={() => pickType(a.id)} testID={`v3-type-${a.id}`} />
                 ))}
               </View>
             </View>
-          ) : null}
-
-          <View style={styles.group}>
-            <Text style={styles.label}>WORKOUT TYPE</Text>
-            <Text style={styles.question}>Want a specific style of session?</Text>
-            <View style={styles.wrap}>
-              <V3Chip size="sm" label="Let MOOD choose" selected={draft.archetype === null} onPress={() => pickType(null)} testID="v3-type-moods" />
-              {ARCHETYPES[draft.direction].map((a) => (
-                <V3Chip key={a.id} size="sm" label={a.name} selected={draft.archetype === a.id} onPress={() => pickType(a.id)} testID={`v3-type-${a.id}`} />
-              ))}
-            </View>
-          </View>
+  
+            </>
+          )}
 
           {note ? (
             <Text style={styles.note} testID="v3-config-note">
@@ -144,6 +212,7 @@ export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply,
             </Text>
           </View>
 
+          {showLength ? (
           <View style={styles.group}>
             <Text style={styles.label}>LENGTH</Text>
             <View style={styles.row}>
@@ -160,11 +229,12 @@ export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply,
               ))}
             </View>
           </View>
+          ) : null}
         </ScrollView>
 
         <Pressable onPress={() => onApply(draft)} testID="v3-config-done" style={({ pressed }) => [styles.doneWrap, pressed && { opacity: 0.9 }]}>
           <LinearGradient colors={[...BRAND_GRADIENT]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.done}>
-            <Text style={styles.doneText}>{`Done · ${configSummary(draft)}`}</Text>
+            <Text style={styles.doneText}>{showLength ? `Done · ${configSummary(draft)}` : `Done · ${focusSummary(draft)}`}</Text>
           </LinearGradient>
         </Pressable>
       </View>

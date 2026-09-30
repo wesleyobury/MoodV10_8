@@ -92,7 +92,7 @@ def _custom_lines(ctx, res, add):
 
 KIND_RANK = {'adaptation': 0, 'decision': 1, 'context': 2}
 CODE_KIND = {
-    'sore_reroute': 'adaptation', 'sore': 'adaptation', 'sore_override': 'adaptation', 'rotation_swap': 'adaptation', 'state_pair': 'adaptation',
+    'why_today': 'adaptation', 'sore_reroute': 'adaptation', 'sore': 'adaptation', 'sore_override': 'adaptation', 'rotation_swap': 'adaptation', 'state_pair': 'adaptation',
     'duration': 'adaptation', 'duration_pair': 'adaptation', 'equipment': 'adaptation', 'progression': 'adaptation', 'swap': 'adaptation',
     'different_workout': 'adaptation', 'structure_beginner': 'adaptation',
     'allocation': 'decision', 'target': 'decision', 'rotation': 'decision', 'frequency': 'decision', 'structure': 'decision',
@@ -146,6 +146,11 @@ def build_lines(ctx, res, history_records):
                 add('target', f"{tl} run as {art} {arch} session, so both get direct work.")
             elif d == 'sweat' and res['archetype'] == 'sweat_circuit':
                 add('target', f"The circuit stations are weighted toward {tl.lower()}.")
+            elif d == 'athletic' and isinstance(res.get('w'), dict) and 'sess' in res['w']:
+                hit = [it['exercise']['name'] for it in items if set(it['exercise'].get('primary_muscles') or []) & set(ctx.target_muscles) and it.get('role') not in ('primary', 'contrast_power')]
+                pq = res['w']['sess']['pq']
+                from .engines.athletic.athletic_core import QUALITY_LABEL as _QL
+                add('target', f"Your {tl} Target shapes the support work" + (f" ({_join(hit[:2])})" if hit else '') + f"; the session itself stays athletic, built around {_QL[pq]}.")
     elif source == 'moods_pick' and not res.get('rerouted'):
         last = [h for h in history_records if h.get('direction') == d]
         if d == 'strength' and last:
@@ -164,20 +169,55 @@ def build_lines(ctx, res, history_records):
     art = lambda w: 'an' if (w or '')[:1].lower() in 'aeiou' else 'a'
     specific = {}
     if d == 'strength':
-        vol = next(iter(_log(res, 'dial_volume')), None)
-        eff = 'dial_effort' in codes
-        if 'amped' in st and fin:
-            specific['amped'] = f"You're Amped, so {art(fin_names)} {fin_names} burnout finishes the session" + (" and working sets go a rep closer to failure." if eff else '.')
-        elif 'amped' in st and eff:
-            specific['amped'] = "You're Amped, so working sets go a rep closer to failure."
-        if 'irritated' in st and fin:
-            specific['irritated'] = f"You're Irritated, so a forceful {fin_names} finishes the session."
-        if 'low_energy' in st and vol and vol.get('value') == -1:
-            specific['low_energy'] = 'Low Energy: one set comes off the last accessory, so the main work keeps its quality.'
-        if 'bored' in st and any(b.get('structure') in ('superset', 'pyramid', 'ladder', 'circuit') for b in res.get('blocks', [])):
-            shape = next(b['structure'] for b in res['blocks'] if b.get('structure') in ('superset', 'pyramid', 'ladder', 'circuit'))
-            specific['bored'] = f"MOOD pushed variety today: part of the session runs as a {shape} instead of your usual straight sets."
-    elif d == 'sweat' and fin and any(s in st for s in ('amped', 'irritated')):
+        from . import why_today as WT
+        wt = WT.build(ctx, res)
+        if wt:
+            # one synthesised line carries the whole story; its code keeps the State contract (state_<s> / state_pair) so the
+            # teaser, the QA harness and the app keep working, and falls back to 'why_today' when no State is involved
+            code = 'state_pair' if len(st) > 1 else (f'state_{st[0]}' if st else 'why_today')
+            sore_claimed = ('soreness', 'sore') in [tuple(c) for c in wt['claims']]
+            if sore_claimed:
+                # the synthesis carries the soreness story: it replaces the standalone sore line (and takes its code when no State is involved)
+                sore_line = next((l for l in lines if l['code'] in ('sore', 'sore_reroute', 'sore_override')), None)
+                if sore_line and not st: code = sore_line['code']
+                lines[:] = [l for l in lines if l['code'] not in ('sore', 'sore_reroute', 'sore_override')]
+            add(code, wt['text'], 'adaptation'); res['_why_claims'] = wt['claims']; res['_why_code'] = code
+            lines[-1]['claims'] = [list(c) for c in wt['claims']]   # audit trail: which contract entries this sentence rests on
+            st = []                                   # the synthesis carries the State story; no separate per-State lines
+        else:
+            specific.update(_strength_state_lines(res, st, fin_names, art))
+    elif d == 'sweat':
+        from . import sweat_why as SWY
+        wt = None
+        try: wt = SWY.compose(ctx, res)
+        except Exception as ex: res.setdefault('log', []).append(dict(reason_code='why_today_fallback', error=repr(ex)))
+        if wt:
+            code = 'state_pair' if len(st) > 1 else (f'state_{st[0]}' if st else 'why_today')
+            if ('soreness', 'sore') in [tuple(c) for c in wt['claims']]:
+                sore_line = next((l for l in lines if l['code'] in ('sore', 'sore_reroute', 'sore_override')), None)
+                if sore_line and not st: code = sore_line['code']
+                lines[:] = [l for l in lines if l['code'] not in ('sore', 'sore_reroute', 'sore_override')]
+            add(code, wt['text'], 'adaptation'); res['_why_claims'] = wt['claims']; res['_why_code'] = code
+            lines[-1]['claims'] = [list(c) for c in wt['claims']]
+            st = []
+        elif fin and any(s in st for s in ('amped', 'irritated')):
+            s0 = 'amped' if 'amped' in st else 'irritated'
+            specific[s0] = f"You're {STATE_NAMES[s0]}, so {art(fin_names)} {fin_names} finisher closes the session."
+    elif d == 'athletic' and isinstance(res.get('w'), dict) and 'sess' in res['w']:
+        from . import athletic_why as AWY
+        wt = None
+        try: wt = AWY.compose(ctx, res)
+        except Exception as ex: res.setdefault('log', []).append(dict(reason_code='why_today_fallback', error=repr(ex)))
+        if wt:
+            code = 'state_pair' if len(st) > 1 else (f'state_{st[0]}' if st else 'why_today')
+            if ('soreness', 'sore') in [tuple(c) for c in wt['claims']]:
+                sore_line = next((l for l in lines if l['code'] in ('sore', 'sore_reroute', 'sore_override')), None)
+                if sore_line and not st: code = sore_line['code']
+                lines[:] = [l for l in lines if l['code'] not in ('sore', 'sore_reroute', 'sore_override')]
+            add(code, wt['text'], 'adaptation'); res['_why_claims'] = wt['claims']; res['_why_code'] = code
+            lines[-1]['claims'] = [list(c) for c in wt['claims']]
+            st = []
+    if False:
         s0 = 'amped' if 'amped' in st else 'irritated'
         specific[s0] = f"You're {STATE_NAMES[s0]}, so {art(fin_names)} {fin_names} finisher closes the session."
     if d == 'sweat' and 'irritated' in st and 'irritated' not in specific:
@@ -215,10 +255,56 @@ def build_lines(ctx, res, history_records):
     _context_lines(ctx, res, items, history_records, source, add, arch)
 
     lines.sort(key=lambda l: KIND_RANK[l['kind']])      # stable: adaptation, then decision, then context
+    # session expectation: a long Core request is a core-focused strength session, and the user should know that before Start
+    # (the synthesis usually carries it; when it does not, a dedicated line does, so the note is never lost)
+    if res.get('session_expectation') == 'long_core_session' and not any('core-focused strength session' in l['text'] for l in lines):
+        lines.insert(min(1, sum(1 for l in lines if l['kind'] == 'adaptation')), dict(code='session_expectation', kind='adaptation',
+                     text=f"You chose {ctx.duration} minutes, so this is a full core-focused strength session rather than an hour of ab work: loaded bracing, carries and stability work that challenge your trunk from several angles, with Core still the focus."))
     return lines[:MAX_LINES]
 
 
 MAX_LINES = 6
+
+STATE_WORD = {'low_energy': 'Low Energy', 'bored': 'Bored', 'irritated': 'Irritated', 'amped': 'Amped', 'stressed': 'Stressed'}
+FIN_WORD = {'burnout': 'burnout', 'forceful': 'forceful', 'carry': 'loaded-carry'}
+
+
+def _strength_state_lines(res, states, fin_names, art):
+    """One specific line per State, built ONLY from decision events that fired (core rebuild). Nothing here is inferred from dial values."""
+    dec = [l for l in res.get('decisions') or res.get('log') or [] if isinstance(l, dict)]
+    out = {}
+    for s in states:
+        name = STATE_WORD.get(s, s); ev = [l for l in dec if l.get('state') == s and l.get('changes')]
+        rir = next((l for l in ev if l['reason_code'] == 'state_rir'), None)
+        vol = next((l for l in ev if l['reason_code'] == 'state_volume'), None)
+        reps = next((l for l in ev if l['reason_code'] == 'state_reps'), None)
+        rest = next((l for l in ev if l['reason_code'] == 'state_rest'), None)
+        slot = next((l for l in ev if l['reason_code'] == 'state_slot_removed'), None)
+        tempo = next((l for l in dec if l.get('reason_code') == 'state_tempo' and l.get('state') in (s, None)), None)
+        fin = next((l for l in dec if l.get('reason_code') == 'finisher_selected' and l.get('state_driven') and s in (l.get('states') or [])), None)
+        var = next((l for l in dec if l.get('reason_code') == 'variant_selected'), None)
+        dev = next((l for l in dec if l.get('reason_code') == 'device_selected'), None)
+        parts = []
+        if rir:
+            delta = rir['changes'][0]['to'] - rir['changes'][0]['from']; scope = {'all': 'every set', 'compound': 'the main lifts', 'primary': 'the main lift', 'secondary': 'the secondary lifts', 'accessory': 'the accessories'}[rir['scope']]
+            parts.append(f"{abs(delta)} more rep{'s' if abs(delta) != 1 else ''} in reserve on {scope}" if delta > 0 else f"{abs(delta)} rep{'s' if abs(delta) != 1 else ''} closer to failure on {scope}")
+        if vol:
+            k = sum(abs(c['to'] - c['from']) for c in vol['changes']); sign = vol['changes'][0]['to'] - vol['changes'][0]['from']
+            plural = 's' if k != 1 else ''
+            if sign > 0: parts.append('one more working set on the main lift' if vol['scope'] == 'primary' else 'one more working set')
+            else: parts.append(f"{k} fewer accessory set{plural}")
+        if reps and not rir:
+            parts.append('the main lifts sit at the heavier end of their rep range' if reps['delta'] < 0 else 'moderate loads in the middle of the rep range')
+        if slot: parts.append('one accessory left out')
+        if fin and fin_names: parts.append(f"{art(fin_names)} {FIN_WORD.get(fin['type'], fin['type'])} finisher ({fin_names}) closes the session")
+        if rest and not parts: parts.append('a little more rest between sets' if rest['delta'] > 0 else 'tighter rest between sets')
+        if tempo and not parts: parts.append('controlled tempo on the secondary work' if tempo['tempo'] == 'controlled' else 'every rep of the main lift moves with intent')
+        if s == 'bored' and dev and not parts: parts.append(f"part of the session runs as a {dev['device']} instead of straight sets")
+        if s == 'bored' and var and var.get('variant') in ('paired', 'top_backoff', 'volume') and not parts: parts.append(f"today's shape is {var['variant'].replace('_', ' ')} rather than your usual straight sets")
+        if parts:
+            txt = parts[0] if len(parts) == 1 else (', '.join(parts[:-1]) + ' and ' + parts[-1])
+            out[s] = f"You're {name}, so {txt}."
+    return out
 
 
 def _rx(it):
@@ -238,7 +324,7 @@ def _decision_lines(ctx, res, items, add, arch):
                 m = target_label(res.get('target_muscles') or ctx.target_muscles or [])
                 add('structure', f"All {len(items)} movements train {m.lower()}, opening with {main['exercise']['name']} ({_rx(main)['display']}).")
         else:
-            parts = [f"{main['exercise']['name']} ({_rx(main)['display']}) leads as the main lift"]
+            parts = [f"{main['exercise']['name']} ({_rx(main)['display']}) {'opens the session' if res['archetype'] == 'strength_arms' else 'leads as the main lift'}"]
             rest = []
             if sec: rest.append(f"{sec} strength lift{'s' if sec != 1 else ''}")
             if acc: rest.append(f"{acc} accessor{'ies' if acc != 1 else 'y'}")
@@ -267,14 +353,31 @@ def _decision_lines(ctx, res, items, add, arch):
             add('structure', f"{iv.get('rounds')} rounds of {iv['work_sec']} s work / {iv.get('recovery_sec', 0)} s easy on {_join(x['exercise']['name'] for x in its)}.")
         elif s == 'continuous':
             add('structure', f"{_rx(its[0])['display']} on the {its[0]['exercise']['name']} as one continuous effort.")
+        elif s == 'pyramid' and iv.get('steps_sec'):
+            steps = '-'.join((f"{x // 60}" if x % 60 == 0 else f"{x // 60}:{x % 60:02d}") for x in iv['steps_sec'])
+            add('structure', f"A {steps} minute pyramid on the {its[0]['exercise']['name']}, {iv.get('recovery_sec', 0)} s easy between steps.")
+        elif s == 'ladder':
+            add('structure', f"A descending ladder on {_join(x['exercise']['name'] for x in its)}: {_rx(its[0])['display']}.")
         extra = [b for b in blocks[1:]]
         mins = int(round(res['estimated_minutes']))
+        comp = (res.get('completeness') or {}).get('label')
         if extra:
             add('volume', f"Plus a short {_join((b['title'] or b['structure']).lower() for b in extra)} block, about {mins} minutes in all.")
+        elif comp == 'substantial':
+            add('volume', f"The main block is the whole workout: nothing is added after it. About {mins} minutes in all with warm-up and downshift.")
         else:
-            add('volume', f"One block, about {mins} minutes in all.")
+            add('volume', f"One main block, about {mins} minutes in all with warm-up and downshift.")
         rpe = (prim.get('effort') or {}).get('rpe')
         if rpe: add('intensity', f"Target effort for the main block is RPE {rpe[0]}–{rpe[1]}." if rpe[0] != rpe[1] else f"Target effort for the main block is RPE {rpe[0]}.")
+    elif d == 'athletic' and isinstance(res.get('w'), dict) and 'sess' in res['w']:
+        from . import athletic_why as AWY
+        add('volume', AWY.workload_line(res))
+        sup = next((b for b in blocks if b.get('type') == 'support'), None)
+        if sup:
+            it = sup['items'][0]; why = (_rx(it).get('direction_fields') or {}).get('why')
+            if why: add('support', f"{it['exercise']['name']} is there for {why}.")
+        fin_b = next((b for b in blocks if b.get('type') == 'finisher'), None)
+        if fin_b: add('finisher', f"A short {fin_b['items'][0]['exercise']['name'].lower()} finisher closes the session for your conditioning goal; it comes last so it cannot blunt the power work.")
     elif d == 'athletic':
         exp = [b for b in blocks if b.get('structure') == 'exposure']
         if exp:
@@ -319,6 +422,21 @@ def _difficulty_lines(ctx, res, items, codes, add):
             else: add('difficulty', 'Advanced difficulty keeps the full exercise range open; today the best fits sit within it without needing the most complex options.', 'context')
         elif lv == 'intermediate':
             add('difficulty', 'Intermediate difficulty: every movement is within the intermediate complexity and skill limits.', 'context')
+    elif d == 'athletic' and exs and isinstance(res.get('w'), dict) and 'sess' in res['w']:
+        A = res['w']['A']
+        if lv == 'beginner':
+            add('difficulty', f"Beginner difficulty keeps the athletic work simple: no Olympic lifts, no high-impact or reactive jumps, and a small landing budget ({A['contacts']} landings today).", 'adaptation')
+        elif lv == 'advanced':
+            from .engines.athletic import athletic_core as _AC
+            un = [e for e in exs if e.get('id') in _AC.POWER and (e.get('impact') == 'high' or (e.get('cx') or 0) >= 3 or e.get('skill') == 'advanced')]   # name the athletic work, not the strength support
+            prim_x = res['w']['sess']['blocks'][0]['items'][-1]
+            if prim_x['kind'] == 'olympic':
+                add('difficulty', f"Advanced difficulty and your goal open an Olympic derivative, {items[0]['exercise']['name'] if items else 'the primary lift'}, kept to {prim_x['sets']} sets of {prim_x['reps']} with {prim_x['rest']} s rest so every rep stays fast.", 'adaptation')
+            elif res['w']['sess']['structure'] == 'contrast': add('difficulty', 'Advanced difficulty unlocks contrast pairing: a heavy set followed by its explosive partner.', 'adaptation')
+            elif un: add('difficulty', f"Advanced difficulty allows more demanding movements such as {names(un)}, with the same low-rep, full-recovery rules.", 'adaptation')
+            else: add('difficulty', 'Advanced means higher quality, not more volume: the same low-rep, full-recovery rules apply.', 'context')
+        else:
+            add('difficulty', 'Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.', 'context')
     elif d == 'athletic' and exs:
         if lv == 'beginner':
             add('difficulty', "Beginner difficulty applies MOOD's athletic safety rules: no high-impact landings or advanced drills, a smaller landing budget, precision-first reps and no repeat-effort block.", 'adaptation')
@@ -331,15 +449,23 @@ def _difficulty_lines(ctx, res, items, codes, add):
     elif d == 'sweat':
         prim = (res.get('blocks') or [None])[0]
         if not prim: return
-        iv = prim.get('interval') or {}; s = prim.get('structure')
-        if s in ('timed_circuit', 'intervals') and iv.get('work_sec'):
+        iv = prim.get('interval') or {}; s = prim.get('structure'); its = prim.get('items') or []
+        if s == 'timed_circuit' and iv.get('work_sec'):
             add('difficulty', f"{L} dosing: {iv['work_sec']} s work and {iv.get('recovery_sec', 0)} s rest per station.", 'adaptation')
+        elif s == 'intervals' and iv.get('work_sec'):
+            w_, r_ = iv['work_sec'], iv.get('recovery_sec', 0)
+            fmt = lambda x: f"{x // 60} min" if x >= 120 and x % 60 == 0 else (f"{x // 60}:{x % 60:02d}" if x >= 60 else f"{x} s")
+            add('difficulty', f"{L} dosing: {fmt(w_)} work with {fmt(r_)} easy between intervals.", 'adaptation')
         elif s == 'anchor_circuit' and prim.get('rest_between_rounds_sec'):
             add('difficulty', f"{L} dosing: the anchor distance, station targets and {prim['rest_between_rounds_sec']} s between rounds are set for your level.", 'adaptation')
         elif s == 'circuit' and prim.get('rest_between_rounds_sec'):
             add('difficulty', f"{L} dosing: station targets and {prim['rest_between_rounds_sec']} s between rounds are set for your level.", 'adaptation')
         elif s == 'continuous' and lv == 'beginner':
             add('difficulty', 'Beginner difficulty caps the steady effort at 20 minutes.', 'adaptation')
+        elif s == 'pyramid' and iv.get('steps_sec'):
+            add('difficulty', f"{L} dosing: {len(iv['steps_sec'])} pyramid steps up to {max(iv['steps_sec']) // 60} min, output held across the steps.", 'adaptation')
+        elif s == 'continuous':
+            add('difficulty', f"{L} dosing: one steady {_rx(its[0])['display']} effort.", 'adaptation')
         else:
             add('difficulty', f"{L} dosing: station targets are set for your level.", 'adaptation')
 
@@ -357,6 +483,14 @@ def _context_lines(ctx, res, items, history_records, source, add, arch):
             add('goal', f"MOOD's Pick follows its standard rotation for {FREQ_TEXT.get(ctx.frequency, ctx.frequency)} Strength days a week.")
     elif d == 'sweat' and source == 'moods_pick' and goal:
         add('goal', f"MOOD's Pick orders Circuit, Engine and Hybrid for your goal to {goal}.")
+    elif d == 'athletic' and isinstance(res.get('w'), dict) and 'sess' in res['w'] and goal:
+        stb = next((b for b in res.get('blocks', []) if b.get('type') == 'strength'), None)
+        if ctx.goal == 'build_strength' and stb: add('goal', f"Your goal is to {goal}, so the athletic strength work is heavier: {stb['items'][0]['exercise']['name']} at {stb['items'][0]['prescription']['display']}.")
+        elif ctx.goal == 'build_muscle' and stb: add('goal', f"Your goal is to {goal}, so the strength work carries a little more volume while the power work stays low-rep.")
+        elif ctx.goal == 'improve_athleticism': add('goal', f"Your goal is to {goal}, so speed and power lead and strength supports them.")
+        elif ctx.goal == 'lose_weight_conditioning': add('goal', "Your goal leans toward conditioning, but Athletic stays performance training: the power work keeps full recovery.")
+        elif ctx.goal == 'feel_better_reduce_stress': add('goal', 'Your goal is to feel better, so the session favours accessible, lower-impact athletic work at a moderate effort.')
+        else: add('goal', f"Your profile goal is to {goal}; today's Athletic session is built from today's choices.")
     elif d == 'athletic' and ctx.goal in ('build_strength', 'build_muscle') and any(b.get('type') == 'support' for b in res.get('blocks', [])):
         add('goal', f"Because your goal is to {goal}, Athletic sessions always include Performance Support.")
     elif goal:

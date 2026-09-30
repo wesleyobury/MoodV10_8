@@ -9,12 +9,12 @@ frozen validator(s); anything that cannot be built is returned as an explicit co
 """
 from __future__ import annotations
 import datetime as _dt, uuid
-from . import normalize as N, formatter as F, explain, progression, render
+from . import normalize as N, formatter as F, explain, progression, render, exercise_meta
 from .engines.strength import adapter as SA
 from .engines.sweat import adapter as WA
 from .engines.athletic import adapter as AA
 
-ENGINE_VERSION = 'strength-v6+wa17/et12 | sweat-final-v4 | athletic-v1'
+ENGINE_VERSION = 'strength-frozen-v3 (gate+coherence+core-focus+strategy on wa17/et12/lib11) | sweat-frozen-v5 (budget+shapes+gate+coherence+completeness+contract) | athletic-frozen-v4 (quality+blueprints+impact/intent budget+gate+coherence+contract; no agility drills; Olympic derivatives; identity pass: athletic movement budget + cost tiers, no carries, muscle-ups, explicit athletic variants; truthful sprint / sled accounting)'
 ADAPTERS = {'strength': SA, 'sweat': WA, 'athletic': AA}
 CONFLICT_TYPES = (SA.Conflict, WA.Conflict, AA.Conflict)
 RENDER = {'strength': render.format_strength, 'sweat': render.format_sweat, 'athletic': render.format_athletic}
@@ -57,6 +57,8 @@ def conflict_payload(ctx, c):
 def _finish(ctx, res, history_records, perf_history, workout_id, version, source=None):
     res = dict(res, selection_source=source or selection_source(ctx))
     warm, blocks, cool = RENDER[ctx.direction](res, engine_ctx(ctx))
+    exercise_meta.apply_scaling(blocks, ctx.direction)     # founder pass 3: scalable bodyweight guidance (presentation only)
+    F.attach_rest_contract(blocks, ctx.direction)          # founder rest audit: when the timer starts, how long, full recovery
     aq = (lambda eid: AA.G.quality(AA.EX[eid]) if eid in AA.EX else None) if ctx.direction == 'athletic' else None
     progression.attach(ctx.direction, blocks, perf_history, ctx.states, aq)
     res = dict(res, warmup=warm, blocks=blocks, cooldown=cool, adjustments=_adjustments(res))
@@ -125,6 +127,9 @@ def _apply_swap(direction, ad, nctx, state, res, ref, excluded):
     if direction == 'sweat':
         bi = ref['block_index']; ii = [e['id'] for e in res['w']['blocks'][bi]['items_e']].index(ref['exercise_id'])
         return ad.swap_exercise(nctx, state['history_snapshot'], state['swap_count'], res, bi, ii, excluded)
+    if 'block_index' in ref:   # rebuilt Athletic: blocks can hold two items (strength pair, contrast pair)
+        bi = ref['block_index']; ii = [x['id'] for x in res['w']['sess']['blocks'][bi]['items']].index(ref['exercise_id'])
+        return ad.swap_exercise(nctx, state['history_snapshot'], state['swap_count'], res, bi, ii, excluded)
     return ad.swap_exercise(nctx, state['history_snapshot'], state['swap_count'], res, ref['item_index'], excluded)
 
 def swap_exercise(state, envelope, item_id, perf_history=()):
@@ -138,7 +143,7 @@ def swap_exercise(state, envelope, item_id, perf_history=()):
     eid = it['exercise']['id']
     if ctx.direction == 'strength': ref = dict(slot=it['slot_id'])
     elif ctx.direction == 'sweat': ref = dict(block_index=bi, exercise_id=eid)
-    else: ref = dict(item_index=bi)
+    else: ref = dict(block_index=bi, exercise_id=eid)
     prior = [s for s in state['exercise_swaps'] if s['item_id'] == item_id]
     excluded = set(prior[-1]['excluded']) if prior else set()
     excluded |= {eid}
@@ -147,7 +152,7 @@ def swap_exercise(state, envelope, item_id, perf_history=()):
     except CONFLICT_TYPES as c:
         return dict(F.envelope_conflict(ctx, conflict_payload(ctx, c)), workout=wk), None
     new_eid = next((l['to'] for l in reversed(res2['log']) if isinstance(l, dict) and l.get('reason_code') == 'exercise_swapped'), None)
-    if ctx.direction == 'sweat': ref = dict(block_index=bi, exercise_id=eid)
+    if ctx.direction in ('sweat', 'athletic'): ref = dict(block_index=bi, exercise_id=eid)
     state2 = dict(state, exercise_swaps=state['exercise_swaps'] + [dict(item_id=item_id, ref=ref, excluded=sorted(excluded), **{'from': eid, 'to': new_eid})],
                   fingerprint=ad.fingerprint(res2), history_record=res2['history_record'])
     env = _finish(ctx, res2, state['history_snapshot'], list(perf_history), wk['workout_id'], wk['version'] + 1, state.get('selection_source'))

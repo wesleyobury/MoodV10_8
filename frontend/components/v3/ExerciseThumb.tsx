@@ -1,24 +1,29 @@
 /**
- * ExerciseThumb — exercise media tile. Uses the library thumbnail when the API
- * returns one; when `media` is null (common today) it renders an intentional
- * monogram tile, never a broken image or empty video frame.
+ * ExerciseThumb — exercise image tile. Founder edit pass: static imagery first (MOOD's own exercise/workout images,
+ * utils/v3ExerciseImages), else an intentional monogram tile. Video thumbnails are never used as images;
+ * the play badge is opt-in (the detail sheet's demo), not shown on Cart rows.
  */
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from '../SafeLinearGradient';
 import { COLORS } from '../../constants/brand';
-import { hasVideo, initials, thumbnailUrl } from '../../utils/v3OverviewFormat';
+import { hasVideo, initials } from '../../utils/v3OverviewFormat';
+import { exerciseImageUrl } from '../../utils/v3ExerciseImages';
+import { optimizedImageUrl } from '../../utils/cloudinaryImage';
 
 interface Props {
-  item: { exercise?: { name?: string; media?: any } | null };
+  item: { exercise?: { id?: string; name?: string; media?: any } | null };
   size?: number;
+  /** Show the small play badge when the library has a demo video (detail surfaces only). */
+  showPlay?: boolean;
 }
 
-export function ExerciseThumb({ item, size = 52 }: Props) {
-  const uri = thumbnailUrl(item as any);
+export function ExerciseThumb({ item, size = 52, showPlay = false }: Props) {
+  const raw = exerciseImageUrl(item as any);
+  const uri = raw ? optimizedImageUrl(raw, size * 3) : null;
   const [failed, setFailed] = useState(false);
-  const video = hasVideo(item as any);
+  const video = showPlay && hasVideo(item as any);
   const radius = Math.round(size * 0.27);
   return (
     <View style={[styles.box, { width: size, height: size, borderRadius: radius }]}>

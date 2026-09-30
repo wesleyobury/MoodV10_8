@@ -238,8 +238,8 @@ def generate(aid,sc,dur,ctx,mode='pick'):
     sc=dict(sc); override_log=[]
     if mode=='explicit' and sc.get('sore'):
         # WA v13 S2a: an explicit Target that names a sore muscle overrides the soreness for that muscle (user intent wins)
-        named={roll(m) for m in (ctx.get('target') or set())}|set(DEFINING.get(aid,set()))
-        ov={m for m in sc['sore'] if roll(m) in named}
+        named={roll(m) for m in (ctx['sore_named'] if ctx.get('sore_named') is not None else (ctx.get('target') or set()))}|(set() if ctx.get('sore_named_only') else set(DEFINING.get(aid,set())))   # core rebuild: only muscles the user named override soreness
+        ov={m for m in sc['sore'] if roll(m) in named and not (ctx.get('sore_named_only') and m=='spinal_erectors' and 'lower_back' not in (ctx.get('sore_named') or ()))}   # naming 'back' does not override a sore lower back
         if ov:
             sc['sore']=set(sc['sore'])-ov
             override_log.append({'reason_code':'sore_override_by_explicit_target','muscles':sorted(ov),'detail':'user explicitly chose a Target that names this muscle; trained normally'})

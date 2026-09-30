@@ -19,11 +19,15 @@ interface Props {
   muted?: boolean;
   /** Fill the grid cell and center the content. */
   block?: boolean;
+  /** H1: sits on a photo (Home hero). Unselected gets a darker glass fill so it reads on any image. */
+  glass?: boolean;
+  /** Founder edit pass: an optional modifier, not a required answer. Unselected is low-contrast; selected stays MOOD gold. */
+  quiet?: boolean;
   style?: ViewStyle;
   testID?: string;
 }
 
-export function V3Chip({ label, selected, onPress, icon, badge, size = 'md', muted, block, style, testID }: Props) {
+export function V3Chip({ label, selected, onPress, icon, badge, size = 'md', muted, block, glass, quiet, style, testID }: Props) {
   const small = size === 'sm';
   const content = (
     <View style={[styles.inner, small && styles.innerSm, block && styles.innerBlock]}>
@@ -32,7 +36,7 @@ export function V3Chip({ label, selected, onPress, icon, badge, size = 'md', mut
       ) : null}
       <Text
         numberOfLines={1}
-        style={[styles.label, small && styles.labelSm, selected && styles.labelOn, muted && !selected && styles.labelMuted]}
+        style={[styles.label, small && styles.labelSm, quiet && !selected && styles.labelQuiet, selected && styles.labelOn, muted && !selected && styles.labelMuted]}
       >
         {label}
       </Text>
@@ -56,7 +60,7 @@ export function V3Chip({ label, selected, onPress, icon, badge, size = 'md', mut
           {content}
         </LinearGradient>
       ) : (
-        <View style={[styles.fill, styles.off]}>{content}</View>
+        <View style={[styles.fill, styles.off, glass && styles.glass, quiet && styles.quiet]}>{content}</View>
       )}
     </Pressable>
   );
@@ -72,6 +76,9 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'rgba(255,255,255,0.16)',
   },
+  glass: { backgroundColor: 'rgba(16,16,16,0.58)', borderColor: 'rgba(255,255,255,0.22)' },
+  quiet: { backgroundColor: 'rgba(10,10,10,0.38)', borderColor: 'rgba(255,255,255,0.13)' },
+  labelQuiet: { color: 'rgba(255,255,255,0.72)', fontWeight: '500' },
   inner: { flexDirection: 'row', alignItems: 'center', gap: 7, paddingHorizontal: 15, paddingVertical: 10 },
   innerBlock: { justifyContent: 'center', paddingHorizontal: 6, paddingVertical: 12 },
   innerSm: { paddingHorizontal: 12, paddingVertical: 7, gap: 5 },

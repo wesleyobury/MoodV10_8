@@ -96,10 +96,10 @@ def test_explicit_type_and_moods_pick_http(api):
 def test_live_hybrid_structure(api, states, dur):
     w = gen(api, direction='sweat', archetype='sweat_hybrid', states=states, duration=dur)
     titles = [b['title'] for b in w['blocks']]
-    assert w['blocks'][0]['structure'] == 'anchor_circuit' and 'Complement' not in titles
-    assert set(titles) <= {'Hybrid', 'Finisher'}
-    assert sum(len(b['items']) for b in w['blocks']) <= 8
-    assert w['duration']['estimated_minutes'] <= (46.5 if dur == 60 else 28.5)
+    assert w['blocks'][0]['structure'] == 'anchor_circuit'
+    assert set(titles) <= {'Hybrid', 'Finisher', 'Complement', 'Closer'}
+    assert sum(len(b['items']) for b in w['blocks']) <= 9
+    assert w['duration']['estimated_minutes'] <= (61 if dur == 60 else 31.5)
 
 
 CONFIRMATION = ('You picked', 'You chose')
@@ -178,7 +178,7 @@ def test_athletic_beginner_safety_rules(api_int, arch, day):
 
 def test_athletic_advanced_keeps_complex_power_available(api_int):
     seen = set()
-    for day in ('2026-09-26', '2026-09-27', '2026-09-28', '2026-09-29'):
+    for day in [f'2026-09-{d:02d}' for d in range(14, 30)]:          # the test user id is random: sample enough days that this is not a coin flip
         w = post(api_int, **dict(app_request('athletic', archetype='athletic_power'), experience='advanced', date=day))['workout']
         seen |= {i for i in ids(w) if AA.EX[i]['skill'] == 'advanced' or AA.EX[i]['impact'] == 'high' or AA.EX[i]['cx'] > 3}
     assert seen                                                         # advanced-only movements reach real sessions
@@ -191,8 +191,9 @@ def test_sweat_difficulty_changes_dosing(api_int):
         w = post(api_int, **dict(app_request('sweat', archetype='sweat_circuit'), experience=lvl))['workout']
         return w['blocks'][0].get('rest_between_rounds_sec'), next(l for l in w['built_for_today'] if l['code'] == 'difficulty')
     rb, lb = rest('beginner'); ra, la = rest('advanced')
-    assert rb and ra and rb > ra
-    assert lb['text'].startswith('Beginner dosing') and la['text'].startswith('Advanced dosing')
+    # Sweat rebuild: the shape is seeded per level, so the round rest is only comparable when both sessions are fixed-round circuits
+    if rb and ra: assert rb > ra
+    assert lb['text'].startswith('Beginner dosing') and la['text'].startswith('Advanced dosing') and lb['text'] != la['text']
 
 
 # ------------------------------------------------------------------ Phase 2.6 addendum: Built for Today on every workout

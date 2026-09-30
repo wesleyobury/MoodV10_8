@@ -23,16 +23,20 @@ def _strength_rx(it, row, blk):
     elif row.get('why') == 'distance' or reps.endswith(' m') or ' m/' in reps:
         kind = 'distance'; m = re.findall(r'\d+', reps); distance = int(m[0]) if m else None
     sets = it['sets']; scheme = it.get('scheme')
-    if blk['structure_id'] in ('superset', 'circuit'): rest = blk['rest_after_round']
-    else: rest = blk['rest_after_round']
+    # Grouped work rests once, after the whole pair / round: that value lives on the block (rest_between_rounds_sec and the
+    # block `rest` contract), not on every row. Straight work rests after each set of this row.
+    rest = None if blk['structure_id'] in ('superset', 'circuit') else blk['rest_after_round']
     display = f"{sets} × {reps}" if not scheme else f"{len(scheme)} sets: {'/'.join(map(str, scheme))}"
+    method = row.get('method')
+    if method: display += f" · {method['label']}"
     lg = strength_effort_text(it.get('rir'), row.get('cls')) if kind == 'reps' else \
         {'distance': 'Heavy enough to be hard by the end; stay tall and keep moving.', 'time': 'Hard, steady effort; stop before form breaks.'}[kind]
     if it.get('load'): lg = (it['load'].capitalize() + '. ' + (lg or '')).strip()
+    if method: lg = (method['text'] + '. ' + (lg or '')).strip()
     if row.get('why') == 'bodyweight, load not adjustable': lg = 'Bodyweight: work within the rep range. ' + (lg or '')
     return F.prescription(kind, sets=sets, reps=reps.replace('/side', ''), reps_scheme=scheme, per_side=per_side, seconds=seconds, distance_m=distance,
                           rest_sec=rest, rir=it.get('rir'), load_guidance=lg.strip() if lg else None, display=display,
-                          direction_fields=dict(slot_class=row.get('cls'), protected=bool(row.get('protected')), role=row.get('role')))
+                          direction_fields=dict(slot_class=row.get('cls'), protected=bool(row.get('protected')), role=row.get('role'), set_method=(method['id'] if method else None)))
 
 def format_strength(res, nctx):
     rows = {r['slot']: r for r in res['rows']}
@@ -91,7 +95,7 @@ def format_sweat(res, nctx):
             rounds = it['rounds']
             for k, e in enumerate(b['items_e'], 1):
                 items.append(F.item(sid(e), b['slot'], _sw_ex(e), F.prescription('time', sets=it['rounds'], seconds=it['work'], rpe=b['rpe'],
-                             rest_sec=it['recovery'], display=f"{it['rounds']} × {F.fmt_seconds(it['work'])} / {F.fmt_seconds(it['recovery'])} easy",
+                             rest_sec=None, display=f"{it['rounds']} × {F.fmt_seconds(it['work'])} / {F.fmt_seconds(it['recovery'])} easy",
                              load_guidance=SG.cue_for(e, s, b['rpe'][1]), direction_fields=dict(progression='output', role=e['role'])), cues=cues_for(e['id'])))
             instr = 'Alternate the exercises each interval.' if it.get('alternate') else ('Hard intervals on the same machine; easy pace between.' if s == 'intervals' else 'All-out efforts with easy recovery between.')
             structure = 'intervals' if s == 'intervals' else 'finisher'
@@ -105,13 +109,16 @@ def format_sweat(res, nctx):
         elif s == 'pyramid':
             e = b['items_e'][0]
             interval = dict(steps_sec=list(it['steps']), recovery_sec=it['recovery'])
-            items.append(F.item(sid(e), b['slot'], _sw_ex(e), F.prescription('time', seconds=sum(it['steps']), rpe=b['rpe'], rest_sec=it['recovery'],
+            items.append(F.item(sid(e), b['slot'], _sw_ex(e), F.prescription('time', seconds=sum(it['steps']), rpe=b['rpe'], rest_sec=None,
                          display='Pyramid ' + '-'.join(F.fmt_seconds(x) for x in it['steps']), load_guidance=f"RPE {b['rpe'][0]}-{b['rpe'][1]}; hold output across steps",
                          direction_fields=dict(progression='output')), cues=cues_for(e['id'])))
             instr = f"Work steps with {it['recovery']} s easy between."
         elif s == 'circuit' and b.get('anchor'):
             structure = 'anchor_circuit'; a = b['anchor']; rounds = len(b['round_stations']); rest_rounds = b['round_rest']
-            items.append(F.item(sid(a), b['slot'] + '.anchor', _sw_ex(a), _sw_rx(a, b['anchor_dose'], b, sets=rounds), cues=cues_for(a['id']), role='anchor'))
+            arx = _sw_rx(a, b['anchor_dose'], b, sets=rounds)
+            if b.get('anchor_doses'):   # ladder hybrid: the anchor dose changes predictably across rounds
+                arx['display'] = ' / '.join(SG.dose_txt(a, x) for x in b['anchor_doses']); arx['direction_fields']['round_doses'] = [SG.dose_txt(a, x) for x in b['anchor_doses']]
+            items.append(F.item(sid(a), b['slot'] + '.anchor', _sw_ex(a), arx, cues=cues_for(a['id']), role='anchor'))
             seen = []
             for r_i, rs in enumerate(b['round_stations'], 1):
                 for e, dz in rs:
@@ -122,6 +129,7 @@ def format_sweat(res, nctx):
                     items.append(F.item(sid(e), b['slot'] + '.station', _sw_ex(e), rx, cues=cues_for(e['id']), role='station'))
             instr = (f"Every round: {a['name']}, then that round's station. " if b.get('rotating') else f"Every round: {a['name']}, then every station. ") + \
                     f"Walk {b['round_rest']} s between rounds."
+            if b.get('setup_s'): instr = f"First {b['setup_s'] // 60} min: set your {a['name']} pace and load every station, then start round 1. " + instr
         elif s in ('circuit', 'emom'):
             rounds = b['rounds']; rest_rounds = b.get('round_rest')
             for k, (e, dz) in enumerate(zip(b['items_e'], b['doses']), 1):
@@ -138,20 +146,98 @@ def format_sweat(res, nctx):
                              display='Ladder ' + '-'.join(map(str, lad)), load_guidance=SG.cue_for(e, s, b['rpe'][1]),
                              direction_fields=dict(progression=b.get('item_progression', {}).get(e['id']), role=e['role'])), cues=cues_for(e['id'])))
             instr = 'Alternate the exercises at each rung, self-paced: ' + '-'.join(map(str, lad)) + ' reps.'
-        title = _SW_TITLE.get(b['slot'], 'Block')
+        title = 'Closer' if b.get('comp_type') == 'closer' else _SW_TITLE.get(b['slot'], 'Block')
+        if b.get('purpose') and b['slot'] == 'complementary_block': instr = (instr + ' ' if instr else '') + f"Purpose: {b['purpose']}."
         blocks.append(F.block(f'B{n}', n, btype, structure, title, items, rounds=rounds, rest_between_items_sec=rest_items, rest_between_rounds_sec=rest_rounds,
                               instructions=instr, effort=dict(rpe=list(b['rpe'])) if b.get('rpe') else None, interval=interval,
-                              est_minutes=round(SG.block_minutes(b, exp), 1)))
-    warm = dict(minutes=w['warm_up_min'], items=[], guidance=f"{w['warm_up_min']} min: easy cardio building to a moderate pace, plus a few reps of the first stations.")
+                              est_minutes=b.get('_est_min', round(SG.block_minutes(b, exp), 1))))
+    warm = dict(minutes=w['warm_up_min'], items=[], guidance=f"{w['warm_up_min']} min: easy cardio building to a moderate pace, plus a few reps of the first stations." + (" Extra time here on purpose: the main block is the workout, so arrive at it ready." if w['blocks'] and w['blocks'][0].get('wu_extra_min') else ''))
     return warm, blocks, dict(minutes=w['downshift_min'], guidance='Easy pace and breathing down.')
 
+# ================================================================== Athletic (V3 Athletic rebuild)
+from .engines.athletic import adapter as AA
+from .engines.athletic import athletic_core as AC
+
+_ATH_BLOCK = {   # role -> (block type, title prefix)
+    'primary': ('primary', 'Primary'), 'secondary': ('secondary', 'Secondary Quality'), 'tertiary': ('secondary', 'Athletic Element'), 'strength': ('strength', 'Athletic Strength'),
+    'support': ('support', 'Support'), 'finisher': ('finisher', 'Finisher')}
+_ATH_ITEM_ID = {'primary': 'primary', 'contrast_strength': 'contrast_strength', 'contrast_power': 'contrast_power', 'secondary': 'secondary', 'tertiary': 'tertiary', 'support': 'support', 'finisher': 'finisher'}
+_WU_NAME = {'raise': 'Raise temperature', 'mobility': 'Mobility', 'primer': 'Primer', 'rehearsal': 'Build-up'}
+_KIND_WORD = {'sprint': 'Speed', 'sled': 'Power'}
+_IMPACT = {'low': 'low impact', 'moderate': 'moderate impact', 'high': 'high impact'}
+
+
+def _ath_rx(x, in_group):
+    e = AC.EX[x['id']]; per = '/side' if x['per_side'] else ''
+    dist = x.get('distance_m'); sec = x.get('seconds')
+    if dist: kind = 'distance'; disp = f"{x['sets']} × {dist} m" + (per if x['per_side'] else '')
+    elif sec: kind = 'time'; disp = f"{x['sets']} × {sec} s{per}"
+    else: kind = 'reps'; disp = f"{x['sets']} × {x['reps']}{per}"
+    df = dict(type=x['cls'], impact=e['impact'], skill=e['skill'], impact_label=_IMPACT.get(e['impact']),
+              category={'power': 'ATHLETIC', 'strength': 'ATHLETIC_STRENGTH'}.get(x['cls'], 'SUPPORT'))
+    if x['cls'] == 'power':
+        df.update(quality=AC.lib_quality(e), athletic_quality=x['quality'], intent='max', contacts=AC.contacts_of(x), kind=x['kind'], cost_tier=AC.tier(x['id'], x['role']))
+    elif x['cls'] == 'strength':
+        df.update(pattern=x['pattern'], why=AC.STRENGTH_WHY.get(x['pattern']))
+    elif x['cls'] == 'support':
+        df.update(purpose=x['kind'], why=AC.SUPPORT_WHY.get(x['kind']))
+    return F.prescription(kind, sets=x['sets'], reps=x['reps'] if kind == 'reps' else None, per_side=bool(x['per_side']), seconds=sec, distance_m=dist,
+                          rest_sec=None if in_group else x['rest'], rir=x.get('rir'), load_guidance=x.get('intent'), display=disp, direction_fields=df)
+
+
+def format_athletic(res, nctx):
+    out = res['w']; sess = out['sess']; blocks = []; strength_n = 0; tertiary_n = 0; seen_q = set()
+    for n, b in enumerate(sess['blocks'], 1):
+        btype, title = _ATH_BLOCK[b['role']]
+        grouped = b['structure'] in ('superset', 'contrast')
+        if b['role'] == 'primary':
+            q = AC.QUALITY_LABEL[b['quality']]
+            k = b['items'][-1]['kind']
+            title = ('Contrast Pair · ' if b['structure'] == 'contrast' else f"Primary {_KIND_WORD.get(k, 'Power')} · ") + q[0].upper() + q[1:]
+            instr = ('Heavy set, 45 s, then the explosive partner. Full recovery after each pair: start the next only when you feel fresh.'
+                     if b['structure'] == 'contrast' else 'Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.')
+        elif b['role'] in ('secondary', 'tertiary'):
+            q = AC.QUALITY_LABEL[b['quality']]; Q = q[0].upper() + q[1:]
+            if b['role'] == 'secondary' and b['quality'] not in seen_q:
+                title = f"Secondary Quality · {Q}"; instr = 'A different athletic quality while you are still fresh. Quality over volume.'
+            else:   # an honest label: a second exercise for a quality the session already has is not a new quality
+                title = f"Athletic Element · {Q}"; instr = 'Another athletic movement, still before any strength work. A few crisp sets; every rep fast.'
+        elif b['role'] == 'strength':
+            instr = (f"Alternate the two: {b['rest_items']} s between them, {b['rest_rounds']} s after each round. " if grouped else '') + (f"Why: {b['why']}." if b.get('why') else '')
+        else:
+            instr = f"Why it's here: {b['why']}." if b.get('why') else None
+        if b['role'] in ('primary', 'secondary', 'tertiary') and b.get('quality'): seen_q.add(b['quality'])
+        items = []
+        for ii, x in enumerate(b['items']):
+            if x['role'] == 'strength':
+                strength_n += 1; iid = 'strength_' + 'abc'[strength_n - 1]
+            elif x['role'] == 'tertiary':
+                tertiary_n += 1; iid = 'tertiary_' + 'abc'[tertiary_n - 1]
+            else: iid = _ATH_ITEM_ID.get(x['role'], x['role'])
+            e = AC.EX[x['id']]; lq = AC.lib_quality(e) if x['cls'] == 'power' else None
+            items.append(F.item(iid, AA.SLOT_ID.get(x['role'], x['role']), F.exercise_ref(e['id'], e['name'], e['eq'], e['prim']), _ath_rx(x, grouped),
+                                cues=cues_for(e['id']), quality_stop=quality_stop(lq) if lq else None, role=x['role']))
+        structure = 'superset' if grouped else 'straight'
+        blocks.append(F.block(f'B{n}', n, btype, structure, title, items, rounds=b['rounds'], rest_between_items_sec=b['rest_items'] if grouped else None,
+                              rest_between_rounds_sec=b['rest_rounds'], instructions=instr, est_minutes=round(AC.block_seconds(b) / 60, 1)))
+    wu_items = []
+    for comp, i, note in out['wu']:
+        e = AC.EX.get(i)
+        wu_items.append(dict(component=comp, component_label=_WU_NAME.get(comp, comp), exercise=F.exercise_ref(e['id'], e['name'], e['eq'], e['prim']) if e else None,
+                             name=e['name'] if e else i, prescription_text=note))
+    wm = out['A']['wu_min']
+    warm = dict(minutes=wm, items=wu_items, guidance=f"{wm:g} min: raise temperature, open the hips, then build into the first explosive set. The last warm-up reps should feel fast and crisp.")
+    cool = dict(minutes=sess.get('cooldown_min'), guidance='Easy walk and slow breathing, then hips and calves.') if sess.get('cooldown_min') else None
+    return warm, blocks, cool
+
+
 # ================================================================== Athletic
-from .engines.athletic import adapter as AA, athletic_gen as AG
+from .engines.athletic import adapter_legacy_v1 as AAL, athletic_gen as AG
 _ATH_TITLE = {'px': 'Primary exposure', 'sx': 'Secondary exposure', 'sx2': 'Third exposure', 'qc': 'Repeat efforts', 'ps': 'Performance Support'}
 _ATH_TYPE = {'px': 'primary', 'sx': 'secondary', 'sx2': 'secondary', 'qc': 'repeats', 'ps': 'support'}
 _WU_NAME = {'raise': 'Raise temperature', 'prep': 'Mobility', 'primer': 'Primer', 'rehearsal': 'Rehearsal'}
 
-def format_athletic(res, nctx):
+def format_athletic_legacy(res, nctx):
     w = res['w']; blocks = []
     for n, x in enumerate(w['items'], 1):
         e = AG.EX[x['id']]; q = AG.quality(e) if x['slot'] != 'ps' else None
@@ -175,7 +261,7 @@ def format_athletic(res, nctx):
             qs = quality_stop(q) if q else None
         blocks.append(F.block(f'B{n}', n, _ATH_TYPE[x['slot']], 'repeats' if x['slot'] == 'qc' else ('straight' if x['slot'] == 'ps' else 'exposure'),
                               _ATH_TITLE[x['slot']],
-                              [F.item(x['slot'] if sum(y['slot'] == x['slot'] for y in w['items'][:n - 1]) == 0 else f"{x['slot']}{n}", AA.SLOT_ID[x['slot']], F.exercise_ref(e['id'], e['name'], e['eq'], e['prim']), rx,
+                              [F.item(x['slot'] if sum(y['slot'] == x['slot'] for y in w['items'][:n - 1]) == 0 else f"{x['slot']}{n}", AAL.SLOT_ID[x['slot']], F.exercise_ref(e['id'], e['name'], e['eq'], e['prim']), rx,
                                       cues=cues_for(e['id']), quality_stop=qs, role=x['slot'])],
                               rounds=x['sets'], rest_between_rounds_sec=x['rest'],
                               instructions=(x.get('why') and f"Why it's here: {x['why']}.") if x['slot'] == 'ps' else

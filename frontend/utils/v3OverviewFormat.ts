@@ -51,16 +51,35 @@ export function blockMeta(block: V3Block, direction: V3Direction): string[] {
   if (direction === 'sweat' && block.est_minutes && typeof iv?.minutes !== 'number') out.push(`~${Math.round(block.est_minutes)} min`);
   const rpe = rpeLabel(block.effort?.rpe);
   if (rpe) out.push(rpe);
-  if (block.rest_between_rounds_sec && (ROUND_STRUCTURES.has(block.structure) || block.structure === 'emom')) {
-    out.push(`${secondsLabel(block.rest_between_rounds_sec)} between rounds`);
-  }
+  const after = roundRestLabel(block);
+  if (after) out.push(after);
   return out;
+}
+
+/**
+ * Rest that belongs to the whole structure, said once and said with its timing: "Rest 90 s after each pair",
+ * "Rest 60 s between rounds", "Full recovery 2:30 min after each pair". Straight sets show rest per row instead.
+ */
+export function roundRestLabel(block: V3Block): string | null {
+  const r = block.rest;
+  const sec = r ? r.seconds : block.rest_between_rounds_sec;
+  if (!sec || sec <= 0) return null;
+  const kind = r?.kind ?? (block.structure === 'superset' && block.items.length > 1 ? 'after_pair' : ROUND_STRUCTURES.has(block.structure) || block.structure === 'emom' ? 'after_round' : null);
+  if (!kind || kind === 'between_sets') return null;
+  const head = r?.full_recovery ? 'Full recovery' : 'Rest';
+  if (kind === 'after_pair') return `${head} ${secondsLabel(sec)} after each pair`;
+  if (kind === 'after_round' || kind === 'interval') return `${head} ${secondsLabel(sec)} between rounds`;
+  return null;
 }
 
 /** Per-row rest: straight sets show the item's own rest; grouped formats show it on the block. */
 export function itemRest(item: V3Item, block: V3Block): string | null {
   if (ROUND_STRUCTURES.has(block.structure) || block.structure === 'emom' || block.structure === 'continuous' || block.interval) return null;
-  return restLabel(item.prescription.rest_sec);
+  if (block.rest && block.rest.kind !== 'between_sets') return null;          // grouped work: the block says it once
+  const sec = item.prescription.rest_sec;
+  if (!sec || sec <= 0) return null;
+  // Long rest reads as intentional: heavy low-rep lifting and max-intent power earn full recovery.
+  return block.rest?.full_recovery && sec >= 150 ? `Full recovery ${secondsLabel(sec)}` : restLabel(sec);
 }
 
 /** Sweat anchor circuits: which rounds a station appears in. */

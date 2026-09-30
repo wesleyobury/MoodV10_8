@@ -82,3 +82,40 @@ test('edge — featured-carousel with hero present must beat a non-empty first i
     someExerciseImage.imageUrl,
   );
 });
+
+/* ---------------------------------------------------------------- V3 hero (H2) */
+import { resolveV3CartHero, V3_REMOTE_HEROES } from './cartHero';
+
+const v3 = (over: Record<string, any> = {}) => ({ direction: 'strength', archetype: { id: 'strength_upper_pull' }, target: { mode: 'moods_pick', muscles: [] }, blocks: [], ...over });
+
+test('V3 hero 1 — archetype image wins', () => {
+  const r = resolveV3CartHero(v3());
+  assert.equal(r.reason, 'archetype');
+  assert.deepEqual(r.source, { kind: 'remote', uri: V3_REMOTE_HEROES.back_biceps });
+});
+
+test('V3 hero 2 — Custom Target uses the target image', () => {
+  const r = resolveV3CartHero(v3({ archetype: { id: 'strength_custom_target' }, target: { mode: 'explicit', muscles: ['hamstrings', 'glutes'] } }));
+  assert.equal(r.reason, 'target');
+  assert.deepEqual(r.source, { kind: 'remote', uri: V3_REMOTE_HEROES.glutes_legs });
+});
+
+test('V3 hero 3 — unknown archetype, no target: never an exercise video thumbnail, Direction image instead', () => {
+  const blocks = [{ items: [{ exercise: { media: null } }, { exercise: { media: { thumbnail_url: 'https://t/x.jpg' } } }] }];
+  const r = resolveV3CartHero(v3({ archetype: { id: 'strength_future' }, blocks }));
+  assert.equal(r.reason, 'direction');
+  assert.notDeepEqual(r.source, { kind: 'remote', uri: 'https://t/x.jpg' });
+});
+
+test('V3 hero 4 — nothing else: Direction fallback', () => {
+  const r = resolveV3CartHero(v3({ direction: 'sweat', archetype: { id: 'sweat_future' } }));
+  assert.equal(r.reason, 'direction');
+  assert.deepEqual(r.source, { kind: 'remote', uri: V3_REMOTE_HEROES.hiit });
+});
+
+test('V3 hero — every shipped archetype has an image', () => {
+  for (const id of ['strength_upper_push', 'strength_upper_pull', 'strength_upper_mixed', 'strength_arms', 'strength_lower_squat', 'strength_lower_hinge',
+    'strength_glutes_legs', 'strength_full_body', 'sweat_engine', 'sweat_circuit', 'sweat_hybrid', 'athletic_power', 'athletic_speed_agility', 'athletic_full_body']) {
+    assert.equal(resolveV3CartHero(v3({ archetype: { id } })).reason, 'archetype', id);
+  }
+});

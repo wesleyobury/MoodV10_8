@@ -1,140 +1,210 @@
-"""Production adapter for the frozen Athletic engine (Athletic FINAL FREEZE, Reference Generator v1).
+"""Production adapter for the rebuilt Athletic engine (V3 Athletic rebuild).
 
-build() (frozen; every candidate combination is checked by the frozen sk5 validator) -> independent re-check with the same
-frozen validator (exactly as the frozen QA re-validates) -> shared formatter.
-Exercise-level swap: exposures re-enter the frozen ranked() pool for the same slot and are re-assembled by the frozen
-assemble() (dosing, impact, density, duration, Performance Support purpose and the validator); QC and Performance Support
-swaps use the frozen pick_qc / pick_ps with the shown exercise excluded, then the frozen validator.
+build() -> athletic_core.generate (primary quality + structure blueprint, low-rep power dosing with full recovery, athletic
+strength, impact / intent budget, State ownership, State Satisfaction gate + whole-session Coherence) -> independent
+athletic_validate -> shared formatter. The Reference Generator v1 adapter is kept byte-for-byte as adapter_legacy_v1.py
+(and athletic_gen.py / sk5.py stay on disk) for the before / after comparison.
+
+Exercise-level swap: same block, same role, same athletic quality and movement kind (power), same pattern (strength) or
+same purpose (support), no higher impact or skill, dose rebuilt by the same dosing rules with the block's sets kept; the
+whole session is re-accounted and re-validated.
 """
 from __future__ import annotations
-import hashlib, threading
-from . import athletic_gen as G, sk5
-from .lib3 import PS, SLOT_ID
+import copy, hashlib, threading
+from . import athletic_core as C, athletic_validate as V
+from . import athletic_gen as G          # library quality lookups used by service / progression (read only)
+from .lib3 import avail
 
 LOCK = threading.RLock()
-EX = G.EX
-GOAL_ROW = {'build_strength': 'get_stronger', 'build_muscle': 'get_stronger', 'improve_athleticism': 'athletic_performance'}   # WA GOAL MAPPING
-LEGS_CONFLICT_OPTIONS = ['switch_direction', 'change_equipment', 'moods_pick']
+EX = C.EX
+SLOT_ID = {'primary': 'primary_power', 'contrast_strength': 'contrast_strength', 'contrast_power': 'contrast_power', 'secondary': 'secondary_quality',
+           'tertiary': 'tertiary_quality', 'strength': 'athletic_strength', 'support': 'support', 'finisher': 'finisher'}
+
 
 class Conflict(Exception):
     def __init__(self, code, message, options, detail=None):
         super().__init__(message); self.code = code; self.message = message; self.options = options; self.detail = detail
 
+
 def history_for_engine(records):
-    """Frozen Athletic history: newest first, dict(aid, ids)."""
-    return [dict(aid=r['archetype'], ids=list(r.get('exercise_ids', []))) for r in reversed(records) if r.get('direction') == 'athletic']
+    """Newest first. Records built by the rebuilt engine carry `native`; older V3 records fall back to their exercise ids."""
+    out = []
+    for r in reversed(list(records)):
+        if r.get('direction') != 'athletic': continue
+        nat = r.get('native')
+        if nat: out.append(dict(nat))
+        else: out.append(dict(ids=list(r.get('exercise_ids') or []), swaps=[EX[i]['swap'] for i in r.get('exercise_ids') or [] if i in EX and EX[i]['swap']]))
+    return out
 
-def _args(nctx, history, swap_count, displayed):
-    return dict(archetype=nctx['archetype'] or 'moods_pick', level=nctx['experience'], duration=nctx['duration'], preset=nctx['equipment'],
-                states=list(nctx['states']), sore=set(nctx['sore']), goal=GOAL_ROW.get(nctx['goal'], 'general_fitness'), history=history,
-                seed=f"{nctx['user']}|{nctx['date']}", swap_count=swap_count, displayed=list(displayed))
 
-def _chain(nctx, history, swap):
-    displayed = []; w = None
-    for k in range(swap + 1):
-        w = G.build(**_args(nctx, history, k, displayed))
-        if w['status'] != 'ok': return w
-        displayed = list(w['ids'])
-    return w
+DECISION_CODES = {'state_ownership', 'sore_reroute', 'candidate_selected', 'state_gate', 'state_coherence_repair', 'budget_repair', 'duration_trim',
+                  'prep_extended', 'structure_relabelled', 'exercise_swapped'}
 
-def _ctx(nctx, history, aid, swap_count=0, displayed=()):
-    """The generator's own ctx, reconstructed exactly as build() creates it (for swaps)."""
-    pre = G.PRESET_ALIAS.get(nctx['equipment'], nctx['equipment']); sore = frozenset(nctx['sore'])
-    states = [s for s in nctx['states'] if s != 'normal']
-    ctx = dict(aid=aid, lv=nctx['experience'], dur=nctx['duration'], preset=pre, states=states, sore=sore, history=list(history),
-               seed=f"{nctx['user']}|{nctx['date']}", relax=set(), swap_count=swap_count, displayed=list(displayed))
-    if aid == 'athletic_full_body' and nctx['duration'] == 60 and not (sore & G.LOWER):
-        if not any(G.is_upper_or_rot(EX[i]) for s_ in ('sx', 'sx2') for i in G.pool(aid, s_, ctx['lv'], pre, sore)): ctx['relax'].add('fba_regions')
-    return ctx
-
-def recheck(w, nctx):
-    """Independent re-validation with the frozen checker (same call the frozen QA uses)."""
-    with LOCK:
-        pre = G.PRESET_ALIAS.get(nctx['equipment'], nctx['equipment'])
-        n_ps = sum(x['slot'] == 'ps' for x in w['items'])
-        sk5.add('_prod', 'prod', w['archetype'], nctx['duration'], nctx['experience'], pre, [s for s in nctx['states'] if s != 'normal'],
-                w['warmup'], w['items'], sore=set(nctx['sore']),
-                reason='Legs sore: upper-only exposures are short, so a second support exercise rounds out the session' if n_ps == 2 else None)
-        relax = set()
-        if any('Equipment-limited' in l for l in w['log']): relax.add('duration_floor')
-        if any('No upper-body or rotational' in l for l in w['log']): relax.add('fba_regions')
-        sk5.SK['_prod']['relax'] = relax
-        r = sk5.check('_prod'); del sk5.SK['_prod']
-        return r
 
 def build(nctx, history_records, swap=0):
     with LOCK:
         history = history_for_engine(history_records)
-        w = _chain(nctx, history, swap)
-        if w['status'] == 'conflict':
-            speed = 'Speed' in w['reason']
-            raise Conflict('sore_target_conflict' if speed else 'equipment_insufficient',
-                           'Speed + Agility needs your legs, and they are sore today.' if speed else
-                           'With sore legs and this equipment there is not enough worthwhile upper-body Athletic work today.',
-                           (['moods_pick', 'change_archetype', 'switch_direction'] if speed else LEGS_CONFLICT_OPTIONS), detail=w['reason'])
-        if w['status'] != 'ok':
-            raise Conflict('cannot_build', 'This Athletic session cannot be built with the current setup.', ['moods_pick', 'change_equipment', 'switch_direction'],
-                           detail=w.get('fails'))
-        r = recheck(w, nctx)
-        if r['fails']:
-            raise Conflict('generation_failed', 'We could not build a valid Athletic session.', ['swap_workout'], detail=r['fails'])
-        return _result(nctx, w, history)
+        try:
+            out = C.generate(nctx, history, swap)
+        except C.Fail as f:
+            msg = str(f)
+            if msg.startswith('sore_terminal'):
+                raise Conflict('sore_target_conflict', 'Speed + Plyo needs your legs, and they are sore today.', ['moods_pick', 'change_archetype', 'switch_direction'], detail=msg)
+            if msg.startswith('sore_equipment'):
+                raise Conflict('equipment_insufficient', 'With sore legs and this equipment there is not enough worthwhile upper-body Athletic work today.',
+                               ['switch_direction', 'change_equipment', 'moods_pick'], detail=msg)
+            raise Conflict('cannot_build', 'This Athletic session cannot be built with the current setup.', ['moods_pick', 'change_equipment', 'switch_direction'], detail=msg)
+        bad = V.fails(out['sess'], out['wu'], out['ctx'], out['ctx']['states'])
+        if bad:
+            raise Conflict('generation_failed', 'We could not build a valid Athletic session.', ['swap_workout', 'moods_pick'], detail=[list(map(str, b)) for b in bad])
+        return _result(nctx, out, history)
 
-def _result(nctx, w, history):
-    rer = any("MOOD's Pick rerouted" in l for l in w['log'])
-    requested = w['archetype']
-    if rer:
-        requested = G.resolve('moods_pick', nctx['experience'], G.PRESET_ALIAS.get(nctx['equipment'], nctx['equipment']), frozenset(), history)[0] or w['archetype']
-    relax = []
-    if any('Equipment-limited' in l for l in w['log']): relax.append('duration_floor_equipment_limited')
-    if any('No upper-body or rotational' in l for l in w['log']): relax.append('fba_regions_equipment')
-    return dict(status='ok', direction='athletic', archetype=w['archetype'], requested_archetype=requested, rerouted=rer and requested != w['archetype'],
-                mode='explicit' if nctx['archetype'] else 'pick', w=w, log=[dict(reason_code='athletic_log', detail=l) for l in w['log']],
-                relaxations=relax, estimated_minutes=float(w['result']['total']), sore_override=[],
-                history_record=dict(direction='athletic', archetype=w['archetype'], exercise_ids=list(w['ids'])), target_muscles=[])
+
+def _requested_without_soreness(nctx, out):
+    ctx = dict(out['ctx'], sore=frozenset(), displayed=[])
+    c = C.candidates(ctx, C.resolve_states(ctx['states'], ctx['lv'], ctx['dur'], ctx['goal']))
+    return c[0][0] if c else out['sess']['arch']
+
+
+def _result(nctx, out, history):
+    from ... import athletic_why as AWY
+    sess = out['sess']; ctx = out['ctx']
+    legs_sore = bool(ctx['sore'] & C.LOWER)
+    requested = nctx.get('archetype') or out.get('requested') or sess['arch']
+    rerouted = bool(out.get('rerouted'))
+    if legs_sore and not nctx.get('archetype'):
+        requested = _requested_without_soreness(nctx, out); rerouted = True
+    if nctx.get('archetype') and nctx.get('archetype') != nctx.get('resolved_archetype'): mode = 'explicit'
+    else: mode = 'pick'
+    ids = [x['id'] for b in sess['blocks'] for x in b['items']]
+    res = dict(status='ok', direction='athletic', archetype=sess['arch'], requested_archetype=requested, rerouted=rerouted, mode=mode, w=out,
+               log=out['log'], relaxations=[], estimated_minutes=float(out['A']['est']), sore_override=[],
+               history_record=dict(direction='athletic', archetype=sess['arch'], exercise_ids=ids, native=C.history_record(out)),
+               target_muscles=list(ctx['target']), expressions={s: [k for k, _ in out['realized'].get(s, [])] for s in ctx['states']})
+    res['decisions'] = [l for l in out['log'] if isinstance(l, dict) and l.get('reason_code') in DECISION_CODES]
+    res['athletic_summary'] = summary(out)
+    res['personalization'] = AWY.contract(nctx, out, history, res)
+    return res
+
+
+def summary(out):
+    sess = out['sess']; A = out['A']
+    qs = C.session_qualities(sess); sec = qs[1] if len(qs) > 1 else None; ter = qs[2] if len(qs) > 2 else None
+    L = C.limits(out['ctx']['lv'], out['ctx']['dur'], out['d'])
+    acc = {k: A[k] for k in ('n_items', 'n_explosive', 'explosive_sets', 'contacts', 'high_contacts', 'sprint_exposures', 'sprint_m', 'sled_efforts', 'sled_m', 'accel_efforts', 'throws',
+                             'olympic_sets', 'high_skill', 'unilateral_explosive_sets', 'strength_sets', 'support_sets', 'intent_load', 'est', 'wu_min',
+                             'ath_cost', 'tier_a', 'n_athletic', 'n_athletic_strength', 'n_support')}
+    return dict(primary_quality=sess['pq'], primary_quality_label=C.QUALITY_LABEL[sess['pq']], secondary_quality=sec,
+                secondary_quality_label=C.QUALITY_LABEL.get(sec) if sec else None, tertiary_quality=ter, athletic_qualities=qs,
+                tertiary_quality_label=C.QUALITY_LABEL.get(ter) if ter else None, structure=sess['structure'], structure_label=C.STRUCTURE_LABEL[sess['structure']],
+                accounting=acc, limits={k: L[k] for k in ('contacts', 'accel_efforts', 'explosive_sets', 'intent_load', 'n_explosive', 'ath_cost', 'tier_a')},
+                state_gate={s: bool(v['satisfied']) for s, v in out['verdict'].items()}, coherence={s: bool(v['coherent']) for s, v in out['verdict'].items()},
+                realized={s: [d for _, d in r] for s, r in out['realized'].items()})
+
 
 # ------------------------------------------------------------------ exercise-level swap
-def swap_exercise(nctx, history_records, swap, res, idx, excluded):
-    """idx: index into w['items'] (warm-up items are not swappable)."""
+KIND_GROUP = {'jump': 'jump', 'loaded_jump': 'jump', 'combo': 'jump', 'bound': 'bound', 'hop': 'hop', 'elastic': 'elastic', 'drop': 'elastic', 'lateral': 'lateral',
+              'sprint': 'sprint', 'sled': 'sprint', 'throw': 'throw', 'slam': 'throw', 'rot_throw': 'throw', 'landmine_rot': 'landmine_rot',
+              'upper': 'upper', 'olympic': 'lift', 'explosive_lift': 'lift', 'swing': 'lift',
+              'uni_jump': 'unilateral_jump', 'pop': 'unilateral_jump', 'muscle_up': 'upper', 'speed_strength': 'speed_strength'}
+IMPACT_RANK = {'low': 0, 'moderate': 1, 'high': 2}
+PAT_GROUP = {'lower_bilateral': 'squat', 'hinge': 'hinge', 'hinge_uni': 'hinge', 'hip_thrust': 'hinge', 'unilateral': 'single_leg', 'lateral_uni': 'single_leg',
+             'upper_pull': 'pull', 'upper_push': 'push', 'upper_push_v': 'push'}
+
+
+def swap_candidates(out, bi, ii, excluded):
+    sess = out['sess']; ctx = out['ctx']; d = out['d']
+    x = sess['blocks'][bi]['items'][ii]; e_old = EX[x['id']]
+    used = [y['id'] for b in sess['blocks'] for y in b['items'] if y['id'] != x['id']]
+    seed = f"{ctx['seed']}|swap|{bi}|{ii}|{len(excluded)}"
+    ok = lambda i: i not in excluded and i != x['id'] and i not in used and not any(EX[u]['swap'] and EX[u]['swap'] == EX[i]['swap'] for u in used)
+    if x['cls'] == 'power':
+        grp = KIND_GROUP.get(x['kind'])
+        pool = [i for i in C.power_pool(ctx, x['quality']) if KIND_GROUP.get(C.kind_of(i)) == grp and ok(i)
+                and IMPACT_RANK[EX[i]['impact']] <= IMPACT_RANK[e_old['impact']] and EX[i]['cx'] <= max(e_old['cx'], 2)]
+        if x['role'] == 'contrast_power': pool = [i for i in pool if C.kind_of(i) in ('jump', 'throw', 'upper')]
+        if x['role'] in ('secondary', 'tertiary'): pool = [i for i in pool if C.TIER_COST[C.tier(i, x['role'])] <= C.TIER_COST[C.tier(x['id'], x['role'])]]
+        tier1 = C.rank_power(ctx, d, pool, 'secondary' if x['role'] in ('secondary', 'tertiary') else 'primary', used, seed)
+        # tier 2: the same movement family in a neighbouring quality (a jump for a jump, a sprint start for a sprint start), never higher impact or skill
+        NEIGH = {'vertical_power': ['horizontal_power'], 'horizontal_power': ['vertical_power'], 'acceleration': [],
+                 'upper_power': ['total_body_power'], 'rotational_power': ['upper_power'], 'total_body_power': ['upper_power'], 'elastic_reactive': ['vertical_power']}
+        pool2 = [i for q2 in NEIGH.get(x['quality'], []) for i in C.power_pool(ctx, q2) if KIND_GROUP.get(C.kind_of(i)) == grp and ok(i)
+                 and IMPACT_RANK[EX[i]['impact']] <= IMPACT_RANK[e_old['impact']] and EX[i]['cx'] <= max(e_old['cx'], 2) and i not in tier1]
+        if x['role'] == 'contrast_power': pool2 = []
+        pool3 = []
+        if x['role'] in ('secondary', 'tertiary'):   # a further athletic element may become another element of the same or lower cost, never a bigger one
+            have_k = {y['kind'] for b in sess['blocks'] for y in b['items'] if y['cls'] == 'power' and y['id'] != x['id']}
+            old_t = C.TIER_COST[C.tier(x['id'], 'tertiary')]
+            for q3 in C.QUALITY_LABEL:
+                pool3 += [i for i in C.power_pool(ctx, q3) if ok(i) and i not in tier1 and i not in pool2 and C.kind_of(i) not in have_k | {'olympic'}
+                          and C.TIER_COST[C.tier(i, 'tertiary')] <= old_t and EX[i]['cx'] <= max(e_old['cx'], 2)
+                          and IMPACT_RANK[EX[i]['impact']] <= IMPACT_RANK[e_old['impact']]]
+        allc = tier1 + C.rank_power(ctx, d, pool2, 'secondary', used, seed) + C.rank_power(ctx, d, pool3, 'secondary', used, seed + '|t3')
+        if x['role'] in ('secondary', 'tertiary'):      # never a costlier athletic element than the one it replaces
+            allc = [i for i in allc if C.TIER_COST[C.tier(i, x['role'])] <= C.TIER_COST[C.tier(x['id'], x['role'])]]
+        return allc
+    if x['cls'] == 'strength':
+        same = [i for i in C.strength_pool(ctx, {x['pattern']}) if ok(i)]
+        grp = [i for i in C.strength_pool(ctx, {p for p, g in PAT_GROUP.items() if g == PAT_GROUP[x['pattern']]}) if ok(i) and i not in same]
+        region = C.LOWER_PAT if x['pattern'] in C.LOWER_PAT else C.UPPER_PAT
+        other = [i for i in C.strength_pool(ctx, region) if ok(i) and i not in same and i not in grp] if x['role'] != 'contrast_strength' else []
+        return C.rank_strength(ctx, d, same, used, seed, 'swap') + C.rank_strength(ctx, d, grp, used, seed, 'swap2') + C.rank_strength(ctx, d, other, used, seed, 'swap3')
+    if x['cls'] == 'support':
+        same = [i for i in C.support_pool(ctx, {x['kind']}) if ok(i)]
+        other = [i for k in C.SUPPORT_PLAN.get(sess['pq'], []) if k != x['kind'] for i in C.support_pool(ctx, {k}) if ok(i) and i not in same]
+        return same + other
+    if x['cls'] == 'finisher':
+        return [i for i in ('sled_push',) if i in EX and ok(i) and avail(EX[i], ctx['preset']) and not C.region_blocked(EX[i], ctx['sore'])]
+    return []
+
+
+def _replace(out, bi, ii, new_id):
+    o2 = dict(out); sess = copy.deepcopy(out['sess']); o2['sess'] = sess
+    ctx = out['ctx']; d = out['d']; b = sess['blocks'][bi]; x = b['items'][ii]
+    lv, dur, goal = ctx['lv'], ctx['dur'], ctx['goal']
+    if x['cls'] == 'power':
+        dz = C.power_dose(new_id, lv, x['role'] if x['role'] in ('secondary', 'tertiary') else ('contrast' if x['role'] == 'contrast_power' else 'primary'), d, dur)
+        dz['sets'] = x['sets']
+        if x['role'] == 'contrast_power': dz['rest'] = max(dz['rest'], x['rest'])
+        nx = C.P(new_id, x['role'], dz)
+        if b['structure'] == 'straight': b['rest_rounds'] = nx['rest']
+    elif x['cls'] == 'strength':
+        slot = 'A' if (ii == 0 and b['role'] == 'strength') else 'B'
+        dz = C.strength_dose(new_id, lv, slot, goal, d, dur, contrast=x['role'] == 'contrast_strength'); dz['sets'] = x['sets']
+        nx = C.ST(new_id, x['role'], dz, C.STRENGTH[new_id])
+    elif x['cls'] == 'support':
+        dz = C.support_dose(new_id, lv, goal); dz['sets'] = x['sets']; nx = C.SU(new_id, dz)
+    else:
+        nx = dict(x, id=new_id, kind='sled_finisher')
+    b['items'][ii] = nx
+    if b['role'] == 'tertiary': b['quality'] = nx['quality']
+    if b['role'] == 'support': b['purpose'] = nx['kind']; b['why'] = C.SUPPORT_WHY[nx['kind']]
+    if sess['primary_id'] == x['id']: sess['primary_id'] = new_id
+    sess['used'] = [new_id if i == x['id'] else i for i in sess['used']]
+    o2['A'] = C.account(sess, out['wu'], lv)
+    return o2
+
+
+def swap_exercise(nctx, history_records, swap, res, bi, ii, excluded):
+    """bi: block index, ii: item index inside the block."""
     with LOCK:
-        history = history_for_engine(history_records); w0 = res['w']; aid = w0['archetype']
-        goal = GOAL_ROW.get(nctx['goal'], 'general_fitness')
-        x = w0['items'][idx]; slot = x['slot']
-        ids = [i['id'] for i in w0['items'] if i['slot'] in ('px', 'sx', 'sx2')]
-        ctx = _ctx(nctx, history, aid, swap_count=max(1, swap + 1), displayed=[i['id'] for i in w0['items']])
-        new_w = None
-        if slot in ('px', 'sx', 'sx2'):
-            others = [i for i in ids if i != x['id']]
-            order = ('px', 'sx', 'sx2')
-            for cand in G.ranked(slot, ctx, [i for i in others if order.index(next(y['slot'] for y in w0['items'] if y['id'] == i)) < order.index(slot)]):
-                if cand in excluded or cand in ids: continue
-                if not G.compatible(EX[cand], others, slot, ctx): continue
-                new_ids = [cand if i == x['id'] else i for i in ids]
-                w = G.assemble(dict(ctx, swap_count=swap), new_ids, goal)
-                if w['status'] == 'ok':
-                    new_w = dict(w, archetype=aid, log=[l for l in w0['log'] if l.startswith(("MOOD's Pick", 'No upper-body'))] + w['log']); break
-        elif slot in ('qc', 'ps'):
-            used = [i['id'] for i in w0['items']] + list(excluded)
-            items = list(w0['items'])
-            if slot == 'qc':
-                q = G.pick_qc(ctx, used)
-                if q: items[idx] = q
-            else:
-                p = G.pick_ps(ctx, [dict(slot=i['slot'], id=i['id']) for i in w0['items'] if i['slot'] in ('px', 'sx', 'sx2')], used)
-                if p: items[idx] = sk5.X('ps', p, x['sets'], purpose=PS[p], why=G.WHY[PS[p]], **G.ps_dose(p, goal))
-            if items[idx] is not x:
-                w = dict(w0, items=items, ids=[i['id'] for i in items])
-                r = recheck(w, nctx)
-                if not r['fails']: new_w = dict(w, result=r)
-        if not new_w: raise Conflict('no_alternative', 'No other exercise fits this part of the session today.', [])
-        r = recheck(new_w, nctx)
-        if r['fails']: raise Conflict('no_alternative', 'No other exercise fits this part of the session today.', [])
-        new_w['result'] = r
-        out = _result(nctx, new_w, history)
-        out['rerouted'] = res['rerouted']; out['requested_archetype'] = res['requested_archetype']
-        out['log'] = res['log'] + [dict(reason_code='exercise_swapped', slot=slot, **{'from': x['id'], 'to': new_w['items'][idx]['id'] if idx < len(new_w['items']) else None})]
-        return out
+        out = res['w']; ctx = out['ctx']
+        x = out['sess']['blocks'][bi]['items'][ii]
+        for new_id in swap_candidates(out, bi, ii, set(excluded)):
+            o2 = _replace(out, bi, ii, new_id)
+            if C.violations(o2['A'], ctx['lv'], ctx['dur'], out['d'], o2['sess']['structure'] == 'contrast'): continue
+            if V.fails(o2['sess'], o2['wu'], ctx, ctx['states']): continue
+            o2['log'] = out['log'] + [dict(reason_code='exercise_swapped', role=x['role'], **{'from': x['id'], 'to': new_id})]
+            res2 = dict(res, w=o2, log=o2['log'], estimated_minutes=float(o2['A']['est']))
+            res2['decisions'] = list(res.get('decisions', [])) + [o2['log'][-1]]
+            ids = [y['id'] for b in o2['sess']['blocks'] for y in b['items']]
+            res2['history_record'] = dict(res['history_record'], exercise_ids=ids, native=C.history_record(o2))
+            res2['athletic_summary'] = summary(o2)
+            return res2
+        raise Conflict('no_alternative', 'No other exercise fits this part of the session today.', [])
+
 
 def fingerprint(res):
-    w = res['w']
-    return hashlib.sha256(repr((w['archetype'], w['warmup'], [(i['slot'], i['id'], i['sets'], i['reps'], i['sec']) for i in w['items']])).encode()).hexdigest()[:16]
+    s = res['w']['sess']
+    return hashlib.sha256(repr((s['arch'], s['structure'], s['pq'], [(b['role'], [(x['id'], x['sets'], x.get('reps'), x['rest']) for x in b['items']]) for b in s['blocks']],
+                                res['w']['wu'])).encode()).hexdigest()[:16]

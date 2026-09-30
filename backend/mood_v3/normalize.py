@@ -33,7 +33,7 @@ PRESETS = {
     'free_weight_limited': {'strength': ('set', FREE_WEIGHT_LIMITED, frozenset({'standard_gym', 'floor_space', 'lane'})),
                             'sweat': 'free_weight_limited', 'athletic': 'free_weight_limited'},
     'minimal':             {'strength': ('set', MINIMAL, frozenset({'floor_space', 'standard_gym'})),
-                            'sweat': 'db_bodyweight_only', 'athletic': 'bodyweight_floor'},
+                            'sweat': 'db_bodyweight_only', 'athletic': 'athletic_minimal'},
 }
 PRESET_ALIASES = {'commercial': 'commercial_gym', 'gym': 'commercial_gym', 'commercial_gym_default': 'commercial_gym', 'full_gym': 'commercial_gym',
                   'free_weight': 'free_weight_limited', 'free_weights': 'free_weight_limited', 'dumbbells_kettlebells': 'free_weight_limited',
@@ -182,10 +182,8 @@ def normalize(raw: dict, user_key: str, history_directions=()) -> Context:
             if k not in clean: clean.append(k)
         if len(clean) > 3: raise InputError('target', 'choose at most 3 Target muscles')
         t_mode, t_muscles = 'explicit', tuple(clean)
-    if direction == 'athletic' and t_mode != 'moods_pick':
-        raise InputError('target', 'Athletic uses an archetype (Power, Speed + Agility, Full-Body Athlete) or MOOD\'s Pick, not a muscle Target')
-    if archetype and t_mode != 'moods_pick' and direction == 'sweat':
-        raise InputError('target', 'choose either a Sweat archetype or a Target, not both')
+    if archetype and t_mode != 'moods_pick' and direction in ('sweat', 'athletic'):
+        raise InputError('target', 'choose either a Sweat archetype or a Target, not both' if direction == 'sweat' else 'choose either an Athletic session type or a Target, not both')
     if archetype == 'strength_custom_target' and t_mode != 'explicit':
         raise InputError('target', 'Custom Target needs 1 to 3 Target muscles')
     date = raw.get('date') or _dt.datetime.now(_dt.timezone.utc).date().isoformat()

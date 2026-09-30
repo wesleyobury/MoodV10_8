@@ -1,22 +1,22 @@
 /**
- * V3 Workout Preview: /v3/workout?id=<workout_id>  (Phase 2.6)
+ * V3 Workout Cart: /v3/workout?id=<workout_id>  (H2, replaces the Phase 2.6 Preview + Details pair)
  *
- * Preview = what. Details = why + how. Guided Session = do.
+ * "Here is today's complete training plan. Review it, then start."
  *
- *   STRENGTH                      Direction eyebrow
- *   Chest                         Target (Target sessions) or session type
- *   ~40 min · 5 exercises · Intermediate   + State chips when any were selected
- *   BUILT FOR TODAY               always: what MOOD adapted, decided and took into account (API lines, kind-marked)
- *   STRAIGHT SETS / SUPERSET ...  the workout itself
- *   Different workout · Details   secondary actions;   Start Workout (sticky)
+ *   HERO           workout image (utils/cartHero resolveV3CartHero) · Direction + States · title · ~estimated min ·
+ *                  level · body emphasis                                      [back]            [Different workout]
+ *   (founder edit pass) a soreness / conflict reroute is one of the Built for Today reasons, never a separate card
+ *   BUILT FOR TODAY  neutral card, collapsed to its lead line; expands to TODAY / MOOD CHOSE / every line
+ *   Warm-up (collapsed) → every block in API order, Direction-specific headings (utils/v3CartFormat) → Cool-down
+ *   Different workout                                                     sticky: Start Workout
  *
- * One source of truth: `env` is the server's envelope for this workout id. It is replaced only by a successful server
- * response for the same id (GET, Different Workout) or a newer cached version written by Details (Swap Exercise).
- * Different Workout keeps the current workout on screen while it builds and swaps it in only on success.
- * Session type is edited on Home (Change sheet) only.
+ * Read-first: rows open a detail sheet (media, cues, load guidance, quality stop, Swap). No reorder / remove / add /
+ * edit here (H4). One source of truth: `env` is the server's envelope for this id; it is replaced only by a successful
+ * server response for the same id (GET, Swap Exercise, Different Workout), never by an older version.
+ * Start Workout opens V3_SESSION_ROUTE with the workout id; the V3 Guided Session replaces that screen, nothing here.
  */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, Animated, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
@@ -25,18 +25,29 @@ import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinea
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { trackEvent } from '../../utils/analytics';
-import { V3Envelope, getV3Workout, swapV3Workout } from '../../utils/v3Api';
+import { V3Envelope, getV3Workout, swapV3Exercise, swapV3Workout } from '../../utils/v3Api';
 import { readCachedEnvelope, updateTodayEnvelope } from '../../utils/v3Today';
-import { STATE_LABEL } from '../../utils/v3HomeModel';
-import { builtForToday, differentWorkoutMessage, exerciseIds, previewMeta, previewTitle, workoutDiff } from '../../utils/v3PreviewFormat';
-import { PreviewSections } from '../../components/v3/PreviewSections';
+import { differentWorkoutMessage, exerciseIds, workoutDiff } from '../../utils/v3PreviewFormat';
+import { rerouteNotice } from '../../utils/v3OverviewFormat';
+import { cartBlocks, cartExplain, cartHeader, exerciseTotal } from '../../utils/v3CartFormat';
+import { resolveV3CartHero } from '../../utils/cartHero';
+import { CartBlockView } from '../../components/v3/CartBlockView';
+import { TermChips, TermSheet } from '../../components/v3/TermSheet';
+import type { TermId } from '../../utils/v3PlainLanguage';
+import { ExerciseSheet } from '../../components/v3/ExerciseSheet';
+import { ExerciseThumb } from '../../components/v3/ExerciseThumb';
+import { HeroImage } from '../../components/v3/HeroImage';
+import { heroImageSource } from '../../components/v3/v3Images';
 
-/** adaptation = something about you changed the workout; decision = a choice MOOD made; context = what it took into account. */
+/** Where Start Workout goes. The V3 Guided Session plugs in here (same param: the workout id). */
+const V3_SESSION_ROUTE = '/v3/session';
+
 const KIND_ICON = { adaptation: 'sparkles', decision: 'git-branch-outline', context: 'person-outline' } as const;
 
-export default function V3WorkoutPreview() {
+export default function V3WorkoutCart() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
   const { id } = useLocalSearchParams<{ id?: string }>();
   const { token, user } = useAuth();
   const uid = user?.id ?? null;
@@ -44,6 +55,14 @@ export default function V3WorkoutPreview() {
   const [env, setEnv] = useState<V3Envelope | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [building, setBuilding] = useState(false);
+  const [sheetItem, setSheetItem] = useState<string | null>(null);
+  const [sheetNotice, setSheetNotice] = useState<string | null>(null);
+  const [term, setTerm] = useState<TermId | null>(null);
+  const [swappingItem, setSwappingItem] = useState<string | null>(null);
+  const [highlight, setHighlight] = useState<string | null>(null);
+  const [explainOpen, setExplainOpen] = useState(false);
+  const [warmOpen, setWarmOpen] = useState(false);
+  const [coolOpen, setCoolOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const toastOpacity = useRef(new Animated.Value(0)).current;
   const contentOpacity = useRef(new Animated.Value(1)).current;
@@ -52,7 +71,7 @@ export default function V3WorkoutPreview() {
 
   const track = useCallback(
     (name: string, meta: Record<string, any> = {}) => {
-      if (token) trackEvent(token, name, { workout_id: id, ...meta });
+      if (token) trackEvent(token, name, { workout_id: id, surface: 'cart', ...meta });
     },
     [token, id],
   );
@@ -97,7 +116,6 @@ export default function V3WorkoutPreview() {
     };
   }, [id, token, uid, accept]);
 
-  // Back from Details: pick up an exercise swap made there (a newer version of the same workout).
   useFocusEffect(
     useCallback(() => {
       if (!uid || !id) return;
@@ -109,7 +127,7 @@ export default function V3WorkoutPreview() {
     const w = env?.workout;
     if (!w || viewedFor.current === w.workout_id) return;
     viewedFor.current = w.workout_id;
-    track('v3_preview_viewed', {
+    track('v3_cart_viewed', {
       direction: w.direction,
       archetype: w.archetype.id,
       selection_source: w.selection_source ?? null,
@@ -118,7 +136,10 @@ export default function V3WorkoutPreview() {
       estimated_minutes: w.duration.estimated_minutes,
       exercises: exerciseIds(w).length,
       bft_lines: (w.built_for_today ?? []).length,
-      bft_adaptations: (w.built_for_today ?? []).filter((l) => l.kind === 'adaptation').length,
+      media_count: w.blocks.reduce((n, b) => n + b.items.filter((i) => !!i.exercise.media).length, 0),
+      outcome: env?.outcome ?? null,
+      rerouted: env?.outcome === 'rerouted',
+      requested_archetype: w.requested_archetype?.id ?? null,
       difficulty: w.experience,
       engine: env?.engine?.phase ?? null,
     });
@@ -149,11 +170,9 @@ export default function V3WorkoutPreview() {
       exercises_changed: d.changed,
       exercises_total: d.total,
       swap_count: after.swap_count,
-      engine: res.envelope.engine?.phase ?? null,
     });
     accept(res.envelope, true);
     if (d.identical) {
-      // Only an old engine does this (Phase 2.5+ returns no_alternative instead); say so rather than pretend.
       showToast("There isn't another version of this workout today.");
       return;
     }
@@ -163,36 +182,64 @@ export default function V3WorkoutPreview() {
     showToast(differentWorkoutMessage(before, after));
   };
 
-  /* ------------------------------------------------------------ navigation */
-  const onDetails = () => {
-    if (!id) return;
-    track('v3_details_opened', { source: 'preview' });
-    router.push({ pathname: '/v3/details', params: { id } } as any);
+  /* ------------------------------------------------------------ Swap Exercise (from the row sheet) */
+  const onSwap = async (itemId: string) => {
+    const w = env?.workout;
+    if (!token || !id || !w || swappingItem) return;
+    const before = w.blocks.flatMap((b) => b.items).find((i) => i.item_id === itemId);
+    setSwappingItem(itemId);
+    track('v3_swap_exercise_tapped', { item_id: itemId, from: before?.exercise.id });
+    const res = await swapV3Exercise(token, id, itemId);
+    setSwappingItem(null);
+    // From the detail sheet the message shows inside the sheet; from a Cart row it is a quiet toast.
+    const notify = (m: string) => {
+      if (sheetItem) {
+        setSheetNotice(m);
+        setTimeout(() => setSheetNotice(null), 2600);
+      } else showToast(m);
+    };
+    if (!res.ok) {
+      track('v3_swap_exercise_result', { item_id: itemId, result: 'error', error_kind: res.error.kind, surface: sheetItem ? 'sheet' : 'row' });
+      notify(res.error.message);
+      return;
+    }
+    const next = res.envelope;
+    if (next.status === 'conflict') {
+      track('v3_swap_exercise_result', { item_id: itemId, result: next.conflict?.code ?? 'conflict', surface: sheetItem ? 'sheet' : 'row' });
+      notify(next.conflict?.code === 'no_alternative' ? 'No other exercise fits this spot today, so this one stays.' : next.conflict?.message || 'No other exercise fits this spot today.');
+      return;
+    }
+    accept(next, true);
+    track('v3_swap_exercise_result', { item_id: itemId, result: 'swapped', from: before?.exercise.id, to: next.workout?.swapped_item?.to, surface: sheetItem ? 'sheet' : 'row' });
+    setHighlight(itemId);
+    setTimeout(() => setHighlight(null), 2200);
+    const newName = next.workout?.blocks.flatMap((b) => b.items).find((i) => i.item_id === itemId)?.exercise.name;
+    notify(newName ? `Swapped in ${newName}` : 'Exercise swapped');
   };
 
   const onStart = () => {
     const w = env?.workout;
     if (!w || !id) return;
-    track('v3_start_workout_tapped', { direction: w.direction, archetype: w.archetype.id, surface: 'preview' });
-    router.push({ pathname: '/v3/session', params: { id } } as any);
+    track('v3_start_workout_tapped', { direction: w.direction, archetype: w.archetype.id });
+    router.push({ pathname: V3_SESSION_ROUTE, params: { id } } as any);
   };
 
   /* ------------------------------------------------------------ render */
   const w = env?.workout ?? null;
-  const bft = w ? builtForToday(w) : [];
-  const states = w ? w.states.filter((s) => s !== 'sore') : [];
-  const sore = w && w.soreness.regions.length ? `Sore ${w.soreness.regions.map((r) => r.replace(/_/g, ' ')).join(', ')}` : null;
+  const header = useMemo(() => (w ? cartHeader(w) : null), [w]);
+  const blocks = useMemo(() => (w ? cartBlocks(w) : []), [w]);
+  const reroute = w && env ? rerouteNotice(w, env.outcome) : null;
+  const explain = useMemo(() => (w ? cartExplain(w, reroute) : null), [w, reroute]);
+  const hero = w ? resolveV3CartHero(w) : null;
+  const heroH = Math.round(Math.min(380, Math.max(300, width * 0.84))) + insets.top;
 
   return (
-    <View style={styles.root} testID="v3-preview">
-      <View style={[styles.topBar, { paddingTop: insets.top + 6 }]}>
-        <Pressable onPress={() => router.back()} hitSlop={12} style={styles.back} accessibilityLabel="Back" testID="v3-preview-back">
-          <Ionicons name="chevron-back" size={22} color={COLORS.textPrimary} />
-        </Pressable>
-      </View>
-
-      {!w ? (
+    <View style={styles.root} testID="v3-cart">
+      {!w || !header || !explain || !hero ? (
         <View style={styles.center}>
+          <Pressable onPress={() => router.back()} hitSlop={12} style={[styles.glassBtn, { position: 'absolute', top: insets.top + 8, left: 14 }]} accessibilityLabel="Back">
+            <Ionicons name="chevron-back" size={22} color={COLORS.textPrimary} />
+          </Pressable>
           {loadError ? (
             <>
               <Text style={styles.errorText}>{loadError}</Text>
@@ -205,83 +252,199 @@ export default function V3WorkoutPreview() {
           )}
         </View>
       ) : (
-        <ScrollView ref={scrollRef} contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + 120 }]} showsVerticalScrollIndicator={false}>
-          <Animated.View style={{ opacity: contentOpacity }} testID="v3-preview-content">
-            <Text style={styles.eyebrow}>{w.direction_name.toUpperCase()}</Text>
-            <Text style={styles.title} testID="v3-preview-title">
-              {previewTitle(w)}
-            </Text>
-            <Text style={styles.meta} testID="v3-preview-meta">
-              {previewMeta(w)}
-            </Text>
-            {states.length || sore ? (
-              <View style={styles.chips}>
-                {states.map((s) => (
-                  <View key={s} style={styles.chip}>
-                    <Text style={styles.chipText}>{STATE_LABEL[s] ?? s}</Text>
+        <>
+          <ScrollView ref={scrollRef} contentContainerStyle={{ paddingBottom: insets.bottom + 130 }} showsVerticalScrollIndicator={false}>
+            <Animated.View style={{ opacity: contentOpacity }} testID="v3-cart-content">
+              {/* ---------------- HERO */}
+              <View style={{ height: heroH }}>
+                <HeroImage
+                  source={heroImageSource(hero.source, width)}
+                  imageKey={hero.source.kind === 'asset' ? hero.source.key : hero.source.uri}
+                  style={StyleSheet.absoluteFillObject as any}
+                />
+                <View style={styles.heroText}>
+                  <Text style={styles.eyebrow} testID="v3-cart-eyebrow">
+                    {header.eyebrow}
+                  </Text>
+                  <Text style={styles.title} testID="v3-cart-title">
+                    {header.title}
+                  </Text>
+                  {header.subtitle ? <Text style={styles.subtitle}>{header.subtitle}</Text> : null}
+                  <Text style={styles.facts} testID="v3-cart-meta">
+                    {header.facts.join('  ·  ')}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.page}>
+                {/* ---------------- Built for Today */}
+                <Pressable
+                  onPress={() => {
+                    setExplainOpen((v) => !v);
+                    if (!explainOpen) track('v3_built_for_today_expanded', {});
+                  }}
+                  style={({ pressed }) => [styles.card, pressed && { opacity: 0.9 }]}
+                  testID="v3-cart-bft"
+                  accessibilityRole="button"
+                  accessibilityState={{ expanded: explainOpen }}
+                >
+                  <View style={styles.cardHead}>
+                    <Ionicons name="sparkles" size={13} color={COLORS.accent} />
+                    <Text style={styles.cardLabel}>BUILT FOR TODAY</Text>
+                    <View style={{ flex: 1 }} />
+                    <Ionicons name={explainOpen ? 'chevron-up' : 'chevron-down'} size={16} color="rgba(255,255,255,0.45)" />
                   </View>
-                ))}
-                {sore ? (
-                  <View style={styles.chip}>
-                    <Text style={styles.chipText}>{sore}</Text>
-                  </View>
+                  {!explainOpen ? (
+                    <Text style={styles.cardText} numberOfLines={2}>
+                      {explain.lead ?? "Built from your Training Profile and today's choices."}
+                    </Text>
+                  ) : (
+                    <View testID="v3-cart-bft-open">
+                      {explain.told.length ? (
+                        <>
+                          <Text style={styles.miniLabel}>YOU TOLD MOOD</Text>
+                          <View style={styles.pills}>
+                            {explain.told.map((t) => (
+                              <View key={t} style={styles.pill}>
+                                <Text style={styles.pillText}>{t}</Text>
+                              </View>
+                            ))}
+                          </View>
+                        </>
+                      ) : null}
+                      {explain.chose ? (
+                        <>
+                          <Text style={[styles.miniLabel, { marginTop: 14 }]}>MOOD CHOSE</Text>
+                          <Text style={styles.chose}>{explain.chose}</Text>
+                          {explain.chosenBy ? <Text style={styles.chosenBy}>{explain.chosenBy}</Text> : null}
+                        </>
+                      ) : null}
+                      {explain.lines.length ? <View style={styles.rule} /> : null}
+                      {explain.lines.map((l) => (
+                        <View key={l.key} style={styles.line}>
+                          <Ionicons name={KIND_ICON[l.kind] as any} size={14} color={l.kind === 'adaptation' ? COLORS.accent : 'rgba(255,255,255,0.45)'} style={{ marginTop: 3 }} />
+                          <Text style={[styles.lineText, l.kind === 'adaptation' && styles.lineStrong]}>{l.text}</Text>
+                        </View>
+                      ))}
+                      <TermChips terms={explain.terms} onPick={setTerm} style={{ marginTop: 12 }} />
+                    </View>
+                  )}
+                </Pressable>
+
+                {/* ---------------- Warm-up */}
+                {w.warmup && (w.warmup.guidance || w.warmup.items.length) ? (
+                  <Pressable onPress={() => setWarmOpen((v) => !v)} style={styles.side} testID="v3-cart-warmup">
+                    <View style={styles.sideHead}>
+                      <Text style={styles.sideTitle}>Warm-up</Text>
+                      <Text style={styles.sideMin}>{w.warmup.minutes ? `${Math.round(w.warmup.minutes)} min` : ''}</Text>
+                      <Ionicons name={warmOpen ? 'chevron-up' : 'chevron-down'} size={16} color="rgba(255,255,255,0.45)" />
+                    </View>
+                    {!warmOpen ? (
+                      <Text style={styles.sideText} numberOfLines={1}>
+                        {w.warmup.items.length ? w.warmup.items.map((x) => x.name).join(' · ') : w.warmup.guidance}
+                      </Text>
+                    ) : w.warmup.items.length ? (
+                      w.warmup.items.map((x, i) => (
+                        <View key={`${x.name}-${i}`} style={styles.wuRow}>
+                          <ExerciseThumb item={x} size={36} />
+                          <View style={{ flex: 1 }}>
+                            <Text style={styles.wuName}>{x.name}</Text>
+                            <Text style={styles.wuMeta}>{[x.component_label, x.prescription_text].filter(Boolean).join(' · ')}</Text>
+                          </View>
+                        </View>
+                      ))
+                    ) : (
+                      <Text style={styles.sideText}>{w.warmup.guidance}</Text>
+                    )}
+                    {warmOpen && w.warmup.items.length && w.warmup.guidance ? <Text style={[styles.sideText, { marginTop: 10 }]}>{w.warmup.guidance}</Text> : null}
+                  </Pressable>
                 ) : null}
+
+                {/* ---------------- Session */}
+                {blocks.map((b) => (
+                  <CartBlockView
+                    key={b.key}
+                    block={b}
+                    highlightItemId={highlight}
+                    onSwap={(it) => onSwap(it.item_id)}
+                    swappingItemId={swappingItem}
+                    onTerm={setTerm}
+                    onOpen={(it) => {
+                      setSheetItem(it.item_id);
+                      track('v3_exercise_detail_opened', { item_id: it.item_id, exercise: it.exercise.id, has_media: !!it.exercise.media });
+                    }}
+                  />
+                ))}
+
+                {/* ---------------- Cool-down */}
+                {w.cooldown && w.cooldown.guidance ? (
+                  <Pressable onPress={() => setCoolOpen((v) => !v)} style={[styles.side, { marginTop: 30 }]} testID="v3-cart-cooldown">
+                    <View style={styles.sideHead}>
+                      <Text style={styles.sideTitle}>Cool-down</Text>
+                      <Text style={styles.sideMin}>{w.cooldown.minutes ? `${Math.round(w.cooldown.minutes)} min` : ''}</Text>
+                      <Ionicons name={coolOpen ? 'chevron-up' : 'chevron-down'} size={16} color="rgba(255,255,255,0.45)" />
+                    </View>
+                    <Text style={styles.sideText} numberOfLines={coolOpen ? undefined : 1}>
+                      {w.cooldown.guidance}
+                    </Text>
+                  </Pressable>
+                ) : null}
+
+                <Text style={styles.totals} testID="v3-cart-totals">
+                  {`${exerciseTotal(w)} exercises · ${header.facts[0]}`}
+                </Text>
+
+                <Pressable
+                  onPress={onDifferent}
+                  disabled={building}
+                  style={({ pressed }) => [styles.different, pressed && { opacity: 0.75 }]}
+                  testID="v3-swap-workout"
+                  accessibilityState={{ busy: building }}
+                >
+                  {building ? <ActivityIndicator size="small" color={COLORS.textPrimary} /> : <Ionicons name="shuffle" size={17} color={COLORS.textPrimary} />}
+                  <Text style={styles.differentText}>{building ? 'Building…' : 'Different workout'}</Text>
+                </Pressable>
               </View>
-            ) : null}
+            </Animated.View>
+          </ScrollView>
 
-            <View style={styles.bft} testID="v3-preview-bft">
-              <View style={styles.bftHead}>
-                <Ionicons name="sparkles" size={13} color={COLORS.accent} />
-                <Text style={styles.bftTitle}>BUILT FOR TODAY</Text>
-              </View>
-              {bft.length ? (
-                bft.map((l) => (
-                  <View key={l.key} style={styles.bftRow} testID={`v3-bft-${l.kind}`}>
-                    <Ionicons name={KIND_ICON[l.kind] as any} size={14} color={l.kind === 'adaptation' ? COLORS.accent : COLORS.textTertiary} style={styles.bftIcon} />
-                    <Text style={[styles.bftText, l.kind === 'adaptation' && styles.bftTextStrong]}>{l.text}</Text>
-                  </View>
-                ))
-              ) : (
-                <Text style={styles.bftText}>Built from your Training Profile and today's choices.</Text>
-              )}
-            </View>
-
-            <PreviewSections workout={w} />
-          </Animated.View>
-
-          <View style={styles.actions}>
-            <Pressable
-              onPress={onDifferent}
-              disabled={building}
-              style={({ pressed }) => [styles.action, pressed && { opacity: 0.7 }]}
-              testID="v3-swap-workout"
-              accessibilityState={{ busy: building }}
-            >
-              {building ? <ActivityIndicator size="small" color={COLORS.textPrimary} /> : <Ionicons name="shuffle" size={16} color={COLORS.textPrimary} />}
-              <Text style={styles.actionText}>{building ? 'Building…' : 'Different workout'}</Text>
+          {/* Floating hero controls */}
+          <View style={[styles.topBar, { top: insets.top + 8 }]} pointerEvents="box-none">
+            <Pressable onPress={() => router.back()} hitSlop={10} style={styles.glassBtn} accessibilityLabel="Back" testID="v3-cart-back">
+              <Ionicons name="chevron-back" size={22} color={COLORS.textPrimary} />
             </Pressable>
-            <Pressable onPress={onDetails} style={({ pressed }) => [styles.action, pressed && { opacity: 0.7 }]} testID="v3-preview-details">
-              <Ionicons name="list-outline" size={16} color={COLORS.textPrimary} />
-              <Text style={styles.actionText}>Details</Text>
+            <Pressable onPress={onDifferent} disabled={building} hitSlop={10} style={styles.glassBtn} accessibilityLabel="Different workout" testID="v3-cart-different-top">
+              {building ? <ActivityIndicator size="small" color={COLORS.textPrimary} /> : <Ionicons name="shuffle" size={19} color={COLORS.textPrimary} />}
             </Pressable>
           </View>
-        </ScrollView>
+
+          <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]}>
+            <LinearGradient colors={['rgba(10,10,10,0)', COLORS.bg]} style={styles.fade as any} />
+            <Pressable onPress={onStart} disabled={building} testID="v3-start-workout">
+              <LinearGradient colors={[...BRAND_GRADIENT]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.cta, building && { opacity: 0.6 }] as any}>
+                <Ionicons name="play" size={18} color={COLORS.accentInk} />
+                <Text style={styles.ctaText}>Start Workout</Text>
+              </LinearGradient>
+            </Pressable>
+          </View>
+
+          <ExerciseSheet
+            workout={w}
+            itemId={sheetItem}
+            swapping={!!swappingItem}
+            notice={sheetNotice}
+            onSwap={onSwap}
+            onClose={() => {
+              setSheetItem(null);
+              setSheetNotice(null);
+            }}
+          />
+        </>
       )}
 
-      {w ? (
-        <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]}>
-          <LinearGradient colors={['rgba(10,10,10,0)', COLORS.bg]} style={styles.fade as any} />
-          <Pressable onPress={onStart} disabled={building} testID="v3-start-workout">
-            <LinearGradient colors={[...BRAND_GRADIENT]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.cta, building && { opacity: 0.6 }] as any}>
-              <Ionicons name="play" size={18} color={COLORS.accentInk} />
-              <Text style={styles.ctaText}>Start Workout</Text>
-            </LinearGradient>
-          </Pressable>
-        </View>
-      ) : null}
-
+      <TermSheet term={term} onClose={() => setTerm(null)} />
       {toast ? (
-        <Animated.View style={[styles.toast, { top: insets.top + 54, opacity: toastOpacity }]} pointerEvents="none" testID="v3-preview-toast">
+        <Animated.View style={[styles.toast, { top: insets.top + 60, opacity: toastOpacity }]} pointerEvents="none" testID="v3-cart-toast">
           <Text style={styles.toastText}>{toast}</Text>
         </Animated.View>
       ) : null}
@@ -291,53 +454,87 @@ export default function V3WorkoutPreview() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.bg },
-  topBar: { paddingHorizontal: 12, paddingBottom: 4 },
-  back: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.06)' },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32 },
-  scroll: { paddingHorizontal: 22, paddingTop: 8 },
   errorText: { fontSize: 15, lineHeight: 22, color: COLORS.textSecondary, textAlign: 'center' },
   errorBtn: { marginTop: 16, paddingHorizontal: 18, paddingVertical: 10, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.08)' },
   errorBtnText: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary },
 
-  eyebrow: { fontSize: 12, fontWeight: '800', letterSpacing: 2.2, color: COLORS.accent },
-  title: { fontSize: 34, lineHeight: 39, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.7, marginTop: 6 },
-  meta: { fontSize: 14.5, color: COLORS.textSecondary, marginTop: 6, fontWeight: '500' },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 12 },
-  chip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.08)' },
-  chipText: { fontSize: 12, fontWeight: '600', color: COLORS.textPrimary, textTransform: 'capitalize' },
-
-  bft: {
-    marginTop: 20,
-    paddingHorizontal: 14,
-    paddingTop: 12,
-    paddingBottom: 6,
-    borderRadius: 16,
-    backgroundColor: 'rgba(255,215,0,0.05)',
+  topBar: { position: 'absolute', left: 14, right: 14, flexDirection: 'row', justifyContent: 'space-between' },
+  glassBtn: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(12,12,12,0.55)',
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(255,215,0,0.3)',
+    borderColor: 'rgba(255,255,255,0.22)',
   },
-  bftHead: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 },
-  bftTitle: { fontSize: 11, fontWeight: '800', letterSpacing: 1.7, color: COLORS.accent },
-  bftRow: { flexDirection: 'row', gap: 9, paddingVertical: 6 },
-  bftIcon: { marginTop: 2 },
-  bftText: { flex: 1, fontSize: 13.5, lineHeight: 19, color: COLORS.textSecondary },
-  bftTextStrong: { color: COLORS.textPrimary },
 
-  actions: { flexDirection: 'row', gap: 10, marginTop: 28 },
-  action: {
-    flex: 1,
+  heroText: { position: 'absolute', left: 22, right: 22, bottom: 14 },
+  eyebrow: { fontSize: 11.5, fontWeight: '800', letterSpacing: 1.9, color: COLORS.accent },
+  title: { fontSize: 36, lineHeight: 41, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.9, marginTop: 6 },
+  subtitle: { fontSize: 16, fontWeight: '600', color: 'rgba(255,255,255,0.78)', marginTop: 2 },
+  facts: { fontSize: 14, fontWeight: '600', color: 'rgba(255,255,255,0.82)', marginTop: 8 },
+
+  page: { paddingHorizontal: 20 },
+  card: {
+    marginTop: 14,
+    padding: 16,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255,255,255,0.10)',
+  },
+  cardHead: { flexDirection: 'row', alignItems: 'center', gap: 7, marginBottom: 8 },
+  cardLabel: { fontSize: 11, fontWeight: '800', letterSpacing: 1.6, color: COLORS.textSecondary },
+  cardText: { fontSize: 14.5, lineHeight: 21, color: COLORS.textPrimary },
+  miniLabel: { fontSize: 10.5, fontWeight: '800', letterSpacing: 1.5, color: COLORS.textTertiary, marginTop: 2 },
+  pills: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
+  pill: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.08)', maxWidth: '100%' },
+  pillText: { fontSize: 12.5, fontWeight: '600', color: COLORS.textPrimary },
+  chose: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginTop: 5 },
+  chosenBy: { fontSize: 12.5, color: COLORS.textSecondary, marginTop: 2 },
+  rule: { height: StyleSheet.hairlineWidth, backgroundColor: 'rgba(255,255,255,0.12)', marginVertical: 14 },
+  line: { flexDirection: 'row', gap: 10, paddingVertical: 5 },
+  lineText: { flex: 1, fontSize: 14, lineHeight: 20, color: COLORS.textSecondary },
+  lineStrong: { color: COLORS.textPrimary },
+
+  side: {
+    marginTop: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255,255,255,0.08)',
+  },
+  sideHead: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  sideTitle: { flex: 1, fontSize: 15, fontWeight: '700', color: COLORS.textPrimary },
+  sideMin: { fontSize: 12.5, color: COLORS.textTertiary },
+  sideText: { fontSize: 13, lineHeight: 19, color: COLORS.textTertiary, marginTop: 6 },
+  wuRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 10 },
+  wuName: { fontSize: 14, fontWeight: '600', color: COLORS.textPrimary },
+  wuMeta: { fontSize: 12, color: COLORS.textTertiary, marginTop: 1 },
+
+  totals: { fontSize: 12.5, color: COLORS.textTertiary, textAlign: 'center', marginTop: 28 },
+  different: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    paddingVertical: 14,
+    marginTop: 12,
+    height: 50,
     borderRadius: 15,
     backgroundColor: 'rgba(255,255,255,0.06)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255,255,255,0.12)',
   },
-  actionText: { fontSize: 14.5, fontWeight: '700', color: COLORS.textPrimary },
+  differentText: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary },
+
   footer: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 20 },
   fade: { position: 'absolute', left: 0, right: 0, top: -36, bottom: 0 },
-  cta: { height: 56, borderRadius: 18, flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center' },
+  cta: { height: 58, borderRadius: 18, flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center' },
   ctaText: { fontSize: 17, fontWeight: '800', color: COLORS.accentInk },
   toast: {
     position: 'absolute',

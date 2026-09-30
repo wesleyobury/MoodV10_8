@@ -23,7 +23,9 @@ if ! nc -z localhost 27017 2>/dev/null; then
   exit 1
 fi
 
-EXPECTED_ENGINE="2.6"
+# The expected engine is whatever the checked-out backend code declares (backend/mood_v3/build_info.py), so this
+# check never goes stale when the engine phase is bumped.
+EXPECTED_ENGINE=$(sed -n "s/^ENGINE_PHASE = '\(.*\)'.*/\1/p" ../backend/mood_v3/build_info.py)
 ENGINE=$(curl -s -m 5 http://localhost:8001/api/v3/version | python3 -c 'import sys,json; print(json.load(sys.stdin).get("engine_phase",""))' 2>/dev/null || true)
 if [[ "$ENGINE" != "$EXPECTED_ENGINE" ]]; then
   echo "✗ The backend on :8001 is running old V3 code (engine '${ENGINE:-none}', expected $EXPECTED_ENGINE)."

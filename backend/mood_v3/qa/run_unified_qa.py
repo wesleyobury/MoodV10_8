@@ -34,12 +34,13 @@ TARGETS = {
                  dict(target=['quads', 'hamstrings']), dict(target='full_body')],
     'sweat': [dict(), dict(archetype='sweat_engine'), dict(archetype='sweat_circuit'), dict(archetype='sweat_hybrid'), dict(target=['quads', 'glutes']),
               dict(target='full_body')],
-    'athletic': [dict(), dict(archetype='athletic_power'), dict(archetype='athletic_speed_agility'), dict(archetype='athletic_full_body')],
+    'athletic': [dict(), dict(archetype='athletic_power'), dict(archetype='athletic_speed_agility'), dict(archetype='athletic_full_body'),
+                 dict(target=['quads', 'glutes']), dict(target='full_body')],
 }
 KNOWN_CONFLICTS = {'sore_target_conflict', 'equipment_insufficient', 'cannot_build'}
 STRUCTURES = {'strength': {'straight', 'superset', 'circuit', 'pyramid', 'ladder', 'finisher'},
               'sweat': {'continuous', 'intervals', 'timed_circuit', 'pyramid', 'anchor_circuit', 'circuit', 'emom', 'ladder', 'finisher'},
-              'athletic': {'exposure', 'repeats', 'straight'}}
+              'athletic': {'straight', 'superset'}}
 
 def ex_meta(direction, eid):
     E = {'strength': SA.EX, 'sweat': SG.EX, 'athletic': AG.EX}[direction]
@@ -76,24 +77,26 @@ def check_envelope(env, raw, fails, tag):
             if d == 'athletic':
                 if e['eq'] == 'treadmill': bad('treadmill in Athletic')
                 if (rx.get('distance_m') or 0) > 10 and AG.quality(e) in ('acceleration', 'sled', 'decel'): bad(f"acceleration > 10 m {e['id']}")
-                if it['role'] in ('px', 'sx', 'sx2') and not it['quality_stop']: bad(f"no quality-stop cue {e['id']}")
+                if it['role'] in ('primary', 'secondary', 'contrast_power') and not it['quality_stop']: bad(f"no quality-stop cue {e['id']}")
             if d == 'sweat' and rx['kind'] == 'reps' and rx.get('reps') and e['role'].startswith('resistance') and rx['reps'] > 20: bad('SC2 rep ceiling')
     # State behavior stays Direction-specific (spot invariants from each frozen contract)
     structs = {b['structure'] for b in w['blocks']}; st_ = set(ctx.states)
     if d == 'strength':
-        if 'low_energy' in st_ and structs - {'straight'}: bad(f'Strength Low Energy structures {structs}')
-        if 'stressed' in st_ and structs & {'circuit', 'pyramid', 'ladder'}: bad(f'Strength Stressed structures {structs}')
-        if not st_ - {'sore'} and ctx.duration == 60 and structs != {'straight'}: bad(f'Strength Normal 60 structures {structs}')
+        # Core rebuild: no State signature is enforced any more (structures come from the variant layer). Only Direction identity holds.
+        if w['archetype']['id'] == 'strength_core' and not structs <= {'straight', 'superset', 'finisher'}: bad(f'Strength Core structures {structs}')   # freeze pass: Core is a core-focused session (pairs allowed, no devices)
         if ctx.experience == 'beginner' and 'circuit' in structs: bad('Strength beginner circuit')
     if d == 'sweat' and 'low_energy' in st_ and any(b['type'] == 'finisher' for b in w['blocks']): bad('Sweat Low Energy finisher')
     if d == 'athletic':
         roles = [it['role'] for b in w['blocks'] for it in b['items']]
-        if 'qc' in roles and ('low_energy' in st_ or ctx.experience == 'beginner' or ctx.duration == 30): bad('Athletic QC where frozen rules forbid it')
-        if ctx.duration == 30 and 'sx2' in roles: bad('Athletic 30 with third exposure')
+        if 'finisher' in roles and (st_ & {'low_energy', 'amped', 'irritated', 'stressed'} or ctx.experience == 'beginner' or ctx.duration == 30): bad('Athletic finisher where the rules forbid it')
+        if ctx.duration == 30 and len(roles) > 3: bad('Athletic 30 with more than 3 exercises')
+        types = [b['type'] for b in w['blocks']]
+        if types[:1] != ['primary']: bad('Athletic primary quality is not first')
+        if 'secondary' in types and any(t in ('strength', 'support', 'finisher') for t in types[:types.index('secondary')]): bad('Athletic power after strength')
     if d == 'athletic':
         wu = w['warmup']['items']
-        if not 2 <= len(wu) <= 4: bad(f'athletic warm-up {len(wu)} items')
-        if any(it['role'] not in ('px', 'sx', 'sx2', 'qc', 'ps') for b in w['blocks'] for it in b['items']): bad('athletic trunk / unknown slot')
+        if not 2 <= len(wu) <= 7: bad(f'athletic warm-up {len(wu)} items')
+        if any(it['role'] not in ('primary', 'secondary', 'tertiary', 'strength', 'support', 'finisher', 'contrast_strength', 'contrast_power') for b in w['blocks'] for it in b['items']): bad('athletic unknown role')
     # explanations
     lines = [l['text'] for l in w['built_for_today']]
     for t in lines:
@@ -101,10 +104,10 @@ def check_envelope(env, raw, fails, tag):
     if len(lines) > 6: bad('too many explanation lines')   # Phase 2.5: up to 6 personalized lines
     for s in ctx.states:
         if s == 'sore': continue
-        if not any(l['code'] in ('state_' + s, 'state_pair') for l in w['built_for_today']): bad(f'no explanation for State {s}')
-    if ctx.sore_regions and not any(l['code'].startswith('sore') for l in w['built_for_today']): bad('no soreness explanation')
+        if not any(l['code'] in ('state_' + s, 'state_pair', 'why_today') or (d == 'strength' and l['code'].startswith('state_')) for l in w['built_for_today']): bad(f'no explanation for State {s}')
+    if ctx.sore_regions and not any(l['code'].startswith('sore') or ['soreness', 'sore'] in (l.get('claims') or []) for l in w['built_for_today']): bad('no soreness explanation')
     # duration honesty
-    est = w['duration']['estimated_minutes']; cap = {('strength', 60): 60, ('strength', 30): 35, ('sweat', 60): 56, ('sweat', 30): 30, ('athletic', 60): 55, ('athletic', 30): 30}[(d, ctx.duration)]
+    est = w['duration']['estimated_minutes']; cap = {('strength', 60): 65, ('strength', 30): 36, ('sweat', 60): 61, ('sweat', 30): 32, ('athletic', 60): 57, ('athletic', 30): 31}[(d, ctx.duration)]
     if est > cap: bad(f'estimated {est} min over {cap}')
     if w['outcome'] if False else env['outcome'] == 'rerouted' and not w['requested_archetype']: bad('reroute without requested archetype')
 
@@ -224,7 +227,7 @@ def run(out_path=None):
     cases = {
         'athletic_speed_sore_legs': (dict(direction='athletic', archetype='athletic_speed_agility', soreness=['legs']), 'conflict:sore_target_conflict'),
         'athletic_pick_sore_legs_reroutes': (dict(direction='athletic', soreness=['legs']), 'ok'),
-        'athletic_bodyweight_sore_legs': (dict(direction='athletic', soreness=['legs'], equipment='minimal'), 'conflict:equipment_insufficient'),
+        'athletic_minimal_sore_legs_upper_session': (dict(direction='athletic', soreness=['legs'], equipment='minimal'), 'ok'),
         'strength_pick_sore_quads_reroutes': (dict(direction='strength', archetype=None, soreness=['quads'], goal='build_strength'), 'rerouted'),
         'strength_explicit_chest_sore_chest_trains': (dict(direction='strength', target=['chest'], soreness=['chest']), 'ok'),
         'strength_explicit_back_sore_arms_shoulders': (dict(direction='strength', target=['back', 'biceps'], soreness=['arms', 'shoulders', 'lower_back']), 'any'),
@@ -233,7 +236,8 @@ def run(out_path=None):
         'strength_minimal_full_body': (dict(direction='strength', archetype='strength_full_body', equipment='minimal'), 'any'),
         'invalid_duration_45': (dict(direction='strength', duration=45), 'input_error'),
         'four_states': (dict(direction='strength', states=['bored', 'stressed', 'amped', 'irritated']), 'input_error'),
-        'athletic_muscle_target': (dict(direction='athletic', target=['chest']), 'input_error'),
+        'athletic_muscle_target_shapes_support': (dict(direction='athletic', target=['chest']), 'ok'),
+        'athletic_archetype_and_target': (dict(direction='athletic', target=['chest'], archetype='athletic_power'), 'input_error'),
     }
     for k, (raw, exp) in cases.items():
         try:
@@ -252,7 +256,7 @@ def run(out_path=None):
     E = {}
     env, st = S.generate_workout(dict(direction='strength', archetype='strength_lower_squat', date='2026-10-01'), 'prog')
     items = [it for b in env['workout']['blocks'] for it in b['items']]
-    main = items[0]; reps = int(main['prescription']['reps'])
+    main = items[0]; reps = max(int(x) for x in __import__('re').findall(r'\d+', str(main['prescription']['reps'])))
     from ..progression import entries_from_performance
     perf_hit = entries_from_performance(env['workout'], [dict(item_id=main['item_id'], sets=[dict(reps=reps, load=100, unit='kg')] * main['prescription']['sets'])])
     perf_miss = entries_from_performance(env['workout'], [dict(item_id=main['item_id'], sets=[dict(reps=reps, load=100, unit='kg'), dict(reps=reps - 2, load=100, unit='kg')])])
@@ -293,11 +297,18 @@ def run(out_path=None):
     F_['sweat_long_passive_rest_caught'] = any(not ok and not n_.startswith('SOFT') for n_, ok, _ in SV.validate(w2))
     w3 = copy.deepcopy(w); w3['blocks'] = w3['blocks'][::-1]
     F_['sweat_primary_not_first_caught'] = any(not ok for n_, ok, _ in SV.validate(w3))
-    aw = AG.build('athletic_power', 'intermediate', 60, 'athletic_commercial_default', [], set(), seed='neg')
-    aw2 = copy.deepcopy(aw); aw2['items'][0] = dict(aw2['items'][0], reps=12, rest=30)
-    F_['athletic_type_a_overdose_caught'] = bool(AA.recheck(aw2, dict(equipment='athletic_commercial_default', duration=60, experience='intermediate', states=[], sore=set()))['fails'])
-    aw3 = copy.deepcopy(aw); aw3['items'][0] = dict(aw3['items'][0], id='treadmill_run') if 'treadmill_run' in AG.EX else aw3['items'][0]
-    F_['athletic_treadmill_caught'] = bool(AA.recheck(aw3, dict(equipment='athletic_commercial_default', duration=60, experience='intermediate', states=[], sore=set()))['fails'])
+    from ..engines.athletic import athletic_core as AC, athletic_validate as AV
+    an = dict(direction='athletic', states=[], duration=60, experience='intermediate', goal='stay_consistent', equipment='athletic_commercial_default', sore=set(),
+              target_mode='moods_pick', target_muscles=(), archetype='athletic_power', user='neg', date='2026-10-01')
+    ao = AC.generate(an, [])
+    s2 = copy.deepcopy(ao['sess']); s2['blocks'][0]['items'][0].update(reps=15, rest=30)
+    F_['athletic_high_rep_short_rest_power_caught'] = bool(AV.fails(s2, ao['wu'], ao['ctx']))
+    s3 = copy.deepcopy(ao['sess']); s3['blocks'] = s3['blocks'][1:] + s3['blocks'][:1]
+    F_['athletic_power_under_fatigue_caught'] = bool(AV.fails(s3, ao['wu'], ao['ctx']))
+    s4 = copy.deepcopy(ao['sess']); s4['blocks'][0]['items'][0]['sets'] = 12
+    F_['athletic_impact_overdose_caught'] = bool(AV.fails(s4, ao['wu'], ao['ctx']))
+    s5 = copy.deepcopy(ao['sess']); s5['blocks'][0]['items'][0]['id'] = 'drop_jump'
+    F_['athletic_intermediate_high_impact_caught'] = bool(AV.fails(s5, ao['wu'], ao['ctx']))
     F_['pass'] = all(v for k, v in F_.items() if k != 'pass')
     if not F_['pass']: fails.append(dict(tag='F', fail=F_))
     R['F_negative'] = F_

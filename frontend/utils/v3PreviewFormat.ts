@@ -14,6 +14,7 @@
  */
 import type { V3Block, V3Item, V3Workout } from './v3Api';
 import { secondsLabel } from './v3OverviewFormat';
+import { bodyAreaOf } from './v3HomeModel';
 
 export interface PreviewRow {
   key: string;
@@ -65,7 +66,7 @@ export function perRound(item: V3Item, rounds: number | null, unit = ''): string
   return unit && /^\d+(–\d+)?$/.test(body) ? `${body} ${unit}` : body;
 }
 
-function stationTag(item: V3Item, total: number | null): string | null {
+export function stationTag(item: V3Item, total: number | null): string | null {
   const r = item.prescription.direction_fields?.rounds;
   if (!Array.isArray(r) || !r.length || (total && r.length >= total)) return null;
   return r.map((x: number) => `R${x}`).join('+');
@@ -187,6 +188,11 @@ export function builtForToday(w: V3Workout): { key: string; kind: 'adaptation' |
 
 /** Preview title: the Target for Target sessions ("Chest", "Back + Core"), else the session type. */
 export function previewTitle(w: V3Workout): string {
+  // Strength Focus body areas are Target sets; show them as the area the user chose ("Upper Body", not "Chest + Back + Shoulders").
+  if (w.target.mode === 'explicit' && w.target.muscles?.length) {
+    const area = bodyAreaOf(w.target.muscles);
+    if (area) return area.label;
+  }
   if ((w.selection_source === 'target' || w.target.mode === 'explicit') && w.target.label && w.target.mode === 'explicit') return w.target.label;
   if (w.target.mode === 'full_body' && w.archetype.id !== 'strength_full_body') return 'Full Body';
   return w.archetype.name;

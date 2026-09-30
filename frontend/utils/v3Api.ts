@@ -14,7 +14,11 @@ declare const __DEV__: boolean;
 
 export type V3Direction = 'strength' | 'sweat' | 'athletic';
 export type V3State = 'low_energy' | 'bored' | 'irritated' | 'sore' | 'amped' | 'stressed';
-export type V3SoreRegion = 'legs' | 'chest' | 'back' | 'upper_back' | 'lower_back' | 'shoulders' | 'arms' | 'core';
+/** Soreness areas. The body map sends the precise ones (muscle ids the API accepts directly); legs / back / arms / lower_body
+ *  are the older broad regions, still accepted and still read from earlier builds. */
+export type V3SoreRegion =
+  | 'chest' | 'shoulders' | 'biceps' | 'triceps' | 'core' | 'upper_back' | 'lower_back' | 'glutes' | 'quads' | 'hamstrings' | 'calves'
+  | 'legs' | 'lower_body' | 'back' | 'arms';
 export type V3Equipment = 'commercial_gym' | 'free_weight_limited' | 'minimal';
 /** Session Difficulty (user-facing) = the V3 `experience` input. */
 export type V3Experience = 'beginner' | 'intermediate' | 'advanced';
@@ -67,6 +71,8 @@ export interface V3Prescription {
   rpe: number | [number, number] | null;
   load_guidance: string | null;
   display: string;
+  /** Founder pass 3: scalable bodyweight strength rows (pull-ups, dips, push-ups ...). Presentation only; the effort target is in rir. */
+  scaling?: { kind: 'bodyweight_adjustable' | 'bodyweight_leverage'; short: string; detail: string } | null;
   direction_fields?: Record<string, any> | null;
 }
 
@@ -112,6 +118,23 @@ export interface V3Block {
   instructions: string | null;
   est_minutes: number | null;
   items: V3Item[];
+  /** Rest contract (founder rest audit): when the timer starts, for how long, and whether it is full recovery. */
+  rest?: V3RestContract | null;
+}
+
+/**
+ * kind: between_sets (after every set; each row's prescription.rest_sec) | after_pair (after A1 + A2; seconds) |
+ * after_round (after the last station; seconds) | interval (work_sec / recovery_sec) | emom | continuous | self_paced.
+ * In grouped work rows carry no rest of their own, so nothing is described twice.
+ */
+export interface V3RestContract {
+  kind: 'between_sets' | 'after_pair' | 'after_round' | 'interval' | 'emom' | 'continuous' | 'self_paced';
+  seconds: number | null;
+  transition_sec: number | null;
+  work_sec?: number | null;
+  recovery_sec?: number | null;
+  full_recovery: boolean;
+  reason?: 'power' | 'heavy' | null;
 }
 
 export interface V3WarmupItem {
@@ -186,7 +209,7 @@ export interface V3Engine {
 }
 
 /** The engine phase this app build expects. A backend reporting anything else is running other code. */
-export const EXPECTED_ENGINE_PHASE = '2.6';
+export const EXPECTED_ENGINE_PHASE = '3.4-athletic-frozen';
 
 export interface V3Envelope {
   schema_version: string;

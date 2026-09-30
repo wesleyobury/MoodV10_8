@@ -1,0 +1,52 @@
+== 60 minutes, full grid, by level
+  beginner                   n= 234  athletic 1/2/3/4+:   0%  90%  10%   0% | mean ATHLETIC 2.10  ATHLETIC_STRENGTH 1.94  SUPPORT 0.00 | other>athletic   0%
+                                     carry 0%  pull-up/row 30%  muscle-up 0%  athletic variants (pop / split jump / speed) 7%  tiers A/B/C 74/170/248 | medians: explosive sets 6.0  contacts 9.0  intent 5.1  strength sets 6.0  est 36.1
+  intermediate               n= 234  athletic 1/2/3/4+:   0%  37%  59%   3% | mean ATHLETIC 2.66  ATHLETIC_STRENGTH 1.47  SUPPORT 0.03 | other>athletic   0%
+                                     carry 0%  pull-up/row 16%  muscle-up 1%  athletic variants (pop / split jump / speed) 15%  tiers A/B/C 86/312/225 | medians: explosive sets 9.0  contacts 9.0  intent 8.1  strength sets 4.0  est 40.7
+  advanced                   n= 234  athletic 1/2/3/4+:   0%  32%  52%  16% | mean ATHLETIC 2.83  ATHLETIC_STRENGTH 1.43  SUPPORT 0.02 | other>athletic   0%
+                                     carry 0%  pull-up/row 18%  muscle-up 2%  athletic variants (pop / split jump / speed) 28%  tiers A/B/C 113/306/244 | medians: explosive sets 10.0  contacts 12.0  intent 9.1  strength sets 4.0  est 44.55
+  all                        n= 702  athletic 1/2/3/4+:   0%  53%  40%   6% | mean ATHLETIC 2.53  ATHLETIC_STRENGTH 1.61  SUPPORT 0.01 | other>athletic   0%
+                                     carry 0%  pull-up/row 21%  muscle-up 1%  athletic variants (pop / split jump / speed) 17%  tiers A/B/C 273/788/717 | medians: explosive sets 8.0  contacts 9.0  intent 7.1  strength sets 4.0  est 40.45
+== 60 minutes, NO State, by level
+  beginner                   n=  36  athletic 1/2/3/4+:   0%  83%  17%   0% | mean ATHLETIC 2.17  ATHLETIC_STRENGTH 1.86  SUPPORT 0.00 | other>athletic   0%
+                                     carry 0%  pull-up/row 36%  muscle-up 0%  athletic variants (pop / split jump / speed) 8%  tiers A/B/C 11/29/38 | medians: explosive sets 6.0  contacts 9.0  intent 5.55  strength sets 6.0  est 36.1
+  intermediate               n=  36  athletic 1/2/3/4+:   0%   8%  83%   8% | mean ATHLETIC 3.00  ATHLETIC_STRENGTH 1.25  SUPPORT 0.14 | other>athletic   0%
+                                     carry 0%  pull-up/row 6%  muscle-up 6%  athletic variants (pop / split jump / speed) 33%  tiers A/B/C 21/60/27 | medians: explosive sets 10.0  contacts 18.0  intent 9.4  strength sets 3.0  est 44.3
+  advanced                   n=  36  athletic 1/2/3/4+:   0%   6%  50%  44% | mean ATHLETIC 3.39  ATHLETIC_STRENGTH 1.22  SUPPORT 0.06 | other>athletic   0%
+                                     carry 0%  pull-up/row 11%  muscle-up 8%  athletic variants (pop / split jump / speed) 47%  tiers A/B/C 32/61/29 | medians: explosive sets 13.0  contacts 24.0  intent 11.9  strength sets 3.0  est 48.65
+== 60 minutes, by goal (no State, intermediate + advanced)
+  improve_athleticism        n=  12  athletic 1/2/3/4+:   0%   0%  92%   8% | mean ATHLETIC 3.08  ATHLETIC_STRENGTH 1.00  SUPPORT 0.17 | other>athletic   0%
+  build_strength             n=  12  athletic 1/2/3/4+:   0%   8%  92%   0% | mean ATHLETIC 2.92  ATHLETIC_STRENGTH 2.00  SUPPORT 0.00 | other>athletic   0%
+  build_muscle               n=  12  athletic 1/2/3/4+:   0%   0%  75%  25% | mean ATHLETIC 3.25  ATHLETIC_STRENGTH 1.08  SUPPORT 0.08 | other>athletic   0%
+  lose_weight_conditioning   n=  12  athletic 1/2/3/4+:   0%   8%  58%  33% | mean ATHLETIC 3.25  ATHLETIC_STRENGTH 1.08  SUPPORT 0.25 | other>athletic   0%
+  feel_better_reduce_stress  n=  12  athletic 1/2/3/4+:   0%  17%  42%  42% | mean ATHLETIC 3.25  ATHLETIC_STRENGTH 1.17  SUPPORT 0.08 | other>athletic   0%
+  stay_consistent            n=  12  athletic 1/2/3/4+:   0%   8%  42%  50% | mean ATHLETIC 3.42  ATHLETIC_STRENGTH 1.08  SUPPORT 0.00 | other>athletic   0%
+== 60 minutes, by State (all levels)
+  amped                      n=  54  athletic 1/2/3/4+:   0%  28%  61%  11% | mean ATHLETIC 2.83  ATHLETIC_STRENGTH 1.57  SUPPORT 0.02 | other>athletic   0%
+  amped+stressed             n=  54  athletic 1/2/3/4+:   0%  39%  61%   0% | mean ATHLETIC 2.61  ATHLETIC_STRENGTH 1.39  SUPPORT 0.00 | other>athletic   0%
+  bored                      n=  54  athletic 1/2/3/4+:   0%  19%  57%  24% | mean ATHLETIC 3.06  ATHLETIC_STRENGTH 1.44  SUPPORT 0.00 | other>athletic   0%
+  bored+low_energy           n=  54  athletic 1/2/3/4+:   0% 100%   0%   0% | mean ATHLETIC 2.00  ATHLETIC_STRENGTH 2.00  SUPPORT 0.00 | other>athletic   0%
+  bored+stressed             n=  54  athletic 1/2/3/4+:   0%  33%  67%   0% | mean ATHLETIC 2.67  ATHLETIC_STRENGTH 1.33  SUPPORT 0.00 | other>athletic   0%
+  irritated                  n=  54  athletic 1/2/3/4+:   0%  26%  61%  13% | mean ATHLETIC 2.87  ATHLETIC_STRENGTH 1.50  SUPPORT 0.04 | other>athletic   0%
+  irritated+low_energy       n=  54  athletic 1/2/3/4+:   0% 100%   0%   0% | mean ATHLETIC 2.00  ATHLETIC_STRENGTH 2.00  SUPPORT 0.00 | other>athletic   0%
+  irritated+stressed         n=  54  athletic 1/2/3/4+:   0%  37%  63%   0% | mean ATHLETIC 2.63  ATHLETIC_STRENGTH 1.37  SUPPORT 0.00 | other>athletic   0%
+  low_energy                 n=  54  athletic 1/2/3/4+:   0% 100%   0%   0% | mean ATHLETIC 2.00  ATHLETIC_STRENGTH 2.00  SUPPORT 0.00 | other>athletic   0%
+  low_energy+amped           n=  54  athletic 1/2/3/4+:   0% 100%   0%   0% | mean ATHLETIC 2.00  ATHLETIC_STRENGTH 2.00  SUPPORT 0.00 | other>athletic   0%
+  none                       n= 108  athletic 1/2/3/4+:   0%  32%  50%  18% | mean ATHLETIC 2.85  ATHLETIC_STRENGTH 1.44  SUPPORT 0.06 | other>athletic   0%
+  stressed                   n=  54  athletic 1/2/3/4+:   0%  44%  56%   0% | mean ATHLETIC 2.56  ATHLETIC_STRENGTH 1.44  SUPPORT 0.00 | other>athletic   0%
+== 60 minutes, by structure (all)
+  athletic_mixed             n=  62  athletic 1/2/3/4+:   0%  15%  74%  11% | mean ATHLETIC 2.97  ATHLETIC_STRENGTH 1.32  SUPPORT 0.10 | other>athletic   0%
+  contrast                   n=  13  athletic 1/2/3/4+:   0%   0%  38%  62% | mean ATHLETIC 3.62  ATHLETIC_STRENGTH 1.38  SUPPORT 0.00 | other>athletic   0%
+  jump_throw                 n= 110  athletic 1/2/3/4+:   0%  30%  57%  13% | mean ATHLETIC 2.83  ATHLETIC_STRENGTH 1.43  SUPPORT 0.00 | other>athletic   0%
+  power_strength             n= 355  athletic 1/2/3/4+:   0%  60%  36%   4% | mean ATHLETIC 2.44  ATHLETIC_STRENGTH 1.66  SUPPORT 0.00 | other>athletic   0%
+  speed_strength             n= 162  athletic 1/2/3/4+:   0%  73%  26%   1% | mean ATHLETIC 2.28  ATHLETIC_STRENGTH 1.75  SUPPORT 0.02 | other>athletic   0%
+
+== 30 minutes, full grid, by level
+  beginner                   n= 234  athletic 1/2/3/4+:   3%  97%   0%   0% | mean ATHLETIC 1.97  ATHLETIC_STRENGTH 1.03  SUPPORT 0.00 | other>athletic   3%
+                                     carry 0%  pull-up/row 1%  muscle-up 0%  athletic variants (pop / split jump / speed) 5%  tiers A/B/C 74/135/253 | medians: explosive sets 6.0  contacts 6.0  intent 4.8  strength sets 3.0  est 22.0
+  intermediate               n= 234  athletic 1/2/3/4+:   6%  94%   0%   0% | mean ATHLETIC 1.94  ATHLETIC_STRENGTH 1.06  SUPPORT 0.00 | other>athletic   6%
+                                     carry 0%  pull-up/row 2%  muscle-up 0%  athletic variants (pop / split jump / speed) 4%  tiers A/B/C 73/165/216 | medians: explosive sets 7.0  contacts 0.0  intent 5.8  strength sets 3.0  est 25.8
+  advanced                   n= 234  athletic 1/2/3/4+:   3%  97%   0%   0% | mean ATHLETIC 1.97  ATHLETIC_STRENGTH 1.03  SUPPORT 0.00 | other>athletic   3%
+                                     carry 0%  pull-up/row 2%  muscle-up 0%  athletic variants (pop / split jump / speed) 5%  tiers A/B/C 114/143/203 | medians: explosive sets 7.0  contacts 0.0  intent 6.6  strength sets 3.0  est 28.0
+  all                        n= 702  athletic 1/2/3/4+:   4%  96%   0%   0% | mean ATHLETIC 1.96  ATHLETIC_STRENGTH 1.04  SUPPORT 0.00 | other>athletic   4%
+                                     carry 0%  pull-up/row 2%  muscle-up 0%  athletic variants (pop / split jump / speed) 5%  tiers A/B/C 261/443/672 | medians: explosive sets 6.0  contacts 6.0  intent 5.2  strength sets 3.0  est 25.1

@@ -82,17 +82,17 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* Workouts - Center position */}
+      {/* Home - Center position (H1: was "Workouts"; the route stays `index` so analytics tab names are unchanged) */}
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Workouts',
+          title: 'Home',
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconContainer}>
               {focused ? (
-                <GradientIcon name="fitness" size={24} />
+                <GradientIcon name="home" size={24} />
               ) : (
-                <Ionicons name="fitness-outline" size={24} color={color} />
+                <Ionicons name="home-outline" size={24} color={color} />
               )}
             </View>
           ),

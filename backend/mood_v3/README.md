@@ -13,7 +13,9 @@ request ─► normalize.py ─► service.py ─► engines/<direction>/adapter
 |---|---|
 | `engines/strength/{audit_engine,qa_engine,prescription,structure}.py` | Frozen Strength reference generator v6 (WA v17 / ET v12 / SD v5 / Library v11) |
 | `engines/sweat/{sweat_data,sweat_gen,sweat_validate}.py` | Frozen Sweat FINAL FREEZE v4 generator and validator |
-| `engines/athletic/{athletic_gen,lib3,lib2,athletic_lib,audit2,sk5,sweat_shared_data}.py` | Frozen Athletic Reference Generator v1 and validator |
+| `engines/athletic/athletic_core.py`, `athletic_validate.py` | Athletic (FROZEN, phase 3.4): primary quality + further athletic movements chosen by an athletic movement budget with cost tiers A/B/C (2-4 at 60 min), strength as 1-2 support exercises, no carries, muscle-ups and explicit athletic variants, 5 structures (no agility / footwork drills), low-rep power dosing with full recovery, athletic strength, impact / intent budget, State ownership, State Satisfaction + whole-session Coherence; independent validator |
+| `engines/athletic/{athletic_gen,lib3,lib2,athletic_lib,audit2,sk5,sweat_shared_data}.py` | Frozen Athletic library (read by the rebuild) and the Reference Generator v1 kept for comparison (`adapter_legacy_v1.py`) |
+| `athletic_why.py` | Athletic personalization contract + Built for Today synthesis (claims rest on realized changes) |
 | `engines/VENDOR_PATCHES.md` | Every line changed while vendoring (paths and imports only) |
 | `engines/state_rules.py` | SD v5 multi-State arbitration (the frozen Sweat implementation, shared read-only) |
 | `engines/*/adapter.py` | Per-Direction production adapter: input translation, validation, exercise swap, conflicts |

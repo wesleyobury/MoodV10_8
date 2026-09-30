@@ -1,0 +1,163 @@
+#1 ['low_energy', 'amped'] | hybrid split_anchor | intermediate | build_muscle | est 46.5 | comp substantial 34.1
+   [Hybrid] anchor_circuit rounds=4 interval=None/NonexNone rest=45 RPE [7, 8] ~28.5min :: Row Erg 600 m; Kettlebell Swing 20; Med-Ball Slam 15; Dumbbell Push Press 16
+   active 20.3 hard 0.0 loaded 204 bw 0 engine 11.3 warm 10 cool 8
+#2 ['amped', 'bored'] | engine long_intervals | intermediate | improve_athleticism | est 47.6 | comp sufficient 26.0
+   [Engine] intervals rounds=5 interval=240/90x5 rest=None RPE [7, 8] ~26.0min :: SkiErg 5 × 4 min / 1:30 easy
+   [Complement] circuit rounds=2 interval=None/NonexNone rest=45 RPE [6, 7] ~7.1min :: Devil Press 8; Single-Arm Landmine Press 10/side; Front-Rack Carry 40 m
+   active 24.9 hard 0.0 loaded 56 bw 0 engine 20.0 warm 8 cool 5
+#3 ['irritated'] | circuit rounds | advanced | build_strength | est 48.4 | comp sufficient 27.8
+   [Circuit] circuit rounds=6 interval=None/NonexNone rest=45 RPE [7, 8] ~26.6min :: Air Bike / Assault Bike 12 cal; Kettlebell Swing 15; Dumbbell Push Press 15; Sled Rope Pull 20 m
+   [Finisher] finisher rounds=6 interval=20/40x6 rest=None RPE [9, 9] ~5.3min :: Battle Rope Waves 6 × 20 s / 40 s easy
+   active 18.8 hard 2.0 loaded 180 bw 0 engine 4.5 warm 10 cool 5
+#4 ['bored'] | engine long_intervals | beginner | feel_better_reduce_stress | est 51.8 | comp insufficient 12.8
+   [Engine] intervals rounds=6 interval=150/150x6 rest=None RPE [6, 7] ~27.5min :: SkiErg 6 × 2:30 / 2:30 easy
+   [Complement] circuit rounds=3 interval=None/NonexNone rest=60 RPE [6, 7] ~10.8min :: Heel-Elevated Dumbbell Squat 12; Single-Arm Landmine Press 8/side; Front-Rack Carry 40 m
+   active 21.5 hard 0.0 loaded 84 bw 0 engine 15.0 warm 7 cool 5
+#5 ['bored'] | circuit rounds | intermediate | lose_weight_conditioning | est 42.9 | comp substantial 29.1
+   [Circuit] circuit rounds=5 interval=None/NonexNone rest=60 RPE [7, 8] ~24.9min :: Front-Rack Carry 40 m; Devil Press 8; Half-Kneeling Single-Arm Landmine Press 10/side; Wall Ball 15
+   active 15.9 hard 0.0 loaded 215 bw 0 engine 0.0 warm 10 cool 8
+#6 ['bored', 'low_energy'] | circuit rounds | advanced | lose_weight_conditioning | est 48.4 | comp sufficient 22.6
+   [Circuit] circuit rounds=6 interval=None/NonexNone rest=45 RPE [6, 7] ~27.9min :: Single-Arm Overhead Carry 40 m; Kickstand Dumbbell RDL 10/side; Dumbbell Floor Press 15; Skater Hops 10/side
+   [Complement] continuous rounds=None interval=None/NonexNone rest=None RPE [5, 6] ~8.0min :: Stationary Bike 8 min steady
+   active 26.1 hard 0.0 loaded 210 bw 120 engine 8.0 warm 6 cool 5
+#7 ['bored'] | engine short_intervals | advanced | lose_weight_conditioning | est 43.8 | comp insufficient 15.6
+   [Engine] intervals rounds=18 interval=40/20x18 rest=None RPE [8, 9] ~17.7min :: Jump Rope 18 × 40 s / 20 s easy
+   [Complement] circuit rounds=2 interval=None/NonexNone rest=45 RPE [6, 7] ~6.6min :: Devil Press 8; Dumbbell Floor Press 15; Single-Arm Overhead Carry 40 m
+   active 16.4 hard 12.0 loaded 46 bw 0 engine 12.0 warm 10 cool 8
+#8 no state | hybrid anchor_couplet | advanced | feel_better_reduce_stress | est 50.3 | comp substantial 45.4
+   [Hybrid] anchor_circuit rounds=6 interval=None/NonexNone rest=45 RPE [7, 8] ~38.3min :: Row Erg 600 m; Wall Ball 20; Single-Arm Overhead Carry 60 m
+   active 28.6 hard 0.0 loaded 120 bw 0 engine 15.7 warm 7 cool 5
+#9 ['low_energy', 'amped'] | hybrid split_anchor | beginner | lose_weight_conditioning | est 47.7 | comp substantial 31.6
+   [Hybrid] anchor_circuit rounds=4 interval=None/NonexNone rest=60 RPE [7, 8] ~30.7min :: Treadmill Run 350 m; Plate Push 20 m; Step-Up 10/side; Farmer Carry 60 m
+   active 19.7 hard 0.0 loaded 80 bw 0 engine 10.0 warm 10 cool 7
+#10 ['amped', 'stressed'] | engine long_intervals | advanced | build_strength | est 43.5 | comp sufficient 26.0
+   [Engine] intervals rounds=4 interval=300/110x4 rest=None RPE [8, 9] ~25.5min :: Row Erg 4 × 5 min / 1:50 easy
+   active 20.0 hard 20.0 loaded 0 bw 0 engine 20.0 warm 10 cool 8
+#11 ['bored'] | engine continuous | advanced | lose_weight_conditioning | est 47.6 | comp sufficient 24.3
+   [Engine] continuous rounds=None interval=None/NonexNone rest=None RPE [5, 6] ~26.0min :: Row Erg 26 min steady
+   [Complement] circuit rounds=2 interval=None/NonexNone rest=45 RPE [6, 7] ~7.1min :: Devil Press 8; Half-Kneeling Single-Arm Landmine Press 10/side; Front-Rack Carry 40 m
+   active 30.9 hard 0.0 loaded 56 bw 0 engine 26.0 warm 8 cool 5
+#12 ['low_energy', 'amped'] | circuit rounds | advanced | lose_weight_conditioning | est 48.1 | comp sufficient 23.2
+   [Circuit] circuit rounds=5 interval=None/NonexNone rest=30 RPE [7, 8] ~20.6min :: Row Erg 250 m; Kettlebell Swing 15; Dumbbell Push Press 15; Suitcase Carry 30 m
+   [Complement] continuous rounds=None interval=None/NonexNone rest=None RPE [5, 6] ~8.0min :: Stationary Bike 8 min steady
+   active 21.6 hard 0.0 loaded 150 bw 0 engine 12.5 warm 10 cool 8
+#13 ['irritated'] | circuit rounds | beginner | feel_better_reduce_stress | est 41.7 | comp sufficient 21.4
+   [Circuit] circuit rounds=5 interval=None/NonexNone rest=75 RPE [7, 8] ~23.7min :: Air Bike / Assault Bike 10 cal; Kettlebell Deadlift 12; Push-Up 8; Sled Rope Pull 20 m
+   active 13.7 hard 0.0 loaded 60 bw 40 engine 5.0 warm 10 cool 8
+#14 ['bored', 'stressed'] | hybrid split_anchor | beginner | improve_athleticism | est 45.3 | comp sufficient 18.1
+   [Hybrid] anchor_circuit rounds=4 interval=None/NonexNone rest=75 RPE [7, 7] ~27.3min :: SkiErg 400 m; Skater Hops 12/side; Front-Rack Carry 60 m
+   active 16.5 hard 0.0 loaded 0 bw 96 engine 9.5 warm 10 cool 8
+#15 ['amped', 'bored'] | engine continuous | advanced | lose_weight_conditioning | est 47.6 | comp sufficient 24.3
+   [Engine] continuous rounds=None interval=None/NonexNone rest=None RPE [6, 7] ~26.0min :: Row Erg 26 min steady
+   [Complement] circuit rounds=2 interval=None/NonexNone rest=45 RPE [6, 7] ~7.1min :: Devil Press 8; Half-Kneeling Single-Arm Landmine Press 10/side; Front-Rack Carry 40 m
+   active 30.9 hard 0.0 loaded 56 bw 0 engine 26.0 warm 8 cool 5
+#16 ['bored'] | hybrid split_anchor | intermediate | lose_weight_conditioning | est 48.9 | comp substantial 45.4
+   [Hybrid] anchor_circuit rounds=4 interval=None/NonexNone rest=60 RPE [7, 8] ~36.9min :: SkiErg 700 m; Devil Press 10; Med-Ball Slam 15; Sled Rope Pull 20 m; Front-Rack Carry 60 m
+   active 27.9 hard 0.0 loaded 100 bw 0 engine 13.8 warm 7 cool 5
+#17 ['amped'] | hybrid anchor_couplet | beginner | build_strength | est 48.0 | comp substantial 27.7
+   [Hybrid] anchor_circuit rounds=6 interval=None/NonexNone rest=60 RPE [7, 8] ~32.0min :: Row Erg 300 m; Skater Hops 12/side; Med-Ball Slam 13
+   active 18.0 hard 0.0 loaded 78 bw 144 engine 10.5 warm 10 cool 6
+#18 ['amped', 'bored'] | circuit emom | advanced | build_strength | est 47.8 | comp sufficient 31.4
+   [Circuit] emom rounds=7 interval=None/Nonex7 rest=None RPE [7, 8] ~28.0min :: Med-Ball Slam 13; Devil Press 8; Dumbbell Floor Press 13; Dumbbell Lateral-Raise Jacks 40 s
+   [Finisher] finisher rounds=6 interval=20/40x6 rest=None RPE [9, 9] ~5.3min :: Sled Rope Pull 6 × 20 s / 40 s easy
+   active 20.4 hard 2.0 loaded 238 bw 0 engine 0.0 warm 8 cool 5
+#19 ['irritated', 'stressed'] | circuit rounds | advanced | lose_weight_conditioning | est 45.1 | comp sufficient 22.9
+   [Circuit] circuit rounds=6 interval=None/NonexNone rest=60 RPE [7, 7] ~27.1min :: Burpee 8; Kettlebell Swing 15; Dumbbell Push Press 15; Farmer Carry 40 m
+   active 16.1 hard 0.0 loaded 180 bw 48 engine 0.0 warm 10 cool 8
+#20 ['irritated'] | engine long_intervals | beginner | build_muscle | est 40.5 | comp sufficient 16.2
+   [Engine] intervals rounds=5 interval=150/150x5 rest=None RPE [7, 8] ~22.5min :: Air Bike / Assault Bike 5 × 2:30 / 2:30 easy
+   active 12.5 hard 0.0 loaded 0 bw 0 engine 12.5 warm 10 cool 8
+#21 ['irritated'] | hybrid split_anchor | advanced | lose_weight_conditioning | est 49.8 | comp substantial 48.9
+   [Hybrid] anchor_circuit rounds=4 interval=None/NonexNone rest=45 RPE [8, 9] ~37.8min :: Row Erg 950 m; Wall Ball 20; Med-Ball Slam 15; Dumbbell Push Press 16; Front-Rack Carry 60 m
+   active 29.6 hard 15.3 loaded 204 bw 0 engine 15.3 warm 7 cool 5
+#22 ['low_energy', 'amped'] | hybrid anchor_couplet | beginner | feel_better_reduce_stress | est 47.5 | comp substantial 24.3
+   [Hybrid] anchor_circuit rounds=5 interval=None/NonexNone rest=60 RPE [7, 8] ~29.5min :: Stationary Bike 14 cal; Plate Push 20 m; Farmer Carry 50 m
+   active 17.5 hard 0.0 loaded 0 bw 0 engine 9.7 warm 10 cool 8
+#23 ['low_energy'] | hybrid split_anchor | advanced | build_strength | est 53.7 | comp substantial 34.7
+   [Hybrid] anchor_circuit rounds=5 interval=None/NonexNone rest=45 RPE [6, 7] ~41.7min :: Row Erg 750 m; Air Squat 20; Suitcase Carry 40 m; Dumbbell Push Press 16; Med-Ball Slam 15
+   active 31.2 hard 0.0 loaded 155 bw 100 engine 17.0 warm 7 cool 5
+#24 ['amped', 'stressed'] | circuit rounds | beginner | lose_weight_conditioning | est 37.0 | comp sufficient 16.0
+   [Circuit] circuit rounds=5 interval=None/NonexNone rest=60 RPE [7, 7] ~19.0min :: Burpee 6; Glute Bridge 15; Dumbbell Push Press 12; Med-Ball Slam 10
+   active 10.0 hard 0.0 loaded 110 bw 105 engine 0.0 warm 10 cool 8
+#25 ['low_energy'] | engine long_intervals | advanced | lose_weight_conditioning | est 47.8 | comp insufficient 17.0
+   [Engine] intervals rounds=4 interval=300/90x4 rest=None RPE [6, 7] ~24.5min :: Stationary Bike 4 × 5 min / 1:30 easy
+   [Complement] circuit rounds=2 interval=None/NonexNone rest=45 RPE [6, 7] ~6.8min :: Glute Bridge 15; Chest-Supported Dumbbell Row 15; Dead Bug 10/side
+   active 24.5 hard 0.0 loaded 30 bw 70 engine 20.0 warm 10 cool 5
+#26 ['bored', 'low_energy'] | hybrid anchor_couplet | beginner | feel_better_reduce_stress | est 47.5 | comp sufficient 15.5
+   [Hybrid] anchor_circuit rounds=5 interval=None/NonexNone rest=75 RPE [6, 7] ~29.5min :: Stationary Bike 10 cal; Plate Push 20 m; Farmer Carry 50 m
+   active 16.5 hard 0.0 loaded 0 bw 0 engine 8.7 warm 10 cool 8
+#27 ['bored'] | engine long_intervals | beginner | improve_athleticism | est 52.4 | comp insufficient 12.8
+   [Engine] intervals rounds=6 interval=150/150x6 rest=None RPE [6, 7] ~27.5min :: SkiErg 6 × 2:30 / 2:30 easy
+   [Complement] circuit rounds=3 interval=None/NonexNone rest=60 RPE [6, 7] ~11.3min :: Kickstand Dumbbell RDL 8/side; Single-Arm Landmine Press 8/side; Front-Rack Carry 40 m
+   active 22.1 hard 0.0 loaded 96 bw 0 engine 15.0 warm 7 cool 5
+#28 ['bored', 'low_energy'] | hybrid split_anchor | beginner | improve_athleticism | est 48.2 | comp substantial 20.9
+   [Hybrid] anchor_circuit rounds=4 interval=None/NonexNone rest=75 RPE [6, 7] ~32.2min :: Treadmill Run 350 m; Plate Push 20 m; Step-Up 10/side; Farmer Carry 60 m
+   active 20.4 hard 0.0 loaded 80 bw 0 engine 10.8 warm 10 cool 6
+#29 ['stressed'] | circuit rounds | beginner | build_strength | est 40.0 | comp sufficient 16.7
+   [Circuit] circuit rounds=5 interval=None/NonexNone rest=75 RPE [7, 7] ~22.0min :: Burpee 6; Box Step-Up (Glute Bias) 8/side; Push-Up 8; Farmer Carry 40 m
+   active 12.0 hard 0.0 loaded 80 bw 70 engine 0.0 warm 10 cool 8
+#30 ['low_energy'] | circuit rounds | beginner | build_strength | est 47.8 | comp sufficient 13.6
+   [Circuit] circuit rounds=5 interval=None/NonexNone rest=75 RPE [6, 7] ~23.3min :: Stationary Bike 1 min; Glute Bridge 15; Bench Dip 8; Farmer Carry 40 m
+   [Complement] continuous rounds=None interval=None/NonexNone rest=None RPE [5, 6] ~8.0min :: Treadmill Run 8 min steady
+   active 21.3 hard 0.0 loaded 40 bw 75 engine 13.0 warm 10 cool 5
+#31 ['bored', 'stressed'] | circuit rounds | beginner | lose_weight_conditioning | est 41.8 | comp sufficient 17.7
+   [Circuit] circuit rounds=5 interval=None/NonexNone rest=90 RPE [7, 7] ~23.8min :: Front-Rack Carry 40 m; Kickstand Dumbbell RDL 8/side; Dumbbell Floor Press 12; Skater Hops 8/side
+   active 12.8 hard 0.0 loaded 140 bw 80 engine 0.0 warm 10 cool 8
+#32 ['low_energy'] | engine continuous | advanced | lose_weight_conditioning | est 47.5 | comp sufficient 20.0
+   [Engine] continuous rounds=None interval=None/NonexNone rest=None RPE [4, 5] ~26.0min :: Stationary Bike 26 min steady
+   [Complement] continuous rounds=None interval=None/NonexNone rest=None RPE [5, 6] ~8.0min :: Row Erg 8 min steady
+   active 34.0 hard 0.0 loaded 0 bw 0 engine 34.0 warm 7 cool 5
+#33 ['irritated'] | engine continuous | advanced | lose_weight_conditioning | est 47.8 | comp sufficient 24.3
+   [Engine] continuous rounds=None interval=None/NonexNone rest=None RPE [6, 7] ~26.0min :: Row Erg 26 min steady
+   [Complement] circuit rounds=2 interval=None/NonexNone rest=45 RPE [6, 7] ~6.3min :: Kettlebell Swing 15; Dumbbell Push Press 15; Front-Rack Carry 40 m
+   active 30.0 hard 0.0 loaded 60 bw 0 engine 26.0 warm 9 cool 5
+#34 ['amped'] | circuit emom | intermediate | build_strength | est 44.8 | comp sufficient 26.6
+   [Circuit] emom rounds=5 interval=None/Nonex5 rest=None RPE [7, 8] ~20.0min :: Med-Ball Slam 13; Dumbbell Snatch 7/side; Dumbbell Push Press 15; Box Jump 13
+   [Finisher] finisher rounds=6 interval=20/40x6 rest=None RPE [9, 9] ~5.3min :: Sled Push 6 × 20 s / 40 s easy
+   active 14.9 hard 2.0 loaded 275 bw 0 engine 0.0 warm 10 cool 8
+#35 ['bored'] | circuit rounds | advanced | lose_weight_conditioning | est 47.2 | comp sufficient 29.1
+   [Circuit] circuit rounds=5 interval=None/NonexNone rest=45 RPE [7, 8] ~23.9min :: Front-Rack Carry 40 m; Devil Press 8; Half-Kneeling Single-Arm Landmine Press 10/side; Wall Ball 15
+   [Complement] ladder rounds=None interval=None/NonexNone rest=None RPE [7, 8] ~3.8min :: Skater Hops Ladder 12-10-8-6-4; Dumbbell Floor Press Ladder 12-10-8-6-4
+   active 18.9 hard 0.0 loaded 255 bw 40 engine 0.0 warm 10 cool 8
+#36 ['irritated', 'stressed'] | hybrid split_anchor | intermediate | improve_athleticism | est 49.1 | comp substantial 42.7
+   [Hybrid] anchor_circuit rounds=5 interval=None/NonexNone rest=60 RPE [8, 8] ~37.1min :: Row Erg 600 m; Burpee 10; Farmer Carry 60 m; Dumbbell Push Press 16
+   active 26.8 hard 13.6 loaded 80 bw 50 engine 13.6 warm 7 cool 5
+#37 ['stressed'] | circuit rounds | advanced | lose_weight_conditioning | est 48.0 | comp sufficient 22.6
+   [Circuit] circuit rounds=7 interval=None/NonexNone rest=60 RPE [7, 7] ~30.0min :: Burpee 8; Glute Bridge 15; Push-Up 12; Farmer Carry 40 m
+   active 17.0 hard 0.0 loaded 0 bw 245 engine 0.0 warm 10 cool 8
+#38 ['bored', 'stressed'] | hybrid anchor_couplet | beginner | feel_better_reduce_stress | est 48.7 | comp substantial 23.0
+   [Hybrid] anchor_circuit rounds=6 interval=None/NonexNone rest=75 RPE [7, 7] ~35.7min :: SkiErg 300 m; Plate Push 20 m; Single-Arm Overhead Carry 60 m
+   active 21.5 hard 0.0 loaded 0 bw 0 engine 11.0 warm 8 cool 5
+#39 ['low_energy'] | circuit timed | beginner | lose_weight_conditioning | est 52.2 | comp insufficient 11.9
+   [Circuit] timed_circuit rounds=6 interval=35/35x6 rest=60 RPE [6, 7] ~35.0min :: Farmer Carry 35 s; Glute Bridge 35 s; Bench Dip 35 s; Dead Bug 35 s
+   [Complement] circuit rounds=2 interval=None/NonexNone rest=60 RPE [6, 7] ~3.7min :: Reverse Crunch 12; Push-Up 8
+   active 15.7 hard 0.0 loaded 0 bw 40 engine 0.0 warm 7 cool 5
+#40 ['low_energy', 'amped'] | engine long_intervals | intermediate | improve_athleticism | est 47.0 | comp sufficient 20.8
+   [Engine] intervals rounds=4 interval=240/70x4 rest=None RPE [7, 8] ~19.5min :: Row Erg 4 × 4 min / 1:10 easy
+   [Complement] continuous rounds=None interval=None/NonexNone rest=None RPE [5, 6] ~8.0min :: Stationary Bike 8 min steady
+   active 24.0 hard 0.0 loaded 0 bw 0 engine 24.0 warm 10 cool 8
+#41 ['amped', 'stressed'] | circuit rounds | advanced | build_muscle | est 43.1 | comp sufficient 27.6
+   [Circuit] circuit rounds=6 interval=None/NonexNone rest=60 RPE [8, 9] ~25.1min :: Box Jump 10; Kettlebell Swing 15; Dumbbell Push Press 15; Med-Ball Slam 12
+   active 14.1 hard 14.1 loaded 312 bw 0 engine 0.0 warm 10 cool 8
+#42 no state | hybrid anchor_couplet | beginner | build_strength | est 48.6 | comp substantial 29.3
+   [Hybrid] anchor_circuit rounds=6 interval=None/NonexNone rest=75 RPE [7, 8] ~35.6min :: Row Erg 300 m; Sled Push 20 m; Single-Arm Overhead Carry 60 m
+   active 21.4 hard 0.0 loaded 0 bw 0 engine 10.5 warm 8 cool 5
+#43 ['irritated', 'stressed'] | engine long_intervals | beginner | improve_athleticism | est 43.2 | comp sufficient 16.2
+   [Engine] intervals rounds=5 interval=150/190x5 rest=None RPE [7, 8] ~25.2min :: Air Bike / Assault Bike 5 × 2:30 / 3:10 easy
+   active 12.5 hard 0.0 loaded 0 bw 0 engine 12.5 warm 10 cool 8
+#44 ['stressed'] | hybrid anchor_couplet | intermediate | feel_better_reduce_stress | est 48.6 | comp sufficient 22.9
+   [Hybrid] anchor_circuit rounds=6 interval=None/NonexNone rest=60 RPE [7, 7] ~34.6min :: Row Erg 400 m; Goblet Squat 15; Suitcase Carry 40 m
+   active 20.6 hard 0.0 loaded 90 bw 0 engine 11.5 warm 8 cool 6
+#45 ['low_energy'] | engine long_intervals | beginner | improve_athleticism | est 49.0 | comp sufficient 12.8
+   [Engine] intervals rounds=6 interval=150/150x6 rest=None RPE [5, 6] ~27.5min :: Stationary Bike 6 × 2:30 / 2:30 easy
+   [Complement] continuous rounds=None interval=None/NonexNone rest=None RPE [5, 6] ~8.0min :: Stair Climber 8 min steady
+   active 23.0 hard 0.0 loaded 0 bw 0 engine 23.0 warm 7 cool 5
+#46 ['amped', 'bored'] | hybrid ladder_hybrid | advanced | feel_better_reduce_stress | est 48.6 | comp substantial 39.8
+   [Hybrid] anchor_circuit rounds=6 interval=None/NonexNone rest=45 RPE [7, 8] ~35.6min :: SkiErg 800 m / 650 m / 550 m / 400 m / 250 m / 250 m; Devil Press 8; Med-Ball Slam 12
+   active 23.8 hard 0.0 loaded 170 bw 0 engine 13.0 warm 8 cool 5
+#47 ['low_energy'] | hybrid split_anchor | beginner | build_muscle | est 48.7 | comp substantial 30.1
+   [Hybrid] anchor_circuit rounds=4 interval=None/NonexNone rest=75 RPE [6, 7] ~36.7min :: Treadmill Run 450 m; Step-Up 10/side; Farmer Carry 60 m; Air Squat 20; Sled Rope Pull 20 m
+   active 27.0 hard 0.0 loaded 80 bw 80 engine 13.9 warm 7 cool 5
+#48 ['irritated', 'low_energy'] | hybrid anchor_couplet | beginner | feel_better_reduce_stress | est 47.5 | comp sufficient 15.5
+   [Hybrid] anchor_circuit rounds=5 interval=None/NonexNone rest=75 RPE [6, 7] ~29.5min :: Stationary Bike 10 cal; Plate Push 20 m; Farmer Carry 50 m
+   active 16.5 hard 0.0 loaded 0 bw 0 engine 8.7 warm 10 cool 8

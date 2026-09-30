@@ -7,6 +7,7 @@
  * The server still validates everything; these helpers only keep the UI from
  * offering a request the contract rejects.
  */
+import { BODY_MAP_REGIONS } from './v3BodyMap';
 import type { V3Direction, V3Equipment, V3Experience, V3GenerateRequest, V3SoreRegion, V3State } from './v3Api';
 
 /* ------------------------------------------------------------------ vocabulary */
@@ -32,16 +33,12 @@ export const STATES: { id: V3State; label: string; icon: string }[] = [
 ];
 export const STATE_LABEL: Record<V3State, string> = Object.fromEntries(STATES.map((s) => [s.id, s.label])) as Record<V3State, string>;
 
-/** Body-map regions the API accepts (normalize.SORE_REGIONS). */
+/** Body-map regions, in head-to-toe order, plus the older broad regions (labels only; still accepted from earlier builds). */
 export const SORE_REGIONS: { id: V3SoreRegion; label: string }[] = [
+  ...BODY_MAP_REGIONS,
   { id: 'legs', label: 'Legs' },
-  { id: 'chest', label: 'Chest' },
   { id: 'back', label: 'Back' },
-  { id: 'upper_back', label: 'Upper Back' },
-  { id: 'lower_back', label: 'Lower Back' },
-  { id: 'shoulders', label: 'Shoulders' },
   { id: 'arms', label: 'Arms' },
-  { id: 'core', label: 'Core' },
 ];
 
 /**
@@ -61,6 +58,67 @@ export const TARGETS: { id: string; label: string; muscles: string[] | 'full_bod
   { id: 'glutes', label: 'Glutes', muscles: ['glutes'] },
   { id: 'calves', label: 'Calves', muscles: ['calves'] },
 ];
+
+/**
+ * Strength Focus (founder edit pass): the user picks a BODY AREA or SPECIFIC MUSCLES; the engine's Target routing picks the
+ * architecture (Upper Body -> Upper Body session, Lower Body -> Glutes + Legs, Chest + Shoulders + Triceps -> Upper Push ...).
+ * Body areas are exact Target sets the frozen Strength contract already routes (mood_v3 strength adapter ROUTING).
+ */
+export const BODY_AREAS: { id: 'upper_body' | 'lower_body' | 'full_body'; label: string; muscles: string[] | 'full_body' }[] = [
+  { id: 'upper_body', label: 'Upper Body', muscles: ['chest', 'back', 'shoulders'] },
+  { id: 'lower_body', label: 'Lower Body', muscles: ['quads', 'hamstrings', 'glutes'] },
+  { id: 'full_body', label: 'Full Body', muscles: 'full_body' },
+];
+
+/** Strength specific-muscle Targets (normalize.USER_FACING_TARGETS; Core is the engine's `core`). */
+export const STRENGTH_MUSCLES: { id: string; label: string }[] = [
+  { id: 'chest', label: 'Chest' },
+  { id: 'back', label: 'Back' },
+  { id: 'shoulders', label: 'Shoulders' },
+  { id: 'biceps', label: 'Biceps' },
+  { id: 'triceps', label: 'Triceps' },
+  { id: 'quads', label: 'Quads' },
+  { id: 'hamstrings', label: 'Hamstrings' },
+  { id: 'glutes', label: 'Glutes' },
+  { id: 'calves', label: 'Calves' },
+  { id: 'core', label: 'Core' },
+];
+
+function sameSet(a: string[], b: string[]): boolean {
+  return a.length === b.length && a.every((x) => b.includes(x));
+}
+
+/** The body area a Target equals exactly, if any. */
+export function bodyAreaOf(target: HomeInputs['target'] | string[] | null | undefined): (typeof BODY_AREAS)[number] | null {
+  if (target === null || target === undefined) return null;
+  if (target === 'full_body') return BODY_AREAS[2];
+  return BODY_AREAS.find((a) => a.muscles !== 'full_body' && sameSet(a.muscles, target as string[])) ?? null;
+}
+
+/** Strength Focus: choose a body area (replaces any muscle selection; tapping it again returns to MOOD's Pick). */
+export function pickBodyArea(inputs: HomeInputs, areaId: string): HomeInputs {
+  const area = BODY_AREAS.find((a) => a.id === areaId);
+  if (!area) return inputs;
+  const on = bodyAreaOf(inputs.target)?.id === areaId;
+  return { ...inputs, target: on ? null : area.muscles === 'full_body' ? 'full_body' : [...area.muscles], archetype: null };
+}
+
+/** Strength Focus: toggle one specific muscle (max 3). Starting from a body area starts a fresh muscle selection. */
+export function toggleStrengthMuscle(inputs: HomeInputs, muscle: string): { inputs: HomeInputs; limitHit: boolean } {
+  const fromArea = bodyAreaOf(inputs.target) !== null;
+  const current = inputs.target === null || inputs.target === 'full_body' || fromArea ? [] : (inputs.target as string[]);
+  if (current.includes(muscle)) {
+    const next = current.filter((m) => m !== muscle);
+    return { inputs: { ...inputs, target: next.length ? next : null, archetype: null }, limitHit: false };
+  }
+  if (current.length >= MAX_TARGET_MUSCLES) return { inputs, limitHit: true };
+  return { inputs: { ...inputs, target: [...current, muscle], archetype: null }, limitHit: false };
+}
+
+export function isStrengthMuscleSelected(inputs: HomeInputs, muscle: string): boolean {
+  if (inputs.target === null || inputs.target === 'full_body' || bodyAreaOf(inputs.target)) return false;
+  return (inputs.target as string[]).includes(muscle);
+}
 
 export const DURATIONS: (30 | 60)[] = [60, 30];
 
@@ -95,7 +153,7 @@ export const ARCHETYPES: Record<V3Direction, { id: string; name: string }[]> = {
   ],
   athletic: [
     { id: 'athletic_power', name: 'Power' },
-    { id: 'athletic_speed_agility', name: 'Speed + Agility' },
+    { id: 'athletic_speed_agility', name: 'Speed + Plyo' },
     { id: 'athletic_full_body', name: 'Full-Body Athlete' },
   ],
 };
@@ -223,6 +281,8 @@ export function clearTarget(inputs: HomeInputs): HomeInputs {
 export function targetLabel(target: HomeInputs['target']): string | null {
   if (target === null) return null;
   if (target === 'full_body') return 'Full Body';
+  const area = bodyAreaOf(target);
+  if (area) return area.label;
   const labels: string[] = [];
   const left = new Set(target);
   for (const chip of TARGETS) {
@@ -343,7 +403,7 @@ export function summaryLine(inputs: HomeInputs): string {
 /** Honest MOOD's Pick copy: the pick uses the profile + completed V3 history; States shape the build. */
 export function moodsPickCopy(direction: V3Direction): string {
   const base = "We'll choose today's session from your profile and recent workouts, then shape it around how you're feeling.";
-  if (direction === 'athletic') return `${base} Athletic rotates Power, Speed + Agility and Full-Body Athlete.`;
+  if (direction === 'athletic') return `${base} Athletic rotates Power, Speed + Plyo and Full-Body Athlete.`;
   return base;
 }
 
@@ -356,3 +416,73 @@ export const BARRIER_BANNER: Record<BarrierKey, { title: string; body: string }>
   motivation: { title: 'One tap to start', body: "Press Build. MOOD's Pick handles the plan." },
   dont_know: { title: 'No planning needed', body: "MOOD's Pick chooses the exercises, sets and rest for you. Just press Build." },
 };
+
+/* ------------------------------------------------------------------ H1: Home hero + Build screen */
+
+/** The Focus row on the Build screen: "MOOD's Pick", "Chest", "Lower Body: Squat · Advanced" (Length is its own row). */
+export function focusSummary(inputs: HomeInputs): string {
+  return [focusLabel(inputs), inputs.difficulty ? DIFFICULTY_LABEL[inputs.difficulty] : null].filter(Boolean).join(' · ');
+}
+
+/** Time-of-day greeting for the Home hero. First name only; no name means no comma. */
+export function greeting(name: string | null | undefined, d: Date = new Date()): string {
+  const h = d.getHours();
+  const part = h >= 5 && h < 12 ? 'Good morning' : h >= 12 && h < 17 ? 'Good afternoon' : h >= 17 && h < 22 ? 'Good evening' : 'Late session';
+  const first = (name ?? '').trim().split(/\s+/)[0];
+  return first ? `${part}, ${first}.` : `${part}.`;
+}
+
+/**
+ * The hero's one line of real context, or null. Only facts MOOD actually has: a first visit (from the onboarding
+ * handoff) or the real workout streak from /api/achievements/state (workout days, never app-open days). A streak
+ * under 2 days says nothing, so it is hidden.
+ */
+export function heroContextLine(opts: { firstVisit: boolean; workoutStreak: number | null }): string | null {
+  if (opts.firstVisit) return 'Your first MOOD workout starts here.';
+  const s = opts.workoutStreak ?? 0;
+  if (s >= 2) return `${s}-day training streak. Keep it going.`;
+  return null;
+}
+
+/** Compact default line under the hero CTA: "Strength · 60 min · MOOD's Pick" (what Build opens with). */
+export function heroDefaultSummary(direction: V3Direction, duration: 30 | 60): string {
+  return [DIRECTION_NAME[direction], `${duration} min`, "MOOD's Pick"].join(' · ');
+}
+
+/** State chips for the hero summary, in chip order: "Stressed · Sore". */
+export function statesLabel(states: V3State[]): string {
+  return STATES.filter((s) => states.includes(s.id)).map((s) => s.label).join(' · ');
+}
+
+/** Same State selection, order-insensitive (does the hero's selection still match today's workout?). */
+export function sameStates(a: V3State[], b: V3State[]): boolean {
+  if (a.length !== b.length) return false;
+  const s = new Set(a);
+  return b.every((x) => s.has(x));
+}
+
+/** Build's default length: the Training Profile's default_duration, else the onboarding handoff's, else 60. */
+export function defaultDuration(profileDefault?: number | null, handoffDefault?: number | null): 30 | 60 {
+  if (profileDefault === 30 || profileDefault === 60) return profileDefault;
+  if (handoffDefault === 30 || handoffDefault === 60) return handoffDefault;
+  return 60;
+}
+
+/* ------------------------------------------------------------------ founder edit pass: optional States, soreness */
+
+/** States are an optional modifier: no selection IS the normal workout. */
+export const HOME_STATE_PROMPT = 'Anything affecting your workout today?';
+export const HOME_STATE_CAPTION = `Optional · choose up to ${MAX_STATES}`;
+
+/** Same sore areas, order-insensitive. */
+export function sameSoreness(a: string[], b: string[]): boolean {
+  if (a.length !== b.length) return false;
+  const s = new Set(a);
+  return b.every((x) => s.has(x));
+}
+
+/** "Sore · Legs, Lower Back". */
+export function soreSummary(regions: string[]): string {
+  const labels = regions.map((r) => SORE_REGIONS.find((x) => x.id === r)?.label ?? r.replace(/_/g, ' '));
+  return `Sore · ${labels.join(', ')}`;
+}

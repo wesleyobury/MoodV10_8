@@ -10,7 +10,7 @@ All routes live under `/api/v3` and need the normal bearer token (`get_current_u
   "states": ["low_energy", "bored"],  // 0-3 of low_energy, stressed, bored, irritated, amped, sore. "normal" is ignored
   "soreness": ["legs", "shoulders"],  // body-map regions (legs, chest, back, upper_back, lower_back, shoulders, arms, core) or muscle ids.
                                       // Giving soreness adds the "sore" State. Sore + 2 other States is the 3-State maximum
-  "target": ["chest", "triceps"],     // Strength / Sweat only: 1-3 user-facing muscles, or "full_body". Omit for MOOD's Pick
+  "target": ["chest", "triceps"],     // 1-3 user-facing muscles, or "full_body". Omit for MOOD's Pick. Athletic: shapes support / power choices, never the athletic identity
   "archetype": null,                  // an explicit archetype, e.g. "sweat_engine", "athletic_power", "strength_upper_pull"; omit for MOOD's Pick
   "duration": 60,                     // 30 | 60 (the only V3 durations)
   "experience": "intermediate",       // beginner | intermediate | advanced
@@ -25,7 +25,7 @@ All routes live under `/api/v3` and need the normal bearer token (`get_current_u
 
 **Training-profile fallback (Phase 1).** Any of `goal`, `experience`, `training_frequency`, `training_preference`, `equipment` and `duration` left out of the request (or sent as null) is filled from the caller's `users.training_profile` (`GET/PUT /api/users/me/training-profile`), and then from the backend defaults above. Precedence: explicit request > training profile > backend default. The envelope reports which fields were filled from the profile in `profile_defaults_applied` (for example `{"goal": "build_muscle", "duration": 60}`); it is `{}` when nothing was filled. Daily inputs (States, soreness, Target, archetype) are never stored in or read from the profile.
 
-Invalid input returns HTTP 422 `{field, message}`. Examples: duration 45, 4 States, a muscle Target on Athletic, an archetype from another Direction, or both a Sweat archetype and a Target.
+Invalid input returns HTTP 422 `{field, message}`. Examples: duration 45, 4 States, an archetype from another Direction, or both a Sweat / Athletic archetype and a Target.
 
 Equipment preset mapping (each Direction uses the preset its frozen QA ran on):
 
@@ -33,7 +33,9 @@ Equipment preset mapping (each Direction uses the preset its frozen QA ran on):
 |---|---|---|---|
 | commercial_gym | frozen commercial default (every controlled value except sled) | sweat_commercial_default (includes sled + turf, founder change) | athletic_commercial_default |
 | free_weight_limited | DB, KB, bench, box, bands, pull-up bar, med ball, slam ball, jump rope | free_weight_limited | free_weight_limited |
-| minimal | DB, bench, jump rope, bodyweight | db_bodyweight_only | bodyweight_floor |
+| minimal | DB, bench, jump rope, bodyweight | db_bodyweight_only | athletic_minimal (DB, bench, jump rope, bodyweight) |
+
+**Production equipment context.** No launch screen asks for equipment. The app never sends `equipment` (except the unreachable "Use full gym equipment" conflict patch, which only appears for a non-commercial preset), onboarding never sets `training_profile.default_equipment`, and both the profile default and the route default are `commercial_gym`. Every real user is therefore generated for a commercial gym. The other presets are API-level compatibility inputs (QA, future features); they are not personalization and Built for Today only mentions equipment when one is actually sent.
 
 ## 2. Unified output (every endpoint returns this envelope)
 
@@ -73,8 +75,8 @@ Equipment preset mapping (each Direction uses the preset its frozen QA ran on):
  "items": [ /* items */ ]}
 ```
 
-- `type`. Strength: main, secondary, target, accessory, finisher. Sweat: primary, complement, finisher. Athletic: primary, secondary, repeats, support.
-- `structure`. Strength: straight, superset, circuit, pyramid, ladder, finisher. Sweat: continuous, intervals, timed_circuit, pyramid, circuit, anchor_circuit, emom, ladder, finisher. Athletic: exposure, repeats, straight.
+- `type`. Strength: main, secondary, target, accessory, finisher. Sweat: primary, complement, finisher. Athletic: primary, secondary, strength, support, finisher (always in that order; power never follows strength).
+- `structure`. Strength: straight, superset, circuit, pyramid, ladder, finisher. Sweat: continuous, intervals, timed_circuit, pyramid, circuit, anchor_circuit, emom, ladder, finisher. Athletic: straight, superset (athletic-strength pair, or the contrast pair in a primary block).
 - `interval`. Sweat only: `{work_sec, recovery_sec, rounds, rest_between_rounds_sec?, alternate?}`, or `{steps_sec, recovery_sec}` for pyramids, or `{minutes, rounds}` for EMOMs. `effort`: Sweat `{rpe: [lo, hi]}`.
 
 **Item**
@@ -98,7 +100,7 @@ Equipment preset mapping (each Direction uses the preset its frozen QA ran on):
 - Direction-specific `direction_fields`:
   - Strength: `slot_class`, `protected`.
   - Sweat: `progression` (`output` or `reuse_load`, from SC5), `role`, and `rounds` for anchor stations (the rounds that station appears in).
-  - Athletic: `type` (A = technical / quality-dominant, B = repeatable ballistic, support, repeats), `quality`, and for Performance Support `purpose` and `why`.
+  - Athletic: `type` (power, strength, support, finisher), `impact`, `skill`; power items add `quality` (library class, keys the quality-stop cue), `athletic_quality`, `kind`, `contacts`; strength items `pattern` and `why`; support items `purpose` and `why`. The workout also carries `athletic` = {primary_quality, secondary_quality, structure (+ labels), accounting (contacts, sprint exposures, explosive sets, throws, Olympic sets, strength sets, intent load, estimate), limits, state_gate, coherence, realized}.
 - `media` is null when the exercise library has no matching video. `cues` fall back to the library's cues.
 
 ## 3. Other endpoints
@@ -115,7 +117,7 @@ Equipment preset mapping (each Direction uses the preset its frozen QA ran on):
 
 ```json
 {"status": "conflict", "outcome": "conflict", "workout": null,
- "conflict": {"code": "sore_target_conflict", "message": "Speed + Agility needs your legs, and they are sore today.",
+ "conflict": {"code": "sore_target_conflict", "message": "Speed + Plyo needs your legs, and they are sore today.",
               "options": [{"action": "moods_pick", "label": "Let MOOD pick", "patch": {"target": null, "archetype": null}},
                           {"action": "switch_direction", "label": "Try Strength", "patch": {"direction": "strength", "target": null, "archetype": null}}],
               "adjustments": [ … ]}}

@@ -34,7 +34,8 @@ let so=M.toggleState(s,'sore').inputs; ok(M.buildBlocker(so)==='sore_needs_area'
 so=M.toggleSoreRegion(so,'legs'); so=M.toggleSoreRegion(so,'upper_back'); ok(M.buildBlocker(so)===null,'sore ok');
 let req=M.buildRequest(so,date); ok(req.states.includes('sore') && JSON.stringify(req.soreness)==='["legs","upper_back"]','sore request');
 const cleared=M.toggleState(so,'sore').inputs; ok(cleared.soreness.length===0 && M.buildRequest(cleared,date).soreness.length===0,'remove sore clears areas');
-ok(M.SORE_REGIONS.map(x=>x.id).join()==='legs,chest,back,upper_back,lower_back,shoulders,arms,core','sore vocab');
+// Approved body-map pass: the eleven precise areas (head to toe), then the legacy broad regions still accepted from earlier builds.
+ok(M.SORE_REGIONS.map(x=>x.id).join()==='shoulders,chest,biceps,triceps,upper_back,core,lower_back,glutes,quads,hamstrings,calves,legs,back,arms','sore vocab');
 // sore + 2 others = 3 max
 let s3=M.toggleState(M.toggleState(so,'amped').inputs,'bored').inputs; ok(M.toggleState(s3,'stressed').limitHit,'sore counts toward 3');
 // ---- direction / target

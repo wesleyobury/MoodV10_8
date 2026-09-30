@@ -18,7 +18,7 @@ ARCHETYPE_NAMES = {
     'strength_glutes_legs': 'Glutes + Legs', 'strength_full_body': 'Full Body', 'strength_core': 'Core',
     'strength_custom_target': 'Custom Target',
     'sweat_engine': 'Engine', 'sweat_circuit': 'Circuit', 'sweat_hybrid': 'Hybrid',
-    'athletic_power': 'Power', 'athletic_speed_agility': 'Speed + Agility', 'athletic_full_body': 'Full-Body Athlete',
+    'athletic_power': 'Power', 'athletic_speed_agility': 'Speed + Plyo', 'athletic_full_body': 'Full-Body Athlete',
 }
 MUSCLE_NAMES = {'chest': 'Chest', 'back': 'Back', 'shoulders': 'Shoulders', 'biceps': 'Biceps', 'triceps': 'Triceps', 'forearms': 'Forearms',
                 'quads': 'Quads', 'hamstrings': 'Hamstrings', 'glutes': 'Glutes', 'calves': 'Calves', 'hip_adductors': 'Adductors',
@@ -77,6 +77,53 @@ def block(block_id, sequence, block_type, structure, title, items, *, rounds=Non
                 effort=effort, instructions=instructions, est_minutes=est_minutes, items=items)
 
 
+# ------------------------------------------------------------------ rest contract (founder rest audit, for Guided Session)
+# Every block carries `rest`: WHEN the timer starts, for how long, and whether it is full recovery. A row's
+# prescription.rest_sec is only ever the rest after each set of that row in straight work (null in grouped work, where
+# the block owns the one rest), so nothing is described twice.
+#   kind            timer starts                                  seconds
+#   between_sets    after every set of each row                   null (each row's prescription.rest_sec)
+#   after_pair      after the last exercise of the pair (A1, A2)  the pair's rest; transition_sec between A1 and A2
+#   after_round     after the last station of a round             the round rest; transition_sec between stations
+#   interval        each interval: work_sec on, recovery_sec easy (interval object); after_round between rotations if set
+#   emom            the minute clock (rest is what is left of each minute)   null
+#   continuous      no programmed rest                            null
+#   self_paced      ladder / density work: rest as needed         null
+FULL_RECOVERY_SEC = 150
+
+
+def rest_contract(block, direction):
+    s = block.get('structure'); iv = block.get('interval') or {}
+    rbr = block.get('rest_between_rounds_sec'); rbi = block.get('rest_between_items_sec')
+    item_rests = [it['prescription'].get('rest_sec') for it in block.get('items', []) if it['prescription'].get('rest_sec')]
+    power = direction == 'athletic' and block.get('type') in ('primary', 'secondary')
+    if s == 'superset' and len(block.get('items', [])) > 1:
+        kind, sec, trans = 'after_pair', rbr, rbi
+    elif s in ('circuit', 'anchor_circuit'):
+        kind, sec, trans = 'after_round', rbr, rbi
+    elif s == 'timed_circuit' or (iv.get('work_sec') and s in ('intervals', 'finisher', 'repeats')):
+        kind, sec, trans = 'interval', iv.get('rest_between_rounds_sec') or rbr, None
+    elif s == 'pyramid' and iv.get('steps_sec'):
+        kind, sec, trans = 'interval', None, None
+    elif s == 'emom':
+        kind, sec, trans = 'emom', None, None
+    elif s == 'continuous':
+        kind, sec, trans = 'continuous', None, None
+    elif s == 'ladder' and direction == 'sweat':
+        kind, sec, trans = 'self_paced', None, None
+    else:   # straight, exposure, repeats without an interval, strength ladder / pyramid / finisher: rest after each set
+        kind, sec, trans = 'between_sets', None, None
+    longest = max([x for x in [sec] + item_rests if x] or [0])
+    full = bool(longest >= FULL_RECOVERY_SEC and (power or direction == 'strength' or kind == 'after_pair' and direction == 'athletic'))
+    return dict(kind=kind, seconds=sec, transition_sec=trans, work_sec=iv.get('work_sec'), recovery_sec=iv.get('recovery_sec'),
+                full_recovery=full, reason=('power' if power else ('heavy' if direction == 'strength' else None)) if full else None)
+
+
+def attach_rest_contract(blocks, direction):
+    for b in blocks or []: b['rest'] = rest_contract(b, direction)
+    return blocks
+
+
 def envelope_ok(*, workout_id, version, ctx, res, built_for_today, created_at, today=None):
     rr = res.get('requested_archetype')
     outcome = 'rerouted' if res.get('rerouted') else ('valid_with_relaxation' if res.get('relaxations') else 'valid')
@@ -99,6 +146,7 @@ def envelope_ok(*, workout_id, version, ctx, res, built_for_today, created_at, t
             equipment=dict(preset=ctx.preset, label=_preset_label(ctx.preset)),
             swap_count=ctx.swap_count,
             selection_source=res.get('selection_source'),   # 'moods_pick' | 'user_selected' | 'target' (Phase 2.5)
+            session_expectation=res.get('session_expectation'),   # e.g. 'long_core_session': the Cart / overview surfaces what this session will look like
             built_for_today=built_for_today,
             today=today,                                     # Phase 2.5 header: {told: [...], chose, chosen_by}
             warmup=res['warmup'],
@@ -106,6 +154,7 @@ def envelope_ok(*, workout_id, version, ctx, res, built_for_today, created_at, t
             cooldown=res.get('cooldown'),
             relaxations=list(res.get('relaxations', [])),
             adjustments=res.get('adjustments', []),
+            **({'athletic': res['athletic_summary']} if res.get('athletic_summary') else {}),   # Athletic: primary quality, structure, impact / intent accounting
         ))
 
 

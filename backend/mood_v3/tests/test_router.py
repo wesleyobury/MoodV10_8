@@ -63,7 +63,7 @@ def test_generate_swap_complete_history_progression(client):
     r3 = client.post(f"/api/v3/workouts/{w['workout_id']}/swap-workout"); w3 = r3.json()['workout']
     assert w3['archetype']['id'] == 'strength_lower_squat' and w3['swap_count'] == 1
     # complete with a performance log on the main lift
-    main = w3['blocks'][0]['items'][0]; reps = int(main['prescription']['reps'])
+    main = w3['blocks'][0]['items'][0]; reps = max(int(x) for x in __import__('re').findall(r'\d+', str(main['prescription']['reps'])))
     r4 = client.post(f"/api/v3/workouts/{w['workout_id']}/complete",
                      json=dict(performance=[dict(item_id=main['item_id'], sets=[dict(reps=reps, load=100, unit='kg')] * main['prescription']['sets'])], fit_rating='just_right'))
     assert r4.status_code == 200 and r4.json()['logged_exercises'] == 1

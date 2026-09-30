@@ -20,6 +20,11 @@ LOADED_ATHLETIC = {'olympic', 'explosive_lift', 'loaded_jump', 'upper_power', 'r
 def _int(x):
     m = re.search(r'\d+', str(x or '')); return int(m.group(0)) if m else None
 
+def _range(x):
+    """'6–8' -> (6, 8); '8' -> (8, 8); a top-set scheme uses its back-off window; None when no number."""
+    nums = [int(n) for n in re.findall(r'\d+', str(x or ''))]
+    return (min(nums), max(nums)) if nums else None
+
 def increment(equipment, primary_muscles, unit):
     lower = bool(set(primary_muscles) & LOWER_MUSCLES)
     kg = unit == 'kg'
@@ -68,9 +73,12 @@ def for_item(direction, item, perf_history, states, *, athletic_quality=None):
     L = max(s['load'] for s in loaded); unit = loaded[0].get('unit', 'kg'); at_L = [s for s in loaded if s['load'] == L]
     reps_txt = ', '.join(str(s.get('reps')) for s in at_L)
     ref = dict(load=L, unit=unit, reps=[s.get('reps') for s in at_L], date=date)
-    p_reps = _int(log.get('prescribed_reps')); p_sets = log.get('prescribed_sets') or len(at_L)
-    if today is None or p_reps is None or today != p_reps:
+    # Core rebuild: Strength prescribes rep WINDOWS ('6–8'). Sessions are comparable when the windows overlap; the user
+    # "hit" the prescription when every set at the top load reached the TOP of last time's window.
+    t_rng = _range(rx.get('reps')); p_rng = _range(log.get('prescribed_reps')); p_sets = log.get('prescribed_sets') or len(at_L)
+    if t_rng is None or p_rng is None or t_rng[0] > p_rng[1] or p_rng[0] > t_rng[1]:
         return dict(reference=ref, suggestion=None, text=f"Last time: {_fmt_load(L, unit)} × {reps_txt}.")
+    p_reps = p_rng[1]
     hit = len(at_L) >= p_sets and all((s.get('reps') or 0) >= p_reps for s in at_L)
     if 'low_energy' in states:
         return dict(reference=ref, suggestion=dict(load=L, unit=unit, reps=today, action='hold'),
