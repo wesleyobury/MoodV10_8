@@ -31,7 +31,7 @@ def test_validator_green_and_invariants_on_grid():
         if f: bad.append((key, f)); continue
         blocks = o['sess']['blocks']; its = [x for b in blocks for x in b['items']]
         # power first, never under fatigue
-        assert blocks[0]['role'] == 'primary', key
+        assert blocks[0]['role'] == 'primary' or (blocks[0]['role'] == 'primer' and blocks[1]['role'] == 'primary'), key   # sequencing pass: optional Primer
         seen_strength = False
         for b in blocks:
             if b['role'] in ('strength', 'support', 'finisher'): seen_strength = True
@@ -60,7 +60,10 @@ def test_state_coherence_rules_hold():
             assert not A['finisher'], key                                    # Amped / Irritated never earn a finisher
             ref = o['ref']      # the same candidate and seed built without States
             if ref:   # same amount of strength / support work; Amped may add at most one small athletic element (richer composition), never volume elsewhere
-                assert A['n_items'] <= ref['n_items'] + 1 and A['strength_sets'] <= ref['strength_sets'] and A['support_sets'] <= ref['support_sets'] + 3, key
+                # final pre-launch pass: a session with 3 athletic movements carries a second strength support (4 -> 1), so strength may
+                # differ from the same-seed reference only when the athletic count does, and the total session never grows by more than one item
+                extra_st = 3 if A['n_explosive'] < ref['n_explosive'] else 0
+                assert A['n_items'] <= ref['n_items'] + 1 and A['strength_sets'] <= ref['strength_sets'] + extra_st and A['support_sets'] <= ref['support_sets'] + 3, key
                 assert A['explosive_sets'] <= C.limits(lv, dur)['explosive_sets'], key
 
 

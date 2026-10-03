@@ -1,138 +1,156 @@
 /**
- * AchievementMedallion — the premium gold emblem used by the achievement
- * toast and the badge grid.
+ * AchievementMedallion — the badge emblem used by the unlock toast, the Explore feed, the Profile shelf and the stats grid.
  *
- * DESIGN GUARDRAILS (memory/DESIGN_GUARDRAILS.md):
- *  - Gold is the gold→orange BRAND_GRADIENT, applied WITH depth (glow +
- *    highlight ring + shadow). Never a flat mustard fill.
- *  - Never gold-on-gold: the icon uses dark ink (accentInk) on the gold.
- *  - Locked state is a recessed dark disc (no gold fill), lock icon in a
- *    muted tone — gold text/emblem never sit on gold.
+ * Founder pass, Oct 2026: a struck coin, not a flat gold disc.
+ *   earned  a dark convex bezel with a fine gold rim, a gold face (radial highlight → gold → orange → deep edge), an
+ *           engraved inner ring, a soft specular, the glyph in dark ink (never gold-on-gold), and an optional value plate
+ *           ("7", "25", "5/7") on the lower rim that says which tier of the badge it is.
+ *   locked  the same coin, recessed: a dark face with the glyph as a faint silhouette (what you are working toward, not a
+ *           generic padlock), a small lock pip, and an optional gold progress arc on the rim.
+ * Built with react-native-svg so it stays crisp at any size. Gold stays a mark (rim, face, arc), never a surface wash.
  */
 
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
+import Svg, { Circle, Defs, Ellipse, LinearGradient, RadialGradient, Stop } from 'react-native-svg';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeLinearGradient } from './SafeLinearGradient';
 import { COLORS } from '../constants/brand';
-
-// A 4-stop gold ramp gives the emblem real dimensionality (highlight → gold →
-// orange → deep) rather than a flat two-tone. Still 100% brand gold→orange.
-const GOLD_RAMP = ['#FFE98A', '#FFD700', '#FFA500', '#C98A00'];
 
 interface Props {
   icon: keyof typeof Ionicons.glyphMap;
   size?: number;
   locked?: boolean;
-  /** Faint gold rim on a locked badge to signal "close / next up". */
+  /** Close to unlocking: the rim warms (used when no exact progress is known). */
   near?: boolean;
-  /** Outer gold halo. Off for dense rows (e.g. the profile badge shelf), where
-   *  overlapping halos read as blur rather than depth. Default on so the full
-   *  achievements grid keeps its intended treatment. */
+  /** Soft gold glow under an earned coin. Off in dense rows (the Profile shelf). */
   glow?: boolean;
+  /** Tier plate on the lower rim: "7", "25", "5/7". */
+  value?: string | null;
+  /** Locked only: 0..1, drawn as a gold arc around the rim. */
+  progress?: number | null;
 }
 
-export default function AchievementMedallion({ icon, size = 64, locked = false, near = false, glow = true }: Props) {
-  const radius = size / 2;
-  const iconSize = Math.round(size * 0.46);
+let uidSeq = 0;
 
-  if (locked) {
-    return (
-      <View
-        style={[
-          styles.locked,
-          {
-            width: size,
-            height: size,
-            borderRadius: radius,
-            borderColor: near ? 'rgba(255,215,0,0.28)' : 'rgba(255,255,255,0.08)',
-          },
-        ]}
-      >
-        <Ionicons
-          name="lock-closed"
-          size={Math.round(iconSize * 0.8)}
-          color={near ? 'rgba(255,215,0,0.42)' : 'rgba(255,255,255,0.26)'}
-        />
-      </View>
-    );
-  }
+export default function AchievementMedallion({ icon, size = 64, locked = false, near = false, glow = true, value = null, progress = null }: Props) {
+  const uid = React.useMemo(() => `m${++uidSeq}`, []);
+  const glyph = Math.round(size * (value ? 0.36 : 0.4));
+  const plate = value ? Math.max(14, Math.round(size * 0.27)) : 0;
+  const R = 46; // rim radius in the 100-unit viewBox
+  const arc = locked && progress != null ? Math.max(0, Math.min(1, progress)) : 0;
+  const circ = 2 * Math.PI * R;
 
   return (
-    <View style={{ width: size, height: size }}>
-      {/* Outer glow — a soft gold halo behind the disc for depth. */}
-      {glow && (
-        <View
-          style={[
-            styles.glow,
-            {
-              width: size,
-              height: size,
-              borderRadius: radius,
-              shadowRadius: size * 0.35,
-            },
-          ]}
+    <View style={[{ width: size, height: size }, !locked && glow && styles.glow, !locked && styles.lift]}>
+      <Svg width={size} height={size} viewBox="0 0 100 100">
+        <Defs>
+          <RadialGradient id={`${uid}b`} cx="50" cy="30" r="70" gradientUnits="userSpaceOnUse">
+            <Stop offset="0" stopColor="#3B3B41" />
+            <Stop offset="0.55" stopColor="#1A1A1E" />
+            <Stop offset="1" stopColor="#09090A" />
+          </RadialGradient>
+          <LinearGradient id={`${uid}r`} x1="0" y1="0" x2="1" y2="1">
+            <Stop offset="0" stopColor="#FFE98A" />
+            <Stop offset="0.45" stopColor="#FFC21A" />
+            <Stop offset="1" stopColor="#B87400" />
+          </LinearGradient>
+          <RadialGradient id={`${uid}f`} cx="38" cy="30" r="62" gradientUnits="userSpaceOnUse">
+            <Stop offset="0" stopColor="#FFF4B8" />
+            <Stop offset="0.3" stopColor="#FFD84A" />
+            <Stop offset="0.68" stopColor="#F5A700" />
+            <Stop offset="1" stopColor="#B36F00" />
+          </RadialGradient>
+          <RadialGradient id={`${uid}l`} cx="50" cy="34" r="56" gradientUnits="userSpaceOnUse">
+            <Stop offset="0" stopColor="#1F1F23" />
+            <Stop offset="1" stopColor="#0C0C0E" />
+          </RadialGradient>
+          <RadialGradient id={`${uid}s`} cx="50" cy="22" r="34" gradientUnits="userSpaceOnUse">
+            <Stop offset="0" stopColor="#FFFFFF" stopOpacity={locked ? 0.1 : 0.55} />
+            <Stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
+          </RadialGradient>
+        </Defs>
+
+        {/* bezel */}
+        <Circle cx="50" cy="50" r="49.5" fill={`url(#${uid}b)`} />
+        {/* rim */}
+        <Circle
+          cx="50" cy="50" r={R} fill="none"
+          stroke={locked ? (near ? 'rgba(255,215,0,0.35)' : 'rgba(255,255,255,0.10)') : `url(#${uid}r)`}
+          strokeWidth={locked ? 1.5 : 2.2}
         />
-      )}
-      <SafeLinearGradient
-        colors={GOLD_RAMP}
-        start={{ x: 0.25, y: 0.1 }}
-        end={{ x: 0.85, y: 1 }}
-        style={[styles.disc, { width: size, height: size, borderRadius: radius }]}
-      >
-        {/* Top highlight ring — inset bevel that catches the light. */}
-        <View style={[styles.highlight, { borderRadius: radius }]} pointerEvents="none" />
-        <Ionicons name={icon} size={iconSize} color={COLORS.accentInk} />
-      </SafeLinearGradient>
+        {arc > 0 ? (
+          <Circle
+            cx="50" cy="50" r={R} fill="none" stroke="#FFC21A" strokeWidth={3} strokeLinecap="round"
+            strokeDasharray={`${circ * arc} ${circ}`} transform="rotate(-90 50 50)"
+          />
+        ) : null}
+        {/* face */}
+        <Circle cx="50" cy="50" r="39" fill={locked ? `url(#${uid}l)` : `url(#${uid}f)`} />
+        {/* engraved inner ring */}
+        <Circle cx="50" cy="50" r="34.5" fill="none" stroke={locked ? 'rgba(255,255,255,0.05)' : 'rgba(90,50,0,0.28)'} strokeWidth={1} />
+        {/* specular */}
+        <Ellipse cx="50" cy="27" rx="27" ry="13" fill={`url(#${uid}s)`} />
+      </Svg>
+
+      <View style={[StyleSheet.absoluteFill, styles.center, value ? { paddingBottom: plate * 0.42 } : null]} pointerEvents="none">
+        <Ionicons name={icon} size={glyph} color={locked ? 'rgba(255,255,255,0.22)' : COLORS.accentInk} />
+      </View>
+
+      {value ? (
+        <View style={[styles.plateWrap, { bottom: -plate * 0.12 }]} pointerEvents="none">
+          <View style={[styles.plate, { height: plate, borderRadius: plate / 2, paddingHorizontal: plate * 0.38 }, locked && styles.plateLocked]}>
+            <Text style={[styles.plateText, { fontSize: plate * 0.62 }, locked && { color: 'rgba(255,255,255,0.45)' }]} numberOfLines={1}>{value}</Text>
+          </View>
+        </View>
+      ) : null}
+
+      {locked && !value ? (
+        <View style={[styles.pip, { width: size * 0.3, height: size * 0.3, borderRadius: size * 0.15, right: -size * 0.02, bottom: -size * 0.02 }]}>
+          <Ionicons name="lock-closed" size={Math.round(size * 0.15)} color="rgba(255,255,255,0.55)" />
+        </View>
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  glow: {
-    position: 'absolute',
-    backgroundColor: '#FFA500',
-    opacity: 0.55,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#FFB300',
-        shadowOpacity: 0.7,
-        shadowOffset: { width: 0, height: 4 },
-      },
-      android: { elevation: 10 },
-      default: {},
-    }),
-  },
-  disc: {
+  center: { alignItems: 'center', justifyContent: 'center' },
+  lift: Platform.select({
+    ios: { shadowColor: '#000', shadowOpacity: 0.5, shadowRadius: 8, shadowOffset: { width: 0, height: 4 } },
+    android: { elevation: 6 },
+    default: {},
+  }) as any,
+  glow: Platform.select({
+    ios: { shadowColor: '#FFB300', shadowOpacity: 0.35, shadowRadius: 14, shadowOffset: { width: 0, height: 4 } },
+    android: { elevation: 8 },
+    default: {},
+  }) as any,
+  plateWrap: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
+  plate: {
+    minWidth: 18,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#121214',
     borderWidth: 1,
-    borderColor: 'rgba(255,225,150,0.6)',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#FF9500',
-        shadowOpacity: 0.55,
-        shadowRadius: 12,
-        shadowOffset: { width: 0, height: 6 },
-      },
-      android: { elevation: 8 },
-      default: {},
-    }),
+    borderColor: 'rgba(255,200,60,0.55)',
   },
-  highlight: {
+  plateLocked: { borderColor: 'rgba(255,255,255,0.14)' },
+  plateText: { color: '#FFD84A', fontWeight: '900', letterSpacing: 0.2, fontVariant: ['tabular-nums'] },
+  pip: {
     position: 'absolute',
-    top: 2,
-    left: 2,
-    right: 2,
-    bottom: '55%',
-    borderTopWidth: 2,
-    borderColor: 'rgba(255,255,255,0.45)',
-    backgroundColor: 'rgba(255,255,255,0.10)',
-  },
-  locked: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.02)',
+    backgroundColor: '#17171A',
     borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
   },
 });
+
+/** The tier plate for a badge id: streak_7 -> "7", vol_25 -> "25", consistent_5of7 -> "5/7"; null when there is no number. */
+export function achievementValue(id: string): string | null {
+  const ofM = id.match(/(\d+)of(\d+)/);
+  if (ofM) return `${ofM[1]}/${ofM[2]}`;
+  const n = id.match(/_(\d+)$/);
+  if (n && Number(n[1]) > 1) return n[1];
+  return null;
+}

@@ -12,6 +12,7 @@ import copy, hashlib, threading
 from . import sweat_gen as G
 from . import sweat_validate as V
 from . import sweat_core as C
+from . import trainer_gate as TG
 from .. import state_rules  # noqa: F401
 
 LOCK = threading.RLock()
@@ -35,9 +36,20 @@ DECISION_CODES = {'state_expression', 'state_conflict_resolved', 'state_gate', '
                   'duration_backfill', 'duration_trim', 'duration_underfill_accepted', 'finisher_selected', 'finisher_dropped_budget', 'sore_reroute', 'sore_exclusion',
                   'sore_override_by_explicit_target', 'target_routed_circuit', 'archetype_skipped_equipment', 'hybrid_complement', 'complement_unavailable', 'exercise_swapped',
                   'primary_block_complete', 'primary_block_short', 'hybrid_closer', 'closer_unavailable', 'duration_backfill_declined',
-                  'primary_block_completeness', 'complement_selected', 'complement_skipped', 'finisher_skipped'}
+                  'primary_block_completeness', 'complement_selected', 'complement_skipped', 'finisher_skipped', 'work_floor_open', 'trainer_gate'}
+
+def _gate(w, nctx):
+    """Trainer Coherence Gate hook for sweat_core.gate_select: validator failures weigh most, then the trainer checks."""
+    return [('validator', n) for n, _ in hard_fails(w)] + TG.check(dict(w=w), nctx)
+
+
+C.GATE = _gate
+
 
 def build(nctx, history_records, swap=0):
+    """Frozen-validator-clean build, selected through the Sweat Trainer Coherence Gate (final pre-launch pass): a build that fails the gate
+    is re-rolled inside sweat_core.gate_select with a salted seed (same archetype); the attempt with the fewest issues ships and its
+    issues are logged (never a conflict for the user)."""
     with LOCK:
         history = history_for_engine(history_records)
         try:
@@ -54,7 +66,12 @@ def build(nctx, history_records, swap=0):
         if bad:
             raise Conflict('generation_failed', 'We could not build a valid Sweat session for this combination.', ['swap_workout', 'moods_pick'], detail=[list(map(str, b)) for b in bad])
         res = _result(nctx, out, history)
+        g = out.get('gate') or {}
+        res['trainer_gate'] = [f'{c}: {d}' for c, d in g.get('issues', [])]
+        if g.get('attempt') or g.get('issues'):
+            res['log'] = list(res['log']) + [dict(reason_code='trainer_gate', attempt=g.get('attempt', 0), issues=res['trainer_gate'])]
         return res
+
 
 RELAX = ('relaxation_a', 'complexity_relaxed_state_cap', 'region_balance_relaxed_sore', 'region_balance_relaxed_equipment', 'conditioning_driver_resistance_only', 'complement_unavailable', 'complement_simplified')
 
@@ -102,7 +119,9 @@ def swap_exercise(nctx, history_records, swap, res, bi, ii, excluded):
             w = _replace(w0, bi, ii, e_old, e_new)
             if hard_fails(w): continue
             if C.budget_violations(C.budget(w['blocks'], aid, w['duration'], w['experience']), w['experience'], w['duration'], aid): continue
-            out = dict(res); out['w'] = w; out['estimated_minutes'] = float(w['est_minutes']); out['budget'] = w['budget']
+            new_issues = TG.check(dict(w=w), nctx)          # final trainer pass: a swap may not create a trainer-gate issue the session did not have
+            if len(new_issues) > len(res.get('trainer_gate') or []): continue
+            out = dict(res); out['w'] = w; out['estimated_minutes'] = float(w['est_minutes']); out['budget'] = w['budget']; out['trainer_gate'] = [f'{c}: {d}' for c, d in new_issues]
             out['log'] = res['log'] + [dict(reason_code='exercise_swapped', block=b0['slot'], **{'from': e_old['id'], 'to': e_new['id']})]
             out['decisions'] = res.get('decisions', []) + [out['log'][-1]]
             out['history_record'] = dict(res['history_record'], exercise_ids=[e['id'] for b in w['blocks'] for e in b['items_e']], native=C.history_record(w, res['_res']))

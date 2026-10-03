@@ -1,0 +1,23 @@
+group                                        n  sprint   sled  0 lift  1 lift  2 lifts  ath.support  loaded pw  oly/KB/DB
+ALL builds                                1950     39%     6%      1%     61%      38%          15%        44%        19%
+trained 60 min (int/adv)                   650     46%    10%      1%     35%      64%          22%        65%        30%
+trained 60 min, no State                   224     56%     8%      3%     25%      72%          23%        71%        34%
+  Power (all levels/durations)             761     15%     2%      4%     63%      33%          23%        68%        30%
+  Speed+Plyo (all levels/durations)        631     82%    12%      0%     56%      44%           2%         4%         0%
+  FullBody (all levels/durations)          558     24%     5%      0%     62%      38%          20%        56%        25%
+
+sessions with two sprint variations: 0%
+
+composition modes, trained 60 min: None 100%
+traditional lifts that are athletic-leaning (unilateral, trap-bar / front-loaded, pull-ups, landmine): 54% of 2662
+most common traditional lifts: goblet_squat 311, front_foot_elevated_split_squat 272, bulgarian_split_squat 220, front_squat 215, trap_bar_deadlift 213, barbell_rdl 211, kettlebell_deadlift 210, kickstand_db_rdl 143, single_leg_rdl 75, inverted_row 71
+
+consecutive sessions (8 days, history on, 224 pairs): same composition mode 100%, identical block shape 0%
+  int Power        None:3+2 | None:3+2 | None:4+1 | None:3+2 | None:3+2 | None:3+2 | None:3+2 | None:3+2
+  int Speed+Plyo   None:3+2 | None:3+2 | None:3+2 | None:3+2 | None:3+2 | None:3+2 | None:3+2 | None:3+2
+  int FullBody     None:3+2 | None:4+1 | None:3+2 | None:4+1 | None:4+1 | None:3+2 | None:3+2 | None:3+2
+  int MOOD's Pick  None:3+2 | None:3+2 | None:3+2 | None:4+1 | None:3+2 | None:3+2 | None:4+1 | None:3+2
+  adv Power        None:4+1 | None:3+2 | None:3+1 | None:4+1 | None:3+2 | None:4+1 | None:4+1 | None:4+1
+  adv Speed+Plyo   None:3+2 | None:3+2 | None:4+1 | None:3+2 | None:3+2 | None:3+2 | None:3+2 | None:4+1
+  adv FullBody     None:3+2 | None:3+2 | None:3+2 | None:4+1 | None:4+1 | None:4+1 | None:4+1 | None:4+1
+  adv MOOD's Pick  None:3+2 | None:3+2 | None:3+2 | None:4+0 | None:4+1 | None:4+1 | None:4+1 | None:3+1

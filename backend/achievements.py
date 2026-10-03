@@ -97,6 +97,7 @@ async def get_achievement_state(db, user_id: str) -> dict:
     moods: set = set()
     days7: set = set()
     days14: set = set()
+    recent_times: set = set()   # Home week strip: completion instants (ISO, UTC) of the last 14 days; the app buckets them by local day
 
     cursor = db.user_events.find(
         {
@@ -122,6 +123,7 @@ async def get_achievement_state(db, user_id: str) -> dict:
             if ts >= since:
                 day_key = ts.strftime("%Y-%m-%d")
                 days14.add(day_key)
+                recent_times.add(ts.isoformat())
                 if ts >= day7_cutoff:
                     days7.add(day_key)
 
@@ -138,6 +140,7 @@ async def get_achievement_state(db, user_id: str) -> dict:
         "workout_streak_best": workout_streak_best,
         "workout_days_last_7": len(days7),
         "workout_days_last_14": len(days14),
+        "workout_completed_at_14d": sorted(recent_times)[-60:],
         "moods_tried": len(moods),
         "difficulties_tried": len(difficulties),
         "hard_workouts": hard_workouts,

@@ -2,7 +2,7 @@
   "expo": {
     "name": "MOOD",
     "slug": "mood-fitness-app",
-    "version": "2.1",
+    "version": "3.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "moodapp",
@@ -66,7 +66,12 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 400,
           "resizeMode": "contain",
-          "backgroundColor": "#000000"
+          "backgroundColor": "#000000",
+          "ios": {
+            "image": "./assets/images/splash-screen-ios.png",
+            "resizeMode": "cover",
+            "backgroundColor": "#000000"
+          }
         }
       ],
       "./plugins/withCxx17Fix",

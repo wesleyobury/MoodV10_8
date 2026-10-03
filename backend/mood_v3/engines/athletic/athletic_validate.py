@@ -10,7 +10,7 @@ from . import athletic_core as C
 from .lib3 import avail
 
 EX = C.EX
-ROLE_ORDER = ['primary', 'secondary', 'tertiary', 'strength', 'support', 'finisher']
+ROLE_ORDER = ['primer', 'primary', 'secondary', 'tertiary', 'strength', 'support', 'finisher']
 MAX_REPS = {'uni_jump': 3, 'pop': 4, 'muscle_up': 3, 'speed_strength': 3, 'jump': 5, 'loaded_jump': 5, 'combo': 3, 'bound': 6, 'hop': 4, 'elastic': 10, 'drop': 4, 'lateral': 4, 'sprint': 1, 'sled': 1,
             'throw': 6, 'slam': 6, 'rot_throw': 5, 'landmine_rot': 5, 'upper': 5, 'olympic': 4, 'explosive_lift': 3, 'swing': 10}
 MIN_REST = {'uni_jump': 75, 'pop': 60, 'muscle_up': 90, 'speed_strength': 75, 'jump': 60, 'loaded_jump': 90, 'combo': 90, 'bound': 90, 'hop': 60, 'elastic': 45, 'drop': 90, 'lateral': 60, 'sprint': 60,
@@ -25,7 +25,8 @@ def validate(sess, wu, ctx, states=()):
     blocks = sess['blocks']; roles = [b['role'] for b in blocks]
     its = [x for b in blocks for x in b['items']]
     # ---- order: highest intent first; power never after strength / support / finisher
-    chk('one_primary_first', roles and roles[0] == 'primary' and roles.count('primary') == 1, roles)
+    # sequencing pass: an optional low-fatigue Primer (potentiation) may precede the primary; nothing else may
+    chk('one_primary_first', roles and roles.count('primary') == 1 and roles.count('primer') <= 1 and (roles[0] == 'primary' or (roles[0] == 'primer' and roles[1] == 'primary')), roles)
     chk('role_order', roles == sorted(roles, key=ROLE_ORDER.index), roles)
     late_power = [x['id'] for b in blocks if b['role'] in ('strength', 'support', 'finisher') for x in b['items'] if x['cls'] == 'power']
     chk('no_power_under_fatigue', not late_power, late_power)
@@ -33,9 +34,15 @@ def validate(sess, wu, ctx, states=()):
     ter = [x for b in blocks if b['role'] == 'tertiary' for x in b['items']]
     chk('further_athletic_dose', all(x['sets'] <= (4 if x['kind'] in C.SPRINT_KINDS | {'speed_strength'} else 3) and x['kind'] != 'olympic' for x in ter), [(x['id'], x['sets']) for x in ter])
     # highest cost first: after the primary, athletic elements run A before B before C
-    rank = {'A': 0, 'B': 1, 'C': 2}
-    seq = [rank[C.tier(b['items'][0]['id'], b['role'])] for b in blocks if b['role'] in ('secondary', 'tertiary')]
+    # sequencing pass: after the lead, athletic work runs in order of performance demand (loaded / high-velocity, ballistic /
+    # plyometric, velocity-strength), and never ahead of a higher-demand element
+    seq = [C.demand(b['items'][-1]) for b in blocks if b['role'] in ('secondary', 'tertiary')]
     chk('athletic_cost_order', seq == sorted(seq), seq)
+    prim_x = C.PB(sess)['items'][-1] if blocks else None
+    if prim_x is not None and sess['structure'] != 'contrast' and sess['arch'] != 'athletic_speed_agility':
+        chk('demand_lead', not seq or C.demand(prim_x) <= seq[0], (prim_x['id'], seq))
+    pr = [x for b in blocks if b['role'] == 'primer' for x in b['items']]
+    chk('primer_low_fatigue', all(x['sets'] <= 2 and x['reps'] <= 6 and x['kind'] in C.PRIMER_KINDS for x in pr), [x['id'] for x in pr])
     chk('no_carries', not any(x['id'] in ('farmer_carry', 'suitcase_carry', 'front_rack_carry', 'overhead_carry') for x in its), [x['id'] for x in its])
     # ---- power dosing + recovery
     for x in its:
@@ -73,14 +80,17 @@ def validate(sess, wu, ctx, states=()):
     chk('exercise_count', (2 <= n_main <= 5) if dur == 60 else (2 <= n_main <= 3), n_main)
     # ---- athletic strength present (the support for the power work)
     has_strength = any(x['cls'] == 'strength' for x in its)
-    chk('athletic_strength_present', has_strength, roles)
+    # composition pass: an athletic-volume session (4 athletic movements + trunk / stability support) needs no traditional strength lift
+    n_pw = sum(x['cls'] == 'power' for x in its)
+    volume_ok = dur == 60 and (n_pw >= 4 or (n_pw >= 3 and any(x['cls'] == 'support' for x in its)))
+    chk('athletic_strength_present', has_strength or volume_ok, roles)
     # ---- structure identity
-    s = sess['structure']; prim = blocks[0]['items'][-1] if blocks else None
+    s = sess['structure']; pblk = C.PB(sess) if blocks else None; prim = pblk['items'][-1] if blocks else None
     if prim:
         pk = prim['kind']
         if s == 'speed_strength': chk('identity_speed', pk in ('sprint', 'sled'), pk)
         if s == 'jump_throw': chk('identity_jump_throw', pk in C.JUMP_KINDS and any(b['role'] in ('secondary', 'tertiary') and b['items'][0]['kind'] in C.THROW_KINDS | {'landmine_rot', 'upper'} for b in blocks), pk)
-        if s == 'contrast': chk('identity_contrast', blocks[0]['structure'] == 'contrast' and blocks[0]['items'][0]['cls'] == 'strength' and prim['cls'] == 'power', blocks[0]['structure'])
+        if s == 'contrast': chk('identity_contrast', pblk['structure'] == 'contrast' and pblk['items'][0]['cls'] == 'strength' and prim['cls'] == 'power', pblk['structure'])
         if s == 'athletic_mixed': chk('identity_mixed', any(b['role'] == 'secondary' for b in blocks), roles)
     # ---- finisher rules
     fin = [b for b in blocks if b['role'] == 'finisher']
@@ -88,6 +98,7 @@ def validate(sess, wu, ctx, states=()):
                                      and not set(states) & {'low_energy', 'amped', 'irritated', 'stressed'}), [b['items'][0]['id'] for b in fin])
     # ---- duration: a training window, not a quota
     lo, hi = EST_BAND[dur]
+    if 'low_energy' in states and dur == 60: lo = 25          # a Low Energy hour may legitimately be short (fewer movements, fewer sets)
     chk('duration_window', lo <= A['est'] <= hi, A['est'])
     # ---- warm-up
     comps = [c for c, *_ in wu]

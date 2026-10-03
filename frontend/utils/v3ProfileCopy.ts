@@ -1,176 +1,260 @@
 /**
  * MOOD V3 — deterministic onboarding / profile-reveal copy.
  *
- * Every sentence here maps to real V3 behaviour (backend/mood_v3):
- *  • training preference → default Direction on Home
- *  • goal → which sessions MOOD's Pick serves first (Strength / Sweat), Sweat
- *    engine style, Athletic support work; it does NOT make Strength sets/reps
- *    goal-specific, so no copy claims that
- *  • experience → exercise eligibility / complexity gates in every Direction
- *  • frequency → Strength MOOD's Pick: 1–2 = full body, 3–4 = split rotation,
- *    5+ = full split incl. hinge + arms days
- *  • barrier → first-session setup only (and future notification copy)
- * No LLM, no network: composable templates only.
+ * Every sentence here maps to real V3 behaviour (backend/mood_v3). No LLM, no network: composable templates only.
+ *  • training preference → default Direction on Home / Build
+ *  • goal → which sessions MOOD's Pick serves first (Strength / Sweat), Sweat engine style, Athletic support work;
+ *    it does NOT make Strength sets/reps goal-specific, so no copy claims that
+ *  • experience → exercise eligibility / complexity gates in every Direction (beginner / intermediate / advanced). The
+ *    onboarding rungs map: getting_started → beginner, basics → intermediate, consistent + serious → advanced
+ *  • frequency → Strength MOOD's Pick: 1–2 = full body, 3–4 = split rotation, 5+ = full split incl. hinge + arms days
+ *  • barrier → first-session setup (States prefill, 30-min suggestion, MOOD's Pick emphasis) and future copy
+ *  • daily States → the "what MOOD will do differently" lines mirror backend/mood_v3/explain.py STATE lines
  */
-import type { Barrier, Direction, Experience, TrainingFrequency, TrainingPreference, TrainingProfile, V3Goal } from './v3Profile';
-import { DIRECTION_LABEL, defaultDirectionFor, experienceLabel, goalLabel, preferenceLabel } from './v3Profile';
+import type { Barrier, Direction, ExperienceDetail, TrainingFrequency, TrainingPreference, TrainingProfile, V3Goal } from './v3ProfileOptions';
+import { DIRECTION_LABEL, defaultDirectionFor, detailFromExperience } from './v3ProfileOptions';
 
 /* ------------------------------------------------------------------ question reactions */
 
-export const PREFERENCE_REACTIONS: Record<TrainingPreference, string> = {
-  lifting: 'Strength sessions become your default. Sweat and Athletic are always one tap away.',
-  conditioning: 'Sweat sessions become your default. Strength and Athletic are always one tap away.',
-  athletic: 'Athletic sessions become your default. Strength and Sweat are always one tap away.',
-  mix: "We'll use your goal to pick where to start. Every style stays one tap away.",
+/** A reaction = the consequence of an answer: a short tag ("what changed") + one line ("how"). */
+export interface Reaction {
+  tag: string;
+  text: string;
+}
+
+export const PREFERENCE_REACTIONS: Record<TrainingPreference, Reaction> = {
+  lifting: { tag: 'Default set · Strength', text: 'Compound lifts lead. Every Strength session is built around a protected main lift.' },
+  conditioning: { tag: 'Default set · Sweat', text: 'Circuits, engine intervals and hybrid sessions that use all the time you give them.' },
+  athletic: { tag: 'Default set · Athletic', text: 'Power, speed and full-body athlete sessions. Quality reps, never sloppy ones.' },
+  mix: { tag: 'Default set · Goal-led', text: 'Your goal decides where MOOD starts. Strength, Sweat and Athletic stay one tap away.' },
 };
 
-export const GOAL_REACTIONS: Record<V3Goal, string> = {
-  build_strength: "MOOD's Pick will lead with heavy, compound-first strength sessions.",
-  lose_weight_conditioning: "MOOD's Pick will lean into sweat and conditioning sessions.",
-  build_muscle: "MOOD's Pick will lead with muscle-building strength sessions.",
-  improve_athleticism: "MOOD's Pick will lean into power, speed and athletic sessions.",
-  feel_better_reduce_stress: 'Steady, approachable sessions that leave you better than you started.',
-  stay_consistent: 'Sessions rotate so every workout feels different and showing up stays easy.',
+export const GOAL_REACTIONS: Record<V3Goal, Reaction> = {
+  build_strength: { tag: 'Priority set', text: "MOOD's Pick leads with heavy, compound-first strength days." },
+  build_muscle: { tag: 'Priority set', text: "MOOD's Pick leads with muscle-building strength days." },
+  lose_weight_conditioning: { tag: 'Priority set', text: "MOOD's Pick leans into Sweat: conditioning that keeps you working the whole session." },
+  improve_athleticism: { tag: 'Priority set', text: "MOOD's Pick leans into power, speed and athletic work." },
+  feel_better_reduce_stress: { tag: 'Priority set', text: 'Steady, approachable sessions that leave you better than you started.' },
+  stay_consistent: { tag: 'Priority set', text: 'Sessions rotate so no two feel the same, and showing up stays easy.' },
 };
 
-export const EXPERIENCE_REACTIONS: Record<Experience, string> = {
-  beginner: "We'll program movements you can do well, and build from there.",
-  intermediate: 'Most of the exercise library is open to you. The most technical lifts stay reserved.',
-  advanced: 'Every movement is on the table, including the technical ones.',
+export const EXPERIENCE_REACTIONS: Record<ExperienceDetail, Reaction> = {
+  getting_started: { tag: 'Exercise pool · Foundations', text: 'Movements you can own from day one. MOOD builds up from there.' },
+  basics: { tag: 'Exercise pool · Full gym', text: 'Most of the library opens up. The most technical lifts stay reserved for now.' },
+  consistent: { tag: 'Exercise pool · Full library', text: 'Every movement MOOD programs is open to you, technical lifts included.' },
+  serious: { tag: 'Exercise pool · Advanced', text: 'Everything is on the table, technical and Olympic variations included. Less hand-holding.' },
 };
 
-export const FREQUENCY_REACTIONS: Record<TrainingFrequency, string> = {
-  '1-2': 'Strength days will be full-body, so every session covers everything.',
-  '3-4': 'Strength days will rotate through upper, lower and pull-focused sessions.',
-  '5+': 'Strength days will rotate a full split, including dedicated hinge and arm days.',
+export const FREQUENCY_REACTIONS: Record<TrainingFrequency, Reaction> = {
+  '1-2': { tag: 'Week planned · Full body', text: 'Strength days go full-body, so every session covers what matters.' },
+  '3-4': { tag: 'Week planned · Rotation', text: 'Strength days rotate upper, lower and pull-focused sessions across your week.' },
+  '5+': { tag: 'Week planned · Full split', text: 'Strength days run a full split, with dedicated hinge and arm days.' },
 };
 
-export const BARRIER_REACTIONS: Record<Barrier, string> = {
-  time: "Your first session will put the 30-minute option front and center.",
-  low_energy: 'Your first session starts with Low Energy selected. Change it anytime.',
-  motivation: "One tap to start. MOOD's Pick handles the plan.",
-  dont_know: "MOOD's Pick builds the whole session. You just press start.",
-  boredom: 'Your first session starts with Bored selected, for more variety.',
+export const BARRIER_REACTIONS: Record<Barrier, Reaction> = {
+  dont_know: { tag: "That's what MOOD removes", text: 'Open the app, tell MOOD where you’re at, and your session is built. Exercises, sets, rest, all of it.' },
+  boredom: { tag: 'Then repetition is the enemy', text: 'Tell MOOD you’re bored and it changes the movements and the session structure, not just the order. Your first session starts there.' },
+  time: { tag: 'Every minute earns its place', text: 'Your first session puts the 30-minute option up front. The main work stays; the rest gets cut.' },
+  low_energy: { tag: 'A different workout, not a skipped one', text: 'Your first session starts with Low Energy on: steadier movements, still a real session. Change it anytime.' },
+  motivation: { tag: 'Starting becomes one tap', text: "MOOD's Pick builds the whole session for you. All you do is press start." },
 };
+
+/* ------------------------------------------------------------------ profile progress */
+
+/** "Your profile is taking shape · 60%": every tap moves it, before Continue. */
+export function profileProgress(answeredBefore: number, hasPending: boolean, total = 5): number {
+  const n = Math.max(0, Math.min(total, answeredBefore + (hasPending ? 1 : 0)));
+  return Math.round((n / total) * 100);
+}
+
+export function profileProgressLabel(pct: number): string {
+  if (pct <= 0) return "Let's build your profile";
+  if (pct >= 100) return 'Profile complete';
+  return 'Your profile is taking shape';
+}
+
+/* ------------------------------------------------------------------ construction (what MOOD learned) */
+
+export interface Conclusion {
+  id: 'direction' | 'goal' | 'experience' | 'frequency' | 'barrier';
+  label: string;
+}
+
+const DIRECTION_FIRST: Record<Direction, string> = { strength: 'Strength-first training', sweat: 'Sweat-first training', athletic: 'Athletic-first training' };
+const GOAL_CONCLUSION: Record<V3Goal, string> = {
+  build_strength: 'Heavy compound priority',
+  build_muscle: 'Muscle-building priority',
+  lose_weight_conditioning: 'Conditioning priority',
+  improve_athleticism: 'Power & speed priority',
+  feel_better_reduce_stress: 'Steady, sustainable sessions',
+  stay_consistent: 'Rotating session styles',
+};
+const POOL_CONCLUSION: Record<ExperienceDetail, string> = {
+  getting_started: 'Foundational exercise pool',
+  basics: 'Full gym exercise pool',
+  consistent: 'Full exercise library',
+  serious: 'Advanced exercise pool',
+};
+const FREQ_CONCLUSION: Record<TrainingFrequency, string> = {
+  '1-2': '1–2 days a week · full body',
+  '3-4': '3–4 days a week · split rotation',
+  '5+': '5+ days a week · full split',
+};
+const BARRIER_CONCLUSION: Record<Barrier, string> = {
+  time: '30-minute option up front',
+  low_energy: 'Low-energy first session',
+  motivation: 'One-tap starts',
+  dont_know: 'Fully built sessions',
+  boredom: 'Higher variety',
+};
+
+/** The settings MOOD actually derived, in the order they lock in on the construction screen. */
+export function profileConclusions(p: TrainingProfile, detail?: ExperienceDetail): Conclusion[] {
+  const dir = defaultDirectionFor(p);
+  const out: Conclusion[] = [];
+  out.push({ id: 'direction', label: p.training_preference === 'mix' ? `Goal-led · starts with ${DIRECTION_LABEL[dir]}` : DIRECTION_FIRST[dir] });
+  if (p.goal) out.push({ id: 'goal', label: GOAL_CONCLUSION[p.goal] });
+  const d = detail ?? detailFromExperience(p.experience);
+  if (d) out.push({ id: 'experience', label: POOL_CONCLUSION[d] });
+  if (p.training_frequency) out.push({ id: 'frequency', label: FREQ_CONCLUSION[p.training_frequency] });
+  if (p.biggest_barrier) out.push({ id: 'barrier', label: BARRIER_CONCLUSION[p.biggest_barrier] });
+  return out;
+}
 
 /* ------------------------------------------------------------------ reveal */
 
-export interface ProfileInsight {
+export interface Adaptation {
+  /** "When you're amped" */
+  when: string;
+  /** what MOOD does, in one sentence */
+  does: string;
+}
+
+export interface ProfileIdentity {
+  /** "WESLEY'S TRAINING PROFILE" */
   eyebrow: string;
-  title: string;
-  body: string;
-  icon: 'flash' | 'sparkles' | 'time-outline' | 'battery-charging' | 'compass' | 'play' | 'shuffle' | 'barbell' | 'layers';
-}
-
-const STRENGTH_ROTATION: Record<TrainingFrequency, string> = {
-  '1-2': 'your Strength days are full-body sessions that cover every major muscle group',
-  '3-4': "MOOD's Pick rotates upper, lower and pull-focused Strength days",
-  '5+': "MOOD's Pick rotates a full split, including dedicated hinge and arm days",
-};
-
-const DIRECTION_STARTS: Record<Direction, string> = {
-  strength: '',
-  sweat: "MOOD's Pick rotates circuits, engine intervals and hybrid sessions",
-  athletic: "MOOD's Pick rotates full-body athlete, power, and speed + agility sessions",
-};
-
-function startInsight(p: TrainingProfile, dir: Direction): ProfileInsight {
-  const freq = p.training_frequency ?? '3-4';
-  const how = dir === 'strength' ? STRENGTH_ROTATION[freq] : DIRECTION_STARTS[dir];
-  const lead =
-    p.training_preference === 'mix'
-      ? `You like variety, so your goal picks the starting point: ${DIRECTION_LABEL[dir]}.`
-      : `Your default is ${DIRECTION_LABEL[dir]}.`;
-  return {
-    eyebrow: 'HOW MOOD STARTS YOU',
-    title: `${DIRECTION_LABEL[dir]} · 60 min`,
-    body: `${lead} ${how.charAt(0).toUpperCase()}${how.slice(1)}. Switch style or go 30 minutes any day.`,
-    icon: 'layers',
-  };
-}
-
-const EDGE: Record<Barrier, ProfileInsight> = {
-  boredom: {
-    eyebrow: 'YOUR EDGE', title: 'Keeping training fresh.', icon: 'shuffle',
-    body: "When things feel stale, tell MOOD you're bored. We'll bring in more movement and structure variety while keeping the workout purposeful.",
-  },
-  low_energy: {
-    eyebrow: 'YOUR EDGE', title: 'Training on a low battery.', icon: 'battery-charging',
-    body: "When energy is low, tell MOOD. We'll adjust the workout while keeping the session worthwhile.",
-  },
-  time: {
-    eyebrow: 'YOUR EDGE', title: 'Making short sessions count.', icon: 'time-outline',
-    body: 'Short on time? Switch any workout to 30 minutes. MOOD keeps the main work and trims the rest.',
-  },
-  motivation: {
-    eyebrow: 'YOUR EDGE', title: 'Getting you started.', icon: 'play',
-    body: "Skip the planning. MOOD's Pick builds a complete session from your profile, so starting is one tap.",
-  },
-  dont_know: {
-    eyebrow: 'YOUR EDGE', title: 'Taking out the guesswork.', icon: 'compass',
-    body: "MOOD's Pick chooses the exercises, sets, reps and rest for you, and tells you why it built today's session the way it did.",
-  },
-};
-
-const LEVEL: Record<Experience, ProfileInsight> = {
-  beginner: {
-    eyebrow: 'BUILT FOR YOUR LEVEL', title: 'Movements you can own.', icon: 'barbell',
-    body: 'Every exercise is matched to your experience, so you build skill and confidence session by session.',
-  },
-  intermediate: {
-    eyebrow: 'BUILT FOR YOUR LEVEL', title: 'Most of the library, unlocked.', icon: 'barbell',
-    body: 'You get the full range of gym movements. The most technical lifts stay reserved for advanced athletes.',
-  },
-  advanced: {
-    eyebrow: 'BUILT FOR YOUR LEVEL', title: 'Everything unlocked.', icon: 'flash',
-    body: 'Technical lifts, Olympic variations and advanced power work are all in play when they fit the session.',
-  },
-};
-
-export interface ProfileReveal {
-  headline: string;         // e.g. "Advanced · 5+ days / week"
-  focus: string;            // goal label
-  style: string;            // preference label
+  /** "The Performance Builder" */
+  archetype: string;
+  /** one sentence under the archetype */
+  tagline: string;
   direction: Direction;
-  insights: ProfileInsight[];
+  /** "Strength" or "Goal-led · Strength first" */
+  primaryDirection: string;
+  /** "Advanced movements · 4×/week · High variety · 60 min" */
+  training: string[];
+  adaptations: Adaptation[];
 }
 
-export function buildProfileReveal(p: TrainingProfile, serverDirection?: Direction): ProfileReveal {
-  const dir = serverDirection ?? defaultDirectionFor(p);
-  const freq = p.training_frequency ? `${p.training_frequency.replace('-', '–')} days / week` : '';
-  const insights: ProfileInsight[] = [startInsight(p, dir)];
-  if (p.biggest_barrier) insights.push(EDGE[p.biggest_barrier]);
-  if (p.experience) insights.push(LEVEL[p.experience]);
+type Variety = 'High' | 'Moderate' | 'Focused';
+
+function varietyOf(p: TrainingProfile): Variety {
+  if (p.biggest_barrier === 'boredom' || p.goal === 'stay_consistent' || p.training_preference === 'mix') return 'High';
+  if (p.training_preference === 'conditioning' || p.training_preference === 'athletic') return 'Moderate';
+  return 'Focused';
+}
+
+const ARCHETYPE_BY_GOAL: Record<V3Goal, string> = {
+  build_strength: 'The Strength Builder',
+  build_muscle: 'The Physique Builder',
+  lose_weight_conditioning: 'The Engine Builder',
+  improve_athleticism: 'The Performance Athlete',
+  feel_better_reduce_stress: 'The Steady Athlete',
+  stay_consistent: 'The Everyday Athlete',
+};
+
+/** A name for the combination, not a score. Deterministic: same answers, same name. */
+export function archetypeName(p: TrainingProfile): string {
+  const goal = p.goal ?? 'stay_consistent';
+  const pref = p.training_preference;
+  const lifting = goal === 'build_strength' || goal === 'build_muscle';
+  if (pref === 'athletic' && lifting) return 'The Performance Builder';
+  if (pref === 'conditioning' && lifting) return 'The Hybrid Builder';
+  if (pref === 'lifting' && goal === 'lose_weight_conditioning') return 'The Lean Builder';
+  if (pref === 'lifting' && goal === 'improve_athleticism') return 'The Power Builder';
+  if (pref === 'mix' && goal !== 'stay_consistent' && goal !== 'feel_better_reduce_stress') return 'The Hybrid Athlete';
+  return ARCHETYPE_BY_GOAL[goal];
+}
+
+const BIAS: Record<Direction, string> = { strength: 'Strong training bias.', sweat: 'Conditioning-first.', athletic: 'Athletic training bias.' };
+
+function tagline(p: TrainingProfile, dir: Direction, variety: Variety): string {
+  const bias = p.training_preference === 'mix' ? 'A little of everything.' : BIAS[dir];
+  const v = variety === 'High' ? 'High variety.' : variety === 'Moderate' ? 'Balanced variety.' : 'Focused structure.';
+  return `${bias} ${v} Built to push when you're ready and adapt when you're not.`;
+}
+
+const POOL_TAG: Record<ExperienceDetail, string> = {
+  getting_started: 'Foundational movements',
+  basics: 'Full gym library',
+  consistent: 'Full movement library',
+  serious: 'Advanced movements',
+};
+const FREQ_TAG: Record<TrainingFrequency, string> = { '1-2': '1–2 days/week', '3-4': '3–4 days/week', '5+': '5+ days/week' };
+
+/* Daily-State lines: mirror backend/mood_v3/explain.py (STATE + direction-specific lines). */
+const AMPED: Record<Direction, string> = {
+  strength: 'The extra energy goes into higher intent on the main work, not a longer list of exercises.',
+  sweat: 'Denser, harder conditioning where it fits, without ending the session early.',
+  athletic: 'More quality efforts, never at the cost of speed.',
+};
+const LOW_ENERGY: Record<Direction, string> = {
+  strength: 'Stable, low-friction movements keep it productive without piling on fatigue. A different challenge, not a recovery day.',
+  sweat: 'Stable, low-friction stations keep the session productive without piling on fatigue. Still a full session.',
+  athletic: 'Simple, low-impact explosive work keeps the quality high without burying you.',
+};
+const ADAPT: Record<'bored' | 'stressed' | 'sore', Adaptation> = {
+  bored: { when: "When you're bored", does: 'New movements and a different session structure, not just a reshuffled list.' },
+  stressed: { when: "When you're stressed", does: "Rhythmic, predictable work. You won't be racing the clock, and you still get a complete session." },
+  sore: { when: "When you're sore", does: 'Tell MOOD where. The session trains around it instead of skipping the day.' },
+};
+const BARRIER_ADAPT: Partial<Record<Barrier, Adaptation>> = {
+  time: { when: "When you're short on time", does: 'Switch to 30 minutes. MOOD keeps the main work and cuts what doesn’t earn its place.' },
+  dont_know: { when: "When you don't know what to do", does: "MOOD's Pick chooses the exercises, sets, reps and rest, and tells you why." },
+  motivation: { when: "When you can't get going", does: "One tap. MOOD's Pick has the whole session built before you've talked yourself out of it." },
+};
+
+/** Three "what MOOD will do differently for you" lines, led by the athlete's own barrier. */
+export function adaptationsFor(p: TrainingProfile, dir: Direction): Adaptation[] {
+  const out: Adaptation[] = [];
+  const add = (a: Adaptation) => { if (!out.some((x) => x.when === a.when)) out.push(a); };
+  const low = { when: "When you're low on energy", does: LOW_ENERGY[dir] };
+  const amped = { when: "When you're amped", does: AMPED[dir] };
+  const b = p.biggest_barrier;
+  if (b === 'low_energy') add(low);
+  else if (b === 'boredom') add(ADAPT.bored);
+  else if (b && BARRIER_ADAPT[b]) add(BARRIER_ADAPT[b]!);
+  if (p.goal === 'feel_better_reduce_stress') add(ADAPT.stressed);
+  add(amped);
+  add(low);
+  add(ADAPT.bored);
+  return out.slice(0, 3);
+}
+
+export function possessiveName(first?: string | null): string {
+  const n = (first ?? '').trim();
+  if (!n) return 'YOUR';
+  const up = n.toUpperCase();
+  return up.endsWith('S') ? `${up}’` : `${up}’S`;
+}
+
+export function profileIdentity(p: TrainingProfile, opts: { firstName?: string | null; detail?: ExperienceDetail; serverDirection?: Direction } = {}): ProfileIdentity {
+  const dir = opts.serverDirection ?? defaultDirectionFor(p);
+  const variety = varietyOf(p);
+  const d = opts.detail ?? detailFromExperience(p.experience);
+  const minutes = p.biggest_barrier === 'time' ? '30–60 min' : '60 min';
+  const training = [d ? POOL_TAG[d] : null, p.training_frequency ? FREQ_TAG[p.training_frequency] : null, `${variety} variety`, minutes].filter(Boolean) as string[];
   return {
-    headline: [experienceLabel(p.experience), freq].filter(Boolean).join(' · '),
-    focus: goalLabel(p.goal),
-    style: preferenceLabel(p.training_preference),
+    eyebrow: `${possessiveName(opts.firstName)} TRAINING PROFILE`,
+    archetype: archetypeName(p),
+    tagline: tagline(p, dir, variety),
     direction: dir,
-    insights,
+    primaryDirection: p.training_preference === 'mix' ? `Goal-led · ${DIRECTION_LABEL[dir]} first` : DIRECTION_LABEL[dir],
+    training,
+    adaptations: adaptationsFor(p, dir),
   };
 }
 
-/** Reveal-loading stream: the profile being "processed", line by line. */
-export function processingLines(p: TrainingProfile): string[] {
-  const dir = defaultDirectionFor(p);
-  return [
-    'Reading your answers…',
-    `TRAINING STYLE → ${preferenceLabel(p.training_preference).toUpperCase()}`,
-    `GOAL → ${goalLabel(p.goal).toUpperCase()}`,
-    `EXPERIENCE → ${experienceLabel(p.experience).toUpperCase()}`,
-    `FREQUENCY → ${(p.training_frequency ?? '').replace('-', '–')} DAYS / WEEK`,
-    `BIGGEST BARRIER → ${barrierUpper(p.biggest_barrier)}`,
-    'Matching exercises to your experience',
-    `Setting your default session: ${DIRECTION_LABEL[dir]} · 60 min`,
-    'Saving your MOOD profile',
-  ];
-}
-
-function barrierUpper(b?: Barrier): string {
-  return ({ time: 'TIME', low_energy: 'LOW ENERGY', motivation: 'MOTIVATION', dont_know: "DON'T KNOW WHAT TO DO", boredom: 'BOREDOM' } as const)[b as Barrier] ?? '';
-}
-
-/** Radar values (0–1) for the six reveal axes — a picture of the answers, not a score. */
+/** Radar values (0–1) for the six profile axes — a picture of the answers, not a score. */
 export const RADAR_AXES = ['Strength', 'Conditioning', 'Power', 'Experience', 'Frequency', 'Variety'];
 export function radarValues(p: TrainingProfile): number[] {
   const pref = p.training_preference ?? 'mix';

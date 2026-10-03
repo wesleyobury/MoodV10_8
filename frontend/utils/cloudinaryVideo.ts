@@ -113,6 +113,61 @@ export function posterUrlFromPublicId(publicId: string, baseUrl: string): string
 }
 
 /** =========================
+ *  Exercise demo videos (V3 founder review 6)
+ *  ========================= */
+
+/**
+ * Exercise library demos are portrait (1080×1920 HEVC .mov at ~60 fps). The generic MP4 above caps at w_1280,h_720, which
+ * for a portrait clip means 720 px TALL (404×720 at ~0.9 Mbps): that is why the demos looked soft next to the bundled
+ * landing video. Demos get their own delivery instead: the long edge capped at 1280 in either orientation (720×1280 for the
+ * library), H.264, q_auto:good, 30 fps, no audio track (demos play muted). ~2 MB for a 7 s clip, about 2.4 Mbps.
+ */
+export const EXERCISE_DEMO_TRANSFORM = 'vc_h264,q_auto:good,w_1280,h_1280,c_limit,fps_30,ac_none';
+
+export function exerciseDemoVideoUrl(url?: string | null): string | null {
+  if (!url) return null;
+  const u = url.replace(/^http:\/\//, 'https://');
+  if (!u.includes('cloudinary.com') || !u.includes('/video/')) return u;
+  const publicId = cloudinaryPublicIdFromUrl(u);
+  const baseUrl = cloudinaryBaseUrl(u);
+  return publicId && baseUrl ? `${baseUrl}/${EXERCISE_DEMO_TRANSFORM}/${publicId}.mp4` : u;
+}
+
+/** A frame of the demo itself (1 s in), sharp enough for a full-width sheet header or the player's poster. */
+export function exerciseDemoPosterUrl(url?: string | null, width = 1080): string | null {
+  if (!url) return null;
+  const u = url.replace(/^http:\/\//, 'https://');
+  const publicId = cloudinaryPublicIdFromUrl(u);
+  const baseUrl = cloudinaryBaseUrl(u);
+  return publicId && baseUrl ? `${baseUrl}/so_1.0,f_jpg,q_auto:good,w_${Math.round(width)},c_limit/${publicId}.jpg` : null;
+}
+
+/**
+ * Warm the CDN for demos the athlete is about to see (the session start): a request whose body is dropped once the headers
+ * arrive makes Cloudinary derive the transformed file once, so the first tap on Watch demo is a cache hit instead of a 3–6 s transcode.
+ * Also prefetches the poster frame. Best effort, deduplicated per app session, never blocks the UI.
+ */
+const warmed = new Set<string>();
+export function warmExerciseDemos(urls: (string | null | undefined)[], max = 12): void {
+  const todo = urls.filter((u): u is string => !!u && u.includes('cloudinary.com') && u.includes('/video/')).slice(0, max);
+  for (const raw of todo) {
+    const v = exerciseDemoVideoUrl(raw);
+    if (!v || warmed.has(v)) continue;
+    warmed.add(v);
+    const poster = exerciseDemoPosterUrl(raw);
+    if (poster) Image.prefetch(poster).catch(() => undefined);
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const t = setTimeout(() => controller?.abort(), 15000);
+    // a cold derivation ignores Range and sends the whole file: stop reading as soon as the headers arrive (the derived
+    // file is already cached at that point); a warm one answers 206 with 2 bytes
+    fetch(v, { headers: { Range: 'bytes=0-1' }, signal: controller?.signal as any })
+      .then(() => controller?.abort())
+      .catch(() => undefined)
+      .finally(() => clearTimeout(t));
+  }
+}
+
+/** =========================
  *  High-level helpers for components
  *  ========================= */
 
@@ -157,6 +212,9 @@ export function normalizeCloudinaryVideoUrl(url?: string | null): string | null 
   if (!normalized.includes('cloudinary.com') || !normalized.includes('/video/')) {
     return normalized;
   }
+
+  // an exercise demo already carries its own delivery transform (exerciseDemoVideoUrl): keep it
+  if (normalized.includes(`/${EXERCISE_DEMO_TRANSFORM}/`)) return normalized;
 
   const publicId = cloudinaryPublicIdFromUrl(normalized);
   const baseUrl = cloudinaryBaseUrl(normalized);

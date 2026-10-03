@@ -116,6 +116,11 @@ export async function readDayStates(uid: string, date: string): Promise<V3DaySta
   return { date, states: [], soreness: [], set: false };
 }
 
+/** Forget today's States ("not chosen yet"). Used when onboarding hands Build a fresh start. */
+export async function clearDayStates(uid: string): Promise<void> {
+  try { await AsyncStorage.removeItem(DAY_STATES_KEY(uid)); } catch { /* ignore */ }
+}
+
 export async function writeDayStates(uid: string, v: V3DayStates): Promise<void> {
   try { await AsyncStorage.setItem(DAY_STATES_KEY(uid), JSON.stringify({ ...v, set: true })); } catch { /* ignore */ }
 }

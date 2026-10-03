@@ -53,7 +53,13 @@ import {
   saveTrainingProfile,
   writeFirstHomeHandoff,
 } from '../../utils/v3Profile';
-import { RADAR_AXES, processingLines, radarValues } from '../../utils/v3ProfileCopy';
+import { RADAR_AXES, radarValues } from '../../utils/v3ProfileCopy';
+import { ProfileConstruction } from '../../components/onboarding/ProfileConstruction';
+
+/** V2 stream for a V3 profile (only reachable if the V3 branch above is bypassed). */
+function processingLines(p: TrainingProfile): string[] {
+  return ['Reading your answers…', `TRAINING STYLE → ${(p.training_preference ?? '').toUpperCase()}`, 'Saving your MOOD profile'];
+}
 
 // Short chip labels so the four corner chips never collide with the radar.
 const V3_PREF_SHORT: Record<TrainingPreference, string> = { lifting: 'Strength', conditioning: 'Sweat', athletic: 'Athletic', mix: 'Mix' };
@@ -169,7 +175,17 @@ function buildThoughts(answers: FunnelAnswers): string[] {
   ];
 }
 
+/**
+ * Route entry. V3 answers present -> the V3 profile construction (components/onboarding/ProfileConstruction): real
+ * settings locking in, then the profile reveal. Otherwise the V2 analyzer below (kept for V3_ONBOARDING_ENABLED = false).
+ */
 export default function RevealLoading() {
+  const { answers } = useOnboardingFunnel();
+  if (V3_ONBOARDING_ENABLED && !!answers.trainingPreference) return <ProfileConstruction />;
+  return <V2RevealLoading />;
+}
+
+function V2RevealLoading() {
   const router = useRouter();
   const { answers, markCompleted, setV3 } = useOnboardingFunnel();
   const { token, user } = useAuth();

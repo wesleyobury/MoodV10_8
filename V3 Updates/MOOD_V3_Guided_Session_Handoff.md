@@ -69,13 +69,17 @@ instruction as coaching copy; drive the timer and the "Full recovery" label from
 - Media availability must never gate starting, progressing or completing a workout. The founder is replacing the media library
   separately; do not build logic that depends on its coverage.
 
-## 5. Completion (required, not implemented yet)
+## 5. Completion (implemented in Guided Session)
 
-- Endpoint exists: `POST /api/v3/workouts/{id}/complete` with `performance[{item_id, sets[{reps, load, unit}]}]`, `fit_rating`,
-  `mood_after`, `duration_actual`. 409 once already completed. There is no frontend V3 completion call yet.
-- Completion is the source for: MOOD's Pick history and rotation, streaks (keep calling `POST /api/user-workouts` as today),
-  exact-exercise progression, V3 history (`GET /api/v3/workouts/history`) and the Home "Done" state.
-- A workout abandoned mid-session must not be recorded as complete.
+- `POST /api/v3/workouts/{id}/complete` with `performance[{item_id, exercise_id, sets[{reps, load, unit}]}]`, `duration_actual`
+  (minutes) and optional `started_at`, `completed_steps`, `total_steps`, `local_date`, `client_session_id`.
+- Idempotent (`mood_v3/completion.py`): one atomic winner; a repeat returns 200 `status: already_completed` with the stored
+  result (it never returned 409; 409 is swap-after-complete). The server runs the side effects exactly once: `user_workouts`
+  row, `workouts_count`, the weekly free-workout allowance (non-entitled users, completion is the only consumer) and the
+  canonical `workout_completed` event (retention streak, achievements). The client no longer calls `/api/user-workouts`.
+- Completion is the source for: MOOD's Pick history and rotation, streaks, exact-exercise progression, V3 history
+  (`GET /api/v3/workouts/history`) and the Home "Done" state.
+- A workout abandoned or ended early is never recorded as complete.
 
 ## 6. Accepted launch behavior
 
@@ -88,7 +92,10 @@ instruction as coaching copy; drive the timer and the "Full recovery" label from
 
 ## 7. Freeze record
 
-Frozen for launch (change only if Guided Session exposes a concrete functional defect; no opportunistic improvements):
+Frozen for launch (change only if Guided Session exposes a concrete functional defect; no opportunistic improvements).
+Guided Session exception (founder-approved D1): `engines/sweat/sweat_core.py` `bouts_longer` now also sets the timed-circuit
+station doses to the raised work time, so every station shows `block.rest.work_sec` (regression: `tests/test_d1_timed_circuit.py`;
+Sweat freeze metrics unchanged; 1 of 2,012 QA sample rows differs, only the station display "40 s" -> "45 s"). Sweat is frozen again.
 - Programming: Strength, Sweat, Athletic, State behavior, soreness routing, bodyweight scaling, Nordic dosing, Different Workout,
   rest rules and the `rest` contract.
 - Product: Home, Build, Cart, body map, Home Shuffle, Strength Focus UX, Built for Today presentation, Cart Swap.

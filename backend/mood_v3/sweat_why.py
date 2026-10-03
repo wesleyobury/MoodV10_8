@@ -157,7 +157,7 @@ def compose(ctx, res):
     for e in P: byin.setdefault(e['input'], []).append(e)
     st = {e['value']: e for e in byin.get('state', []) if e.get('realized')}
     kinds = {s: set(e.get('kinds', [])) for s, e in st.items()}
-    arch = ARCH_NAME[w['archetype_id']]; shape = SHAPE_NAME.get(p.get('shape'), p.get('shape')); eng = next((e for b in w['blocks'] for e in b['items_e'] if e['role'] == 'engine'), None)
+    arch = ARCH_NAME[w['archetype_id']]; shape = SHAPE_NAME.get(p.get('shape'), p.get('shape')); eng = next((e for e in p['items_e'] if e['role'] == 'engine'), None)   # main-block machine only: a complement's machine is not where the State acted
     en = eng['name'] if eng else None
     stations = [e['name'] for e in p['items_e'] if e['role'] != 'engine']
     tools = [e['name'] for b in w['blocks'] for e in b['items_e'] if e['role'] != 'engine' and (e['mod'] in ('sled', 'rope', 'throw') or e['pat'] == 'carry' or e['forceful'])]

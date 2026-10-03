@@ -1,0 +1,77 @@
+builds 1968  ok 1950  conflicts 18 Counter({'sore_target_conflict': 18})
+gate issues (any) 0%  by code Counter()
+
+== UNCONSTRAINED (no State, no soreness, commercial gym), by archetype / level / duration ==
+cell                                  n  n_ath  n_A/B   n_C  >=3 ath  >=2 A/B  loaded prim ld   oly  sprint  jump2+ superset    est
+Power beg 60                         22   2.27   1.55  0.73      27%      55%     18%      0%    0%     41%      0%      73%  34.94
+Power beg 30                         22   2.00   1.00  1.00       0%       5%     27%      0%    0%      0%      0%       0%  22.48
+Power int 60                         22   3.09   2.36  0.73      86%      91%     86%      5%    9%     14%     27%      23%  43.63
+Power int 30                         22   2.00   1.55  0.45       0%      55%     68%     23%   14%      0%      0%       0%  26.17
+Power adv 60                         22   3.36   2.50  0.86      91%      95%     59%     27%   27%     32%     41%       9%  48.47
+Power adv 30                         22   2.00   1.41  0.59       0%      41%     68%     45%   36%      0%      0%       0%  28.10
+Speed+Plyo beg 60                    22   2.05   1.09  0.95       5%       9%      5%      0%    0%     82%      5%      95%  40.43
+Speed+Plyo beg 30                    22   2.00   1.00  1.00       0%       0%      0%      0%    0%     82%      0%       0%  23.57
+Speed+Plyo int 60                    22   2.95   2.14  0.82      91%      95%     32%      0%    9%     82%      9%      18%  45.25
+Speed+Plyo int 30                    22   2.00   1.36  0.64       0%      36%     32%      0%    0%     32%      0%       0%  26.60
+Speed+Plyo adv 60                    22   3.50   2.55  0.95     100%     100%     68%      0%    5%     64%     23%      14%  50.19
+Speed+Plyo adv 30                    22   2.00   1.14  0.86       0%      14%     14%      0%    0%     45%      0%       0%  27.94
+FullBody beg 60                      22   2.23   1.23  1.00      23%      23%      9%      0%    0%     14%     14%      82%  35.76
+FullBody beg 30                      22   2.00   1.05  0.95       0%       9%     18%      0%    0%      0%      0%       0%  21.73
+FullBody int 60                      22   3.00   2.41  0.59      91%     100%     68%     27%   14%     55%     36%      23%  43.60
+FullBody int 30                      22   2.00   1.41  0.59       0%      41%     64%     23%   14%      0%      0%       0%  25.86
+FullBody adv 60                      22   3.68   2.73  0.95     100%     100%     77%     41%   59%     50%     45%      14%  49.47
+FullBody adv 30                      22   2.00   1.45  0.55       0%      45%     50%     36%   36%      0%      0%       0%  27.95
+MOOD's Pick beg 60                   22   2.14   1.14  1.00      14%      14%      0%      0%    0%     55%      9%      91%  38.20
+MOOD's Pick beg 30                   22   2.00   1.00  1.00       0%       0%      5%      0%    0%     41%      0%       0%  22.95
+MOOD's Pick int 60                   22   3.27   2.59  0.68     100%     100%     77%     32%   14%     50%     36%      14%  45.03
+MOOD's Pick int 30                   22   2.00   1.36  0.64       0%      36%     59%     41%   14%     18%      0%       0%  26.68
+MOOD's Pick adv 60                   22   3.41   2.77  0.64      91%      91%     86%     32%   41%     41%     45%      18%  49.05
+MOOD's Pick adv 30                   22   2.00   1.32  0.68       0%      32%     41%     27%   18%     23%      0%       0%  28.09
+
+== STRENGTH-SUPPORT FORM (all ok builds) ==
+  beginner      one_straight 56%  superset 44%
+  intermediate  one_straight 88%  superset 12%
+  advanced      none 6%  one_straight 83%  superset 11%
+  build_strength none 3%  one_straight 51%  superset 46%
+
+== STATES (int + adv, 60 min, all archetypes) ==
+  none                             n= 24 ath 3.25 A/B 2.54 loaded 71% superset 0% est 45.54
+  low_energy                       n= 24 ath 2.00 A/B 0.75 loaded 0% superset 100% est 36.91
+  bored                            n= 24 ath 3.50 A/B 2.62 loaded 71% superset 0% est 46.95
+  irritated                        n= 24 ath 3.38 A/B 2.29 loaded 58% superset 0% est 45.42
+  amped                            n= 24 ath 3.21 A/B 2.58 loaded 54% superset 0% est 48.22
+  stressed                         n= 24 ath 3.00 A/B 2.04 loaded 50% superset 0% est 42.11
+  amped+bored                      n= 24 ath 3.08 A/B 2.50 loaded 71% superset 0% est 48.14
+  low_energy+amped                 n= 24 ath 2.00 A/B 0.54 loaded 0% superset 100% est 36.50
+  stressed+amped                   n= 24 ath 2.92 A/B 2.08 loaded 54% superset 8% est 42.65
+  irritated+bored                  n= 24 ath 3.42 A/B 2.25 loaded 58% superset 0% est 45.79
+  low_energy+stressed              n= 24 ath 2.00 A/B 0.83 loaded 4% superset 100% est 36.99
+  irritated+amped                  n= 24 ath 3.25 A/B 2.25 loaded 67% superset 0% est 48.45
+  bored+stressed                   n= 24 ath 3.00 A/B 2.12 loaded 25% superset 0% est 42.16
+  low_energy+bored+irritated       n= 24 ath 2.00 A/B 0.46 loaded 0% superset 100% est 36.36
+  amped+bored+irritated            n= 24 ath 3.21 A/B 2.08 loaded 58% superset 0% est 48.24
+  stressed+irritated+amped         n= 24 ath 2.88 A/B 2.00 loaded 54% superset 12% est 41.48
+
+== POWER int/adv 60 (all inputs on commercial gym): primary exercise mix ==
+  consecutive_broad_jump 18, broad_jump 17, rfe_split_squat_jump 16, seated_box_jump 14, box_jump 14, mb_scoop_toss 12, lateral_box_jump 11, kettlebell_swing 11, push_press 9, trap_bar_jump 8, countermovement_jump 8, hang_high_pull 8, db_jump_squat 7, banded_squat_jump 6, broad_jump_to_vertical 6, pogo_to_box_jump 6, mb_rotational_throw 5, mb_backward_toss 5, banded_broad_jump 4, split_jump 4
+
+== SPEED+PLYO int/adv 60: primary mix / elements ==
+  falling_start_sprint 56, sled_push 34, acceleration_sprint 33, consecutive_broad_jump 19, lateral_box_jump 9, broad_jump 5, drop_jump 5, reactive_vertical_jump 4, banded_broad_jump 4, lateral_single_leg_hop 4, single_leg_box_jump 3, broad_jump_to_vertical 2, skater_hop 1, banded_lateral_bound 1, single_leg_hop 1, pogo_hop 1, alternating_bound 1
+  sprint/sled present 79%  2+ lower speed/plyo 69%  throw present 86%
+
+== FULL-BODY int/adv 60: coverage ==
+  lower 97%  upper/rot 95%  loaded 60%  all three 53%
+
+== EXERCISE FREQUENCY (athletic movements, all ok builds) ==
+  mb_rotational_throw 482, mb_rotational_slam 401, falling_start_sprint 320, broad_jump 267, acceleration_sprint 213, db_push_press 212, countermovement_jump 187, mb_overhead_throw 153, mb_shot_put 146, landmine_rotational_punch 144, mb_chest_pass 139, consecutive_broad_jump 130, med_ball_slam 127, sled_push 127, seated_box_jump 113, explosive_push_up 109, landmine_push_press 85, lateral_box_jump 85, mb_scoop_toss 72, reverse_lunge_knee_drive_hop 65, kettlebell_swing 64, rfe_split_squat_jump 61, hang_high_pull 60, skater_hop 57, mb_step_behind_throw 48, broad_jump_to_vertical 44, box_jump 42, db_jump_squat 38, split_jump 38, lateral_single_leg_hop 37, step_up_pop 35, single_leg_hop 35, banded_lateral_bound 34, banded_broad_jump 34, trap_bar_jump 34, db_snatch 33, db_step_up_pop 32, pogo_to_box_jump 30, landmine_split_jerk 27, banded_squat_jump 24, mb_backward_toss 24, push_press 23, reactive_vertical_jump 16, drop_jump 16, hang_clean_to_box_knee_drive 13, lateral_bound_to_box_jump 13, hang_power_clean 13, speed_trap_bar_deadlift 13, db_hang_power_clean 12, single_leg_box_jump 12, pogo_hop 12, split_jerk 11, alternating_bound 7, band_assisted_muscle_up 7, power_snatch 7, bar_muscle_up 5, kb_snatch 5, landmine_rotational_clean_press 3, speed_box_squat 2
+  never used: []
+
+== STRUCTURAL REPETITION: most common block-shape signatures (int/adv 60) ==
+   2.6%  sprint|rot_throw + superset
+   2.2%  jump|slam + superset
+   1.8%  lateral|rot_throw + superset
+   1.8%  throw|jump + superset
+   1.4%  jump|throw + superset
+   1.4%  sprint|slam + superset
+   1.2%  lateral|throw + superset
+   1.1%  sprint|lateral|rot_throw + one_straight

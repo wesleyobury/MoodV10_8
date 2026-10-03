@@ -3,6 +3,7 @@
  *
  *   FOCUS          What do you want to train?        MOOD's Pick | Targets (Strength / Sweat only)
  *   WORKOUT TYPE   Want a specific style of session?  Let MOOD choose | registry archetypes
+ *   GOAL           What are you training for? (the funnel question; default: Training Profile goal; today only)
  *   DIFFICULTY     Beginner | Intermediate | Advanced (default: Training Profile experience; today only)
  *   LENGTH         60 | 30
  *
@@ -41,6 +42,11 @@ import {
   isStrengthMuscleSelected,
   pickBodyArea,
   toggleStrengthMuscle,
+  GOAL_CHOICES,
+  GOAL_LABEL,
+  V3Goal,
+  effectiveGoal,
+  setGoal,
 } from '../../utils/v3HomeModel';
 import { V3Chip } from './V3Chip';
 
@@ -50,13 +56,21 @@ interface Props {
   suggest30?: boolean;
   /** training_profile.experience: the default Difficulty. */
   profileLevel: V3Experience | null;
+  /** training_profile.goal (the funnel answer): the default Goal. */
+  profileGoal?: V3Goal | null;
   onApply: (next: HomeInputs) => void;
   onClose: () => void;
   /** H1: the Build screen shows Length inline, so its Focus sheet hides it. Default true. */
   showLength?: boolean;
 }
 
-export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply, onClose, showLength = true }: Props) {
+/** Upper Body / Lower Body is picked (Full Body is its own chip). */
+function bodyAreaOrUpperLower(target: HomeInputs['target']): boolean {
+  const a = bodyAreaOf(target);
+  return !!a && a.id !== 'full_body';
+}
+
+export function ConfigSheet({ visible, inputs, suggest30, profileLevel, profileGoal = null, onApply, onClose, showLength = true }: Props) {
   const insets = useSafeAreaInsets();
   const [draft, setDraft] = useState<HomeInputs>(inputs);
   const [note, setNote] = useState<string | null>(null);
@@ -94,7 +108,9 @@ export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply,
       return;
     }
     const hadType = draft.archetype;
-    const r = toggleTarget(draft, chipId);
+    // a muscle tapped while Upper / Lower Body is picked starts a fresh muscle selection
+    const base = bodyAreaOrUpperLower(draft.target) ? clearTarget(draft) : draft;
+    const r = toggleTarget(base, chipId);
     if (r.limitHit) {
       setNote('Up to 3 muscle groups. Arms counts as two.');
       return;
@@ -162,8 +178,20 @@ export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply,
                 <Text style={styles.question}>What do you want to train?</Text>
                 <View style={styles.wrap}>
                   <V3Chip size="sm" label="MOOD's Pick" icon="sparkles" selected={draft.target === null} onPress={() => pickFocus(null)} testID="v3-focus-moods-pick" />
+                  {/* founder review: Upper Body / Lower Body as one-tap areas (the same Target sets Strength's BODY AREA sends) */}
+                  {BODY_AREAS.filter((a) => a.id !== 'full_body').map((a) => (
+                    <V3Chip key={a.id} size="sm" label={a.label} selected={bodyAreaOf(draft.target)?.id === a.id} onPress={() => pickArea(a.id)} testID={`v3-focus-${a.id}`} />
+                  ))}
                   {TARGETS.map((t) => (
-                    <V3Chip key={t.id} size="sm" label={t.label} selected={isTargetSelected(draft, t.id)} onPress={() => pickFocus(t.id)} testID={`v3-focus-${t.id}`} />
+                    <V3Chip
+                      key={t.id}
+                      size="sm"
+                      label={t.label}
+                      // while an area is picked, its muscles are not shown as separately selected
+                      selected={t.muscles === 'full_body' ? draft.target === 'full_body' : !bodyAreaOrUpperLower(draft.target) && isTargetSelected(draft, t.id)}
+                      onPress={() => pickFocus(t.id)}
+                      testID={`v3-focus-${t.id}`}
+                    />
                   ))}
                 </View>
               </View>
@@ -188,6 +216,30 @@ export function ConfigSheet({ visible, inputs, suggest30, profileLevel, onApply,
               {note}
             </Text>
           ) : null}
+
+          <View style={styles.group} testID="v3-goal-group">
+            <Text style={styles.label}>GOAL</Text>
+            <Text style={styles.question}>What are you training for?</Text>
+            <View style={styles.wrap}>
+              {GOAL_CHOICES.map((g) => (
+                <V3Chip
+                  key={g.id}
+                  size="sm"
+                  label={g.label}
+                  selected={effectiveGoal(draft, profileGoal) === g.id}
+                  onPress={() => setDraft(setGoal(draft, g.id, profileGoal))}
+                  testID={`v3-goal-${g.id}`}
+                />
+              ))}
+            </View>
+            <Text style={styles.hint} testID="v3-goal-hint">
+              {draft.goal && profileGoal
+                ? `Today only. Your Training Profile stays ${GOAL_LABEL[profileGoal]}.`
+                : profileGoal
+                  ? 'Your answer from setup.'
+                  : 'Today only.'}
+            </Text>
+          </View>
 
           <View style={styles.group}>
             <Text style={styles.label}>DIFFICULTY</Text>
@@ -253,7 +305,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     borderTopLeftRadius: 26,
     borderTopRightRadius: 26,
-    backgroundColor: '#121212',
+    backgroundColor: COLORS.sheet,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderColor: 'rgba(255,255,255,0.14)',
   },

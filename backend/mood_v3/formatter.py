@@ -53,9 +53,12 @@ def duration_display(estimated):
     return f'{lo}–{lo + 5} min'
 
 
+from .exercise_meta import display_muscles as _display_muscles
+
+
 def exercise_ref(eid, name, equipment, primary_muscles):
     return dict(id=eid, name=name, equipment=equipment, equipment_label=EQUIPMENT_NAMES.get(equipment, equipment),
-                primary_muscles=list(primary_muscles), media=None)
+                primary_muscles=list(primary_muscles), display_muscles=_display_muscles(eid, primary_muscles), media=None)
 
 
 def prescription(kind, *, sets=None, reps=None, reps_scheme=None, per_side=False, seconds=None, distance_m=None, calories=None,

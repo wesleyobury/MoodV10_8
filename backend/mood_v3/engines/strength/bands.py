@@ -38,7 +38,9 @@ SMALL_SHIFT = 0.3
 # (12–15) was far above what anyone can do with control, so it takes 4–6 reps (the overlap of the frozen library's own
 # default_rep_band 4–8 and a 3–6 controlled-rep target) and never goes to failure (RIR floor 1: stop before technique breaks).
 # Sets, rest, State levers and validation stay the class's. Nothing else is listed here.
-EXERCISE_DOSE = {'nordic_curl': dict(reps='4–6', rir_floor=1)}
+EXERCISE_DOSE = {'nordic_curl': dict(reps='4–6', rir_floor=1),
+                 # (final pre-launch pass) a ballistic swing is dosed for crisp hip snap, never as a 6–8 rep grind
+                 'kettlebell_swing': dict(reps='12–15')}
 
 
 def rir_floor(eid):
@@ -139,14 +141,32 @@ def rep_text(e, cls, exp, pos):
     m = META.get(e['id'], {})
     if m.get('metric') == 'time': return str(m.get('band') or '30–45 sec'), 'time', 'timed'
     if m.get('metric') == 'distance': return str(m.get('band') or '20 m'), 'distance', 'distance'
-    bw = (m.get('load') in (False, 'FALSE')) and e['eq'] == 'bodyweight'
+    fixed = m.get('load') in (False, 'FALSE')
+    bw = fixed and e['eq'] == 'bodyweight'
     if bw:
         txt = (EXERCISE_DOSE.get(e['id']) or {}).get('reps') or ('8–12' if cls in ('primary_compound', 'secondary_compound') else '12–15')
+        txt = _cap_to_library(txt, m)
         return (txt + ('/side' if e['lat'] != 'bilateral' else '')), 'reps', 'bodyweight, load not adjustable'
+    dose = (EXERCISE_DOSE.get(e['id']) or {}).get('reps')
+    if dose: return dose + ('/side' if e['lat'] != 'bilateral' else ''), 'reps', 'dosed for the movement'
     a, b = rep_window(cls, exp, rep_pos_for(e, cls, pos))
     txt = f'{a}–{b}' if b > a else str(a)
+    if fixed:   # load cannot be added or removed (Dragon Flag, Glute-Ham Raise, Ab Wheel): the reps follow what the movement allows
+        capped = _cap_to_library(txt, m)
+        if capped != txt: return capped + ('/side' if e['lat'] != 'bilateral' else ''), 'reps', 'load not adjustable'
     if e['lat'] != 'bilateral': txt += '/side'
     return txt, 'reps', ''
+
+
+def _cap_to_library(txt, m):
+    """(final pre-launch pass) A fixed-load movement never gets a rep window above its library band: 12–15 Dragon Flags or
+    Glute-Ham Raises are not realistic. The window keeps its width and slides down under the library's top (never below its floor)."""
+    import re as _re
+    lib = [int(x) for x in _re.findall(r'\d+', str(m.get('band') or ''))][:2]
+    cur = [int(x) for x in _re.findall(r'\d+', txt)][:2]
+    if len(lib) < 2 or len(cur) < 2 or cur[1] <= lib[1]: return txt
+    w = cur[1] - cur[0]; hi = lib[1]; lo = max(lib[0], hi - w)
+    return f'{lo}–{hi}'
 
 
 def in_band(cls, exp, sets=None, rir=None, rest=None, reps_lo=None, reps_hi=None):

@@ -16,11 +16,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/AuthContext';
 import { useAchievements } from '../contexts/AchievementsContext';
 import { ACHIEVEMENTS, TOTAL_ACHIEVEMENTS } from '../constants/achievements';
-import AchievementMedallion from '../components/AchievementMedallion';
+import AchievementMedallion, { achievementValue } from '../components/AchievementMedallion';
 import BackButton from '../components/BackButton';
 import Constants from 'expo-constants';
 
 import { API_URL } from '../utils/apiConfig';
+import { COLORS } from '../constants/brand';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface ActivityStats {
@@ -251,7 +252,7 @@ export default function UserStatsScreen() {
               const earned = earnedSet.has(a.id);
               return (
                 <View key={a.id} style={styles.badgeCell}>
-                  <AchievementMedallion icon={a.icon as any} size={58} locked={!earned} />
+                  <AchievementMedallion icon={a.icon as any} size={58} locked={!earned} value={achievementValue(a.id)} glow={false} />
                   <Text
                     style={[styles.badgeCaption, !earned && styles.badgeCaptionLocked]}
                     numberOfLines={1}
@@ -398,13 +399,13 @@ export default function UserStatsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: COLORS.bg,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: COLORS.bg,
   },
   header: {
     flexDirection: 'row',

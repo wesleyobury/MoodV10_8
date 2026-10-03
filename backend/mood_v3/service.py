@@ -9,12 +9,12 @@ frozen validator(s); anything that cannot be built is returned as an explicit co
 """
 from __future__ import annotations
 import datetime as _dt, uuid
-from . import normalize as N, formatter as F, explain, progression, render, exercise_meta
+from . import normalize as N, formatter as F, explain, progression, render, exercise_meta, bft
 from .engines.strength import adapter as SA
 from .engines.sweat import adapter as WA
 from .engines.athletic import adapter as AA
 
-ENGINE_VERSION = 'strength-frozen-v3 (gate+coherence+core-focus+strategy on wa17/et12/lib11) | sweat-frozen-v5 (budget+shapes+gate+coherence+completeness+contract) | athletic-frozen-v4 (quality+blueprints+impact/intent budget+gate+coherence+contract; no agility drills; Olympic derivatives; identity pass: athletic movement budget + cost tiers, no carries, muscle-ups, explicit athletic variants; truthful sprint / sled accounting)'
+ENGINE_VERSION = 'strength-frozen-v4 (gate+coherence+core-focus+strategy+trainer-coherence-gate on wa17/et12/lib11) | sweat-frozen-v6 (budget+shapes+gate+coherence+contract+work-floor+trainer-coherence-gate; no standalone steady state) | athletic-frozen-v7 (quality+blueprints+impact/intent budget+gate+coherence+contract; no agility drills; Olympic derivatives; identity pass: athletic movement budget + cost tiers, no carries, muscle-ups, explicit athletic variants; truthful sprint / sled accounting; final pre-launch pass: loaded-power Power, archetype composition, strength-form variety, performance roles, trainer coherence gate; composition pass: sprint as a sprinkle in standard gyms, chosen session compositions, athletic-leaning support; sequencing pass: demand order + Primer, cart phases, athletic core only, velocity strength)'
 ADAPTERS = {'strength': SA, 'sweat': WA, 'athletic': AA}
 CONFLICT_TYPES = (SA.Conflict, WA.Conflict, AA.Conflict)
 RENDER = {'strength': render.format_strength, 'sweat': render.format_sweat, 'athletic': render.format_athletic}
@@ -54,7 +54,7 @@ def conflict_payload(ctx, c):
         else: opts.append(dict(action=o, label=OPTION_LABELS.get(o, o), patch=None))
     return dict(code=c.code, message=c.message, options=opts)
 
-def _finish(ctx, res, history_records, perf_history, workout_id, version, source=None):
+def _finish(ctx, res, history_records, perf_history, workout_id, version, source=None, recent_bft=()):
     res = dict(res, selection_source=source or selection_source(ctx))
     warm, blocks, cool = RENDER[ctx.direction](res, engine_ctx(ctx))
     exercise_meta.apply_scaling(blocks, ctx.direction)     # founder pass 3: scalable bodyweight guidance (presentation only)
@@ -63,8 +63,14 @@ def _finish(ctx, res, history_records, perf_history, workout_id, version, source
     progression.attach(ctx.direction, blocks, perf_history, ctx.states, aq)
     res = dict(res, warmup=warm, blocks=blocks, cooldown=cool, adjustments=_adjustments(res))
     lines = explain.build_lines(ctx, res, history_records)
-    return F.envelope_ok(workout_id=workout_id, version=version, ctx=ctx, res=res, built_for_today=lines, created_at=now_iso(),
-                         today=explain.today_block(ctx, res, lines))
+    env = F.envelope_ok(workout_id=workout_id, version=version, ctx=ctx, res=res, built_for_today=lines, created_at=now_iso(),
+                        today=explain.today_block(ctx, res, lines))
+    # Built for Today blurb (Oct 2026 quality pass): composed from the FINISHED workout + trace; never alters the workout.
+    blurb, brief = bft.build(ctx, res, env['workout'], history_records, recent_bft)
+    env['workout']['today']['blurb'] = blurb['text']
+    env['workout']['today']['blurb_meta'] = {k: blurb[k] for k in ('source', 'frame', 'facts')}
+    env['_bft'] = dict(brief=brief.to_dict() if brief else None, composer=blurb, recent=list(recent_bft or []))   # server-only: the router pops it before saving / returning
+    return env
 
 def _adjustments(res):
     out = []
@@ -73,14 +79,14 @@ def _adjustments(res):
         else: out.append(dict(reason_code='log', detail=str(l)))
     return out[:60]
 
-def generate_workout(raw, user_key, history_records=(), perf_history=(), *, workout_id=None):
+def generate_workout(raw, user_key, history_records=(), perf_history=(), *, workout_id=None, recent_bft=()):
     """-> (envelope, state). history_records: completed V3 workouts oldest -> newest (history_record dicts).
     state carries what a later swap needs to rebuild this exact workout deterministically."""
     history_records = list(history_records)
     ctx = N.normalize(raw, user_key, [h.get('direction') for h in history_records])
-    return _generate(ctx, history_records, list(perf_history), workout_id=workout_id)
+    return _generate(ctx, history_records, list(perf_history), workout_id=workout_id, recent_bft=recent_bft)
 
-def _generate(ctx, history_records, perf_history, *, workout_id=None, resolved_archetype=None, version=1, source=None, extra_log=None):
+def _generate(ctx, history_records, perf_history, *, workout_id=None, resolved_archetype=None, version=1, source=None, extra_log=None, recent_bft=()):
     ad = ADAPTERS[ctx.direction]; nctx = engine_ctx(ctx, resolved_archetype)
     workout_id = workout_id or uuid.uuid4().hex
     source = source or selection_source(ctx)
@@ -89,7 +95,7 @@ def _generate(ctx, history_records, perf_history, *, workout_id=None, resolved_a
     except CONFLICT_TYPES as c:
         return F.envelope_conflict(ctx, conflict_payload(ctx, c), adjustments=_detail(c)), None
     if extra_log: res = dict(res, log=list(extra_log) + list(res.get('log', [])))
-    env = _finish(ctx, res, history_records, perf_history, workout_id, version, source)
+    env = _finish(ctx, res, history_records, perf_history, workout_id, version, source, recent_bft)
     if ctx.direction == 'strength' and res.get('mode') == 'pick': rarch = res['requested_archetype']
     elif ctx.direction != 'strength' and source == 'moods_pick' and resolved_archetype: rarch = resolved_archetype
     else: rarch = None
@@ -132,7 +138,7 @@ def _apply_swap(direction, ad, nctx, state, res, ref, excluded):
         return ad.swap_exercise(nctx, state['history_snapshot'], state['swap_count'], res, bi, ii, excluded)
     return ad.swap_exercise(nctx, state['history_snapshot'], state['swap_count'], res, ref['item_index'], excluded)
 
-def swap_exercise(state, envelope, item_id, perf_history=()):
+def swap_exercise(state, envelope, item_id, perf_history=(), recent_bft=()):
     """Exercise-level swap. -> (envelope, new_state). Conflict envelope (workout unchanged) when no alternative exists."""
     ctx, ad, nctx, res = _rebuild(state)
     wk = envelope['workout']
@@ -155,8 +161,13 @@ def swap_exercise(state, envelope, item_id, perf_history=()):
     if ctx.direction in ('sweat', 'athletic'): ref = dict(block_index=bi, exercise_id=eid)
     state2 = dict(state, exercise_swaps=state['exercise_swaps'] + [dict(item_id=item_id, ref=ref, excluded=sorted(excluded), **{'from': eid, 'to': new_eid})],
                   fingerprint=ad.fingerprint(res2), history_record=res2['history_record'])
-    env = _finish(ctx, res2, state['history_snapshot'], list(perf_history), wk['workout_id'], wk['version'] + 1, state.get('selection_source'))
+    env = _finish(ctx, res2, state['history_snapshot'], list(perf_history), wk['workout_id'], wk['version'] + 1, state.get('selection_source'), recent_bft)
     env['workout']['swapped_item'] = dict(item_id=item_id, **{'from': eid, 'to': new_eid})
+    # one exercise changed: keep the copy the user already read unless it names the exercise that just left
+    old = (wk.get('today') or {}).get('blurb'); old_name = it['exercise']['name']
+    if old and old_name not in old:
+        env['workout']['today']['blurb'] = old; env['workout']['today']['blurb_meta'] = (wk.get('today') or {}).get('blurb_meta')
+        env['_bft']['keep'] = True
     return env, state2
 
 def pick_rotation(ctx):
@@ -166,7 +177,7 @@ def pick_rotation(ctx):
         return rot + [a for a in SA.QE.ROTATION if a not in rot and a not in ('strength_core', 'strength_custom_target')]
     return list(N.ARCHETYPES[ctx.direction])
 
-def swap_workout(state, envelope, perf_history=()):
+def swap_workout(state, envelope, perf_history=(), recent_bft=()):
     """Different Workout. Same Direction / Target / duration / States / soreness / equipment; swap_count + 1.
     Phase 2.5: when MOOD picked the session type, Different Workout may move to another eligible archetype (rotation order,
     skipping ones already shown in this chain and any that cannot be built today). A user-selected archetype or a Target is kept
@@ -176,6 +187,8 @@ def swap_workout(state, envelope, perf_history=()):
     wid = envelope['workout']['workout_id'] if envelope.get('workout') else None
     version = (envelope['workout']['version'] + 1) if envelope.get('workout') else 1
     cur = (envelope.get('workout') or {}).get('archetype', {}).get('id') or state.get('history_record', {}).get('archetype')
+    on_screen = ((envelope.get('workout') or {}).get('today') or {}).get('blurb')
+    recent = ([on_screen] if on_screen else []) + [r for r in (recent_bft or []) if r and r != on_screen]
     chain = list(state.get('archetype_chain') or ([cur] if cur else []))
     if source == 'moods_pick' and cur:
         rot = pick_rotation(ctx)
@@ -184,13 +197,13 @@ def swap_workout(state, envelope, perf_history=()):
         fresh = [a for a in ordered if a not in chain] or [a for a in ordered if a != cur]
         for alt in fresh:
             env, st2 = _generate(ctx, state['history_snapshot'], list(perf_history), workout_id=wid, resolved_archetype=alt, version=version, source=source,
-                                 extra_log=[{'reason_code': 'moods_pick_rotated', 'from': cur, 'to': alt}])
+                                 extra_log=[{'reason_code': 'moods_pick_rotated', 'from': cur, 'to': alt}], recent_bft=recent)
             if st2 and env['workout']['archetype']['id'] != cur:
                 st2['history_snapshot'] = state['history_snapshot']
                 st2['archetype_chain'] = (chain + [env['workout']['archetype']['id']])[-12:]
                 return env, st2
     env, st2 = _generate(ctx, state['history_snapshot'], list(perf_history), workout_id=wid,
-                         resolved_archetype=state.get('resolved_archetype'), version=version, source=source)
+                         resolved_archetype=state.get('resolved_archetype'), version=version, source=source, recent_bft=recent)
     if st2:
         st2['history_snapshot'] = state['history_snapshot']
         st2['archetype_chain'] = (chain + [env['workout']['archetype']['id']])[-12:]

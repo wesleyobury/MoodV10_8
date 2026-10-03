@@ -182,6 +182,32 @@ export interface HomeInputs {
   equipment: V3Equipment | null;
   /** Today's Difficulty override. null = the Training Profile's experience (nothing sent; the server fills it). */
   difficulty: V3Experience | null;
+  /** Today's goal override (the funnel's "What are you training for?"). null = the Training Profile's goal. Never written back. */
+  goal?: V3Goal | null;
+}
+
+/** The funnel's goal values (utils/v3Profile GOAL_OPTIONS); the API's `goal`. */
+export type V3Goal = 'build_strength' | 'lose_weight_conditioning' | 'build_muscle' | 'improve_athleticism' | 'feel_better_reduce_stress' | 'stay_consistent';
+
+/** Same labels as the funnel (utils/v3Profile GOAL_OPTIONS). */
+export const GOAL_CHOICES: { id: V3Goal; label: string }[] = [
+  { id: 'build_strength', label: 'Build Strength' },
+  { id: 'lose_weight_conditioning', label: 'Sweat / Burn Fat' },
+  { id: 'build_muscle', label: 'Improve Physique' },
+  { id: 'improve_athleticism', label: 'Improve Athleticism' },
+  { id: 'feel_better_reduce_stress', label: 'Feel Better / Reduce Stress' },
+  { id: 'stay_consistent', label: 'Stay Consistent' },
+];
+export const GOAL_LABEL = Object.fromEntries(GOAL_CHOICES.map((g) => [g.id, g.label])) as Record<V3Goal, string>;
+
+/** Today's goal. Choosing the profile's own goal clears the override, so the request stays profile-driven. */
+export function setGoal(inputs: HomeInputs, goal: V3Goal, profileGoal: V3Goal | null): HomeInputs {
+  return { ...inputs, goal: profileGoal && goal === profileGoal ? null : goal };
+}
+
+/** The goal today's workout will use (null when the profile has none and nothing was picked). */
+export function effectiveGoal(inputs: HomeInputs, profileGoal: V3Goal | null): V3Goal | null {
+  return inputs.goal ?? profileGoal ?? null;
 }
 
 export function initialInputs(direction: V3Direction, opts: { states?: V3State[]; duration?: 30 | 60 } = {}): HomeInputs {
@@ -319,6 +345,7 @@ export function buildRequest(inputs: HomeInputs, date: string): V3GenerateReques
   if (inputs.archetype) req.archetype = inputs.archetype;
   if (inputs.equipment) req.equipment = inputs.equipment;
   if (inputs.difficulty) req.experience = inputs.difficulty;
+  if (inputs.goal) req.goal = inputs.goal;
   return req;
 }
 
@@ -333,6 +360,7 @@ export function requestSignature(req: V3GenerateRequest): string {
     du: req.duration,
     e: req.equipment ?? null,
     x: req.experience ?? null,
+    g: req.goal ?? null,
     date: req.date,
   };
   return JSON.stringify(norm);
@@ -401,6 +429,25 @@ export function summaryLine(inputs: HomeInputs): string {
 }
 
 /** Honest MOOD's Pick copy: the pick uses the profile + completed V3 history; States shape the build. */
+/**
+ * The session types MOOD's Pick rotates through for this athlete. Mirrors the backend resolver
+ * (backend/mood_v3/engines/strength/adapter.py rotation_for: 1–2 days = full body only, 5+ adds hinge + arms days;
+ * Sweat and Athletic rotate all of their session types). Display only: the server still makes the pick.
+ */
+const PICK_GOAL_ROTATION: Record<string, string[]> = {
+  build_strength: ['strength_lower_squat', 'strength_upper_pull', 'strength_upper_push', 'strength_glutes_legs', 'strength_upper_mixed'],
+  build_muscle: ['strength_upper_pull', 'strength_lower_squat', 'strength_upper_push', 'strength_glutes_legs', 'strength_upper_mixed'],
+  improve_athleticism: ['strength_lower_squat', 'strength_upper_pull', 'strength_glutes_legs', 'strength_upper_push', 'strength_upper_mixed'],
+};
+const PICK_DEFAULT_ROTATION = ['strength_glutes_legs', 'strength_upper_pull', 'strength_upper_push', 'strength_lower_squat', 'strength_upper_mixed'];
+export function moodsPickRotation(direction: V3Direction, goal?: string | null, frequency?: string | null): string[] {
+  if (direction !== 'strength') return ARCHETYPES[direction].map((a) => a.name);
+  if (frequency === '1-2') return ['Full Body'];
+  const ids = [...(PICK_GOAL_ROTATION[goal ?? ''] ?? PICK_DEFAULT_ROTATION)];
+  if (frequency === '5+') { ids.push('strength_lower_hinge'); ids.push('strength_arms'); }
+  return ids.map((id) => archetypeName(id) ?? id);
+}
+
 export function moodsPickCopy(direction: V3Direction): string {
   const base = "We'll choose today's session from your profile and recent workouts, then shape it around how you're feeling.";
   if (direction === 'athletic') return `${base} Athletic rotates Power, Speed + Plyo and Full-Body Athlete.`;
@@ -412,7 +459,7 @@ export type BarrierKey = 'time' | 'low_energy' | 'motivation' | 'dont_know' | 'b
 export const BARRIER_BANNER: Record<BarrierKey, { title: string; body: string }> = {
   low_energy: { title: 'Set up for a low-energy day', body: 'Low Energy is on for your first session. Tap it to turn it off.' },
   boredom: { title: 'Set up for variety', body: 'Bored is on for your first session, so MOOD mixes things up. Tap it to turn it off.' },
-  time: { title: 'Short on time?', body: 'The 30-minute option keeps the main work and trims the rest.' },
+  time: { title: 'Built for a short window', body: '30 minutes is selected for your first session. The main work stays; the rest gets cut.' },
   motivation: { title: 'One tap to start', body: "Press Build. MOOD's Pick handles the plan." },
   dont_know: { title: 'No planning needed', body: "MOOD's Pick chooses the exercises, sets and rest for you. Just press Build." },
 };
@@ -421,7 +468,7 @@ export const BARRIER_BANNER: Record<BarrierKey, { title: string; body: string }>
 
 /** The Focus row on the Build screen: "MOOD's Pick", "Chest", "Lower Body: Squat · Advanced" (Length is its own row). */
 export function focusSummary(inputs: HomeInputs): string {
-  return [focusLabel(inputs), inputs.difficulty ? DIFFICULTY_LABEL[inputs.difficulty] : null].filter(Boolean).join(' · ');
+  return [focusLabel(inputs), inputs.goal ? GOAL_LABEL[inputs.goal] : null, inputs.difficulty ? DIFFICULTY_LABEL[inputs.difficulty] : null].filter(Boolean).join(' · ');
 }
 
 /** Time-of-day greeting for the Home hero. First name only; no name means no comma. */

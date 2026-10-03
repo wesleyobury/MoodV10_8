@@ -256,6 +256,13 @@ async def track_user_event(
         
         # Update daily activity summary
         await update_daily_activity(db, user_id, event_type)
+
+        # V3: first-time milestones on the user record (users.milestones.*), see v3_tracking.py
+        try:
+            from v3_tracking import stamp_milestones
+            await stamp_milestones(db, user_id, event_type, metadata, event["timestamp"])
+        except Exception as _me:
+            logger.warning(f"milestone stamp failed for {event_type}: {_me}")
         
         logger.info(f"Tracked event {event_type} for user {user_id}")
         

@@ -7,7 +7,7 @@ describes a change that the generator did not make.
 from __future__ import annotations
 import hashlib
 from .engines.athletic import athletic_core as C
-from .engines.athletic.athletic_core import EX, QUALITY_LABEL, STRUCTURE_LABEL
+from .engines.athletic.athletic_core import EX, QUALITY_LABEL, STRUCTURE_LABEL, PB
 
 STATE_WORD = {'low_energy': 'low on energy', 'bored': 'bored', 'irritated': 'irritated', 'amped': 'amped', 'stressed': 'stressed'}
 GOAL_INTENT = {'improve_athleticism': 'speed_power_reactive_emphasis', 'build_strength': 'force_oriented_athletic_strength_and_loaded_power',
@@ -39,7 +39,7 @@ def _rx(x):
 # ---------------------------------------------------------------- contract
 def contract(nctx, out, history, res=None):
     sess = out['sess']; A = out['A']; ctx = out['ctx']; lv = ctx['lv']; goal = ctx['goal']; dur = ctx['dur']
-    its = _items(out); st = [x for x in its if x['cls'] == 'strength']; prim = sess['blocks'][0]['items'][-1]
+    its = _items(out); st = [x for x in its if x['cls'] == 'strength']; prim = PB(sess)['items'][-1]
     P = []
     for s in ctx['states']:
         rz = out['realized'].get(s, [])
@@ -90,17 +90,20 @@ def contract(nctx, out, history, res=None):
 # ---------------------------------------------------------------- Built for Today
 def _strategy(out, seed):
     sess = out['sess']; blocks = sess['blocks']; q = QUALITY_LABEL[sess['pq']]
-    prim_b = blocks[0]; prim = prim_b['items'][-1]
+    prim_b = PB(sess); prim = prim_b['items'][-1]
     sec = next((b for b in blocks if b['role'] == 'secondary'), None)
     ters = [b for b in blocks if b['role'] == 'tertiary']
-    stb = next((b for b in blocks if b['role'] == 'strength'), None)
-    st_names = _join([_n(x['id']) for x in stb['items']]) if stb else ''
+    st_x = [x for b in blocks if b['role'] == 'strength' for x in b['items'] if x['cls'] == 'strength']
+    stb = dict(items=st_x) if st_x else None
+    st_names = _join([_n(x['id']) for x in st_x]) if st_x else ''
     claims = [('structure', sess['structure']), ('primary_quality', sess['pq'])]
     if sess['structure'] == 'contrast':
         s_x = prim_b['items'][0]
         t = f"Today is primarily {q}: heavy {_n(s_x['id'])} paired with {_n(prim['id'])}, so the heavy set primes the explosive one, with full recovery after every pair"
     else:
-        t = f"Today is primarily {q}: {_n(prim['id'])} comes first, while you're fresh"
+        pr = next((b['items'][-1] for b in blocks if b['role'] == 'primer'), None)
+        t = (f"Today is primarily {q}: two quick sets of {_n(pr['id'])} prime the {_n(prim['id'])}, which comes next while you're fresh" if pr
+             else f"Today is primarily {q}: {_n(prim['id'])} comes first, while you're fresh")
     # each further element is described by its true quality; a repeated quality is said as "more", never relabelled as something new
     seen = {sess['pq']}; parts = []
     for b in ([sec] if sec else []) + ters:
@@ -108,13 +111,13 @@ def _strategy(out, seed):
         claims.append(('secondary' if b is sec else 'tertiary', bq))
     if parts: t += ', then ' + _join(parts)
     if stb:
-        t += f", and {st_names} {'build' if len(stb['items']) > 1 else 'builds'} the strength behind it"; claims.append(('strength', stb['items'][0]['pattern']))
+        t += f", and {st_names}, done for bar speed, {'build' if len(stb['items']) > 1 else 'builds'} the strength behind it"; claims.append(('strength', stb['items'][0]['pattern']))
     return t + '.', claims
 
 
 def _state_sentence(s, out, seed):
     R = dict(out['realized'].get(s, [])); v = out['verdict'].get(s, {}); sess = out['sess']; its = _items(out)
-    prim = sess['blocks'][0]['items'][-1]; st = [x for x in its if x['cls'] == 'strength']
+    prim = PB(sess)['items'][-1]; st = [x for x in its if x['cls'] == 'strength']
     W = STATE_WORD[s]; kinds = list(R)
     if s == 'low_energy':
         bits = []
@@ -128,7 +131,7 @@ def _state_sentence(s, out, seed):
         return (f"You're {W}, so today's athletic work stays focused: {_join(bits[:3])}. You still train explosively without turning the session into a grind."), [('state', s, k) for k in kinds]
     if s == 'amped':
         bits = []
-        if 'contrast' in R: bits.append(f"a heavy-light contrast pair ({_n(sess['blocks'][0]['items'][0]['id'])} into {_n(prim['id'])})")
+        if 'contrast' in R: bits.append(f"a heavy-light contrast pair ({_n(PB(sess)['items'][0]['id'])} into {_n(prim['id'])})")
         loaded = [x for x in st if EX[x['id']]['eq'] not in ('bodyweight', 'suspension_trainer', 'pullup_bar')]
         if 'heavier_strength' in R and loaded: bits.append(f"heavier strength work ({_n(loaded[0]['id'])} at {loaded[0]['reps']} reps, about {loaded[0]['rir']} from failure)")
         elif 'heavier_strength' in R and st: bits.append(f"harder strength sets ({_n(st[0]['id'])}, about {st[0]['rir']} reps from failure)")
@@ -174,7 +177,7 @@ PAIR_NEEDS = {frozenset({'low_energy', 'amped'}): ('low_energy',), frozenset({'a
 def _sore_sentence(out):
     ctx = out['ctx']; sess = out['sess']
     if not ctx['sore']: return None
-    prim = sess['blocks'][0]['items'][-1]
+    prim = PB(sess)['items'][-1]
     if ctx['sore'] & C.LOWER:
         sec = next((b for b in sess['blocks'] if b['role'] == 'secondary'), None)
         return f"Your legs are sore, so the power work moves to the upper body: {_n(prim['id'])}" + (f" and {_n(sec['items'][0]['id'])}" if sec else '') + ', with no jumping or sprinting.'
@@ -190,7 +193,7 @@ def compose(ctx_n, res):
     if so: sents.append(so); claims.append(('soreness', 'sore'))
     states = list(ctx['states'])
     pair = next((p for p in PAIR_TEXT if p <= set(states)), None)
-    its = _items(out); prim = out['sess']['blocks'][0]['items'][-1]; st = [x for x in its if x['cls'] == 'strength']
+    its = _items(out); prim = PB(out['sess'])['items'][-1]; st = [x for x in its if x['cls'] == 'strength']
     done = set()
     if pair and all(out['realized'].get(s) for s in PAIR_NEEDS[pair]):
         sents.append(PAIR_TEXT[pair](out, prim, st)); claims += [('state', s, k) for s in pair for k, _ in out['realized'].get(s, [])]; done |= set(pair)
@@ -205,7 +208,7 @@ def compose(ctx_n, res):
 
 def workload_line(res):
     out = res['w']; A = out['A']; sess = out['sess']
-    prim = sess['blocks'][0]['items'][-1]
+    prim = PB(sess)['items'][-1]
     bits = []
     if A['contacts']: bits.append(f"about {A['contacts']} landings")
     if A['sprint_exposures']: bits.append(f"{A['sprint_exposures']} sprint efforts")

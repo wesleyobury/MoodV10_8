@@ -32,11 +32,22 @@ export function rpeLabel(rpe: unknown): string | null {
 const ROUND_STRUCTURES = new Set(['superset', 'circuit', 'timed_circuit', 'anchor_circuit']);
 
 /** Short facts under a block title: rounds, interval format, effort, rest between rounds. */
+/**
+ * The EMOM label, rounds included (founder pass, Oct 2026): "EMOM · 20 min · 5 rounds". One station per minute, so a 20-minute
+ * EMOM with 4 stations is 5 rounds through them; without the round count the block read as one pass of each exercise.
+ */
+export function emomLabel(block: V3Block): string {
+  const n = Math.max(1, block.items.length);
+  const minutes = block.interval?.minutes ?? (block.rounds ?? 1) * n;
+  const rounds = Math.ceil(minutes / n);
+  return n > 1 && rounds > 1 ? `EMOM · ${minutes} min · ${rounds} rounds` : `EMOM · ${minutes} min`;
+}
+
 export function blockMeta(block: V3Block, direction: V3Direction): string[] {
   const out: string[] = [];
   const iv = block.interval;
   if (direction === 'sweat' && iv) {
-    if (typeof iv.minutes === 'number') out.push(`EMOM · ${iv.minutes} min`);
+    if (typeof iv.minutes === 'number') out.push(emomLabel(block));
     else if (Array.isArray(iv.steps_sec) && iv.steps_sec.length) {
       out.push(`Pyramid ${iv.steps_sec.map((s) => secondsLabel(s)).join(' / ')}`);
       if (iv.recovery_sec) out.push(`${secondsLabel(iv.recovery_sec)} easy between`);

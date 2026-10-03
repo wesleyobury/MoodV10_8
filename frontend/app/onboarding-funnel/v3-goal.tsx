@@ -1,5 +1,5 @@
 /**
- * MOOD V3 onboarding — Step 2 — GOAL (V3 goal ids).
+ * MOOD V3 onboarding — Step 2 — GOAL. Clean editorial selection.
  */
 import React from 'react';
 import { V3QuestionScreen } from '../../components/onboarding/V3QuestionScreen';
@@ -14,10 +14,12 @@ export default function V3GoalScreen() {
         question: 'primary_goal',
         step: 2,
         eyebrow: "Why you're here",
-        title: 'What are you training for?',
-        subtitle: 'MOOD uses this to decide which sessions come first.',
+        title: 'What are you really chasing?',
+        subtitle: 'Pick the one that matters most right now.',
         options: GOAL_OPTIONS,
         reactions: GOAL_REACTIONS,
+        variant: 'editorial',
+        cta: 'Continue',
       }}
     />
   );

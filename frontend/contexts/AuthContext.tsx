@@ -90,6 +90,8 @@ export interface Entitlement {
   free_workouts_remaining: number | null;
   /** V2.1 — ISO ts when the weekly free allowance resets. Null if entitled. */
   free_workouts_reset_at?: string | null;
+  /** Oct 2026 — true once this week's free workout has been started (starting another this week needs access). */
+  first_workout_claimed?: boolean;
   is_founding_member: boolean;
   founding_pricing_claimed: boolean;
   founding_window_active: boolean;

@@ -36,7 +36,8 @@ def test_single_major_is_custom_and_only_that_muscle(m):
     n = len([it for b in env['workout']['blocks'] if b['type'] != 'finisher' for it in b['items']])
     assert n == 4 or (m == 'calves' and n >= 3)              # core rebuild: major target 4 with a compound lead (calves: thin, distinct pool)
     # founder rest audit: rest is no longer used as filler, so a Target session may honestly finish at 45+ (timing.WINDOW[60])
-    assert 45 <= env['workout']['duration']['estimated_minutes'] <= 62 or m == 'calves'
+    # final pre-launch pass: the lead is now the most muscle-specific compound (Hip Thrust for Glutes), which can land a little shorter
+    assert 42 <= env['workout']['duration']['estimated_minutes'] <= 62 or m == 'calves'
 
 
 @pytest.mark.parametrize('m', ['biceps', 'triceps'])

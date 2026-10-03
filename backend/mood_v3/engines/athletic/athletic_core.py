@@ -116,19 +116,45 @@ POWER = {
     'reverse_lunge_knee_drive_hop': ('vertical_power', 'uni_jump', 'beginner'),
     'step_up_pop': ('vertical_power', 'pop', 'beginner'), 'db_step_up_pop': ('vertical_power', 'pop', 'intermediate'),
     'band_assisted_muscle_up': ('upper_power', 'muscle_up', 'intermediate'), 'bar_muscle_up': ('upper_power', 'muscle_up', 'advanced'),
-    'speed_trap_bar_deadlift': ('total_body_power', 'speed_strength', 'intermediate'), 'speed_box_squat': ('vertical_power', 'speed_strength', 'intermediate'),
+    # founder swap (post-sequencing pass): no trap-bar deadlifts or back squats in Athletic, in any form; their jump versions
+    # (Trap-Bar Jump Squat, Dumbbell Jump Squat) carry that force production instead
+    # final pre-launch pass: speed / plyo vocabulary already in the library (photographed, never programmed until now). Start
+    # variations are acceleration, not agility; the Power Skip is a bound for height and distance.
+    'power_skip': ('horizontal_power', 'bound', 'beginner'),
+    'split_stance_start_sprint': ('acceleration', 'sprint', 'beginner'), 'half_kneeling_start_sprint': ('acceleration', 'sprint', 'beginner'),
+    'push_up_start_sprint': ('acceleration', 'sprint', 'intermediate'), 'broad_jump_to_sprint': ('acceleration', 'sprint', 'intermediate'),
 }
 POWER = {i: v for i, v in POWER.items() if i in EX}
 JUMP_KINDS = {'jump', 'loaded_jump', 'combo', 'bound', 'hop', 'elastic', 'drop', 'lateral', 'uni_jump', 'pop'}
 SPRINT_KINDS = {'sprint', 'sled'}
 THROW_KINDS = {'throw', 'slam', 'rot_throw'}
 OLY_KINDS = {'olympic', 'explosive_lift'}
+# Final pre-launch pass: loaded power = an explosive movement with an external load (Olympic derivatives, DB / KB explosive lifts,
+# loaded jumps, speed-strength lifts, swings, push presses / jerks, explosive landmine work). "Major" excludes the light landmine punch.
+LOADED_KINDS = {'olympic', 'explosive_lift', 'loaded_jump', 'speed_strength', 'swing', 'landmine_rot'}
+LOADED_UPPER = {'db_push_press', 'landmine_push_press', 'landmine_split_jerk', 'push_press'}
+
+
+def is_loaded(i):
+    k = kind_of(i)
+    return bool(k) and (k in LOADED_KINDS or i in LOADED_UPPER) and EX[i]['eq'] not in ('bodyweight', 'bands')
+
+
+def is_major_loaded(i):
+    return is_loaded(i) and i != 'landmine_rotational_punch'
+
+
+# movements that are variations of one another (different library families, same training effect): at most one per session
+REDUNDANT = {i: 'broad_jump' for i in ('broad_jump', 'broad_jump_to_vertical', 'consecutive_broad_jump', 'banded_broad_jump', 'broad_jump_to_sprint')}
+REDUNDANT.update({i: 'box_jump' for i in ('box_jump', 'pogo_to_box_jump', 'seated_box_jump', 'lateral_box_jump')})
+REDUNDANT.update({i: 'split_jump' for i in ('split_jump', 'rfe_split_squat_jump', 'reverse_lunge_knee_drive_hop')})
+REDUNDANT.update({i: 'push_press' for i in ('push_press', 'db_push_press', 'landmine_push_press', 'landmine_split_jerk', 'split_jerk')})
 FORCEFUL_SIMPLE = {'med_ball_slam', 'mb_rotational_slam', 'broad_jump', 'sled_push', 'acceleration_sprint', 'falling_start_sprint', 'mb_chest_pass',
                    'mb_scoop_toss', 'countermovement_jump', 'kettlebell_swing', 'db_push_press', 'mb_overhead_throw', 'mb_rotational_throw', 'box_jump', 'trap_bar_jump'}
 
 # ------------------------------------------------------------------ athletic strength + support vocabulary: id -> pattern
 STRENGTH = {
-    'trap_bar_deadlift': 'lower_bilateral', 'front_squat': 'lower_bilateral', 'barbell_back_squat': 'lower_bilateral', 'goblet_squat': 'lower_bilateral',
+    'front_squat': 'lower_bilateral', 'goblet_squat': 'lower_bilateral',      # founder swap: Trap-Bar Deadlift / Back Squat -> their jump versions
     'kettlebell_deadlift': 'hinge', 'barbell_rdl': 'hinge', 'db_rdl': 'hinge', 'single_leg_rdl': 'hinge_uni', 'kickstand_db_rdl': 'hinge_uni',
     'barbell_hip_thrust': 'hip_thrust', 'db_hip_thrust': 'hip_thrust',
     'bulgarian_split_squat': 'unilateral', 'front_foot_elevated_split_squat': 'unilateral', 'reverse_lunge': 'unilateral', 'db_step_up': 'unilateral',
@@ -138,14 +164,25 @@ STRENGTH = {
     'db_bench_press': 'upper_push', 'barbell_bench_press': 'upper_push', 'push_up': 'upper_push', 'weighted_push_up': 'upper_push',
     'half_kneeling_landmine_press': 'upper_push_v', 'landmine_press_single_arm': 'upper_push_v', 'db_shoulder_press': 'upper_push_v',
 }
+# founder swap: the jump versions of the trap-bar deadlift / back squat also serve the Athletic Strength slot (velocity strength:
+# light load, max-height jumps). They stay ATHLETIC exercises when used as athletic work; the item's class says which role it has.
+STRENGTH_DUAL = {'trap_bar_jump': 'lower_bilateral', 'db_jump_squat': 'lower_bilateral'}
+
+
+def strength_pattern(i): return STRENGTH.get(i) or STRENGTH_DUAL.get(i)
+
+
 SUPPORT = {
     'nordic_curl': 'hamstring', 'slider_hamstring_curl': 'hamstring',          # identity pass: no loaded carries in Athletic (founder decision)
-    'pallof_press': 'anti_rotation', 'pallof_step_out': 'anti_rotation', 'landmine_rotation': 'anti_rotation', 'dead_bug': 'anti_extension',
-    'side_plank': 'lateral_trunk', 'copenhagen_plank': 'lateral_trunk', 'single_leg_db_calf_raise': 'tendon',
+    # sequencing / presentation pass: athletic trunk work is forceful, dynamic or loaded (anti-rotation under load, loaded rotation,
+    # explosive chops); passive filler (dead bug, side / Copenhagen plank) is no longer Athletic support
+    'pallof_press': 'anti_rotation', 'pallof_step_out': 'anti_rotation', 'landmine_rotation': 'rotation', 'cable_wood_chop': 'rotation',
+    'single_leg_db_calf_raise': 'tendon',
 }
 SUPPORT_WHY = {'hamstring': 'hamstring strength and resilience for jumping and sprinting',
-               'anti_rotation': 'trunk control that transfers force from the hips to the hands', 'anti_extension': 'trunk control under the jumps and lifts',
-               'lateral_trunk': 'hip and trunk stiffness for cutting and lateral pushes', 'tendon': 'ankle and calf stiffness for the elastic work'}
+               'anti_rotation': 'loaded anti-rotation that transfers force from the hips to the hands',
+               'rotation': 'forceful rotation from the hips, the trunk side of rotational power', 'tendon': 'ankle and calf stiffness for the elastic work'}
+CORE_KINDS = ('anti_rotation', 'rotation')
 LOWER_PAT = {'lower_bilateral', 'hinge', 'hinge_uni', 'hip_thrust', 'unilateral', 'lateral_uni'}
 UPPER_PAT = {'upper_pull', 'upper_push', 'upper_push_v'}
 
@@ -170,7 +207,7 @@ def region_blocked(e, sore):
     if sore & {'chest'} and (pw and pw[1] in ('upper', 'muscle_up') or i == 'mb_chest_pass'): return True
     if sore & {'back', 'lats'} and pw and pw[1] == 'muscle_up': return True
     if sore & {'hamstrings', 'glutes', 'quads', 'calves'} and pw and pw[0] in LOWER_Q and pw[1] not in THROW_KINDS: return True
-    if sore & {'core'} and (SUPPORT.get(i) in ('anti_rotation', 'anti_extension', 'lateral_trunk') or (pw and pw[1] in ('rot_throw', 'landmine_rot'))): return True
+    if sore & {'core'} and (SUPPORT.get(i) in CORE_KINDS or (pw and pw[1] in ('rot_throw', 'landmine_rot'))): return True
     return False
 
 
@@ -195,7 +232,7 @@ def power_pool(ctx, q, kinds=None):
 
 def strength_pool(ctx, pats):
     out = []
-    for i, p in STRENGTH.items():
+    for i, p in list(STRENGTH.items()) + list(STRENGTH_DUAL.items()):
         if p not in pats or i not in EX: continue
         e = EX[i]
         # trap-bar deadlift is beginner-rated in the library but cx 3; beginners get it only through the level cap
@@ -217,6 +254,15 @@ def support_pool(ctx, kinds):
 
 
 def kind_of(i): return POWER[i][1] if i in POWER else None
+
+
+def loaded_need(ctx, d, arch):
+    """Final pre-launch pass. 2 = an intermediate / advanced Power session must carry a meaningful loaded explosive movement;
+    1 = a 60-minute intermediate / advanced Full-Body Athlete session should; 0 = no requirement (beginners, Low Energy, other days)."""
+    if ctx['lv'] == 'beginner' or 'low_energy' in d['prefer']: return 0
+    if arch == 'athletic_power': return 2
+    if arch == 'athletic_full_body' and ctx['dur'] == 60: return 1
+    return 0
 def q_of(i): return POWER[i][0] if i in POWER else None
 
 
@@ -289,13 +335,14 @@ def power_dose(i, lv, role, d, dur):
     elif kind == 'combo': reps = 2; rest = 105; intent = 'max intent on both parts, stick the landing'
     elif kind == 'bound':
         reps = 3 if i == 'consecutive_broad_jump' else 6; rest = 120; intent = 'max distance per contact, stick the last one' if reps == 3 else '6 contacts (3 per leg), max distance'
+        if i == 'power_skip': rest = 90; intent = '6 skips (3 per leg): drive the knee and arm, as high and far as you can; walk back and reset'
     elif kind == 'hop': reps = 3; per_side = True; rest = 90; intent = 'stick each landing for a full second'
     elif kind == 'elastic':
         if i == 'pogo_hop': reps = 10; rest = 60; intent = '10 quick contacts, stiff ankles, minimal ground time'
         else: reps = 5; rest = 90; intent = 'bounce straight back up, minimal ground contact; end the set when height drops'
     elif kind == 'drop': reps = 3; rest = 120; intent = 'step off, land and rebound instantly; full recovery'
     elif kind == 'lateral':
-        reps = 2 if i == 'lateral_bound_to_box_jump' else 3; per_side = i != 'lateral_box_jump'; rest = (75, 90, 90)[L]; intent = 'push hard sideways, stick each landing'
+        reps = 2 if i == 'lateral_bound_to_box_jump' else 3; per_side = i != 'lateral_box_jump'; rest = 90; intent = 'push hard sideways, stick each landing'
     elif kind == 'sprint':
         sets = (5, 6, 8)[L] if role == 'primary' else ((3, 3, 3)[L] if role == 'tertiary' else (4, 4, 5)[L]); reps = 1; dist = 10 if i == 'acceleration_sprint' else 5; rest = (60, 75, 90)[L]
         intent = 'all-out start, walk back slowly, next rep only when fully recovered'
@@ -324,6 +371,8 @@ def power_dose(i, lv, role, d, dur):
         reps = 2 if 'deadlift' in i else 3; rest = 90; intent = 'about 50% of your estimated max: every rep as fast as possible, full rest; stop the set if bar speed visibly slows'
         sets = max(sets, 4)
     else: rest = 90; intent = 'max intent'
+    # (Oct 2026) never fewer than 3 reps of anything counted in reps (per side when unilateral); sprints / sleds are counted in distance
+    if dist is None: reps = max(reps, 3)
     sets = min(8, max(3 if role == 'primary' else 2, sets + (d['primary_set_delta'] if role in ('primary', 'contrast') else 0)))
     rest = rest + d['rest_bonus']
     if dur == 30 and role == 'primary' and kind in SPRINT_KINDS: sets = min(sets, (5, 6, 6)[L])
@@ -342,37 +391,57 @@ def work_seconds(i, reps, per_side, dist):
     return (10 + reps * base) * (2 if per_side else 1)
 
 
+# composition pass: when a traditional lift supports an athletic session it leans athletic (unilateral, trap-bar / front-loaded,
+# vertical pulling, landmine pressing); slower bench / machine-style lifts remain possible but are no longer the default
+ATHLETIC_LEAN = {'trap_bar_jump', 'db_jump_squat', 'trap_bar_deadlift', 'front_squat', 'bulgarian_split_squat', 'front_foot_elevated_split_squat', 'db_step_up', 'lateral_step_up',
+                 'lateral_lunge', 'single_leg_rdl', 'kickstand_db_rdl', 'reverse_lunge', 'pull_up', 'chin_up', 'half_kneeling_landmine_press',
+                 'landmine_press_single_arm', 'single_arm_db_row', 'barbell_hip_thrust', 'meadows_row'}
+ORDINARY = {'db_bench_press', 'barbell_bench_press', 'db_shoulder_press', 'chest_supported_db_row', 'push_up', 'goblet_squat', 'barbell_back_squat',
+            'inverted_row', 'kettlebell_deadlift', 'db_hip_thrust', 'weighted_push_up'}
+# support-slot balance (founder pass): lifts that the plans reach most often are damped so the slot rotates
+SLOT_BALANCE = {'front_squat': 0.55, 'kettlebell_deadlift': 0.7, 'goblet_squat': 0.7, 'bulgarian_split_squat': 0.65, 'front_foot_elevated_split_squat': 0.6, 'trap_bar_jump': 1.4, 'db_jump_squat': 1.4}
 LIGHT_LOAD = {'goblet_squat', 'kettlebell_deadlift', 'db_rdl', 'db_hip_thrust', 'kickstand_db_rdl', 'inverted_row', 'suspension_row', 'push_up', 'reverse_lunge', 'walking_lunge', 'lateral_lunge', 'db_step_up', 'lateral_step_up'}
-GOAL_STRENGTH = {   # goal -> level -> (A sets, A reps, A rir, A rest, B sets, B reps, B rir, B rest)
-    'build_strength':            ((3, 6, 3, 120, 3, 8, 2, 90), (4, 4, 2, 150, 3, 6, 2, 90), (4, 3, 2, 180, 3, 6, 2, 90)),
-    'improve_athleticism':       ((3, 6, 3, 120, 3, 8, 2, 75), (3, 5, 2, 120, 3, 6, 2, 90), (4, 4, 2, 150, 3, 6, 2, 90)),
-    'build_muscle':              ((3, 8, 2, 90, 3, 10, 2, 75), (4, 6, 2, 120, 3, 10, 2, 75), (4, 6, 1, 120, 3, 8, 1, 75)),
-    'lose_weight_conditioning':  ((3, 8, 3, 75, 3, 10, 3, 60), (3, 8, 2, 75, 3, 10, 2, 60), (3, 6, 2, 90, 3, 10, 2, 60)),
-    'feel_better_reduce_stress': ((2, 8, 3, 90, 2, 10, 3, 60), (3, 8, 3, 90, 2, 10, 3, 60), (3, 6, 3, 90, 3, 8, 3, 75)),
-    'stay_consistent':           ((3, 8, 3, 90, 3, 10, 3, 60), (3, 6, 2, 120, 3, 8, 2, 75), (3, 5, 2, 120, 3, 8, 2, 75)),
+# Sequencing / presentation pass: a traditional lift inside an Athletic session is VELOCITY strength. Light-to-moderate load, crisp
+# low reps, enough rest to stay fast, maximal concentric intent; the set ends when bar speed drops. (Build Strength keeps it a
+# little heavier, still fast; Build Muscle a little more volume.)  goal -> level -> (A sets, reps, rir, rest, B sets, reps, rir, rest)
+_VEL = ((3, 5, 3, 120, 3, 6, 3, 90), (3, 4, 3, 120, 3, 5, 3, 90), (3, 4, 3, 150, 3, 5, 3, 90))
+GOAL_STRENGTH = {
+    'build_strength':            ((3, 5, 3, 120, 3, 6, 3, 90), (4, 3, 2, 150, 3, 5, 3, 90), (4, 3, 2, 180, 3, 4, 3, 90)),
+    'improve_athleticism':       _VEL,
+    'build_muscle':              ((3, 6, 3, 90, 3, 8, 3, 75), (3, 5, 3, 120, 3, 6, 3, 90), (3, 5, 3, 120, 3, 6, 3, 90)),
+    'lose_weight_conditioning':  _VEL,
+    'feel_better_reduce_stress': ((2, 5, 3, 90, 2, 6, 3, 75), (3, 5, 3, 90, 2, 6, 3, 75), (3, 4, 3, 120, 3, 5, 3, 90)),
+    'stay_consistent':           _VEL,
 }
 
 
 def strength_dose(i, lv, slot, goal, d, dur, contrast=False):
+    if i in STRENGTH_DUAL and not contrast:      # loaded jump squat as velocity strength: low reps, every rep max height, full reset
+        sets = 3 if dur == 60 else 2 if 'low_energy' in d['prefer'] else 3
+        return dict(sets=sets, reps=3, per_side=False, rir=3, rest=120 if slot == 'A' else 105, work_s=work_seconds(i, 3, False, None),
+                    intent=('Light load (about 20-30% of your squat): ' if i == 'trap_bar_jump' else 'Light dumbbells: ') +
+                           'jump as high as you can every rep, land softly and reset. Stop the set when the height drops')
     row = GOAL_STRENGTH.get(goal, GOAL_STRENGTH['stay_consistent'])[SKILL_IDX[lv]]
     sets, reps, rir, rest = (row[0], row[1], row[2], row[3]) if slot == 'A' else (row[4], row[5], row[6], row[7])
     e = EX[i]; uni = e['lat'] in ('unilateral', 'alternating')
     if contrast: sets, reps, rir, rest = (3 if lv != 'advanced' else 4), 3, 2, 45
     reps = max(3, reps + d['strength_rep_delta']); rir = max(1, min(4, rir + d['strength_rir_delta']))
     sets = max(min(sets, 3 if dur == 60 else 2), sets + d['strength_set_delta'])
-    if uni: reps = min(max(reps, (4 if d['amped_mode'] else 5) if not contrast else reps), 8)      # single-leg / single-arm work below 5 reps per side is not a useful strength dose
-    if i in LIGHT_LOAD and not contrast: reps = max(reps, 6)          # goblet squat, KB deadlift, body-weight rows / push-ups cannot be loaded for heavy triples
+    if uni: reps = min(max(reps, (4 if d['amped_mode'] else 5) if not contrast else reps), 6)     # velocity: crisp reps per side      # single-leg / single-arm work below 5 reps per side is not a useful strength dose
+    if i in LIGHT_LOAD and not contrast: reps = max(reps, 5)          # light implements: a few more reps, still fast          # goblet squat, KB deadlift, body-weight rows / push-ups cannot be loaded for heavy triples
     if STRENGTH.get(i) == 'upper_pull' and i in ('pull_up', 'chin_up'): reps = min(reps, 6 if lv != 'advanced' else 5)
-    if i in ('push_up',) and goal in ('build_strength',): reps = max(reps, 8)
     if dur == 30 and not contrast: sets = min(sets, 3)
     return dict(sets=sets, reps=reps, per_side=uni, rir=rir, rest=rest, work_s=work_seconds(i, reps, uni, None), intent=_strength_intent(rir, slot, goal, contrast))
 
 
+VELOCITY_CUE = 'Explode through every rep: move the weight as fast as you can with control.'
+
+
 def _strength_intent(rir, slot, goal, contrast):
     if contrast: return f"heavy but crisp: about {rir} rep{'s' if rir != 1 else ''} left in the tank, then straight to the explosive partner"
-    base = f"about {rir} rep{'s' if rir != 1 else ''} left in the tank"
-    if slot == 'A' and goal == 'build_strength': return base + '; 2 lighter ramp-up sets first'
-    if slot == 'A': return base + '; 1-2 ramp-up sets first'
+    load = 'a load you can move fast (heavy but fast today)' if goal == 'build_strength' else 'a light-to-moderate load'
+    base = f"{VELOCITY_CUE} Use {load}; stop the set when the speed clearly drops"
+    if slot == 'A': return base + '. 1-2 ramp-up sets first'
     return base
 
 
@@ -381,19 +450,19 @@ def support_dose(i, lv, goal):
     if k == 'hamstring':
         n = 4 if i == 'nordic_curl' else 8
         return dict(sets=3 if lv != 'beginner' else 2, reps=n, rest=75, work_s=4 * n + 10, per_side=False, intent='slow, controlled lowering')
-    if k == 'lateral_trunk':
-        s = 20 if i == 'copenhagen_plank' else 30
-        return dict(sets=2 if lv == 'beginner' else 3, reps=0, seconds=s, rest=45, work_s=2 * s + 10, per_side=True, intent='long straight line, breathe behind the brace')
+    if k == 'rotation':
+        intent = ('explosive chop: rotate hard from the hips and pivot the back foot, control the return' if i == 'cable_wood_chop'
+                  else 'loaded rotation: drive the bar across with the hips, fast and controlled')
+        return dict(sets=2 if lv == 'beginner' else 3, reps=6, rest=60, work_s=2 * (10 + 6 * 2), per_side=True, intent=intent)
     if k == 'tendon': return dict(sets=3, reps=10, rest=60, work_s=2 * 35, per_side=True, intent='slow, full range, pause at the top')
-    if k == 'anti_extension': return dict(sets=3, reps=8, rest=45, work_s=40, per_side=True, intent='low back stays down; slow and controlled')
-    n = 6 if i.startswith('landmine') else 10
-    return dict(sets=3 if lv != 'beginner' else 2, reps=n, rest=45, work_s=2 * (10 + 3 * n), per_side=True, intent='resist the rotation; slow and controlled')
+    return dict(sets=3 if lv != 'beginner' else 2, reps=8, rest=60, work_s=2 * (10 + 3 * 8), per_side=True,
+                intent='heavy enough that resisting the pull is hard; press out, hold 2 s, no rotation')
 
 
 # ================================================================== candidate selection
 ARCH_QUALITIES = {
     'athletic_power': ['vertical_power', 'horizontal_power', 'total_body_power', 'upper_power', 'rotational_power'],
-    'athletic_speed_agility': ['acceleration', 'elastic_reactive', 'horizontal_power'],
+    'athletic_speed_agility': ['acceleration', 'elastic_reactive', 'horizontal_power', 'vertical_power'],   # composition pass: jump-led speed days
     'athletic_full_body': ['horizontal_power', 'vertical_power', 'acceleration', 'total_body_power', 'rotational_power', 'upper_power'],
 }
 ARCH_STRUCTURES = {
@@ -429,6 +498,7 @@ def arch_for(structure, pq):
     if structure == 'speed_strength': return 'athletic_speed_agility'
     if structure == 'athletic_mixed': return 'athletic_speed_agility' if pq in ('acceleration', 'elastic_reactive') else 'athletic_full_body'
     if structure == 'jump_throw': return 'athletic_full_body'
+    if structure == 'power_strength' and pq == 'elastic_reactive': return 'athletic_speed_agility'
     return 'athletic_power'
 
 
@@ -478,6 +548,11 @@ def candidates(ctx, d):
                     w *= 1.6 if (pq in ('rotational_power', 'elastic_reactive') or s in ('contrast', 'athletic_mixed', 'jump_throw')) else 0.8
                 if pq == 'total_body_power' and lv != 'beginner' and d['allow_olympic']:        # Olympic derivatives live here: a real share of capable users' sessions
                     w *= {'advanced': 1.8, 'intermediate': 1.25}[lv] if goal in ('build_strength', 'improve_athleticism') else {'advanced': 1.3, 'intermediate': 1.1}[lv]
+                # final pre-launch pass: an intermediate / advanced Power day is built around loaded power whenever the quality offers it
+                # (only inside a chosen archetype: MOOD's Pick keeps its archetype balance; composition_fill still guarantees the loaded movement)
+                if ctx['arch'] and loaded_need(ctx, d, a) and any(is_major_loaded(i) for i in power_pool(ctx, pq)): w *= 1.6 if a == 'athletic_power' else 1.15
+                if ctx['arch'] and a == 'athletic_power' and pq == 'total_body_power' and lv != 'beginner' and d['allow_olympic']: w *= 1.5    # Power is where Olympic derivatives live
+                if pq == 'acceleration' and not ctx.get('sprint_space'): w *= 0.2          # standard gym: sprint-led days are occasional, not the identity
                 if s in d['avoid_structures']: w *= 0.05
                 # history (penalties, never bans)
                 for n, hrec in enumerate(hist[:3]):
@@ -519,10 +594,26 @@ def rank_power(ctx, d, ids, role, used, seed, primary_q=None):
         if kind == 'olympic': s *= {'advanced': 2.2 if perf_goal else 1.3, 'intermediate': 1.4 if perf_goal else 1.0}.get(lv, 0.0)   # meaningful for capable users, never automatic
         if kind == 'slam' and role == 'primary' and not d['forceful']: s *= 0.4       # slams are a cathartic secondary, rarely the day's main power
         if kind in ('speed_strength', 'pop') and role == 'primary': s *= 0.15        # speed-strength and step-up pops support the day, rarely lead it
+        if kind == 'sprint' and not ctx.get('sprint_space'): s *= 0.25              # composition pass: a standard gym rarely sprints
+        if kind == 'sled' and role != 'primary' and not ctx.get('sprint_space'): s *= 0.4      # sled: one gym-friendly option among many
+        if i in ('trap_bar_jump', 'db_jump_squat'): s *= 1.4      # founder swap: the jump versions take the trap-bar deadlift / back squat's place
         if kind == 'muscle_up' and role == 'primary' and not d['novelty']: s *= 0.5
         if i == 'band_assisted_muscle_up' and lv == 'advanced': s *= 0.25      # advanced users get the bar muscle-up; the band version is the intermediate option
-        if lv == 'advanced' and role == 'primary' and kind != 'olympic' and (e['skill'] == 'advanced' or e['impact'] == 'high' or e['cx'] >= 4): s *= 1.6   # specificity, not volume
+        if lv == 'advanced' and role == 'primary' and kind not in ('olympic', 'uni_jump', 'pop') and (e['skill'] == 'advanced' or e['impact'] == 'high' or e['cx'] >= 4): s *= 1.6   # specificity, not volume
+        # final pre-launch pass: the day's main power is a real power movement. Loaded power leads capable Power days; a throw, a
+        # seated / step-up jump or a split-stance jump rarely carries a trained athlete's session on its own.
+        if role == 'primary' and i == 'power_skip' and ctx.get('cur_arch') != 'athletic_speed_agility': s *= 0.4     # a skip is speed work, not a Power lead
+        if role == 'primary' and lv != 'beginner' and 'low_energy' not in d['prefer']:
+            if tier(i, 'tertiary') == 'C': s *= 0.3      # (sore legs too: an upper-body day leads with a press / landmine before a med-ball throw)
+        if role == 'primary' and lv != 'beginner' and not (ctx['sore'] & LOWER) and 'low_energy' not in d['prefer']:
+            if kind in ('uni_jump', 'pop'): s *= 0.5
+            if ctx.get('cur_arch') != 'athletic_speed_agility' and kind in ('lateral', 'hop'): s *= 0.5
+            need = loaded_need(ctx, d, ctx.get('cur_arch'))
+            if need == 2: s *= (2.6 if kind != 'swing' else 1.3) if is_major_loaded(i) else (0.5 if kind in ('lateral', 'uni_jump', 'pop', 'hop') else 1.0)   # a swing supports, an Olympic derivative / loaded jump leads
+            elif need == 1 and is_major_loaded(i): s *= 1.4
         if 'low_energy' in d['prefer']: s *= 1.5 if (e['cx'] <= 1 and e['impact'] == 'low') or kind in ('throw', 'sprint') else (0.7 if e['impact'] != 'low' else 1.0)
+        if 'low_energy' in d['prefer'] and role == 'primary' and ctx.get('cur_arch') == 'athletic_power' and lv != 'beginner' and is_major_loaded(i) and e['cx'] <= 2 and e['impact'] == 'low':
+            s *= 2.0    # a Low Energy Power day can still lead with a simple, low-impact loaded movement (swing, push press)
         if d['simple']: s *= (1.5 if e['cx'] <= 2 else 0.5) * (1.0 if d['novelty'] or e['nov'] <= 2 else 0.8)   # Bored owns novelty, Stressed owns complexity
         if d['forceful']: s *= 1.8 if i in FORCEFUL_SIMPLE else (0.6 if not e['forceful'] else 1.0)
         if d['novelty']: s *= 1.6 if (e['nov'] >= 3 or vector(e) in ('lateral', 'rotational', 'multi')) else 0.7
@@ -534,6 +625,7 @@ def rank_power(ctx, d, ids, role, used, seed, primary_q=None):
         for dd in disp:
             if i in dd.get('ids', []): s *= 0.05
         if i in used or any(EX[x]['swap'] == EX[i]['swap'] for x in used): s *= 0.0
+        if REDUNDANT.get(i) and any(REDUNDANT.get(x) == REDUNDANT[i] for x in used): s *= 0.0     # final pre-launch pass: one broad jump per session
         return s * ((0.8 + 0.4 * u(seed, 'p', role, i)) if role != 'secondary' else (0.6 + 0.8 * u(seed, 'p', role, i)))
     return [i for i in sorted(ids, key=lambda i: -score(i)) if score(i) > 0]
 
@@ -552,6 +644,7 @@ def rank_strength(ctx, d, ids, used, seed, tag):
         if d['forceful'] and i in ('trap_bar_deadlift', 'barbell_back_squat', 'front_squat', 'barbell_hip_thrust', 'pull_up'): s *= 1.3
         if 'low_energy' in d['prefer'] and (e['cx'] >= 3 or e['sysd'] >= 4): s *= 0.6
         if tgt & set(e['prim']): s *= 1.8
+        if goal not in ('build_muscle',): s *= 1.5 if i in ATHLETIC_LEAN else (0.6 if i in ORDINARY and lv != 'beginner' else 1.0)
         if d['amped_mode'] and i in LIGHT_LOAD: s *= 0.35          # Amped expresses itself through load: prefer a strength lift that can actually get heavier
         for n, h in enumerate(hist[:2]):
             if i in h.get('ids', []): s *= (0.45, 0.7)[n]
@@ -578,20 +671,22 @@ STRENGTH_WHY = {'lower_bilateral': 'bilateral leg strength behind the jumps and 
                 'upper_pull': 'pulling strength that balances the pushing and throwing', 'upper_push': 'pressing strength behind the upper-body power',
                 'upper_push_v': 'overhead pressing strength and shoulder stability'}
 SUPPORT_PLAN = {   # purpose-bound trunk / tendon / hamstring work only (no loaded carries in Athletic)
-                'acceleration': ['hamstring', 'tendon'], 'elastic_reactive': ['tendon', 'anti_extension'], 'rotational_power': ['anti_rotation'],
-                'upper_power': ['anti_rotation', 'anti_extension'], 'vertical_power': ['anti_extension', 'hamstring'],
-                'horizontal_power': ['hamstring', 'anti_rotation'], 'total_body_power': ['anti_rotation', 'anti_extension']}
+                'acceleration': ['hamstring', 'tendon'], 'elastic_reactive': ['tendon', 'rotation'], 'rotational_power': ['anti_rotation'],
+                'upper_power': ['anti_rotation', 'rotation'], 'vertical_power': ['rotation', 'hamstring'],
+                'horizontal_power': ['hamstring', 'anti_rotation'], 'total_body_power': ['anti_rotation', 'rotation']}
 SECONDARY_FOR = {   # structure -> primary quality -> complementary secondary qualities (ordered)
     'jump_throw': {'_': ['rotational_power', 'upper_power', 'total_body_power']},
-    'athletic_mixed': {'acceleration': ['rotational_power', 'horizontal_power', 'upper_power'], 'horizontal_power': ['acceleration', 'rotational_power'],
-                       'total_body_power': ['acceleration', 'rotational_power'], 'elastic_reactive': ['acceleration', 'rotational_power']},
+    # final pre-launch pass: a speed day's second element is more speed / plyo work, not a med-ball throw
+    'athletic_mixed': {'acceleration': ['horizontal_power', 'elastic_reactive', 'vertical_power', 'rotational_power'], 'horizontal_power': ['acceleration', 'rotational_power'],
+                       'total_body_power': ['acceleration', 'rotational_power'], 'elastic_reactive': ['acceleration', 'horizontal_power']},
     'power_strength': {'vertical_power': ['upper_power', 'rotational_power', 'acceleration'], 'horizontal_power': ['rotational_power', 'upper_power', 'acceleration'],
                        'total_body_power': ['rotational_power', 'horizontal_power', 'upper_power'],
                        'upper_power': ['rotational_power'], 'rotational_power': ['upper_power'], 'elastic_reactive': ['rotational_power']},
-    'speed_strength': {'acceleration': ['elastic_reactive', 'rotational_power', 'horizontal_power']},
+    'speed_strength': {'acceleration': ['elastic_reactive', 'horizontal_power', 'vertical_power', 'rotational_power']},
 }
 SECONDARY_KINDS = {'rotational_power': {'rot_throw', 'slam', 'landmine_rot'}, 'upper_power': {'throw', 'slam', 'upper'}, 'total_body_power': {'throw'},
-                   'horizontal_power': {'jump'}, 'acceleration': {'sprint', 'sled'}, 'elastic_reactive': {'elastic'}, 'vertical_power': {'jump'}}
+                   'horizontal_power': {'jump', 'lateral', 'bound'}, 'acceleration': {'sprint', 'sled'}, 'elastic_reactive': {'elastic', 'hop'}, 'vertical_power': {'jump'}}
+SPEED_PLYO_KINDS = {'sprint', 'sled', 'jump', 'lateral', 'bound', 'elastic', 'hop', 'combo', 'drop', 'uni_jump'}   # lower-body speed / plyometric work
 CONTRAST_SECONDARY = {'vertical_power': ['rotational_power', 'upper_power', 'acceleration'], 'horizontal_power': ['rotational_power', 'upper_power', 'acceleration'],
                       'upper_power': ['rotational_power', 'horizontal_power']}
 LOW_COST_KINDS = THROW_KINDS | {'upper', 'landmine_rot'}          # a second athletic movement that costs almost no impact budget
@@ -614,7 +709,8 @@ def tier(i, role='x'):
 
 # (beginner, intermediate, advanced) at 60 / 30 min: movement budget in cost points, most Tier A movements, most athletic movements
 ATH_BUDGET = {60: ((5, 8, 10), (1, 1, 2), (3, 4, 4)), 30: ((4, 5, 6), (1, 1, 1), (2, 2, 2))}
-TARGET_N = {'beginner': ((2, 0.7), (3, 0.3)), 'intermediate': ((2, 0.1), (3, 0.6), (4, 0.3)), 'advanced': ((2, 0.05), (3, 0.25), (4, 0.7))}
+# final pre-launch pass: a normal intermediate / advanced 60-minute day has 3-4 athletic movements (beginners 2-3)
+TARGET_N = {'beginner': ((2, 0.45), (3, 0.55)), 'intermediate': ((3, 0.75), (4, 0.25)), 'advanced': ((3, 0.45), (4, 0.55))}
 # families for variety and impact: never two sprint / sled elements, at most two jump-family and two throw-family elements
 FAMILY = lambda k: ('olympic' if k in OLY_KINDS else 'sprint' if k in SPRINT_KINDS else 'jump' if k in JUMP_KINDS else 'throw' if k in THROW_KINDS
                     else 'upper' if k in ('upper', 'muscle_up', 'landmine_rot') else k)
@@ -627,6 +723,45 @@ def ath_budget(ctx, d):
     if 'low_energy' in d['prefer']: bud = min(bud, 4); amax = min(amax, 1); nmax = 2
     if d['simple']: amax = min(amax, 1); nmax = min(nmax, 3 if ctx['lv'] != 'beginner' else 2)
     return bud, amax, min(nmax, d['max_explosive'])
+
+
+# ------------------------------------------------------------------ composition pass: session composition is chosen, not templated
+# loaded_power: loaded explosive work dominates (4 athletic, 2+ loaded), 1 strength support
+# athletic_volume: 4 athletic movements across qualities, a trunk / stability support, no traditional strength lift
+# power_complex: 3 athletic movements, 1 strength support, optional trunk work
+# strength_supported: 2-3 athletic movements, 2 strength supports
+MODES = ('loaded_power', 'athletic_volume', 'power_complex', 'strength_supported')
+MODE_SHAPE = {'loaded_power': (4, 1), 'athletic_volume': (4, 0), 'power_complex': (3, 1), 'strength_supported': (3, 2)}   # (athletic target, strength)
+MODE_W = {'athletic_power': dict(loaded_power=0.35, athletic_volume=0.15, power_complex=0.28, strength_supported=0.22),
+          'athletic_speed_agility': dict(loaded_power=0.10, athletic_volume=0.35, power_complex=0.33, strength_supported=0.22),
+          'athletic_full_body': dict(loaded_power=0.25, athletic_volume=0.25, power_complex=0.27, strength_supported=0.23)}
+
+
+def composition_mode(ctx, d, arch, structure, seed):
+    """-> mode name or None (None = the fixed rules: 30 min, Low Energy, sore legs, contrast pairing)."""
+    lv, dur = ctx['lv'], ctx['dur']
+    if dur != 60 or 'low_energy' in d['prefer'] or (ctx['sore'] & LOWER) or structure == 'contrast': return None
+    if lv == 'beginner': w = dict(power_complex=0.5, strength_supported=0.5)
+    else: w = dict(MODE_W.get(arch, MODE_W['athletic_full_body']))
+    g = ctx['goal']
+    if g == 'build_strength': w['strength_supported'] = w.get('strength_supported', 0) * 3; w['athletic_volume'] = w.get('athletic_volume', 0) * 0.3
+    if g == 'build_muscle': w['strength_supported'] = w.get('strength_supported', 0) * 1.6
+    if d['simple']: w['loaded_power'] = 0; w['athletic_volume'] = 0          # Stressed: at most 4 exercises, predictable
+    if d['amped_mode'] == 'intent_and_load' and 'loaded_power' in w: w['loaded_power'] *= 1.6
+    if d['novelty']:
+        for k in ('athletic_volume', 'loaded_power'):
+            if k in w: w[k] *= 1.4
+    last = ctx['history'][0].get('mode') if ctx['history'] else None
+    if last in w: w[last] *= 0.4                                              # a different shape from last time
+    for dd in ctx['displayed']:
+        if dd.get('mode') in w: w[dd['mode']] *= 0.3
+    w = {k: v for k, v in w.items() if v > 0}
+    tot = sum(w.values()); r = u(seed, 'mode') * tot; acc = 0.0
+    for k in MODES:
+        if k not in w: continue
+        acc += w[k]
+        if r <= acc: return k
+    return list(w)[-1]
 
 
 def target_count(ctx, d, structure, seed):
@@ -673,6 +808,7 @@ def pick_extras(ctx, d, blocks, used, structure, seed, n_target):
                 if e['cx'] >= 4 and any(EX[y['id']]['cx'] >= 4 or y['kind'] == 'olympic' for y in its): continue      # one high-skill movement per session
                 if d['secondary_kinds'] and k not in d['secondary_kinds']: continue
                 if structure == 'contrast' and k in ('speed_strength',): continue
+                if ctx.get('cur_arch') == 'athletic_speed_agility' and k in OLY_KINDS | {'swing', 'speed_strength'}: continue   # a speed day stays a speed day
                 dz = power_dose(i, lv, 'tertiary', d, dur); x = dict(id=i, kind=k, cls='power', role='tertiary', **dz)
                 proj = [dict(y, sets=projected_sets(y, len(its) + 1)) for y in its + [x]]     # after the rebalance that a further element triggers
                 if (sum(contacts_of(y) for y in proj) > LIM['contacts'] or sum(y['sets'] for y in proj) > LIM['explosive_sets']
@@ -687,6 +823,18 @@ def pick_extras(ctx, d, blocks, used, structure, seed, n_target):
             if vector(EX[i]) not in vecs: b *= 1.25
             if k == 'muscle_up' and d['novelty']: b *= 1.8
             if k in ('pop', 'uni_jump') and d['novelty']: b *= 1.3
+            # final pre-launch pass: composition, not count. A med-ball throw only rounds out a session that already has two
+            # meaningful (Tier A / B) movements; speed days add speed / plyo work; Power adds its loaded movement first
+            arch = ctx.get('cur_arch'); n_ab = sum(tier(x['id'], x['role']) != 'C' for x in its)
+            if lv != 'beginner' and tier(i, 'tertiary') == 'C' and n_ab < 2: b *= 0.3
+            if arch == 'athletic_speed_agility': b *= 1.5 if k in SPEED_PLYO_KINDS else 0.3
+            if loaded_need(ctx, d, arch) and is_major_loaded(i) and not any(is_major_loaded(x['id']) for x in its): b *= 3.0
+            if arch == 'athletic_full_body' and not any(_is_upper_el(x['id']) for x in its) and _is_upper_el(i): b *= 2.0
+            # composition pass: a loaded-power day stacks loaded work; standard gyms rarely sprint
+            if ctx.get('mode') == 'loaded_power' and is_major_loaded(i) and sum(is_major_loaded(x['id']) for x in its) < 2: b *= 3.0
+            if ctx.get('mode') == 'athletic_volume' and q_of(i) not in {x['quality'] for x in its}: b *= 1.5
+            if k == 'sprint' and not ctx.get('sprint_space'): b *= 0.25
+            if k == 'sled' and not ctx.get('sprint_space'): b *= 0.5       # sled work is gym-friendly, but one option among many
             return b
         # seeded weighted choice: the ranking and the variety bonuses decide how often, not whether (so the vocabulary actually varies)
         wts = [(0.88 ** n) * bonus(i) for n, i in enumerate(ranked)]
@@ -700,6 +848,71 @@ def pick_extras(ctx, d, blocks, used, structure, seed, n_target):
     return out
 
 
+def _is_upper_el(i): return q_of(i) in UPPER_Q or kind_of(i) in THROW_KINDS | {'upper', 'muscle_up'}
+def _is_lower_el(i): return q_of(i) in LOWER_Q and kind_of(i) not in THROW_KINDS
+
+
+def composition_gaps(ctx, d, arch, its):
+    """Final pre-launch pass: what this archetype's athletic work must contain (beyond the count). -> list of gap codes."""
+    gaps = []; legs_sore = bool(ctx['sore'] & LOWER); le = 'low_energy' in d['prefer']
+    if loaded_need(ctx, d, arch) and not any(is_major_loaded(x['id']) for x in its): gaps.append('loaded')
+    if arch == 'athletic_speed_agility' and not le and not legs_sore and sum(x['kind'] in SPEED_PLYO_KINDS for x in its) < 2: gaps.append('speed_plyo')
+    if arch == 'athletic_full_body' and ctx['dur'] == 60 and not le and not legs_sore:
+        if not any(_is_upper_el(x['id']) for x in its): gaps.append('upper')
+        if not any(_is_lower_el(x['id']) for x in its): gaps.append('lower')
+    return gaps
+
+
+GAP_POOL = {'loaded': lambda i: is_major_loaded(i) and kind_of(i) != 'olympic', 'speed_plyo': lambda i: kind_of(i) in SPEED_PLYO_KINDS,
+            'upper': _is_upper_el, 'lower': _is_lower_el}
+
+
+def ensure_composition(ctx, d, blocks, used, arch, seed, log):
+    """Fill composition gaps by adding (when the movement budget allows) or replacing the least valuable further element.
+    The primary is never touched; barbell Olympic lifts still only lead; the impact / intent / cost budgets still hold."""
+    lv, dur = ctx['lv'], ctx['dur']; bud, amax, nmax = ath_budget(ctx, d); LIM = limits(lv, dur, d)
+    def pw(bl): return [x for b in bl for x in b['items'] if x['cls'] == 'power']
+    def fits(bl):
+        its = pw(bl)
+        if len(its) > nmax or sum(TIER_COST[tier(x['id'], x['role'])] for x in its) > bud or sum(tier(x['id'], x['role']) == 'A' for x in its) > amax: return False
+        if sum(EX[x['id']]['cx'] >= 4 or x['kind'] == 'olympic' for x in its) > 1: return False
+        fams = [FAMILY(x['kind']) for x in its]
+        if any(fams.count(f) > FAMILY_CAP.get(f, 2) + (1 if f in ('throw', 'upper') and ctx['sore'] & LOWER else 0) for f in set(fams)): return False
+        jumps = [vector(EX[x['id']]) for x in its if x['kind'] in JUMP_KINDS]
+        if len(jumps) != len(set(jumps)): return False
+        # the later budget repair trims sets (primary to 3, others to 2), so check the element fits at those floors
+        proj = [dict(y, sets=min(projected_sets(y, len(its)), 3 if y['role'] in ('primary', 'contrast_power') and lv != 'beginner' else 2)) for y in its]
+        return (sum(contacts_of(y) for y in proj) <= LIM['contacts'] and sum(y['sets'] for y in proj) <= LIM['explosive_sets']
+                and sum(y['sets'] * INTENT_W.get(y['kind'], 1.0) for y in proj) <= LIM['intent_load'])
+    for _ in range(2):
+        gaps = composition_gaps(ctx, d, arch, pw(blocks))
+        if not gaps: return
+        gap = gaps[0]; its = pw(blocks)
+        pool = [i for q in QUALITY_LABEL for i in power_pool(ctx, q) if GAP_POOL[gap](i) and kind_of(i) != 'olympic']   # barbell Olympic lifts only lead
+        pool = [i for i in pool if EX[i]['cx'] <= min(d['cx_cap'], 4 if lv == 'advanced' else 3) and not (q_of(i) == 'elastic_reactive' and not d['allow_elastic'])
+                and not (kind_of(i) == 'explosive_lift' and any(x['kind'] == 'olympic' for x in its))]
+        ranked = rank_power(ctx, d, pool, 'secondary', used, f"{seed}|comp|{gap}")
+        done = False
+        for new in ranked:
+            dz = power_dose(new, lv, 'tertiary', d, dur)
+            nb = make_block('tertiary', [P(new, 'tertiary', dz)], 'straight', rounds=dz['sets'], rest_rounds=dz['rest'], quality=q_of(new))
+            if fits(blocks + [nb]):
+                blocks.append(nb); used.append(new); done = True
+                log.append(dict(reason_code='composition_fill', gap=gap, action='add', item=new)); break
+            # replace the least valuable further element whose removal does not open another gap (C tier first, then the cheapest)
+            for ob in sorted([b for b in blocks if b['role'] in ('secondary', 'tertiary')],
+                             key=lambda b: (tier(b['items'][0]['id'], b['role']) != 'C', TIER_COST[tier(b['items'][0]['id'], b['role'])], u(seed, 'rm', b['items'][0]['id']))):
+                trial = [b for b in blocks if b is not ob]
+                if set(composition_gaps(ctx, d, arch, pw(trial) + [nb['items'][0]])) - set(gaps): continue
+                rdz = power_dose(new, lv, ob['role'], d, dur)
+                rb = make_block(ob['role'], [P(new, ob['role'], rdz)], 'straight', rounds=rdz['sets'], rest_rounds=rdz['rest'], quality=q_of(new))
+                if not fits(trial + [rb]): continue
+                blocks[blocks.index(ob)] = rb; used.remove(ob['items'][0]['id']); used.append(new); done = True
+                log.append(dict(reason_code='composition_fill', gap=gap, action='replace', item=new, replaced=ob['items'][0]['id'])); break
+            if done: break
+        if not done: return
+
+
 def projected_sets(x, n_ath):
     """Sets after the rebalance in build_session (primary gives up a set, other elements capped at 3; sprints / speed-strength at 4)."""
     if n_ath < 3: return x['sets']
@@ -709,20 +922,90 @@ def projected_sets(x, n_ath):
     return min(x['sets'], 4 if x['kind'] in SPRINT_KINDS | {'speed_strength'} else 3)
 
 
+def demand(x):
+    """Sequencing pass: performance demand. 0 = high-skill / high-velocity power (Olympic derivatives, explosive lifts, loaded jumps,
+    sprints, drop / reactive / consecutive jumps, muscle-ups); 1 = ballistic / plyometric (jumps, bounds, hops, throws, swings,
+    landmine and dumbbell presses);
+    2 = velocity-strength (speed pulls / squats). Sprints are high-velocity but unloaded: 1, performed fresh with the ballistic work."""
+    k = x['kind']; i = x['id']
+    if k == 'speed_strength': return 2
+    if k in OLY_KINDS or k in ('drop', 'muscle_up') or (is_loaded(i) and k == 'loaded_jump') or tier(i, 'tertiary') == 'A': return 0
+    return 1
+
+
+def _seq_key(b):
+    x = b['items'][-1]; rank = {'A': 0, 'B': 1, 'C': 2}
+    return (demand(x), rank[tier(x['id'], 'tertiary')], 0 if x['kind'] in JUMP_KINDS | SPRINT_KINDS else 1)
+
+
 def order_athletic(blocks):
-    """Highest cost / skill first: primary stays first; the other athletic blocks by tier (A, B, C), jumps before throws within a tier."""
-    prim = [b for b in blocks if b['role'] == 'primary']; rest = [b for b in blocks if b['role'] in ('secondary', 'tertiary')]
-    rank = {'A': 0, 'B': 1, 'C': 2}
-    rest.sort(key=lambda b: (rank[tier(b['items'][0]['id'], 'tertiary')], 0 if b['items'][0]['kind'] in JUMP_KINDS | SPRINT_KINDS else 1))
+    """Sequencing pass: by performance demand (loaded / high-velocity power, then ballistic / plyometric, then velocity-strength),
+    then cost tier, jumps before throws. A Primer and the primary keep their places."""
+    head = [b for b in blocks if b['role'] in ('primer', 'primary')]; rest = [b for b in blocks if b['role'] in ('secondary', 'tertiary')]
+    rest.sort(key=_seq_key)
     for n, b in enumerate(rest):
         role = 'secondary' if n == 0 else 'tertiary'
         b['role'] = role
         for x in b['items']: x['role'] = role
-    return prim + rest
+    return head + rest
+
+
+PRIMER_KINDS = {'jump', 'combo', 'pop', 'elastic', 'lateral', 'uni_jump'}
+
+
+def sequence_session(ctx, d, arch, structure, blocks, log):
+    """Sequencing pass: the session runs in order of performance demand. When a higher-demand loaded movement sits behind the lead,
+    either the lead was a low-fatigue jump that can prime it (it becomes the Primer: 2 crisp sets, then the loaded lead) or the
+    loaded movement simply moves first. Speed + Plyo keeps its speed / plyo lead. -> (structure, primary block)"""
+    P = blocks[0]
+    if P['structure'] == 'contrast' or arch == 'athletic_speed_agility' or len(blocks) < 2: return structure, P
+    p = P['items'][-1]; rest = [b for b in blocks[1:] if b['role'] in ('secondary', 'tertiary')]
+    if not rest: return structure, P
+    L = min(rest, key=_seq_key); lx = L['items'][-1]
+    if demand(lx) >= demand(p):
+        # intentional potentiation: a loaded lower / total-body lead may be preceded by a low-fatigue jump from later in the session
+        j = next((b for b in rest if b['items'][-1]['kind'] == 'jump' and EX[b['items'][-1]['id']]['impact'] != 'high' and tier(b['items'][-1]['id'], 'tertiary') != 'A'), None)
+        if (j and ctx['lv'] != 'beginner' and demand(p) == 0 and is_loaded(p['id']) and p['quality'] in ('total_body_power', 'vertical_power')
+                and not d['simple'] and 'low_energy' not in d['prefer'] and u(ctx['seed'], 'potentiate', p['id']) < 0.3):
+            jx = j['items'][-1]; reps = min(jx['reps'], 3); work = work_seconds(jx['id'], reps, jx['per_side'], None)
+            from .athletic_validate import MIN_REST
+            rest_s = max(MIN_REST.get(jx['kind'], 60), int(3 * min(work, 30)), 60)
+            px = dict(jx, role='primer', sets=2, reps=reps, rest=rest_s, work_s=work,
+                      intent=f"2 crisp, low-fatigue sets to prime the {EX[p['id']]['name']}: full intent, stop well before any fatigue")
+            blocks.remove(j); blocks.insert(0, make_block('primer', [px], 'straight', rounds=2, rest_rounds=rest_s, quality=j['quality']))
+            relabel_roles(dict(blocks=blocks)); log.append(dict(reason_code='sequenced_primer', primer=jx['id'], lead=p['id'], why='potentiation'))
+        return structure, P
+    lv, dur = ctx['lv'], ctx['dur']
+    primer_ok = (p['kind'] in PRIMER_KINDS and tier(p['id'], 'tertiary') != 'A' and EX[p['id']]['impact'] != 'high' and demand(lx) == 0
+                 and (is_loaded(lx['id']) or lx['kind'] in OLY_KINDS))       # potentiation primes a loaded lift, nothing else
+    ndz = power_dose(lx['id'], lv, 'primary', d, dur)
+    n_ath = sum(x['cls'] == 'power' for b in blocks for x in b['items'])
+    if n_ath >= 3 and ndz['sets'] > (4 if lx['kind'] in OLY_KINDS else 3): ndz['sets'] -= 1
+    nb = make_block('primary', [P_item(lx['id'], 'primary', ndz)], 'straight', rounds=ndz['sets'], rest_rounds=ndz['rest'], quality=q_of(lx['id']))
+    blocks.remove(L)
+    if primer_ok:
+        reps = min(p['reps'], 3) if p['kind'] != 'elastic' else min(p['reps'], 6)
+        work = work_seconds(p['id'], reps, p['per_side'], p.get('distance_m'))
+        from .athletic_validate import MIN_REST
+        rest_s = max(MIN_REST.get(p['kind'], 60), int(3 * min(work, 30)), 60)
+        px = dict(p, role='primer', sets=2, reps=reps, rest=rest_s, work_s=work,
+                  intent=f"2 crisp, low-fatigue sets to prime the {EX[lx['id']]['name']}: full intent, stop well before any fatigue")
+        primer = make_block('primer', [px], 'straight', rounds=2, rest_rounds=rest_s, quality=P['quality'])
+        blocks[0:1] = [primer, nb]
+        log.append(dict(reason_code='sequenced_primer', primer=p['id'], lead=lx['id']))
+    else:
+        P['role'] = 'secondary'
+        for x in P['items']: x['role'] = 'secondary'
+        blocks[0:1] = [nb, P]
+        log.append(dict(reason_code='sequenced_lead', lead=lx['id'], moved=p['id']))
+    blocks[:] = order_athletic(blocks)
+    if structure == 'jump_throw': log.append(dict(reason_code='structure_relabelled', **{'from': structure, 'to': 'power_strength'})); structure = 'power_strength'
+    return structure, nb
+
+
 CONTRAST_PAIRS = {   # primary quality -> [(strength id, explosive analogue ids ...)]
-    'vertical_power': [('trap_bar_deadlift', ['countermovement_jump', 'box_jump']), ('front_squat', ['box_jump', 'countermovement_jump']),
-                       ('barbell_back_squat', ['box_jump', 'countermovement_jump']), ('goblet_squat', ['countermovement_jump'])],
-    'horizontal_power': [('barbell_hip_thrust', ['broad_jump']), ('barbell_rdl', ['broad_jump']), ('trap_bar_deadlift', ['broad_jump'])],
+    'vertical_power': [('front_squat', ['box_jump', 'countermovement_jump'])],      # final pre-launch pass: no goblet-squat "heavy" contrast
+    'horizontal_power': [('barbell_hip_thrust', ['broad_jump']), ('barbell_rdl', ['broad_jump'])],
     'upper_power': [('barbell_bench_press', ['mb_chest_pass', 'explosive_push_up']), ('db_bench_press', ['mb_chest_pass', 'explosive_push_up']),
                     ('weighted_push_up', ['explosive_push_up', 'mb_chest_pass'])],
 }
@@ -744,6 +1027,9 @@ def P(i, role, dz):  # power item
     return dict(id=i, cls='power', kind=kind_of(i), quality=q_of(i), role=role, **dz)
 
 
+P_item = P
+
+
 def ST(i, role, dz, pattern):
     return dict(id=i, cls='strength', kind='strength', pattern=pattern, role=role, **dz)
 
@@ -753,6 +1039,7 @@ def SU(i, dz):
 
 
 def build_session(ctx, d, arch, structure, pq, seed, log):
+    ctx = dict(ctx, cur_arch=arch)
     lv, dur, goal = ctx['lv'], ctx['dur'], ctx['goal']
     used = []; blocks = []; notes = []
     # ---------------- primary
@@ -775,6 +1062,7 @@ def build_session(ctx, d, arch, structure, pq, seed, log):
     else:
         pool = power_pool(ctx, pq)
         if structure == 'jump_throw': pool = [i for i in pool if kind_of(i) in JUMP_KINDS] or pool
+        if arch == 'athletic_speed_agility': pool = [i for i in pool if kind_of(i) in SPEED_PLYO_KINDS] or pool   # a speed day leads with speed / plyo work
         ranked = rank_power(ctx, d, pool, 'primary', used, seed)
         if not ranked: return None
         primary_id = ranked[0]
@@ -787,6 +1075,10 @@ def build_session(ctx, d, arch, structure, pq, seed, log):
         sq_list = list(opts.get(pq) or opts.get('_') or [])
         if len(sq_list) > 1 and not ctx['target']:
             sq_list = sorted(sq_list, key=lambda q: -((1.0 + 0.2 * (q == sq_list[0])) * (0.5 if any(h.get('secondary_quality') == q for h in ctx['history'][:1]) else 1.0) * u(seed, 'sq', q)))
+        if arch == 'athletic_speed_agility':      # speed / plyo first, whatever the structure
+            sq_list = [q for q in ('elastic_reactive', 'horizontal_power', 'vertical_power', 'acceleration') if q != pq] + [q for q in sq_list if q not in LOWER_Q]
+        if not ctx.get('sprint_space') and 'acceleration' in sq_list and u(seed, 'sq_accel') > 0.2:      # standard gym: a sprint is the exception
+            sq_list = [q for q in sq_list if q != 'acceleration'] + ['acceleration']
         tu = set(ctx['target']) & TARGET_UPPER
         if tu & {'chest', 'triceps', 'shoulders'}: sq_list = ['upper_power'] + [q for q in sq_list if q != 'upper_power']
         elif tu or 'core' in ctx['target']: sq_list = ['rotational_power'] + [q for q in sq_list if q != 'rotational_power']
@@ -799,12 +1091,21 @@ def build_session(ctx, d, arch, structure, pq, seed, log):
             if sq == 'elastic_reactive' and not d['allow_elastic']: continue
             kinds = set(SECONDARY_KINDS.get(sq) or ()) if n_try < len(sq_list) else set(LOW_COST_KINDS)
             if d['secondary_kinds']: kinds &= set(d['secondary_kinds']) if not le_throw_primary else {'jump', 'sprint'}
-            if dur == 30: kinds &= LOW_COST_KINDS
+            # 30 min: a cheap second element. Final pre-launch pass: a short speed / plyo element counts as cheap too (the 30-minute
+            # contact / cost budget still decides), so a 30-minute Speed + Plyo day is not sprint + med-ball throw by default
+            if dur == 30 and not le_throw_primary: kinds &= LOW_COST_KINDS | ({'jump', 'lateral', 'bound', 'elastic', 'sprint', 'sled'} if lv != 'beginner' else set())
             if not kinds: continue
             pool = [i for i in power_pool(ctx, sq, kinds) if EX[i]['cx'] <= min(3, max(2, d['cx_cap'] - 1))]
-            # a lower-body secondary after a lower-body primary must be low-contact and a different vector
-            if sq in LOWER_Q and pq in LOWER_Q: pool = [i for i in pool if kind_of(i) in ('sprint', 'sled', 'jump', 'lateral') and vector(EX[i]) != vector(EX[primary_id])]
+            # a lower-body secondary after a lower-body primary is a different movement: never a second jump in the same direction
+            if sq in LOWER_Q and pq in LOWER_Q:
+                pool = [i for i in pool if kind_of(i) in ('sprint', 'sled', 'jump', 'lateral', 'bound', 'elastic', 'hop')
+                        and not (kind_of(i) in JUMP_KINDS and kind_of(primary_id) in JUMP_KINDS and vector(EX[i]) == vector(EX[primary_id]))
+                        and not (kind_of(i) in SPRINT_KINDS and kind_of(primary_id) in SPRINT_KINDS)]
             pool = [i for i in pool if kind_of(i) != kind_of(primary_id) and EX[i]['pat'] != EX[primary_id]['pat']]   # a different movement, not a second version of the first
+            if le_throw_primary: pool = [i for i in pool if tier(i, 'secondary') != 'C'] or pool      # the throw's partner is a real jump or start
+            # final pre-launch pass: never pick a second Tier A element the movement budget would immediately drop again
+            n_a = sum(tier(x['id'], x['role']) == 'A' for b in blocks for x in b['items'] if x['cls'] == 'power')
+            if n_a >= ath_budget(ctx, d)[1]: pool = [i for i in pool if tier(i, 'secondary') != 'A']
             ranked = rank_power(ctx, d, pool, 'secondary', used, seed)
             if not ranked: continue
             sid = ranked[0]; dz = power_dose(sid, lv, 'secondary', d, dur)
@@ -812,9 +1113,12 @@ def build_session(ctx, d, arch, structure, pq, seed, log):
             used.append(sid); break
     # ---------------- further athletic movements (identity pass): count limited by the athletic movement budget, not by block names
     n_target = target_count(ctx, d, structure, seed)
+    mode = composition_mode(ctx, d, arch, structure, seed); ctx['mode'] = mode
+    if mode and lv != 'beginner': n_target = min(MODE_SHAPE[mode][0], ath_budget(ctx, d)[2])
     if not any(b['role'] == 'secondary' for b in blocks) and n_target >= 2 and dur == 60:
         pass   # the secondary step found nothing; the extras step below still tries to reach the target
     blocks += pick_extras(ctx, d, blocks, used, structure, seed, n_target)
+    ensure_composition(ctx, d, blocks, used, arch, seed, log)
     blocks[:] = order_athletic(blocks)
     n_ath = sum(x['cls'] == 'power' for b in blocks for x in b['items'])
     # rebalance, not more volume: with three or more athletic movements the primary gives up a set and every other element stays at 3 sets
@@ -827,10 +1131,18 @@ def build_session(ctx, d, arch, structure, pq, seed, log):
             cap = 4 if b['items'][0]['kind'] in SPRINT_KINDS | {'speed_strength'} else 3
             if b['role'] in ('secondary', 'tertiary') and b['items'][0]['sets'] > cap:
                 b['items'][0]['sets'] = cap; b['rounds'] = cap
+    # ---------------- sequencing pass: order by performance demand (Primer / loaded lead / ballistic / velocity-strength)
+    structure, pb_ = sequence_session(ctx, d, arch, structure, blocks, log)
+    if pb_['items'][-1]['id'] != primary_id and pb_['role'] == 'primary':
+        primary_id = pb_['items'][-1]['id']; pq = pb_['quality'] or pq
     # ---------------- athletic strength
     plan_a, plan_b = STRENGTH_PLAN[pq]
     if goal == 'build_strength' and lv != 'beginner': plan_a = ['lower_bilateral', 'hinge'] + [p for p in plan_a if p not in ('lower_bilateral', 'hinge')]
     if ctx['sore'] & LOWER: plan_a, plan_b = ['upper_pull', 'upper_push'], ['upper_push_v', 'upper_pull']
+    # founder swap: with the trap-bar deadlift and back squat gone, the bilateral slot is mostly the front squat; trained users
+    # rotate the force slot across patterns so one lift does not carry half of all Athletic sessions
+    elif lv != 'beginner' and goal != 'build_strength' and plan_a and plan_a[0] == 'lower_bilateral' and u(seed, 'rot_a') < 0.55:
+        plan_a = plan_a[1:] + ['lower_bilateral']
     tl = set(ctx['target']) & TARGET_LOWER; tu = set(ctx['target']) & TARGET_UPPER
     if tu and not (ctx['sore'] & LOWER):
         pref = []
@@ -849,53 +1161,70 @@ def build_session(ctx, d, arch, structure, pq, seed, log):
     has_sec = n_ath >= 2
     if structure == 'contrast': n_strength = (1 if n_ath <= 3 else 0) if dur == 60 else 0     # the heavy half of the pair is strength already
     elif dur == 30: n_strength = 1 if has_sec else 2
-    elif goal == 'build_strength' or n_ath <= 2: n_strength = 2
+    elif mode:      # composition pass: the chosen shape decides; a short athletic list gets its strength back so the session is never thin
+        n_strength = (min(2, MODE_SHAPE[mode][1] + (1 if n_ath <= 2 or (mode == 'athletic_volume' and n_ath < 4) else 0)) if lv != 'beginner'
+                      else (2 if mode == 'strength_supported' or n_ath <= 2 else 1))
+        if mode == 'athletic_volume' and n_ath >= 4: n_strength = 0
+    elif goal == 'build_strength' or n_ath <= 3: n_strength = 2
     else: n_strength = 1
     st_items = []
-    contrast_pat = STRENGTH.get(blocks[0]['items'][0]['id']) if structure == 'contrast' else None
+    contrast_pat = STRENGTH.get(PB(dict(blocks=blocks))['items'][0]['id']) if structure == 'contrast' else None
     heavy_first = lv == 'advanced' or (goal == 'build_strength' and lv == 'intermediate') or (d['amped_mode'] is not None and lv != 'beginner')
     if 'upper_pull' in plan_b[:1] and not (tu & {'back', 'biceps', 'forearms'}) and u(seed, 'b_pull') < 0.5:
         plan_b = [p for p in plan_b if p != 'upper_pull'] + ['upper_pull']        # pull-ups / rows are occasional balance, not the default partner
+    lean_only = n_strength == 1 and lv != 'beginner' and goal not in ('build_muscle', 'build_strength') and not contrast_pat
+    # founder pass: the support slot is a seeded weighted choice across the plan's patterns (not always the top lift of the first
+    # pattern), with a balance factor, so no single lift owns the Athletic Strength slot
+    session_loaded_jump = any(x['cls'] == 'power' and (x['kind'] == 'loaded_jump' or x['id'] in STRENGTH_DUAL) for b in blocks for x in b['items'])
     for slot, plan in (('A', plan_a), ('B', plan_b)):
         if len(st_items) >= n_strength: break
         if structure == 'contrast' and slot == 'A':
             anti = ['upper_pull'] + ([p for p in plan_a if p in LOWER_PAT] if contrast_pat in UPPER_PAT and not (ctx['sore'] & LOWER) else [])
             plan = [p for p in anti + plan_b + plan_a if p != contrast_pat]
-        for pat in plan:
+        pool = []
+        for n_p, pat in enumerate(plan):
             if st_items and pat == st_items[0]['pattern']: continue
             if st_items and pat in LOWER_PAT and st_items[0]['pattern'] in LOWER_PAT and ctx['dur'] == 30: continue
             if contrast_pat and pat == contrast_pat: continue
             cand = rank_strength(ctx, d, strength_pool(ctx, {pat}), used, seed, slot + pat)
-            if slot == 'A' and heavy_first and not contrast_pat:
-                # the force-producing slot should be loadable: skip light-load options while a later pattern offers a loadable one
-                heavy = [i for i in cand if i not in LIGHT_LOAD]
-                later = any(i not in LIGHT_LOAD for p2 in plan[plan.index(pat) + 1:] for i in strength_pool(ctx, {p2}) if i not in used)
-                if not heavy and later: continue
-                cand = heavy or cand
-            if not cand: continue
-            sid = cand[0]; dz = strength_dose(sid, lv, 'A' if not st_items else 'B', goal, d, dur)
-            st_items.append(ST(sid, 'strength', dz, pat)); used.append(sid); break
+            cand = [i for i in cand if not (i in STRENGTH_DUAL and (session_loaded_jump or 'low_energy' in d['prefer'] or any(y['id'] in STRENGTH_DUAL for y in st_items)))]
+            for pos, i in enumerate(cand[:3]): pool.append((i, pat, (1.0, 0.75, 0.55, 0.4, 0.3)[min(n_p, 4)] * (1.0, 0.7, 0.5)[pos]))
+            if n_p >= 3 and pool: break
+        if not pool: continue
+        if slot == 'A' and heavy_first and not contrast_pat and any(i not in LIGHT_LOAD for i, _, _ in pool):
+            pool = [x for x in pool if x[0] not in LIGHT_LOAD]         # the force-producing slot should be loadable
+        if lean_only and any(i in ATHLETIC_LEAN for i, _, _ in pool):
+            pool = [x for x in pool if x[0] in ATHLETIC_LEAN]          # a lone support lift for a trained athlete leans athletic
+        wts = [w * SLOT_BALANCE.get(i, 1.0) for i, _, w in pool]
+        r = u(seed, 'st_pick', slot) * sum(wts); acc = 0.0; sid, pat = pool[-1][0], pool[-1][1]
+        for (i, p_, _), w_ in zip(pool, wts):
+            acc += w_
+            if acc >= r: sid, pat = i, p_; break
+        slot = 'A' if not st_items else 'B'; dz = strength_dose(sid, lv, slot, goal, d, dur)
+        st_items.append(dict(ST(sid, 'strength', dz, pat), slot=slot)); used.append(sid)
     if st_items and 'low_energy' in d['prefer'] and len(st_items) == 2:
         for x in st_items: x['sets'] = min(x['sets'], 2)            # Low Energy: two short strength exercises, not more strength volume than a normal day
     if st_items and has_sec and goal != 'build_strength':
         for x in st_items: x['sets'] = min(x['sets'], 3)            # with more athletic work the strength stays concise (3 rounds)
     if st_items:
-        if len(st_items) == 2:
+        form = strength_form(ctx, d, st_items, seed)
+        if form == 'superset':
             rounds = max(x['sets'] for x in st_items)
             for x in st_items: x['sets'] = rounds
             rest_r = max(60, st_items[0]['rest'] - 30) if dur == 60 else 60
             blocks.append(make_block('strength', st_items, 'superset', rounds=rounds, rest_items=60 if dur == 60 else 30, rest_rounds=rest_r,
                                                                             why=STRENGTH_WHY[st_items[0]['pattern']]))
-        else:
-            x = st_items[0]; blocks.append(make_block('strength', st_items, 'straight', rounds=x['sets'], rest_rounds=x['rest'], why=STRENGTH_WHY[x['pattern']]))
+        else:   # straight sets: each strength exercise is its own block with its own full rest
+            for x in st_items: blocks.append(make_block('strength', [x], 'straight', rounds=x['sets'], rest_rounds=x['rest'], why=STRENGTH_WHY[x['pattern']]))
     # ---------------- support (optional, purpose-bound)
-    if dur == 60 and d['support_ok'] and support_wanted(ctx, d, structure, pq, blocks, seed):
+    if dur == 60 and d['support_ok'] and (support_wanted(ctx, d, structure, pq, blocks, seed) or mode_support(ctx, mode, blocks, seed)):
         kinds = list(SUPPORT_PLAN[pq])
-        if 'core' in ctx['target']: kinds = ['anti_rotation', 'anti_extension', 'lateral_trunk'] + kinds
+        if 'core' in ctx['target']: kinds = ['rotation', 'anti_rotation'] + kinds
         if 'calves' in ctx['target']: kinds = ['tendon'] + kinds
         if 'hamstrings' in ctx['target'] and not any(x['pattern'].startswith('hinge') for x in st_items): kinds = ['hamstring'] + kinds
         if any(x['pattern'].startswith('hinge') for x in st_items) and 'hamstrings' not in ctx['target']: kinds = [k for k in kinds if k != 'hamstring']
-        if ctx['sore'] & LOWER: kinds = ['anti_rotation', 'anti_extension']
+        if ctx['sore'] & LOWER: kinds = ['anti_rotation', 'rotation']
+        if mode in ('athletic_volume', 'power_complex'): kinds = [k for k in kinds if k in CORE_KINDS] + ['rotation', 'anti_rotation'] + kinds
         for k in dict.fromkeys(kinds):
             cand = [i for i in support_pool(ctx, {k}) if i not in used]
             cand = sorted(cand, key=lambda i: (-(1.5 if EX[i]['cx'] <= 2 and lv == 'beginner' else 1.0) * (0.6 if any(i in h.get('ids', []) for h in ctx['history'][:1]) else 1.0)
@@ -904,10 +1233,60 @@ def build_session(ctx, d, arch, structure, pq, seed, log):
             sid = cand[0]; dz = support_dose(sid, lv, goal)
             blocks.append(make_block('support', [SU(sid, dz)], 'straight', rounds=dz['sets'], rest_rounds=dz['rest'], purpose=k, why=SUPPORT_WHY[k]))
             used.append(sid); break
+    # final pre-launch pass: a single strength lift and a trunk / tendon support exercise can share the strength rest (paired support)
+    sbs = [b for b in blocks if b['role'] == 'strength']; sup = next((b for b in blocks if b['role'] == 'support'), None)
+    if sup and dur == 60 and len(sbs) == 1 and len(sbs[0]['items']) == 1 and 'low_energy' not in d['prefer'] and u(seed, 'pair_support') < 0.4:
+        sb = sbs[0]; x = sb['items'][0]; y = sup['items'][0]; y['sets'] = x['sets']
+        sb['items'].append(y); sb['structure'] = 'superset'; sb['rest_items'] = 60; sb['rest_rounds'] = max(75, x['rest'] - 45)
+        sb['why'] = f"{sb['why']}; the {SUPPORT_WHY[y['kind']].split(' for ')[0]} work fills the rest"; sb['paired_support'] = True
+        blocks.remove(sup); log.append(dict(reason_code='paired_support', strength=x['id'], support=y['id']))
     # ---------------- rare finisher (purposeful, self-limiting, never after a hard power session)
     fin = finisher_for(ctx, d, blocks, structure, used, seed)
     if fin: blocks.append(fin); used.append(fin['items'][0]['id'])
-    return dict(arch=arch, structure=structure, pq=pq, blocks=blocks, primary_id=primary_id, used=used)
+    return dict(arch=arch, structure=structure, pq=pq, blocks=blocks, primary_id=primary_id, used=used, mode=mode)
+
+
+def strength_form(ctx, d, st_items, seed):
+    """Final pre-launch pass: a superset is a programming choice, not the Athletic template. Two leg lifts are never alternated;
+    a heavy barbell / trap-bar lift for a trained or Amped lifter is mostly done as straight sets with its own full rest; 30-minute
+    sessions and Low Energy days pair more often (time, simplicity)."""
+    if len(st_items) < 2: return 'straight'
+    if ctx['dur'] == 30: return 'superset'
+    a, b = st_items
+    if a['pattern'] in LOWER_PAT and b['pattern'] in LOWER_PAT: return 'separate'
+    heavy = a['id'] not in LIGHT_LOAD and EX[a['id']]['eq'] in ('barbell', 'trap_bar')
+    w = 0.45 if ctx['lv'] == 'beginner' else 0.35
+    if 'low_energy' in d['prefer']: w = 0.55
+    if heavy and (ctx['lv'] == 'advanced' or ctx['goal'] == 'build_strength' or d['amped_mode']): w = 0.15
+    return 'superset' if u(seed, 'strength_form') < w else 'separate'
+
+
+def strength_blocks(sess): return [b for b in sess['blocks'] if b['role'] == 'strength']
+
+
+def drop_second_strength(sess):
+    """Keep only the first strength exercise (a superset becomes straight sets; a second straight block is removed). -> True if changed."""
+    sbs = strength_blocks(sess)
+    if not sbs: return False
+    sb = sbs[0]
+    if len(sb['items']) == 2:
+        sb['items'] = sb['items'][:1]; sb['structure'] = 'straight'; sb['rest_items'] = None; sb['rest_rounds'] = sb['items'][0]['rest']; sb['rounds'] = sb['items'][0]['sets']
+        return True
+    if len(sbs) > 1:
+        sess['blocks'].remove(sbs[1]); return True
+    return False
+
+
+def mode_support(ctx, mode, blocks, seed):
+    """Composition pass: athletic_volume always ends with trunk / stability work (it has no strength lift); power_complex sometimes."""
+    n_items = sum(len(b['items']) for b in blocks)
+    n_pw = sum(x['cls'] == 'power' for b in blocks for x in b['items']); n_st = sum(x['cls'] == 'strength' for b in blocks for x in b['items'])
+    if n_items >= 5 or n_pw < 3 or n_st > 1: return False      # trunk work never tips the session toward support
+    if any(x['cls'] == 'power' and (x['kind'] in ('rot_throw', 'slam', 'landmine_rot') or x.get('quality') == 'rotational_power') for b in blocks for x in b['items']):
+        return False            # the trunk is already trained forcefully (throw, slam, landmine rotation): no core added to fill a slot
+    if mode == 'athletic_volume': return True
+    if mode == 'power_complex': return u(seed, 'mode_support') < 0.45
+    return False
 
 
 def support_wanted(ctx, d, structure, pq, blocks, seed):
@@ -939,7 +1318,7 @@ def finisher_for(ctx, d, blocks, structure, used, seed):
 RAISE = ['stationary_bike', 'row_erg', 'air_bike', 'ski_erg', 'jump_rope']
 def prep(ctx, d, sess, seed):
     lv, dur, pre = ctx['lv'], ctx['dur'], ctx['preset']; pq = sess['pq']; legs_sore = bool(ctx['sore'] & LOWER)
-    first = sess['blocks'][0]['items'][-1]['id'] if sess['structure'] == 'contrast' else sess['primary_id']
+    first = PB(sess)['items'][-1]['id'] if sess['structure'] == 'contrast' else sess['primary_id']
     k = kind_of(first)
     wu = []
     raises = [i for i in RAISE if i in EX and avail(EX[i], pre)] or ['jump_rope']
@@ -1000,6 +1379,7 @@ def total_minutes(sess, wu):
 
 
 def contacts_of(x):
+    if x['cls'] == 'strength' and x['id'] in STRENGTH_DUAL: return x['sets'] * x['reps']      # a jump squat in the strength slot still lands
     if x['cls'] != 'power' or x['kind'] not in JUMP_KINDS: return 0
     n = x['sets'] * x['reps'] * (2 if x['per_side'] else 1)
     if x['kind'] == 'combo': n *= 2
@@ -1093,13 +1473,13 @@ def reconcile(sess, wu, ctx, d, log):
             return contacts_of(x) + 3 * (x['kind'] in SPRINT_KINDS) * x['sets'] + x['sets'] * INTENT_W.get(x['kind'], 1)
         movable = [bx for bx in pw if bx[1]['sets'] > (3 if bx[1]['role'] in ('primary', 'contrast_power') and lv != 'beginner' else 2)]
         if codes & {'contacts', 'high_contacts', 'accel_efforts', 'explosive_sets', 'intent_load', 'olympic_sets'} and movable:
-            b, x = max(movable, key=cost); x['sets'] -= 1
+            b, x = max(movable, key=lambda bx: (cost(bx), bx[1]['role'] not in ('primary', 'contrast_power'))); x['sets'] -= 1
             if b['structure'] == 'contrast':
                 for y in b['items']: y['sets'] = x['sets']
             b['rounds'] = x['sets'] if b['structure'] != 'superset' else b['rounds']
             log.append(dict(reason_code='budget_repair', action='fewer_sets', item=x['id'], sets=x['sets'], why=sorted(codes))); continue
         if 'strength_sets' in codes:
-            sb = next((b for b in sess['blocks'] if b['role'] == 'strength'), None)
+            sb = max([b for b in strength_blocks(sess) if b['rounds'] > 2], key=lambda b: b['rounds'] * len(b['items']), default=None)
             if sb and sb['rounds'] > 2:
                 sb['rounds'] -= 1
                 for x in sb['items']: x['sets'] = sb['rounds']
@@ -1136,12 +1516,13 @@ def fit_window(sess, wu, ctx, d, log):
     """Duration is a window, not a quota. Over the window: trim the least essential work (finisher, support, a strength round,
     a secondary set). Under the floor: lengthen the preparation (never add training work)."""
     lv, dur = ctx['lv'], ctx['dur']; lo, hi = WINDOW[dur]
+    if 'low_energy' in d['prefer'] and dur == 60: lo = 27          # a Low Energy hour may be short; never pad it with an over-long warm-up
     for _ in range(10):
         A = account(sess, wu, lv)
         if A['est'] <= hi: break
         fb = next((b for b in sess['blocks'] if b['role'] == 'finisher'), None) or next((b for b in sess['blocks'] if b['role'] == 'support'), None)
         if fb: sess['blocks'].remove(fb); log.append(dict(reason_code='duration_trim', action='drop_' + fb['role'])); continue
-        sb = next((b for b in sess['blocks'] if b['role'] == 'strength' and b['rounds'] > 3), None)
+        sb = next((b for b in reversed(sess['blocks']) if b['role'] == 'strength' and b['rounds'] > 3), None)
         if sb:
             sb['rounds'] -= 1
             for x in sb['items']: x['sets'] = sb['rounds']
@@ -1151,18 +1532,20 @@ def fit_window(sess, wu, ctx, d, log):
         sec = next((b for b in sess['blocks'] if b['role'] == 'tertiary' and b['items'][0]['sets'] > 2), None) or \
               next((b for b in sess['blocks'] if b['role'] == 'secondary' and b['items'][0]['sets'] > 2), None)
         if sec: sec['items'][0]['sets'] -= 1; sec['rounds'] = sec['items'][0]['sets']; log.append(dict(reason_code='duration_trim', action=f"fewer_{sec['role']}_sets")); continue
-        sb = next((b for b in sess['blocks'] if b['role'] == 'strength' and b['rounds'] > 2), None)
+        sb = next((b for b in reversed(sess['blocks']) if b['role'] == 'strength' and b['rounds'] > 2), None)
         if sb:
             sb['rounds'] -= 1
             for x in sb['items']: x['sets'] = sb['rounds']
             log.append(dict(reason_code='duration_trim', action='fewer_strength_rounds')); continue
+        if len(strength_blocks(sess)) > 1 and sum(b['role'] in ('primary', 'secondary', 'tertiary') for b in sess['blocks']) >= 3:
+            sess['blocks'].remove(strength_blocks(sess)[-1]); log.append(dict(reason_code='duration_trim', action='drop_second_strength')); continue
         tb = next((b for b in reversed(sess['blocks']) if b['role'] == 'tertiary'), None)
         if tb: sess['blocks'].remove(tb); relabel_roles(sess); log.append(dict(reason_code='duration_trim', action='drop_tertiary')); continue
         break
     A = account(sess, wu, lv)
     have = {i for c, i, *_ in wu}
     for m in EXTRA_MOB:
-        if A['est'] >= lo: break
+        if A['est'] >= lo or len(wu) >= 6: break
         if m in have or m not in EX or not avail(EX[m], ctx['preset']) or region_blocked(EX[m], ctx['sore']): continue
         pos = max(k for k, w in enumerate(wu) if w[0] in ('raise', 'mobility')) + 1
         wu.insert(pos, ('mobility', m, {'lateral_lunge': '5 / side, bodyweight', 'glute_bridge': '10', 'leg_swings': '10 each way', 'worlds_greatest_stretch': '3 / side'}[m]))
@@ -1174,7 +1557,7 @@ def fit_window(sess, wu, ctx, d, log):
 def realized_for_state(s, A, ref, sess, d, ctx):
     """What actually changed for this State vs the same session built without States (ref). -> list of (kind, detail)."""
     R = []; its = [x for b in sess['blocks'] for x in b['items']]; pw = [x for x in its if x['cls'] == 'power']
-    prim = sess['blocks'][0]['items'][-1] if sess['blocks'] else None
+    prim = PB(sess)['items'][-1] if sess['blocks'] else None
     st = [x for x in its if x['cls'] == 'strength']
     if s == 'low_energy':
         if ref and A['explosive_sets'] < ref['explosive_sets']: R.append(('fewer_explosive_sets', f"{A['explosive_sets']} explosive sets instead of {ref['explosive_sets']}"))
@@ -1265,19 +1648,16 @@ def coherence_repair(s, sess, ctx, d, log):
         for role in ('finisher', 'support') if s == 'stressed' else ('finisher', 'tertiary', 'support'):
             b = next((b for b in reversed(blocks) if b['role'] == role), None)
             if b: blocks.remove(b); relabel_roles(sess); log.append(dict(reason_code='state_coherence_repair', state=s, action=f'drop_{role}')); return True
-        sb = next((b for b in blocks if b['role'] == 'strength'), None)
-        if s == 'stressed' and sb and len(sb['items']) == 2:       # simple does not mean mostly strength: the second strength exercise goes first
-            sb['items'] = sb['items'][:1]; sb['structure'] = 'straight'; sb['rest_items'] = None; sb['rest_rounds'] = sb['items'][0]['rest']
+        if s == 'stressed' and drop_second_strength(sess):        # simple does not mean mostly strength: the second strength exercise goes first
             log.append(dict(reason_code='state_coherence_repair', state=s, action='one_strength_exercise')); return True
         b = next((b for b in reversed(blocks) if b['role'] == 'tertiary'), None) if s == 'stressed' else None
         if b: blocks.remove(b); relabel_roles(sess); log.append(dict(reason_code='state_coherence_repair', state=s, action='drop_tertiary')); return True
-        sb = next((b for b in blocks if b['role'] == 'strength'), None)
-        if s == 'low_energy' and sb and sb['rounds'] > 2:
+        sb = next((b for b in blocks if b['role'] == 'strength' and b['rounds'] > 2), None)
+        if s == 'low_energy' and sb:
             sb['rounds'] -= 1
             for x in sb['items']: x['sets'] = sb['rounds']
             log.append(dict(reason_code='state_coherence_repair', state=s, action='fewer_strength_sets')); return True
-        if s == 'low_energy' and sb and len(sb['items']) == 2:
-            sb['items'] = sb['items'][:1]; sb['structure'] = 'straight'; sb['rest_items'] = None; sb['rest_rounds'] = sb['items'][0]['rest']; log.append(dict(reason_code='state_coherence_repair', state=s, action='one_strength_exercise')); return True
+        if s == 'low_energy' and drop_second_strength(sess): log.append(dict(reason_code='state_coherence_repair', state=s, action='one_strength_exercise')); return True
         b = next((b for b in blocks if b['role'] == 'secondary'), None)
         if b: blocks.remove(b); log.append(dict(reason_code='state_coherence_repair', state=s, action='drop_secondary')); return True
     if s == 'amped':
@@ -1295,7 +1675,8 @@ def make_ctx(nctx, history):
     return dict(lv=nctx['experience'], dur=nctx['duration'], preset=pre, goal=nctx.get('goal') or 'stay_consistent', states=[s for s in nctx['states'] if s not in ('normal', 'sore')],
                 sore=frozenset(nctx.get('sore') or ()), target=tuple(t for t in tgt if t != 'full_body'), full_body=(nctx.get('target_mode') == 'full_body'),
                 arch=arch, arch_explicit=bool(arch) and arch != nctx.get('resolved_archetype'), seed=f"{nctx['user']}|{nctx['date']}",
-                history=list(history), displayed=[], bored='bored' in nctx['states'], banned=set(nctx.get('banned') or ()))
+                history=list(history), displayed=[], bored='bored' in nctx['states'], banned=set(nctx.get('banned') or ()),
+                sprint_space=bool(nctx.get('sprint_space')))   # composition pass: sprinting is a sprinkle in a standard gym unless turf / track space is declared
 
 
 class Fail(Exception): pass
@@ -1311,7 +1692,7 @@ def _ref_account(ctx, arch, structure, pq, seed):
     s0['dur'] = ctx['dur']; wu0 = prep(c0, d0, s0, seed); A0 = reconcile(s0, wu0, c0, d0, log0)
     st = [x for b in s0['blocks'] for x in b['items'] if x['cls'] == 'strength']
     A0['_strength_rir'] = min((x['rir'] for x in st), default=None); A0['_strength_reps'] = st[0]['reps'] if st else None
-    A0['_primary_sets'] = s0['blocks'][0]['items'][-1]['sets']; A0['_ids'] = [x['id'] for b in s0['blocks'] for x in b['items']]
+    A0['_primary_sets'] = PB(s0)['items'][-1]['sets']; A0['_ids'] = [x['id'] for b in s0['blocks'] for x in b['items']]
     return A0
 
 
@@ -1322,7 +1703,7 @@ def generate(nctx, history, swap=0):
     for k in range(swap + 1):
         ctx = dict(ctx0, displayed=list(displayed), swap=k)
         out = _generate_once(ctx, nctx)
-        displayed.append(dict(primary_quality=out['sess']['pq'], structure=out['sess']['structure'], ids=list(out['sess']['used'])))
+        displayed.append(dict(primary_quality=out['sess']['pq'], structure=out['sess']['structure'], ids=list(out['sess']['used']), mode=out['sess'].get('mode')))
     return out
 
 
@@ -1373,16 +1754,19 @@ def _generate_once(ctx, nctx):
         from . import athletic_validate as _V
         vf = _V.fails(sess, wu, ctx, states)
         if vf: tried.append((arch, structure, pq, 'validator:' + ','.join(sorted({k.split(':')[0] for k, _ in vf})))); continue
-        ok = all(v['satisfied'] and v['coherent'] for v in verdict.values())
-        score = sum(v['satisfied'] + v['coherent'] for v in verdict.values())
-        cand = dict(sess=sess, wu=wu, A=A, d=d, log=L, verdict=verdict, realized=realized, ref=ref, rank=n, weight=w, ctx=ctx, rerouted=rerouted, requested=requested)
+        from . import trainer_gate as _TG
+        gate = _TG.check(sess, ctx, d)        # final pre-launch pass: Athletic Trainer Coherence Gate
+        ok = all(v['satisfied'] and v['coherent'] for v in verdict.values()) and not gate
+        score = (sum(v['satisfied'] + v['coherent'] for v in verdict.values()), -len(gate))
+        cand = dict(sess=sess, wu=wu, A=A, d=d, log=L, verdict=verdict, realized=realized, ref=ref, rank=n, weight=w, ctx=ctx, rerouted=rerouted, requested=requested, gate=gate)
         if ok:
             best = cand; break
-        tried.append((arch, structure, pq, 'state_gate'))
+        tried.append((arch, structure, pq, 'trainer_gate:' + ','.join(gate) if gate else 'state_gate'))
         if best is None or score > best['_score']: best = dict(cand, _score=score)
     if best is None: raise Fail('no feasible Athletic candidate passed the budget')
     best['log'].append(dict(reason_code='candidate_selected', archetype=best['sess']['arch'], structure=best['sess']['structure'], primary_quality=best['sess']['pq'],
                             rank=best['rank'], tried=[list(t) for t in tried]))
+    best['log'].append(dict(reason_code='trainer_gate', issues=list(best['gate'])))
     for s, v in best['verdict'].items():
         best['log'].append(dict(reason_code='state_gate', state=s, satisfied=v['satisfied'], coherent=v['coherent'], problems=v['problems'],
                                 realized=[k for k, _ in best['realized'][s]]))
@@ -1392,9 +1776,35 @@ def _generate_once(ctx, nctx):
     return best
 
 
+# final pre-launch pass: the cart shows WHY a movement is in an athletic session (its performance role), not a bodybuilding muscle label
+PERFORMANCE_ROLES = ('Total-Body Power', 'Lower-Body Power', 'Upper-Body Power', 'Rotational Power', 'Acceleration', 'Plyometric',
+                     'Velocity Strength', 'Contrast Strength', 'Core / Stability', 'Rotational Core', 'Resilience', 'Conditioning')
+
+
+def performance_role(x):
+    i = x['id']; cls = x['cls']
+    if cls == 'strength': return 'Contrast Strength' if x.get('role') == 'contrast_strength' else 'Velocity Strength'
+    if cls == 'support': return ('Rotational Core' if SUPPORT.get(i) == 'rotation' else 'Core / Stability') if SUPPORT.get(i) in CORE_KINDS else 'Resilience'
+    if cls == 'finisher': return 'Conditioning'
+    k = kind_of(i); q = q_of(i)
+    if k in SPRINT_KINDS: return 'Acceleration'
+    if q == 'rotational_power' or k == 'landmine_rot': return 'Rotational Power'
+    if q == 'upper_power' or k in ('upper', 'muscle_up'): return 'Upper-Body Power'
+    if k in OLY_KINDS or k == 'swing' or q == 'total_body_power': return 'Total-Body Power'
+    if k in ('loaded_jump', 'speed_strength'): return 'Lower-Body Power'
+    return 'Plyometric'
+
+
+def PB(sess):
+    """The primary block (sequencing pass: a Primer block may precede it)."""
+    return next((b for b in sess['blocks'] if b['role'] == 'primary'), sess['blocks'][0])
+
+
 def session_qualities(sess):
     """The workout's distinct athletic qualities in order (primary first). Two exercises for one quality are one quality."""
     out = [sess['pq']]
+    for b in sess['blocks']:
+        if b['role'] == 'primer' and b.get('quality') and b['quality'] not in out: out.append(b['quality'])
     for b in sess['blocks']:
         if b['role'] in ('secondary', 'tertiary') and b.get('quality') and b['quality'] not in out: out.append(b['quality'])
     return out
@@ -1403,7 +1813,7 @@ def session_qualities(sess):
 def history_record(out):
     s = out['sess']
     qs = session_qualities(s); sec = qs[1] if len(qs) > 1 else None; ter = qs[2] if len(qs) > 2 else None
-    return dict(primary_quality=s['pq'], structure=s['structure'], primary_id=s['primary_id'], secondary_quality=sec, tertiary_quality=ter, ids=list(s['used']),
+    return dict(primary_quality=s['pq'], structure=s['structure'], primary_id=s['primary_id'], secondary_quality=sec, tertiary_quality=ter, ids=list(s['used']), mode=s.get('mode'),
                 swaps=[EX[i]['swap'] for i in s['used'] if EX[i]['swap']],
                 strength_patterns=[x.get('pattern') for b in s['blocks'] for x in b['items'] if x['cls'] == 'strength'],
                 states=list(out['ctx']['states']))

@@ -26,7 +26,7 @@ def test_legacy_hybrid_pathology_is_gone():
         B = res['budget']; L_ = C.limits('advanced', 60)
         eng_m = sum(v for k, v in B['engine'].items() if k.endswith('distance'))
         assert B['anchor_share'] is None or B['anchor_share'] <= L_['anchor_share'] + 0.005, B
-        assert eng_m <= 4200, B
+        assert eng_m <= 5000, B        # final trainer pass: the 60-minute work floor adds a round; 5 x ~900 m spread over a 55-minute hybrid, never 7 x 800 m in one block
         assert B['engine_min'] <= L_['engine_min'] + 0.6, B
         assert 45 <= res['estimated_minutes'] <= 60.5
 
@@ -75,7 +75,7 @@ def test_beginner_rules():
 
 
 def test_secondary_elements_earn_their_place():
-    """Never main + complement + finisher; no finisher after a hard main block; no complement beside a substantial main block."""
+    """Never main + complement + finisher; no finisher after a hard main block; a complement beside a substantial main block only to reach the work floor."""
     for arch in ('sweat_engine', 'sweat_circuit', 'sweat_hybrid'):
         for exp in ('intermediate', 'advanced'):
             for states in ([], ['amped'], ['irritated'], ['bored'], ['amped', 'bored']):
@@ -87,4 +87,6 @@ def test_secondary_elements_earn_their_place():
                     if p['rpe'][0] >= 8 or p['rpe'][1] >= 9: assert not has_fin, (arch, exp, states, user)
                     lab = next((l['label'] for l in res['log'] if l.get('reason_code') == 'primary_block_completeness'), None)
                     assert lab in ('insufficient', 'sufficient', 'substantial')
-                    if lab == 'substantial': assert not has_comp or bl[1].get('comp_type') == 'closer', (arch, exp, states, user)
+                    # final trainer pass: a complement beside a substantial main block only when the main block alone is below the work floor
+                    if lab == 'substantial' and has_comp and bl[1].get('comp_type') != 'closer':
+                        assert C.block_minutes(p, exp) < C.work_floor([p], 60, exp), (arch, exp, states, user)

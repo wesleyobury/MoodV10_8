@@ -91,12 +91,12 @@ def check_envelope(env, raw, fails, tag):
         if 'finisher' in roles and (st_ & {'low_energy', 'amped', 'irritated', 'stressed'} or ctx.experience == 'beginner' or ctx.duration == 30): bad('Athletic finisher where the rules forbid it')
         if ctx.duration == 30 and len(roles) > 3: bad('Athletic 30 with more than 3 exercises')
         types = [b['type'] for b in w['blocks']]
-        if types[:1] != ['primary']: bad('Athletic primary quality is not first')
+        if types[:1] != ['primary'] and types[:2] != ['primer', 'primary']: bad('Athletic primary quality is not first')   # an optional Primer may precede it
         if 'secondary' in types and any(t in ('strength', 'support', 'finisher') for t in types[:types.index('secondary')]): bad('Athletic power after strength')
     if d == 'athletic':
         wu = w['warmup']['items']
         if not 2 <= len(wu) <= 7: bad(f'athletic warm-up {len(wu)} items')
-        if any(it['role'] not in ('primary', 'secondary', 'tertiary', 'strength', 'support', 'finisher', 'contrast_strength', 'contrast_power') for b in w['blocks'] for it in b['items']): bad('athletic unknown role')
+        if any(it['role'] not in ('primer', 'primary', 'secondary', 'tertiary', 'strength', 'support', 'finisher', 'contrast_strength', 'contrast_power') for b in w['blocks'] for it in b['items']): bad('athletic unknown role')
     # explanations
     lines = [l['text'] for l in w['built_for_today']]
     for t in lines:

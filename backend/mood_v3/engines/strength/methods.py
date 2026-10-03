@@ -15,7 +15,7 @@ LV = {'beginner': 0, 'intermediate': 1, 'advanced': 2}
 METHODS = {
     'pause': dict(label='paused reps', text='Pause 2 s at the hardest point of every rep, then drive out of it', extra_set_s=6, fatigue='low', min_level=1,
                   roles=('primary_compound', 'secondary_compound')),
-    'slow_eccentric': dict(label='3 s eccentric', text='Take 3 s to lower every rep, then lift at normal speed', extra_set_s=10, fatigue='low', min_level=0,
+    'slow_eccentric': dict(label='eccentrics', text='Eccentrics: take about 3 seconds on the way down every rep, then lift at normal speed', extra_set_s=10, fatigue='low', min_level=0,
                            roles=('secondary_compound', 'accessory')),
     'one_and_half': dict(label='1.5 reps', text='Full rep, half rep from the stretched position, back to the top: that is one rep', extra_set_s=10, fatigue='moderate', min_level=1,
                          roles=('accessory', 'secondary_compound')),
@@ -30,7 +30,7 @@ METHODS = {
 STATE_P = {'bored': 2.0, 'amped': 1.3, 'irritated': 0.8, 'low_energy': 0.4, 'stressed': 0.3}
 STATE_W = {
     'bored':      dict(pause=1.5, slow_eccentric=1.0, one_and_half=1.5, cluster=1.0, drop_set=1.5, rest_pause=1.2),
-    'amped':      dict(pause=0.8, slow_eccentric=0.3, one_and_half=0.6, cluster=1.8, drop_set=1.2, rest_pause=1.3),
+    'amped':      dict(pause=0.8, slow_eccentric=0.12, one_and_half=0.5, cluster=1.8, drop_set=1.3, rest_pause=1.3),
     'irritated':  dict(pause=0.6, slow_eccentric=0.2, one_and_half=0.3, cluster=1.0, drop_set=0.5, rest_pause=1.0),
     'low_energy': dict(pause=0.3, slow_eccentric=1.5, one_and_half=0.4, cluster=0.0, drop_set=0.0, rest_pause=0.0),
     'stressed':   dict(pause=0.8, slow_eccentric=1.5, one_and_half=0.2, cluster=0.0, drop_set=0.0, rest_pause=0.0),
@@ -53,10 +53,13 @@ def compatible(mid, row, e, level, variant):
     if row.get('kind') != 'reps' or row.get('why') or row.get('tempo') or row.get('scheme') or row.get('method'): return False
     if LV[level] < m['min_level'] or row['cls'] not in m['roles']: return False
     if row['sets'] < 2 or e['pat'] == 'carry': return False
+    if variant == 'top_backoff' and row['cls'] == 'primary_compound': return False   # the top set + back-off scheme IS the primary's method
+    if e['pm0'] == 'core' and mid != 'slow_eccentric': return False                   # no rest-pause Pallof press: trunk work stays clean
     if mid == 'pause':
         return e['cls'] == 'compound' and e['pat'] in PRESS_SQUAT_HINGE and e['eq'] in LOADABLE and e['cx'] <= 3 and not e['explosive']
     if mid == 'slow_eccentric':
         if e['explosive'] or e['pm0'] == 'core' or (row['cls'] == 'secondary_compound' and e['eq'] == 'bodyweight'): return False
+        if e['pat'] == 'hinge' and e['sysd'] >= 4: return False      # no slow-eccentric deadlifts from the floor
         if level == 'beginner':   # beginners: controlled eccentrics live on machines, cables and stable accessories, never on a loaded hinge / squat / press
             return e['eq'] in MACHINE_CABLE | {'dumbbells'} and e['pat'] not in PRESS_SQUAT_HINGE and (e['cls'] == 'isolation' or e['sup'] != 'unsupported')
         return True

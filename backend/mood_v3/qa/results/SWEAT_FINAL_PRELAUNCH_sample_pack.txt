@@ -1,0 +1,167 @@
+[engine 60m intermediate no-State] est 53.8 | work 41.8 | active 29.0 | hard 0.0 | WU 7 DS 5 setup 0.0
+  - Engine [intervals] 26.0 min RPE [7, 8] x5 rest None {'work_sec': 240, 'recovery_sec': 90, 'rounds': 5, 'alternate': False}
+      Air Bike / Assault Bike: 5 × 4 min / 1:30 easy
+  - Complement [circuit] 14.2 min RPE [6, 7] x4 rest 45
+      Goblet Squat: 15
+      Push-Up: 12
+      Dead Bug: 10/side
+
+[engine 60m intermediate stressed] est 53.8 | work 41.8 | active 29.0 | hard 0.0 | WU 7 DS 5 setup 0.0
+  - Engine [intervals] 26.0 min RPE [6, 7] x5 rest None {'work_sec': 240, 'recovery_sec': 90, 'rounds': 5, 'alternate': False}
+      Air Bike / Assault Bike: 5 × 4 min / 1:30 easy
+  - Complement [circuit] 14.2 min RPE [6, 7] x4 rest 45
+      Goblet Squat: 15
+      Push-Up: 12
+      Dead Bug: 10/side
+
+[engine 30m intermediate stressed] est 27.5 | work 20.5 | active 16.0 | hard 0.0 | WU 4 DS 3 setup 0.0
+  - Engine [intervals] 20.5 min RPE [6, 7] x4 rest None {'work_sec': 240, 'recovery_sec': 90, 'rounds': 4, 'alternate': False}
+      Air Bike / Assault Bike: 4 × 4 min / 1:30 easy
+
+[engine 60m advanced amped] est 55.4 | work 43.4 | active 32.1 | hard 0.0 | WU 7 DS 5 setup 0.0
+  - Engine [intervals] 28.6 min RPE [7, 8] x6 rest None {'work_sec': 240, 'recovery_sec': 55, 'rounds': 6, 'alternate': False}
+      Air Bike / Assault Bike: 6 × 4 min / 55 s easy
+  - Complement [circuit] 13.3 min RPE [6, 7] x4 rest 45
+      Kettlebell Swing: 15
+      Dumbbell Push Press: 15
+      Front-Rack Carry: 40 m
+
+[engine 60m intermediate irritated] est 50.2 | work 38.2 | active 24.0 | hard 12.0 | WU 7 DS 5 setup 0.0
+  - Engine [intervals] 17.7 min RPE [8, 9] x18 rest None {'work_sec': 40, 'recovery_sec': 20, 'rounds': 18, 'alternate': False}
+      Air Bike / Assault Bike: 18 × 40 s / 20 s easy
+  - Complement [intervals] 19.0 min RPE [6, 7] x8 rest None {'work_sec': 90, 'recovery_sec': 60, 'rounds': 8, 'alternate': False}
+      SkiErg: 8 × 1:30 / 1 min easy
+
+[engine 60m beginner low_energy] est 55.6 | work 43.6 | active 22.9 | hard 0.0 | WU 7 DS 5 setup 0.0
+  - Engine [intervals] 32.5 min RPE [5, 6] x7 rest None {'work_sec': 150, 'recovery_sec': 150, 'rounds': 7, 'alternate': False}
+      Stationary Bike: 7 × 2:30 / 2:30 easy
+  - Complement [circuit] 9.7 min RPE [6, 7] x3 rest 60
+      Glute Bridge: 15
+      Suspension Trainer Row / TRX Row: 12
+      Dead Bug: 8/side
+
+[circuit 60m intermediate no-State] est 52.8 | work 41.8 | active 26.3 | hard 0.0 | WU 6 DS 5 setup 0.0
+  - Circuit [circuit] 24.6 min RPE [7, 8] x5 rest 60
+      Air Bike / Assault Bike: 12 cal
+      Dumbbell Snatch: 10/side
+      Push-Up: 12
+      Farmer Carry: 40 m
+  - Complement [intervals] 15.7 min RPE [7, 8] x16 rest None {'work_sec': 40, 'recovery_sec': 20, 'rounds': 16, 'alternate': False}
+      SkiErg: 16 × 40 s / 20 s easy
+
+[circuit 60m intermediate stressed] est 52.4 | work 41.4 | active 21.6 | hard 0.0 | WU 6 DS 5 setup 0.0
+  - Circuit [circuit] 26.9 min RPE [6, 7] x6 rest 75
+      Sled Push: 20 m
+      Glute Bridge: 15
+      Push-Up: 12
+      Farmer Carry: 40 m
+  - Complement [intervals] 13.0 min RPE [6, 7] x7 rest None {'work_sec': 60, 'recovery_sec': 60, 'rounds': 7, 'alternate': False}
+      Jump Rope: 7 × 1 min / 1 min easy
+
+[circuit 30m intermediate stressed] est 29.2 | work 22.2 | active 12.2 | hard 0.0 | WU 4 DS 3 setup 0.0
+  - Circuit [circuit] 22.2 min RPE [6, 7] x5 rest 75
+      Sled Push: 20 m
+      Glute Bridge: 15
+      Push-Up: 12
+      Farmer Carry: 40 m
+
+[circuit 60m intermediate amped] est 51.0 | work 40.0 | active 23.4 | hard 15.9 | WU 6 DS 5 setup 0.0
+  - Circuit [circuit] 26.9 min RPE [8, 9] x6 rest 60
+      Jump Squat: 12
+      Dumbbell Snatch: 10/side
+      Dumbbell Push Press: 15
+      Med-Ball Slam: 12
+  - Complement [intervals] 11.5 min RPE [6, 7] x5 rest None {'work_sec': 90, 'recovery_sec': 60, 'rounds': 5, 'alternate': False}
+      Air Bike / Assault Bike: 5 × 1:30 / 1 min easy
+
+[circuit 30m advanced amped] est 26.4 | work 19.4 | active 11.4 | hard 11.4 | WU 4 DS 3 setup 0.0
+  - Circuit [circuit] 19.4 min RPE [8, 9] x5 rest 45
+      Jump Squat: 12
+      Dumbbell Snatch: 8/side
+      Dumbbell Push Press: 13
+      Med-Ball Slam: 10
+
+[circuit 60m intermediate low_energy] est 52.6 | work 41.6 | active 23.1 | hard 0.0 | WU 6 DS 5 setup 0.0
+  - Circuit [circuit] 23.1 min RPE [6, 7] x5 rest 60
+      Stationary Bike: 1 min
+      Glute Bridge: 15
+      Chest-Supported Dumbbell Row: 15
+      Suitcase Carry: 30 m
+  - Complement [intervals] 17.0 min RPE [6, 7] x9 rest None {'work_sec': 60, 'recovery_sec': 60, 'rounds': 9, 'alternate': False}
+      Row Erg: 9 × 1 min / 1 min easy
+
+[circuit 60m advanced bored] est 52.8 | work 41.8 | active 26.2 | hard 0.0 | WU 6 DS 5 setup 0.0
+  - Circuit [circuit] 26.6 min RPE [7, 8] x6 rest 45
+      Front-Rack Carry: 40 m
+      Devil Press: 8
+      Suspension Trainer Row / TRX Row: 15
+      Wall Ball: 15
+  - Complement [intervals] 13.7 min RPE [7, 8] x14 rest None {'work_sec': 40, 'recovery_sec': 20, 'rounds': 14, 'alternate': False}
+      Air Bike / Assault Bike: 14 × 40 s / 20 s easy
+
+[hybrid 60m intermediate no-State] est 59.7 | work 47.7 | active 37.2 | hard 0.0 | WU 7 DS 5 setup 0.0
+  - Hybrid [anchor_circuit] 40.2 min RPE [7, 8] x4 rest 60
+      Row Erg: 900 m
+      Wall Ball: 20
+      Med-Ball Slam: 15
+      Dumbbell Push Press: 16
+      Front-Rack Carry: 60 m
+  - Closer [continuous] 6.0 min RPE [5, 6]
+      Stair Climber: 6 min steady
+
+[hybrid 60m advanced amped] est 55.1 | work 43.1 | active 34.8 | hard 0.0 | WU 7 DS 5 setup 0.0
+  - Hybrid [anchor_circuit] 43.1 min RPE [7, 8] x4 rest 45
+      Row Erg: 1150 m
+      Dumbbell Snatch: 12/side
+      Med-Ball Slam: 15
+      Sled Rope Pull: 20 m
+      Front-Rack Carry: 60 m
+
+[hybrid 30m intermediate stressed] est 28.0 | work 20.0 | active 13.8 | hard 0.0 | WU 5 DS 3 setup 0.0
+  - Hybrid [anchor_circuit] 20.0 min RPE [6, 7] x3 rest 75
+      Row Erg: 500 m
+      Goblet Squat: 15
+      Suitcase Carry: 40 m
+      Dumbbell Push Press: 15
+
+[hybrid 60m beginner bored] est 56.4 | work 44.4 | active 33.1 | hard 0.0 | WU 7 DS 5 setup 0.0
+  - Hybrid [anchor_circuit] 36.9 min RPE [7, 8] x4 rest 75
+      SkiErg: 600 m
+      Plate Push: 20 m
+      Med-Ball Slam: 13
+      Sled Rope Pull: 20 m
+      Front-Rack Carry: 60 m
+  - Closer [continuous] 6.0 min RPE [5, 6]
+      Stair Climber: 6 min steady
+
+[circuit 60m intermediate low_energy+amped] est 52.2 | work 41.2 | active 23.9 | hard 0.0 | WU 6 DS 5 setup 0.0
+  - Circuit [circuit] 26.7 min RPE [7, 8] x6 rest 45
+      Row Erg: 250 m
+      Kettlebell Swing: 15
+      Dumbbell Push Press: 15
+      Suitcase Carry: 30 m
+  - Complement [intervals] 13.0 min RPE [6, 7] x7 rest None {'work_sec': 60, 'recovery_sec': 60, 'rounds': 7, 'alternate': False}
+      SkiErg: 7 × 1 min / 1 min easy
+
+[engine 60m intermediate amped+stressed] est 55.9 | work 43.9 | active 29.5 | hard 0.0 | WU 7 DS 5 setup 0.0
+  - Engine [intervals] 33.2 min RPE [7, 8] x6 rest None {'work_sec': 240, 'recovery_sec': 110, 'rounds': 6, 'alternate': False}
+      Air Bike / Assault Bike: 6 × 4 min / 1:50 easy
+  - Complement [circuit] 9.2 min RPE [6, 7] x3 rest 45
+      Kettlebell Swing: 15
+      Dumbbell Push Press: 15
+      Suitcase Carry: 30 m
+
+[circuit 60m advanced amped+bored+irritated] est 50.5 | work 39.5 | active 24.3 | hard 16.8 | WU 6 DS 5 setup 0.0
+  - Circuit [circuit] 26.6 min RPE [9, 9] x6 rest 45
+      Sled Rope Pull: 20 m
+      Kettlebell Swing: 15
+      Dumbbell Push Press: 15
+      Wall Ball: 15
+  - Complement [intervals] 11.5 min RPE [6, 7] x5 rest None {'work_sec': 90, 'recovery_sec': 60, 'rounds': 5, 'alternate': False}
+      Air Bike / Assault Bike: 5 × 1:30 / 1 min easy
+
+[hybrid 30m beginner no-State] est 30.2 | work 22.2 | active 12.2 | hard 0.0 | WU 5 DS 3 setup 0.0
+  - Hybrid [anchor_circuit] 22.2 min RPE [7, 8] x5 rest 75
+      Row Erg: 250 m
+      Wall Ball: 10
+      Med-Ball Slam: 10

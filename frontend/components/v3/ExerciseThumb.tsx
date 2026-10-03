@@ -31,7 +31,7 @@ export function ExerciseThumb({ item, size = 52, showPlay = false }: Props) {
         <Image source={{ uri }} style={{ width: size, height: size }} resizeMode="cover" onError={() => setFailed(true)} />
       ) : (
         <LinearGradient
-          colors={['#262626', '#141414']}
+          colors={[COLORS.surfaceElevated, COLORS.surface]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}
@@ -51,7 +51,7 @@ export function ExerciseThumb({ item, size = 52, showPlay = false }: Props) {
 const styles = StyleSheet.create({
   box: {
     overflow: 'hidden',
-    backgroundColor: '#161616',
+    backgroundColor: COLORS.surface,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'rgba(255,255,255,0.12)',
   },

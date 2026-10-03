@@ -1,0 +1,138 @@
+production-path builds: 1068; ok 1068; conflicts Counter()
+
+== beginner 30 min (n=178)
+  n_items            median 3 (p10 3, p90 3, max 3)
+  n_explosive        median 1 (p10 1, p90 1, max 1)
+  explosive_sets     median 3 (p10 3, p90 5, max 5)
+  contacts           median 0 (p10 0, p90 9, max 12)
+  sprint_exposures   median 0 (p10 0, p90 5, max 5)
+  throws             median 0 (p10 0, p90 15, max 24)
+  olympic_sets       median 0 (p10 0, p90 0, max 0)
+  high_skill         median 0 (p10 0, p90 0, max 0)
+  strength_sets      median 6 (p10 4, p90 6, max 6)
+  support_sets       median 0 (p10 0, p90 0, max 0)
+  intent_load        median 3 (p10 1.8, p90 5, max 5)
+  est                median 20.6 (p10 18.6, p90 25.5, max 26.7)
+  primary quality    {'acceleration': 73, 'vertical_power': 37, 'horizontal_power': 36, 'total_body_power': 19, 'upper_power': 6, 'rotational_power': 5, 'change_of_direction': 2}
+  structure          {'power_strength': 103, 'speed_strength': 73, 'agility_strength': 2}
+  Olympic primary 0 · finisher 0 · secondary quality 0
+
+== beginner 60 min (n=178)
+  n_items            median 4 (p10 3, p90 5, max 5)
+  n_explosive        median 1 (p10 1, p90 2, max 2)
+  explosive_sets     median 5 (p10 3, p90 7, max 8)
+  contacts           median 9 (p10 0, p90 9, max 12)
+  sprint_exposures   median 0 (p10 0, p90 5, max 6)
+  throws             median 0 (p10 0, p90 24, max 39)
+  olympic_sets       median 0 (p10 0, p90 0, max 0)
+  high_skill         median 0 (p10 0, p90 0, max 0)
+  strength_sets      median 6 (p10 6, p90 6, max 6)
+  support_sets       median 3 (p10 0, p90 3, max 3)
+  intent_load        median 4.8 (p10 3, p90 6.1, max 7.1)
+  est                median 37.5 (p10 32.3, p90 44, max 51.3)
+  primary quality    {'acceleration': 59, 'horizontal_power': 47, 'vertical_power': 47, 'total_body_power': 15, 'rotational_power': 5, 'change_of_direction': 4, 'upper_power': 1}
+  structure          {'power_strength': 86, 'speed_strength': 56, 'jump_throw': 29, 'athletic_mixed': 4, 'agility_strength': 3}
+  Olympic primary 0 · finisher 0 · secondary quality 79
+
+== intermediate 30 min (n=178)
+  n_items            median 3 (p10 3, p90 3, max 3)
+  n_explosive        median 1 (p10 1, p90 1, max 1)
+  explosive_sets     median 4 (p10 3, p90 6, max 6)
+  contacts           median 0 (p10 0, p90 16, max 30)
+  sprint_exposures   median 0 (p10 0, p90 6, max 6)
+  throws             median 0 (p10 0, p90 15, max 32)
+  olympic_sets       median 0 (p10 0, p90 0, max 4)
+  high_skill         median 0 (p10 0, p90 0, max 0)
+  strength_sets      median 6 (p10 4, p90 6, max 6)
+  support_sets       median 0 (p10 0, p90 0, max 0)
+  intent_load        median 4 (p10 2.8, p90 6, max 6)
+  est                median 23.2 (p10 18.7, p90 27.3, max 30.4)
+  primary quality    {'acceleration': 54, 'horizontal_power': 38, 'vertical_power': 33, 'total_body_power': 25, 'change_of_direction': 13, 'rotational_power': 9, 'upper_power': 6}
+  structure          {'power_strength': 111, 'speed_strength': 54, 'agility_strength': 13}
+  Olympic primary 0 · finisher 0 · secondary quality 0
+
+== intermediate 60 min (n=178)
+  n_items            median 4 (p10 3, p90 5, max 5)
+  n_explosive        median 1 (p10 1, p90 2, max 2)
+  explosive_sets     median 6 (p10 3, p90 8, max 10)
+  contacts           median 9 (p10 0, p90 24, max 50)
+  sprint_exposures   median 0 (p10 0, p90 6, max 7)
+  throws             median 0 (p10 0, p90 24, max 44)
+  olympic_sets       median 0 (p10 0, p90 0, max 5)
+  high_skill         median 0 (p10 0, p90 0, max 0)
+  strength_sets      median 6 (p10 6, p90 6, max 8)
+  support_sets       median 0 (p10 0, p90 3, max 3)
+  intent_load        median 5 (p10 3, p90 7.8, max 9.5)
+  est                median 41.2 (p10 33.4, p90 47.8, max 55.5)
+  primary quality    {'acceleration': 47, 'horizontal_power': 43, 'vertical_power': 41, 'total_body_power': 22, 'change_of_direction': 17, 'upper_power': 3, 'rotational_power': 3, 'elastic_reactive': 2}
+  structure          {'power_strength': 78, 'speed_strength': 40, 'jump_throw': 30, 'agility_strength': 15, 'athletic_mixed': 15}
+  Olympic primary 0 · finisher 2 · secondary quality 71
+
+== advanced 30 min (n=178)
+  n_items            median 3 (p10 3, p90 3, max 3)
+  n_explosive        median 1 (p10 1, p90 1, max 1)
+  explosive_sets     median 5 (p10 4, p90 6, max 6)
+  contacts           median 0 (p10 0, p90 16, max 30)
+  sprint_exposures   median 0 (p10 0, p90 6, max 6)
+  throws             median 0 (p10 0, p90 0, max 40)
+  olympic_sets       median 0 (p10 0, p90 0, max 5)
+  high_skill         median 0 (p10 0, p90 0, max 1)
+  strength_sets      median 6 (p10 4, p90 6, max 6)
+  support_sets       median 0 (p10 0, p90 0, max 0)
+  intent_load        median 5 (p10 4, p90 6, max 7.2)
+  est                median 25.5 (p10 20.9, p90 28.7, max 30.6)
+  primary quality    {'acceleration': 54, 'vertical_power': 43, 'horizontal_power': 39, 'total_body_power': 18, 'change_of_direction': 13, 'rotational_power': 6, 'upper_power': 5}
+  structure          {'power_strength': 99, 'speed_strength': 54, 'agility_strength': 13, 'contrast': 12}
+  Olympic primary 0 · finisher 0 · secondary quality 0
+
+== advanced 60 min (n=178)
+  n_items            median 4 (p10 3, p90 5, max 5)
+  n_explosive        median 1 (p10 1, p90 2, max 2)
+  explosive_sets     median 8 (p10 4, p90 10, max 13)
+  contacts           median 12 (p10 0, p90 18, max 36)
+  sprint_exposures   median 0 (p10 0, p90 8, max 8)
+  throws             median 0 (p10 0, p90 32, max 57)
+  olympic_sets       median 0 (p10 0, p90 0, max 6)
+  high_skill         median 0 (p10 0, p90 0, max 1)
+  strength_sets      median 6 (p10 6, p90 8, max 8)
+  support_sets       median 0 (p10 0, p90 3, max 3)
+  intent_load        median 7.4 (p10 4, p90 10.8, max 14)
+  est                median 48 (p10 36.1, p90 54.7, max 56.9)
+  primary quality    {'acceleration': 51, 'horizontal_power': 43, 'vertical_power': 37, 'total_body_power': 25, 'change_of_direction': 14, 'upper_power': 4, 'elastic_reactive': 2, 'rotational_power': 2}
+  structure          {'power_strength': 69, 'speed_strength': 40, 'jump_throw': 30, 'athletic_mixed': 24, 'agility_strength': 10, 'contrast': 5}
+  Olympic primary 0 · finisher 1 · secondary quality 78
+
+== State Satisfaction / Coherence (all levels, both durations)
+  amped        n=216 satisfied 100.0% coherent 100.0%
+  bored        n=216 satisfied 100.0% coherent 100.0%
+  irritated    n=216 satisfied 100.0% coherent 100.0%
+  low_energy   n=288 satisfied 100.0% coherent 100.0%
+  stressed     n=288 satisfied 100.0% coherent 100.0%
+
+== Paired State effect (intermediate 60, commercial; each State session vs the SAME candidate built without States; 40 users)
+   median with-State / without: explosive sets | contacts+sprints | exercises | strength top-set reps | strength RIR | max complexity | est min
+  low_energy                   3/4 |      5/12 |   3/4 |   6/6 |   3/2 |   2/3 | 33.4/40.9
+  bored                        4/5 |      12/9 |   4/4 |   6/6 |   2/2 |   3/3 | 45.5/41.1
+  irritated                    5/5 |   5.5/5.5 |   4/4 |   6/6 |   2/2 |   3/3 | 44.25/41.95
+  amped                        5/4 |       9/9 |   4/4 |   5/6 |   1/2 |   3/3 | 46.9/41
+  stressed                     4/4 |       6/6 |   4/4 |   6/6 |   2/2 |   2/3 | 41.9/38.9
+  low_energy+amped             3/4 |      5/12 |   3/4 |   5/6 |   3/2 |   3/3 | 33.3/40.9
+  amped+stressed               4/4 |       6/6 |   4/4 |   5/6 |   1/2 |   3/3 | 41.45/38.9
+  bored+stressed               6/5 |     12/12 |   4/4 |   6/6 |   2/2 |   2/3 | 41.85/41.1
+  irritated+low_energy         3/4 |       5/5 |   3/4 |   6/6 |   3/2 |   2/3 | 33.4/41
+  irritated+stressed       4.5/4.5 |       5/6 |   4/4 |   6/6 |   2/2 |   2/3 | 40.15/41.05
+  bored+low_energy             3/4 |       5/9 |   3/4 |   6/6 |   3/2 |   2/3 | 33.9/40.3
+
+== Goal differences (60 min, no State): primary quality mix, median strength sets, finisher count
+  improve_athleticism        strength sets 6.0 · explosive sets 7.0 · finishers 0 · {'horizontal_power': 5, 'acceleration': 4, 'vertical_power': 4, 'change_of_direction': 3}
+  build_strength             strength sets 8.0 · explosive sets 6.0 · finishers 0 · {'total_body_power': 5, 'horizontal_power': 5, 'vertical_power': 4, 'acceleration': 2}
+  build_muscle               strength sets 8.0 · explosive sets 7.0 · finishers 0 · {'acceleration': 7, 'vertical_power': 6, 'horizontal_power': 3, 'total_body_power': 1}
+  lose_weight_conditioning   strength sets 6.0 · explosive sets 6.0 · finishers 3 · {'vertical_power': 5, 'acceleration': 5, 'horizontal_power': 3, 'change_of_direction': 3}
+  feel_better_reduce_stress  strength sets 6.0 · explosive sets 6.0 · finishers 0 · {'vertical_power': 10, 'horizontal_power': 4, 'total_body_power': 2, 'acceleration': 1}
+  stay_consistent            strength sets 6.0 · explosive sets 6.0 · finishers 0 · {'horizontal_power': 5, 'acceleration': 5, 'vertical_power': 4, 'total_body_power': 2}
+
+== History variation (30 users x 5 consecutive MOOD's Pick sessions, intermediate 60)
+  back-to-back same primary quality 5/120 · back-to-back same primary exercise 0/120 · mean distinct primary qualities per 5 sessions 4.2
+
+== Different Workout: 12 runs · primary quality changed 11 · primary exercise changed 12
+== Swap Exercise: 57 swaps · valid (role, type, sets, impact kept) 54 · invalid 0 · honest no-alternative 3

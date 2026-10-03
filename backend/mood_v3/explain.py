@@ -90,6 +90,109 @@ def _custom_lines(ctx, res, add):
         add('allocation', f"{names[lead]} gets {n(lead)} while {_join(names[m] + ' gets ' + str(alloc[m]['exercises']) for m in rest)}{core_tail}.")
 
 
+# ------------------------------------------------------------------ Target sessions: why this one, for this user, today
+# Founder pass (Oct 2026): a Target workout's line says more than "Quads + Hamstrings + Glutes run as Glutes + Legs". It adds
+# what MOOD knows about the user, in this order: their history with this area (days since it was last trained, or that recent
+# sessions went elsewhere), then their profile goal tied to a fact from today's output; only with neither, a plain line on why
+# this area is worth a day. Context only: nothing here claims the generator changed anything because of it.
+
+_LOWER = {'quads', 'hamstrings', 'glutes', 'calves', 'hip_adductors', 'hip_abductors'}
+_UPPER = {'chest', 'back', 'shoulders', 'biceps', 'triceps', 'forearms', 'front_delts', 'side_delts', 'rear_delts'}
+AREA_OF_ARCHETYPE = {'strength_lower_squat': 'lower', 'strength_lower_hinge': 'lower', 'strength_glutes_legs': 'lower',
+                     'athletic_power': 'lower', 'athletic_speed_agility': 'lower',
+                     'strength_upper_push': 'upper', 'strength_upper_pull': 'upper', 'strength_upper_mixed': 'upper', 'strength_arms': 'upper',
+                     'strength_core': 'core'}
+AREA_WORD = {'lower': 'leg', 'upper': 'upper-body', 'core': 'core'}
+AREA_NOUN = {'lower': 'legs', 'upper': 'upper body', 'core': 'core'}
+
+
+def _target_area(muscles):
+    m = set(muscles or [])
+    if not m: return None
+    if m <= _LOWER: return 'lower'
+    if m <= _UPPER: return 'upper'
+    if m == {'core'}: return 'core'
+    return None
+
+
+def _days_between(d_from, d_to):
+    import datetime as _d
+    try:
+        a = _d.date.fromisoformat(str(d_from)[:10]); b = _d.date.fromisoformat(str(d_to)[:10])
+        return (b - a).days
+    except Exception:
+        return None
+
+
+def _history_sentence(ctx, area, history_records):
+    """History with this area, newest first. None when MOOD has nothing true to say."""
+    if not area or not history_records: return None
+    recent = list(reversed(history_records))           # newest first
+    hit = next(((i, h) for i, h in enumerate(recent) if AREA_OF_ARCHETYPE.get(h.get('archetype')) == area), None)
+    word, noun = AREA_WORD[area], AREA_NOUN[area]
+    they = 'it' if area in ('upper', 'core') else 'they'
+    if hit:
+        i, h = hit
+        days = _days_between(h.get('completed_at'), getattr(ctx, 'date', None))
+        if days is None or days < 0: return None
+        if days == 0: return f"You already trained {noun} earlier today, so let the first sets tell you how {they} feel."
+        if days == 1: return f"You trained {noun} yesterday too, so let the first sets tell you how {they} feel."
+        if days == 2: return f"Your last {word} day was 2 days ago, so {they}'ve had time to recover."
+        if i >= 2: return f"Your last {i} sessions went elsewhere and your last {word} day was {days} days ago, so this balances your week."
+        return f"Your last {word} day was {days} days ago, so {they} should be fresh for this."
+    others = [h for h in recent[:3] if AREA_OF_ARCHETYPE.get(h.get('archetype')) and AREA_OF_ARCHETYPE.get(h.get('archetype')) != area]
+    if len(others) >= 2: return f"Your last {len(others)} sessions trained other areas, so this balances your week."
+    return f"Your first {word} day in MOOD."
+
+
+def _goal_sentence(ctx, res, items, area):
+    """The profile goal tied to a fact from today's output (never a claim the goal changed the prescription)."""
+    goal = GOAL_TEXT.get(getattr(ctx, 'goal', None))
+    if not goal or not items: return None
+    noun = AREA_NOUN.get(area) or target_label(ctx.target_muscles or res.get('target_muscles') or []).lower()
+    sets = sum((_rx(it).get('sets') or 0) for it in items)
+    main = items[0]
+    g = ctx.goal
+    if g == 'build_muscle' and sets and ctx.direction == 'strength':
+        tm = ctx.target_muscles or res.get('target_muscles') or []
+        what = target_label(tm).lower() if len(tm) == 1 else (AREA_WORD.get(area) or noun)
+        return f"For your goal to build muscle, that's {sets} working sets of direct {what} work."
+    if g == 'build_strength' and ctx.direction == 'strength':
+        return f"For your goal to build strength, it leads with {main['exercise']['name']} at {_rx(main).get('display')}."
+    if g == 'improve_athleticism':
+        if area == 'lower': return f"For your goal to {goal}, strong hips and legs carry straight into sprinting and jumping."
+        if area == 'upper': return f"For your goal to {goal}, pressing and pulling strength carries into throwing, pushing and contact."
+        return f"For your goal to {goal}, a strong trunk transfers force between your legs and upper body."
+    if g == 'lose_weight_conditioning':
+        if area == 'lower': return f"For your goal to {goal}, training your biggest muscles makes this one of the most demanding sessions you can do."
+        return f"For your goal to {goal}, strength work keeps the muscle you have while your conditioning improves."
+    if g == 'feel_better_reduce_stress':
+        return f"For your goal to {goal}, one clear focus keeps today simple: show up and do the work."
+    if g == 'stay_consistent':
+        return f"For your goal to {goal}, training what you want to train today is how the habit sticks."
+    return None
+
+
+AREA_WHY = {
+    'lower': 'Leg days train your biggest muscles and build strength that carries into everything else.',
+    'upper': 'Upper-body days build the pressing and pulling strength you use every day.',
+    'core': 'A strong trunk makes every other lift steadier and safer.',
+}
+
+
+def _target_personal(ctx, res, items, history_records):
+    """Up to two sentences: history, then goal; the plain area 'why' only when MOOD knows neither."""
+    area = _target_area(ctx.target_muscles or res.get('target_muscles'))
+    bits = [b for b in (_history_sentence(ctx, area, history_records), _goal_sentence(ctx, res, items, area)) if b]
+    if not bits and area: bits = [AREA_WHY[area]]
+    return ' '.join(bits[:2]) or None
+
+
+def _with_personal(base, ctx, res, items, history_records):
+    extra = _target_personal(ctx, res, items, history_records)
+    return f"{base} {extra}" if extra else base
+
+
 KIND_RANK = {'adaptation': 0, 'decision': 1, 'context': 2}
 CODE_KIND = {
     'why_today': 'adaptation', 'sore_reroute': 'adaptation', 'sore': 'adaptation', 'sore_override': 'adaptation', 'rotation_swap': 'adaptation', 'state_pair': 'adaptation',
@@ -139,13 +242,19 @@ def build_lines(ctx, res, history_records):
     elif source == 'target':
         if res['archetype'] == 'strength_custom_target':
             _custom_lines(ctx, res, add)
+            if not any(l['code'] == 'allocation' for l in lines):
+                add('target', _target_personal(ctx, res, items, history_records))
+            else:
+                al = next(l for l in lines if l['code'] == 'allocation')
+                al['text'] = _with_personal(al['text'], ctx, res, items, history_records)
         elif ctx.target_mode != 'full_body':
             tl = target_label(ctx.target_muscles or res.get('target_muscles'))
             if d == 'strength' and len(ctx.target_muscles or []) > 1:
                 art = 'an' if arch[:1].lower() in 'aeiou' else 'a'
-                add('target', f"{tl} run as {art} {arch} session, so both get direct work.")
+                n = len(ctx.target_muscles or [])
+                add('target', _with_personal(f"{tl} run as {art} {arch} session, so {'both get' if n == 2 else 'each gets'} direct work.", ctx, res, items, history_records))
             elif d == 'sweat' and res['archetype'] == 'sweat_circuit':
-                add('target', f"The circuit stations are weighted toward {tl.lower()}.")
+                add('target', _with_personal(f"The circuit stations are weighted toward {tl.lower()}.", ctx, res, items, history_records))
             elif d == 'athletic' and isinstance(res.get('w'), dict) and 'sess' in res['w']:
                 hit = [it['exercise']['name'] for it in items if set(it['exercise'].get('primary_muscles') or []) & set(ctx.target_muscles) and it.get('role') not in ('primary', 'contrast_power')]
                 pq = res['w']['sess']['pq']
@@ -252,7 +361,7 @@ def build_lines(ctx, res, history_records):
     # 6. what MOOD built, the Difficulty rules that applied, and the profile / history context behind it
     _decision_lines(ctx, res, items, add, arch)
     _difficulty_lines(ctx, res, items, codes, add)
-    _context_lines(ctx, res, items, history_records, source, add, arch)
+    _context_lines(ctx, res, items, history_records, source, add, arch, goal_said=any('For your goal' in l['text'] for l in lines))
 
     lines.sort(key=lambda l: KIND_RANK[l['kind']])      # stable: adaptation, then decision, then context
     # session expectation: a long Core request is a core-focused strength session, and the user should know that before Start
@@ -429,7 +538,7 @@ def _difficulty_lines(ctx, res, items, codes, add):
         elif lv == 'advanced':
             from .engines.athletic import athletic_core as _AC
             un = [e for e in exs if e.get('id') in _AC.POWER and (e.get('impact') == 'high' or (e.get('cx') or 0) >= 3 or e.get('skill') == 'advanced')]   # name the athletic work, not the strength support
-            prim_x = res['w']['sess']['blocks'][0]['items'][-1]
+            prim_x = _AC.PB(res['w']['sess'])['items'][-1]
             if prim_x['kind'] == 'olympic':
                 add('difficulty', f"Advanced difficulty and your goal open an Olympic derivative, {items[0]['exercise']['name'] if items else 'the primary lift'}, kept to {prim_x['sets']} sets of {prim_x['reps']} with {prim_x['rest']} s rest so every rep stays fast.", 'adaptation')
             elif res['w']['sess']['structure'] == 'contrast': add('difficulty', 'Advanced difficulty unlocks contrast pairing: a heavy set followed by its explosive partner.', 'adaptation')
@@ -470,7 +579,7 @@ def _difficulty_lines(ctx, res, items, codes, add):
             add('difficulty', f"{L} dosing: station targets are set for your level.", 'adaptation')
 
 
-def _context_lines(ctx, res, items, history_records, source, add, arch):
+def _context_lines(ctx, res, items, history_records, source, add, arch, goal_said=False):
     d = ctx.direction
     goal = GOAL_TEXT.get(ctx.goal)
     if d == 'strength' and source == 'moods_pick' and goal:
@@ -493,7 +602,7 @@ def _context_lines(ctx, res, items, history_records, source, add, arch):
         else: add('goal', f"Your profile goal is to {goal}; today's Athletic session is built from today's choices.")
     elif d == 'athletic' and ctx.goal in ('build_strength', 'build_muscle') and any(b.get('type') == 'support' for b in res.get('blocks', [])):
         add('goal', f"Because your goal is to {goal}, Athletic sessions always include Performance Support.")
-    elif goal:
+    elif goal and not goal_said:
         add('goal', f"Your profile goal is to {goal}; today's {DIRECTION_NAMES[d]} session is built from today's choices.")
     same = [h for h in history_records if h.get('direction') == d]
     if not history_records:

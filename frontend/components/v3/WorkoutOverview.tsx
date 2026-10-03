@@ -99,7 +99,7 @@ export function WorkoutOverview({ envelope, onSwap, swappingItemId, highlightIte
           {built.length ? (
             <View style={styles.bftHead}>
               <Ionicons name="sparkles" size={14} color={COLORS.accent} />
-              <Text style={styles.bftTitle}>BUILT FOR TODAY</Text>
+              <Text style={styles.bftTitle}>BUILT FOR YOUR MOOD</Text>
             </View>
           ) : null}
           {built.map((l) => (
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     marginTop: 18,
     padding: 16,
     borderRadius: 18,
-    backgroundColor: '#141414',
+    backgroundColor: COLORS.surface,
     borderWidth: 1,
     borderColor: 'rgba(255,215,0,0.28)',
   },

@@ -30,110 +30,9 @@ export const V3_ONBOARDING_ENABLED = true;
  */
 export const V3_HOME_ENABLED = true;
 
-/* ------------------------------------------------------------------ values */
-
-export type TrainingPreference = 'lifting' | 'conditioning' | 'athletic' | 'mix';
-export type V3Goal =
-  | 'build_strength'
-  | 'lose_weight_conditioning'
-  | 'build_muscle'
-  | 'improve_athleticism'
-  | 'feel_better_reduce_stress'
-  | 'stay_consistent';
-export type Experience = 'beginner' | 'intermediate' | 'advanced';
-export type TrainingFrequency = '1-2' | '3-4' | '5+';
-export type Barrier = 'time' | 'low_energy' | 'motivation' | 'dont_know' | 'boredom';
-export type Direction = 'strength' | 'sweat' | 'athletic';
-export type ProfileSource = 'onboarding_v3' | 'reonboarding_v3' | 'user_edit';
-/** new = signup funnel; upgrade = existing user's first V3 open; edit = Settings. */
-export type V3FunnelMode = 'new' | 'upgrade' | 'edit';
-
-export interface TrainingProfile {
-  training_preference?: TrainingPreference;
-  goal?: V3Goal;
-  experience?: Experience;
-  training_frequency?: TrainingFrequency;
-  biggest_barrier?: Barrier;
-  default_duration?: 30 | 60;
-  default_equipment?: 'commercial_gym' | 'free_weight_limited' | 'minimal';
-  profile_source?: ProfileSource;
-  completed_at?: string;
-  updated_at?: string;
-}
-
-export interface TrainingProfileResponse {
-  profile: TrainingProfile;
-  complete: boolean;
-  default_direction: Direction;
-  version: number;
-}
-
-export const DEFAULT_DURATION = 60 as const;
-export const DEFAULT_EQUIPMENT = 'commercial_gym' as const;
-
-/* ------------------------------------------------------------------ labels */
-// Same labels on the funnel and (Phase 2) the Home screen.
-
-export const PREFERENCE_OPTIONS: { id: TrainingPreference; label: string; description: string }[] = [
-  // Same vocabulary as the Home Directions (Strength / Sweat / Athletic). Stored IDs unchanged.
-  { id: 'lifting', label: 'Strength', description: 'Lifting, muscle & strength' },
-  { id: 'conditioning', label: 'Sweat', description: 'Conditioning, HIIT & endurance' },
-  { id: 'athletic', label: 'Athletic', description: 'Power, speed & athleticism' },
-  { id: 'mix', label: 'Mix It Up', description: 'A little of everything' },
-];
-export const GOAL_OPTIONS: { id: V3Goal; label: string }[] = [
-  { id: 'build_strength', label: 'Build Strength' },
-  { id: 'lose_weight_conditioning', label: 'Sweat / Burn Fat' },
-  { id: 'build_muscle', label: 'Improve Physique' },
-  { id: 'improve_athleticism', label: 'Improve Athleticism' },
-  { id: 'feel_better_reduce_stress', label: 'Feel Better / Reduce Stress' },
-  { id: 'stay_consistent', label: 'Stay Consistent' },
-];
-export const EXPERIENCE_OPTIONS: { id: Experience; label: string; description: string }[] = [
-  { id: 'beginner', label: 'Beginner', description: 'Still learning the fundamentals.' },
-  { id: 'intermediate', label: 'Intermediate', description: 'Comfortable with most gym movements.' },
-  { id: 'advanced', label: 'Advanced', description: 'Years of serious, structured training.' },
-];
-export const FREQUENCY_OPTIONS: { id: TrainingFrequency; label: string; description: string }[] = [
-  { id: '1-2', label: '1–2 days a week', description: 'Getting it in when I can.' },
-  { id: '3-4', label: '3–4 days a week', description: 'A steady routine.' },
-  { id: '5+', label: '5+ days a week', description: 'Training is part of my week.' },
-];
-export const BARRIER_OPTIONS: { id: Barrier; label: string; description: string }[] = [
-  { id: 'time', label: 'Time', description: "I'm always short on it." },
-  { id: 'low_energy', label: 'Low energy', description: "I'm wiped by the time I get to it." },
-  { id: 'motivation', label: 'Motivation', description: 'I struggle to get started.' },
-  { id: 'dont_know', label: "Don't know what to do", description: 'I freeze on the plan.' },
-  { id: 'boredom', label: 'Boredom', description: 'Same workouts, every time.' },
-];
-
-const labelOf = <T extends string>(opts: { id: T; label: string }[], id?: T) => opts.find((o) => o.id === id)?.label ?? '';
-export const preferenceLabel = (v?: TrainingPreference) => labelOf(PREFERENCE_OPTIONS, v);
-export const goalLabel = (v?: V3Goal) => labelOf(GOAL_OPTIONS, v);
-export const experienceLabel = (v?: Experience) => labelOf(EXPERIENCE_OPTIONS, v);
-export const frequencyLabel = (v?: TrainingFrequency) => (v ? `${v.replace('-', '–')} days / week` : '');
-export const barrierLabel = (v?: Barrier) =>
-  ({ time: 'Time', low_energy: 'Low energy', motivation: 'Motivation', dont_know: 'Knowing what to do', boredom: 'Boredom' } as const)[v as Barrier] ?? '';
-export const DIRECTION_LABEL: Record<Direction, string> = { strength: 'Strength', sweat: 'Sweat', athletic: 'Athletic' };
-
-/**
- * Default Direction for the Home card. Mirrors the backend rule
- * (mood_v3.normalize.resolve_direction): training preference, then goal, then
- * Strength. The server also returns `default_direction`; prefer that when you
- * have it — this local copy is for rendering before the round-trip lands.
- */
-export function defaultDirectionFor(p: TrainingProfile): Direction {
-  if (p.training_preference === 'lifting') return 'strength';
-  if (p.training_preference === 'conditioning') return 'sweat';
-  if (p.training_preference === 'athletic') return 'athletic';
-  if (p.goal === 'lose_weight_conditioning') return 'sweat';
-  if (p.goal === 'improve_athleticism') return 'athletic';
-  return 'strength';
-}
-
-export function isProfileComplete(p?: TrainingProfile | null): boolean {
-  return !!p && !!p.training_preference && !!p.goal && !!p.experience && !!p.training_frequency && !!p.biggest_barrier;
-}
+export * from './v3ProfileOptions';
+import { DEFAULT_DURATION, DEFAULT_EQUIPMENT, defaultDirectionFor } from './v3ProfileOptions';
+import type { Barrier, Direction, TrainingProfile, TrainingProfileResponse, V3FunnelMode } from './v3ProfileOptions';
 
 /* ------------------------------------------------------------------ server */
 
@@ -209,6 +108,8 @@ export interface FirstHomeHandoff {
   default_equipment: 'commercial_gym' | 'free_weight_limited' | 'minimal';
   profile: TrainingProfile;
   prefill: FirstSessionPrefill | null;
+  /** Set by the profile reveal CTA ("Build my first workout"): Home opens Build once, then clears it. */
+  launch_build?: boolean;
 }
 
 const HANDOFF_KEY = (uid: string) => `@mood_v3_first_home_v1:${uid}`;
@@ -253,4 +154,52 @@ export async function consumeFirstHomeHandoff(userId: string): Promise<void> {
     const h = await readFirstHomeHandoff(userId);
     if (h) await AsyncStorage.setItem(HANDOFF_KEY(userId), JSON.stringify({ ...h, pending: false, prefill: null }));
   } catch { /* ignore */ }
+}
+
+/** Reveal CTA: Home (which sits under Build in the stack) opens Build on arrival, once. */
+export async function requestFirstBuildLaunch(userId: string): Promise<void> {
+  try {
+    const h = await readFirstHomeHandoff(userId);
+    if (h) await AsyncStorage.setItem(HANDOFF_KEY(userId), JSON.stringify({ ...h, launch_build: true }));
+  } catch { /* ignore */ }
+}
+
+/** Home: consume the one-time Build launch. Returns true when Home should open Build now. */
+export async function takeFirstBuildLaunch(userId: string): Promise<boolean> {
+  try {
+    const h = await readFirstHomeHandoff(userId);
+    if (!h?.launch_build) return false;
+    await AsyncStorage.setItem(HANDOFF_KEY(userId), JSON.stringify({ ...h, launch_build: false }));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/* ------------------------------------------------------------------ first-workout activation window */
+
+/**
+ * From the profile reveal until the first V3 workout is finished (or 24 h pass), auxiliary prompts (wearables connect,
+ * the founding-offer modal) wait, so nothing stands between onboarding and workout #1. Device-local by design: it only
+ * orders prompts, it never decides access.
+ */
+const FIRST_WORKOUT_PENDING_KEY = (uid: string) => `@mood_v3_first_workout_pending_v1:${uid}`;
+const FIRST_WORKOUT_WINDOW_MS = 24 * 60 * 60 * 1000;
+
+export async function markFirstWorkoutPending(userId: string): Promise<void> {
+  try { await AsyncStorage.setItem(FIRST_WORKOUT_PENDING_KEY(userId), String(Date.now())); } catch { /* ignore */ }
+}
+export async function clearFirstWorkoutPending(userId: string): Promise<void> {
+  try { await AsyncStorage.removeItem(FIRST_WORKOUT_PENDING_KEY(userId)); } catch { /* ignore */ }
+}
+export async function isFirstWorkoutPending(userId?: string | null): Promise<boolean> {
+  if (!userId) return false;
+  try {
+    const raw = await AsyncStorage.getItem(FIRST_WORKOUT_PENDING_KEY(userId));
+    if (!raw) return false;
+    const at = Number(raw);
+    return Number.isFinite(at) && Date.now() - at < FIRST_WORKOUT_WINDOW_MS;
+  } catch {
+    return false;
+  }
 }

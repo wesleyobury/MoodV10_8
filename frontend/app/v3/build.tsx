@@ -8,7 +8,7 @@
  *   2. State       carried from the Home hero (same day storage, editable here); Sore asks where
  *   3. Focus       MOOD's Pick by default; Change opens the Focus / Workout Type / Difficulty sheet
  *   4. Length      the time available (profile default_duration); the workout is built to fit inside it
- *   5. Build       POST /api/v3/workouts/generate -> Cart (/v3/workout), replacing this screen
+ *   5. Build       POST /api/v3/workouts/generate -> Cart (/v3/workout), pushed on top (Back returns here)
  *
  * Moved here from the Phase 2.6 Home without changing the rules: State limits and Sore areas, Target vs Workout Type,
  * conflict options (ConflictSheet), request signatures and "same inputs, same day, same engine = reopen, don't rebuild".
@@ -17,11 +17,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
-import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
+import { BRAND_GRADIENT, COLORS, bgA } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { trackEvent } from '../../utils/analytics';
 import { FirstHomeHandoff, consumeFirstHomeHandoff, fetchTrainingProfile, readFirstHomeHandoff } from '../../utils/v3Profile';
@@ -40,14 +40,19 @@ import {
   focusSummary,
   initialInputs,
   moodsPickCopy,
+  moodsPickRotation,
+  BARRIER_BANNER,
   requestSignature,
+  setArchetype,
   setDirection,
   setDuration,
+  targetSupported,
   summaryLine,
   toggleSoreRegion,
   toggleState,
+  V3Goal,
 } from '../../utils/v3HomeModel';
-import { readDayStates, readLastDirection, readTodayBySignature, writeDayStates, writeLastDirection, writeToday } from '../../utils/v3Today';
+import { clearDayStates, readDayStates, readLastDirection, readTodayBySignature, writeDayStates, writeLastDirection, writeToday } from '../../utils/v3Today';
 import type { V3TodayEntry } from '../../utils/v3Today';
 import { V3_HOME_HERO } from '../../utils/cartHero';
 import { V3Chip } from '../../components/v3/V3Chip';
@@ -55,6 +60,9 @@ import { ConflictSheet } from '../../components/v3/ConflictSheet';
 import { ConfigSheet } from '../../components/v3/ConfigSheet';
 import { BodyMapSheet } from '../../components/v3/BodyMapSheet';
 import { V3_ASSETS } from '../../components/v3/v3Images';
+import { parseBuildPreset } from '../../utils/v3Explore';
+import { PickRotator } from '../../components/v3/PickRotator';
+import { BuildCoachmark } from '../../components/v3/BuildCoachmark';
 
 const VALID_STATES = new Set<string>(STATES.map((s) => s.id));
 
@@ -67,10 +75,19 @@ export default function V3Build() {
   const insets = useSafeAreaInsets();
   const { token, user } = useAuth();
   const uid = user?.id ?? null;
+  /** Explore (Trending, MOOD's Picks) and Profile (Do Again) open Build with a preset: those inputs arrive preselected. */
+  const { preset: presetParam, source: presetSource, first: firstParam } = useLocalSearchParams<{ preset?: string; source?: string; first?: string }>();
+  /** Opened straight from the onboarding profile reveal ("Build my first workout"). */
+  const fromOnboarding = firstParam === '1';
+  /** First Build after onboarding: a one-time overlay pointing at Build Workout (BuildCoachmark). */
+  const [coachmark, setCoachmark] = useState(false);
+  const [footerH, setFooterH] = useState(0);
 
   const [inputs, setInputs] = useState<HomeInputs | null>(null);
   const [handoff, setHandoff] = useState<FirstHomeHandoff | null>(null);
   const [profileLevel, setProfileLevel] = useState<V3Experience | null>(null);
+  const [profileGoal, setProfileGoal] = useState<V3Goal | null>(null);
+  const [profileFreq, setProfileFreq] = useState<string | null>(null);
   const [engine, setEngine] = useState<{ engine_phase: string; engine_build: string } | null | undefined>(undefined);
   const [configOpen, setConfigOpen] = useState(false);
   const [building, setBuilding] = useState(false);
@@ -80,6 +97,8 @@ export default function V3Build() {
   const [mapOpen, setMapOpen] = useState(false);
   const directionTouched = useRef(false);
   const durationTouched = useRef(false);
+  /** "I'm steady today": picked on Home (no States, explicitly) or here; shown as a selected option under the six States. */
+  const [steady, setSteady] = useState(false);
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const track = useCallback(
@@ -98,21 +117,56 @@ export default function V3Build() {
       const [h, last, ds] = await Promise.all([readFirstHomeHandoff(uid), readLastDirection(uid), readDayStates(uid, date)]);
       if (!alive) return;
       const pending = h && h.pending ? h : null;
-      const dir: V3Direction = last ?? (pending?.default_direction as V3Direction) ?? 'strength';
-      // States: today's Home selection; on a first visit with nothing chosen yet, the onboarding prefill.
+      const preset = parseBuildPreset(presetParam);
+      // Opened by the onboarding reveal ("Build my first workout"): the funnel answers win over anything stored on this
+      // device from earlier (a last-used Direction, today's States from a previous run / test account).
+      const onboarding = fromOnboarding && !!pending && !preset;
       const prefill = (pending?.prefill?.states ?? []).filter((s) => VALID_STATES.has(s)) as V3State[];
-      const states = ds.set ? ds.states : prefill;
-      const base = initialInputs(dir, { states, duration: defaultDuration(null, pending?.default_duration) });
-      setInputs({ ...base, soreness: states.includes('sore') ? ds.soreness : [] });
+      const dir: V3Direction = onboarding
+        ? ((pending!.default_direction as V3Direction) ?? 'strength')
+        : preset?.direction ?? last ?? (pending?.default_direction as V3Direction) ?? 'strength';
+      if (onboarding) {
+        directionTouched.current = true; // a late profile fetch must not move it
+        setCoachmark(true);
+      }
+      // States: the onboarding prefill; otherwise today's Home selection, else the first-visit prefill.
+      const states = onboarding ? prefill : preset?.states ?? (ds.set ? ds.states : prefill);
+      if (onboarding) {
+        if (prefill.length) writeDayStates(uid, { date, states: prefill, soreness: [], set: true });
+        else clearDayStates(uid);
+      }
+      // Home's "I'm steady today" saves today's States as set-and-empty: arrive with Steady already selected
+      setSteady(preset || onboarding ? false : ds.set && ds.states.length === 0);
+      // First visit from onboarding: the "short on time" answer arrives as 30 min selected (changeable), not just a badge.
+      const firstDuration = !preset && pending?.prefill?.suggest_duration === 30 && (onboarding || !ds.set) ? 30 : null;
+      if (firstDuration) durationTouched.current = true;
+      let base = initialInputs(dir, { states, duration: preset?.duration ?? firstDuration ?? defaultDuration(null, pending?.default_duration) });
+      base = { ...base, soreness: !preset && !onboarding && states.includes('sore') ? ds.soreness : [] };
+      if (preset) {
+        // a preset is an explicit choice: profile defaults arriving later must not overwrite it
+        directionTouched.current = true;
+        if (preset.duration) durationTouched.current = true;
+        if (preset.target && targetSupported(dir)) base = { ...base, target: preset.target, archetype: null };
+        else if (preset.archetype) base = setArchetype(base, preset.archetype);
+      }
+      setInputs(base);
       const lvl = (pending?.profile as any)?.experience as V3Experience | undefined;
       if (lvl) setProfileLevel(lvl);
+      const hg = (pending?.profile as any)?.goal as V3Goal | undefined;
+      if (hg) setProfileGoal(hg);
+      const hf = (pending?.profile as any)?.training_frequency as string | undefined;
+      if (hf) setProfileFreq(hf);
       setHandoff(pending);
-      track('v3_build_viewed', { direction: dir, direction_source: last ? 'last_used' : pending ? 'handoff' : 'fallback', states, first_visit: !!pending });
+      track('v3_build_viewed', { direction: dir, direction_source: preset ? 'preset' : onboarding ? 'onboarding' : last ? 'last_used' : pending ? 'handoff' : 'fallback', states, first_visit: !!pending, preset_source: preset ? presetSource ?? null : null });
       if (!token) return;
       const prof = await fetchTrainingProfile(token);
       if (!alive || !prof) return;
       const pl = prof.profile?.experience as V3Experience | undefined;
       if (pl) setProfileLevel(pl);
+      const pg = prof.profile?.goal as V3Goal | undefined;
+      if (pg) setProfileGoal(pg);
+      const pf = prof.profile?.training_frequency as string | undefined;
+      if (pf) setProfileFreq(pf);
       const pd = defaultDuration(prof.profile?.default_duration as any, pending?.default_duration);
       setInputs((i) => {
         if (!i) return i;
@@ -172,8 +226,22 @@ export default function V3Build() {
     }
     setInputs(r.inputs);
     persistStates(r.inputs);
+    setSteady(false);
     setError(null);
     track('v3_state_toggled', { state: id, selected: r.inputs.states.includes(id), count: r.inputs.states.length });
+  };
+
+  /** Steady = no States today, on purpose. Picking it clears the States (and any sore areas); a State clears it. */
+  const onSteady = () => {
+    if (!inputs) return;
+    haptic();
+    if (steady && inputs.states.length === 0) { setSteady(false); return; }
+    const next = { ...inputs, states: [] as V3State[], soreness: [] as HomeInputs['soreness'] };
+    setInputs(next);
+    persistStates(next);
+    setSteady(true);
+    setError(null);
+    track('v3_state_toggled', { state: 'steady', selected: true, count: 0 });
   };
 
   const onMapDone = (regions: HomeInputs['soreness']) => {
@@ -215,7 +283,7 @@ export default function V3Build() {
   const onConfig = (next: HomeInputs) => {
     setConfigOpen(false);
     if (!inputs) return;
-    const changed = next.target !== inputs.target || next.archetype !== inputs.archetype || next.difficulty !== inputs.difficulty;
+    const changed = next.target !== inputs.target || next.archetype !== inputs.archetype || next.difficulty !== inputs.difficulty || (next.goal ?? null) !== (inputs.goal ?? null);
     setInputs(next);
     setError(null);
     if (!changed) return;
@@ -226,10 +294,14 @@ export default function V3Build() {
     if (next.difficulty !== inputs.difficulty) {
       track('v3_difficulty_changed', { direction: next.direction, from: inputs.difficulty ?? profileLevel ?? null, to: next.difficulty ?? profileLevel ?? null, override: !!next.difficulty });
     }
+    if ((next.goal ?? null) !== (inputs.goal ?? null)) {
+      track('v3_goal_changed', { direction: next.direction, from: inputs.goal ?? profileGoal ?? null, to: next.goal ?? profileGoal ?? null, override: !!next.goal });
+    }
   };
 
   /* ---------------------------------------------------------------- build */
-  const openCart = (id: string) => router.replace({ pathname: '/v3/workout', params: { id } } as any);
+  // Pushed, not replaced (founder pass, Oct 2026): Back from the Cart returns to Build with every choice still set.
+  const openCart = (id: string) => router.push({ pathname: '/v3/workout', params: { id } } as any);
 
   const build = async (override?: HomeInputs) => {
     const inp = override ?? inputs;
@@ -343,7 +415,7 @@ export default function V3Build() {
         <Pressable onPress={() => router.back()} hitSlop={12} style={styles.back} accessibilityLabel="Back" testID="v3-build-back">
           <Ionicons name="chevron-back" size={22} color={COLORS.textPrimary} />
         </Pressable>
-        <Text style={styles.topTitle}>Build today’s workout</Text>
+        <Text style={styles.topTitle}>{fromOnboarding ? 'Build your first workout' : 'Build today’s workout'}</Text>
         <View style={{ width: 36 }} />
       </View>
 
@@ -403,6 +475,26 @@ export default function V3Build() {
               />
             ))}
           </View>
+          {/* under the six States: the "nothing to adjust for" answer, prefilled when Home's "I'm steady today" opened Build */}
+          {/* Selected reads as an answer already given (a gold check on a neutral row), not as a gold button still to press */}
+          {(() => {
+            const on = steady && inputs.states.length === 0;
+            return (
+              <Pressable
+                onPress={onSteady}
+                accessibilityRole="button"
+                accessibilityState={{ selected: on }}
+                style={({ pressed }) => [styles.steadyRow, on && styles.steadyRowOn, pressed && { opacity: 0.85 }]}
+                testID="v3-state-steady"
+              >
+                <View style={[styles.steadyMark, on && styles.steadyMarkOn]}>
+                  <Ionicons name={on ? 'checkmark' : 'leaf-outline'} size={on ? 14 : 13} color={on ? COLORS.accentInk : '#FFE2A6'} />
+                </View>
+                <Text style={[styles.steadyLabel, on && styles.steadyLabelOn]}>I’m steady today</Text>
+                <Text style={[styles.steadyNote, on && styles.steadyNoteOn]} testID={on ? 'v3-state-steady-on' : undefined}>{on ? 'Selected' : 'Nothing to adjust for'}</Text>
+              </Pressable>
+            );
+          })()}
           {inputs.states.includes('sore') ? (
             <View style={styles.sore} testID="v3-soreness">
               <View style={styles.soreHead}>
@@ -424,7 +516,7 @@ export default function V3Build() {
         {/* 3. Focus */}
         <View style={styles.section}>
           <Text style={styles.step}>3</Text>
-          <Text style={styles.h2}>Focus</Text>
+          <Text style={styles.h2}>What do you want to hit?</Text>
           <Pressable
             onPress={() => setConfigOpen(true)}
             style={({ pressed }) => [styles.row, pressed && { opacity: 0.85 }]}
@@ -435,6 +527,9 @@ export default function V3Build() {
                 {focusSummary(inputs)}
               </Text>
               {pickCopy ? <Text style={styles.rowSub}>{pickCopy}</Text> : null}
+              {pickCopy ? (
+                <PickRotator names={moodsPickRotation(inputs.direction, inputs.goal ?? profileGoal, profileFreq)} testID="v3-pick-rotator" />
+              ) : null}
             </View>
             <Text style={styles.rowChange}>Change</Text>
           </Pressable>
@@ -472,12 +567,26 @@ export default function V3Build() {
       </ScrollView>
 
       {/* 5. Build */}
-      <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]} pointerEvents="box-none">
-        <LinearGradient colors={['rgba(10,10,10,0)', COLORS.bg]} style={styles.footerFade as any} />
+      {coachmark && footerH > 0 ? (
+        <BuildCoachmark
+          title={handoff?.prefill?.copy_key ? BARRIER_BANNER[handoff.prefill.copy_key].title : 'You’re all set'}
+          body={(() => {
+            const k = handoff?.prefill?.copy_key;
+            if (!k) return 'Your answers are already in. Tap Build Workout to see your first session.';
+            // dont_know / motivation copy already says "press Build"
+            return k === 'dont_know' || k === 'motivation' ? BARRIER_BANNER[k].body : `${BARRIER_BANNER[k].body} Tap Build Workout when you're ready.`;
+          })()}
+          footerHeight={footerH}
+          onDismiss={() => { setCoachmark(false); track('v3_build_coachmark_dismissed', { via: 'tap' }); }}
+        />
+      ) : null}
+
+      <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]} pointerEvents="box-none" onLayout={(e) => setFooterH(e.nativeEvent.layout.height)}>
+        <LinearGradient colors={[bgA(0), COLORS.bg]} style={styles.footerFade as any} />
         <Text style={styles.summary} numberOfLines={1} testID="v3-build-summary">
           {buildingLine}
         </Text>
-        <Pressable onPress={() => build()} disabled={building || !!blocker} testID="v3-build" style={({ pressed }) => [pressed && { opacity: 0.9 }]}>
+        <Pressable onPress={() => { if (coachmark) { setCoachmark(false); track('v3_build_coachmark_dismissed', { via: 'build' }); } build(); }} disabled={building || !!blocker} testID="v3-build" style={({ pressed }) => [pressed && { opacity: 0.9 }]}>
           <LinearGradient
             colors={blocker ? ['rgba(255,255,255,0.08)', 'rgba(255,255,255,0.08)'] : [...BRAND_GRADIENT]}
             start={{ x: 0, y: 0 }}
@@ -503,6 +612,7 @@ export default function V3Build() {
         inputs={inputs}
         suggest30={suggest30}
         profileLevel={profileLevel}
+        profileGoal={profileGoal}
         showLength={false}
         onApply={onConfig}
         onClose={() => setConfigOpen(false)}
@@ -526,12 +636,20 @@ const styles = StyleSheet.create({
   sectionHead: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 12 },
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   stateCell: { flexGrow: 1, flexBasis: '30%' },
+  steadyRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 8, paddingVertical: 11, paddingHorizontal: 14, borderRadius: 22, backgroundColor: '#6E6158', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,245,230,0.24)' },
+  steadyRowOn: { backgroundColor: '#8E7F74', borderColor: 'rgba(255,245,230,0.5)', borderWidth: 1 },
+  steadyMark: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,245,230,0.14)' },
+  steadyMarkOn: { backgroundColor: COLORS.accent },
+  steadyLabel: { flex: 1, fontSize: 14, fontWeight: '600', color: COLORS.textPrimary },
+  steadyLabelOn: { fontWeight: '700' },
+  steadyNoteOn: { color: COLORS.textPrimary },
+  steadyNote: { fontSize: 12.5, fontWeight: '600', color: COLORS.textSecondary },
 
   dirRow: { flexDirection: 'row', gap: 10, marginTop: 14 },
   dirCard: { flex: 1, borderRadius: 18, overflow: 'hidden' },
   dirCardOn: { borderWidth: 2, borderColor: COLORS.textPrimary },
   dirCardOff: { borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,255,255,0.14)' },
-  dirImg: { height: 168, justifyContent: 'flex-end', backgroundColor: '#141414' },
+  dirImg: { height: 168, justifyContent: 'flex-end', backgroundColor: COLORS.surface },
   dirImgInner: { borderRadius: 16, width: '100%', height: '100%' },
   check: {
     position: 'absolute',

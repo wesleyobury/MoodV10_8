@@ -7,12 +7,16 @@ const here = path.dirname(new URL(import.meta.url).pathname);
 const nm = (p) => path.join(here, 'node_modules', p);
 const stub = (f) => path.join(here, 'stubs', f);
 const EDGE = [
-  [/(^|\/)contexts\/AuthContext$/, 'AuthContext.tsx'], [/(^|\/)utils\/analytics$/, 'analytics.ts'], [/(^|\/)utils\/devFlags$/, 'devFlags.ts'],
+  [/(^|\/)contexts\/AuthContext$/, 'AuthContext.tsx'], [/(^|\/)utils\/analytics$|^\.\.\/analytics$/, 'analytics.ts'], [/(^|\/)utils\/devFlags$/, 'devFlags.ts'],
   [/^\.\/api$|(^|\/)utils\/api$/, 'api.ts'], [/SafeLinearGradient$/, 'SafeLinearGradient.tsx'], [/(^|\/)constants\/brand$/, 'brand.ts'],
 ];
 const PKG = { 'react-native': nm('react-native-web'), react: nm('react'), 'react-dom': nm('react-dom'), '@expo/vector-icons': stub('icons.tsx'),
   'react-native-safe-area-context': stub('safearea.tsx'), 'expo-router': stub('router.tsx'), '@react-navigation/native': stub('nav.ts'),
-  '@react-native-async-storage/async-storage': stub('storage.ts') };
+  '@react-native-async-storage/async-storage': stub('storage.ts'),
+  // Guided Session QA: native-only modules recorded on window.__native (stubs/native.tsx), SVG as DOM SVG
+  'expo-haptics': stub('native.tsx'), 'expo-keep-awake': stub('native.tsx'), 'expo-notifications': stub('native.tsx'), 'expo-constants': stub('native.tsx'),
+  'expo-localization': stub('native.tsx'), 'expo-image': stub('native.tsx'), 'expo-av': stub('native.tsx'), 'react-native-svg': stub('svg.tsx'),
+  'expo-modules-core': stub('native.tsx'), '@react-native-masked-view/masked-view': stub('masked.tsx'), 'react-native-view-shot': stub('native.tsx'), 'expo-media-library': stub('native.tsx'), 'expo-sharing': stub('native.tsx') };
 const edges = { name: 'edges', setup(b) {
   b.onResolve({ filter: /.*/ }, (a) => {
     for (const [re, f] of EDGE) if (re.test(a.path)) return { path: stub(f) };
@@ -33,7 +37,7 @@ function require_resolve(p) {
 }
 fs.mkdirSync(path.join(here, 'dist'), { recursive: true });
 fs.writeFileSync(path.join(here, 'dist/index.html'), '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body,#root{height:100%;margin:0;background:#0A0A0A;font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif}#root{display:flex}</style></head><body><div id="root"></div><script src="bundle.js"></script></body></html>');
-await esbuild.build({ entryPoints: [path.join(here, 'main.tsx')], bundle: true, outfile: path.join(here, 'dist/bundle.js'), loader: { '.json': 'json' }, jsx: 'automatic',
+await esbuild.build({ entryPoints: [path.join(here, 'main.tsx')], bundle: true, outfile: path.join(here, 'dist/bundle.js'), loader: { '.json': 'json', '.png': 'file', '.jpg': 'file' }, jsx: 'automatic', banner: { js: 'window.process = window.process || { env: { NODE_ENV: "development" } };' },
   define: { 'process.env.NODE_ENV': '"development"', __DEV__: 'true', global: 'window' }, plugins: [edges],
   resolveExtensions: ['.web.tsx', '.web.ts', '.web.js', '.tsx', '.ts', '.js'], logLevel: 'error' });
 console.log('built', path.join(here, 'dist'));

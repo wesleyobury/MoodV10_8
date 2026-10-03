@@ -23,13 +23,94 @@ FORCEFUL_POOL = ['kettlebell_swing', 'push_press', 'db_clean_to_press', 'kb_clea
 CARRY_POOL = ['farmer_carry', 'suitcase_carry']
 FIN_REPS = {'kettlebell_swing': '15', 'push_press': '6', 'db_clean_to_press': '8', 'kb_clean_and_press': '6/side', 'db_snatch': '6/side', 'barbell_thruster': '8',
             'sled_push': '20 m', 'farmer_carry': '30 m', 'suitcase_carry': '25 m/side'}
-TEMPO_TEXT = {'controlled': 'Controlled tempo: 3 s lowering, smooth drive, no bounce', 'explosive_intent': 'Move the bar with intent: controlled down, drive up as fast as it will go'}
+TEMPO_TEXT = {'controlled': 'Controlled eccentrics: slow and steady on the way down, smooth drive up, no bounce', 'explosive_intent': 'Move the bar with intent: controlled down, drive up as fast as it will go'}
+
+# ------------------------------------------------------------------ final pre-launch trainer-quality pass (Oct 2026)
+# Exercise eligibility by level: assisted machines are beginner regressions. Intermediate / advanced lifters get the real
+# movement (pull-up, pulldown, dip, pressdown); the assisted versions never generate for them.
+BEGINNER_ONLY = {'assisted_pull_up_machine', 'assisted_dip_triceps'}
+# Low-value accessories: legitimate exercises, but never worth one of a session's few accessory slots unless the user named
+# the muscle. They rank below every relevant option (they remain a last resort for a thin pool).
+LOW_VALUE = {'band_pull_apart', 'plate_front_raise', 'cable_front_raise', 'copenhagen_plank', 'mountain_climber', 'banded_lateral_walk',
+             'side_lying_hip_abduction', 'cable_hip_adduction', 'hip_adduction_machine'}
+# Accessory relevance per archetype (rolled lead muscle): tier 2 = what the session is about, tier 1 = acceptable support,
+# anything else (core on a hinge day, adductors on a Full Body day) only when nothing relevant is left.
+ACC_FOCUS = {
+    'strength_lower_hinge': ({'hamstrings', 'glutes', 'spinal_erectors'}, {'hip_abductors', 'calves'}),
+    'strength_glutes_legs': ({'glutes', 'quads', 'hamstrings'}, {'hip_abductors', 'calves'}),
+    'strength_lower_squat': ({'quads', 'glutes', 'hamstrings'}, {'calves', 'hip_abductors'}),
+    'strength_upper_push':  ({'chest', 'triceps', 'shoulders'}, set()),
+    'strength_upper_pull':  ({'back', 'biceps', 'shoulders'}, {'forearms'}),
+    'strength_upper_mixed': ({'chest', 'back', 'shoulders', 'biceps', 'triceps'}, set()),
+    'strength_arms':        ({'biceps', 'triceps', 'shoulders'}, {'forearms'}),
+    'strength_full_body':   ({'chest', 'back', 'shoulders', 'biceps', 'triceps', 'hamstrings', 'glutes', 'quads', 'core'}, {'calves'}),
+}
+FRONT_RAISES = {'plate_front_raise', 'cable_front_raise'}
+NICHE_SECONDARY = {'curtsy_lunge', 'lateral_lunge'}
+# Upper Pull main lift (Oct 2026): every heavy, loadable back lift can lead (pull-ups, rows on bar / machine / cable / landmine),
+# not only plate-loaded machines. Bodyweight-limited or regression options never lead for a trained lifter.
+PULL_LEAD_EQ = {'barbell', 'plate_loaded_machine', 'selectorized_machine', 'dumbbells', 'cable', 'landmine', 'pullup_bar'}
+PULL_LEAD_OK = {'t_bar_row', 'machine_high_row', 'machine_low_row'}          # 'allowed' in the library, legitimate heavy leads
+PULL_LEAD_WEAK = {'inverted_row', 'assisted_pull_up_machine'}
+# Forceful finishers that belong to the session: no thruster after a pull day, no carry on a hinge day.
+FORCEFUL_BY_ARCH = {
+    'strength_upper_pull':  ['kettlebell_swing', 'db_snatch', 'sled_push'],
+    'strength_upper_push':  ['push_press', 'kb_clean_and_press', 'db_clean_to_press', 'sled_push'],
+    'strength_upper_mixed': ['push_press', 'db_clean_to_press', 'kb_clean_and_press', 'kettlebell_swing', 'db_snatch'],
+    'strength_lower_squat': ['kettlebell_swing', 'barbell_thruster', 'sled_push'],
+    'strength_lower_hinge': ['kettlebell_swing', 'db_snatch', 'sled_push'],
+    'strength_glutes_legs': ['kettlebell_swing', 'sled_push', 'barbell_thruster'],
+    'strength_arms': [],                       # an Arms day finishes on the arms (burnout) or grip (farmer carry), not a swing
+}
+CARRY_OK = {'strength_full_body', 'strength_upper_pull', 'strength_upper_mixed', 'strength_glutes_legs', 'strength_lower_squat', 'strength_arms'}
 
 
 def seedu(*parts): return V.u(*parts)
 
 
+def acc_tier(aid, e, sel, Tg):
+    """Accessory relevance for this session (2 relevant, 1 acceptable, 0 filler). A user-named Target muscle is always relevant."""
+    m = AE.roll(e['pm0'])
+    if Tg and m in Tg: return 2
+    if e['id'] in LOW_VALUE: return 0
+    if e['id'] in FRONT_RAISES and any(x['pat'] in AE.PUSH and x['cls'] != 'isolation' for x in sel.values()): return 0   # front delts already pressed
+    if aid == 'strength_arms' and m == 'shoulders' and (e['cls'] != 'isolation' or e['explosive']): return 0   # delt work on an Arms day is raises, not a Push Press
+    focus = ACC_FOCUS.get(aid)
+    if not focus: return 1
+    if aid == 'strength_full_body':
+        if m not in focus[0]: return 1 if m in focus[1] else 0
+        if m == 'core': return 2
+        covered = {AE.roll(x) for s in sel.values() for x in s['prim']} | {AE.roll(x) for s in sel.values() for x in (s.get('compm') or ())}
+        return 2 if m not in covered else 1          # Full Body: an accessory earns its slot by filling a gap
+    return 2 if m in focus[0] else (1 if m in focus[1] else 0)
+
+
+def fb_upper_pref(sel):
+    """Full Body upper-body class: a pull unless the bridge already pulls (Renegade Row) and nothing presses yet."""
+    pats = set()
+    for e in sel.values(): pats |= {e['pat']} | set(e.get('comps') or ())
+    if (pats & AE.PULL) and not (pats & AE.PUSH): return 'push'
+    return 'pull'
+
+
 # ================================================================== ranker + slot plan (injected into the frozen composer)
+# Sore as a secondary mover (Oct 2026 generator fix). A sore muscle that only assists loses priority (-3, unchanged). A sore TRUNK
+# stabilizer (lower back / core) in an UNSUPPORTED lift carries the load under it (bent-over rows, free-weight hinges and squats,
+# swings), so that lift loses decisively (-6) whenever a supported or non-loading alternative exists. Nothing is excluded here: when
+# every option involves the sore area the ranking falls back to the usual order.
+SORE_TRUNK = {'spinal_erectors', 'core'}
+
+
+def sore_secondary_penalty(e, sc):
+    hit = set(e['sec']) & (sc.get('sore') or set())
+    if not hit: return 0.0
+    return 6.0 if (hit & SORE_TRUNK and e.get('sup') == 'unsupported') else 3.0
+
+
+def sore_trunk_loaded(e, sc):
+    return bool(set(e['sec']) & (sc.get('sore') or set()) & SORE_TRUNK) and e.get('sup') == 'unsupported'
+
+
 def rank(cands, sc, sel, aid, slot, ctx, seed=0):
     """Hard eligibility is upstream (candidates). Here: Target fulfilment (strict) > protected-primary continuity (strict) >
     weighted soft score: library verdict, State bias, recency x novelty, swap chain, equipment diversity, profile distance, seeded jitter.
@@ -47,7 +128,32 @@ def rank(cands, sc, sel, aid, slot, ctx, seed=0):
     used_eq = {e['eq'] for e in sel.values()}; bctx = dict(used_eq=used_eq, last_station=(list(sel.values())[-1]['station'] if sel else None))
     is_primary = SLOT_CLS.get((aid, slot)) == 'primary_compound'
     dw = sc.get('swap', 0) > 0 and bool(sc.get('displayed'))
+    pull_lead = (aid, slot) == ('strength_upper_pull', 'primary_pull')
+    last_leads = [h.get('slots', {}).get('primary_pull') for h in (sc.get('history') or []) if h.get('archetype') == aid][-2:]
+    lead_pat = None
+    if pull_lead:   # row or vertical pull today: an even, seeded choice that leans away from the last session's lead pattern
+        pw = {'horizontal_pull': 1.0, 'vertical_pull': 1.0}
+        if last_leads and EX.get(last_leads[-1]) and EX[last_leads[-1]]['pat'] in pw: pw[EX[last_leads[-1]]['pat']] *= 0.35
+        lead_pat = V.weighted_pick(pw, sc.get('user', 'u'), sc.get('date', 'd'), 'pull_lead_pat', sc.get('swap', 0), sc.get('_jitter_salt', ''))
     def soft(e, v, b):
+        if pull_lead:   # (Oct 2026) Upper Pull leads with any high-value heavy back lift, rotated by recency
+            s = (VERDICT_W['preferred'] if e['id'] in PULL_LEAD_OK else VERDICT_W[v]) + 0.3 * b
+            s += 1.0 if e['eq'] in PULL_LEAD_EQ else -1.5
+            # no systemic-demand bonus by pattern: rows and vertical pulls compete evenly and recency alternates them; a trained lifter's
+            # free-weight rows (barbell, T-bar) get a fair share, more so on a strength goal
+            s += 1.5 if e['pat'] == lead_pat else 0.0
+            if sc.get('exp') != 'beginner' and e['eq'] in ('barbell', 'landmine') and e['id'] not in PULL_LEAD_WEAK:
+                s += 0.2 + (0.3 if sc.get('_goal') in ('build_strength', 'improve_athleticism') else 0.0)
+            if sc.get('exp') == 'advanced' and e['id'] == 'weighted_pull_up' and sc.get('_goal') in ('build_strength', 'improve_athleticism'): s += 0.5
+            if e['id'] in PULL_LEAD_WEAK and sc.get('exp') != 'beginner': s -= 1.5
+            if last_leads:
+                if e['id'] == last_leads[-1]: s -= 2.0
+                elif e['id'] in last_leads: s -= 1.0
+            fr, er = QE.recency_penalty(e, aid, sc); s -= rmult * (0.5 * fr + 0.5 * er)
+            sf, se = QE.swap_penalty(e, sc); s -= 2.0 * sf + 2.0 * se
+            s += jit * seedu(sc.get('user', 'u'), sc.get('date', 'd'), aid, slot, e['id'], sc.get('swap', 0), sc.get('_jitter_salt', ''))
+            s -= sore_secondary_penalty(e, sc)      # (Oct 2026 fix) this branch returned before the soreness penalty below
+            return s
         s = VERDICT_W[v] + (0.8 if is_primary else 0.3) * b
         if is_primary:   # a main lift is loadable, bilateral where possible and systemically meaningful
             s += 1.0 if e['eq'] in ('barbell', 'trap_bar', 'plate_loaded_machine', 'selectorized_machine', 'smith_machine', 'dumbbells') else -1.5
@@ -59,7 +165,7 @@ def rank(cands, sc, sel, aid, slot, ctx, seed=0):
         f = QE.depth_first(aid, slot, sel)
         if f is not None: s += 0.5 * AE.profile_distance(e, f)
         if not protected: s += D.bias_score(e, bias, bctx) * (0.5 if SLOT_CLS.get((aid, slot)) == 'secondary_compound' else 1.0)
-        if sc.get('sore') and (set(e['sec']) & sc['sore']): s -= 3.0          # a sore muscle as a secondary mover: avoid when an equal option exists
+        s -= sore_secondary_penalty(e, sc)          # a sore muscle as a secondary mover: avoid when an equal option exists
         lvl = sc.get('exp')
         if SLOT_CLS.get((aid, slot)) == 'secondary_compound' and e['cls'] == 'compound':
             # movement-family redundancy across the compound slots: a third press adds little; for a beginner (or a Stressed / feel-better
@@ -67,15 +173,34 @@ def rank(cands, sc, sel, aid, slot, ctx, seed=0):
             same = sum(1 for x in sel.values() if x['cls'] == 'compound' and x['mfam'] == e['mfam'])
             limit = 1 if (lvl == 'beginner' or 'stressed' in (sc.get('_states') or ()) or sc.get('_goal') == 'feel_better_reduce_stress') else 2
             if same >= limit: s -= 2.5
+        if SLOT_CLS.get((aid, slot)) == 'secondary_compound' and not (Tg and sc.get('_explicit') and AE.roll(e['pm0']) in Tg):
+            # a support lift should be worth its slot: no niche lunge variation as the default, no unloaded push-up for a trained lifter
+            if e['id'] in NICHE_SECONDARY and 'bored' not in (sc.get('_states') or ()): s -= 1.0
+            if lvl != 'beginner' and e['eq'] == 'bodyweight' and PR.META.get(e['id'], {}).get('load') in (False, 'FALSE') and e['pat'] in AE.PUSH: s -= 1.5
+            if 'unilateral' not in slot and aid in ('strength_lower_hinge', 'strength_glutes_legs', 'strength_lower_squat'):
+                s += 0.6 if (e['lat'] == 'bilateral' and e['eq'] not in ('bodyweight', 'bands')) else -0.4   # the second lower-body lift is a loadable one
+        if aid == 'strength_upper_pull' and slot in ('complementary_pull', 'secondary_back') and sel.get('primary_pull') and e['sysd'] > sel['primary_pull']['sysd']:
+            s -= 1.0      # the main lift stays the heaviest pull: no Pendlay Row after a Lat Pulldown lead
+        if aid == 'strength_full_body' and slot == 'true_full_body_bridge' and sel.get('primary_lower') and sel['primary_lower']['pat'] in (e.get('comps') or ()):
+            s -= 1.0      # Hack Squat then a Thruster is two squats; the bridge should add a pattern (lunge-to-press, clean-to-press, renegade row)
         if lvl == 'beginner' and not is_primary: s += 0.6 * D.fit(e, 'supported', bctx) + 0.4 * D.fit(e, 'simple', bctx)
         elif lvl == 'advanced' and not is_primary: s += 0.4 if (e['cx'] >= 3 or e['eq'] in ('barbell', 'trap_bar', 'landmine')) else 0.0
         s += jit * seedu(sc.get('user', 'u'), sc.get('date', 'd'), aid, slot, e['id'], 0 if protected else sc.get('swap', 0), '' if protected else sc.get('_jitter_salt', ''))
         return s
     covered = {AE.roll(m) for x in sel.values() for m in x['prim']} if Tg else set()
+    is_acc = SLOT_CLS.get((aid, slot)) in ('accessory', 'extra') and aid in ACC_FOCUS
     def key(t):
-        e, v, b = t; tc = ((3 if AE.roll(e['pm0']) not in covered else 2) if AE.roll(e['pm0']) in Tg else (1 if e['prims'] & Tg else 0)) if Tg else 0   # an uncovered Target muscle comes first
-        if protected and not dw: return (-tc, 0 if e['id'] == anchor else 1, -soft(e, v, b))
-        return (-tc, -soft(e, v, b))
+        # an uncovered Target muscle comes first; a lift that only touches an already-covered Target muscle as a second prime mover
+        # earns nothing (a hinge day's second compound is not forced to be another hamstring-involving pull)
+        e, v, b = t; tc = ((3 if AE.roll(e['pm0']) not in covered else 2) if AE.roll(e['pm0']) in Tg else (1 if ({AE.roll(m) for m in e['prims']} & Tg) - covered else 0)) if Tg else 0
+        at = acc_tier(aid, e, sel, Tg if sc.get('_explicit') else set()) if is_acc else 1
+        # continuity keeps last session's main lift, unless that lift now leans on a sore muscle (soreness outranks continuity)
+        keep = e['id'] == anchor and not (set(e['sec']) & (sc.get('sore') or set()))
+        # a sore trunk stabilizer under an unsupported load is avoided ahead of everything else (Target fit included) whenever an
+        # alternative exists in the pool: the hinge / squat / row still gets trained, through a supported or non-axial option
+        trunk = 1 if sore_trunk_loaded(e, sc) else 0
+        if protected and not dw and not pull_lead: return (trunk, -tc, 0 if keep else 1, -soft(e, v, b))
+        return (trunk, -tc, -at, -soft(e, v, b))
     return sorted(pool, key=key)
 
 
@@ -144,12 +269,24 @@ def candidates(aid, slot, sc, sel, ctx, relax_swap=False):
     the main lift away (Sore still can, through the soreness filters inside hard_ok)."""
     if SLOT_CLS.get((aid, slot)) in ('primary_compound', 'secondary_compound') and sc.get('state') == '_cap-1':
         sc = dict(sc, state='_cap0')          # a lowering State cap applies to accessory work; the compound lifts keep the level's cap
+    if aid == 'strength_full_body' and slot == 'primary_upper' and sel:
+        pref = fb_upper_pref(sel)
+        if pref != ctx.get('fb_upper_eval', ctx.get('fb_upper', 'pull')):
+            alt = _orig_candidates(aid, slot, sc, sel, dict(ctx, fb_upper_eval=pref), relax_swap)
+            if alt: ctx['fb_upper_eval'] = pref; return alt       # Full Body always both presses and pulls
     return _orig_candidates(aid, slot, sc, sel, ctx, relax_swap)
+
+
+_orig_hard_ok = AE.hard_ok
+def hard_ok(e, sc):
+    if e['id'] in BEGINNER_ONLY and sc.get('exp') != 'beginner': return False
+    return _orig_hard_ok(e, sc)
 
 
 # install the hooks (compose / _build / sore_substitute resolve these names from module globals)
 AE.rank = rank; QE.rank = rank; QE.backfill = backfill; AE.slot_active = slot_active; QE.slot_active = slot_active
 AE.candidates = candidates; QE.candidates = candidates
+AE.hard_ok = hard_ok; QE.hard_ok = hard_ok; ST.hard_ok = hard_ok
 
 
 # ================================================================== prescription rows
@@ -282,9 +419,11 @@ def burnout_candidate(aid, W, sc, ctx, seed, exclude=()):
     return e
 
 
-def forceful_candidates(kind, W, sc, exclude=()):
+def forceful_candidates(kind, W, sc, exclude=(), aid=None):
     used = set(W.values()) | set(exclude); out = []
-    for eid in (FORCEFUL_POOL if kind == 'forceful' else CARRY_POOL):
+    if kind == 'carry' and aid and aid not in CARRY_OK: return out
+    carries = CARRY_POOL if aid == 'strength_full_body' else ['farmer_carry']   # outside Full Body a carry finisher is grip work, not anti-lateral-flexion core work
+    for eid in ((FORCEFUL_BY_ARCH.get(aid, FORCEFUL_POOL)) if kind == 'forceful' else carries):
         e = EX.get(eid)
         if not e or eid in used or not AE.hard_ok(e, sc): continue
         if sc.get('sore') and set(e['allm']) & sc['sore']: continue
@@ -310,7 +449,7 @@ def pick_finisher(aid, W, sc, ctx, seed, types, history_fin, exclude=()):
             e = burnout_candidate(aid, W, sc, ctx, seed, exclude)
             if e: return t, e
             continue
-        pool = forceful_candidates(t, W, sc, exclude)
+        pool = forceful_candidates(t, W, sc, exclude, aid)
         if not pool: continue
         pool.sort(key=lambda e: ((e['id'] in recent), seedu(seed, 'fin', t, e['id'])))
         return t, pool[0]
@@ -347,11 +486,30 @@ def build_structure(aid, rows, variant, res, sc, dur, ctx, W, seed, history_fin,
     p_pair = v['pairing'] * res.get('pairing_mult', 1.0)
     pool = [r for r in rows if _pairable(r, aid, variant)]
     pairs = []
+    def align(a, b):
+        hi_a, hi_b = _band(a, exp)['sets'][1], _band(b, exp)['sets'][1]; lo_a, lo_b = _band(a, exp)['sets'][0], _band(b, exp)['sets'][0]
+        m = max(a['sets'], b['sets'])
+        if m > min(hi_a, hi_b): m = min(a['sets'], b['sets'])
+        return m if m >= max(lo_a, lo_b) else None
+    if aid == 'strength_arms':
+        # Arms is programmed one of two deliberate ways: antagonist supersets (curl + extension, lead pair then depth pair) on a
+        # paired / efficient shape, otherwise straight sets grouped by muscle (ordering below). Never a curl paired with a raise.
+        if p_pair >= 0.5 and dur == 60:   # a 30-minute Arms session is too short to compress further
+            byslot = {r['slot']: r for r in rows}
+            for x, y in (('biceps_exercise', 'triceps_exercise'), ('biceps_depth', 'triceps_depth')):
+                a, b = byslot.get(x), byslot.get(y)
+                if not a or not b: continue
+                m = align(a, b)
+                if m is None or not _compatible(dict(a, sets=m), dict(b, sets=m)): continue
+                if a['sets'] != m or b['sets'] != m: log.append(dict(reason_code='pair_sets_aligned', slots=[a['slot'], b['slot']], sets=m))
+                a['sets'] = b['sets'] = m; pairs.append((a, b)); used.add(a['slot']); used.add(b['slot'])
+        pool = []
     for a in pool:
         if a['slot'] in used: continue
         for b in pool:
             if b is a or b['slot'] in used or not _compatible(a, b): continue
             if aid == 'strength_custom_target' and 'core' in (a.get('muscle'), b.get('muscle')) and a.get('muscle') != b.get('muscle'): continue   # Core stays its own last block
+            if aid == 'strength_custom_target' and (a.get('first') or b.get('first')): continue   # each Target block's lead lift runs on its own, first
             if seedu(seed, 'pair', a['slot'], b['slot']) < p_pair:
                 hi_a, hi_b = _band(a, exp)['sets'][1], _band(b, exp)['sets'][1]; lo_a, lo_b = _band(a, exp)['sets'][0], _band(b, exp)['sets'][0]
                 m = max(a['sets'], b['sets'])
@@ -361,8 +519,13 @@ def build_structure(aid, rows, variant, res, sc, dur, ctx, W, seed, history_fin,
                 a['sets'] = b['sets'] = m; pairs.append((a, b)); used.add(a['slot']); used.add(b['slot']); break
     for a, b in pairs:
         blk, extra = ST.superset(a, b, nb(), f'{v["name"]}: paired accessories'); blocks.append(blk)
+    # ---- at most two 'special' elements per session (three when Bored): top-set scheme, set methods, a pyramid / ladder, a finisher.
+    # Each is a legitimate tool; stacked, they turn a session into a gimmick.
+    special_cap = 3 if 'bored' in (res.get('states') or ()) else 2
+    specials = sum(1 for r in rows if r.get('method')) + (1 if any(r.get('top_backoff') for r in rows) else 0)
     # ---- one programming device
     device = None; dp = v['device_p'] * res.get('device_p', 1.0) * (0.0 if aid == 'strength_core' else 1.0)   # no pyramids / ladders on trunk work
+    if specials >= special_cap: dp = 0.0
     opts = [d for d in v['devices'] if d != 'finisher']
     if opts and seedu(seed, 'device') < min(1.0, dp):
         d = opts[int(seedu(seed, 'device_pick') * len(opts)) % len(opts)]
@@ -372,13 +535,15 @@ def build_structure(aid, rows, variant, res, sc, dur, ctx, W, seed, history_fin,
         elif d == 'ladder':
             cand = [r for r in rows if r['slot'] not in used and EX[r['eid']]['cls'] == 'isolation' and not r.get('protected') and EX[r['eid']]['pm0'] != 'core' and r['kind'] == 'reps' and not r['why'] and not r.get('method')]
             if cand: blocks.append(ST.ladder(cand[-1], nb(), f'{v["name"]}: descending ladder on an isolation')); used.add(cand[-1]['slot']); device = 'ladder'
-        if device: log.append(dict(reason_code='device_selected', device=device))
+        if device: log.append(dict(reason_code='device_selected', device=device)); specials += 1
     # ---- optional finisher (a device: State probability, variant compatibility at 30)
     fin = None; fp, ftypes = res.get('finisher', (0.0, ()))
     if fp <= 0 and 'finisher' in v['devices']: fp, ftypes = min(0.2, dp * 0.6), ('burnout', 'forceful', 'carry')
     if aid in ('strength_custom_target', 'strength_core'): ftypes = tuple(t for t in ftypes if t == 'burnout')   # a Target / Core session finishes on its own muscle
+    if aid not in CARRY_OK: ftypes = tuple(t for t in ftypes if t != 'carry')                       # no carry tacked onto a hinge / push day
     if exp == 'beginner': ftypes = tuple(t for t in ftypes if t != 'burnout')                 # RIR-0 burnouts are intermediate and up; a beginner State never means failure
     if dur == 30: fp *= 0.4
+    if specials >= special_cap: fp = 0.0
     if fp > 0 and ftypes and not sc.get('_no_fin') and seedu(seed, 'finisher') < fp:
         t, e = pick_finisher(aid, W, sc, ctx, seed, ftypes, history_fin, fin_exclude)
         if e:
@@ -395,7 +560,22 @@ def build_structure(aid, rows, variant, res, sc, dur, ctx, W, seed, history_fin,
                 it = b['items'][0]; it['scheme'] = r['scheme']; it['load'] = 'top set heavy, then back off 10–15% for the remaining sets'
             blocks.append(b)
     pos = {r['slot']: i for i, r in enumerate(rows)}
-    blocks.sort(key=lambda b: min(pos.get(it['slot'], 99) for it in b['items']))
+    if aid == 'strength_arms' and not any({EX[a['eid']]['pm0'], EX[b['eid']]['pm0']} == {'biceps', 'triceps'} for a, b in pairs):
+        # straight-set Arms: train one muscle group, then the other (the bridge lift first, delts after); the order flips by session
+        first = 'biceps' if seedu(seed, 'arms_order') < 0.5 else 'triceps'
+        other = 'triceps' if first == 'biceps' else 'biceps'
+        def g(r):   # grouped by the muscle the exercise actually trains (a sore-shoulder substitute curl joins the biceps group)
+            if r['slot'] == 'compound_combination': return 0
+            m = EX[r['eid']]['pm0']; base = {first: 1, other: 3, 'shoulders': 5}.get(m, 7)
+            return base + (0 if r['slot'].endswith('_exercise') else (0.5 if r['slot'].endswith('_depth') else 0.7))
+        pos = {r['slot']: g(r) for r in rows}
+        log.append(dict(reason_code='arms_grouped_by_muscle', first=first))
+    # a Custom Target superset that joins two muscle blocks sits where its later half belongs: both muscles' compound leads come first
+    def bkey(b):
+        ps = [pos.get(it['slot'], 99) for it in b['items']]
+        if aid == 'strength_custom_target' and not any(r.get('first') for r in rows if r['slot'] in {it['slot'] for it in b['items']}): return max(ps)
+        return min(ps)
+    blocks.sort(key=bkey)
     for i, b in enumerate(blocks, 1): b['block_id'] = f'B{i}'; b['sequence_index'] = i
     if fin: blocks_fin['sequence_index'] = len(blocks) + 1; blocks.append(blocks_fin)
     for b in blocks:
@@ -547,6 +727,8 @@ def validate(payload, aid_req, sc, dur, ctx, rows, blocks, fin, exp, est, swappe
 def composition_checks(aid, W, sc, ctx):
     if aid in ('strength_core', 'strength_custom_target'): return []
     out = []; sel = {}
+    if aid == 'strength_full_body' and 'true_full_body_bridge' in W:
+        ctx = dict(ctx, fb_upper_eval=fb_upper_pref({'b': EX[W['true_full_body_bridge']]}))
     for s in AE.SLOTS[aid]:
         slot = s['slot']
         if slot not in W: continue
@@ -955,12 +1137,18 @@ CT_SIZE = {60: {1: {'major': 4, 'minor': 4, 'core': 3}, 2: {'major': 3, 'minor':
            30: {1: {'major': 3, 'minor': 3, 'core': 3}, 2: {'major': 2, 'minor': 1, 'core': 1}, 3: {'major': 1, 'minor': 1, 'core': 1}}}
 
 
+CT_NOT_LEAD = {'curtsy_lunge', 'lateral_lunge', 'sled_push', 'kettlebell_swing', 'rack_pull'}
+CT_OK = {eid for eid, v, c, b in AE.ELIG[('strength_custom_target', 'target_block_a')] if EX[eid]['cls'] != 'integrated' and not EX[eid]['combo']}
+
+
 def compose_custom(targets, sc, dur, seed, shown=()):
     """Blocks per Target muscle. Rules: lead with a compound where the pool has one (Core with other Targets stays direct trunk work);
     compounds >= 40% of a major-muscle block; at most one exercise per swap family and at most two per movement family; every pick
     profile-distinct (>= 2 of equipment / support / laterality / movement family / tags) from every other pick in the block."""
     n = len(targets)
-    pool = [EX[eid] for eid, v, c, b in AE.ELIG[('strength_custom_target', 'target_block_a')] if AE.hard_ok(EX[eid], sc)]
+    # combination / integrated lifts (Clean to Press, Thruster, Renegade Row) are Full Body work: their taxonomy lists a Target muscle,
+    # but they never make a session unmistakably about that muscle, so they are not Custom Target material
+    pool = [EX[eid] for eid, v, c, b in AE.ELIG[('strength_custom_target', 'target_block_a')] if AE.hard_ok(EX[eid], sc) and eid in CT_OK]
     blocks = {}; fails = []; widths = {}; relaxed = []
     def sig(e): return (e['eq'], e['sup'], e['lat'], tuple(sorted(e['vt'])))
     def distinct(e, chosen):
@@ -976,6 +1164,11 @@ def compose_custom(targets, sc, dur, seed, shown=()):
             s += 0.5 if e['lat'] == 'bilateral' else 0.0
             s += 0.3 if e['sysd'] >= 3 else 0.0
             s -= 2.0 if (PR.META.get(e['id'], {}).get('load') in (False, 'FALSE') and e['eq'] == 'bodyweight') else 0.0
+            # ... that is unmistakably about this muscle: the Target is its only prime mover (Hip Thrust for Glutes) rather than one of
+            # three (Trap-Bar Deadlift), and it is not a ballistic / niche variation (Swing, Curtsy Lunge)
+            own = sum(1 for x in e['prims'] if AE.roll(x) == m) / max(1, len(e['prims']))
+            s += 1.5 * own - (1.5 if (e['explosive'] or e['forceful'] or e['id'] in CT_NOT_LEAD) else 0.0)
+        if e['id'] in LOW_VALUE: s -= 1.5
         s += D.bias_score(e, sc.get('_bias') or {}, dict(used_eq={c['eq'] for c in chosen}, last_station=(chosen[-1]['station'] if chosen else None)))
         s += 0.6 * (e['eq'] not in {c['eq'] for c in chosen}) + seedu(seed, 'ct', m, e['id'], sc.get('swap', 0))
         return s
@@ -1193,6 +1386,7 @@ def compose_core(sc, dur, exp, seed, shown=(), history=()):
         s -= 1.2 * recent.get(e['id'], 0) + 2.0 * (e['id'] in {i for ids in shown for i in ids})
         if cat == 'brace_load': s += 0.6 * (e['pat'] in ('squat', 'vertical_push'))       # the loaded bracing lead is a squat or an overhead press when one exists
         if cat in ('anti_extension', 'anti_rotation', 'rotation', 'flexion'): s -= 0.6 * (e['sysd'] >= 2) + 0.4 * (e['id'] == 'mountain_climber')   # direct trunk work is trunk work, not conditioning
+        if e['id'] in LOW_VALUE: s -= 2.0                                                  # Copenhagen plank is adductor work first
         s += 1.3 * seedu(seed, 'core', cat, e['id'], sc.get('swap', 0), sc.get('_jitter_salt', ''))
         return s
     def pick(cat):

@@ -178,6 +178,8 @@ function NavigationStack() {
       <Stack.Screen name="privacy-policy" options={{ headerShown: false }} />
       <Stack.Screen name="cart" options={{ headerShown: false }} />
       <Stack.Screen name='workout-session' options={{ headerShown: false }} />
+      {/* V3 Guided Session: no swipe-back; leaving goes through the exit sheet (pause and leave / end workout). */}
+      <Stack.Screen name="v3/session" options={{ headerShown: false, gestureEnabled: false, fullScreenGestureEnabled: false }} />
       <Stack.Screen name='settings' options={{ headerShown: false }} />
       <Stack.Screen name="admin-add-workout" options={{ headerShown: false }} />
       <Stack.Screen name="saved-builds" options={{ headerShown: false }} />

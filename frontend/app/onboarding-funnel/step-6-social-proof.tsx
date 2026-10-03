@@ -17,7 +17,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Analytics } from '../../utils/analytics';
 
 const WORKOUTS_COMPLETED = '1,100+';
-const ATHLETES_TRAINING = '600+';
+const ATHLETES_TRAINING = '1,000+';
 const APP_STORE_RATING = '5.0';
 
 type Testimonial = {
@@ -52,7 +52,7 @@ const TESTIMONIALS: Testimonial[] = [
 
 export default function Step6SocialProof() {
   const router = useRouter();
-  const { markStepEntered, consumeStepDuration } = useOnboardingFunnel();
+  const { answers, markStepEntered, consumeStepDuration } = useOnboardingFunnel();
   const { token, user } = useAuth();
 
   useEffect(() => {
@@ -82,6 +82,8 @@ export default function Step6SocialProof() {
   return (
     <FunnelLayout
       step={6}
+      // V3 funnel: the profile is complete; this is the last beat before MOOD builds it.
+      profilePct={answers.trainingPreference ? 100 : undefined}
       eyebrow="Don't take our word for it"
       title="Trusted by those who coach elite athletes."
       ctaLabel="Build my profile"

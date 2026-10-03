@@ -38,6 +38,8 @@ def _strength_rx(it, row, blk):
                           rest_sec=rest, rir=it.get('rir'), load_guidance=lg.strip() if lg else None, display=display,
                           direction_fields=dict(slot_class=row.get('cls'), protected=bool(row.get('protected')), role=row.get('role'), set_method=(method['id'] if method else None)))
 
+from .engines.strength.trainer_gate import block_role as strength_block_role   # cart heading = the block's role in THIS workout
+
 def format_strength(res, nctx):
     rows = {r['slot']: r for r in res['rows']}
     for r in res.get('fin_rows', []): rows['finisher'] = r
@@ -48,9 +50,8 @@ def format_strength(res, nctx):
             row = rows[it['slot']]; e = SA.EX[it['exercise_id']]
             ex = F.exercise_ref(e['id'], e['name'], e['eq'], e['prim'])
             items.append(F.item(it['slot'], it['slot'], ex, _strength_rx(it, row, b), cues=cues_for(e['id']), role=row.get('role')))
-        cls = rows[b['items'][0]['slot']].get('cls', 'accessory')
-        btype = 'finisher' if b['structure_id'] == 'finisher' else _STR_TYPE.get(cls, 'accessory')
-        title = _STR_TITLE.get(b['structure_id']) or ({'main': 'Main lift', 'secondary': 'Strength', 'target': 'Target block', 'accessory': 'Accessory'}[btype])
+        btype, label = strength_block_role(res['archetype'], b, [rows[it['slot']] for it in b['items']])
+        title = _STR_TITLE.get(b['structure_id']) or label
         blocks.append(F.block(f'B{n}', n, btype, b['structure_id'], title, items, rounds=b['rounds'],
                               rest_between_items_sec=b['rest_between_items'] or None, rest_between_rounds_sec=b['rest_after_round'],
                               instructions=_STR_INSTR.get(b['structure_id'])))
@@ -97,7 +98,7 @@ def format_sweat(res, nctx):
                 items.append(F.item(sid(e), b['slot'], _sw_ex(e), F.prescription('time', sets=it['rounds'], seconds=it['work'], rpe=b['rpe'],
                              rest_sec=None, display=f"{it['rounds']} × {F.fmt_seconds(it['work'])} / {F.fmt_seconds(it['recovery'])} easy",
                              load_guidance=SG.cue_for(e, s, b['rpe'][1]), direction_fields=dict(progression='output', role=e['role'])), cues=cues_for(e['id'])))
-            instr = 'Alternate the exercises each interval.' if it.get('alternate') else ('Hard intervals on the same machine; easy pace between.' if s == 'intervals' else 'All-out efforts with easy recovery between.')
+            instr = 'Alternate the exercises each interval.' if it.get('alternate') else (('Hard intervals on the same machine; easy pace between.' if b['rpe'][1] >= 8 else 'Controlled intervals at a steady pace you can repeat every round; easy pace between.') if s == 'intervals' else 'All-out efforts with easy recovery between.')
             structure = 'intervals' if s == 'intervals' else 'finisher'
         elif s == 'intervals':   # timed rotation
             interval = dict(work_sec=it['work'], recovery_sec=it['recovery'], rounds=it['rounds'], rest_between_rounds_sec=it.get('round_rest'))
@@ -135,7 +136,10 @@ def format_sweat(res, nctx):
             for k, (e, dz) in enumerate(zip(b['items_e'], b['doses']), 1):
                 items.append(F.item(sid(e), b['slot'], _sw_ex(e), _sw_rx(e, dz, b, sets=rounds), cues=cues_for(e['id'])))
             if s == 'emom':
-                instr = f"Every minute on the minute for {b['minutes']} min: one station per minute, rest the remainder of the minute."
+                n_st = len(b['items_e']); laps = -(-b['minutes'] // max(1, n_st))
+                instr = (f"Every minute on the minute for {b['minutes']} min: one station per minute, in order, rest the remainder of the minute. "
+                         f"{laps} rounds through the {n_st} stations." if n_st > 1 and laps > 1 else
+                         f"Every minute on the minute for {b['minutes']} min: rest the remainder of each minute.")
                 interval = dict(minutes=b['minutes'], rounds=rounds)
             else:
                 instr = f"{rounds} rounds, moving station to station; rest {b['round_rest']} s after each round."
@@ -159,12 +163,44 @@ from .engines.athletic import adapter as AA
 from .engines.athletic import athletic_core as AC
 
 _ATH_BLOCK = {   # role -> (block type, title prefix)
-    'primary': ('primary', 'Primary'), 'secondary': ('secondary', 'Secondary Quality'), 'tertiary': ('secondary', 'Athletic Element'), 'strength': ('strength', 'Athletic Strength'),
+    'primer': ('primer', 'Primer'), 'primary': ('primary', 'Primary'), 'secondary': ('secondary', 'Secondary Quality'), 'tertiary': ('secondary', 'Athletic Element'), 'strength': ('strength', 'Athletic Strength'),
     'support': ('support', 'Support'), 'finisher': ('finisher', 'Finisher')}
-_ATH_ITEM_ID = {'primary': 'primary', 'contrast_strength': 'contrast_strength', 'contrast_power': 'contrast_power', 'secondary': 'secondary', 'tertiary': 'tertiary', 'support': 'support', 'finisher': 'finisher'}
+_ATH_ITEM_ID = {'primer': 'primer', 'primary': 'primary', 'contrast_strength': 'contrast_strength', 'contrast_power': 'contrast_power', 'secondary': 'secondary', 'tertiary': 'tertiary', 'support': 'support', 'finisher': 'finisher'}
 _WU_NAME = {'raise': 'Raise temperature', 'mobility': 'Mobility', 'primer': 'Primer', 'rehearsal': 'Build-up'}
 _KIND_WORD = {'sprint': 'Speed', 'sled': 'Power'}
 _IMPACT = {'low': 'low impact', 'moderate': 'moderate impact', 'high': 'high impact'}
+
+
+def _ath_context(x):
+    """Sequencing / presentation pass: a short contextual tag the Athletic cart shows on the row (why this lift is here)."""
+    if x['cls'] == 'strength': return 'Heavy, then explode' if x.get('role') == 'contrast_strength' else 'For velocity'
+    if x.get('role') == 'primer': return 'Primer'
+    if x['cls'] == 'power' and x['kind'] == 'speed_strength': return 'For velocity'
+    return None
+
+
+def ath_phases(sess):
+    """Sequencing / presentation pass: at most ~3 phases that read as one coached session, labelled for the actual work.
+    -> list of (phase id, label) per block, in order."""
+    blocks = sess['blocks']; arch = sess.get('arch')
+    def ph(b):
+        if b['role'] == 'primer': return 'primer'
+        if b['role'] in ('primary', 'secondary', 'tertiary'): return 'strength' if all(AC.demand(x) == 2 for x in b['items'] if x['cls'] == 'power') and b['role'] != 'primary' else 'power'
+        if b['role'] == 'finisher': return 'finish'
+        return 'strength'
+    ids = [ph(b) for b in blocks]
+    pw = [x for b, p in zip(blocks, ids) if p == 'power' for x in b['items'] if x['cls'] == 'power']
+    loaded = any(AC.is_loaded(x['id']) or x['kind'] in AC.OLY_KINDS for x in pw) or any(b['structure'] == 'contrast' for b in blocks)
+    if loaded or not pw: power_label = 'Power'
+    elif arch == 'athletic_speed_agility': power_label = 'Speed & Plyo'
+    elif all(x['kind'] in AC.JUMP_KINDS for x in pw): power_label = 'Plyometrics'
+    else: power_label = 'Power'
+    st_its = [x for b, p in zip(blocks, ids) if p == 'strength' for x in b['items']]
+    if any(x['cls'] == 'strength' or x['kind'] == 'speed_strength' for x in st_its): st_label = 'Athletic Strength'
+    elif any(x['cls'] == 'support' and AC.SUPPORT.get(x['id']) in AC.CORE_KINDS for x in st_its): st_label = 'Athletic Core'
+    else: st_label = 'Resilience'
+    lab = {'primer': 'Primer', 'power': power_label, 'strength': st_label, 'finish': 'Finisher'}
+    return [(p, lab[p]) for p in ids]
 
 
 def _ath_rx(x, in_group):
@@ -174,7 +210,8 @@ def _ath_rx(x, in_group):
     elif sec: kind = 'time'; disp = f"{x['sets']} × {sec} s{per}"
     else: kind = 'reps'; disp = f"{x['sets']} × {x['reps']}{per}"
     df = dict(type=x['cls'], impact=e['impact'], skill=e['skill'], impact_label=_IMPACT.get(e['impact']),
-              category={'power': 'ATHLETIC', 'strength': 'ATHLETIC_STRENGTH'}.get(x['cls'], 'SUPPORT'))
+              category={'power': 'ATHLETIC', 'strength': 'ATHLETIC_STRENGTH'}.get(x['cls'], 'SUPPORT'), performance_role=AC.performance_role(x),
+              context_tag=_ath_context(x))
     if x['cls'] == 'power':
         df.update(quality=AC.lib_quality(e), athletic_quality=x['quality'], intent='max', contacts=AC.contacts_of(x), kind=x['kind'], cost_tier=AC.tier(x['id'], x['role']))
     elif x['cls'] == 'strength':
@@ -187,10 +224,16 @@ def _ath_rx(x, in_group):
 
 def format_athletic(res, nctx):
     out = res['w']; sess = out['sess']; blocks = []; strength_n = 0; tertiary_n = 0; seen_q = set()
+    phases = ath_phases(sess)
     for n, b in enumerate(sess['blocks'], 1):
         btype, title = _ATH_BLOCK[b['role']]
         grouped = b['structure'] in ('superset', 'contrast')
-        if b['role'] == 'primary':
+        if b['role'] == 'primer':
+            q = AC.QUALITY_LABEL[b['quality']]
+            lead = AC.PB(sess)['items'][-1]
+            title = 'Primer · ' + q[0].upper() + q[1:]
+            instr = f"Two crisp, low-fatigue sets to wake up the nervous system for the {AC.EX[lead['id']]['name']}. Not a workout: stop well before any fatigue."
+        elif b['role'] == 'primary':
             q = AC.QUALITY_LABEL[b['quality']]
             k = b['items'][-1]['kind']
             title = ('Contrast Pair · ' if b['structure'] == 'contrast' else f"Primary {_KIND_WORD.get(k, 'Power')} · ") + q[0].upper() + q[1:]
@@ -203,10 +246,13 @@ def format_athletic(res, nctx):
             else:   # an honest label: a second exercise for a quality the session already has is not a new quality
                 title = f"Athletic Element · {Q}"; instr = 'Another athletic movement, still before any strength work. A few crisp sets; every rep fast.'
         elif b['role'] == 'strength':
-            instr = (f"Alternate the two: {b['rest_items']} s between them, {b['rest_rounds']} s after each round. " if grouped else '') + (f"Why: {b['why']}." if b.get('why') else '')
+            vel = any(x['cls'] == 'strength' for x in b['items'])
+            instr = (f"Alternate the two: {b['rest_items']} s between them, {b['rest_rounds']} s after each round. " if grouped else '') + \
+                    (f"For velocity: {AC.VELOCITY_CUE[0].lower() + AC.VELOCITY_CUE[1:]} Stop the set when the speed clearly drops. " if vel else '') + (f"Why: {b['why']}." if b.get('why') else '')
+            if b.get('paired_support'): title = 'Athletic Strength + Core'
         else:
             instr = f"Why it's here: {b['why']}." if b.get('why') else None
-        if b['role'] in ('primary', 'secondary', 'tertiary') and b.get('quality'): seen_q.add(b['quality'])
+        if b['role'] in ('primer', 'primary', 'secondary', 'tertiary') and b.get('quality'): seen_q.add(b['quality'])
         items = []
         for ii, x in enumerate(b['items']):
             if x['role'] == 'strength':
@@ -220,6 +266,8 @@ def format_athletic(res, nctx):
         structure = 'superset' if grouped else 'straight'
         blocks.append(F.block(f'B{n}', n, btype, structure, title, items, rounds=b['rounds'], rest_between_items_sec=b['rest_items'] if grouped else None,
                               rest_between_rounds_sec=b['rest_rounds'], instructions=instr, est_minutes=round(AC.block_seconds(b) / 60, 1)))
+        blocks[-1]['performance_roles'] = list(dict.fromkeys(AC.performance_role(x) for x in b['items']))   # final pre-launch pass: cart sub-label
+        blocks[-1]['phase'], blocks[-1]['phase_label'] = phases[n - 1]            # sequencing / presentation pass: the cart's phase
     wu_items = []
     for comp, i, note in out['wu']:
         e = AC.EX.get(i)

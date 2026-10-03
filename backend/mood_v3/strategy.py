@@ -91,8 +91,11 @@ def _detail(v, s, kind):
     return out
 
 
+def _nmov(n): return f"{n} less-familiar movement{'s' if n != 1 else ''}"
+
+
 def _name(detail):
-    s = detail
+    s = detail.replace('left out ', '')    # 'left out Cable Fly' -> 'Cable Fly' before the ' out' cut below
     for cut in (' RIR ', ' →', ' rest ', ' × ', ' (', ' out', ' runs', ':'):
         if cut in s: s = s.split(cut)[0]
     return re.sub(r'\s+\d.*$', '', s).replace('left out ', '').strip()
@@ -124,7 +127,7 @@ def interpret(ctx, res):
             add('amped_low_energy', 10, f"You're amped but running on less energy than usual, so energy sets the budget and the readiness goes into one place: {_name(amped_part[0])}. Everything around it stays {pick(['further from failure', 'light on cost and further from failure'], seed, 'al1')}.",
                 [('state', 'amped'), ('state', 'low_energy')], f"Low Energy owns systemic cost (realized {le_cost}); Amped kept only on the primary ({amped_part[0]}).")
         elif le_cost and 'amped' in v['yielded']:
-            add('amped_yielded', 9, f"You're amped but low on energy, and with no main lift in this session energy wins: we're {_join(_le_frags(v)[:2])} rather than chasing the extra energy.",
+            add('amped_yielded', 9, f"You're amped but low on energy, and {'with no main lift in this session ' if not prim else ''}energy wins today: we're {_join(_le_frags(v)[:2])} rather than chasing the extra energy.",
                 [('state', 'low_energy'), ('state_yielded', 'amped')], "Amped yielded to Low Energy by rule (no primary lift to carry the effort); Low Energy realized " + ', '.join(le_cost) + '.')
     if {'irritated', 'stressed'} <= st:
         direct = [k for k in ('reps', 'tempo', 'rest', 'structure', 'finisher') if k in _kinds(v, 'irritated')]
@@ -142,11 +145,11 @@ def interpret(ctx, res):
         add('bored_stressed', 10, f"You're bored and stressed, so the novelty is in the movements ({n} less-familiar {'one' if n == 1 else 'ones'}) while the structure stays plain and predictable.",
             [('state', 'bored'), ('state', 'stressed')], f"Bored owns exercise novelty ({n} new vs no-State build); Stressed owns structure (variant {v['variant']}, {v['n_pairs']} pairs).")
     if {'bored', 'low_energy'} <= st and 'exercises' in _kinds(v, 'bored') and le_cost:
-        add('bored_low_energy', 10, f"You're bored and low on energy, so the change of scenery comes from the movement choices, not from extra work: {len(_detail(v, 'bored', 'exercises'))} less-familiar movements, everything {pick(['further from failure', 'kept at a comfortable effort'], seed, 'bl1')}.",
+        add('bored_low_energy', 10, f"You're bored and low on energy, so the change of scenery comes from the movement choices, not from extra work: {_nmov(len(_detail(v, 'bored', 'exercises')))}, everything {pick(['further from failure', 'kept at a comfortable effort'], seed, 'bl1')}.",
             [('state', 'bored'), ('state', 'low_energy')], f"Bored realized {list(_kinds(v, 'bored'))}; Low Energy realized {le_cost}.")
     if {'amped', 'bored'} <= st and _kinds(v, 'amped') and _kinds(v, 'bored'):
         nb = len(_detail(v, 'bored', 'exercises')); mb = _detail(v, 'bored', 'set_method')
-        novel_bits = ([mb[0]] if mb else []) + ([f"{nb} less-familiar movements"] if nb else []) or ['a different shape']
+        novel_bits = ([mb[0]] if mb else []) + ([_nmov(nb)] if nb else []) or ['a different shape']
         add('amped_bored', 9, f"You're amped and bored, so the extra energy goes into something new: {_join(novel_bits)}, with {pn or 'the main work'} pushed {'a rep closer to failure' if 'rir' in _kinds(v, 'amped') else 'harder'}.",
             [('state', 'amped'), ('state', 'bored')], f"Amped realized {list(_kinds(v, 'amped'))}; Bored realized {list(_kinds(v, 'bored'))}.")
     # ---- single-State strategies (skipped when a pair strategy already covers the State)
@@ -166,10 +169,12 @@ def interpret(ctx, res):
             add('amped_adv_strength', 8, f"You're amped, so that extra readiness goes into demanding compound work{(' with ' + pn + ' ' + _amped_primary_phrase(v)) if pn and _amped_primary_phrase(v) else ''}. Since you're an advanced lifter focused on strength, the session stays compound-heavy rather than turning the energy into more accessory volume.",
                 [('state', 'amped'), ('experience', 'advanced'), ('goal', goal)], f"Amped + advanced + {goal}: realized {list(k)}; compound sets {v['comp_sets']} vs accessory {v['acc_sets']}; primary reps {prim['reps'] if prim else 'n/a'} RIR {prim['rir'] if prim else 'n/a'}.")
         elif lvl == 'beginner' and lvl_ok:
-            add('amped_beginner', 8, f"You're amped, so we're using it {pick(['without chasing failure', 'the way a good coach would for a newer lifter'], seed, 'ab')}: {_join(_amped_frags(v)[:2])}, still with reps in reserve on every set.",
+            _af = _amped_frags(v)[:2]
+            add('amped_beginner', 8, (f"You're amped, so we're using it {pick(['without chasing failure', 'the way a good coach would for a newer lifter'], seed, 'ab')}: {_join(_af)}, still with reps in reserve on every set." if _af else
+                                      "You're amped, so the main work moves with intent, still with reps in reserve on every set."),
                 [('state', 'amped'), ('experience', 'beginner')], f"Beginner Amped: realized {list(k)}; min RIR {min((r['rir'] for r in v['rows'] if r.get('rir') is not None), default=None)}; no RIR-0 finisher.")
         else:
-            add('amped', 8, f"You're amped today, so we're {_join(_amped_frags(v)[:3])}.", [('state', 'amped')], f"Amped realized {list(k)}; near failure {v['near_failure']}; total sets {v['total_sets']}.")
+            add('amped', 8, (f"You're amped today, so we're {_join(_amped_frags(v)[:3])}." if _amped_frags(v) else "You're amped today, so the main work carries more intent."), [('state', 'amped')], f"Amped realized {list(k)}; near failure {v['near_failure']}; total sets {v['total_sets']}.")
     if 'irritated' in st and 'irritated' not in covered and _kinds(v, 'irritated'):
         k = _kinds(v, 'irritated'); fr = _irr_frags(v)
         if lvl == 'advanced' and heavy_kept and pn and lvl_ok:
@@ -183,7 +188,7 @@ def interpret(ctx, res):
         cont = next((x for x in (hist['realized'] if hist else []) if x.startswith('main lift continuity')), None)
         if lvl == 'advanced' and (m or v['cx3']) and lvl_ok:
             shape_word = str(v['variant']).replace('_', ' ')
-            bits = ([m[0]] if m else []) + ([f"{n} less-familiar movements"] if n else []) + ([f"a {shape_word} shape"] if 'structure' in k else [])
+            bits = ([m[0]] if m else []) + ([_nmov(n)] if n else []) + ([f"a {shape_word} shape"] if 'structure' in k else [])
             cont_txt = (', while ' + cont.split(': ')[1].split(',')[0] + ' stays so your progression carries over') if cont else ''
             add('bored_adv', 8, f"You're bored, so the novelty is the sophisticated kind: {_join(bits)}{cont_txt}.",
                 [('state', 'bored'), ('experience', 'advanced')] + ([('history', 'history')] if cont else []), f"Bored advanced: realized {list(k)}; methods {v['methods']}; complexity-3+ movements {v['cx3']}; continuity {bool(cont)}.")
@@ -201,7 +206,7 @@ def interpret(ctx, res):
         regs = [REGION_NAMES.get(r, r.replace('_', ' ')) for r in (getattr(ctx, 'sore_regions', None) or [])] or [str(x).replace('_', ' ') for x in sore['value']]
         region = _join(list(dict.fromkeys(regs))); plural = region.endswith('s') or ' and ' in region; be = 'are' if plural else 'is'
         if v['narrowed']:
-            txt = f"Your {region} {be} sore, so today's {ARCHETYPE_NAMES.get(v['narrowed']['archetype'], v['narrowed']['archetype'])} keeps the {' and '.join(v['narrowed']['kept'])} work and leaves the {' and '.join(v['narrowed']['left_out'])} work out."
+            txt = f"Your {region} {be} sore, so today's {ARCHETYPE_NAMES.get(v['narrowed']['archetype'], v['narrowed']['archetype'])} keeps the {' and '.join(v['narrowed']['kept'])} work and leaves the {' and '.join(v['narrowed']['left_out']) or region} work out."
         elif v['rerouted'] or sore['realized'][0].startswith('rerouted') or (getattr(ctx, 'target_mode', '') == 'moods_pick' and not getattr(ctx, 'archetype', None)):
             txt = f"Your {region} {be} sore, so we're moving the work {pick(['away from ' + ('them' if plural else 'it'), 'elsewhere'], seed, 'sr')}: today is {'an' if v['arch_name'][:1] in 'AEIOU' else 'a'} {v['arch_name']} session that leaves {'them' if plural else 'it'} alone."
         elif any('trained as asked' in x for x in sore['realized']):
@@ -249,7 +254,8 @@ def interpret(ctx, res):
         if bits: add('history', 3, _cap(_join(bits)) + '.', [('history', 'history')], f"History: {r}.")
     tgt = next((e for e in v['byin'].get('target', []) if e.get('realized')), None)
     if tgt and isinstance(tgt['value'], list) and len(tgt['value']) >= 2 and not v['narrowed']:
-        add('target', 2, f"Both {' and '.join(tgt['value'])} get direct work, in that order.", [('target', 'target')], f"Target: {tgt['realized']}.")
+        tv = list(tgt['value'])
+        add('target', 2, f"Both {' and '.join(tv)} get direct work, in that order." if len(tv) == 2 else f"{', '.join(tv[:-1]).capitalize()} and {tv[-1]} each get direct work, in that order.", [('target', 'target')], f"Target: {tgt['realized']}.")
     if v['core']:
         cats = v['core'].get('categories') or []
         add('core_focus', 6 if v['expectation'] else 2,
@@ -339,7 +345,7 @@ def _str_frags(v):
     if d('slot_removed'): f.append("one thing fewer to set up")
     if d('complexity_or_systemic_cap'): f.append("nothing technical")
     if d('rir'): f.append("moderate effort")
-    if d('set_method'): f.append(f"a 3 s eccentric on {d('set_method')[0].split(' on ')[-1]} to give the reps a rhythm")
+    if d('set_method'): f.append(f"eccentrics on {d('set_method')[0].split(' on ')[-1]} to give the reps a rhythm")
     return f
 
 

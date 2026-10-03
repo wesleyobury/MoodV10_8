@@ -116,7 +116,9 @@ def test_built_for_today_has_no_confirmations(api, kw):
 
 def test_teaser_only_when_meaningful(api):
     assert gen(api, direction='sweat', archetype='sweat_hybrid')['today']['teaser'] is None
-    assert gen(api, direction='strength', target=['chest'])['today']['teaser'] is None
+    # Founder pass (Oct 2026): a single-muscle Target now gets a personal line (history / goal / why), so it has a teaser
+    t = gen(api, direction='strength', target=['chest'])['today']['teaser']
+    assert t['title'] == 'Built around Chest' and 'For your goal to build muscle' in t['text'] and 'direct chest work' in t['text']
     t = gen(api, direction='strength', states=['amped'])['today']['teaser']
     assert t['title'] == 'Built for your Amped state' and t['text']
     t = gen(api, direction='strength', target=['back', 'core'])['today']['teaser']

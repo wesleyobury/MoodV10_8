@@ -99,7 +99,8 @@ def summary(out):
                 tertiary_quality_label=C.QUALITY_LABEL.get(ter) if ter else None, structure=sess['structure'], structure_label=C.STRUCTURE_LABEL[sess['structure']],
                 accounting=acc, limits={k: L[k] for k in ('contacts', 'accel_efforts', 'explosive_sets', 'intent_load', 'n_explosive', 'ath_cost', 'tier_a')},
                 state_gate={s: bool(v['satisfied']) for s, v in out['verdict'].items()}, coherence={s: bool(v['coherent']) for s, v in out['verdict'].items()},
-                realized={s: [d for _, d in r] for s, r in out['realized'].items()})
+                realized={s: [d for _, d in r] for s, r in out['realized'].items()},
+                trainer_gate=dict(issues=list(out.get('gate') or [])), composition=sess.get('mode'))
 
 
 # ------------------------------------------------------------------ exercise-level swap
@@ -169,9 +170,10 @@ def _replace(out, bi, ii, new_id):
         nx = C.P(new_id, x['role'], dz)
         if b['structure'] == 'straight': b['rest_rounds'] = nx['rest']
     elif x['cls'] == 'strength':
-        slot = 'A' if (ii == 0 and b['role'] == 'strength') else 'B'
+        slot = x.get('slot') or ('A' if (ii == 0 and b['role'] == 'strength') else 'B')
         dz = C.strength_dose(new_id, lv, slot, goal, d, dur, contrast=x['role'] == 'contrast_strength'); dz['sets'] = x['sets']
-        nx = C.ST(new_id, x['role'], dz, C.STRENGTH[new_id])
+        nx = C.ST(new_id, x['role'], dz, C.strength_pattern(new_id))
+        if x.get('slot'): nx['slot'] = x['slot']
     elif x['cls'] == 'support':
         dz = C.support_dose(new_id, lv, goal); dz['sets'] = x['sets']; nx = C.SU(new_id, dz)
     else:
@@ -193,6 +195,7 @@ def swap_exercise(nctx, history_records, swap, res, bi, ii, excluded):
         for new_id in swap_candidates(out, bi, ii, set(excluded)):
             o2 = _replace(out, bi, ii, new_id)
             if C.violations(o2['A'], ctx['lv'], ctx['dur'], out['d'], o2['sess']['structure'] == 'contrast'): continue
+            if o2['A']['est'] > C.WINDOW[ctx['dur']][1]: continue          # a swap never pushes the session past its time window
             if V.fails(o2['sess'], o2['wu'], ctx, ctx['states']): continue
             o2['log'] = out['log'] + [dict(reason_code='exercise_swapped', role=x['role'], **{'from': x['id'], 'to': new_id})]
             res2 = dict(res, w=o2, log=o2['log'], estimated_minutes=float(o2['A']['est']))

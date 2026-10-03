@@ -8,7 +8,7 @@ validation, decision log) lives in core.py. The frozen prescription / structure 
 """
 from __future__ import annotations
 import threading
-from . import audit_engine as AE, qa_engine as QE, core as C
+from . import audit_engine as AE, qa_engine as QE, core as C, trainer_gate as TG
 
 LOCK = threading.RLock()
 EX = AE.EX
@@ -95,10 +95,10 @@ def build(nctx, history_records, swap=0):
         else:
             aid, why = nctx.get('resolved_archetype') or moods_pick(nctx['goal'], nctx['frequency'], history)[0], 'moods_pick'; mode = 'pick'
         if aid == 'strength_custom_target':
-            return C.build_custom(nctx, list(nctx['target_muscles']), swap, history, eq, sp)
+            return _gated(C.build_custom(nctx, list(nctx['target_muscles']), swap, history, eq, sp), nctx)
         if aid == 'strength_core':
-            return C.build_core(nctx, swap, history, eq, sp)
-        last_err = None
+            return _gated(C.build_core(nctx, swap, history, eq, sp), nctx)
+        last_err = None; best = None
         for attempt, salt in enumerate(('', '#r1', '#r2')):
             try:
                 b = C.build_archetype(aid, mode, why, nctx, history, swap, eq, sp, salt)
@@ -126,9 +126,24 @@ def build(nctx, history_records, swap=0):
                         out['requested_archetype'] = alt; out['skipped_archetype'] = aid
                         return out
                 raise
-            if not b['bad']: return C.result(nctx, b, attempt)
+            if not b['bad']:
+                # Trainer Coherence Gate: a valid session that a good trainer would still question is re-rolled (same salts as the
+                # validator retry); if every attempt is questioned, the attempt with the fewest issues ships, with the issues logged
+                out = C.result(nctx, b, attempt); issues = TG.check(out, nctx)
+                if not issues: return out
+                out['log'].append({'reason_code': 'trainer_gate', 'attempt': attempt, 'issues': [f'{c}: {d}' for c, d in issues]})
+                if best is None or len(issues) < best[0]: best = (len(issues), out)
+                continue
             last_err = b['bad']
+        if best: return best[1]
         raise Conflict('generation_failed', 'We could not build a valid session for this combination.', ['swap_workout', 'moods_pick'], detail=[list(map(str, c)) for c in last_err])
+
+def _gated(out, nctx):
+    """Custom Target / Core: no salt retry path, so the gate result is logged for QA and monitoring only."""
+    issues = TG.check(out, nctx)
+    if issues: out['log'] = list(out['log']) + [{'reason_code': 'trainer_gate', 'attempt': 0, 'issues': [f'{c}: {d}' for c, d in issues]}]
+    return out
+
 
 def swap_exercise(nctx, history_records, swap, res, slot, excluded):
     with LOCK:

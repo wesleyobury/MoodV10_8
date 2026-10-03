@@ -49,9 +49,12 @@ def test_nordic_stays_an_advanced_movement(client):
 
 
 def test_other_bodyweight_and_hamstring_rows_are_unchanged():
-    assert set(B.EXERCISE_DOSE) == {'nordic_curl'}
-    for eid in ('slider_hamstring_curl', 'reverse_nordic', 'sissy_squat', 'single_leg_glute_bridge'):
-        assert B.rep_text(SA.EX[eid], 'accessory', 'advanced', 0.5)[0].startswith('12–15'), eid
+    # final pre-launch pass (Oct 2026): the swing gets a ballistic dose, and a fixed-load movement never exceeds its library rep band
+    assert set(B.EXERCISE_DOSE) == {'nordic_curl', 'kettlebell_swing'}
+    assert B.rep_text(SA.EX['single_leg_glute_bridge'], 'accessory', 'advanced', 0.5)[0].startswith('12–15')
+    for eid in ('slider_hamstring_curl', 'reverse_nordic', 'sissy_squat'):   # library band 8–12: the generic 12–15 slides under it
+        assert B.rep_text(SA.EX[eid], 'accessory', 'advanced', 0.5)[0].startswith('9–12'), eid
+    assert B.rep_text(SA.EX['dragon_flag'], 'accessory', 'advanced', 0.5)[0] in ('5–8', '6–8')
     assert B.rep_text(SA.EX['nordic_curl'], 'accessory', 'advanced', 0.5)[0] == '4–6'
     for eid in ('lying_leg_curl', 'seated_leg_curl'):
         if eid in SA.EX: assert B.rep_text(SA.EX[eid], 'accessory', 'advanced', 0.5)[0] != '4–6'

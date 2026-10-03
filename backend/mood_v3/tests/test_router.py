@@ -15,9 +15,30 @@ class _Cursor:
         try: return next(self._it)
         except StopIteration: raise StopAsyncIteration
 
+def _get(d, path):
+    for part in path.split('.'):
+        if not isinstance(d, dict) or part not in d: return _MISSING
+        d = d[part]
+    return d
+
+_MISSING = object()
+
+def _cond(val, v):
+    if isinstance(v, dict) and v and all(k.startswith('$') for k in v):
+        for op, arg in v.items():
+            if op == '$ne' and not (val is _MISSING or val != arg): return False
+            if op == '$exists' and (val is not _MISSING) != bool(arg): return False
+        return True
+    return val is not _MISSING and val == v
+
+def _set_path(d, path, v):
+    parts = path.split('.')
+    for p in parts[:-1]: d = d.setdefault(p, {})
+    d[parts[-1]] = copy.deepcopy(v)
+
 class _Col:
     def __init__(self): self.docs = []
-    def _match(self, d, q): return all(d.get(k) == v for k, v in q.items())
+    def _match(self, d, q): return all(_cond(_get(d, k), v) for k, v in q.items())
     def find(self, q=None, proj=None): return _Cursor([d for d in self.docs if self._match(d, q or {})])
     async def find_one(self, q, proj=None): return copy.deepcopy(next((d for d in self.docs if self._match(d, q)), None))
     async def insert_one(self, d): self.docs.append(copy.deepcopy(d))
@@ -26,10 +47,17 @@ class _Col:
             def __init__(self, n): self.matched_count = n; self.modified_count = n
         for d in self.docs:
             if self._match(d, q):
-                d.update(copy.deepcopy(u.get('$set', {})))
+                for k, v in u.get('$set', {}).items(): _set_path(d, k, v)
                 for k, v in u.get('$push', {}).items(): d.setdefault(k, []).append(copy.deepcopy(v))
                 return _R(1)
         return _R(0)
+    async def find_one_and_update(self, q, u):
+        for d in self.docs:
+            if self._match(d, q):
+                before = copy.deepcopy(d)
+                for k, v in u.get('$set', {}).items(): _set_path(d, k, v)
+                return before
+        return None
 
 class _DB:
     def __init__(self):
@@ -104,3 +132,19 @@ def test_every_item_swappable_or_explicit(client, direction):
             assert r.status_code == 200
             body = r.json(); assert body['status'] == 'ok' or body['conflict']['code'] == 'no_alternative'
             assert body['workout']['direction'] == direction
+
+def test_repeat_makes_a_fresh_copy_of_a_completed_workout(client):
+    """Saved Workouts: do it again. Same plan, new id, not completed; the original keeps its completion."""
+    w = client.post('/api/v3/workouts/generate', json=dict(direction='strength', archetype='strength_upper_push', duration=60, date='2026-10-02')).json()['workout']
+    assert client.post(f"/api/v3/workouts/{w['workout_id']}/complete", json=dict(performance=[])).status_code == 200
+    r = client.post(f"/api/v3/workouts/{w['workout_id']}/repeat")
+    assert r.status_code == 200, r.text
+    c = r.json()['workout']
+    assert c['workout_id'] and c['workout_id'] != w['workout_id']
+    assert [i['exercise']['id'] for b in c['blocks'] for i in b['items']] == [i['exercise']['id'] for b in w['blocks'] for i in b['items']]
+    # the copy can be swapped and completed; the original stays completed
+    assert client.post(f"/api/v3/workouts/{c['workout_id']}/swap-exercise", json=dict(item_id=c['blocks'][0]['items'][0]['item_id'])).status_code == 200
+    assert client.post(f"/api/v3/workouts/{c['workout_id']}/complete", json=dict(performance=[])).json()['status'] == 'completed'
+    assert client.get('/api/v3/workouts/history').json()['count'] == 2
+    client.user['id'] = 'someone_else'
+    assert client.post(f"/api/v3/workouts/{w['workout_id']}/repeat").status_code == 403

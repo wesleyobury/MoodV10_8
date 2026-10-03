@@ -67,3 +67,79 @@ def apply_scaling(blocks, direction: str):
             rx['load_guidance'] = (lg[:1].upper() + lg[1:] + ' ' + sc['detail']).strip()
             touched.append(it['exercise']['id'])
     return touched
+
+
+# ---- What the app SAYS an exercise trains (founder pass: muscle labels).
+# The frozen library's primary_muscles drive selection, soreness and progression and stay as they are. They name the lead
+# muscle of the movement, which reads wrong on screen for whole-body and conditioning work (a burpee is not "Quads", a bike
+# is not "Quads", a thruster is not "Quads + Shoulders"). This map is display only: exercise_ref() ships it as
+# display_muscles, the app shows it wherever it labels an exercise or a block. Ids not listed show primary_muscles.
+# Tokens: real muscles, plus 'full_body', 'cardio' and 'lower_body' (the app title-cases them: "Full Body", "Cardio").
+DISPLAY_MUSCLES = {
+    # conditioning machines and cyclical cardio
+    'row_erg': ['full_body', 'cardio'],
+    'ski_erg': ['full_body', 'cardio'],
+    'air_bike': ['full_body', 'cardio'],
+    'stationary_bike': ['cardio'],
+    'treadmill_run': ['cardio'],
+    'treadmill_incline_walk': ['cardio'],
+    'stair_climber': ['cardio'],
+    'high_knees': ['cardio'],
+    'jump_rope': ['cardio'],
+    'jumping_jack': ['cardio'],
+    'db_jumping_jack': ['cardio', 'shoulders'],
+    'mountain_climber': ['core', 'cardio'],
+    'battle_rope_waves': ['shoulders', 'cardio'],
+    # whole-body movements: legs drive, arms finish
+    'burpee': ['full_body', 'cardio'],
+    'barbell_thruster': ['full_body'],
+    'db_thruster': ['full_body'],
+    'db_squat_to_press': ['full_body'],
+    'landmine_squat_to_press': ['full_body'],
+    'reverse_lunge_to_press': ['full_body'],
+    'devil_press': ['full_body'],
+    'db_clean_to_press': ['full_body'],
+    'kb_clean_and_press': ['full_body'],
+    'db_snatch': ['full_body'],
+    'kb_snatch': ['full_body'],
+    'turkish_get_up': ['full_body'],
+    'wall_ball': ['full_body'],
+    'med_ball_slam': ['full_body'],
+    'mb_overhead_throw': ['full_body'],
+    'sled_push': ['full_body'],
+    'plate_push': ['full_body'],
+    'sled_pull': ['full_body'],
+    'farmer_carry': ['full_body'],
+    'front_rack_carry': ['full_body'],
+    # sprints: hips drive them, not the quads
+    'acceleration_sprint': ['glutes', 'hamstrings'],
+    'falling_start_sprint': ['glutes', 'hamstrings'],
+    'half_kneeling_start_sprint': ['glutes', 'hamstrings'],
+    'split_stance_start_sprint': ['glutes', 'hamstrings'],
+    'push_up_start_sprint': ['glutes', 'hamstrings'],
+    'drop_step_sprint': ['glutes', 'hamstrings'],
+    'sprint_to_stick': ['glutes', 'hamstrings'],
+    'broad_jump_to_sprint': ['glutes', 'hamstrings'],
+    'single_leg_hop_to_sprint': ['glutes', 'hamstrings'],
+    'crossover_sprint': ['glutes', 'hamstrings'],
+    # agility, footwork and running drills: the whole lower body, no single lead muscle
+    'pro_agility_shuttle': ['lower_body'],
+    'short_shuttle': ['lower_body'],
+    'cut_and_go': ['lower_body'],
+    'lateral_shuffle_stick': ['lower_body'],
+    'shuffle_crossover_sprint': ['lower_body'],
+    'backpedal_to_stick': ['lower_body'],
+    'carioca': ['lower_body'],
+    'wall_drill': ['lower_body'],
+    'a_march': ['lower_body'],
+    'a_skip': ['lower_body'],
+    'power_skip': ['lower_body'],
+    'dot_drill': ['lower_body'],
+    'line_hops': ['calves', 'lower_body'],
+    'pogo_hop': ['calves', 'lower_body'],
+}
+
+
+def display_muscles(exercise_id: str, primary_muscles) -> list:
+    """What to label the exercise with: the founder display map, else the library's primary muscles."""
+    return list(DISPLAY_MUSCLES.get(exercise_id) or primary_muscles or [])

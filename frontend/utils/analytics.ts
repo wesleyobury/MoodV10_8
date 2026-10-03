@@ -172,7 +172,11 @@ export const getUserTimezone = (): string => {
  * you just shipped or one still on half your users' phones — which is exactly
  * the question that blocks every "did the fix work?" investigation.
  */
-export const getAppBuildInfo = (): { app_version: string; app_build: string } => {
+// Product line of this JS bundle. Every event from the V3 app carries app_line: 'v3', so the admin can classify V3
+// activity even if a build ships (or an OTA lands) with an unexpected app_version.
+export const APP_LINE = 'v3';
+
+export const getAppBuildInfo = (): { app_version: string; app_build: string; app_line: string } => {
   try {
     const expo: any = Constants.expoConfig ?? {};
     const build =
@@ -181,9 +185,10 @@ export const getAppBuildInfo = (): { app_version: string; app_build: string } =>
     return {
       app_version: String(expo?.version ?? 'unknown'),
       app_build: String(build ?? 'unknown'),
+      app_line: APP_LINE,
     };
   } catch {
-    return { app_version: 'unknown', app_build: 'unknown' };
+    return { app_version: 'unknown', app_build: 'unknown', app_line: APP_LINE };
   }
 };
 
@@ -711,7 +716,7 @@ export const Analytics = {
   onboardingStepViewed: (
     token: string | null,
     // V3 adds funnel_version ('v3') and mode ('new' | 'upgrade' | 'edit').
-    metadata: { step: number; question?: string; funnel_version?: string; mode?: string },
+    metadata: { step: number; question?: string; funnel_version?: string; mode?: string; funnel_design?: string },
   ) =>
     token
       ? trackEvent(token, 'onboarding_step_viewed', metadata)
@@ -719,7 +724,7 @@ export const Analytics = {
 
   onboardingStepCompleted: (
     token: string | null,
-    metadata: { step: number; question?: string; answer?: any; time_spent_ms?: number; funnel_version?: string; mode?: string }
+    metadata: { step: number; question?: string; answer?: any; time_spent_ms?: number; funnel_version?: string; mode?: string; funnel_design?: string; experience?: string }
   ) =>
     token
       ? trackEvent(token, 'onboarding_step_completed', metadata)

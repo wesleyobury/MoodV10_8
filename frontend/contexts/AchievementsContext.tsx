@@ -52,7 +52,7 @@ import {
   ACHIEVEMENTS_BY_ID,
   evaluateEarned,
 } from '../constants/achievements';
-import AchievementMedallion from '../components/AchievementMedallion';
+import { AchievementToastCard } from '../components/AchievementToastCard';
 
 // Badges the SERVER awards + emits events for. The client celebrates them but
 // must never emit `badge_earned` for them (the server already did).
@@ -379,13 +379,8 @@ function AchievementToastHost({
           { opacity, transform: [{ translateY }, { scale }] },
         ]}
       >
-        <Pressable style={styles.toastInner} onPress={animateOut} accessibilityRole="button">
-          <AchievementMedallion icon={def.icon as any} size={46} />
-          <View style={styles.textCol}>
-            <Text style={styles.eyebrow}>BADGE UNLOCKED</Text>
-            <Text style={styles.title} numberOfLines={1}>{def.label}</Text>
-            <Text style={styles.desc} numberOfLines={2}>{def.description}</Text>
-          </View>
+        <Pressable onPress={animateOut} accessibilityRole="button" accessibilityLabel={`Badge unlocked: ${def.label}. ${def.description}`}>
+          <AchievementToastCard def={def} />
         </Pressable>
       </Animated.View>
     </View>
@@ -402,24 +397,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 9999,
   },
+  // the card itself (surface, depth, layout) is components/AchievementToastCard
   toast: {
     width: '92%',
     maxWidth: 380,
-    borderRadius: 18,
-    backgroundColor: 'rgba(20,19,24,0.96)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.28)',
-    // Depth — a lifted glassy card, not a flat rectangle.
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOpacity: 0.55,
-        shadowRadius: 22,
-        shadowOffset: { width: 0, height: 14 },
-      },
-      android: { elevation: 14 },
-      default: {},
-    }),
   },
   toastInner: {
     flexDirection: 'row',

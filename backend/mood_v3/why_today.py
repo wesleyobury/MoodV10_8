@@ -26,7 +26,7 @@ def _name(detail, k=0):
 
 
 def _mex(d):
-    """Exercise named in a set-method detail ('3 s eccentric on Leg Press' -> 'Leg Press')."""
+    """Exercise named in a set-method detail ('eccentrics on Leg Press' -> 'Leg Press')."""
     s = d[0] if isinstance(d, list) else d
     return s.split(' on ', 1)[1] if ' on ' in s else s
 
@@ -87,7 +87,7 @@ def _state_fragments(s, entry):
         if 'exercises' in det: f.append("sticking to familiar movements you can run on autopilot")
         if 'complexity_or_systemic_cap' in det: f.append("keeping anything technical out of it")
         if 'rir' in det: f.append("keeping effort moderate")
-        if 'set_method' in det: f.append(f"using a 3 s eccentric on {_mex(det['set_method'])} to give the reps a rhythm")
+        if 'set_method' in det: f.append(f"using eccentrics on {_mex(det['set_method'])} to give the reps a rhythm")
     return f
 
 
@@ -127,7 +127,7 @@ def build(ctx, res, direction_name='Strength'):
         rr = sore['realized'][0]; arch = ARCHETYPE_NAMES.get(res.get('archetype'), res.get('archetype'))
         narrowed = next((l for l in res.get('log', []) if isinstance(l, dict) and l.get('reason_code') == 'archetype_narrowed_around_soreness'), None)
         if narrowed:
-            opener = f"Your {region} {'are' if plural else 'is'} sore, so today's {ARCHETYPE_NAMES.get(narrowed['archetype'], narrowed['archetype'])} keeps the {' and '.join(narrowed['kept'])} work and leaves the {' and '.join(narrowed['left_out'])} work out"
+            opener = f"Your {region} {'are' if plural else 'is'} sore, so today's {ARCHETYPE_NAMES.get(narrowed['archetype'], narrowed['archetype'])} keeps the {' and '.join(narrowed['kept'])} work and leaves the {' and '.join(narrowed['left_out']) or region} work out"
         elif rr.startswith('rerouted'):
             opener = f"Your {region} {'are' if plural else 'is'} sore, so we're taking {'them' if plural else 'it'} out of the equation today with {'an' if arch[:1] in 'AEIOU' else 'a'} {arch} session"
         elif 'trained as asked' in rr:
@@ -187,6 +187,7 @@ def build(ctx, res, direction_name='Strength'):
         if new: k = new.split(' movement')[0]; bits.append(f"{k} movement{'s are' if k != '1' else ' is'} new versus your last one")
         if bits: sentences.append((_join(bits)[0].upper() + _join(bits)[1:]) + '.'); claims.append(('history', 'history'))
     elif tgt and len(sentences) < 3 and isinstance(tgt['value'], list) and len(tgt['value']) >= 2:
-        sentences.append(f"Both {' and '.join(tgt['value'])} get direct work, in that order."); claims.append(('target', 'target'))
+        tv = list(tgt['value'])
+        sentences.append(f"Both {' and '.join(tv)} get direct work, in that order." if len(tv) == 2 else f"{(_join(tv)[0].upper() + _join(tv)[1:])} each get direct work, in that order."); claims.append(('target', 'target'))
     if not sentences: return None
     return dict(text=' '.join(sentences[:3]), claims=claims)

@@ -33,7 +33,7 @@ def library_audit():
     L.append(f"  ATHLETIC vocabulary: {len(C.POWER)} exercises; ATHLETIC_STRENGTH: {len(C.STRENGTH)}; SUPPORT: {len(C.SUPPORT)}")
     names = Counter(re.sub(r'[^a-z]', '', e['name'].lower()) for e in C.EX.values())
     L.append(f"  duplicate exercise names in the library: {[n for n, c in names.items() if c > 1] or 'none'}")
-    new = [i for i, e in C.EX.items() if e.get('identity_new') or i == 'hang_high_pull']
+    new = [i for i, e in C.EX.items() if (e.get('identity_new') or i == 'hang_high_pull') and i in C.POWER]   # retired variants (speed pulls / squats) are skipped
     d = C.resolve_states([], 'advanced', 60, 'stay_consistent')
     for i in new + ['split_jump']:
         e = C.EX[i]; q, k, m = C.POWER[i]; dz = C.power_dose(i, 'advanced', 'tertiary', d, 60)

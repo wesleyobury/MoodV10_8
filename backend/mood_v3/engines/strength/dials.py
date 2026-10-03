@@ -28,12 +28,16 @@ EXPRESSIONS = {
                               structure={'efficient': 1.6, 'traditional': 1.3, 'paired': 0.6, 'volume': 0.4}, finisher=(0.0, ()), device_p=0.0),
     },
     'amped': {
-        'top_set':       dict(levers=[('rir', 'primary', -1)], structure={'top_backoff': 40.0, 'heavy_primary': 1.2, 'efficient': 0.5},
+        # (final pre-launch pass) top_backoff was weighted x40 (x60 with the State bias): nearly every eligible Amped session became a
+        # Top Set + Back-off. It is now one legitimate Amped expression among four, and the set shape inside it is likely, not certain.
+        'top_set':       dict(levers=[('rir', 'primary', -1)], structure={'top_backoff': 5.0, 'heavy_primary': 1.2, 'efficient': 0.5},
                               bias={'compound': 0.5}, finisher=(0.0, ()), device_p=1.0, needs_primary=True, min_exp='intermediate'),
-        'extra_set_paired': dict(levers=[('sets', 'primary', +1)], structure={'paired': 3.0, 'volume': 1.5, 'efficient': 0.5},
+        'extra_set_paired': dict(levers=[('sets', 'primary', +1)], structure={'paired': 2.0, 'volume': 1.6, 'efficient': 0.5},
                               bias={'compound': 0.5}, finisher=(0.0, ()), device_p=1.0),
         'heavy_end':     dict(levers=[('reppos', 'compound', -0.3), ('rir', 'secondary', -1)], structure={'heavy_primary': 1.3, 'traditional': 1.0, 'efficient': 0.5},
                               bias={'compound': 0.5}, finisher=(0.6, ('burnout', 'forceful')), device_p=1.0),
+        'intensity':     dict(levers=[('rir', 'accessory', -1), ('reppos', 'compound', -0.15)], structure={'traditional': 1.2, 'volume': 1.3, 'top_backoff': 0.5, 'efficient': 0.5},
+                              bias={'compound': 0.5}, finisher=(0.0, ()), device_p=1.0, force_method=True, min_exp='intermediate'),
     },
     'irritated': {
         'heavy_primary': dict(levers=[('reppos', 'primary', -0.3), ('restpos', 'compound', +0.2)], tempo=('explosive_intent', 'primary'),
@@ -64,7 +68,7 @@ STATE_STRUCTURE = {   # State-level structure bias (applied on top of the expres
     'low_energy': dict(traditional=1.4, efficient=1.6, heavy_primary=0.5, volume=0.4, paired=0.7, top_backoff=0.4),
     'bored': dict(traditional=0.4, paired=1.4, volume=1.2, top_backoff=1.3, heavy_primary=1.1, efficient=0.8),
     'irritated': dict(heavy_primary=1.8, top_backoff=1.3, volume=0.6, paired=0.9, efficient=0.9),
-    'amped': dict(heavy_primary=1.2, top_backoff=1.5, volume=1.2, paired=1.2, traditional=0.7, efficient=0.5),
+    'amped': dict(heavy_primary=1.3, top_backoff=1.0, volume=1.2, paired=1.0, traditional=0.8, efficient=0.5),
     'stressed': dict(traditional=1.8, efficient=1.2, heavy_primary=0.9, volume=0.8, paired=0.3, top_backoff=0.0),   # Stressed: no counting-heavy top-set schemes
 }
 CAP_DELTA = {'low_energy': -1, 'stressed': -1, 'irritated': -1, 'bored': +1, 'amped': 0, 'sore': 0}

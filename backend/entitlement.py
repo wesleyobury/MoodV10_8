@@ -174,24 +174,109 @@ def can_generate_workout(user: dict, is_admin: bool = False) -> bool:
     return free_workouts_used_this_period(user) < FREE_WORKOUT_ALLOWANCE
 
 
-def can_start_workout(user: dict, is_admin: bool = False) -> bool:
-    """
-    Workout *start* gate — the load-bearing paywall enforcement point.
+# ── Weekly free workout, gated at START (Oct 2026, V3 launch) ─────────────
+# Product rule: each ISO week (Monday 00:00 UTC reset, same window as above) a
+# non-entitled user gets ONE free workout, and it is fully usable. STARTING a
+# second, different workout in the same week requires full access (subscription /
+# trial / comp / admin). For a new user that means: workout #1 free, paywall on
+# starting workout #2; next week they get one more free workout.
+#
+# What counts as a start: an explicit start of a specific workout, identified by
+# a stable key ("v3:<workout_id>"). The week's free start is CLAIMED on the user
+# doc ({key, period, ...}) the first time a start is allowed that week, so it is
+# server-side and survives reinstall / relogin. Re-starting the SAME key in the
+# same week (reopening, resuming, relaunching, restarting after an accidental
+# exit) is always allowed. Generating, previewing, swapping, editing the cart and
+# browsing never call the gate. A claim from an earlier week is simply stale.
+#
+# Grace: a claimed-but-not-completed workout can be swapped for a different one
+# within FIRST_WORKOUT_SWITCH_GRACE_SEC of the claim (tapped Start on the wrong
+# workout, ended it right away, built another).
+FIRST_FREE_WORKOUT_FIELD = "first_free_workout"   # {key, period, source, started_at, moved_count}
+FIRST_WORKOUT_SWITCH_GRACE_SEC = 15 * 60
+# Key-less starts come only from the legacy V2 players, which call the gate on
+# Start AND on Complete with no workout identity. They share one claim key and are
+# treated as the same session for this long after the claim.
+LEGACY_KEY = "v2:legacy"
+LEGACY_SESSION_WINDOW_SEC = 4 * 60 * 60
 
-    Full-access users: unlimited. Non-entitled users: FREE_WORKOUT_ALLOWANCE
-    per ISO week, then blocked (Hard Paywall #3) until the week rolls over.
-    The counter is booked server-side on workout completion via
-    `consume_free_workout_update`.
+
+def first_free_workout(user: dict, now: datetime | None = None) -> dict | None:
+    """This week's free-workout claim, or None (never claimed, or claimed in an earlier week)."""
+    claim = (user or {}).get(FIRST_FREE_WORKOUT_FIELD)
+    if not (isinstance(claim, dict) and claim.get("key")):
+        return None
+    if claim.get("period") != current_free_period_key(now):
+        return None
+    return claim
+
+
+def start_decision(
+    user: dict,
+    is_admin: bool,
+    key: str | None,
+    *,
+    claimed_completed: bool = False,
+    now: datetime | None = None,
+) -> tuple[bool, str]:
+    """Pure decision for "may this user START this workout?".
+
+    Returns (allowed, outcome). outcome is one of:
+      entitled         full access; this week's first start is still recorded
+      first_workout    no claim this week: this start becomes the week's free workout
+      same_workout     re-start of this week's claimed workout (reopen / resume / restart)
+      switch_grace     claim moves to this workout (old one never completed, <15 min)
+      second_workout   blocked: a second workout this week without access
     """
+    n = now or datetime.now(timezone.utc)
+    k = key or LEGACY_KEY
+    access, _ = has_full_access(user, is_admin)
+    claim = first_free_workout(user, n)
+    if access:
+        return True, "entitled"
+    if claim is None:
+        return True, "first_workout"
+    if claim.get("key") == k:
+        if k != LEGACY_KEY:
+            return True, "same_workout"
+        started = _parse_dt(claim.get("started_at"))
+        if started is not None and (n - started).total_seconds() <= LEGACY_SESSION_WINDOW_SEC:
+            return True, "same_workout"
+        return False, "second_workout"
+    started = _parse_dt(claim.get("started_at"))
+    if (
+        not claimed_completed
+        and started is not None
+        and (n - started).total_seconds() <= FIRST_WORKOUT_SWITCH_GRACE_SEC
+    ):
+        return True, "switch_grace"
+    return False, "second_workout"
+
+
+def first_workout_claim_doc(key: str | None, source: str, now: datetime | None = None, moved_count: int = 0) -> dict:
+    n = now or datetime.now(timezone.utc)
+    return {
+        "key": key or LEGACY_KEY,
+        "period": current_free_period_key(n),
+        "source": source,
+        "started_at": n,
+        "moved_count": moved_count,
+    }
+
+
+def can_start_workout(user: dict, is_admin: bool = False) -> bool:
+    """Coarse start check without a workout identity: entitled, or this week's
+    free workout has not been claimed yet. The keyed gate (start_decision)
+    is what POST /api/workouts/start enforces."""
     has_access, _ = has_full_access(user, is_admin)
     if has_access:
         return True
-    return free_workouts_used_this_period(user) < FREE_WORKOUT_ALLOWANCE
+    return first_free_workout(user) is None
 
 
 def free_workouts_remaining(user: dict) -> int:
-    """Remaining free workouts in the current week (never negative)."""
-    return max(0, FREE_WORKOUT_ALLOWANCE - free_workouts_used_this_period(user))
+    """1 until this week's free workout has been started, then 0 until Monday."""
+    return 0 if first_free_workout(user) is not None else 1
 
 
 def subscription_mirror_for_client(user: dict) -> dict:

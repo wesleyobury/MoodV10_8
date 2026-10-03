@@ -103,6 +103,13 @@ def build_training_profile_router(db, get_current_user):
         res = await db.users.update_one({'_id': ObjectId(current_user_id)}, {'$set': {'training_profile': merged}})
         if res.matched_count == 0:
             raise HTTPException(404, 'User not found')
+        if merged.get('completed_at'):
+            # V3 activation milestone (v3_tracking.py), server-side so it never depends on client analytics
+            try:
+                from v3_tracking import stamp_milestone
+                await stamp_milestone(db, current_user_id, 'v3_onboarded_at', merged['completed_at'])
+            except Exception:
+                pass
         return public_view(merged)
 
     return r

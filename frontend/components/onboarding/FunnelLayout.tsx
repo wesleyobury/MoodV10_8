@@ -30,6 +30,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SafeLinearGradient as LinearGradient } from '../SafeLinearGradient';
 import { BRAND_GRADIENT, COLORS, FUNNEL_TOTAL_STEPS } from '../../constants/brand';
+import { profileProgressLabel } from '../../utils/v3ProfileCopy';
 
 interface FunnelLayoutProps {
   step: number;
@@ -44,6 +45,13 @@ interface FunnelLayoutProps {
   ctaLoading?: boolean;
   onCtaPress?: () => void;
   testID?: string;
+  /**
+   * V3 profile funnel: 0–100. Replaces "Step X / N" with "YOUR PROFILE IS TAKING SHAPE · 60%", and the bar follows
+   * the profile (it moves on every tap, not only on Continue).
+   */
+  profilePct?: number;
+  /** Rendered in a fixed slot right above the CTA (V3: the answer's consequence), so it is never below the fold. */
+  aboveCta?: React.ReactNode;
 }
 
 export function FunnelLayout({
@@ -58,8 +66,13 @@ export function FunnelLayout({
   ctaLoading,
   onCtaPress,
   testID,
+  profilePct,
+  aboveCta,
 }: FunnelLayoutProps) {
-  const progress = Math.max(0, Math.min(1, step / totalSteps));
+  const isProfile = typeof profilePct === 'number';
+  const progress = isProfile
+    ? Math.max(0, Math.min(1, profilePct! / 100))
+    : Math.max(0, Math.min(1, step / totalSteps));
   const progressAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -93,9 +106,16 @@ export function FunnelLayout({
             />
           </Animated.View>
         </View>
-        <Text style={styles.stepLabel}>
-          Step {step} / {totalSteps}
-        </Text>
+        {isProfile ? (
+          <Text style={styles.stepLabel} testID={`${testID || 'funnel'}-profile-progress`}>
+            {profileProgressLabel(profilePct!)}
+            {profilePct! > 0 ? <Text style={styles.stepPct}>{`  ·  ${profilePct}%`}</Text> : null}
+          </Text>
+        ) : (
+          <Text style={styles.stepLabel}>
+            Step {step} / {totalSteps}
+          </Text>
+        )}
       </View>
 
       <View style={styles.body}>
@@ -112,6 +132,8 @@ export function FunnelLayout({
           {children}
         </ScrollView>
       </View>
+
+      {aboveCta ? <View style={styles.aboveCta}>{aboveCta}</View> : null}
 
       {ctaLabel ? (
         <View style={styles.footer}>
@@ -170,6 +192,16 @@ const styles = StyleSheet.create({
     color: COLORS.textTertiary,
     textTransform: 'uppercase',
     fontWeight: '500',
+  },
+  stepPct: {
+    color: COLORS.accent,
+    fontWeight: '700',
+  },
+  aboveCta: {
+    paddingTop: 12,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255,255,255,0.06)',
+    paddingBottom: 14,
   },
   body: {
     flex: 1,

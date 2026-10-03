@@ -8,7 +8,7 @@ workout from an older engine is never reopened as if it were a fresh build.
 from __future__ import annotations
 import datetime as _dt, hashlib, pathlib
 
-ENGINE_PHASE = '3.4-athletic-frozen'
+ENGINE_PHASE = '3.9-athletic-sequencing-pass'   # after 3.6-sweat-final-prelaunch, 3.7 / 3.8 Athletic passes
 
 
 def _fingerprint() -> str:

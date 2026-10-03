@@ -13,7 +13,7 @@
  * Presentation only: names, prescriptions and cues are the API's text. No workout rules live here.
  */
 import type { V3Block, V3Item, V3Workout } from './v3Api';
-import { secondsLabel } from './v3OverviewFormat';
+import { emomLabel, secondsLabel } from './v3OverviewFormat';
 import { bodyAreaOf } from './v3HomeModel';
 
 export interface PreviewRow {
@@ -135,7 +135,7 @@ export function previewSections(w: V3Workout): PreviewSection[] {
         rows = b.items.map((i) => row(i, null, perRound(i, b.rounds)));
         break;
       case 'emom':
-        label = join('EMOM', typeof b.interval?.minutes === 'number' ? `${b.interval.minutes} min` : roundsText(b.rounds));
+        label = emomLabel(b);
         rows = b.items.map((i) => row(i, null, perRound(i, b.rounds)));
         break;
       case 'intervals':

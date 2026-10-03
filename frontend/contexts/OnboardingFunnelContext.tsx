@@ -25,6 +25,7 @@ import { API_URL } from '../utils/apiConfig';
 import type {
   Barrier,
   Experience,
+  ExperienceDetail,
   TrainingFrequency,
   TrainingPreference,
   V3FunnelMode,
@@ -75,6 +76,8 @@ export interface FunnelAnswers {
   trainingPreference?: TrainingPreference;
   v3Goal?: V3Goal;
   experience?: Experience;
+  /** The human rung picked in onboarding ("I train consistently"); maps to `experience`. Device-local. */
+  experienceDetail?: ExperienceDetail;
   trainingFrequency?: TrainingFrequency;
   barrier?: Barrier;
   /** new = signup, upgrade = existing user's first V3 open, edit = Settings. */
@@ -99,7 +102,7 @@ interface OnboardingFunnelContextValue {
   setEquipment: (equipment: EquipmentAccess) => void;
   setFirstName: (firstName: string) => void;
   /** MOOD V3 profile setters. */
-  setV3: (delta: Partial<Pick<FunnelAnswers, 'trainingPreference' | 'v3Goal' | 'experience' | 'trainingFrequency' | 'barrier' | 'v3Mode' | 'v3SavedAt'>>) => void;
+  setV3: (delta: Partial<Pick<FunnelAnswers, 'trainingPreference' | 'v3Goal' | 'experience' | 'experienceDetail' | 'trainingFrequency' | 'barrier' | 'v3Mode' | 'v3SavedAt'>>) => void;
   /** Returns ms spent on the given step since `markStepEntered` was called. */
   markStepEntered: (step: number) => void;
   consumeStepDuration: (step: number) => number;

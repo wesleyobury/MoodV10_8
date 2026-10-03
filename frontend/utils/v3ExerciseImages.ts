@@ -12,6 +12,8 @@
  * Founder policy (post pass 4): Cart and exercise images are static photos only (the set is moving to AI-generated photos in one
  * visual theme). Exercise-video thumbnails are never used as images. Anything not listed shows the monogram tile.
  */
+import { thumbUrl } from './v3ExerciseThumbs';
+
 export const V3_EXERCISE_IMAGES: Record<string, string> = {
   air_bike: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240950/mood_app/workout_images/foko2r38_download_2_.jpg', // Air Bike <- V2 equipment (air bike)
   arnold_press: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1770240980/mood_app/workout_images/64d4m132_arnold_press.jpg', // Arnold Press <- V2 card
@@ -100,14 +102,21 @@ export const V3_EXERCISE_IMAGES: Record<string, string> = {
 };
 
 /**
- * The image a V3 exercise row shows: MOOD's own static exercise photo (above), else null (the caller renders its monogram tile).
+ * The image a V3 exercise row shows. Resolution order (founder UX pass, thumbnail library):
+ *   1. the V3 exercise thumbnail library (utils/v3ExerciseThumbs, one visual theme, keyed by canonical exercise id;
+ *      every exercise the generator can produce is covered);
+ *   2. the older verified static photo above (kept only as a fallback for an id that ever leaves the library);
+ *   3. null: the caller renders its monogram tile. Nothing here ever blocks a workout.
  * Video-library thumbnails (exercise.media.thumbnail_url) are intentionally ignored; video only drives the Watch demo button.
  */
 export function exerciseImageUrl(item: { exercise?: { id?: string; media?: { thumbnail_url?: string | null } | null } | null }): string | null {
   const id = item.exercise?.id;
-  return (id && V3_EXERCISE_IMAGES[id]) || null;
+  if (!id) return null;
+  return thumbUrl(id) ?? V3_EXERCISE_IMAGES[id] ?? null;
 }
 
-export function exerciseImageSource(item: Parameters<typeof exerciseImageUrl>[0]): 'mood' | 'none' {
+export function exerciseImageSource(item: Parameters<typeof exerciseImageUrl>[0]): 'library' | 'mood' | 'none' {
+  const id = item.exercise?.id;
+  if (id && thumbUrl(id)) return 'library';
   return exerciseImageUrl(item) ? 'mood' : 'none';
 }

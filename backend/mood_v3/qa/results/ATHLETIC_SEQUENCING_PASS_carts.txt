@@ -1,0 +1,3922 @@
+carts 448; failures 0
+phases per cart (excl. finisher): {"1":20,"2":409,"3":19}
+velocity-strength rows tagged FOR VELOCITY: 511/511
+phase shapes:
+  303  POWER > ATHLETIC STRENGTH
+  104  SPEED & PLYO > ATHLETIC STRENGTH
+  19  PRIMER > POWER > ATHLETIC STRENGTH
+  12  POWER
+  8  SPEED & PLYO
+  2  PRIMER > POWER
+
+### athletic_power|beginner|30|none|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|none|2026-10-06
+ATHLETIC | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|none|2026-10-07
+ATHLETIC | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~7 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~7 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~6 min)  [main]
+       Broad Jump to Stick                    2 × 3         
+       Med-Ball Rotational Slam               2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|amped|2026-10-05
+ATHLETIC · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|amped|2026-10-06
+ATHLETIC · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|amped|2026-10-07
+ATHLETIC · AMPED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~10 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|bored|2026-10-05
+ATHLETIC · BORED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|bored|2026-10-06
+ATHLETIC · BORED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|bored|2026-10-07
+ATHLETIC · BORED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~10 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|60|none|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~12 min)  [main]
+       Countermovement Jump                   3 × 3         
+       Sled Push                              3 × 10 m      
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Goblet Squat                           5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_power|beginner|60|none|2026-10-06
+ATHLETIC | Power
+  POWER  ·  Plyometric · Upper-Body Power   (3 ex, ~13 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Broad Jump to Stick                    2 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### athletic_power|beginner|60|none|2026-10-07
+ATHLETIC | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### athletic_power|beginner|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_power|beginner|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_power|beginner|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~10 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+       Push-Up                                2 × 6           FOR VELOCITY
+
+### athletic_power|beginner|60|amped|2026-10-05
+ATHLETIC · AMPED | Power
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~14 min)  [main]
+       Countermovement Jump                   3 × 3         
+       Sled Push                              3 × 10 m      
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Goblet Squat                           5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_power|beginner|60|amped|2026-10-06
+ATHLETIC · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (3 ex, ~14 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Broad Jump to Stick                    2 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### athletic_power|beginner|60|amped|2026-10-07
+ATHLETIC · AMPED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~12 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Dumbbell Bench Press                   3 × 5           FOR VELOCITY
+
+### athletic_power|beginner|60|bored|2026-10-05
+ATHLETIC · BORED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (3 ex, ~13 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Dumbbell Push Press                    2 × 4         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_power|beginner|60|bored|2026-10-06
+ATHLETIC · BORED | Power
+  POWER  ·  Plyometric · Acceleration   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Half-Kneeling Start Sprint (5 m)       4 × 5 m       
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### athletic_power|beginner|60|bored|2026-10-07
+ATHLETIC · BORED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### athletic_power|beginner|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_power|beginner|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_power|beginner|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### athletic_power|beginner|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (3 ex, ~13 min)  [main]
+       Countermovement Jump                   3 × 3         
+       Skater Hops                            2 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Goblet Squat                           5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_power|beginner|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~12 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Sled Push                              3 × 10 m      
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### athletic_power|beginner|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~12 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Dumbbell Bench Press                   3 × 5           FOR VELOCITY
+
+### athletic_power|intermediate|30|none|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Landmine Push Press                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|none|2026-10-06
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|none|2026-10-07
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~12 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Trap-Bar Deadlift                      2 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|amped|2026-10-05
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Landmine Push Press                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|30|amped|2026-10-06
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~11 min)  [main]
+       Hang High Pull                         3 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|30|amped|2026-10-07
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~13 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|30|bored|2026-10-05
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Landmine Push Press                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|bored|2026-10-06
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|bored|2026-10-07
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~12 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Lower-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Dumbbell Jump Squat                    4 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Lower-Body Power · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Explosive Push-Up                      3 × 4         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  POWER  ·  Lower-Body Power · Rotational Power   (2 ex, ~14 min)  [main]
+       Dumbbell Jump Squat                    4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power   (1 ex, ~7 min)  [main]
+       Hang High Pull                         3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~12 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|60|none|2026-10-05
+ATHLETIC | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Landmine Push Press                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|60|none|2026-10-06
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|60|none|2026-10-07
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Dumbbell Romanian Deadlift             5 reps          FOR VELOCITY
+    A2 Push-Up                                5 reps          FOR VELOCITY
+
+### athletic_power|intermediate|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Dumbbell Romanian Deadlift             5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_power|intermediate|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Dumbbell Romanian Deadlift             2 × 5           FOR VELOCITY
+       Weighted Push-Up                       2 × 5           FOR VELOCITY
+
+### athletic_power|intermediate|60|amped|2026-10-05
+ATHLETIC · AMPED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~16 min)  [main]
+       Hang High Pull                         4 × 3         
+       Landmine Push Press                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|60|amped|2026-10-06
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~22 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|60|amped|2026-10-07
+ATHLETIC · AMPED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Box Jump                               2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~15 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|60|bored|2026-10-05
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Landmine Push Press                    3 × 3/side    
+       Explosive Step-Up (Pop)                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|60|bored|2026-10-06
+ATHLETIC · BORED | Power
+  POWER  ·  Lower-Body Power · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Trap-Bar Jump Squat                    3 × 3         
+       Explosive Push-Up                      3 × 4         
+  ATHLETIC STRENGTH  ·  Total-Body Power · Rotational Core   (3 ex, ~17 min)
+       Speed Trap-Bar Deadlift                4 × 2           FOR VELOCITY
+       Front Squat                            3 × 4           FOR VELOCITY
+       Cable Wood Chop                        3 × 6/side    
+
+### athletic_power|intermediate|60|bored|2026-10-07
+ATHLETIC · BORED | Power
+  POWER  ·  Lower-Body Power · Plyometric   (4 ex, ~23 min)  [main]
+       Trap-Bar Jump Squat                    3 × 3         
+       Skater Hops                            3 × 3/side    
+       Landmine Split Jerk                    3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### athletic_power|intermediate|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Lower-Body Power · Plyometric   (3 ex, ~16 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Single-Leg Hop to Stick                3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Lower-Body Power · Upper-Body Power   (3 ex, ~16 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Explosive Push-Up                      3 × 4         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  POWER  ·  Lower-Body Power · Rotational Power   (3 ex, ~18 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Landmine Rotational Punch              3 × 4/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|intermediate|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~21 min)  [main]
+       Hang High Pull                         4 × 3         
+       Dumbbell Jump Squat                    3 × 3         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_power|intermediate|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~22 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Broad Jump                      3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|30|none|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Power Snatch                           4 × 2         
+       Landmine Split Jerk                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|none|2026-10-06
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~13 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|none|2026-10-07
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Trap-Bar Deadlift                      2 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|amped|2026-10-05
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~14 min)  [main]
+       Power Snatch                           4 × 2         
+       Landmine Split Jerk                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|30|amped|2026-10-06
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|30|amped|2026-10-07
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~13 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|30|bored|2026-10-05
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Power Snatch                           4 × 2         
+       Landmine Split Jerk                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|bored|2026-10-06
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~13 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|bored|2026-10-07
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Kettlebell Swing                       5 × 8         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~14 min)  [main]
+       Kettlebell Swing                       5 × 8         
+       Broad Jump to Stick                    3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~14 min)  [main]
+       Kettlebell Swing                       5 × 8         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power   (1 ex, ~10 min)  [main]
+       Hang High Pull                         4 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~15 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|60|none|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~21 min)  [main]
+       Power Snatch                           4 × 2         
+       Banded Lateral Bound                   3 × 3/side    
+       Landmine Split Jerk                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|60|none|2026-10-06
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~21 min)  [main]
+       Hang High Pull                         4 × 3         
+       Dumbbell Jump Squat                    3 × 3         
+       Banded Lateral Bound                   3 × 3/side    
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~13 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+       Pallof Press                           3 × 8/side    
+
+### athletic_power|advanced|60|none|2026-10-07
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Consecutive Broad Jumps                3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Barbell Romanian Deadlift              2 × 4           FOR VELOCITY
+       Push-Up                                2 × 5           FOR VELOCITY
+
+### athletic_power|advanced|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Barbell Romanian Deadlift              4 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_power|advanced|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~13 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Barbell Romanian Deadlift              2 × 4           FOR VELOCITY
+       Weighted Push-Up                       2 × 5           FOR VELOCITY
+
+### athletic_power|advanced|60|amped|2026-10-05
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~26 min)  [main]
+       Power Snatch                           5 × 2         
+       Countermovement Jump                   3 × 3         
+       Landmine Split Jerk                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|60|amped|2026-10-06
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~23 min)  [main]
+       Hang High Pull                         5 × 3         
+       Banded Lateral Bound                   3 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|60|amped|2026-10-07
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~24 min)  [main]
+       Hang High Pull                         5 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|60|bored|2026-10-05
+ATHLETIC · BORED | Power
+  POWER  ·  Lower-Body Power · Plyometric   (3 ex, ~20 min)  [main]
+       Trap-Bar Jump Squat                    4 × 3         
+       Single-Leg Hop to Stick                3 × 3/side    
+       Landmine Split Jerk                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|60|bored|2026-10-06
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Plyometric   (4 ex, ~26 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   3 × 3/side    
+       Dumbbell Step-Up with Pop              3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### athletic_power|advanced|60|bored|2026-10-07
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Plyometric   (4 ex, ~25 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Kettlebell Swing                       3 × 8         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### athletic_power|advanced|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~17 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Banded Lateral Bound                   3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~18 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Broad Jump to Stick                    3 × 3         
+       Split-Squat Jump                       3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~18 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Banded Broad Jump                      3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_power|advanced|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~23 min)  [main]
+       Hang High Pull                         5 × 3         
+       Lateral Bound to Box Jump              3 × 2/side    
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~17 min)  [main]
+       Hang High Pull                         5 × 3         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_power|advanced|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~18 min)  [main]
+       Hang High Pull                         5 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|none|2026-10-05
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~7 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Reverse Lunge to Knee-Drive Hop        2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|none|2026-10-06
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~7 min)  [main]
+       Power Skip                             2 × 6         
+       Skater Hops                            2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|none|2026-10-07
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~7 min)  [main]
+       Power Skip                             2 × 6         
+       Skater Hops                            2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~7 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~6 min)  [main]
+       Power Skip                             2 × 6         
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (2 ex, ~6 min)  [main]
+       Power Skip                             2 × 6         
+       Med-Ball Rotational Slam               2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|amped|2026-10-05
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~8 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Reverse Lunge to Knee-Drive Hop        2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|amped|2026-10-06
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~7 min)  [main]
+       Power Skip                             2 × 6         
+       Skater Hops                            2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|amped|2026-10-07
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~7 min)  [main]
+       Power Skip                             2 × 6         
+       Skater Hops                            2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|bored|2026-10-05
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~7 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Reverse Lunge to Knee-Drive Hop        2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|bored|2026-10-06
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~7 min)  [main]
+       Power Skip                             2 × 6         
+       Skater Hops                            2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|bored|2026-10-07
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~7 min)  [main]
+       Power Skip                             2 × 6         
+       Skater Hops                            2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Reverse Lunge to Knee-Drive Hop        2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~7 min)  [main]
+       Power Skip                             2 × 6         
+       Skater Hops                            2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~7 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Countermovement Jump                   2 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Countermovement Jump                   2 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Countermovement Jump                   2 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Countermovement Jump                   2 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|none|2026-10-05
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Explosive Start (5-10 m)               4 × 10 m      
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|none|2026-10-06
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (3 ex, ~13 min)  [main]
+       Power Skip                             3 × 6         
+       Skater Hops                            2 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### athletic_speed_agility|beginner|60|none|2026-10-07
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~13 min)  [main]
+       Power Skip                             3 × 6         
+       Skater Hops                            2 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Power Skip                             2 × 6         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (2 ex, ~8 min)  [main]
+       Power Skip                             2 × 6         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+       Push-Up                                2 × 6           FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|amped|2026-10-05
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~14 min)  [main]
+       Skater Hops                            4 × 3/side    
+       Explosive Start (5-10 m)               4 × 10 m      
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|amped|2026-10-06
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (3 ex, ~14 min)  [main]
+       Power Skip                             3 × 6         
+       Skater Hops                            2 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### athletic_speed_agility|beginner|60|amped|2026-10-07
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~15 min)  [main]
+       Power Skip                             3 × 6         
+       Skater Hops                            2 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|bored|2026-10-05
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Half-Kneeling Start Sprint (5 m)       4 × 5 m       
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|bored|2026-10-06
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~13 min)  [main]
+       Power Skip                             3 × 6         
+       Broad Jump to Stick                    2 × 3         
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|bored|2026-10-07
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~13 min)  [main]
+       Power Skip                             3 × 6         
+       Skater Hops                            2 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Explosive Start (5-10 m)               4 × 10 m      
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~9 min)  [main]
+       Power Skip                             2 × 6         
+       Skater Hops                            3 × 3/side    
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Countermovement Jump                   3 × 3         
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~11 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Explosive Start (5-10 m)               4 × 10 m      
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_speed_agility|beginner|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (3 ex, ~13 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Reverse Lunge to Knee-Drive Hop        2 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### athletic_speed_agility|beginner|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~13 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Countermovement Jump                   2 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|none|2026-10-05
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~11 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Sled Push                              3 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|none|2026-10-06
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~12 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|none|2026-10-07
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~13 min)  [main]
+       Single-Leg Hop to Stick                4 × 3/side    
+       Lateral Box Jump                       3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Trap-Bar Deadlift                      2 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|amped|2026-10-05
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~11 min)  [main]
+       Alternating Bound                      3 × 6         
+       Sled Push                              3 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|amped|2026-10-06
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~12 min)  [main]
+       Power Skip                             3 × 6         
+       Banded Lateral Bound                   3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|amped|2026-10-07
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~11 min)  [main]
+       Power Skip                             3 × 6         
+       Lateral Box Jump                       3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|bored|2026-10-05
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~10 min)  [main]
+       Continuous Vertical Jumps              4 × 5         
+       Push-Up-Start Sprint (5 m)             3 × 5 m       
+  ATHLETIC STRENGTH   (1 ex, ~8 min)
+       Front-Foot Elevated Split Squat        3 × 5/side      FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|bored|2026-10-06
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~13 min)  [main]
+       Continuous Vertical Jumps              4 × 5         
+       Banded Lateral Bound                   3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~8 min)
+       Front-Foot Elevated Split Squat        3 × 5/side      FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|bored|2026-10-07
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~12 min)  [main]
+       Continuous Vertical Jumps              4 × 5         
+       Lateral Box Jump                       3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~8 min)
+       Front-Foot Elevated Split Squat        3 × 5/side      FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~11 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Sled Push                              3 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~12 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~12 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Countermovement Jump                   3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~12 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Sled Push                              3 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~13 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Box Jump                               3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~13 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Countermovement Jump                   3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|none|2026-10-05
+ATHLETIC | Speed + Plyo
+  POWER  ·  Plyometric · Lower-Body Power   (3 ex, ~18 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Dumbbell Jump Squat                    3 × 3         
+       Sled Push                              4 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|none|2026-10-06
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (4 ex, ~16 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Pogo Jumps                             3 × 10        
+       Split-Stance Start Sprint (5 m)        3 × 5 m       
+       Med-Ball Rotational Throw              3 × 4/side    
+
+### athletic_speed_agility|intermediate|60|none|2026-10-07
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (4 ex, ~20 min)  [main]
+       Single-Leg Hop to Stick                3 × 3/side    
+       Box Jump                               3 × 3         
+       Sled Push                              3 × 10 m      
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### athletic_speed_agility|intermediate|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Dumbbell Romanian Deadlift             5 reps          FOR VELOCITY
+    A2 Push-Up                                5 reps          FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Dumbbell Romanian Deadlift             5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Dumbbell Romanian Deadlift             2 × 5           FOR VELOCITY
+       Weighted Push-Up                       2 × 5           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|amped|2026-10-05
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~21 min)  [main]
+       Alternating Bound                      4 × 6         
+       Sled Push                              4 × 10 m      
+       Explosive Push-Up                      3 × 4         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|amped|2026-10-06
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~19 min)  [main]
+       Power Skip                             4 × 6         
+       Lateral Bound to Box Jump              3 × 2/side    
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|amped|2026-10-07
+ATHLETIC · AMPED | Speed + Plyo
+  POWER  ·  Plyometric · Upper-Body Power   (4 ex, ~22 min)  [main]
+       Power Skip                             3 × 6         
+       Lateral Box Jump                       3 × 3         
+       Landmine Split Jerk                    3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### athletic_speed_agility|intermediate|60|bored|2026-10-05
+ATHLETIC · BORED | Speed + Plyo
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~15 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Push-Up-Start Sprint (5 m)             4 × 5 m       
+       Landmine Split Jerk                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|bored|2026-10-06
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (4 ex, ~19 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Half-Kneeling Start Sprint (5 m)       3 × 5 m       
+       Med-Ball Rotational Throw              3 × 4/side    
+
+### athletic_speed_agility|intermediate|60|bored|2026-10-07
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (4 ex, ~19 min)  [main]
+       Single-Leg Hop to Stick                3 × 3/side    
+       Continuous Vertical Jumps              3 × 5         
+       Push-Up-Start Sprint (5 m)             3 × 5 m       
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### athletic_speed_agility|intermediate|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Speed + Plyo
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~17 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Sled Push                              4 × 10 m      
+       Landmine Rotational Punch              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Dumbbell Romanian Deadlift             3 × 5           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (3 ex, ~15 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Split-Squat Jump                       3 × 3/side    
+       Explosive Push-Up                      3 × 4         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~16 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~21 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Sled Push                              4 × 10 m      
+       Single-Leg Box Jump                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~19 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|intermediate|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~18 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Pogo to Box Jump                       3 × 2         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|none|2026-10-05
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~13 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Sled Push                              3 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|none|2026-10-06
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~11 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Single-Leg Box Jump                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|none|2026-10-07
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~13 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Lateral Box Jump                       3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Trap-Bar Deadlift                      2 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|amped|2026-10-05
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~14 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Sled Push                              3 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|amped|2026-10-06
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~12 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Single-Leg Box Jump                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|amped|2026-10-07
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~14 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Lateral Box Jump                       3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|bored|2026-10-05
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~13 min)  [main]
+       Drop Jump                              4 × 3         
+       Push-Up-Start Sprint (5 m)             3 × 5 m       
+  ATHLETIC STRENGTH   (1 ex, ~9 min)
+       Front-Foot Elevated Split Squat        3 × 5/side      FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|bored|2026-10-06
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~13 min)  [main]
+       Drop Jump                              4 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~9 min)
+       Bulgarian Split Squat                  3 × 5/side      FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|bored|2026-10-07
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~14 min)  [main]
+       Drop Jump                              4 × 3         
+       Lateral Box Jump                       3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~9 min)
+       Bulgarian Split Squat                  3 × 5/side      FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~15 min)  [main]
+       Broad Jump to Stick                    5 × 3         
+       Sled Push                              3 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~14 min)  [main]
+       Lateral Box Jump                       5 × 3         
+       Countermovement Jump                   3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~15 min)  [main]
+       Broad Jump to Stick                    5 × 3         
+       Countermovement Jump                   3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (2 ex, ~14 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Sled Push                              3 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~14 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Box Jump                               3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|advanced|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~14 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Countermovement Jump                   3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|none|2026-10-05
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (3 ex, ~20 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Bar Muscle-Up                          3 × 2         
+       Sled Push                              4 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|none|2026-10-06
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (4 ex, ~22 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Split-Stance Start Sprint (5 m)        3 × 5 m       
+       Step-Behind Rotational Throw           3 × 4/side    
+
+### athletic_speed_agility|advanced|60|none|2026-10-07
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (4 ex, ~24 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Rear-Foot-Elevated Split Squat Jump    3 × 3/side    
+       Sled Push                              3 × 10 m      
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### athletic_speed_agility|advanced|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Barbell Romanian Deadlift              2 × 4           FOR VELOCITY
+       Push-Up                                2 × 5           FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Barbell Romanian Deadlift              4 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (2 ex, ~13 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Barbell Romanian Deadlift              2 × 4           FOR VELOCITY
+       Weighted Push-Up                       2 × 5           FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|amped|2026-10-05
+ATHLETIC · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (3 ex, ~25 min)  [main]
+       Consecutive Broad Jumps                5 × 3         
+       Bar Muscle-Up                          3 × 2         
+       Sled Push                              4 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|amped|2026-10-06
+ATHLETIC · AMPED | Speed + Plyo
+  POWER  ·  Plyometric · Rotational Power   (4 ex, ~30 min)  [main]
+       Consecutive Broad Jumps                5 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Landmine Rotational Punch              3 × 4/side    
+       Step-Behind Rotational Throw           3 × 4/side    
+
+### athletic_speed_agility|advanced|60|amped|2026-10-07
+ATHLETIC · AMPED | Speed + Plyo
+  POWER  ·  Plyometric · Rotational Power   (4 ex, ~29 min)  [main]
+       Consecutive Broad Jumps                5 × 3         
+       Rear-Foot-Elevated Split Squat Jump    3 × 3/side    
+       Landmine Rotational Clean and Press    3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### athletic_speed_agility|advanced|60|bored|2026-10-05
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~19 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Push-Up-Start Sprint (5 m)             4 × 5 m       
+       Rear-Foot-Elevated Split Squat Jump    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|bored|2026-10-06
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (4 ex, ~25 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Band-Assisted Muscle-Up                3 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Step-Behind Rotational Throw           3 × 4/side    
+
+### athletic_speed_agility|advanced|60|bored|2026-10-07
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (4 ex, ~22 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Pogo to Box Jump                       3 × 2         
+       Push-Up-Start Sprint (5 m)             3 × 5 m       
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### athletic_speed_agility|advanced|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~19 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Sled Push                              4 × 10 m      
+       Explosive Push-Up                      3 × 4         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Barbell Romanian Deadlift              3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (3 ex, ~16 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~18 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~24 min)  [main]
+       Consecutive Broad Jumps                5 × 3         
+       Continuous Vertical Jumps              3 × 5         
+       Sled Push                              4 × 10 m      
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_speed_agility|advanced|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~23 min)  [main]
+       Box Jump                               5 × 3         
+       Sled Push                              4 × 10 m      
+       Med-Ball Scoop Toss                    3 × 5         
+  ATHLETIC STRENGTH  ·  Rotational Core   (2 ex, ~12 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+       Landmine Rotation                      3 × 6/side    
+
+### athletic_speed_agility|advanced|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~23 min)  [main]
+       Consecutive Broad Jumps                5 × 3         
+       Sled Push                              4 × 10 m      
+       Med-Ball Scoop Toss                    3 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~13 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+       Pallof Step-Out                        3 × 8/side    
+
+### athletic_full_body|beginner|30|none|2026-10-05
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|none|2026-10-06
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|none|2026-10-07
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~7 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~7 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~6 min)  [main]
+       Broad Jump to Stick                    2 × 3         
+       Med-Ball Rotational Slam               2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|amped|2026-10-05
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|amped|2026-10-06
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|amped|2026-10-07
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~10 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|bored|2026-10-05
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|bored|2026-10-06
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|bored|2026-10-07
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~10 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|60|none|2026-10-05
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~12 min)  [main]
+       Countermovement Jump                   3 × 3         
+       Sled Push                              3 × 10 m      
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Goblet Squat                           5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_full_body|beginner|60|none|2026-10-06
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (3 ex, ~13 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Broad Jump to Stick                    2 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### athletic_full_body|beginner|60|none|2026-10-07
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### athletic_full_body|beginner|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_full_body|beginner|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_full_body|beginner|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~10 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+       Push-Up                                2 × 6           FOR VELOCITY
+
+### athletic_full_body|beginner|60|amped|2026-10-05
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~14 min)  [main]
+       Countermovement Jump                   3 × 3         
+       Sled Push                              3 × 10 m      
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Goblet Squat                           5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_full_body|beginner|60|amped|2026-10-06
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (3 ex, ~14 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Broad Jump to Stick                    2 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### athletic_full_body|beginner|60|amped|2026-10-07
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~12 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Dumbbell Bench Press                   3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|60|bored|2026-10-05
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (3 ex, ~14 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Reverse Lunge to Knee-Drive Hop        2 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|60|bored|2026-10-06
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~11 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Half-Kneeling Start Sprint (5 m)       4 × 5 m       
+       Med-Ball Rotational Throw              2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### athletic_full_body|beginner|60|bored|2026-10-07
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### athletic_full_body|beginner|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_full_body|beginner|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### athletic_full_body|beginner|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### athletic_full_body|beginner|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (3 ex, ~13 min)  [main]
+       Countermovement Jump                   3 × 3         
+       Skater Hops                            2 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Goblet Squat                           5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_full_body|beginner|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~12 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Sled Push                              3 × 10 m      
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### athletic_full_body|beginner|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~12 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Dumbbell Bench Press                   3 × 5           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|none|2026-10-05
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Landmine Push Press                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|none|2026-10-06
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|none|2026-10-07
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~12 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Trap-Bar Deadlift                      2 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|amped|2026-10-05
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Landmine Push Press                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|amped|2026-10-06
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~11 min)  [main]
+       Hang High Pull                         3 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|amped|2026-10-07
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~13 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|bored|2026-10-05
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Lower-Body Power · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Banded Broad Jump                      3 × 3         
+       Landmine Push Press                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|bored|2026-10-06
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|bored|2026-10-07
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~12 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Lower-Body Power · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Banded Broad Jump                      3 × 3         
+       Explosive Push-Up                      3 × 4         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~12 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power   (1 ex, ~7 min)  [main]
+       Hang High Pull                         3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~13 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|none|2026-10-05
+ATHLETIC | Full-Body Athlete
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Landmine Push Press                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|none|2026-10-06
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|none|2026-10-07
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Dumbbell Romanian Deadlift             5 reps          FOR VELOCITY
+    A2 Push-Up                                5 reps          FOR VELOCITY
+
+### athletic_full_body|intermediate|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Dumbbell Romanian Deadlift             5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_full_body|intermediate|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Dumbbell Romanian Deadlift             2 × 5           FOR VELOCITY
+       Weighted Push-Up                       2 × 5           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|amped|2026-10-05
+ATHLETIC · AMPED | Full-Body Athlete
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~16 min)  [main]
+       Hang High Pull                         4 × 3         
+       Landmine Push Press                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|amped|2026-10-06
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~21 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|amped|2026-10-07
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~21 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|bored|2026-10-05
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Lower-Body Power · Upper-Body Power   (3 ex, ~17 min)  [main]
+       Trap-Bar Jump Squat                    3 × 3         
+       Landmine Push Press                    3 × 3/side    
+       Step-Behind Rotational Throw           3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|bored|2026-10-06
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~19 min)  [main]
+       Hang High Pull                         4 × 3         
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|bored|2026-10-07
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~19 min)  [main]
+       Hang High Pull                         4 × 3         
+       Pogo to Box Jump                       3 × 2         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~15 min)  [main]
+       Kettlebell Swing                       3 × 8         
+       Banded Lateral Bound                   3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Lower-Body Power · Upper-Body Power   (3 ex, ~16 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Explosive Push-Up                      3 × 4         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Lower-Body Power · Rotational Power   (3 ex, ~18 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Landmine Rotational Punch              3 × 4/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~19 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Banded Squat Jump                      3 × 3         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Upper-Body Power   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Dumbbell Push Press                    3 × 4         
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_full_body|intermediate|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~20 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Banded Squat Jump                      3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|30|none|2026-10-05
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Power Snatch                           4 × 2         
+       Landmine Split Jerk                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|none|2026-10-06
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~13 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|none|2026-10-07
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Trap-Bar Deadlift                      2 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|amped|2026-10-05
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~14 min)  [main]
+       Power Snatch                           4 × 2         
+       Landmine Split Jerk                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|30|amped|2026-10-06
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|30|amped|2026-10-07
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~13 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|30|bored|2026-10-05
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Power Snatch                           4 × 2         
+       Landmine Split Jerk                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|bored|2026-10-06
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~13 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|bored|2026-10-07
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Kettlebell Swing                       5 × 8         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~14 min)  [main]
+       Kettlebell Swing                       5 × 8         
+       Broad Jump to Stick                    3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~14 min)  [main]
+       Kettlebell Swing                       5 × 8         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power   (1 ex, ~10 min)  [main]
+       Hang High Pull                         4 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~15 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|60|none|2026-10-05
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~21 min)  [main]
+       Power Snatch                           4 × 2         
+       Banded Lateral Bound                   3 × 3/side    
+       Landmine Split Jerk                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|60|none|2026-10-06
+ATHLETIC | Full-Body Athlete
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Box Jump                               2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Rotational Power   (3 ex, ~19 min)  [main]
+       Hang High Pull                         4 × 3         
+       Kettlebell Swing                       3 × 8         
+       Step-Behind Rotational Throw           3 × 4/side    
+
+### athletic_full_body|advanced|60|none|2026-10-07
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Consecutive Broad Jumps                3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Barbell Romanian Deadlift              2 × 4           FOR VELOCITY
+       Push-Up                                2 × 5           FOR VELOCITY
+
+### athletic_full_body|advanced|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Barbell Romanian Deadlift              4 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### athletic_full_body|advanced|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~13 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Barbell Romanian Deadlift              2 × 4           FOR VELOCITY
+       Weighted Push-Up                       2 × 5           FOR VELOCITY
+
+### athletic_full_body|advanced|60|amped|2026-10-05
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~26 min)  [main]
+       Power Snatch                           5 × 2         
+       Countermovement Jump                   3 × 3         
+       Landmine Split Jerk                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|60|amped|2026-10-06
+ATHLETIC · AMPED | Full-Body Athlete
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Box Jump                               2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~18 min)  [main]
+       Hang High Pull                         5 × 3         
+       Step-Behind Rotational Throw           3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|60|amped|2026-10-07
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~24 min)  [main]
+       Hang High Pull                         5 × 3         
+       Consecutive Broad Jumps                3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|60|bored|2026-10-05
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Acceleration   (3 ex, ~21 min)  [main]
+       Power Snatch                           4 × 2         
+       Broad Jump to Sprint (5 m)             4 × 5 m       
+       Landmine Rotational Punch              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|60|bored|2026-10-06
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (4 ex, ~25 min)  [main]
+       Hang High Pull                         4 × 3         
+       Lateral Box Jump                       3 × 3         
+       Dumbbell Step-Up with Pop              3 × 3/side    
+       Step-Behind Rotational Throw           3 × 4/side    
+
+### athletic_full_body|advanced|60|bored|2026-10-07
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (4 ex, ~25 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Kettlebell Swing                       3 × 8         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### athletic_full_body|advanced|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~17 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Banded Lateral Bound                   3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~16 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~18 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Banded Broad Jump                      3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### athletic_full_body|advanced|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~23 min)  [main]
+       Hang High Pull                         5 × 3         
+       Lateral Bound to Box Jump              3 × 2/side    
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~25 min)  [main]
+       Hang High Pull                         5 × 3         
+       Dumbbell Jump Squat                    3 × 3         
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~24 min)  [main]
+       Hang High Pull                         5 × 3         
+       Banded Broad Jump                      3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|beginner|30|none|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|none|2026-10-06
+ATHLETIC | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|none|2026-10-07
+ATHLETIC | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~7 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### pick|beginner|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~7 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### pick|beginner|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~6 min)  [main]
+       Broad Jump to Stick                    2 × 3         
+       Med-Ball Rotational Slam               2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+
+### pick|beginner|30|amped|2026-10-05
+ATHLETIC · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|amped|2026-10-06
+ATHLETIC · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|amped|2026-10-07
+ATHLETIC · AMPED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~10 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|bored|2026-10-05
+ATHLETIC · BORED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|bored|2026-10-06
+ATHLETIC · BORED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|bored|2026-10-07
+ATHLETIC · BORED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~10 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|60|none|2026-10-05
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~12 min)  [main]
+       Countermovement Jump                   3 × 3         
+       Sled Push                              3 × 10 m      
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Goblet Squat                           5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### pick|beginner|60|none|2026-10-06
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (3 ex, ~13 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Broad Jump to Stick                    2 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### pick|beginner|60|none|2026-10-07
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### pick|beginner|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### pick|beginner|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### pick|beginner|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~10 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Kettlebell Deadlift                    2 × 5           FOR VELOCITY
+       Push-Up                                2 × 6           FOR VELOCITY
+
+### pick|beginner|60|amped|2026-10-05
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~14 min)  [main]
+       Countermovement Jump                   3 × 3         
+       Sled Push                              3 × 10 m      
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Goblet Squat                           5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### pick|beginner|60|amped|2026-10-06
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (3 ex, ~14 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Broad Jump to Stick                    2 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### pick|beginner|60|amped|2026-10-07
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~12 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Dumbbell Bench Press                   3 × 5           FOR VELOCITY
+
+### pick|beginner|60|bored|2026-10-05
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (3 ex, ~14 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Reverse Lunge to Knee-Drive Hop        2 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|60|bored|2026-10-06
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~11 min)  [main]
+       Skater Hops                            2 × 3/side    
+       Half-Kneeling Start Sprint (5 m)       4 × 5 m       
+       Med-Ball Rotational Throw              2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+
+### pick|beginner|60|bored|2026-10-07
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Skater Hops                            3 × 3/side    
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### pick|beginner|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### pick|beginner|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Kettlebell Deadlift                    5 reps          FOR VELOCITY
+    A2 Push-Up                                6 reps          FOR VELOCITY
+
+### pick|beginner|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Push-Up                                3 × 6           FOR VELOCITY
+
+### pick|beginner|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Upper-Body Power   (3 ex, ~13 min)  [main]
+       Countermovement Jump                   3 × 3         
+       Skater Hops                            2 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Goblet Squat                           5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### pick|beginner|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~12 min)  [main]
+       Broad Jump to Stick                    3 × 3         
+       Sled Push                              3 × 10 m      
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH  ·  Core / Stability   (2 ex, ~10 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Pallof Press                           2 × 8/side    
+
+### pick|beginner|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~12 min)  [main]
+       Broad Jump to Stick                    4 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~12 min)
+       Kettlebell Deadlift                    3 × 5           FOR VELOCITY
+       Dumbbell Bench Press                   3 × 5           FOR VELOCITY
+
+### pick|intermediate|30|none|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Lower-Body Power · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Banded Broad Jump                      3 × 3         
+       Landmine Push Press                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|30|none|2026-10-06
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### pick|intermediate|30|none|2026-10-07
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~12 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### pick|intermediate|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~8 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Trap-Bar Deadlift                      2 × 4           FOR VELOCITY
+
+### pick|intermediate|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~9 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### pick|intermediate|30|amped|2026-10-05
+ATHLETIC · AMPED | Power
+  POWER  ·  Lower-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Banded Broad Jump                      3 × 3         
+       Landmine Push Press                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|intermediate|30|amped|2026-10-06
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~11 min)  [main]
+       Hang High Pull                         3 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### pick|intermediate|30|amped|2026-10-07
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~13 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|intermediate|30|bored|2026-10-05
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Hang High Pull                         3 × 3         
+       Landmine Push Press                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|30|bored|2026-10-06
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~13 min)  [main]
+       Continuous Vertical Jumps              4 × 5         
+       Banded Lateral Bound                   3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~8 min)
+       Front-Foot Elevated Split Squat        3 × 5/side      FOR VELOCITY
+
+### pick|intermediate|30|bored|2026-10-07
+ATHLETIC · BORED | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric   (2 ex, ~12 min)  [main]
+       Continuous Vertical Jumps              4 × 5         
+       Lateral Box Jump                       3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~8 min)
+       Front-Foot Elevated Split Squat        3 × 5/side      FOR VELOCITY
+
+### pick|intermediate|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Lower-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Dumbbell Jump Squat                    4 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Lower-Body Power   (2 ex, ~10 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Banded Broad Jump                      2 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### pick|intermediate|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Lower-Body Power   (1 ex, ~9 min)  [main]
+       Dumbbell Jump Squat                    4 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~11 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|intermediate|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power   (1 ex, ~7 min)  [main]
+       Hang High Pull                         3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### pick|intermediate|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~12 min)  [main]
+       Hang High Pull                         3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|intermediate|60|none|2026-10-05
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Lower-Body Power · Acceleration   (4 ex, ~21 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Banded Broad Jump                      2 × 3         
+       Sled Push                              3 × 10 m      
+       Landmine Rotational Punch              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|60|none|2026-10-06
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### pick|intermediate|60|none|2026-10-07
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Dumbbell Romanian Deadlift             5 reps          FOR VELOCITY
+    A2 Push-Up                                5 reps          FOR VELOCITY
+
+### pick|intermediate|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Dumbbell Romanian Deadlift             5 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### pick|intermediate|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Dumbbell Romanian Deadlift             2 × 5           FOR VELOCITY
+       Weighted Push-Up                       2 × 5           FOR VELOCITY
+
+### pick|intermediate|60|amped|2026-10-05
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Lower-Body Power · Acceleration   (3 ex, ~22 min)  [main]
+       Banded Broad Jump                      4 × 3         
+       Sled Push                              4 × 10 m      
+       Dumbbell Push Press                    3 × 4         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|intermediate|60|amped|2026-10-06
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~21 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### pick|intermediate|60|amped|2026-10-07
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~21 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|intermediate|60|bored|2026-10-05
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~22 min)  [main]
+       Hang Clean to Box Knee Drive           4 × 2/side    
+       Banded Broad Jump                      3 × 3         
+       Landmine Push Press                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|60|bored|2026-10-06
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~19 min)  [main]
+       Hang High Pull                         4 × 3         
+       Lateral Box Jump                       3 × 3         
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### pick|intermediate|60|bored|2026-10-07
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~19 min)  [main]
+       Hang High Pull                         4 × 3         
+       Pogo to Box Jump                       3 × 2         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Lower-Body Power · Plyometric   (3 ex, ~16 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Single-Leg Hop to Stick                3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Lower-Body Power · Upper-Body Power   (3 ex, ~17 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Banded Broad Jump                      3 × 3         
+       Explosive Push-Up                      3 × 4         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### pick|intermediate|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Lower-Body Power · Rotational Power   (2 ex, ~12 min)  [main]
+       Dumbbell Jump Squat                    3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|intermediate|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Lower-Body Power · Acceleration   (3 ex, ~18 min)  [main]
+       Trap-Bar Jump Squat                    3 × 3         
+       Sled Push                              4 × 10 m      
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|intermediate|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Upper-Body Power   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Dumbbell Push Press                    3 × 4         
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### pick|intermediate|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~20 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Banded Squat Jump                      3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~6 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|advanced|30|none|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Power Snatch                           4 × 2         
+       Landmine Split Jerk                    2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|advanced|30|none|2026-10-06
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~13 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### pick|advanced|30|none|2026-10-07
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|advanced|30|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Overhead Throw                2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### pick|advanced|30|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~10 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Chest Pass                    2 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Trap-Bar Deadlift                      2 × 4           FOR VELOCITY
+
+### pick|advanced|30|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~11 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~4 min)
+       Front Squat                            2 × 4           FOR VELOCITY
+
+### pick|advanced|30|amped|2026-10-05
+ATHLETIC · AMPED | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~14 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Landmine Split Jerk                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|advanced|30|amped|2026-10-06
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### pick|advanced|30|amped|2026-10-07
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~13 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Shot-Put Throw                2 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|advanced|30|bored|2026-10-05
+ATHLETIC · BORED | Power
+  POWER  ·  Contrast Strength · Plyometric   (3 ex, ~21 min)  [main]
+    CONTRAST PAIR · 4 ROUNDS
+    A1 Barbell Hip Thrust                     3 reps          HEAVY, THEN EXPLODE
+    A2 Broad Jump to Stick                    3 reps        
+       Landmine Split Jerk                    3 × 3/side    
+
+### pick|advanced|30|bored|2026-10-06
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~13 min)  [main]
+       Hang High Pull                         4 × 3         
+       Banded Lateral Bound                   2 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### pick|advanced|30|bored|2026-10-07
+ATHLETIC · BORED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|advanced|30|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~13 min)  [main]
+       Kettlebell Swing                       5 × 8         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|advanced|30|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Plyometric   (2 ex, ~14 min)  [main]
+       Kettlebell Swing                       5 × 8         
+       Broad Jump to Stick                    3 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### pick|advanced|30|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~14 min)  [main]
+       Kettlebell Swing                       5 × 8         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|advanced|30|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Upper-Body Power   (2 ex, ~14 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|advanced|30|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Power
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Broad Jump to Stick                    2 × 3           PRIMER
+  POWER  ·  Total-Body Power   (1 ex, ~10 min)  [main]
+       Hang High Pull                         4 × 3         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### pick|advanced|30|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~15 min)  [main]
+       Hang High Pull                         4 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|advanced|60|none|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~21 min)  [main]
+       Power Snatch                           4 × 2         
+       Banded Lateral Bound                   3 × 3/side    
+       Landmine Split Jerk                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|advanced|60|none|2026-10-06
+ATHLETIC | Full-Body Athlete
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Box Jump                               2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Rotational Power   (3 ex, ~19 min)  [main]
+       Hang High Pull                         4 × 3         
+       Kettlebell Swing                       3 × 8         
+       Step-Behind Rotational Throw           3 × 4/side    
+
+### pick|advanced|60|none|2026-10-07
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~20 min)  [main]
+       Hang High Pull                         4 × 3         
+       Consecutive Broad Jumps                3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|advanced|60|low_energy|2026-10-05
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Barbell Romanian Deadlift              2 × 4           FOR VELOCITY
+       Push-Up                                2 × 5           FOR VELOCITY
+
+### pick|advanced|60|low_energy|2026-10-06
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Upper-Body Power   (2 ex, ~12 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Chest Pass                    3 × 5         
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+    SUPERSET · 2 ROUNDS
+    A1 Barbell Romanian Deadlift              4 reps          FOR VELOCITY
+    A2 Dumbbell Bench Press                   5 reps          FOR VELOCITY
+
+### pick|advanced|60|low_energy|2026-10-07
+ATHLETIC · LOW ENERGY | Power
+  POWER  ·  Plyometric · Rotational Power   (2 ex, ~13 min)  [main]
+       Lateral Box Jump                       4 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~8 min)
+       Barbell Romanian Deadlift              2 × 4           FOR VELOCITY
+       Weighted Push-Up                       2 × 5           FOR VELOCITY
+
+### pick|advanced|60|amped|2026-10-05
+ATHLETIC · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~26 min)  [main]
+       Power Snatch                           5 × 2         
+       Countermovement Jump                   3 × 3         
+       Landmine Split Jerk                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|advanced|60|amped|2026-10-06
+ATHLETIC · AMPED | Full-Body Athlete
+  PRIMER  ·  Plyometric   (1 ex, ~3 min)
+       Box Jump                               2 × 3           PRIMER
+  POWER  ·  Total-Body Power · Rotational Power   (2 ex, ~18 min)  [main]
+       Hang High Pull                         5 × 3         
+       Step-Behind Rotational Throw           3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### pick|advanced|60|amped|2026-10-07
+ATHLETIC · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~24 min)  [main]
+       Hang High Pull                         5 × 3         
+       Consecutive Broad Jumps                3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|advanced|60|bored|2026-10-05
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Plyometric · Acceleration   (3 ex, ~19 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Push-Up-Start Sprint (5 m)             4 × 5 m       
+       Landmine Split Jerk                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|advanced|60|bored|2026-10-06
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (4 ex, ~25 min)  [main]
+       Hang High Pull                         4 × 3         
+       Lateral Box Jump                       3 × 3         
+       Dumbbell Step-Up with Pop              3 × 3/side    
+       Step-Behind Rotational Throw           3 × 4/side    
+
+### pick|advanced|60|bored|2026-10-07
+ATHLETIC · BORED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Plyometric   (4 ex, ~25 min)  [main]
+       Hang High Pull                         4 × 3         
+       Reverse Lunge to Knee-Drive Hop        3 × 3/side    
+       Kettlebell Swing                       3 × 8         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+
+### pick|advanced|60|stressed|2026-10-05
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~17 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Banded Lateral Bound                   3 × 3/side    
+       Med-Ball Overhead Throw                3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|advanced|60|stressed|2026-10-06
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~18 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Broad Jump to Stick                    3 × 3         
+       Split-Squat Jump                       3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 4           FOR VELOCITY
+
+### pick|advanced|60|stressed|2026-10-07
+ATHLETIC · STRESSED | Power
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~18 min)  [main]
+       Kettlebell Swing                       4 × 8         
+       Banded Broad Jump                      3 × 3         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 4           FOR VELOCITY
+
+### pick|advanced|60|irritated+amped|2026-10-05
+ATHLETIC · IRRITATED · AMPED | Power
+  POWER  ·  Total-Body Power · Plyometric   (3 ex, ~23 min)  [main]
+       Hang High Pull                         5 × 3         
+       Lateral Bound to Box Jump              3 × 2/side    
+       Med-Ball Slam                          3 × 5         
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|advanced|60|irritated+amped|2026-10-06
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~25 min)  [main]
+       Hang High Pull                         5 × 3         
+       Dumbbell Jump Squat                    3 × 3         
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Trap-Bar Deadlift                      3 × 3           FOR VELOCITY
+
+### pick|advanced|60|irritated+amped|2026-10-07
+ATHLETIC · IRRITATED · AMPED | Full-Body Athlete
+  POWER  ·  Total-Body Power · Lower-Body Power   (3 ex, ~24 min)  [main]
+       Hang High Pull                         5 × 3         
+       Banded Broad Jump                      3 × 3         
+       Med-Ball Rotational Slam               3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Front Squat                            3 × 3           FOR VELOCITY
+
+### pick|intermediate|60|free_weight_limited sore []|2026-10-05
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (3 ex, ~17 min)  [main]
+       Continuous Vertical Jumps              3 × 5         
+       Band-Assisted Muscle-Up                3 × 3         
+       Skater Hops                            3 × 3/side    
+  ATHLETIC STRENGTH   (2 ex, ~13 min)
+    SUPERSET · 3 ROUNDS
+    A1 Bulgarian Split Squat                  5/side          FOR VELOCITY
+    A2 Pull-Up                                5 reps          FOR VELOCITY
+
+### pick|advanced|60|free_weight_limited sore []|2026-10-05
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Upper-Body Power   (3 ex, ~17 min)  [main]
+       Drop Jump                              4 × 3         
+       Skater Hops                            2 × 3/side    
+       Explosive Push-Up                      3 × 4         
+  ATHLETIC STRENGTH   (2 ex, ~14 min)
+    SUPERSET · 3 ROUNDS
+    A1 Bulgarian Split Squat                  5/side          FOR VELOCITY
+    A2 Pull-Up                                5 reps          FOR VELOCITY
+
+### pick|intermediate|60|free_weight_limited sore ['legs']|2026-10-05
+ATHLETIC · SORE LEGS | Power
+  POWER  ·  Upper-Body Power · Rotational Power   (3 ex, ~16 min)  [main]
+       Band-Assisted Muscle-Up                3 × 3         
+       Dumbbell Push Press                    3 × 4         
+       Med-Ball Rotational Throw              3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~11 min)
+    SUPERSET · 3 ROUNDS
+    A1 Pull-Up                                4 reps          FOR VELOCITY
+    A2 Seated Dumbbell Shoulder Press         5 reps          FOR VELOCITY
+
+### pick|advanced|60|free_weight_limited sore ['legs']|2026-10-05
+ATHLETIC · SORE LEGS | Power
+  POWER  ·  Upper-Body Power · Rotational Power   (4 ex, ~25 min)  [main]
+       Band-Assisted Muscle-Up                4 × 3         
+       Dumbbell Push Press                    4 × 4         
+       Med-Ball Rotational Slam               3 × 4/side    
+       Step-Behind Rotational Throw           3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Chin-Up                                3 × 4           FOR VELOCITY
+
+### pick|intermediate|60|free_weight_limited sore ['shoulders']|2026-10-05
+ATHLETIC · SORE SHOULDERS | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~16 min)  [main]
+       Continuous Vertical Jumps              3 × 5         
+       Alternating Bound                      3 × 6         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~14 min)
+    SUPERSET · 3 ROUNDS
+    A1 Bulgarian Split Squat                  5/side          FOR VELOCITY
+    A2 Single-Arm Dumbbell Row                5/side          FOR VELOCITY
+
+### pick|advanced|60|free_weight_limited sore ['shoulders']|2026-10-05
+ATHLETIC · SORE SHOULDERS | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Rotational Power   (3 ex, ~20 min)  [main]
+       Drop Jump                              4 × 3         
+       Alternating Bound                      3 × 6         
+       Med-Ball Shot-Put Throw                3 × 4/side    
+  ATHLETIC STRENGTH   (2 ex, ~15 min)
+    SUPERSET · 3 ROUNDS
+    A1 Bulgarian Split Squat                  5/side          FOR VELOCITY
+    A2 Single-Arm Dumbbell Row                5/side          FOR VELOCITY
+
+### pick|intermediate|60|minimal sore []|2026-10-05
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~15 min)  [main]
+       Continuous Vertical Jumps              3 × 5         
+       Push-Up-Start Sprint (5 m)             4 × 5 m       
+       Single-Leg Hop to Stick                3 × 3/side    
+  ATHLETIC STRENGTH   (2 ex, ~14 min)
+    SUPERSET · 3 ROUNDS
+    A1 Bulgarian Split Squat                  5/side          FOR VELOCITY
+    A2 Single-Arm Dumbbell Row                5/side          FOR VELOCITY
+
+### pick|advanced|60|minimal sore []|2026-10-05
+ATHLETIC | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~18 min)  [main]
+       Continuous Vertical Jumps              4 × 5         
+       Push-Up-Start Sprint (5 m)             4 × 5 m       
+       Skater Hops                            3 × 3/side    
+  ATHLETIC STRENGTH   (2 ex, ~15 min)
+    SUPERSET · 3 ROUNDS
+    A1 Bulgarian Split Squat                  5/side          FOR VELOCITY
+    A2 Single-Arm Dumbbell Row                5/side          FOR VELOCITY
+
+### pick|intermediate|60|minimal sore ['legs']|2026-10-05
+ATHLETIC · SORE LEGS | Power
+  POWER  ·  Upper-Body Power   (1 ex, ~7 min)  [main]
+       Dumbbell Push Press                    4 × 4         
+  ATHLETIC STRENGTH   (2 ex, ~13 min)
+    SUPERSET · 3 ROUNDS
+    A1 Single-Arm Dumbbell Row                5/side          FOR VELOCITY
+    A2 Seated Dumbbell Shoulder Press         5 reps          FOR VELOCITY
+
+### pick|advanced|60|minimal sore ['legs']|2026-10-05
+ATHLETIC · SORE LEGS | Power
+  POWER  ·  Contrast Strength · Upper-Body Power   (3 ex, ~20 min)  [main]
+    CONTRAST PAIR · 4 ROUNDS
+    A1 Dumbbell Bench Press                   3 reps          HEAVY, THEN EXPLODE
+    A2 Explosive Push-Up                      4 reps        
+       Dumbbell Push Press                    3 × 4         
+  ATHLETIC STRENGTH   (1 ex, ~9 min)
+       Single-Arm Dumbbell Row                3 × 5/side      FOR VELOCITY
+
+### pick|intermediate|60|minimal sore ['shoulders']|2026-10-05
+ATHLETIC · SORE SHOULDERS | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~15 min)  [main]
+       Continuous Vertical Jumps              3 × 5         
+       Push-Up-Start Sprint (5 m)             4 × 5 m       
+       Skater Hops                            3 × 3/side    
+  ATHLETIC STRENGTH   (2 ex, ~14 min)
+    SUPERSET · 3 ROUNDS
+    A1 Bulgarian Split Squat                  5/side          FOR VELOCITY
+    A2 Single-Arm Dumbbell Row                5/side          FOR VELOCITY
+
+### pick|advanced|60|minimal sore ['shoulders']|2026-10-05
+ATHLETIC · SORE SHOULDERS | Speed + Plyo
+  SPEED & PLYO  ·  Plyometric · Acceleration   (3 ex, ~18 min)  [main]
+       Continuous Vertical Jumps              4 × 5         
+       Push-Up-Start Sprint (5 m)             4 × 5 m       
+       Skater Hops                            3 × 3/side    
+  ATHLETIC STRENGTH   (2 ex, ~15 min)
+    SUPERSET · 3 ROUNDS
+    A1 Bulgarian Split Squat                  5/side          FOR VELOCITY
+    A2 Single-Arm Dumbbell Row                5/side          FOR VELOCITY
+
+### athletic_power|advanced|60|build_strength|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Contrast Strength · Plyometric   (4 ex, ~28 min)  [main]
+    CONTRAST PAIR · 4 ROUNDS
+    A1 Barbell Romanian Deadlift              3 reps          HEAVY, THEN EXPLODE
+    A2 Broad Jump to Stick                    3 reps        
+       Sled Push                              4 × 10 m      
+       Landmine Push Press                    3 × 3/side    
+  ATHLETIC STRENGTH   (1 ex, ~8 min)
+       Pull-Up                                3 × 3           FOR VELOCITY
+
+### athletic_full_body|advanced|60|build_strength|2026-10-05
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Acceleration   (4 ex, ~25 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Sled Push                              4 × 10 m      
+       Landmine Push Press                    3 × 3/side    
+       Step-Behind Rotational Throw           3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~12 min)
+       Front Squat                            4 × 3           FOR VELOCITY
+
+### athletic_power|advanced|60|build_muscle|2026-10-05
+ATHLETIC | Power
+  POWER  ·  Contrast Strength · Plyometric   (5 ex, ~34 min)  [main]
+    CONTRAST PAIR · 4 ROUNDS
+    A1 Barbell Romanian Deadlift              3 reps          HEAVY, THEN EXPLODE
+    A2 Broad Jump to Stick                    3 reps        
+       Sled Push                              4 × 10 m      
+       Dumbbell Step-Up with Pop              3 × 3/side    
+       Landmine Push Press                    3 × 3/side    
+
+### athletic_full_body|advanced|60|build_muscle|2026-10-05
+ATHLETIC | Full-Body Athlete
+  POWER  ·  Plyometric · Acceleration   (4 ex, ~25 min)  [main]
+       Consecutive Broad Jumps                4 × 3         
+       Sled Push                              4 × 10 m      
+       Landmine Push Press                    3 × 3/side    
+       Step-Behind Rotational Throw           3 × 4/side    
+  ATHLETIC STRENGTH   (1 ex, ~7 min)
+       Barbell Romanian Deadlift              3 × 5           FOR VELOCITY

@@ -1,0 +1,77 @@
+== 1. Classification + library audit
+  ids in both ATHLETIC (POWER) and ATHLETIC_STRENGTH vocabularies: none
+  carries in the Athletic SUPPORT vocabulary: none (still in the master library: ['farmer_carry', 'front_rack_carry', 'overhead_carry', 'suitcase_carry'])
+  ATHLETIC vocabulary: 64 exercises; ATHLETIC_STRENGTH: 32; SUPPORT: 9
+  duplicate exercise names in the library: none
+  Hang High Pull                         min intermediate impact low      cx 3 tier A dose 4x3 rest 120s swap high_pull          same-family records: ['db_hang_power_clean', 'hang_power_clean']
+  Explosive Step-Up (Pop)                min beginner     impact moderate cx 1 tier C dose 3x4/side rest 90s swap step_up_pop        same-family records: ['db_step_up_pop']
+  Dumbbell Step-Up with Pop              min intermediate impact moderate cx 2 tier B dose 3x3/side rest 90s swap step_up_pop_loaded same-family records: ['step_up_pop']
+  Reverse Lunge to Knee-Drive Hop        min beginner     impact moderate cx 2 tier B dose 3x3/side rest 90s swap lunge_hop          same-family records: none
+  Rear-Foot-Elevated Split Squat Jump    min advanced     impact moderate cx 3 tier B dose 3x3/side rest 90s swap rfe_split_jump     same-family records: ['split_jump']
+  Band-Assisted Muscle-Up                min intermediate impact low      cx 3 tier B dose 3x3 rest 120s swap muscle_up          same-family records: ['bar_muscle_up']
+  Bar Muscle-Up                          min advanced     impact low      cx 4 tier B dose 3x2 rest 120s swap muscle_up          same-family records: ['band_assisted_muscle_up']
+  Speed Trap-Bar Deadlift                min intermediate impact low      cx 3 tier B dose 4x2 rest 90s swap deadlift           same-family records: none
+  Speed Box Squat                        min intermediate impact low      cx 3 tier B dose 4x3 rest 90s swap back_squat         same-family records: none
+  Split-Squat Jump                       min intermediate impact moderate cx 2 tier B dose 3x3/side rest 90s swap split_jump         same-family records: ['rfe_split_squat_jump']
+
+== 2. Olympic / explosive-lift pool actually in the library (by level eligibility)
+  beginner     none
+  intermediate ['Push Press', 'Dumbbell Hang Power Clean', 'Kettlebell Snatch', 'Hang Clean to Box Knee Drive', 'Hang High Pull']
+  advanced     ['Push Press', 'Dumbbell Hang Power Clean', 'Kettlebell Snatch', 'Hang Clean to Box Knee Drive', 'Dumbbell Snatch', 'Hang Power Clean', 'Power Snatch', 'Split Jerk', 'Hang High Pull']
+  not in the library (not programmed): ['hang_clean', 'power_clean', 'push_jerk', 'hang_snatch']
+
+== 3. Broad grid invariants (production path)
+  builds 882, ok 882, conflicts {}
+  power after strength                       0
+  carry                                      0
+  strength mislabelled ATHLETIC              0
+  high impact below advanced                 0
+  Tier A over limit                          0
+  athletic cost over budget                  0
+  sprint accounting                          0
+  sled accounting                            0
+  duplicate quality metadata                 0
+  secondary title repeats primary quality    0
+  BFT sprint claim                           0
+  BFT sprint claim without sprints           0
+  BFT sled claim                             0
+  BFT landing claim                          0
+  BFT carry claim                            0
+  beginner too advanced                      0
+  30 min more than 3 exercises               0
+  State gate / coherence                     0
+  sessions where two athletic exercises share one quality (allowed, labelled honestly): 32 of 882
+  sore legs       18 sessions; athletic movements mean 2.56
+  sore shoulders  18 sessions; athletic movements mean 2.56
+  sore lower_back 18 sessions; athletic movements mean 2.56
+  sore chest      18 sessions; athletic movements mean 2.50
+
+== 4. Accounting truthfulness examples (sled vs sprint)
+  ['Sled Push', 'Seated Box Jump']: sprint exposures 0 (0 m), sled efforts 3 (30 m), jump contacts 6 (0 high-impact), throws 0, Olympic-derivative sets 0, explosive sets 5
+     Built for Today: ['About 6 landings and 3 sled pushes in all, with 90 s between primary sets so every rep stays explosive.']
+  ['Sled Push', 'Seated Box Jump']: sprint exposures 0 (0 m), sled efforts 3 (30 m), jump contacts 6 (0 high-impact), throws 0, Olympic-derivative sets 0, explosive sets 5
+     Built for Today: ['About 6 landings and 3 sled pushes in all, with 90 s between primary sets so every rep stays explosive.']
+  ['Sled Push', 'Seated Box Jump']: sprint exposures 0 (0 m), sled efforts 3 (30 m), jump contacts 6 (0 high-impact), throws 0, Olympic-derivative sets 0, explosive sets 5
+     Built for Today: ['About 6 landings and 3 sled pushes in all, with 105 s between primary sets so every rep stays explosive.']
+
+== 5. State regression vs the same-seed no-State session (C.generate; 60 min, intermediate + advanced, 3 goals x 12 users)
+  low_energy             mean change: athletic -1.42  explosive sets -4.4  contacts -11.1  intent -6.0  max cx -0.60  Tier A -0.72  strength sets +0.0  RIR +1.17  exercises -0.81  novelty -0.42  forceful -0.12  changed ids 3.1
+  bored                  mean change: athletic +0.03  explosive sets -0.0  contacts -1.1  intent -0.2  max cx -0.07  Tier A +0.12  strength sets +0.1  RIR +0.11  exercises +0.03  novelty +0.19  forceful -0.12  changed ids 2.7
+  irritated              mean change: athletic +0.04  explosive sets +0.2  contacts -2.6  intent -0.4  max cx -0.32  Tier A +0.01  strength sets +0.0  RIR +0.03  exercises +0.06  novelty -0.37  forceful +1.32  changed ids 3.0
+  amped                  mean change: athletic -0.10  explosive sets +0.2  contacts +0.6  intent +0.3  max cx -0.01  Tier A -0.01  strength sets +0.0  RIR -0.85  exercises -0.17  novelty -0.03  forceful -0.06  changed ids 1.7
+  stressed               mean change: athletic -0.42  explosive sets -1.4  contacts -5.7  intent -2.6  max cx -0.39  Tier A -0.72  strength sets -0.7  RIR +0.17  exercises -0.81  novelty -0.39  forceful +0.64  changed ids 2.3
+  low_energy+amped       mean change: athletic -1.42  explosive sets -4.4  contacts -11.1  intent -6.0  max cx -0.35  Tier A -0.72  strength sets +0.0  RIR +1.17  exercises -0.81  novelty -0.43  forceful -0.12  changed ids 3.1
+  amped+stressed         mean change: athletic -0.42  explosive sets -1.4  contacts -5.7  intent -2.6  max cx -0.38  Tier A -0.72  strength sets -0.7  RIR -0.83  exercises -0.81  novelty -0.39  forceful +0.64  changed ids 2.4
+  bored+stressed         mean change: athletic -0.42  explosive sets -1.5  contacts +0.2  intent -2.1  max cx -0.40  Tier A -0.78  strength sets -0.7  RIR +0.17  exercises -0.81  novelty +0.07  forceful -0.36  changed ids 2.6
+  irritated+low_energy   mean change: athletic -1.42  explosive sets -4.4  contacts -11.1  intent -6.0  max cx -0.49  Tier A -0.69  strength sets +0.0  RIR +1.17  exercises -0.81  novelty -0.78  forceful +0.88  changed ids 3.1
+  irritated+stressed     mean change: athletic -0.42  explosive sets -1.4  contacts -6.3  intent -2.7  max cx -0.40  Tier A -0.72  strength sets -0.7  RIR +0.17  exercises -0.81  novelty -0.48  forceful +1.33  changed ids 2.8
+  bored+low_energy       mean change: athletic -1.42  explosive sets -4.5  contacts -9.6  intent -6.0  max cx -0.54  Tier A -0.75  strength sets +0.0  RIR +1.17  exercises -0.81  novelty -0.13  forceful -0.12  changed ids 3.2
+  bored+amped            mean change: athletic -0.24  explosive sets -0.2  contacts -2.0  intent -0.2  max cx -0.15  Tier A +0.08  strength sets +0.3  RIR -0.83  exercises -0.17  novelty +0.15  forceful -0.15  changed ids 2.8
+  irritated+amped        mean change: athletic -0.28  explosive sets -0.1  contacts -3.3  intent -0.4  max cx -0.32  Tier A +0.07  strength sets +0.2  RIR -0.83  exercises -0.32  novelty -0.36  forceful +1.15  changed ids 2.7
+
+== 6. History / repetition over 8 consecutive days (C.generate with history; 60 min; 10 users x 3 levels)
+  day-to-day: same primary exercise 0%, same primary quality 12%, mean exercise overlap with yesterday 2%
+
+== 7. Duration (estimated minutes; a window, not a quota)
+  60 min: median 41.9  {'40-50': 189, '50-57': 76, '<40': 176}
+  30 min: median 25.1  {'20-25': 158, '25-31': 231, '<20': 52}

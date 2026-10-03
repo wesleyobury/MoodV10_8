@@ -1,0 +1,169 @@
+builds 486 ok 486 conflicts Counter() errors 0
+
+== beginner 30 min (81)
+  n_items          n=81 min=3 p25=3 med=3 p75=3 max=3
+  n_explosive      n=81 min=1 p25=1 med=1 p75=1 max=1
+  explosive_sets   n=81 min=3 p25=3 med=3 p75=4 max=5
+  contacts         n=81 min=0 p25=0 med=9 p75=9 max=9
+  sprint_exp       n=81 min=0 p25=0 med=0 p75=0 max=5
+  olympic_sets     n=81 min=0 p25=0 med=0 p75=0 max=0
+  n_support        n=81 min=2 p25=2 med=2 p75=2 max=2
+  support_sets     n=81 min=4 p25=6 med=6 p75=6 max=6
+  est              n=81 min=18.1 p25=20.1 med=20.6 p75=23.6 max=27.0
+  max_power_reps   n=81 min=0 p25=3 med=3 p75=3 max=5
+  min_power_rest   n=81 min=45 p25=60 med=75 p75=75 max=90
+  arch Counter({'athletic_power': 59, 'athletic_speed_agility': 20, 'athletic_full_body': 2})
+  primary quality Counter({'horizontal_power': 30, 'acceleration': 18, 'vertical_power': 13, 'total_body_power': 9, 'rotational_power': 6, 'upper_power': 3, 'change_of_direction': 2})
+  structure Counter({'power_strength': 61, 'speed_strength': 18, 'agility_strength': 2})
+  finisher 0  repeats 0  no support 0  explosive_after_support 0
+
+== beginner 60 min (81)
+  n_items          n=81 min=3 p25=4 med=5 p75=5 max=5
+  n_explosive      n=81 min=1 p25=2 med=2 p75=2 max=2
+  explosive_sets   n=81 min=3 p25=6 med=6 p75=6 max=8
+  contacts         n=81 min=0 p25=0 med=9 p75=9 max=12
+  sprint_exp       n=81 min=0 p25=0 med=0 p75=4 max=5
+  olympic_sets     n=81 min=0 p25=0 med=0 p75=0 max=0
+  n_support        n=81 min=2 p25=3 med=3 p75=3 max=3
+  support_sets     n=81 min=6 p25=8 med=9 p75=9 max=9
+  est              n=81 min=30.2 p25=37.1 med=41.0 p75=43.1 max=50.9
+  max_power_reps   n=81 min=0 p25=4 med=4 p75=5 max=5
+  min_power_rest   n=81 min=45 p25=60 med=60 p75=75 max=90
+  arch Counter({'athletic_power': 40, 'athletic_speed_agility': 21, 'athletic_full_body': 20})
+  primary quality Counter({'vertical_power': 23, 'horizontal_power': 22, 'acceleration': 20, 'total_body_power': 9, 'rotational_power': 3, 'upper_power': 3, 'change_of_direction': 1})
+  structure Counter({'power_strength': 40, 'jump_throw': 20, 'speed_strength': 19, 'athletic_mixed': 2})
+  finisher 0  repeats 0  no support 0  explosive_after_support 0
+
+== intermediate 30 min (81)
+  n_items          n=81 min=3 p25=3 med=3 p75=3 max=3
+  n_explosive      n=81 min=1 p25=1 med=1 p75=1 max=1
+  explosive_sets   n=81 min=3 p25=4 med=4 p75=5 max=6
+  contacts         n=81 min=0 p25=0 med=8 p75=12 max=24
+  sprint_exp       n=81 min=0 p25=0 med=0 p75=4 max=6
+  olympic_sets     n=81 min=0 p25=0 med=0 p75=0 max=0
+  n_support        n=81 min=2 p25=2 med=2 p75=2 max=2
+  support_sets     n=81 min=4 p25=6 med=6 p75=6 max=6
+  est              n=81 min=18.0 p25=22.1 med=23.8 p75=25.2 max=30.4
+  max_power_reps   n=81 min=0 p25=0 med=3 p75=3 max=8
+  min_power_rest   n=81 min=55 p25=90 med=90 p75=105 max=135
+  arch Counter({'athletic_power': 54, 'athletic_speed_agility': 25, 'athletic_full_body': 2})
+  primary quality Counter({'horizontal_power': 26, 'acceleration': 20, 'vertical_power': 13, 'total_body_power': 10, 'upper_power': 5, 'change_of_direction': 5, 'rotational_power': 2})
+  structure Counter({'power_strength': 56, 'speed_strength': 20, 'agility_strength': 5})
+  finisher 0  repeats 0  no support 0  explosive_after_support 0
+
+== intermediate 60 min (81)
+  n_items          n=81 min=3 p25=4 med=4 p75=5 max=5
+  n_explosive      n=81 min=1 p25=1 med=2 p75=2 max=2
+  explosive_sets   n=81 min=3 p25=4 med=7 p75=7 max=9
+  contacts         n=81 min=0 p25=0 med=8 p75=12 max=24
+  sprint_exp       n=81 min=0 p25=0 med=0 p75=0 max=6
+  olympic_sets     n=81 min=0 p25=0 med=0 p75=0 max=0
+  n_support        n=81 min=2 p25=3 med=3 p75=3 max=3
+  support_sets     n=81 min=6 p25=9 med=9 p75=9 max=11
+  est              n=81 min=31.3 p25=41.9 med=45.4 p75=47.8 max=56.5
+  max_power_reps   n=81 min=0 p25=3 med=4 p75=4 max=8
+  min_power_rest   n=81 min=60 p25=60 med=90 p75=90 max=135
+  arch Counter({'athletic_power': 32, 'athletic_full_body': 28, 'athletic_speed_agility': 21})
+  primary quality Counter({'vertical_power': 26, 'horizontal_power': 17, 'acceleration': 13, 'total_body_power': 13, 'change_of_direction': 6, 'elastic_reactive': 2, 'upper_power': 2, 'rotational_power': 2})
+  structure Counter({'power_strength': 31, 'jump_throw': 23, 'athletic_mixed': 14, 'speed_strength': 9, 'agility_strength': 4})
+  finisher 1  repeats 0  no support 0  explosive_after_support 0
+
+== advanced 30 min (81)
+  n_items          n=81 min=2 p25=3 med=3 p75=3 max=3
+  n_explosive      n=81 min=1 p25=1 med=1 p75=1 max=1
+  explosive_sets   n=81 min=4 p25=4 med=5 p75=5 max=6
+  contacts         n=81 min=0 p25=0 med=12 p75=15 max=30
+  sprint_exp       n=81 min=0 p25=0 med=0 p75=0 max=6
+  olympic_sets     n=81 min=0 p25=0 med=0 p75=0 max=0
+  n_support        n=81 min=1 p25=2 med=2 p75=2 max=2
+  support_sets     n=81 min=4 p25=6 med=6 p75=6 max=6
+  est              n=81 min=19.6 p25=24.4 med=26.3 p75=28.1 max=31.0
+  max_power_reps   n=81 min=0 p25=2 med=3 p75=3 max=8
+  min_power_rest   n=81 min=0 p25=90 med=105 p75=120 max=135
+  arch Counter({'athletic_power': 57, 'athletic_speed_agility': 22, 'athletic_full_body': 2})
+  primary quality Counter({'vertical_power': 23, 'acceleration': 19, 'horizontal_power': 17, 'total_body_power': 11, 'upper_power': 6, 'change_of_direction': 3, 'rotational_power': 2})
+  structure Counter({'power_strength': 48, 'speed_strength': 19, 'contrast': 11, 'agility_strength': 3})
+  finisher 0  repeats 0  no support 0  explosive_after_support 0
+
+== advanced 60 min (81)
+  n_items          n=81 min=3 p25=4 med=4 p75=5 max=5
+  n_explosive      n=81 min=1 p25=1 med=2 p75=2 max=2
+  explosive_sets   n=81 min=4 p25=5 med=9 p75=9 max=13
+  contacts         n=81 min=0 p25=0 med=12 p75=15 max=30
+  sprint_exp       n=81 min=0 p25=0 med=0 p75=5 max=8
+  olympic_sets     n=81 min=0 p25=0 med=0 p75=0 max=5
+  n_support        n=81 min=2 p25=3 med=3 p75=3 max=3
+  support_sets     n=81 min=6 p25=8 med=9 p75=9 max=11
+  est              n=81 min=31.8 p25=45.0 med=49.4 p75=52.7 max=56.5
+  max_power_reps   n=81 min=0 p25=2 med=3 p75=4 max=5
+  min_power_rest   n=81 min=0 p25=60 med=90 p75=105 max=150
+  arch Counter({'athletic_power': 35, 'athletic_full_body': 24, 'athletic_speed_agility': 22})
+  primary quality Counter({'horizontal_power': 23, 'vertical_power': 20, 'acceleration': 18, 'total_body_power': 8, 'upper_power': 6, 'change_of_direction': 3, 'elastic_reactive': 2, 'rotational_power': 1})
+  structure Counter({'power_strength': 27, 'jump_throw': 19, 'athletic_mixed': 15, 'speed_strength': 11, 'contrast': 8, 'agility_strength': 1})
+  finisher 1  repeats 0  no support 0  explosive_after_support 0
+
+== ALL 30 min (243)
+  n_items          n=243 min=2 p25=3 med=3 p75=3 max=3
+  n_explosive      n=243 min=1 p25=1 med=1 p75=1 max=1
+  explosive_sets   n=243 min=3 p25=3 med=4 p75=5 max=6
+  contacts         n=243 min=0 p25=0 med=8 p75=12 max=30
+  sprint_exp       n=243 min=0 p25=0 med=0 p75=0 max=6
+  olympic_sets     n=243 min=0 p25=0 med=0 p75=0 max=0
+  n_support        n=243 min=1 p25=2 med=2 p75=2 max=2
+  support_sets     n=243 min=4 p25=6 med=6 p75=6 max=6
+  est              n=243 min=18.0 p25=21.3 med=23.8 p75=26.0 max=31.0
+  max_power_reps   n=243 min=0 p25=2 med=3 p75=3 max=8
+  min_power_rest   n=243 min=0 p25=75 med=90 p75=105 max=135
+  arch Counter({'athletic_power': 170, 'athletic_speed_agility': 67, 'athletic_full_body': 6})
+  primary quality Counter({'horizontal_power': 73, 'acceleration': 57, 'vertical_power': 49, 'total_body_power': 30, 'upper_power': 14, 'rotational_power': 10, 'change_of_direction': 10})
+  structure Counter({'power_strength': 165, 'speed_strength': 57, 'contrast': 11, 'agility_strength': 10})
+  finisher 0  repeats 0  no support 0  explosive_after_support 0
+
+== ALL 60 min (243)
+  n_items          n=243 min=3 p25=4 med=5 p75=5 max=5
+  n_explosive      n=243 min=1 p25=1 med=2 p75=2 max=2
+  explosive_sets   n=243 min=3 p25=5 med=6 p75=8 max=13
+  contacts         n=243 min=0 p25=0 med=9 p75=12 max=30
+  sprint_exp       n=243 min=0 p25=0 med=0 p75=4 max=8
+  olympic_sets     n=243 min=0 p25=0 med=0 p75=0 max=5
+  n_support        n=243 min=2 p25=3 med=3 p75=3 max=3
+  support_sets     n=243 min=6 p25=8 med=9 p75=9 max=11
+  est              n=243 min=30.2 p25=40.9 med=45.0 p75=49.2 max=56.5
+  max_power_reps   n=243 min=0 p25=3 med=4 p75=4 max=8
+  min_power_rest   n=243 min=0 p25=60 med=75 p75=90 max=150
+  arch Counter({'athletic_power': 107, 'athletic_full_body': 72, 'athletic_speed_agility': 64})
+  primary quality Counter({'vertical_power': 69, 'horizontal_power': 62, 'acceleration': 51, 'total_body_power': 30, 'upper_power': 11, 'change_of_direction': 10, 'rotational_power': 6, 'elastic_reactive': 4})
+  structure Counter({'power_strength': 98, 'jump_throw': 62, 'speed_strength': 39, 'athletic_mixed': 31, 'contrast': 8, 'agility_strength': 5})
+  finisher 2  repeats 0  no support 0  explosive_after_support 0
+
+== RED FLAGS
+  3+ lower-body explosive exercises             0 / 486
+  4+ explosive exercises                        0 / 486
+  contacts > level cap (B40/I80/A110)           0 / 486
+  power reps > 8                                0 / 486
+  7+ items                                      0 / 486
+  explosive after support work                  0 / 486
+  60 min with no athletic-strength work         0 / 486
+  finisher                                      2 / 486   e.g. {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "lose_weight_conditioning"}
+  olympic for beginner                          0 / 486
+  power rest < 45 s                             0 / 486
+  sprints > 10 exposures                        0 / 486
+
+== STATE (60 min, intermediate) median explosive sets / contacts / support sets / est
+  None         n=11 exp_sets=7 contacts=12 support=9 est=47.4 gate=Counter({'{}': 11})
+  low_energy   n=2 exp_sets=3.0 contacts=7.5 support=6.0 est=33.65 gate=Counter({"{'low_energy': True}": 2})
+  bored        n=2 exp_sets=5.5 contacts=0.0 support=9.0 est=43.650000000000006 gate=Counter({"{'bored': True}": 2})
+  irritated    n=2 exp_sets=6.0 contacts=0.0 support=9.0 est=45.35 gate=Counter({"{'irritated': True}": 2})
+  amped        n=2 exp_sets=6.5 contacts=7.5 support=9.0 est=49.55 gate=Counter({"{'amped': True}": 2})
+  stressed     n=2 exp_sets=4.0 contacts=6.0 support=9.0 est=39.75 gate=Counter({"{'stressed': True}": 2})
+
+== GOAL (60 min, no State) median explosive sets / support sets
+  improve_athleticism          n=18 exp_sets=8.0 support=8.0 pq=[('vertical_power', 6), ('acceleration', 5), ('change_of_direction', 2), ('horizontal_power', 2)]
+  build_strength               n=18 exp_sets=6.0 support=11.0 pq=[('vertical_power', 9), ('total_body_power', 4), ('horizontal_power', 2), ('acceleration', 1)]
+  build_muscle                 n=18 exp_sets=6.0 support=10.0 pq=[('horizontal_power', 9), ('acceleration', 4), ('vertical_power', 4), ('change_of_direction', 1)]
+  lose_weight_conditioning     n=18 exp_sets=8.0 support=9.0 pq=[('acceleration', 13), ('total_body_power', 3), ('vertical_power', 2)]
+  feel_better_reduce_stress    n=18 exp_sets=7.0 support=8.0 pq=[('vertical_power', 8), ('horizontal_power', 5), ('acceleration', 3), ('change_of_direction', 2)]
+  stay_consistent              n=18 exp_sets=6.0 support=9.0 pq=[('vertical_power', 6), ('horizontal_power', 6), ('total_body_power', 3), ('rotational_power', 1)]
+
+== DIFFERENT WORKOUT n=40 median changed 3.0 arch_changed 37 pq_changed 40 identical 0
+== SWAP n=139 ok=131 explosive->non 0 non->explosive 0 quality kept 119 role kept 131
