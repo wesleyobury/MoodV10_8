@@ -236,3 +236,32 @@ test('V3 hero — exercise photos only join the pool of the Direction that owns 
   assert.ok(st.includes(thumbUrl(strengthId)!) && !st.includes(thumbUrl(sweatId)!));
   assert.ok(sw.includes(thumbUrl(sweatId)!) && !sw.includes(thumbUrl(strengthId)!));
 });
+
+/* ---------------------------------------------------------------- Home: three different athletes */
+import { resolveV3HomeHeroes, v3PhotoAthlete, V3_PRIMARY_ATHLETE } from './cartHero';
+
+test('V3 Home heroes — every curated photo has a known athlete', () => {
+  for (const p of V3_HERO_LIBRARY) assert.ok(p.athlete && v3PhotoAthlete(p.uri) === p.athlete, p.uri);
+  for (const k of HERO_KEYS) assert.ok(V3_PRIMARY_ATHLETE[k], k);
+});
+
+test('V3 Home heroes — the three cards never repeat an athlete, and the Cart reuses the card photo', () => {
+  for (let i = 0; i < 300; i++) {
+    const ws = [
+      v3({ workout_id: `s-${i}`, archetype: { id: HERO_KEYS.filter((k) => k.startsWith('strength_'))[i % 9] } }),
+      v3({ workout_id: `w-${i}`, direction: 'sweat', archetype: { id: ['sweat_circuit', 'sweat_engine', 'sweat_hybrid'][i % 3] } }),
+      v3({ workout_id: `a-${i}`, direction: 'athletic', archetype: { id: ['athletic_power', 'athletic_speed_agility', 'athletic_full_body'][i % 3] } }),
+    ];
+    const hs = resolveV3HomeHeroes(ws);
+    const who = hs.map((h) => v3PhotoAthlete((h as any).uri));
+    assert.equal(new Set(who).size, 3, `${i}: ${who.join(',')}`);
+    ws.forEach((w, j) => assert.deepEqual(resolveV3CartHero(w).source, hs[j]));
+  }
+});
+
+test('V3 Home heroes — missing workouts stay null', () => {
+  const hs = resolveV3HomeHeroes([null, v3({ workout_id: 'x' }), null]);
+  assert.equal(hs[0], null);
+  assert.equal(hs[2], null);
+  assert.ok(hs[1]);
+});
