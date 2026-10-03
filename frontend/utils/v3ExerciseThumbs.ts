@@ -102,7 +102,7 @@ export const V3_EXERCISE_THUMBS: Record<string, string> = {
   db_jumping_jack: 'v1790791931', // F088 Dumbbell Lateral-Raise Jacks
   banded_squat_jump: 'v1790791931', // F089 Banded Squat Jump
   db_bench_press: 'v1790791931', // F090 Dumbbell Bench Press
-  db_snatch: 'v1790791931', // F091 Dumbbell Snatch
+  db_snatch: 'v1790999786', // F091 Dumbbell Snatch
   db_step_up: 'v1790791932', // F092 Dumbbell Step-Up
   lateral_lunge: 'v1790791932', // F093 Lateral Lunge
   hang_power_clean: 'v1790791932', // F094 Hang Power Clean
