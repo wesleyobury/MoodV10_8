@@ -200,7 +200,8 @@ from entitlement import (
     current_free_period_key,
 )
 from start_gate import gate_workout_start  # one free workout per week; paywall on starting a second one
-from v3_tracking import record_start_gate, backfill_milestones  # V3 server events + user milestones
+from v3_tracking import record_start_gate  # V3 server events + user milestones
+from admin_v3 import build_admin_v3_router  # V3 founder dashboard API
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -15749,6 +15750,8 @@ api_router.include_router(build_v3_router(db, get_current_user, _v3_completion_h
 api_router.include_router(build_explore_router(db, get_current_user))
 # MOOD V3: GET/PUT /api/users/me/training-profile (users.training_profile)
 api_router.include_router(build_training_profile_router(db, get_current_user))
+# MOOD V3 founder dashboard: /api/analytics/admin/v3/* (pulse, activation, workouts, retention, revenue, users)
+api_router.include_router(build_admin_v3_router(db, require_admin))
 
 # Subscriptions / IAP — StoreKit validate, Apple webhooks, founding claim
 api_router.include_router(
