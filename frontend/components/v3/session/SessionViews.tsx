@@ -192,9 +192,9 @@ export function Hero(props: {
         ) : null}
         <Text style={styles.eyebrow} numberOfLines={1} testID="v3-session-block">{line1}</Text>
         {video ? (
-          <Pressable onPress={props.onDetails} style={styles.demoChip} hitSlop={8} testID="v3-session-demo">
-            <Ionicons name="play" size={11} color={COLORS.textPrimary} />
-            <Text style={styles.demoText}>Demo</Text>
+          <Pressable onPress={props.onDetails} style={({ pressed }) => [styles.demoChip, pressed && { opacity: 0.8 }]} hitSlop={8} accessibilityRole="button" accessibilityLabel="Watch demo" testID="v3-session-demo">
+            <View style={styles.demoPlay}><Ionicons name="play" size={10} color={COLORS.accentInk} style={{ marginLeft: 1 }} /></View>
+            <Text style={styles.demoText}>Watch demo</Text>
           </Pressable>
         ) : null}
       </View>
@@ -381,9 +381,9 @@ export function ExerciseHeader(props: { v: StepView; plan: SessionPlan; focus: V
           {!groupEyebrow && num && where.role ? <Text style={styles.exEyebrowRole}>{`  ·  ${where.role}`}</Text> : null}
         </Text>
         {video ? (
-          <Pressable onPress={props.onDetails} style={styles.demoChip} hitSlop={8} testID="v3-session-demo">
-            <Ionicons name="play" size={11} color={COLORS.textPrimary} />
-            <Text style={styles.demoText}>Demo</Text>
+          <Pressable onPress={props.onDetails} style={({ pressed }) => [styles.demoChip, pressed && { opacity: 0.8 }]} hitSlop={8} accessibilityRole="button" accessibilityLabel="Watch demo" testID="v3-session-demo">
+            <View style={styles.demoPlay}><Ionicons name="play" size={10} color={COLORS.accentInk} style={{ marginLeft: 1 }} /></View>
+            <Text style={styles.demoText}>Watch demo</Text>
           </Pressable>
         ) : null}
       </View>
@@ -1023,8 +1023,10 @@ const styles = StyleSheet.create({
   coach: { flexDirection: 'row', gap: 7, marginTop: 14, alignSelf: 'flex-start', maxWidth: '100%' },
   coachText: { flexShrink: 1, fontSize: 14.5, lineHeight: 21, color: COLORS.textPrimary, fontWeight: '500' },
 
-  demoChip: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 9, paddingVertical: 3, borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.10)', marginLeft: 'auto' },
-  demoText: { fontSize: 11.5, fontWeight: '700', color: COLORS.textPrimary },
+  // founder pass, Oct 2026: "Watch demo", easier to spot and tap: a glass pill with a small gold play disc (gold as the mark)
+  demoChip: { flexDirection: 'row', alignItems: 'center', gap: 7, height: 30, paddingLeft: 5, paddingRight: 12, borderRadius: 15, backgroundColor: 'rgba(20,20,22,0.62)', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,255,255,0.28)', marginLeft: 'auto' },
+  demoPlay: { width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: COLORS.accent },
+  demoText: { fontSize: 12.5, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: 0.1 },
 
   since: { fontSize: 12.5, color: COLORS.textTertiary, marginBottom: 8, fontVariant: ['tabular-nums'] },
   eyebrowRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },

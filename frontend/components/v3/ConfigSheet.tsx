@@ -4,7 +4,7 @@
  *   FOCUS          What do you want to train?        MOOD's Pick | Targets (Strength / Sweat only)
  *   WORKOUT TYPE   Want a specific style of session?  Let MOOD choose | registry archetypes
  *   GOAL           What are you training for? (the funnel question; default: Training Profile goal; today only)
- *   DIFFICULTY     Beginner | Intermediate | Advanced (default: Training Profile experience; today only)
+ *   DIFFICULTY     Beginner | Intermediate | Advanced (default: Training Profile experience; a change is saved to it)
  *   LENGTH         60 | 30
  *
  * The backend takes one routing instruction (a Target or an archetype). The sheet keeps that graceful: picking a Focus
@@ -256,11 +256,8 @@ export function ConfigSheet({ visible, inputs, suggest30, profileLevel, profileG
               ))}
             </View>
             <Text style={styles.hint} testID="v3-difficulty-hint">
-              {draft.difficulty && profileLevel
-                ? `Today only. Your Training Profile stays ${DIFFICULTY_LABEL[profileLevel]}.`
-                : profileLevel
-                  ? 'From your Training Profile.'
-                  : 'Today only.'}
+              {/* founder pass, Oct 2026: the level you pick sticks (it becomes your Training Profile level) */}
+              {'We’ll keep this level for your next workouts.'}
             </Text>
           </View>
 

@@ -24,7 +24,7 @@ import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinea
 import { BRAND_GRADIENT, COLORS, bgA } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { trackEvent } from '../../utils/analytics';
-import { FirstHomeHandoff, consumeFirstHomeHandoff, fetchTrainingProfile, readFirstHomeHandoff } from '../../utils/v3Profile';
+import { FirstHomeHandoff, consumeFirstHomeHandoff, fetchTrainingProfile, readFirstHomeHandoff, saveTrainingProfile } from '../../utils/v3Profile';
 import { V3Conflict, V3ConflictOption, V3Direction, V3Experience, V3State, generateV3Workout, getV3Version, localDateISO } from '../../utils/v3Api';
 import {
   DIRECTIONS,
@@ -293,6 +293,14 @@ export default function V3Build() {
     }
     if (next.difficulty !== inputs.difficulty) {
       track('v3_difficulty_changed', { direction: next.direction, from: inputs.difficulty ?? profileLevel ?? null, to: next.difficulty ?? profileLevel ?? null, override: !!next.difficulty });
+      // founder pass, Oct 2026: the last level picked sticks, even when it differs from the funnel answer. It is saved as the
+      // Training Profile's experience, so the next Build, Home's suggestions and the server default all start from it.
+      const level = next.difficulty ?? profileLevel ?? null;
+      if (level && level !== profileLevel) {
+        setProfileLevel(level);
+        setInputs({ ...next, difficulty: null });
+        if (token) void saveTrainingProfile(token, { experience: level } as any);
+      }
     }
     if ((next.goal ?? null) !== (inputs.goal ?? null)) {
       track('v3_goal_changed', { direction: next.direction, from: inputs.goal ?? profileGoal ?? null, to: next.goal ?? profileGoal ?? null, override: !!next.goal });
