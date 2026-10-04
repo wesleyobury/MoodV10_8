@@ -65,6 +65,49 @@ SAMPLE_NAMES = ['Marcus', 'Jada', 'Chris', 'Priya', 'Andre', 'Sofia', 'Malik', '
                 'Jordan', 'Nia', 'Tyler', 'Camila', 'Darius', 'Hannah', 'Omar', 'Zoe', 'Isaiah', 'Lena', 'Kevin', 'Maya',
                 'Jalen', 'Grace', 'Luis', 'Tasha', 'Ben', 'Imani', 'Noah', 'Ava', 'Xavier', 'Riley', 'Devon', 'Kiara']
 
+# Sample faces (founder-supplied, AI-generated people, Oct 4): code -> first name. Served from backend/static/sample_avatars
+# at /api/v3/sample-avatars/<code>.jpg. About half of the sample rows wear one (see _assign_people).
+SAMPLE_PHOTO_PEOPLE = {
+    'P03': 'Malik', 'P04': 'Mei', 'P06': 'Camila', 'P07': 'Ryan', 'P08': 'Priya', 'P09': 'Imani', 'P10': 'Kevin', 'P11': 'Omar',
+    'P12': 'Hannah', 'P13': 'Sione', 'P14': 'Kiara', 'P15': 'Sofia', 'P16': 'Emma', 'P17': 'Tyler', 'P18': 'Jasmine', 'P19': 'Darius',
+    'P20': 'Gabriela', 'P21': 'Ben', 'P22': 'Luis', 'P23': 'Aaliyah', 'P24': 'Valeria', 'P25': 'Riley', 'P26': 'Diego', 'P27': 'Nia',
+    'P28': 'Amira', 'P29': 'Jake', 'P30': 'Mateo', 'P31': 'Grace', 'P32': 'Andre', 'P33': 'Lucia', 'P34': 'Arjun', 'P35': 'Megan',
+    'P36': 'Tasha', 'P37': 'Cole', 'P38': 'Hana', 'P39': 'Rafael', 'P40': 'Anaya', 'P41': 'Jalen', 'P42': 'Brooke', 'P43': 'Tevita',
+    'P44': 'Yuna', 'P45': 'Isaiah', 'P46': 'Matt', 'P47': 'Simone', 'P48': 'Kai', 'P49': 'Elena', 'P50': 'Nikos', 'P51': 'Ivy',
+    'P52': 'Marco', 'P53': 'Divya', 'P54': 'Liam', 'P55': 'Maya', 'P56': 'Sarah', 'P57': 'Xavier', 'P58': 'Zoe', 'P59': 'Danny',
+    'P60': 'Rosa', 'P61': 'Noah', 'P62': 'Monique', 'P63': 'Josh', 'P64': 'Jenny', 'P65': 'Chris', 'P66': 'Laura', 'P67': 'Kate',
+    'P68': 'Marcus', 'P69': 'Bianca', 'P70': 'Kenji', 'P71': 'Eli', 'P72': 'Ana', 'P73': 'Owen', 'P74': 'Rohan', 'P75': 'Dana',
+    'P76': 'Jordan', 'P77': 'Ava', 'P78': 'Theo', 'P79': 'Carmen', 'P80': 'Tony', 'P81': 'Jada', 'P82': 'Logan', 'P84': 'Destiny',
+    'P85': 'Nadia', 'P87': 'Adrian', 'P88': 'Tiana', 'P89': 'Devon', 'P90': 'Kelsey', 'P91': 'Ray', 'P92': 'Alicia', 'P93': 'Ethan',
+    'P94': 'Mia', 'P95': 'Drew',
+}
+_PHOTO_CODES = list(SAMPLE_PHOTO_PEOPLE)
+# names without a photo (initial avatar): never a name that also has a face, so one name is always one person
+_PLAIN_NAMES = [n for n in SAMPLE_NAMES if n not in set(SAMPLE_PHOTO_PEOPLE.values())] + \
+    ['Alex', 'Sam', 'Jamie', 'Taylor', 'Chloe', 'Brandon', 'Erin', 'Victor', 'Paige', 'Trevor', 'Leah', 'Miguel', 'Kayla', 'Sean']
+SAMPLE_AVATAR_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'sample_avatars')
+
+
+def _assign_people(sessions: List[Dict[str, Any]]) -> None:
+    """Who each sample session is: about half wear a face (photo + its name), the rest a plain name. Seeded per session, so
+    every client sees the same person on the same session; no two sessions on screen share a person."""
+    used_codes, used_names = set(), set()
+    for s in reversed(sessions):            # oldest first, so a row keeps its person while newer rows arrive
+        r = random.Random(f"{SALT}:who:{s['id']}")
+        if r.random() < 0.5:
+            i = r.randrange(len(_PHOTO_CODES))
+            while _PHOTO_CODES[i] in used_codes and len(used_codes) < len(_PHOTO_CODES):
+                i = (i + 7) % len(_PHOTO_CODES)
+            code = _PHOTO_CODES[i]; used_codes.add(code)
+            s['name'], s['avatar_code'] = SAMPLE_PHOTO_PEOPLE[code], code
+        else:
+            i = r.randrange(len(_PLAIN_NAMES))
+            while _PLAIN_NAMES[i] in used_names and len(used_names) < len(_PLAIN_NAMES):
+                i = (i + 7) % len(_PLAIN_NAMES)
+            s['name'], s['avatar_code'] = _PLAIN_NAMES[i], None
+            used_names.add(s['name'])
+
+
 SAMPLE_FOCUS = {
     'strength': [('Upper Body', 3), ('Chest + Triceps', 3), ('Back + Biceps', 3), ('Lower Body', 3), ('Glutes + Legs', 2),
                  ('Shoulders', 2), ('Upper Push', 2), ('Upper Pull', 2), ('Full Body', 2), ('Arms', 1)],
@@ -139,13 +182,7 @@ def sample_sessions(now: Optional[float] = None, lookback_min: int = LIVE_LOOKBA
             out.append(dict(id=f's{slot}-{i}', started=start, ended=end if end <= now else None, direction=direction, states=states,
                             focus=focus, planned_minutes=planned, est_minutes=round(minutes), name=name))
     out.sort(key=lambda s: -s['started'])
-    used = set()
-    for s in reversed(out):                       # no two sessions on screen share a first name (within a window this size)
-        i = SAMPLE_NAMES.index(s['name'])
-        while SAMPLE_NAMES[i] in used and len(used) < len(SAMPLE_NAMES):
-            i = (i + 7) % len(SAMPLE_NAMES)
-        s['name'] = SAMPLE_NAMES[i]
-        used.add(s['name'])
+    _assign_people(out)
     return out
 
 
@@ -242,10 +279,11 @@ def _sample_details(s: dict, live: bool) -> List[str]:
     return feed_details(s['states'], exercises=exercises, sets=sets, level=level, est_minutes=s['planned_minutes'] * 0.95 if live else None)
 
 
-def feed_samples(now: _dt.datetime, real_entries: int, format_ago) -> List[dict]:
+def feed_samples(now: _dt.datetime, real_entries: int, format_ago, avatar_base: Optional[str] = None) -> List[dict]:
     """Sample rows for the Live feed (EXPLORE_SYNTHETIC). Started in the last 20 min and still going -> LIVE NOW; finished in
     the last few hours -> a completion. They only fill the feed up to ~15 rows, so they fade out as real activity grows.
-    Production (labeled): no name, no face, `sample` + `show_sample_tag`; the feed's stats header never counts them."""
+    Production (labeled): first name, a face on about half (avatar_base + /api/v3/sample-avatars/<code>.jpg), `sample` +
+    `show_sample_tag`; the header counts them only with the "Includes sample sessions" note under it."""
     mode = synthetic_mode()
     if mode == 'off':
         return []
@@ -268,7 +306,8 @@ def feed_samples(now: _dt.datetime, real_entries: int, format_ago) -> List[dict]
         rows.append({
             'id': f"sample-{s['id']}", 'type': 'live_now' if live else 'completion',
             # first name on every sample row (founder call, Oct 3); production keeps the SAMPLE tag + footnote so it stays honest
-            'user': {'id': '', 'username': '', 'name': s['name'], 'avatar': ''},
+            'user': {'id': '', 'username': '', 'name': s['name'],
+                     'avatar': f"{avatar_base}/api/v3/sample-avatars/{s['avatar_code']}.jpg" if (avatar_base and s.get('avatar_code')) else ''},
             'mood_bucket': bucket, 'mood_label': label, 'workout_name': s['focus'],
             'duration_minutes': None if live else s['est_minutes'], 'milestone_count': None,
             'timestamp': ts.isoformat(), 'ago_text': format_ago(ts), 'workout_snapshot_id': None,
@@ -334,6 +373,15 @@ def _entry(*, id, kind, direction, states, focus, elapsed_min, est_min, name=Non
 
 def build_explore_router(db, get_current_user):
     r = APIRouter(prefix='/v3', tags=['v3-explore'])
+
+    @r.get('/sample-avatars/{code}.jpg')
+    async def sample_avatar(code: str):
+        from fastapi import HTTPException
+        from fastapi.responses import FileResponse
+        if code not in SAMPLE_PHOTO_PEOPLE:
+            raise HTTPException(404, 'Not found')
+        return FileResponse(os.path.join(SAMPLE_AVATAR_DIR, f'{code}.jpg'), media_type='image/jpeg',
+                            headers={'Cache-Control': 'public, max-age=604800, immutable'})
     trending_cache: Dict[str, Any] = {'at': 0.0, 'value': None}
 
     async def _optional_user(authorization: Optional[str]) -> Optional[str]:

@@ -10148,6 +10148,7 @@ def _format_relative_time(ts: datetime) -> str:
 
 @api_router.get("/feed/live")
 async def get_live_feed(
+    request: Request,
     limit: int = 30,
     authorization: Optional[str] = Header(None),
 ):
@@ -10464,7 +10465,10 @@ async def get_live_feed(
     # counted in the stats header above)
     try:
         raw_entries = await enrich_live_feed(db, raw_entries)
-        raw_entries += feed_samples(now, len(raw_entries), _format_relative_time)
+        # sample faces are served by this backend: absolute https URL from the host the app called (behind the proxy)
+        _host = request.headers.get("x-forwarded-host") or request.headers.get("host") or ""
+        _scheme = "http" if _host.startswith(("localhost", "127.", "10.", "192.168.")) else "https"
+        raw_entries += feed_samples(now, len(raw_entries), _format_relative_time, avatar_base=f"{_scheme}://{_host}" if _host else None)
     except Exception as _fe:
         logger.warning(f"live feed v3 / sample rows skipped: {_fe}")
 
