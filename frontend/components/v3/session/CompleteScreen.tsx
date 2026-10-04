@@ -25,7 +25,7 @@
  */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as Haptics from 'expo-haptics';
-import { ActivityIndicator, Animated, AppState, Easing, Keyboard, Pressable, StyleSheet, Text, TextInput, View, useWindowDimensions } from 'react-native';
+import { ActivityIndicator, Animated, AppState, Easing, Keyboard, Platform, Pressable, StyleSheet, Text, TextInput, View, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from '../../SafeLinearGradient';
 import { COLORS } from '../../../constants/brand';
@@ -42,6 +42,10 @@ import { InstagramTip, loadIgTipOff, saveIgTipOff } from './InstagramTip';
 import { loadRingGoals, resolveRingGoals, RingGoalPrefs, saveRingGoals } from '../../../utils/v3Session/goalStore';
 import { shareCard } from '../../../utils/v3Session/share';
 import { SHARE_TREATMENTS, ShareCard, ShareData, ShareTreatment } from './ShareCard';
+import { useHealth } from '../../../contexts/HealthContext';
+import { setHealthOnboardingComplete } from '../../../utils/healthStorage';
+
+const HEALTH_NAME = Platform.OS === 'ios' ? 'Apple Health' : 'Health Connect';
 
 interface Props {
   record: SessionRecord;
@@ -236,6 +240,28 @@ export function Share(p: {
     setWearableState('synced');
   };
 
+  // Connect ask (Oct 2026): a fresh finish is the moment the wearable pays off, so anyone who has never seen the Health
+  // permission sheet gets one card here. Granting fills the numbers straight away; either answer retires the card (the
+  // status leaves 'notDetermined') and marks Health onboarding done so the gate does not ask again.
+  const health = useHealth();
+  const [connecting, setConnecting] = useState(false);
+  const askConnect = !!p.autoSync && wearableState !== 'unavailable' && health.available && health.status === 'notDetermined';
+  const connect = async () => {
+    if (connecting) return;
+    Keyboard.dismiss();
+    setConnecting(true);
+    let granted = false;
+    try { granted = await health.requestPermissions(); } catch { granted = false; }
+    await setHealthOnboardingComplete().catch(() => undefined);
+    setConnecting(false);
+    if (!granted) return;
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => undefined);
+    setWearableState('syncing');
+    const [startISO, endISO] = windowISO();
+    const n = await syncWearable(startISO, endISO).catch(() => null);
+    if (n) { applyWearable(n, 'auto'); setWearableState('synced'); } else setWearableState('idle');
+  };
+
   // automatic pass: now, at 15s and at 55s (a Watch hands its workout to Health a few seconds after it ends), and whenever
   // the app returns to the front, until a Watch workout matching the session has been read
   useEffect(() => {
@@ -289,7 +315,7 @@ export function Share(p: {
   };
 
   // everything fits one screen: the card takes the height that is left (1:1 square), never wider than 300
-  const FIXED = (p.header ? 118 : 36) /* done header / title */ + 74 /* numbers */ + 44 /* goals · health */ + 30 /* source line */ + 44 /* overlay picker */ + 64 /* share row */ + 66 /* Done */ + (p.status ? 22 : 0) + 24;
+  const FIXED = (p.header ? 118 : 36) /* done header / title */ + 74 /* numbers */ + 44 /* goals · health */ + 30 /* source line */ + 44 /* overlay picker */ + 64 /* share row */ + 66 /* Done */ + (p.status ? 22 : 0) + (askConnect ? 66 : 0) + 24;
   const avail = height - p.insets.top - 8 - p.insets.bottom - FIXED;
   const cardW = Math.max(200, Math.min(300, width - 88, Math.floor(avail)));
   const source = after?.source === 'wearable' ? 'From your wearable. Tap a number to change it.' : 'Tap a number to type it. No estimates.';
@@ -329,13 +355,25 @@ export function Share(p: {
             <Ionicons name="disc-outline" size={15} color={COLORS.textPrimary} />
             <Text style={styles.smallBtnText}>Adjust goals</Text>
           </Pressable>
-          {wearableState !== 'unavailable' ? (
+          {wearableState !== 'unavailable' && !askConnect ? (
             <Pressable onPress={sync} disabled={wearableState === 'syncing'} style={({ pressed }) => [styles.toolBtn, pressed && { opacity: 0.75 }]} testID="v3-results-sync" hitSlop={4}>
               {wearableState === 'syncing' ? <ActivityIndicator size="small" color={COLORS.textPrimary} /> : <Ionicons name="watch-outline" size={15} color={COLORS.textPrimary} />}
               <Text style={styles.smallBtnText}>{wearableState === 'synced' ? 'Synced' : wearableState === 'empty' ? 'Nothing in Health' : 'Sync Health'}</Text>
             </Pressable>
           ) : null}
         </View>
+        {askConnect ? (
+          <Pressable onPress={connect} disabled={connecting} style={({ pressed }) => [styles.connect, pressed && { opacity: 0.85 }]} testID="v3-results-connect-health" accessibilityLabel={`Connect ${HEALTH_NAME}`}>
+            <View style={styles.connectIcon}><Ionicons name="watch-outline" size={18} color={COLORS.accent} /></View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.connectTitle} numberOfLines={1}>Connect {HEALTH_NAME}</Text>
+              <Text style={styles.connectSub} numberOfLines={1}>Fill calories and heart rate from your watch, every workout.</Text>
+            </View>
+            <View style={styles.connectBtn}>
+              {connecting ? <ActivityIndicator size="small" color={COLORS.accentInk} /> : <Text style={styles.connectBtnText}>Connect</Text>}
+            </View>
+          </Pressable>
+        ) : null}
         <Text style={styles.source} numberOfLines={1}>{source}</Text>
 
         <View style={styles.treatments}>
@@ -485,4 +523,10 @@ const styles = StyleSheet.create({
   shareBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, height: 50, borderRadius: 16, backgroundColor: 'rgba(255,255,255,0.07)', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,255,255,0.12)' },
   shareText: { fontSize: 15, fontWeight: '700', color: COLORS.textPrimary },
   offscreen: { position: 'absolute', left: -9999, top: 0 },
+  connect: { flexDirection: 'row', alignItems: 'center', gap: 12, height: 58, marginTop: 8, paddingLeft: 12, paddingRight: 8, borderRadius: 16, backgroundColor: 'rgba(255,255,255,0.06)', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,255,255,0.14)' },
+  connectIcon: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.07)' },
+  connectTitle: { fontSize: 14.5, fontWeight: '800', color: COLORS.textPrimary },
+  connectSub: { fontSize: 12, color: COLORS.textSecondary, marginTop: 1 },
+  connectBtn: { height: 36, minWidth: 84, paddingHorizontal: 14, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: COLORS.accent },
+  connectBtnText: { fontSize: 13.5, fontWeight: '800', color: COLORS.accentInk },
 });
