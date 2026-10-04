@@ -346,22 +346,58 @@ export function resolveV3CartHero(w: V3HeroWorkout): { source: V3HeroSource; rea
  * twice. Each card starts at its normal seeded pick and walks its pool until it finds an athlete not already on screen
  * (falls back to its normal pick if the pool has nobody new). Choices are remembered per workout_id so the Cart matches.
  */
+/**
+ * Who each cast member is (from the photos), for the Home rule below. Anyone not listed is "unknown" and never blocks a pick.
+ */
+export const V3_ATHLETE_GENDER: Record<string, 'f' | 'm'> = {
+  amara: 'f', brooke: 'f', harper: 'f', imani: 'f', lena: 'f', maya: 'f', mei: 'f', nia: 'f', noa: 'f', zoe: 'f',
+  cole: 'm', dre: 'm', jalen: 'm', julian: 'm', kai: 'm', mateo: 'm', wyatt: 'm',
+};
+
+/**
+ * The three Home cards' photos: three different athletes (founder rule), and (founder pass, Oct 2026) never three women or
+ * three men in a row. Each card keeps its own seeded rotation order; the first combination in that order that satisfies
+ * both rules wins, so a card only moves off its usual photo when it has to. If no mix exists in the pools, it falls back to
+ * three different athletes, then to the plain seeded pick.
+ */
 export function resolveV3HomeHeroes(ws: readonly (V3HeroWorkout | null)[]): (V3HeroSource | null)[] {
-  const used = new Set<string>();
-  return ws.map((w) => {
+  type Slot = { fixed: V3HeroSource } | { order: string[] } | null;
+  const slots: Slot[] = ws.map((w) => {
     if (!w) return null;
     const plan = heroPlan(w);
-    if (plan.kind === 'fixed') return plan.source;
+    if (plan.kind === 'fixed') return { fixed: plan.source };
     const n = plan.pool.length;
     const start = plan.seed && n ? hashSeed(`${plan.seed}|${plan.salt}`) % n : 0;
-    let uri = plan.pool[start];
-    for (let i = 0; i < n; i++) {
-      const u = plan.pool[(start + i) % n];
-      const a = v3PhotoAthlete(u);
-      if (!a || !used.has(a)) { uri = u; break; }
-    }
-    const who = v3PhotoAthlete(uri);
-    if (who) used.add(who);
+    return { order: Array.from({ length: n }, (_, i) => plan.pool[(start + i) % n]) };
+  });
+  const gender = (uri: string | null) => (uri ? V3_ATHLETE_GENDER[v3PhotoAthlete(uri) ?? ''] ?? null : null);
+  const mixed = (uris: (string | null)[]) => {
+    const g = uris.filter((u): u is string => !!u).map(gender);
+    return g.length < 3 || g.includes(null) || new Set(g).size > 1;
+  };
+  const search = (needMix: boolean): (string | null)[] | null => {
+    const pick: (string | null)[] = [];
+    const go = (k: number): boolean => {
+      if (k === slots.length) return !needMix || mixed(pick);
+      const sl = slots[k];
+      if (!sl || 'fixed' in sl) { pick.push(sl && 'fixed' in sl && sl.fixed.kind === 'remote' ? sl.fixed.uri : null); if (go(k + 1)) return true; pick.pop(); return false; }
+      for (const u of sl.order) {
+        const a = v3PhotoAthlete(u);
+        if (a && pick.some((x) => x && v3PhotoAthlete(x) === a)) continue;
+        pick.push(u);
+        if (go(k + 1)) return true;
+        pick.pop();
+      }
+      return false;
+    };
+    return go(0) ? pick : null;
+  };
+  const chosen = search(true) ?? search(false);
+  return ws.map((w, k) => {
+    const sl = slots[k];
+    if (!w || !sl) return null;
+    if ('fixed' in sl) return sl.fixed;
+    const uri = chosen?.[k] ?? sl.order[0];
     const source: V3HeroSource = { kind: 'remote', uri };
     if (w.workout_id) homeChosen.set(w.workout_id, source);
     return source;

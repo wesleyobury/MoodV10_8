@@ -265,3 +265,28 @@ test('V3 Home heroes — missing workouts stay null', () => {
   assert.equal(hs[2], null);
   assert.ok(hs[1]);
 });
+
+test('V3 Home heroes — never three women or three men across the three cards (founder pass, Oct 2026)', async () => {
+  const { V3_ATHLETE_GENDER } = await import('./cartHero');
+  // every athlete the Home cards can show has a gender on file
+  for (const p of V3_HERO_LIBRARY) assert.ok(V3_ATHLETE_GENDER[p.athlete], p.athlete);
+  const S = HERO_KEYS.filter((k) => k.startsWith('strength_'));
+  const SW = ['sweat_circuit', 'sweat_engine', 'sweat_hybrid'];
+  const AT = ['athletic_power', 'athletic_speed_agility', 'athletic_full_body'];
+  let checked = 0;
+  for (const s of S) for (const sw of SW) for (const at of AT) for (let i = 0; i < 12; i++) {
+    const ws = [
+      v3({ workout_id: `s-${s}-${i}`, archetype: { id: s } }),
+      v3({ workout_id: `w-${sw}-${i}`, direction: 'sweat', archetype: { id: sw } }),
+      v3({ workout_id: `a-${at}-${i}`, direction: 'athletic', archetype: { id: at } }),
+    ];
+    const hs = resolveV3HomeHeroes(ws);
+    const who = hs.map((h) => v3PhotoAthlete((h as any).uri));
+    const g = who.map((a) => V3_ATHLETE_GENDER[a ?? '']);
+    assert.equal(new Set(who).size, 3, who.join(','));
+    assert.ok(new Set(g).size > 1, `${s}/${sw}/${at}#${i}: ${who.join(', ')}`);
+    ws.forEach((w, j) => assert.deepEqual(resolveV3CartHero(w).source, hs[j]));
+    checked++;
+  }
+  assert.ok(checked >= 900);
+});
