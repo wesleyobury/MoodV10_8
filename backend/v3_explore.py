@@ -311,7 +311,7 @@ def feed_samples(now: _dt.datetime, real_entries: int, format_ago, avatar_base: 
             'mood_bucket': bucket, 'mood_label': label, 'workout_name': s['focus'],
             'duration_minutes': None if live else s['est_minutes'], 'milestone_count': None,
             'timestamp': ts.isoformat(), 'ago_text': format_ago(ts), 'workout_snapshot_id': None,
-            'sample': True, 'show_sample_tag': not realistic, 'v3_preset': preset,
+            'sample': True, 'show_sample_tag': False, 'v3_preset': preset,
             'details': _sample_details(s, live),
         })
     rows.sort(key=lambda r: r['timestamp'], reverse=True)

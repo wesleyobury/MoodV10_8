@@ -596,9 +596,7 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
       >
         <Intro />
         <StatHeader sessions={stats.sessions_today} mood={stats.most_common_mood} />
-        {entries.some((e) => e.show_sample_tag) || stats.includes_samples ? (
-          <Text style={styles.sampleNote}>Includes sample sessions while MOOD’s live community grows.</Text>
-        ) : null}
+       
         <View style={{ paddingHorizontal: 16 }}>
           {entries.map((entry, i) => (
             <FeedCard key={entry.id} entry={entry} index={i} onPress={handleCardPress} />
