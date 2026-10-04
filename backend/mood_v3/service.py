@@ -79,12 +79,18 @@ def _adjustments(res):
         else: out.append(dict(reason_code='log', detail=str(l)))
     return out[:60]
 
-def generate_workout(raw, user_key, history_records=(), perf_history=(), *, workout_id=None, recent_bft=()):
+def generate_workout(raw, user_key, history_records=(), perf_history=(), *, workout_id=None, recent_bft=(), pick_archetype=None):
     """-> (envelope, state). history_records: completed V3 workouts oldest -> newest (history_record dicts).
-    state carries what a later swap needs to rebuild this exact workout deterministically."""
+    state carries what a later swap needs to rebuild this exact workout deterministically.
+    pick_archetype: Home's MOOD's Pick suggestion for Strength (recovery steering). Used only when MOOD is picking (no explicit
+    archetype or Target) and it is a real Strength rotation type; the workout stays MOOD's Pick, so Different Workout rotates."""
     history_records = list(history_records)
     ctx = N.normalize(raw, user_key, [h.get('direction') for h in history_records])
-    return _generate(ctx, history_records, list(perf_history), workout_id=workout_id, recent_bft=recent_bft)
+    resolved = None
+    if pick_archetype and ctx.direction == 'strength' and ctx.target_mode == 'moods_pick' and not ctx.archetype \
+            and pick_archetype in SA.QE.ROTATION and pick_archetype not in ('strength_core', 'strength_custom_target'):
+        resolved = pick_archetype
+    return _generate(ctx, history_records, list(perf_history), workout_id=workout_id, resolved_archetype=resolved, recent_bft=recent_bft)
 
 def _generate(ctx, history_records, perf_history, *, workout_id=None, resolved_archetype=None, version=1, source=None, extra_log=None, recent_bft=()):
     ad = ADAPTERS[ctx.direction]; nctx = engine_ctx(ctx, resolved_archetype)

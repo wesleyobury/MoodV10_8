@@ -240,6 +240,13 @@ export default function V3WorkoutCart() {
     track('v3_swap_workout_tapped', { swap_count: before.swap_count, selection_source: before.selection_source ?? null, archetype: before.archetype.id });
     const res = await swapV3Workout(token, id);
     setBuilding(false);
+    if (!res.ok && res.error.kind === 'completed') {
+      // finished already: Different Workout cannot change it. Send them Home, where the card builds a fresh one.
+      track('v3_swap_workout_result', { result: 'completed' });
+      showToast('You already finished this one. Pick a fresh workout on Home.');
+      setTimeout(() => router.replace('/(tabs)' as any), 1400);
+      return;
+    }
     if (!res.ok || res.envelope.status === 'conflict' || !res.envelope.workout) {
       const msg = res.ok ? res.envelope.conflict?.message || "There isn't another version of this workout today." : res.error.message;
       track('v3_swap_workout_result', { result: res.ok ? res.envelope.conflict?.code ?? 'conflict' : 'error' });

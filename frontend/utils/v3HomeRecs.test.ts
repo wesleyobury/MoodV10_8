@@ -118,11 +118,12 @@ test('recovery: nothing to steer', () => {
   assert.equal(recoveryPlan([h('strength_glutes_legs', 10)], { now: NOW, states: ['sore'] }), null);
 });
 
-test('recovery: steered Strength slot carries the archetype; other Directions do not', () => {
+test('recovery: steered Strength slot carries it as MOOD\'s Pick (pick_archetype, never archetype); other Directions do not', () => {
   const slots = recSlots({ pick: 'strength', states: [], soreness: [], duration: 60, date: D, strengthArchetype: 'strength_upper_pull' });
-  assert.equal(slots[0].request.archetype, 'strength_upper_pull');
-  assert.equal(slots[1].request.archetype, undefined);
-  assert.equal(slots[2].request.archetype, undefined);
+  assert.equal(slots[0].request.pick_archetype, 'strength_upper_pull');
+  assert.equal(slots[0].request.archetype, undefined);
+  assert.equal(slots[1].request.pick_archetype, undefined);
+  assert.equal(slots[2].request.pick_archetype, undefined);
 });
 
 test('recovery line', () => {

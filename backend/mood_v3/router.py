@@ -44,6 +44,9 @@ class GenerateBody(BaseModel):
     training_preference: Optional[str] = None
     date: Optional[str] = None            # the user's local date (YYYY-MM-DD); seeds same-day determinism
     persist: bool = True                  # false = live preview (home card), not stored, not swappable
+    # Home recovery steering (Oct 2026): MOOD's Pick suggests this Strength session type (rest the area trained last). Built
+    # as MOOD's Pick, not as the user's choice, so Different Workout can still rotate to another session type.
+    pick_archetype: Optional[str] = None
 
 class SwapExerciseBody(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -301,10 +304,10 @@ def build_v3_router(db, get_current_user, completion_hooks=None):
         recent = await _recent_bft(user_id)
         # Persistent inputs: explicit request value > users.training_profile > backend default.
         profile = await _training_profile(user_id)
-        raw, applied = apply_profile_defaults(body.model_dump(exclude={'persist'}), body.model_fields_set, profile)
+        raw, applied = apply_profile_defaults(body.model_dump(exclude={'persist', 'pick_archetype'}), body.model_fields_set, profile)
         t0 = time.perf_counter()
         try:
-            env, state = await asyncio.to_thread(lambda: service.generate_workout(raw, user_id, hist, perf, recent_bft=recent))
+            env, state = await asyncio.to_thread(lambda: service.generate_workout(raw, user_id, hist, perf, recent_bft=recent, pick_archetype=body.pick_archetype))
         except N.InputError as e:
             await _track_generated(user_id, raw, body.persist, t0, status='invalid', conflict_code=f'input:{e.field}')
             raise HTTPException(422, dict(field=e.field, message=e.message))

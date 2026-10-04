@@ -124,6 +124,8 @@ export default function V3Home() {
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inflight = useRef(new Set<string>());
+  /** this visit's history fetch (completed workout ids): fetchSlot waits for it before reusing a cached build */
+  const historyReady = useRef<Promise<V3HistoryItem[]>>(Promise.resolve([]));
   const doneKey = useRef<string | null>(null);
   const firstFetch = useRef(true);
   const ctaPrimary = useRef(new Animated.Value(0)).current;
@@ -153,7 +155,21 @@ export default function V3Home() {
     const date = localDateISO();
     const [h, last, sess] = await Promise.all([readFirstHomeHandoff(uid), readLastDirection(uid), readSession(uid)]);
     // Recent completed workouts: the recovery line + steering of the Strength suggestion (utils/v3HomeRecs recoveryPlan).
-    if (token) getV3History(token, 20).then(setHistory);
+    // Kept as a promise too: a card must never reopen a workout that is already finished (fetchSlot waits for this).
+    const hp = token ? getV3History(token, 20) : Promise.resolve([] as V3HistoryItem[]);
+    historyReady.current = hp;
+    hp.then((h) => {
+      setHistory(h);
+      const done = new Set(h.map((x) => x.workout_id));
+      // a card already pointing at a finished workout (finished on another visit / device): rebuild it
+      setRecs((m) => {
+        const stale = Object.keys(m).filter((k) => { const r = m[k]; return r.status === 'ok' && !!r.workoutId && done.has(r.workoutId); });
+        if (!stale.length) return m;
+        const next = { ...m };
+        stale.forEach((k) => delete next[k]);
+        return next;
+      });
+    });
     // Week strip + streak pill: refreshed on every focus, so a workout finished a minute ago shows its flame.
     if (token) {
       authFetch<{ workout_streak?: number; workout_completed_at_14d?: string[] }>('/api/achievements/state', token)
@@ -319,7 +335,10 @@ export default function V3Home() {
       try {
         // Same inputs already built today by the running engine (Build screen, or an earlier Start): reuse that workout.
         const existing = await readTodayBySignature(uid, slot.request.date, sig);
-        const completed = session?.mode === 'done' && existing?.workout_id === session.workoutId;
+        // Finished already (this run's session, or the server's history): never reopen it, build a fresh one (founder bug Oct 4:
+        // the card reopened a completed workout and Different Workout answered "This workout is already complete").
+        const finished = existing ? new Set((await historyReady.current.catch(() => [] as V3HistoryItem[])).map((h) => h.workout_id)) : null;
+        const completed = !!existing && ((session?.mode === 'done' && existing.workout_id === session.workoutId) || !!finished?.has(existing.workout_id));
         if (existing?.envelope.workout && engine && existing.envelope.engine?.build === engine.engine_build && !completed) {
           done({ status: 'ok', workout: existing.envelope.workout, workoutId: existing.workout_id });
           return;

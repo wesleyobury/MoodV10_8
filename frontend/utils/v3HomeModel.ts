@@ -357,6 +357,7 @@ export function requestSignature(req: V3GenerateRequest): string {
     so: [...req.soreness].sort(),
     t: req.target === undefined ? null : req.target === 'full_body' ? 'full_body' : [...req.target].sort(),
     a: req.archetype ?? null,
+    pa: req.pick_archetype ?? null,
     du: req.duration,
     e: req.equipment ?? null,
     x: req.experience ?? null,

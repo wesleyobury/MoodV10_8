@@ -40,6 +40,9 @@ export interface V3GenerateRequest {
   goal?: 'build_strength' | 'lose_weight_conditioning' | 'build_muscle' | 'improve_athleticism' | 'feel_better_reduce_stress' | 'stay_consistent';
   date: string;
   persist: boolean;
+  /** Home recovery steering: MOOD's Pick suggests this Strength session type, but it stays MOOD's Pick (Different Workout
+   *  can rotate). Needs the Oct 2026 backend (the server rejects unknown fields). */
+  pick_archetype?: string;
 }
 
 /* ------------------------------------------------------------------ envelope */

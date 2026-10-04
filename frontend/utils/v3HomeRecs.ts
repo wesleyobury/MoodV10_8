@@ -40,10 +40,12 @@ export function recSlots(opts: {
   slotStates?: V3State[] | null;
 }): RecSlot[] {
   return recDirections(opts.pick).map((direction, i) => {
-    const archetype = direction === 'strength' ? opts.strengthArchetype ?? null : null;
+    // Recovery steering is MOOD's suggestion, not the user's choice: sent as pick_archetype so the server keeps it MOOD's Pick
+    // (an explicit archetype locked Different Workout to that one session type, founder bug Oct 4).
+    const pick = direction === 'strength' ? opts.strengthArchetype ?? null : null;
     const states = opts.slotStates?.[i] ? [opts.slotStates[i]] : opts.states;
-    const req = buildRequest({ ...initialInputs(direction, { states, duration: opts.duration }), soreness: [...opts.soreness], archetype }, opts.date);
-    const request = { ...req, persist: false };
+    const req = buildRequest({ ...initialInputs(direction, { states, duration: opts.duration }), soreness: [...opts.soreness], archetype: null }, opts.date);
+    const request = { ...req, persist: false, ...(pick ? { pick_archetype: pick } : {}) };
     return { direction, pick: direction === opts.pick, request, signature: requestSignature(request) };
   });
 }
