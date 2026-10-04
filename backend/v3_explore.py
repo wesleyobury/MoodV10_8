@@ -279,6 +279,25 @@ def feed_samples(now: _dt.datetime, real_entries: int, format_ago) -> List[dict]
     return rows[:cap]
 
 
+def sample_day_stats(now: _dt.datetime) -> Dict[str, Any]:
+    """Sample sessions finished since local midnight (America/Chicago): their count and their Live bucket labels. Lets the
+    Explore header's "sessions today" climb through the day like the sample rows below it (founder call, Oct 4). Off mode
+    -> nothing. The client keeps the "Includes sample sessions" note under the header whenever this is counted."""
+    if synthetic_mode() == 'off':
+        return {'count': 0, 'labels': Counter()}
+    t = now.timestamp()
+    local = now.astimezone(_ACTIVITY_TZ)
+    midnight = local.replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
+    lookback = int((t - midnight) // 60) + 1
+    labels: Counter = Counter()
+    n = 0
+    for s in sample_sessions(t, lookback_min=lookback, finished=True):
+        if s['ended'] is not None and s['ended'] >= midnight:
+            n += 1
+            labels[V3_LIVE_BUCKET[s['direction']][1]] += 1
+    return {'count': n, 'labels': labels}
+
+
 # ------------------------------------------------------------------ helpers
 
 def _first_name(u: dict) -> str:

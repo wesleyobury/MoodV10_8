@@ -103,7 +103,7 @@ interface LiveEntry {
 }
 
 interface LiveFeedData {
-  stats: { sessions_today: number; most_common_mood: string | null };
+  stats: { sessions_today: number; most_common_mood: string | null; includes_samples?: boolean };
   entries: LiveEntry[];
 }
 
@@ -596,7 +596,7 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
       >
         <Intro />
         <StatHeader sessions={stats.sessions_today} mood={stats.most_common_mood} />
-        {entries.some((e) => e.show_sample_tag) ? (
+        {entries.some((e) => e.show_sample_tag) || stats.includes_samples ? (
           <Text style={styles.sampleNote}>Includes sample sessions while MOOD’s live community grows.</Text>
         ) : null}
         <View style={{ paddingHorizontal: 16 }}>

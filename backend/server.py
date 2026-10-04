@@ -175,7 +175,7 @@ from notification_worker import (
 from seed_data import PREVIEW_FEATURED_WORKOUTS, FEATURED_WORKOUT_IDS
 from exercises_seed_data import PREVIEW_EXERCISES
 from mood_v3.router import build_v3_router  # MOOD V3 unified workout generation
-from v3_explore import build_explore_router, v3_live_bucket, enrich_live_feed, feed_samples  # MOOD V3 Explore (Live) + Profile activity
+from v3_explore import build_explore_router, v3_live_bucket, enrich_live_feed, feed_samples, sample_day_stats  # MOOD V3 Explore (Live) + Profile activity
 from mood_v3.completion import CompletionHooks as V3CompletionHooks  # MOOD V3 Guided Session completion side effects
 from training_profile import build_training_profile_router  # MOOD V3 persistent training profile
 from workout_drafts import (
@@ -10200,6 +10200,18 @@ async def get_live_feed(
         cls = v3_live_bucket({"source": "v3", "direction": row.get("_id")})
         if cls:
             bucket_counts[cls[1]] = bucket_counts.get(cls[1], 0) + row["count"]
+    # Sample sessions finished today count too (EXPLORE_SYNTHETIC != off), so the header climbs through the day; the
+    # client shows "Includes sample sessions" under it whenever includes_samples is true.
+    includes_samples = False
+    try:
+        _sd = sample_day_stats(now)
+        if _sd["count"]:
+            includes_samples = True
+            sessions_today += _sd["count"]
+            for _label, _n in _sd["labels"].items():
+                bucket_counts[_label] = bucket_counts.get(_label, 0) + _n
+    except Exception as _se:
+        logger.warning(f"live feed sample stats skipped: {_se}")
     most_common_mood = max(bucket_counts.items(), key=lambda x: x[1])[0] if bucket_counts else None
 
     # ---------- ENTRIES ----------
@@ -10464,6 +10476,7 @@ async def get_live_feed(
         "stats": {
             "sessions_today": sessions_today,
             "most_common_mood": most_common_mood,
+            "includes_samples": includes_samples,
         },
         "entries": entries,
     }
