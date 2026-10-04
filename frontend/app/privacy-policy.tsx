@@ -32,7 +32,7 @@ export default function PrivacyPolicyScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.lastUpdated}>Last Updated: June 2026</Text>
+        <Text style={styles.lastUpdated}>Last Updated: October 2026</Text>
         <Text style={styles.effectiveDate}>Effective Date: February 2025</Text>
 
         {/* Introduction */}
@@ -79,7 +79,7 @@ export default function PrivacyPolicyScreen() {
             <Text style={styles.bulletItem}>• Email address - Used for account verification, login authentication, password recovery, and essential service communications</Text>
             <Text style={styles.bulletItem}>• Username - Used for identification within the app and community features</Text>
             <Text style={styles.bulletItem}>• Password - Securely encrypted using bcrypt hashing; we cannot see your password</Text>
-            <Text style={styles.bulletItem}>• Profile picture (optional) - Displayed on your profile and posts</Text>
+            <Text style={styles.bulletItem}>• Profile picture (optional) - Displayed on your profile and next to your activity in Live on MOOD</Text>
             <Text style={styles.bulletItem}>• Bio and display name (optional) - Information you choose to share publicly</Text>
           </View>
           <Text style={styles.paragraph}>
@@ -107,7 +107,7 @@ export default function PrivacyPolicyScreen() {
 
           <Text style={styles.subTitle}>3.3 User-Generated Content (UGC)</Text>
           <Text style={styles.paragraph}>
-            When you upload or create content, we collect and store:
+            As of MOOD 3.0, the app no longer offers posts, comments, or direct messages. Content created with earlier versions of the app is retained until you delete it or delete your account. Where applicable, we collect and store:
           </Text>
           <View style={styles.bulletList}>
             <Text style={styles.bulletItem}>• Photos and videos - Media files you upload for posts or profile pictures</Text>
@@ -143,6 +143,22 @@ export default function PrivacyPolicyScreen() {
           </Text>
           <Text style={styles.paragraph}>
             Health/Fitness Data Restriction: We treat mood, energy, workout history, and fitness data as sensitive information. We do not sell or share your health or fitness data with third parties for advertising, data mining, or profiling.
+          </Text>
+
+          <Text style={styles.subTitle}>3.4.1 Apple Health (HealthKit)</Text>
+          <Text style={styles.paragraph}>
+            If you choose to connect Apple Health, MOOD asks for permission to read the following data. MOOD only reads this data; it does not write any data to Apple Health.
+          </Text>
+          <View style={styles.bulletList}>
+            <Text style={styles.bulletItem}>• Resting heart rate, sleep (last night), active energy, and steps - Shown in your daily snapshot on Home</Text>
+            <Text style={styles.bulletItem}>• Heart rate - Shown live during workout sessions</Text>
+            <Text style={styles.bulletItem}>• Heart rate variability and workout history - Shown in your workout stats</Text>
+          </View>
+          <Text style={styles.paragraph}>
+            Purpose: To show your activity and recovery alongside your MOOD workouts and to add stats such as heart rate and calories to workouts you complete. Workout stats derived from this data (for example, average heart rate and calories for a MOOD workout) are stored with your workout history on our servers so you can view them later.
+          </Text>
+          <Text style={styles.paragraph}>
+            Apple Health data is never used for advertising or marketing, never sold, and never shared with third parties for advertising, data mining, or profiling. It is not stored in iCloud by MOOD. Connecting Apple Health is optional, and you can change or revoke access at any time in the iOS Health app or in Settings &gt; Privacy &amp; Security &gt; Health.
           </Text>
 
           <Text style={styles.subTitle}>3.5 Analytics & Usage Data</Text>
@@ -181,15 +197,20 @@ export default function PrivacyPolicyScreen() {
             <Text style={styles.bulletItem}>• Users you block</Text>
           </View>
 
+          <Text style={styles.subTitle}>3.6.1 Live on MOOD</Text>
+          <Text style={styles.paragraph}>
+            When you start or complete a MOOD workout, other MOOD users may see this activity in the Live on MOOD feed on the Explore tab. The feed shows your first name, your profile picture (if you have one), the type of workout, how you were feeling (the States you selected), and summary details such as the number of exercises and length. It does not show your email, health data, or location.
+          </Text>
+
           <Text style={styles.subTitle}>3.7 Device Permissions</Text>
           <Text style={styles.paragraph}>
             Our app may request the following device permissions:
           </Text>
           <View style={styles.bulletList}>
-            <Text style={styles.bulletItem}>• Camera - To record photos and videos for posts and profile pictures</Text>
-            <Text style={styles.bulletItem}>• Microphone - To record audio when creating videos</Text>
-            <Text style={styles.bulletItem}>• Photo Library (Read) - To select existing photos/videos for upload</Text>
-            <Text style={styles.bulletItem}>• Photo Library (Write) - To save content to your device</Text>
+            <Text style={styles.bulletItem}>• Apple Health (optional) - To read the health and fitness data described in Section 3.4.1</Text>
+            <Text style={styles.bulletItem}>• Camera and Microphone - Only if you choose to take a photo or record video in the app</Text>
+            <Text style={styles.bulletItem}>• Photo Library (Read) - To choose a profile picture</Text>
+            <Text style={styles.bulletItem}>• Photo Library (Write) - To save workout summary images you choose to save or share</Text>
             <Text style={styles.bulletItem}>• Push Notifications - To send you relevant updates (optional)</Text>
           </View>
           <Text style={styles.paragraph}>
