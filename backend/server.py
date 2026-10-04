@@ -2112,6 +2112,8 @@ DEFAULT_APP_CONFIG = {
     "welcome_video_url": "",
     "welcome_video_thumbnail_url": "",
     "welcome_video_caption": "",
+    # Profile "Welcome to MOOD" sheet text above the founder video (empty = the app's built-in text).
+    "founder_message_text": "",
 }
 
 
@@ -2512,6 +2514,7 @@ class AppConfigUpdate(BaseModel):
     welcome_video_url: Optional[str] = None
     welcome_video_thumbnail_url: Optional[str] = None
     welcome_video_caption: Optional[str] = None
+    founder_message_text: Optional[str] = None
 
 
 @api_router.get("/config")

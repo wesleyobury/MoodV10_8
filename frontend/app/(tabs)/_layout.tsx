@@ -7,13 +7,16 @@ import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinea
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { useBadges } from '../../contexts/BadgeContext';
+import { useFounderMessage } from '../../utils/founderMessage';
 import { Analytics } from '../../utils/analytics';
 
 // Re-export useBadges for components that import from _layout
 export { useBadges } from '../../contexts/BadgeContext';
 
 export default function TabLayout() {
-  const { token } = useAuth();
+  const { token, user, isGuest } = useAuth();
+  // the one badge left: a founder welcome message this user has not opened yet (cleared when they open it on Profile)
+  const founder = useFounderMessage(isGuest ? null : user?.id);
   const previousTab = useRef<string>('index');
   // V3 (Oct 2026): the social feed and DMs are gone, so the tabs carry no notification / message badges.
   const { refreshBadges } = useBadges();
@@ -104,6 +107,8 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profile',
+          tabBarBadge: founder.unseen ? 1 : undefined,
+          tabBarBadgeStyle: { backgroundColor: COLORS.accent, color: COLORS.accentInk, fontSize: 10, fontWeight: '800' },
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconContainer}>
               {focused ? (

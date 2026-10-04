@@ -24,6 +24,8 @@ import * as Haptics from 'expo-haptics';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
+import { FounderMessageCard } from '../../components/FounderMessage';
+import { useFounderMessage } from '../../utils/founderMessage';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import { FoundingMemberBadge } from '../../components/FoundingMemberBadge';
 import AchievementMedallion from '../../components/AchievementMedallion';
@@ -128,6 +130,7 @@ export default function Profile() {
   const insets = useSafeAreaInsets();
   const { token, user, isGuest } = useAuth();
   const uid = user?.id ?? null;
+  const founder = useFounderMessage(isGuest ? null : uid);
 
   const [rows, setRows] = useState<ActivityRow[] | null>(null);
   const [failed, setFailed] = useState(false);
@@ -338,6 +341,9 @@ export default function Profile() {
             </View>
             <Ionicons name="chevron-forward" size={17} color="rgba(255,255,255,0.4)" />
           </Pressable>
+          {founder.message ? (
+            <FounderMessageCard message={founder.message} unseen={founder.unseen} uid={uid} onOpened={() => track('founder_message_opened', { first: founder.unseen })} />
+          ) : null}
         </View>
 
         {!rows && !failed ? (
