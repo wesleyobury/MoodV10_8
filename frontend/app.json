@@ -112,6 +112,6 @@
       "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 0
     },
-    "runtimeVersion": "1.2.1"
+    "runtimeVersion": "3.0.0"
   }
 }
