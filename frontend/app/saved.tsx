@@ -21,6 +21,7 @@ import { repeatV3Workout } from '../utils/v3Api';
 import { SavedWorkout, fetchSaved } from '../utils/v3Saved';
 import { trackEvent } from '../utils/analytics';
 import { V3_ASSETS } from '../components/v3/v3Images';
+import GuestGate from '../components/GuestGate';
 
 function directionOf(s: SavedWorkout): 'strength' | 'sweat' | 'athletic' | null {
   // V3 saves carry the Direction on every row (workoutType) and at the start of the name (utils/v3SavedBody)
@@ -31,7 +32,7 @@ function directionOf(s: SavedWorkout): 'strength' | 'sweat' | 'athletic' | null 
   return null;
 }
 
-export default function SavedScreen() {
+function SavedScreenScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { token } = useAuth();
@@ -166,3 +167,11 @@ const styles = StyleSheet.create({
   emptyTitle: { fontSize: 15.5, fontWeight: '700', color: COLORS.textPrimary },
   emptySub: { fontSize: 13, color: '#8D8D90', textAlign: 'center', lineHeight: 18 },
 });
+
+
+/** Workouts need a profile: guests get the sign-up prompt (components/GuestGate). */
+export default function SavedScreen() {
+  const { isGuest } = useAuth();
+  if (isGuest) return <GuestGate action="save workouts" />;
+  return <SavedScreenScreen />;
+}

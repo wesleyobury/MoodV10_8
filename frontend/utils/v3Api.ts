@@ -283,7 +283,7 @@ function toError(res: ApiResponse<any>): V3Error {
 async function call(path: string, token: string, init: { method?: string; body?: unknown; timeoutMs?: number } = {}): Promise<V3Result> {
   const res = await apiFetch<V3Envelope>(path, {
     method: init.method ?? 'GET',
-    headers: { Authorization: `Bearer ${token}` },
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
     body: init.body === undefined ? undefined : JSON.stringify(init.body),
     timeoutMs: init.timeoutMs,
   });
@@ -355,6 +355,11 @@ export async function getV3Bft(token: string, workoutId: string): Promise<V3BftP
 
 export function generateV3Workout(token: string, req: V3GenerateRequest): Promise<V3Result> {
   return call('/api/v3/workouts/generate', token, { method: 'POST', body: req, timeoutMs: GENERATE_TIMEOUT_MS });
+}
+
+/** Guest Home: a live preview with no account (never stored; Start needs a profile). */
+export function previewV3Workout(req: V3GenerateRequest): Promise<V3Result> {
+  return call('/api/v3/workouts/preview', '', { method: 'POST', body: { ...req, persist: false }, timeoutMs: GENERATE_TIMEOUT_MS });
 }
 
 /** A fresh, un-completed copy of a workout (Saved Workouts: do it again). Same plan, new workout id. */

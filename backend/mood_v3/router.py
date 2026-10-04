@@ -328,6 +328,21 @@ def build_v3_router(db, get_current_user, completion_hooks=None):
         _trace('generate', user_id, env, raw)
         return await _finish(env)
 
+    @r.post('/workouts/preview')
+    async def preview(body: GenerateBody):
+        """Guest Home (Oct 2026): a live preview with no account. Never stored, no history, no profile, no LLM copy; Start
+        stays behind sign-up in the app. Same generator and inputs as /generate with persist=false."""
+        raw = body.model_dump(exclude={'persist', 'pick_archetype'})
+        try:
+            env, _ = await asyncio.to_thread(lambda: service.generate_workout(raw, 'guest', (), (), recent_bft=(), pick_archetype=body.pick_archetype))
+        except N.InputError as e:
+            raise HTTPException(422, dict(field=e.field, message=e.message))
+        _bft_prepare(env, persist=False)
+        if env['status'] == 'ok':
+            env['workout']['workout_id'] = None
+        env['profile_defaults_applied'] = []
+        return await _finish(env)
+
     @r.get('/workouts/history')
     async def history(limit: int = 20, user_id: str = Depends(get_current_user)):
         docs = await col.find({'user_id': user_id, 'status': 'completed'}).sort('completed_at', -1).limit(min(limit, 100)).to_list(100)

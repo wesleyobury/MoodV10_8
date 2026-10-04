@@ -38,11 +38,12 @@ import WearablesSnapshot from '../WearablesSnapshot';
 import { trackEvent } from '../../utils/analytics';
 import { authFetch } from '../../utils/api';
 import { FirstHomeHandoff, consumeFirstHomeHandoff, fetchTrainingProfile, readFirstHomeHandoff, takeFirstBuildLaunch } from '../../utils/v3Profile';
-import { EXPECTED_ENGINE_PHASE, V3Direction, V3HistoryItem, getV3History, V3SoreRegion, V3State, V3Workout, completeV3Workout, generateV3Workout, getV3Version, localDateISO } from '../../utils/v3Api';
+import { EXPECTED_ENGINE_PHASE, V3Direction, V3HistoryItem, getV3History, V3SoreRegion, V3State, V3Workout, completeV3Workout, generateV3Workout, getV3Version, localDateISO, previewV3Workout } from '../../utils/v3Api';
 import { MAX_STATES, STATES, defaultDuration, requestSignature, soreSummary } from '../../utils/v3HomeModel';
 import { RecSlot, fitCards, weekStrip, cardHeight916, homeHeadline, homeSpacing, persistRequest, recCardSize, recSlots, recoveryPlan, recsMessage, featuredMoods, stateCta, stateTileSize, streakLabel } from '../../utils/v3HomeRecs';
 import { V3DayStates, V3TodayEntry, readDayStates, readLastDirection, readTodayBySignature, writeDayStates, writeLastDirection, writeToday } from '../../utils/v3Today';
 import { BodyMapSheet } from './BodyMapSheet';
+import GuestPromptModal from '../GuestPromptModal';
 import { StateCard } from './StateCard';
 import { MoodWorkoutCard } from './MoodWorkoutCard';
 import { resolveV3HomeHeroes } from '../../utils/cartHero';
@@ -101,9 +102,12 @@ export default function V3Home() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { width: screenW } = useWindowDimensions();
-  const { token, user } = useAuth();
+  const { token, user, isGuest } = useAuth();
   const { freeWorkoutsRemaining, freeWorkoutsResetAt } = useSubscription();
-  const uid = user?.id ?? null;
+  // Guests (Oct 2026) get this Home too: live previews from /preview, stored under a 'guest' key on this phone. Starting or
+  // building a workout asks them to create a profile (GuestPromptModal).
+  const uid = user?.id ?? (isGuest ? 'guest' : null);
+  const [guestPrompt, setGuestPrompt] = useState<string | null>(null);
 
   const [ready, setReady] = useState(false);
   const [day, setDay] = useState<V3DayStates | null>(null);
@@ -323,7 +327,7 @@ export default function V3Home() {
   /* ---------------------------------------------------------------- recommendations */
   const fetchSlot = useCallback(
     async (slot: RecSlot, force = false) => {
-      if (!token || !uid) return;
+      if ((!token && !isGuest) || !uid) return;
       const sig = slot.signature;
       if (inflight.current.has(sig)) return;
       inflight.current.add(sig);
@@ -343,7 +347,7 @@ export default function V3Home() {
           done({ status: 'ok', workout: existing.envelope.workout, workoutId: existing.workout_id });
           return;
         }
-        const res = await generateV3Workout(token, slot.request);
+        const res = token ? await generateV3Workout(token, slot.request) : await previewV3Workout(slot.request);
         if (!res.ok) {
           done({ status: 'error' });
           track('v3_home_rec_outcome', { direction: slot.direction, outcome: 'error', kind: res.error.kind });
@@ -360,12 +364,12 @@ export default function V3Home() {
         inflight.current.delete(sig);
       }
     },
-    [token, uid, engine, session, track],
+    [token, isGuest, uid, engine, session, track],
   );
 
   // Build (or reuse) the three recommendations whenever the inputs change. Debounced so tapping through States is cheap.
   useEffect(() => {
-    if (!ready || !token || !uid || engine === undefined) return;
+    if (!ready || (!token && !isGuest) || !uid || engine === undefined) return;
     // Only never-requested signatures: in-flight ones are 'loading', failed ones retry from the card (tap to retry).
     const missing = slots.filter((s) => !recs[s.signature]);
     if (!missing.length) return;
@@ -377,7 +381,7 @@ export default function V3Home() {
     }, wait);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, token, uid, engine, slotKey, recs]);
+  }, [ready, token, isGuest, uid, engine, slotKey, recs]);
 
   /* ---------------------------------------------------------------- actions */
   const showToast = (msg: string) => {
@@ -439,6 +443,11 @@ export default function V3Home() {
   const onStateCta = () => {
     if (!uid || !day) return;
     haptic();
+    if (isGuest) {
+      track('v3_guest_gate', { action: 'build', source: cta.source });
+      setGuestPrompt('build your workout');
+      return;
+    }
     selectionLive = true;
     writeDayStates(uid, { ...day, set: true });
     track('v3_build_opened', { source: cta.source, states, soreness });
@@ -446,6 +455,11 @@ export default function V3Home() {
   };
 
   const onSeeAll = () => {
+    if (isGuest) {
+      track('v3_guest_gate', { action: 'build', source: 'home_see_all' });
+      setGuestPrompt('build your workout');
+      return;
+    }
     // Build reads today's States from storage: hand it exactly what Home shows (possibly none).
     if (uid && day) {
       selectionLive = true;
@@ -478,6 +492,12 @@ export default function V3Home() {
   /** Start: persist the previewed request (or reuse today's build of it) and open the existing Cart. */
   const onStart = async (slot: RecSlot) => {
     const r = recs[slot.signature];
+    if (isGuest) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+      track('v3_guest_gate', { action: 'start', direction: slot.direction, archetype: r?.status === 'ok' ? r.workout.archetype.id : null });
+      setGuestPrompt('start this workout');
+      return;
+    }
     if (!token || !uid || !day || r?.status !== 'ok' || startingSig) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
     const open = (id: string, reused: boolean) => {
@@ -714,6 +734,7 @@ export default function V3Home() {
         </View>
       ) : null}
       <BodyMapSheet visible={mapOpen} initial={day.soreness} onDone={onMapDone} onCancel={onMapCancel} />
+      <GuestPromptModal visible={!!guestPrompt} onClose={() => setGuestPrompt(null)} action={guestPrompt ?? undefined} />
     </View>
   );
 }

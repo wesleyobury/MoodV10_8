@@ -55,12 +55,13 @@ import { CompletedStatsOverlay } from '../../components/v3/CompletedStatsOverlay
 import { useV3StartGate } from '../../utils/v3Session/startGate';
 import { readSession } from '../../utils/v3Session/store';
 import { BftLiveText, BftSource } from '../../components/v3/BftLiveText';
+import GuestGate from '../../components/GuestGate';
 
 /** Where Start Workout goes. The V3 Guided Session plugs in here (same param: the workout id). */
 const V3_SESSION_ROUTE = '/v3/session';
 
 
-export default function V3WorkoutCart() {
+function V3WorkoutCartScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
@@ -680,3 +681,11 @@ const styles = StyleSheet.create({
   },
   toastText: { fontSize: 13.5, fontWeight: '600', color: COLORS.textPrimary, textAlign: 'center' },
 });
+
+
+/** Workouts need a profile: guests get the sign-up prompt (components/GuestGate). */
+export default function V3WorkoutCart() {
+  const { isGuest } = useAuth();
+  if (isGuest) return <GuestGate action="start this workout" />;
+  return <V3WorkoutCartScreen />;
+}

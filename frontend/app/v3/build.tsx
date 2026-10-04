@@ -63,6 +63,7 @@ import { V3_ASSETS } from '../../components/v3/v3Images';
 import { parseBuildPreset } from '../../utils/v3Explore';
 import { PickRotator } from '../../components/v3/PickRotator';
 import { BuildCoachmark } from '../../components/v3/BuildCoachmark';
+import GuestGate from '../../components/GuestGate';
 
 const VALID_STATES = new Set<string>(STATES.map((s) => s.id));
 
@@ -70,7 +71,7 @@ function haptic() {
   Haptics.selectionAsync().catch(() => {});
 }
 
-export default function V3Build() {
+function V3BuildScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { token, user } = useAuth();
@@ -714,3 +715,11 @@ const styles = StyleSheet.create({
   ctaRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   ctaText: { fontSize: 17, fontWeight: '800', color: COLORS.accentInk, letterSpacing: 0.2 },
 });
+
+
+/** Workouts need a profile: guests get the sign-up prompt (components/GuestGate). */
+export default function V3Build() {
+  const { isGuest } = useAuth();
+  if (isGuest) return <GuestGate action="build your workout" />;
+  return <V3BuildScreen />;
+}

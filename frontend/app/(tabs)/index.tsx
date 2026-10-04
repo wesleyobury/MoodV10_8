@@ -602,12 +602,12 @@ const moodCards: MoodCard[] = [
 
 /**
  * Workouts tab. MOOD V3: signed-in users get the V3 Today's Workout builder
- * (components/v3/V3Home). Guests, and V3_HOME_ENABLED = false, get the V2
- * home below, unchanged.
+ * (components/v3/V3Home). Guests get the same V3 Home in guest mode (live suggestions, starting or
+ * building a workout asks them to create a profile). V3_HOME_ENABLED = false gets the V2 home below.
  */
 export default function WorkoutsHome() {
   const { token, isGuest } = useAuth();
-  if (V3_HOME_ENABLED && token && !isGuest) return <V3Home />;
+  if (V3_HOME_ENABLED && (isGuest || token)) return <V3Home />;
   return <V2WorkoutsHome />;
 }
 

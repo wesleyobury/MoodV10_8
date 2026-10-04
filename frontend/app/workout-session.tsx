@@ -43,6 +43,7 @@ import ExerciseLookupTrigger from '../components/ExerciseLookupTrigger';
 import OnboardingOverlay, { type TargetRect } from '../components/OnboardingOverlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from '../components/Toast';
+import GuestGate from '../components/GuestGate';
 
 const TIP_FORM_VIDEOS_DISMISSED_KEY = 'mood:tip:form_videos:never';
 
@@ -64,7 +65,7 @@ interface SessionWorkout {
   intensityReason?: string;
 }
 
-export default function WorkoutSessionScreen() {
+function WorkoutSessionScreenScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
@@ -1252,3 +1253,10 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 });
+
+/** Workouts need a profile: guests get the sign-up prompt (components/GuestGate). */
+export default function WorkoutSessionScreen() {
+  const { isGuest } = useAuth();
+  if (isGuest) return <GuestGate action="start this workout" />;
+  return <WorkoutSessionScreenScreen />;
+}

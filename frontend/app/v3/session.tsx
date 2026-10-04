@@ -37,10 +37,11 @@ import { useGuidedSession } from '../../components/v3/session/useGuidedSession';
 import { CompleteScreen } from '../../components/v3/session/CompleteScreen';
 import { WeightLogger } from '../../components/v3/session/WeightLogger';
 import { ActionSheet, Actions, ChecklistBody, ClockBody, ExerciseScreen, FinishBody, InfoSheet, ReadyBody, TopBar } from '../../components/v3/session/SessionViews';
+import GuestGate from '../../components/GuestGate';
 
 const HOME = '/(tabs)';
 
-export default function V3GuidedSession() {
+function V3GuidedSessionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { id, from } = useLocalSearchParams<{ id?: string; from?: string }>();
@@ -390,3 +391,11 @@ const styles = StyleSheet.create({
   errorBtn: { marginTop: 14, paddingHorizontal: 18, paddingVertical: 10, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.08)' },
   errorBtnText: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary },
 });
+
+
+/** Workouts need a profile: guests get the sign-up prompt (components/GuestGate). */
+export default function V3GuidedSession() {
+  const { isGuest } = useAuth();
+  if (isGuest) return <GuestGate action="start this workout" />;
+  return <V3GuidedSessionScreen />;
+}
